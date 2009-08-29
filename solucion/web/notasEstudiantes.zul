@@ -1,0 +1,59 @@
+<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
+<?page id="estudianes"?>
+<window xmlns:y="http://www.zkoss.org/2007/yui"
+title="Notas del Estudiante" onCreate="notasd()" sizable="true"
+closable="true" border="normal" width="80%" id="principalNotasEstudiantes">
+<zscript>
+<![CDATA[
+import bean.notasConsultas;
+import java.math.BigDecimal;
+
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import org.zkforge.yuiext.grid.Row;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Matriculas mat = (Matriculas)ses.getAttribute("matricula");
+System.out.println("MATRICULA:  "+mat);
+
+List sistemas = adm.query("Select o from Sistemacalificacion as o "+ 
+" where o.periodo.codigoper = '"+mat.curso.getPeriodo().getCodigoper()+"' order by o.orden ");
+String[][] values = new String[sistemas.size()][2];
+        Date fechaActual = new Date();
+          DateMidnight actual = new DateMidnight(fechaActual);
+                  for (int i=0;i<sistemas.size();i++) {
+                     values[i][0]= ((Sistemacalificacion)sistemas.get(i)).getAbreviatura();
+                     values[i][1]= "readonly";
+
+                  }
+
+
+]]>
+    </zscript>
+ 
+    <grid width="100%"  id="datos">
+        <columns>
+            <column width="240px" label ="Materia"/>
+            <column forEach="${values}" label="${each[0]}"  width="30px" align="center" />
+        </columns>
+        <rows id="filas"  use="bean.notasConsultas">
+        </rows>
+    </grid>
+    <button label="Salir" onClick="principalNotasEstudiantes.detach()"/>
+
+<zscript><![CDATA[
+
+void notasd(){
+        Matriculas matee = principalNotasEstudiantes.getAttribute("matricula");
+        filas.addRow(matee);
+}
+ 
+]]>
+</zscript>
+</window>
+
+	

@@ -1,0 +1,316 @@
+<window  mode="overlapped"  title="Control de Cursos" width="500px" border="normal"
+    maximizable="true" closable="true" sizable="true">
+
+ <zscript>
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.Cursos;
+  import jcinform.persistencia.Periodo;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    List allEvents = adm.query("Select o from Cursos as o where o.codigocur = 0");
+    static Cursos empa = new Cursos();
+    Permisos permiso = new Permisos();
+    List perfiles = adm.query("Select o from Global as o where o.grupo = 'PER'");
+    List especialidades = adm.query("Select o from Global as o where o.grupo = 'ESP'");
+    List paralelos = adm.query("Select o from Global as o where o.grupo = 'PAR'");
+    
+    Object media = null;
+
+//FUNCIONES
+void llenar(Cursos empa){
+    nombres.value = empa.getDescripcion();
+    secuencia.value = empa.getSecuencia();
+    aprobacion.value = new BigDecimal(empa.getAprobacion());
+    minima.value = new BigDecimal(empa.getMinima());
+    desde.value = empa.getInicial();
+    hasta.value = empa.getFinali();
+    inspector.value = empa.getInspector();
+    cedulaiden.value = empa.getCedulaiden();
+    tutor.value = empa.getTutor();
+    cedulatut.value = empa.getCedulatut();
+
+if(empa.getParalelo()!=null){
+        Listitem item = new Listitem();
+        item.setValue(empa.getParalelo());
+        item.appendChild(new Listcell(empa.getParalelo()+""));
+        paralelosL.appendChild(item);
+        paralelosL.setSelectedItem(item);
+
+    }
+    if(empa.getEspecialidad()!=null){
+        Listitem item = new Listitem();
+        item.setValue(empa.getEspecialidad());
+        item.appendChild(new Listcell(empa.getEspecialidad()+""));
+        especialidadesL.appendChild(item);
+        especialidadesL.setSelectedItem(item);
+
+    }
+ 
+
+}
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            empa = (Cursos)datos.selectedItem.value;
+        }else{empa.setCodigocur(0);}
+
+    nombres.readonly = estado;
+    secuencia.readonly = estado;
+    aprobacion.readonly = estado;
+    minima.readonly = estado;
+    desde.disabled = estado;
+    hasta.disabled = estado;
+    tutor.readonly = estado;
+    cedulatut.readonly = estado;
+    inspector.readonly = estado;
+    cedulaiden.readonly= estado;
+    paralelosL.disabled= estado;
+
+    especialidadesL.disabled= estado;
+
+}
+
+
+ void guardar(){
+
+ if(nombres.value=="" || secuencia.value ==""){
+    Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    return;
+ }
+        Periodo per = (Periodo) ses.getAttribute("periodo");
+        empa.setDescripcion(nombres.value);
+        empa.setSecuencia(secuencia.value);
+
+        empa.setAprobacion((aprobacion.value).doubleValue());
+        empa.setMinima((minima.value).doubleValue());
+
+        empa.setInspector(inspector.value);
+        empa.setTutor(tutor.value);
+        empa.setCedulaiden(cedulaiden.value);
+        empa.setCedulatut(cedulatut.value);
+
+        empa.setEspecialidad(especialidadesL.selectedItem.value);
+        empa.setParalelo(paralelosL.selectedItem.value);
+ 
+
+        empa.setInicial(desde.value);
+        empa.setFinali(hasta.value);
+        empa.setPeriodo(per);
+//alert(empa.getCodigocur());
+        if((!empa.getCodigocur().equals(0)) ){
+             adm.actualizar(empa);
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = empa.getCodigocur()+"";
+                  ((Listcell)children.get(1)).label = empa.getDescripcion()+" "+empa.getEspecialidad().getDescripcion()+" "+empa.getParalelo();
+             permiso.auditar("Cursos","Actualizar",""+empa.getCodigocur()+" "+empa.getDescripcion()+" "+empa.getEspecialidad().getDescripcion()+" "+empa.getParalelo());
+         }else{
+             empa.setCodigocur(adm.getNuevaClave("Cursos","codigocur"));
+             adm.guardar(empa);
+            permiso.auditar("Cursos","Guardar",""+empa.getCodigocur()+" "+empa.getDescripcion()+" "+empa.getEspecialidad().getDescripcion()+" "+empa.getParalelo());
+         }
+            
+            
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Cursos(0));
+            
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Cursos",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+llenar(new Cursos(0));
+estado(false,false);
+//alert(empa.getCodigocur());
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Cursos)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             empa = (Cursos)datos.selectedItem.value;
+             adm.eliminarObjeto(Cursos.class, empa.getCodigocur());
+             permiso.auditar("Cursos","Eliminar",""+empa.getCodigocur()+" "+empa.getDescripcion()+" "+empa.getEspecialidad().getDescripcion()+" "+empa.getParalelo());
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Cursos(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Cursos as o where o.identificacion = '"+valor+"' ");
+            if(empleados.size()>0){
+                Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Cursos object = (Cursos)it.next();
+                        empa = object;
+                 }
+            llenar(empa);
+
+            }else{
+                empa = new Cursos(0);
+            }
+
+        }
+    }
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o from Cursos as o where o.descripcion like '%"+p+"%' and o.periodo.codigoper = '"+periodo.getCodigoper()+"'  order by o.secuencia,o.paralelo.descripcion, o.descripcion");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Cursos acceIt = (Cursos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigocur()+" "));
+                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "+acceIt.getEspecialidad().getDescripcion()+" "+acceIt.getParalelo() ));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargarEspe(Global g){
+    empa.setEspecialidad(g);
+}
+void cargarSec(Global g){
+    empa.setSeccion(g);
+}
+void cargarPar(Global g){
+    empa.setParalelo(g);
+}
+  </zscript>
+<groupbox mold="3d" >
+       <caption label="Agregar" />
+
+<grid width="100%">
+<rows>
+
+<row><span style="float:right"> Nombres(*):</span>
+        <textbox id="nombres"  maxlength="100" cols="40" readonly="true"   />   </row>
+ <row> <span style="float:right"> Especialidad:</span>
+        
+		<listbox disabled="true" id="especialidadesL" width="250px" mold="select"
+		onSelect="cargarEspe(((Global)self.selectedItem.value));">
+			<listhead>
+				<listheader label="Especialidad"/>
+			</listhead>
+			<listitem selected="true"  forEach="${especialidades}" value="${each}">
+                  <listcell label="${each.descripcion}" />
+
+            </listitem>
+		</listbox>
+
+
+</row>
+<row> <span style="float:right"> Paralelo:</span>
+         <span>
+		<listbox id="paralelosL"  disabled="true"  mold="select"
+                onSelect="cargarPar(((Global)self.selectedItem.value));">
+			<listhead>
+				<listheader label="Paralelos"/>
+			</listhead>
+			<listitem selected="true" forEach="${paralelos}" value="${each}">
+                  <listcell label="${each.descripcion}" />
+            </listitem>
+		</listbox>
+
+ 
+		 
+</span>
+</row>
+
+    <row> <span style="float:right"> Orden(*):</span>
+        <span> <intbox id="secuencia"  maxlength="60" cols="10" readonly="true"  />
+        Nota Aprobación(*):
+        <decimalbox id="aprobacion" maxlength="100" cols="10"  readonly="true"    />
+        </span>
+    </row>
+
+    <row> <span style="float:right"> Nota Mínima:</span>
+        <decimalbox id="minima" maxlength="30" cols="10"  readonly="true"  /> </row>
+    <row> <span style="float:right"> Inspector:</span>
+      <span>   <textbox id="inspector" maxlength="100" cols="35"  readonly="true"  />
+      CI: 
+        <textbox id="cedulaiden" maxlength="13" cols="13" readonly="true"  /></span>
+    </row>
+    <row> <span style="float:right"> Tutor:</span>
+     <span>   <textbox id="tutor" maxlength="100" cols="35"  readonly="true"  />
+      CI:
+        <textbox id="cedulatut" maxlength="13" cols="13" readonly="true"  /></span>
+   </row>
+
+ <row> <span style="float:right"> Pase de Notas:</span>
+<span>Desde: <datebox disabled="true" format="dd/MMM/yyyy" id="desde"/> Hasta:<datebox  disabled="true"  format="dd/MMM/yyyy"  id="hasta"/></span>
+         </row>
+ 
+</rows>
+</grid>
+<vbox>
+<vbox>
+<hbox>
+    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+</hbox>
+</vbox>
+
+			</vbox>
+
+ </groupbox>
+<groupbox mold="3d" >
+    <caption label="Busquedas" />
+<vbox>
+    <hbox> Curso:  <textbox id="buscarText"  maxlength="60" cols="40" />  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
+    <hbox>
+         <listbox mold="paging" rows="10" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+			<listhead>
+                                <listheader label="Cod."/>
+                                <listheader label="Nombres"/>
+
+			</listhead>
+			<listitem  forEach="${allEvents}" value="${each}">
+                           <listcell label="${each.codigocur}" />
+                           <listcell label="${each.especialidad}" />
+            </listitem>
+		</listbox>
+
+
+    </hbox>
+</vbox>
+</groupbox>
+
+</window>

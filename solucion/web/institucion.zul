@@ -1,0 +1,267 @@
+ 
+<window  mode="overlapped" id="ventana"  title="Control de Institucion" width="500px" border="normal"
+    maximizable="true" closable="true" sizable="true" xmlns:a="http://www.zkoss.org/2005/zk/annotation">
+
+ <zscript>
+
+  import jcinform.persistencia.Global;
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.Institucion;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+    import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Institucion as o where o.identificacion = 0");
+    Institucion inobjeto = new Institucion();
+    Permisos permiso = new Permisos();
+    //FUNCIONES
+void cargarEscudo(byte[] imageData){
+  foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+}
+void cargarVacio(){
+  foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+}
+
+  </zscript>
+<groupbox mold="3d" >
+       <caption label="Agregar" />
+<grid width="100%">
+<rows> 
+    <row>
+        <span style="float:right"> Denominación(*):</span>
+       <a:bind value="inobjeto.denominacion"/>
+       <textbox id="denominacion" onChange="update();" width="200px" />
+    </row>
+    <row>
+        <span style="float:right"> Nombre(*):</span>
+       <a:bind value="inobjeto.nombre"/>
+       <textbox id="nombre" onChange="update();"  width="200px"  />
+    </row>
+    <row>
+        <span style="float:right"> Tipo(*):</span>
+       <span><a:bind value="inobjeto.tipo"/><textbox id="tipo" onChange="update();"  width="95px"  />
+       Escuela,Colegio... </span>
+    </row>
+    <row>
+        <span style="float:right"> Slogan:</span>
+       <a:bind value="inobjeto.slogan"/>
+       <textbox id="slogan" onChange="update();" width="200px" />
+    </row>
+    <row>
+        <span style="float:right"> Teléfono(*):</span>
+       <a:bind value="inobjeto.telefono"/>
+       <textbox id="telefono" onChange="update();"/>
+    </row>
+    <row>
+        <span style="float:right"> Dirección(*):</span>
+       <a:bind value="inobjeto.direccion"/>
+       <textbox id="direccion" onChange="update();"  width="200px" />
+    </row>
+    <row>
+        <span style="float:right"> Secretaria(*):</span>
+       <a:bind value="inobjeto.secretaria"/>
+       <textbox id="secretaria" onChange="update();"/>
+    </row>
+    <row>
+        <span style="float:right"> Rector(*):</span>
+       <a:bind value="inobjeto.rector"/>
+       <textbox id="rector" onChange="update();"/>
+    </row>
+    <row>
+        <span style="float:right"> Email(*):</span>
+       <a:bind value="inobjeto.usuariomail"/>
+       <textbox id="email" onChange="update();"/>
+    </row>
+    <row>
+        <span style="float:right"> Clave(*):</span>
+       <a:bind value="inobjeto.clavemail"/>
+       <textbox  type="password" id="clave" onChange="update();"/>
+    </row>
+    
+  <row>
+      <button label="Subir Imagen" id="ima">
+		<attribute name="onClick">{
+			Object media = Fileupload.get();
+			if (media instanceof org.zkoss.image.Image) {
+				foto0.setContent(media);
+			} else if (media != null){
+				Messagebox.show("Seleccione un Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+            }
+		}</attribute>
+	</button>
+  <image border="1" height="115px" id="foto0"/>
+  </row>
+</rows>
+</grid>
+<vbox>
+<vbox>
+<hbox>
+    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+</hbox>
+</vbox>
+
+			</vbox>
+
+ </groupbox>
+<groupbox mold="3d" >
+
+       <caption label="Busquedas" />
+<vbox>
+    <hbox>  Perfiles:  <textbox id="buscarText"  maxlength="60" cols="40" />  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
+    <hbox>
+         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+			<listhead>
+                                <listheader label="Cod."/>
+                                <listheader label="Nombres"/>
+
+			</listhead>
+			<listitem forEach="${allEvents}" value="${each}">
+                           <listcell label="${each.codigoinst}" />
+                           <listcell label="${each.denominacion}" />
+            </listitem>
+		</listbox>
+
+
+    </hbox>
+</vbox>
+
+
+</groupbox>
+<zscript>
+    AnnotateDataBinder binder = new AnnotateDataBinder(ventana);
+    binder.bindBean("inobjeto", inobjeto);
+    binder.loadAll();
+
+    void update() {
+          binder.saveAll();
+          binder.loadAll();
+    }
+
+//FUNCIONES
+ 
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            inobjeto = (Institucion)datos.selectedItem.value;
+        }
+
+    denominacion.readonly = estado;
+    nombre.readonly = estado;
+    telefono.readonly = estado;
+    email.readonly = estado;
+    direccion.readonly = estado;
+    secretaria.readonly = estado;
+    rector.readonly = estado;
+    clave.readonly = estado;
+    tipo.readonly = estado;
+    slogan.readonly = estado;
+     
+
+}
+
+
+ void guardar(){
+ if(denominacion.value=="" || nombre=="" || telefono =="" || secretaria =="" ||rector ==""  || direccion =="" ){
+    Messagebox.show("Ingrese todos los campos para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+    return ;
+ }
+             org.zkoss.image.Image nueva = foto0.getContent();
+            inobjeto.setEscudo(nueva.getByteData());
+
+        if((!inobjeto.getCodigoinst().equals(0)) ){
+             adm.actualizar(inobjeto);
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = inobjeto.codigoinst+"";
+                  ((Listcell)children.get(1)).label = inobjeto.denominacion+ " " + inobjeto.nombre;
+         }else{
+            inobjeto.setCodigoinst(adm.getNuevaClave("Institucion","codigoinst"));
+             adm.guardar(inobjeto);
+         }
+
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    binder.bindBean("inobjeto",(new Institucion(0)));
+                    binder.loadAll();
+          
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Institucion",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false; 
+       inobjeto = new Institucion(0);
+        binder.bindBean("inobjeto",inobjeto);
+        binder.loadAll();
+        estado(false,false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        binder.bindBean("inobjeto",(Institucion)datos.selectedItem.value);
+        binder.loadAll();
+            if(((Institucion)datos.selectedItem.value).getEscudo() != null){
+                    cargarEscudo(((Institucion)datos.selectedItem.value).getEscudo());
+            }else{
+                    cargarVacio();
+            }
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             inobjeto = (Institucion)datos.selectedItem.value;
+             adm.eliminarObjeto(Institucion.class, inobjeto.getCodigoinst());
+            datos.removeItemAt(datos.getSelectedIndex());
+           
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+   
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o from Institucion as o where o.nombre like '%"+p+"%' order by o.nombre");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Institucion acceIt = (Institucion) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigoinst()+""));
+                      li.appendChild(new Listcell(acceIt.getDenominacion()+" "+acceIt.getNombre()));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Global g){
+inobjeto.setPerfil(g);
+}
+
+</zscript>
+</window>

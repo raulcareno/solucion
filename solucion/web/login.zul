@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page   id="loginjx" title="Administrador Educativo" ?>
+<!--window  id="principalImagen">
+
+
+<separator bar="true"/-->
+
+
+<zk>
+ 
+<window onLoad="usuario.focus();" onCreate="usuario.focus();"  mode="overlapped" id="winLogin" style="position:absolute; top:20%; left:35%" border="normal" width="420px" sizable="true">
+  
+
+<zscript>
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.persistencia.Periodo;
+  import jcinform.persistencia.Institucion;
+  import bean.Permisos;
+  import jcinform.procesos.Administrador;
+  import javax.faces.context.FacesContext;
+   
+
+ Administrador adm = new Administrador();
+ List perfiles = adm.query("Select o from Periodo as o where o.estado = true");
+  Periodo per = new Periodo(-1);
+  per.setDescripcion("[Seleccione]");
+  perfiles.add(0,per);
+ Permisos permisos = new Permisos();
+
+void verificar(){
+  Empleados user =adm.ingresoSistema(usuario.value, clave.value);
+  
+  if(user != null){
+              
+                // cargo los periodos que tienen
+ List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'");
+             if(user.getCodigoemp().equals(-1)){
+                  equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
+             }
+                if(equivaEncontrados.size()>0){
+                            Empleadoperiodo p = new Empleadoperiodo();
+                             Periodo per = new Periodo(-1);
+                             Institucion ins = new Institucion(-1);
+                             ins.setTipo("");
+                              per.setDescripcion("[Seleccione]");
+                              p.setPeriodo(per);
+                              ins.setDenominacion("");
+                              ins.setNombre("");
+                              per.setInstitucion(ins);
+                              equivaEncontrados.add(0,p);
+                                verificar.visible = false;
+                                btnIngresar.visible = true;
+                                clave.disabled = true;
+                                usuario.disabled = true;
+                                rperiodo.visible = true;
+
+                            periodo = new Listbox();
+
+                                int a=0;
+                                      for(Iterator it =periodo.getItems().iterator(); it.hasNext();) {
+                                            periodo.getItems().remove(a);
+                                        }
+                                       for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                                              Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
+                                              Listitem li = new Listitem();
+                                              li.setValue(acceIt.getPeriodo());
+                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " "+ acceIt.getPeriodo().getInstitucion().getTipo()));
+                                              periodo.appendChild(li);
+                                     }
+
+            }else{
+                Messagebox.show("Usuario Correcto no tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                usuario.focus();
+            }
+
+                
+            }else{
+                Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                usuario.focus();
+             }
+  
+}
+
+void ingresoSistemas(){
+    if(periodo.getSelectedItem()==null){
+        Messagebox.show("Seleccione un periodo...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return;
+    }
+    if(((Periodo)periodo.getSelectedItem().getValue()).getCodigoper().equals(-1)){
+        Messagebox.show("Seleccione un periodo...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return;
+    }
+
+    Institucion inst = (Institucion) adm.buscarClave(new Integer(1), Institucion.class);
+    String bas = inst.getIniciales().substring(1,inst.getIniciales().length());
+     
+            Empleados user = adm.ingresoSistema(usuario.value, clave.value);
+            if(user != null){
+                    Periodo perio = (Periodo)periodo.selectedItem.value;
+                    permisos.llenar(user,perio);
+                    
+                if(user.getTipo().equals("Interna"))
+                    Executions.sendRedirect("index.zul");
+                else
+                    Executions.sendRedirect("indexProfesores.zul");
+
+            }else{
+                Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                usuario.focus();
+
+             }
+    
+
+}
+</zscript>
+		 <grid style="background-color:white">
+		<columns sizable="true" menupopup="auto">
+			<column label=" "  />
+			<column label=" "/>
+		</columns>
+		<rows>
+            <row spans="2">
+ <span style="float:center"> <image src="/images/about.png" style="aling:center"/></span>
+            </row>
+			<row>
+				<span style="float:right">Usuario:(*):</span>
+                <textbox onOK="clave.focus()"  id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
+			</row>
+			<row>
+				<span style="float:right">Contraseña:(*):</span>
+                 <textbox  onOK="verificar.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
+			</row>
+            <row align="center" id="rperiodo" visible="false" spans="2">
+                    <listbox  onOK="btnIngresar.focus()"   width="380px"  id="periodo" mold="select">
+                        <listitem forEach="${perfiles}" value="${each}">
+                              <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
+                        </listitem>
+                    </listbox>
+
+                  
+            </row>
+            <row spans="2" align="center" >
+             <span style="float:center">
+		<button label="Verificar"   image="/images/key.png"  id="verificar" onClick="usuario.getValue(); clave.getValue(); verificar()"/>
+        <button label="Ingresar Sistema"  visible="false" image="/images/ingreso.gif" id="btnIngresar" onClick="usuario.getValue(); clave.getValue(); ingresoSistemas();"/>
+        <button label="Consultar Notas" image="/images/notas.png">
+                        <attribute name="onClick">{
+                             Window win = (Window) Executions.createComponents("/loginEstudiantes.zul", null, null);
+                            win.doModal();
+                        }</attribute>
+                    </button>
+
+                    </span>
+            </row>
+             <row align="center" spans="2">
+                <label style="font-size:9px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)3400 925"/>
+              </row>
+		</rows>
+	</grid>
+       
+		<separator/>
+		
+	</window>
+ </zk>
+	<!--/window-->

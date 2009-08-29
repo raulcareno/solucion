@@ -1,0 +1,77 @@
+<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
+<?page id="main-page"?>
+<window xmlns:y="http://www.zkoss.org/2007/yui"
+title="Notas del Estudiante" onCreate="notas()"
+sizable="true"  closable="true" border="normal" width="80%" id="principalGrado">
+<zscript>
+<![CDATA[
+import bean.notasGrado;
+import java.math.BigDecimal;
+
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import org.zkforge.yuiext.grid.Row;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+ 
+Cursos periodo = (Cursos) ses.getAttribute("curso");
+List sistemas = adm.query("Select o from Materiasgrado as o "+
+                 " where o.curso.codigocur =  '"+periodo.getCodigocur()+"' order by o.codigo ");
+ 
+String[][] values = new String[sistemas.size()][2];
+ 
+                  for (int i=0;i<sistemas.size();i++) {
+                     values[i][0]= ((Materiasgrado)sistemas.get(i)).getNombre();
+                     values[i][1]= "number";
+                     if(((Materiasgrado)sistemas.get(i)).getEspromedio()){
+                     values[i][1]= "readonly";
+                     }
+
+                  }
+guardar(){
+    notasGrado nso = new notasGrado();
+    notasGrado r = (notasGrado) datos.getRows();
+     Cursos mat = principalGrado.getAttribute("curso");
+    String resultado = nso.guardar(r.getChildren(),mat);
+    if(resultado.equals("ok")){
+        Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+     }else{
+        Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+     }
+
+}
+
+
+]]>
+    </zscript>
+
+    <y:grid width="100%"  id="datos"  editable = "true">
+        <y:columns>
+           
+              <y:column editortype="readonly" style="font-size:11px" width="20px" label ="Mat."/>
+             <y:column editortype="readonly"  width="240px" label ="Estudiante"/>
+             <y:column forEach="${values}"  width="25px" editortype="${each[1]}" label="${each[0]}" align="right"  />
+
+        </y:columns>
+        <y:rows id="filas"  use="bean.notasGrado">
+        </y:rows>
+
+    </y:grid>
+ 
+<button label="Guardar"  image="/images/guardar.gif" onClick="guardar(); principalGrado.detach();"/>
+<zscript><![CDATA[
+
+void notas(){
+        Cursos mat = principalGrado.getAttribute("curso");
+        filas.addRow(mat);
+}
+
+]]>
+</zscript>
+</window>
+
+	

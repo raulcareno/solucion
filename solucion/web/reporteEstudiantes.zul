@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window  mode="overlapped"  title="Reporte de Estudiantes" width="81%" height="100%" border="normal"
+    maximizable="true" closable="true" sizable="true">
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+	<zscript>
+        <![CDATA[
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.notas;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import org.zkforge.yuiext.grid.Row;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+cursos.add(0,new Cursos(-1));
+Cursos todos = new Cursos(-2);
+todos.setDescripcion("[TODOS]");
+cursos.add(todos);
+
+List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
+void buscar2(Cursos cur){
+
+    }
+ public JRDataSource inscritos(String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      Periodo periodo = (Periodo) ses.getAttribute("periodo");
+      ArrayList detalle = new ArrayList();
+        String query = "SELECT mat FROM Matriculas AS mat " +
+                "WHERE  mat.estado =  '"+tipo+"' " +
+                "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+      List hoy = adm.query(query);
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+            Matriculas elem = (Matriculas) it.next();
+            detalle.add(elem);
+      }
+      ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
+      return ds;
+}
+public JRDataSource certificados(Cursos curso,String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+                    ArrayList detalle = new ArrayList();
+                    String query = "SELECT mat FROM Matriculas AS mat " +
+                            "WHERE  mat.estado like '%Matriculado%' " +
+                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                    if (!curso.getCodigocur().equals(-2)) {
+                        query = "Select o from Matriculas as o " +
+                                "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                                "and o.curso.codigocur = '" + curso.getCodigocur() + "'";
+                    }
+
+                    List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = null;
+                if(tipo.equals("CM")){
+                     ds = new ReporteCertificadoDataSource(detalle);
+                }else if(tipo.equals("LMIN")  || tipo.equals("LFEC")  || tipo.equals("LGENT")  || tipo.equals("LGEN")  || tipo.equals("LASI")  || tipo.equals("LCA")  || tipo.equals("LCAS")  || tipo.equals("AM")  || tipo.equals("LMAT")  || tipo.equals("LCLA")  || tipo.equals("LREP")  || tipo.equals("LCAR")){
+                      ds = new ReporteActaDataSource(detalle);
+                }
+            
+            return ds;
+
+}
+
+
+		void showReport() {
+			//Preparing parameters
+            Institucion insts = periodo.getInstitucion();
+			Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", insts.getDireccion());
+            parametros.put("slogan", insts.getSlogan());
+            parametros.put("secretaria", insts.getSecretaria());
+            parametros.put("rectora", insts.getRector());
+            
+			//LCAS,LCA,LASI.LGEN,LGENT,LFEC,LMIN
+			//conanioscumplidos
+            String tipo = reporte.getSelectedItem().getValue();
+            JRDataSource datasource = null;
+            if(tipo.equals("CM")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"CM");
+                    report.setSrc("WEB-INF/reportes/certificadoMatricula.jasper");
+                    parametros.put("titulo", "Certificado de Matricula");
+            }else if(tipo.equals("LFEC")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/conanioscumplidos.jasper");
+            }else if(tipo.equals("LCAS")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/concasilleros.jasper");
+            }else if(tipo.equals("LMIN")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/conmatricula.jasper");
+            }else if(tipo.equals("LCA")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/con1casilleros.jasper");
+            }else if(tipo.equals("LASI")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/conasistencia.jasper");
+            }else if(tipo.equals("LGEN")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/congenero.jasper");
+            }else if(tipo.equals("AM")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"AM");
+                    parametros.put("titulo", "Acta de Matricula");
+                    report.setSrc("WEB-INF/reportes/actaMatricula.jasper");
+                     
+            }else if(tipo.equals("INS")){
+                    datasource = inscritos("Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/estudiantes.jasper");
+            }else if(tipo.equals("MAT")){
+                    datasource = inscritos("Matriculado");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/estudiantes.jasper");
+            }else if(tipo.equals("RET")){
+                    datasource = inscritos("Retirado");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/estudiantes.jasper");
+            }else if(tipo.equals("LMAT")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LMAT");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/estudiantes.jasper");
+            }else if(tipo.equals("LCLA")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCLA");
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/claves.jasper");
+            }else if(tipo.equals("LREP")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/representantes.jasper");
+            }else if(tipo.equals("LCAR")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCAR");
+                    parametros.put("titulo", "Carné Estudiantil");
+                    report.setSrc("WEB-INF/reportes/carnet.jasper");
+            }else if(tipo.equals("-1")){
+                alert("No ha seleccionado ningún reporte...!");
+                    return;
+            }
+            if(!tipo.equals("-1")){
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType((String) format.getSelectedItem().getValue());
+            }
+		}
+
+void campos(String valor){
+        if(valor.equals("CM") || valor.equals("AM")){
+            curs.disabled = false;
+            mates.disabled = false;
+            titulo.value = "Listado de Estudiantes";
+        } else if(valor.equals("INS") || valor.equals("MAT") || valor.equals("RET") ){
+            curs.disabled = true;
+            mates.disabled = true;
+            titulo.value = "Listado de Estudiantes";
+        }else if(valor.equals("LMAT") || valor.equals("LCLA") || valor.equals("LREP") || valor.equals("LCAR")){
+            curs.disabled = false;
+            mates.disabled = true;
+            titulo.value = "Listado de Estudiantes";
+
+        }
+        if(valor.equals("CM"))
+            titulo.value = "Certificado de Matricula";
+        if(valor.equals("AM"))
+            titulo.value = "Actas de Matricula";
+        if(valor.equals("INS"))
+            titulo.value = "Estudiantes Inscritos";
+        if(valor.equals("MAT"))
+            titulo.value = "Listado de Matriculados";
+        if(valor.equals("RET"))
+            titulo.value = "Listado de Retirados";
+        if(valor.equals("LMAT"))
+            titulo.value = "Listado de Matriculados";
+        if(valor.equals("LCAR"))
+            titulo.value = "Carné Estudiantil";
+        if(valor.equals("LCLA"))
+            titulo.value = "Claves de Estudiantes";
+        if(valor.equals("LREP"))
+            titulo.value = "Lista de Representantes";
+        if(valor.equals("LCAS"))
+            titulo.value = "Listado de Estudiantes";
+       if(valor.equals("LCA"))
+            titulo.value = "Listado de Estudiantes";
+       if(valor.equals("LASI"))
+            titulo.value = "Listado de Estudiantes";
+       if(valor.equals("LGEN"))
+            titulo.value = "Listado de Estudiantes";
+       if(valor.equals("LFEC"))
+            titulo.value = "Listado de Estudiantes";
+       if(valor.equals("LMIN"))
+            titulo.value = "Listado de Estudiantes";
+        
+
+
+
+
+
+}
+
+
+]]>
+    </zscript>
+<panel width="100%" id="parametros"  height="100%" border="normal" collapsible="true" title="Parametros">
+				<panelchildren>
+<grid width="420px">
+<rows>
+<row>
+<span style="float:right"> Reporte:</span> <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="300px"  mold="select" >
+		<listitem label="[Seleccione]" value="-1" selected="true" />
+        <listitem label="Certificado de Matricula" value="CM" />
+		<listitem label="Actas de Matricula" value="AM" />
+		<listitem label="Estudiantes Inscritos" value="INS" />
+		<listitem label="Estudiantes Matriculados" value="MAT" />
+		<listitem label="Estudiantes Retirados" value="RET" />
+		<listitem label="Lista de Matriculados" value="LMAT" />
+        <listitem label="Lista de Carné Estudiantil"  value="LCAR"/>
+		<listitem label="Lista de Claves" value="LCLA"/>
+        <listitem label="Lista de Representantes" value="LREP"/>
+        <listitem label="Lista de Estudiantes con Casilleros vacios" value="LCAS"/>
+        <listitem label="Lista de Estudiantes 1 Casillero" value="LCA"/>
+        <listitem label="Listado para Asistencia" value="LASI"/>
+        <listitem label="Listadopor Genero" value="LGEN"/>
+        <listitem label="Listado con Años Cumplidos" value="LFEC"/>
+        <listitem label="Listado con Folio y No. Matricula" value="LMIN"/>
+	</listbox>
+</row>
+
+<row>
+<span style="float:right"> Curso:</span>
+        <listbox id="curs" width="300px"  mold="select"
+        onSelect="buscar2(((Cursos)self.selectedItem.value));">
+
+            <listitem forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
+        </listbox>
+</row>
+<row>
+<span style="float:right"> Estudiantes: </span>
+
+                                <listbox id="mates" width="300px"  mold="select" >
+                                    <listitem forEach="${estudiantes}" value="${each}">
+                                        <listcell label="${each.apellidos}" />
+                                    </listitem>
+                                </listbox>
+
+
+</row>
+<row>
+    <span style="float:right"> Titulo: </span>
+    			<textbox id="titulo" width="280px" />
+</row>
+
+<row>
+<span style="float:right"> Formato:</span>
+ <span> <listbox id="format" mold="select" onSelect="showReport();rep.setOpen(true);parametros.setOpen(false); " >
+		<listitem label="PDF" value="pdf" selected="true" />
+		<listitem label="XML" value="xml" />
+		<listitem label="HTML" value="html" />
+		<listitem label="Word (RTF)" value="rtf" />
+		<listitem label="Excel" value="xls" />
+		<listitem label="Excel (JXL)" value="jxl" />
+		<listitem label="CSV" value="csv" />
+		<listitem label="OpenOffice (ODT)" value="odt" unless="false"/>
+	</listbox>
+    <button label="Ejecutar!" onClick='showReport();rep.setOpen(true);parametros.setOpen(false);  '/></span>
+</row>
+</rows>
+</grid>
+</panelchildren>
+</panel>
+<panel width="100%" onOpen="parametros.setOpen(true);" id="rep"  height="90%" border="normal" collapsible="true" maximizable="true"   title="Reporte">
+    <panelchildren>
+      <jasperreport id="report" />
+   </panelchildren>
+</panel>
+	
+
+
+</zk>
+
+
+</window>
+
+
+
+
+
+

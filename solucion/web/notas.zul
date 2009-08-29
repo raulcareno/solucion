@@ -1,0 +1,140 @@
+<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
+<?page id="main-page"?>
+<window     xmlns:y="http://www.zkoss.org/2007/yui"
+ title="Ingreso de Notas" border="normal"
+width="100%" id="principal">
+<zscript>
+<![CDATA[
+import bean.notas;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import org.zkforge.yuiext.grid.Row;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+
+List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
+notas no = new notas();
+
+List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  order by o.orden ");
+ 
+String[][] values = new String[sistemas.size()][2];
+Date fechaActual = new Date();
+  DateMidnight actual = new DateMidnight(fechaActual);
+
+          for (int i=0;i<sistemas.size();i++) {
+             values[i][0]= ((Sistemacalificacion)sistemas.get(i)).getAbreviatura();
+                DateMidnight inicial = new DateMidnight(((Sistemacalificacion)sistemas.get(i)).getFechainicial());
+                DateMidnight finale = new DateMidnight(((Sistemacalificacion)sistemas.get(i)).getFechafinal());
+            if(actual.compareTo(finale) <=0 && actual.compareTo(inicial) >=0){
+                values[i][1]= "number";
+  
+            }else{
+               values[i][1]= "number";
+                //values[i][1]= "readonly";
+
+            }
+           
+           // values[i]="number";
+          }
+
+void recalculo(){
+notas nso = new notas();
+nso.calcularDisciplina(((Cursos)curs.selectedItem.value),"N1");
+
+}
+guardar(){
+    notas nso = new notas();
+    notas r = (notas) datos.getRows();
+        String resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+        if(resultado.equals("ok")){
+            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+         }else{
+            Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         }
+
+}
+
+void buscar2(Cursos cur){
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+        //bd2.getItems().clear();
+mates.getChildren().clear();
+bd2.value = ""; 
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor estudent = (MateriaProfesor) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent.getMateria()+""));
+                        mates.appendChild(item);
+             }
+
+    }
+
+void doAdd(Cursos curso, MateriaProfesor materia){
+
+                filas.addRow(curso,materia);
+      
+}
+
+]]>
+</zscript>
+<grid>
+<rows>
+<row>
+ <span style="float:right"> Curso(*):</span>
+               <bandbox  width="400px" readonly="true"  id="bd1">
+                    <bandpopup>
+                    <vbox>
+                    <listbox id="curs" width="420px"
+                    onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
+
+                        <listitem forEach="${cursos}" value="${each}">
+                              <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                        </listitem>
+                    </listbox>
+                    </vbox>
+                    </bandpopup>
+                </bandbox>
+</row>
+<row>
+   <span style="float:right"> Materias(*):</span>
+               <bandbox  width="300px" readonly="true"  id="bd2">
+                    <bandpopup>
+                    <vbox>
+                    <listbox id="mates" width="320px"
+                    onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
+
+                        <listitem forEach="${materias}" value="${each}">
+                              <listcell label="${each.descripcion}" />
+
+                        </listitem>
+                    </listbox>
+                    </vbox>
+                    </bandpopup>
+                </bandbox>
+</row>
+</rows>
+</grid>
+ <y:grid width="100%" id="datos" editable = "true">
+         <y:columns>
+             <y:column editortype="readonly" style="font-size:11px" width="20px" label ="Mat."/>
+             <y:column editortype="readonly"  width="240px" label ="Estudiante"/>
+             <y:column forEach="${values}"  width="25px" editortype="${each[1]}" label="${each[0]}" align="right"  />
+         </y:columns>
+         <y:rows id="filas" use="bean.notas">
+         </y:rows>
+ </y:grid>
+ <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+ <button label="Recalcular"   onClick="recalculo();"/>
+</window>
+
+	

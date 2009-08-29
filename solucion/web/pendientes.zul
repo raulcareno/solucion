@@ -1,0 +1,116 @@
+<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
+<window  xmlns:y="http://www.zkoss.org/2007/yui"  mode="overlapped"
+sizable="true" title="Registro de estudiantes que mantienen deuda " width="650px" border="normal"
+maximizable="true" closable="true" >
+<zscript>
+
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import java.util.Iterator;
+  import java.util.UUID;
+  import jcinform.procesos.Administrador;
+   import bean.Permisos;
+//globales
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+
+Global global = new Global();
+EventDAO evtdao = new EventDAO();
+List perfiles = evtdao.perfiles();
+Permisos permiso = new Permisos();
+
+ 
+List accesos = new ArrayList();
+int w = 0;
+ ListModel model = new SimpleListModel(accesos.toArray());
+//globales
+void guardar(){
+     if(verificar("Agregar")){
+          int inicio = datos.getModel().getSize();
+        Boolean estado = true;
+        int i=0;
+            while(estado==true){
+               Estudiantes acc = datos.getModel().getElementAt(i);
+                 adm.actualizar(acc);
+                if(i==(inicio-1)){
+                    estado=false;
+                }
+                i++;
+            }
+        Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+    }
+
+
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Accesos",accion);
+
+    }
+ 
+    void buscar(Cursos p){
+        datos.setModel(null);
+       accesosList = adm.query("Select o.estudiante from Matriculas as o where o.curso.codigocur = '"+p.getCodigocur()+"' ");
+       ListModel mo = new SimpleListModel(accesosList.toArray());
+       datos.setModel(mo);
+    }
+
+</zscript>
+      
+<groupbox mold="3d" >
+       <caption label="Agregar" />
+<vbox>
+
+  <hbox>  
+  
+  <span style="float:right"> Curso(*):</span>
+               <bandbox  width="400px" readonly="true"  id="bd1">
+                    <bandpopup>
+                    <vbox>
+                    <listbox id="curs" width="420px"
+                    onSelect="bd1.value=self.selectedItem.label;buscar(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
+
+                        <listitem forEach="${cursos}" value="${each}">
+                              <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                        </listitem>
+                    </listbox>
+                    </vbox>
+                    </bandpopup>
+                </bandbox>
+
+        <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
+</hbox>
+    </vbox>
+    </groupbox>
+
+
+<vbox>
+
+	<hbox>
+
+
+	</hbox>
+	</vbox>
+ <y:grid height="300px"  editable="true"  id="datos" model="@{accesos}">
+      <y:columns>
+        <y:column  label="Apellidos"/>
+        <y:column  label="Nombres"/>
+        <y:column editortype="check" label="Bloquear"/>
+      </y:columns>
+      <y:rows>
+       <y:row self="@{each=acceos}">
+           <y:label value="@{acceos.apellido}"/>
+           <y:label value="@{acceos.nombre}"/>
+           <y:label value="@{acceos.pendientes}"/>
+       </y:row>
+       </y:rows>
+   </y:grid>
+</window>

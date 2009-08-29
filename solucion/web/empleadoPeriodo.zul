@@ -1,0 +1,197 @@
+
+<window  mode="overlapped"  title="Control de Empleados Año Lectivo" width="900px" border="normal"
+    maximizable="true" closable="true" sizable="true">
+        <zscript><![CDATA[
+
+
+  import jcinform.persistencia.Global;
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.persistencia.Periodo;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+     
+    static Empleadoperiodo equi = new Empleadoperiodo();
+    Permisos permiso = new Permisos();
+    List perfiles = adm.query("Select o from Global as o where o.grupo = 'PER'");
+ List periodos = adm.query("Select o from Periodo as o");
+  Periodo per = new Periodo(-1);
+  per.setDescripcion("[Seleccione]");
+  periodos.add(0,per);
+
+//FUNCIONES
+ 
+void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+         
+    }
+
+
+}
+
+
+ void guardar(){
+
+ Periodo per = (Periodo)periodo.selectedItem.value;
+   adm.ejecutaSql("Delete from Empleadoperiodo where periodo.codigoper = "+per.getCodigoper()+" ");
+               for(Iterator it = right.getItems().iterator(); it.hasNext();) {
+                 Listitem object = (Listitem)it.next();
+                 Empleados emp = object.getValue();
+                 Empleadoperiodo nuevo = new Empleadoperiodo();
+                 nuevo.setCodigo(adm.getNuevaClave("Empleadoperiodo","codigo"));
+                 nuevo.setEmpleado(emp);
+                 nuevo.setPeriodo(per);
+                 adm.guardar(nuevo);
+                }
+        
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                     
+  
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("EmpleadosPeriodos",accion);
+
+    }
+
+
+
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+  void buscar(Periodo p){
+
+
+        List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.periodo.codigoper = '"+p.getCodigoper()+"' order by o.empleado.apellidos  ");
+        right = new Listbox();
+        
+        int a=0;
+              for(Iterator it = right.getItems().iterator(); it.hasNext();) {
+                    right.getItems().remove(a);
+                }
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt.getEmpleado());
+                      li.appendChild(new Listcell(acceIt.getEmpleado().getApellidos()+" "+ acceIt.getEmpleado().getNombres()));
+                      right.appendChild(li);
+             }
+
+    //ANADO LOS QUE NO ESTAN EN ASIGNADOS -------------------------------------------------------
+        equivaEncontrados = adm.query("Select d from Empleados as d where d.codigoemp not in "+
+        "(Select o.empleado.codigoemp from Empleadoperiodo as o where o.periodo.codigoper = '"+p.getCodigoper()+"' ) order by d.apellidos ");
+        left = new Listbox();
+        int a=0;
+              for(Iterator it = left.getItems().iterator(); it.hasNext();) {
+                    left.getItems().remove(a);
+                }
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Empleados acceIt = (Empleados) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getApellidos()+" "+ acceIt.getNombres()));
+                      left.appendChild(li);
+             }
+    
+
+    }
+ ]]>
+        </zscript>
+   
+    <panel  title="Seleccione un Periodo">
+        <panelchildren>
+            <listbox  onOK="ingresar.focus()" onSelect="buscar((Periodo)self.selectedItem.value);"   width="410px"  id="periodo" mold="select">
+                <listitem forEach="${periodos}" value="${each}">
+                    <listcell   label="${each.descripcion} ${each.institucion}" />
+
+                </listitem>
+            </listbox>
+        </panelchildren>
+    </panel>
+    <columnlayout>
+        <columnchildren width="50%">
+      
+            <panel title="No Asignados al Periodo Seleccionado">
+                <panelchildren>
+                    <listbox id="left" multiple="true" height="300px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                        <listhead>
+                            <listheader label="Profesores"/>
+                        </listhead>
+                        <listitem  forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.codigocur}" />
+                            <listcell label="${each.especialidad}" />
+                        </listitem>
+                    </listbox>
+                </panelchildren>
+            </panel>
+        </columnchildren>
+        <columnchildren width="100px">
+            <panel>
+                <panelchildren style="margin: 70px 34px;">
+                    <image sclass="pointer" src="/images/anadir.png" tooltiptext="Add Project">
+                        <attribute name="onClick">
+						Set items = left.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("Seleccion un Profesor para Anadir!");
+						} else {
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+								li.setSelected(false);
+								right.appendChild(li);
+							}
+						}
+                        </attribute>
+                    </image>
+                    <separator height="15px"/>
+                    <image sclass="pointer" src="/images/quitar.png"  tooltiptext="Remove Project">
+                        <attribute name="onClick">
+						Set items = right.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("Seleccion un Profesor para Quitar!");
+						} else {
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+								li.setSelected(false);
+								left.appendChild(li);
+							}
+						}
+                        </attribute>
+                    </image>
+                </panelchildren>
+            </panel>
+        </columnchildren>
+        <columnchildren width="50%">
+            <panel title="Asignados al Periodo Seleccionado" height="">
+                <panelchildren>
+                    <listbox id="right" multiple="true"  height="300px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                        <listhead>
+                            <listheader label="Profesores"/>
+                        </listhead>
+                        <listitem  forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.codigocur}" />
+                            <listcell label="${each.especialidad}" />
+                        </listitem>
+                    </listbox>
+                </panelchildren>
+            </panel>
+        </columnchildren>
+    </columnlayout>
+    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+    <button  image="/images/editar.gif" id="modificar"  label="Modificar"   onClick="modificar()"/>
+ 
+
+</window>

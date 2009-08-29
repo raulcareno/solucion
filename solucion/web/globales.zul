@@ -1,0 +1,214 @@
+<window  mode="overlapped"  title="Control de Parámetros Globales" width="500px" border="normal"
+    maximizable="true" closable="true" sizable="true">
+
+ <zscript>
+  import jcinform.persistencia.Global;
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.Global;
+  import jcinform.persistencia.Periodo;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Global as o where o.grupo = 0");
+    static Global equi = new Global();
+    Permisos permiso = new Permisos();
+    //SimpleTreeModel stm = new SimpleTreeModel(root);
+//FUNCIONES
+void llenar(Global equi2){
+   equi = equi2;
+    nombre.value = equi.getDescripcion();
+    String p = "Especialidad";
+    try{
+        if(equi.getGrupo().equals("ESP")){
+            p = "Especialidad";
+        }else if(equi.getGrupo().equals("MAT")){
+            p = "Materias";
+        }else if(equi.getGrupo().equals("SEC")){
+            p = "Secciones";
+        }else if(equi.getGrupo().equals("PAR")){
+            p = "Paralelos";
+        }
+
+    }catch(Exception ea)
+    {
+        equi.setGrupo("ESP");
+    }
+   grupo.value = p;
+
+    
+}
+void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+        equi = (Global)datos.selectedItem.value;
+    }
+    nombre.disabled = estado;
+    grupo.disabled = estado;
+
+}
+
+
+ void guardar(){
+    if(nombre.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+        equi.setDescripcion(nombre.value);
+        equi.setGrupo(grupo.selectedItem.value);
+        if((!equi.getCodigo().equals(0)) ){
+             adm.actualizar(equi);
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = equi.getCodigo()+"";
+                  ((Listcell)children.get(1)).label = nombre.value+ "" ;
+                  permiso.auditar("Globales","Actualizar",""+equi.getCodigo()+" - "+equi.getDescripcion());
+         }else{
+                equi.setCodigo(adm.getNuevaClave("Global","codigo"));
+                adm.guardar(equi);
+                permiso.auditar("Globales","Guardar",""+equi.getCodigo()+" - "+equi.getDescripcion());
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Global(0));
+    }
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Globales",accion);
+ }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new Global(0));
+        estado(false,false);
+        
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Global)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             equi = (Global)datos.selectedItem.value;
+             adm.eliminarObjeto(Global.class, equi.getCodigo());
+             permiso.auditar("Globales","Eliminar",""+equi.getCodigo()+" - "+equi.getDescripcion());
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Global(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+   void buscar(String p){
+        if(p.equals("Especialidad")){
+            p = "ESP";
+        }else if(p.equals("Materias")){
+            p = "MAT";
+        }else if(p.equals("Secciones")){
+            p = "SEC";
+        }else if(p.equals("Paralelos")){
+            p = "PAR";
+        }
+      
+        List equivaEncontrados = adm.query("Select o from Global as o where o.grupo = '"+p+"' ");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+   
+       
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Global acceIt = (Global) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Global g){
+equi.setPerfil(g);
+}
+  </zscript>
+<groupbox mold="3d" >
+       <caption label="Agregar" />
+	
+<grid width="100%">
+<rows> 
+<row><span style="float:right"> Nombre(*):</span>
+        <textbox id="nombre"  maxlength="60" cols="40" disabled="true"   />   </row>
+<row> <span style="float:right"> Grupo(*):</span>
+     <combobox   readonly="true"  disabled="true"  id="grupo"  width="120px">
+            <comboitem  value="ESP" label="Especialidad"/>
+            <comboitem  value="MAT" label="Materias"/>
+            <comboitem  value="SEC" label="Secciones"/>
+            <comboitem  value="PAR" label="Paralelos"/>
+    </combobox>
+</row>
+
+</rows>
+</grid>
+<vbox>
+<vbox>
+<hbox>
+    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+</hbox>
+</vbox>
+
+			</vbox>
+
+ </groupbox>
+<groupbox mold="3d" >
+
+       <caption label="Busquedas" />
+<vbox>
+    <hbox>  Tipo:
+<combobox     id="buscarText"  width="60px">
+              <comboitem  value="ESP" label="Especialidad"/>
+            <comboitem  value="MAT" label="Materias"/>
+            <comboitem  value="SEC" label="Secciones"/>
+            <comboitem  value="PAR" label="Paralelos"/>
+    </combobox>
+ <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
+    <hbox>
+         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+			<listhead>
+                                <listheader label="Código"/>
+                                <listheader label="Nombre"/>
+
+			</listhead>
+			<listitem forEach="${allEvents}" value="${each}">
+                           <listcell label="${each.codigo}" />
+                           <listcell label="${each.descripcion}" />
+            </listitem>
+		</listbox>
+
+
+    </hbox>
+</vbox>
+</groupbox>
+	
+
+</window>

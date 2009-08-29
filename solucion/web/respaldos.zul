@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+    <zscript><![CDATA[
+
+  import java.io.File;
+  import java.io.IOException;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+import bean.notas;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import org.zkforge.yuiext.grid.Row;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+ 
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+  Administrador adm = new Administrador();
+
+List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+
+
+
+
+ public void  respaldar(){
+
+  try{
+  List  parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'IP'");
+    ParametrosGlobales para = parame.get(0);
+    String ip = para.getCvalor();
+
+    parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'RESPALDOS'");
+    para = parame.get(0);
+    String direc = para.getCvalor();
+    
+    parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'USUARIO'");
+    para = parame.get(0);
+    String usuario = para.getCvalor();
+    
+    parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'CLAVES'");
+    para = parame.get(0);
+    String clave = para.getCvalor();
+
+        Date fechaActual = new Date();
+        String fec = "fecha"+fechaActual.getDate()+"-"+(fechaActual.getMonth()+1)+"-"+(fechaActual.getYear()+1900)+"_"+fechaActual.getHours()+"-"+fechaActual.getMinutes()+"-"+fechaActual.getSeconds()+"";
+  File duir = new File(direc);
+  duir.mkdir();
+  Runtime.getRuntime().exec("cmd /c mysqldump -h "+ip+" --op -u "+usuario+" -p"+clave+" academico > "+direc+"\\academico"+fec+".sql");
+   alert("Respaldo realizado con Éxito en: "+direc+"\\respaldo"+fec+".sql ");
+ }catch(Exception e){
+ System.out.println(""+e);
+    alert("No se pudo realizar el Respaldo");
+ }
+
+}
+
+void recalculo(){
+    notas nso = new notas();
+    nso.calcularDisciplina(((Cursos)curs.selectedItem.value));
+
+}
+
+]]>
+    </zscript>
+    <grid>
+        <rows>
+
+<row>
+ <span style="float:right"> Click en el boton para :</span>
+ <button id="buscar"  label="Respaldar Información" onClick="respaldar();"/>
+
+</row>
+
+<row>
+
+ <span style="float:right"> Curso(*):</span>
+ <span>
+               <bandbox  width="400px" readonly="true"  id="bd1">
+                    <bandpopup>
+                    <vbox>
+                    <listbox id="curs" width="420px"
+                    onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
+
+                        <listitem forEach="${cursos}" value="${each}">
+                              <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                        </listitem>
+                    </listbox>
+                    </vbox>
+                    </bandpopup>
+                </bandbox>
+
+ <button label="Recalcular Disciplina"   onClick="recalculo();"/>
+</span>
+</row>
+</rows>
+   </grid>
+    </zk>

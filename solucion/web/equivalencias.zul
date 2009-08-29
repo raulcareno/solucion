@@ -1,0 +1,251 @@
+ 
+<window  mode="overlapped"  title="Control de Equivalencias" width="500px" border="normal"
+    maximizable="true" closable="true" sizable="true">
+
+ <zscript>
+  import jcinform.persistencia.Global;
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.Equivalencias;
+  import jcinform.persistencia.Periodo;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+
+  Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Equivalencias as o where o.identificacion = 0");
+    static Equivalencias equi = new Equivalencias();
+    Permisos permiso = new Permisos();
+     
+
+
+//FUNCIONES
+void llenar(Equivalencias equi2){
+   equi = equi2;
+    nombre.value = equi.getNombre();
+    abreviatura.value = equi.getAbreviatura();
+    try{
+      if(equi.getValorminimo().equals(null)){
+        equi.setValormaximo(0.0);
+        equi.setValorminimo(0.0);
+    }
+    }catch(Exception aa){
+        equi.setValormaximo(0.0);
+        equi.setValorminimo(0.0);
+    }    
+  
+ BigDecimal mini = new BigDecimal(equi.getValorminimo());
+    desde.value = mini;
+ BigDecimal maxi= new BigDecimal(equi.getValormaximo());
+    hasta.value = maxi;
+String p = "Aprovechamiento";
+try{
+        if(equi.getGrupo().equals("AP")){
+            p = "Aprovechamiento";
+        }else if(equi.getGrupo().equals("DI")){
+            p = "Disciplina";
+        }else if(equi.getGrupo().equals("SU")){
+            p = "Supletorio";
+        }
+}catch(Exception ea)
+{equi.setGrupo("AP");
+}
+   grupo.value = p;
+
+    
+}
+void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+        equi = (Equivalencias)datos.selectedItem.value;
+    }
+    nombre.disabled = estado;
+    abreviatura.disabled = estado;
+    desde.disabled = estado;
+    hasta.disabled = estado;
+    grupo.disabled = estado;
+
+}
+
+
+ void guardar(){
+    if(nombre.value.equals("") || abreviatura.value.equals("") || grupo.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+        equi.setNombre(nombre.value);
+        equi.setAbreviatura(abreviatura.value);
+        equi.setGrupo(grupo.selectedItem.value);
+        equi.setValorminimo((desde.value).doubleValue());
+        equi.setValormaximo((hasta.value).doubleValue());
+
+
+        equi.setPeriodo(periodo);
+        if((!equi.getCodigoequi().equals(0)) ){
+             adm.actualizar(equi);
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = nombre.value;
+                  ((Listcell)children.get(1)).label = abreviatura.value+ "" ;
+                  ((Listcell)children.get(2)).label = desde.value+ "";
+                  ((Listcell)children.get(3)).label = hasta.value+ "";
+         }else{
+             equi.setCodigoequi(adm.getNuevaClave("Equivalencias","codigoequi"));
+             adm.guardar(equi);
+
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Equivalencias(0));
+  
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Equivalencias",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new Equivalencias(0));
+        estado(false,false);
+        
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Equivalencias)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             equi = (Equivalencias)datos.selectedItem.value;
+             adm.eliminarObjeto(Equivalencias.class, equi.getCodigoequi());
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Equivalencias(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+
+  void buscar(String p){
+        if(p.equals("Aprovechamiento")){
+            p = "AP";
+        }else if(p.equals("Disciplina")){
+            p = "DI";
+        }else if(p.equals("Supletorio")){
+            p = "SU";
+        }
+List equivaEncontrados = adm.query("Select o from Equivalencias as o where o.grupo = '"+p+"' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+datos = new Listbox();
+int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+   
+       
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Equivalencias acceIt = (Equivalencias) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+""));
+                      li.appendChild(new Listcell(acceIt.getAbreviatura()+" "));
+                      li.appendChild(new Listcell(acceIt.getValorminimo()+""));
+                      li.appendChild(new Listcell(acceIt.getValormaximo()+""));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Global g){
+equi.setPerfil(g);
+}
+  </zscript>
+<groupbox mold="3d" >
+       <caption label="Agregar" />
+	
+<grid width="100%">
+<rows> 
+<row><span style="float:right"> Nombre(*):</span>
+        <textbox id="nombre"  maxlength="60" cols="40" disabled="true"   />   </row>
+    <row> <span style="float:right"> Abreviatura(*):</span>
+        <textbox id="abreviatura"  maxlength="10" cols="10" disabled="true"  /> </row>
+    <row> <span style="float:right"> Desde(*):</span>
+        <decimalbox format="#,##0.##" id="desde" maxlength="8" cols="8"  disabled="true"    /> </row>
+    <row> <span style="float:right"> Hasta(*):</span>
+        <decimalbox format="#,##0.##" id="hasta" maxlength="8" cols="8"  disabled="true"  /> </row>
+    
+ 
+<row> <span style="float:right"> Grupo(*):</span>
+     <combobox   readonly="true"  disabled="true"  id="grupo"  width="120px">
+            <comboitem  value="AP" label="Aprovechamiento"/>
+            <comboitem  value="DI" label="Disciplina"/>
+            <comboitem  value="SU" label="Supletorio"/>
+    </combobox>
+</row>
+
+</rows>
+</grid>
+<vbox>
+<vbox>
+<hbox>
+    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+</hbox>
+</vbox>
+
+			</vbox>
+
+ </groupbox>
+<groupbox mold="3d" >
+
+       <caption label="Busquedas" />
+<vbox>
+    <hbox>  Tipo:
+<combobox     id="buscarText"  width="60px">
+            <comboitem id="AP" label="Aprovechamiento"/>
+            <comboitem id="DI"  label="Disciplina"/>
+            <comboitem id="SU"  label="Supletorio"/>
+    </combobox>
+ <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
+    <hbox>
+         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+			<listhead>
+                                <listheader label="Descripción"/>
+                                <listheader label="Abreviatura"/>
+                                <listheader label="Desde"/>
+                                <listheader label="Hasta"/>
+
+			</listhead>
+			<listitem forEach="${allEvents}" value="${each}">
+                           <listcell label="${each.nombre}" />
+                           <listcell label="${each.abreviatura}" />
+                           <listcell label="${each.valorminimo}" />
+                            <listcell label="${each.valormaximo}" />
+            </listitem>
+		</listbox>
+
+
+    </hbox>
+</vbox>
+</groupbox>
+
+</window>

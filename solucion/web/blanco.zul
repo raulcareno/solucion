@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="ZK::Hello World!"?>
+
+ <window >
+<image id="img1" src="/images/seleccione.gif"/>
+ </window>
+ 

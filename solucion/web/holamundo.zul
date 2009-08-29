@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="ZK::Hello World!"?>
+<window>
+ <zscript>
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.Global;
+  import jcinform.persistencia.Accesos;
+  import java.util.Iterator;
+  import java.util.UUID;
+
+  EventDAO evtdao = new EventDAO(); 
+ List perfiles = evtdao.buscarAccesos("2");
+    public class MyRowRenderer implements RowRenderer {
+      public void render(Row row, Object data) {
+        Checkbox cheIngresar = new Checkbox("");
+        cheIngresar.setChecked(((Accesos)data).getIngresar());
+        Checkbox cheGuardar = new Checkbox("");
+        cheGuardar.setChecked(((Accesos)data).getGuardar());
+        Checkbox cheActualizar = new Checkbox("");
+        cheActualizar.setChecked(((Accesos)data).getActualizar());
+        Checkbox cheEliminar = new Checkbox("");
+        cheEliminar.setChecked(((Accesos)data).getEliminar());
+        new Label(""+((Accesos)data).getCodigoacc()).setParent(row);
+        new Label(""+((Accesos)data).getModulo()).setParent(row);
+        cheIngresar.setParent(row);
+        cheGuardar.setParent(row);
+        cheActualizar.setParent(row);
+        cheEliminar.setParent(row);
+      }
+    }
+    ListModel model = new SimpleListModel(perfiles.toArray());
+    RowRenderer rowRenderer = new MyRowRenderer();
+  </zscript>
+
+  <grid fixedLayout="true" width="600px"  model="${model}" rowRenderer="${rowRenderer}">
+        <columns sizable="true"  menupopup="auto">
+			<column width="50px"  label="Codigo" />
+			<column width="150px"  label="Módulo"/>
+            <column label="Ingresar"/>
+			<column label="Guardar"/>
+            <column label="Modificar"/>
+			<column label="Eliminar"/>
+		</columns>
+</grid>
+</window>

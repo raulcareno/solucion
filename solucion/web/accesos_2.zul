@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Accesos"?>
+<window title="Control de Accesos" width="700px" border="normal">
+<zscript>
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.Global;
+  import jcinform.persistencia.Accesos;
+  import java.util.Iterator;
+  import java.util.UUID;
+
+
+ Global global = new Global();
+  EventDAO evtdao = new EventDAO();
+  List perfiles = evtdao.perfiles();
+
+    void busqueda(String p){
+        List accesos = evtdao.buscarAccesos(p);
+        for (Iterator it = accesos.iterator(); it.hasNext();) {
+                 Accesos acceIt = (Accesos) it.next();
+                 Integer codigo = acceIt.getCodigoacc();
+
+           Listitem li = new Listitem();
+              li.setValue(acceIt);
+              li.appendChild(new Listcell(acceIt.getCodigoacc()+""));
+              li.appendChild(new Listcell(acceIt.getModulo()+""));
+                li.appendChild(new Listcell(acceIt.getIngresar()+""));
+              li.appendChild(new Listcell(acceIt.getGuardar()+""));
+              li.appendChild(new Listcell(acceIt.getActualizar()+""));
+            li.appendChild(new Listcell(acceIt.getEliminar()+""));
+              datos.appendChild(li);
+
+
+             }
+
+    }
+
+</zscript>
+<grid >
+		<columns sizable="true">
+			<column label="Codigo" sortAscending="&#36;{asc}" sortDescending="&#36;{dsc}"/>
+			<column label="nombre"/>
+		</columns>
+<rows>
+			<row>
+
+			</row>
+			<row >
+
+			</row>
+
+
+		</rows>
+	</grid>
+
+ <vbox>
+	<bandbox id="bd">
+		<bandpopup>
+		<vbox>
+		<hbox>Perfiles: <textbox/></hbox>
+		<listbox width="250px"
+		onSelect="busqueda(self.selectedItem.label); bd.closeDropdown();">
+			<listhead>
+				<listheader label="Cod."/>
+				<listheader label="Description"/>
+			</listhead>
+			<listitem forEach="${perfiles}" value="${each}">
+                           <listcell label="${each.codigo}" />
+                           <listcell label="${each.descripcion}" />
+                        </listitem>
+		</listbox>
+		</vbox>
+		</bandpopup>
+	</bandbox>
+	<hbox>
+	<listbox id="datos" width="400px">
+			<listhead>
+                                <listheader label="Cod."/>
+                                <listheader label="Description"/>
+                                <listheader label="Ingresar"/>
+                                <listheader label="Guardar"/>
+                                <listheader label="Modificar"/>
+                                <listheader label="Eliminar"/>
+			</listhead>
+			<listitem forEach="${accesos}" value="${each}">
+                           <listcell label="${each.codigoacc}" />
+                           <listcell label="${each.ingresar}" />
+                           <listcell label="${each.guardar}" />
+                           <listcell>
+                                <checkbox label="Apple"/>
+                            </listcell>
+                           <listcell label="${each.eliminar}" />
+
+
+                        </listitem>
+		</listbox>
+	</hbox>
+	</vbox>
+
+</window>

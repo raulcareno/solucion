@@ -1,0 +1,198 @@
+<window  mode="overlapped"  title="Control de Trimestres" width="500px" border="normal"
+    maximizable="true" closable="true" sizable="true">
+
+ <zscript>
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.Trimestres;
+  import jcinform.persistencia.Periodo;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    List allEvents = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim ");
+    static Trimestres empa = new Trimestres();
+    Permisos permiso = new Permisos();
+ 
+    Object media = null;
+
+//FUNCIONES
+void llenar(Trimestres empa){
+    nombres.value = empa.getDescripcion();
+
+}
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            empa = (Trimestres)datos.selectedItem.value;
+        }else{empa.setCodigotrim(0);}
+        nombres.disabled = estado;
+}
+
+
+ void guardar(){
+  if(nombres.value==""){
+    Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    return;
+ }
+
+        Periodo per = (Periodo) ses.getAttribute("periodo");
+        empa.setDescripcion(nombres.value);
+      empa.setPeriodo(per.getCodigoper());
+        if((!empa.getCodigotrim().equals(0)) ){
+             adm.actualizar(empa);
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = empa.getCodigotrim()+"";
+                  ((Listcell)children.get(1)).label = empa.getDescripcion()+" ";
+         }else{
+             empa.setCodigotrim(adm.getNuevaClave("Trimestres","codigotrim"));
+             adm.guardar(empa);
+         }
+          Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+          guardar.disabled=true;
+          agregar.disabled=false;
+          estado(true,false);
+          llenar(new Trimestres(0));
+
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Trimestres",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+llenar(new Trimestres(0));
+estado(false,false);
+//alert(empa.getCodigotrim());
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Trimestres)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             empa = (Trimestres)datos.selectedItem.value;
+             adm.eliminarObjeto(Trimestres.class, empa.getCodigotrim());
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Trimestres(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Trimestres as o where o.identificacion = '"+valor+"' ");
+            if(empleados.size()>0){
+                Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Trimestres object = (Trimestres)it.next();
+                        empa = object;
+                 }
+            llenar(empa);
+
+            }else{
+                empa = new Trimestres(0);
+            }
+
+        }
+    }
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o from Trimestres as o where o.descripcion like '%"+p+"%' and o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim ");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Trimestres acceIt = (Trimestres) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigotrim()+" "));
+                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargarEspe(Global g){
+    empa.setEspecialidad(g);
+}
+void cargarSec(Global g){
+    empa.setSeccion(g);
+}
+void cargarPar(Global g){
+    empa.setParalelo(g);
+}
+  </zscript>
+<groupbox mold="3d" >
+       <caption label="Agregar" />
+
+<grid width="100%">
+<rows>
+
+<row><span style="float:right"> Nombres(*):</span>
+        <textbox id="nombres"  maxlength="60" cols="40" disabled="true"   />   </row>
+  
+
+
+
+</rows>
+</grid>
+<vbox>
+<vbox>
+<hbox>
+    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+</hbox>
+</vbox>
+
+			</vbox>
+
+ </groupbox>
+<groupbox mold="3d" >
+    <caption label="Busquedas" />
+<vbox>
+    <hbox> Trimestres:  <textbox id="buscarText"  maxlength="60" cols="40" />  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
+    <hbox>
+         <listbox mold="paging" rows="5" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+			<listhead>
+                                <listheader label="Cod."/>
+                                <listheader label="Nombres"/>
+
+			</listhead>
+			<listitem  forEach="${allEvents}" value="${each}">
+                           <listcell label="${each.codigotrim}" />
+                           <listcell label="${each.descripcion}" />
+            </listitem>
+		</listbox>
+
+
+    </hbox>
+</vbox>
+</groupbox>
+
+</window>

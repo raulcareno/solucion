@@ -1,0 +1,58 @@
+<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
+<?page id="main-page"?>
+<window xmlns:y="http://www.zkoss.org/2007/yui"
+  title="Cursos " width="70%" id="cursosdeGrado">
+<zscript>
+<![CDATA[
+import bean.Procesos;
+import java.math.BigDecimal;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import org.zkforge.yuiext.grid.Row;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+ 
+ Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+List cursos = adm.query("Select o from Cursos as o "+ 
+" where o.periodo.codigoper = '"+periodo.getCodigoper()+"'   ");
+
+void aprovechamiento(){
+              
+Procesos pro = new Procesos();
+pro.aprovechamiento((Cursos)cursosList.selectedItem.value);
+Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+
+}
+void disciplina(){
+Procesos pro = new Procesos();
+pro.disciplina((Cursos)cursosList.selectedItem.value);
+Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+}
+]]>
+    </zscript>
+    <grid>
+        <rows>
+            <row>
+                 <listbox mold="select" id="cursosList"  width="420px" >
+                    <listitem>
+                        <listcell label="Seleccione un Curso" />
+                    </listitem>
+                    <listitem forEach="${cursos}" value="${each}">
+                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                    </listitem>
+                </listbox>
+               <button label="Aprovechamiento"   image="/images/run.gif" onClick="aprovechamiento();"/>
+               <button label="Disciplina"   image="/images/run.gif" onClick="disciplina()"/>
+            </row>
+
+        </rows>
+    </grid>
+
+
+</window>
+
+	

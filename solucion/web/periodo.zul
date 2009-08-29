@@ -1,0 +1,346 @@
+<window  mode="overlapped" id="ventana"  title="Control de Años Lectivos" width="550px" border="normal"
+    maximizable="true" closable="true" sizable="true" xmlns:a="http://www.zkoss.org/2005/zk/annotation">
+ <zscript>
+  import jcinform.persistencia.Global;
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Periodo as o where o.codigoper = 0");
+    List instObjetos = adm.query("Select o from Institucion as o ");
+    List secciones = adm.query("Select o from Global as o where o.grupo = 'SEC'");
+    Periodo inobjeto = new Periodo();
+    Permisos permiso = new Permisos();
+   List periodosListadod = adm.query("Select o from Periodo as o order by o.descripcion");
+   
+
+  </zscript>
+
+<groupbox mold="3d" >
+       <caption label="Agregar" />
+<grid width="100%">
+<rows> 
+    <row>
+        <span style="float:right"> Código(*):</span>
+       <textbox id="codigo"  readonly="true" value="@{inobjeto.codigoper}" onChange="update();"/>
+    </row>
+    <row>
+        <span style="float:right"> Año Lectivo(*):</span>
+       <textbox id="descripcion" value="@{inobjeto.descripcion}"  onChange="update();"/>
+    </row>
+    <row>
+        <span style="float:right"> Estado(*):</span>
+		<checkbox id="estado"    checked="@{inobjeto.estado}" onCheck="update();" />
+    </row>
+     <row>
+        <span style="float:right"> Institucion(*):</span>
+ 
+     <listbox id="listadoi"  width="320px" mold="select">
+                 <listitem  selected="true" forEach="${instObjetos}" value="${each}"  label="${each.denominacion} ${each.nombre}" />
+       </listbox>
+ </row>
+ <row>
+
+        <span style="float:right"> Jornada:</span>
+		<listbox id="seccionesL" mold="select" >
+			<listitem selected="true"  forEach="${secciones}" value="${each}">
+                  <listcell label="${each.descripcion}" />
+            </listitem>
+		</listbox>
+ </row>
+
+ <row>
+
+        <span style="float:right"> Regimen:</span>
+		 <textbox id="regimen" value="@{inobjeto.regimen}"  onChange="update();"/>
+ </row>
+ 
+</rows>
+</grid>
+<vbox>
+    <vbox>
+    <hbox>
+        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+    </hbox>
+    </vbox>
+</vbox>
+
+ </groupbox>
+ 
+<groupbox mold="3d" >
+
+       <caption label="Busquedas a" />
+<vbox>
+    <hbox>  Perfiles:  <textbox id="buscarText"  maxlength="60" cols="40" />  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
+    <hbox>
+         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+			<listhead>
+                <listheader label="Cod."/>
+                <listheader label="Nombres"/>
+                <listheader label="Estado"/>
+			</listhead>
+			<listitem forEach="${allEvents}" value="${each}">
+               <listcell label="${each.codigoper}" />
+               <listcell label="${each.descripcion}" />
+               <listcell label="${each.institucion}" />
+               <listcell label="${each.estado}" />
+            </listitem>
+		</listbox>
+    </hbox>
+</vbox>
+</groupbox>
+<groupbox  mold="3d">
+<caption label="Copiar parametros a nuevo periodo" />
+<vbox>
+    <hbox> Desde </hbox>
+    <hbox>
+       <listbox id="periodosListado" mold="select" >
+            <listitem  label="[Seleccione]" value="-1"/>
+			<listitem forEach="${periodosListadod}" value="${each}">
+                <listcell label="${each.descripcion} ${each.institucion}" />
+            </listitem>
+		</listbox>
+    </hbox>
+    <hbox>Hasta </hbox>
+    <hbox>
+       <listbox id="periodosListado2" mold="select" >
+            <listitem  label="[Seleccione]" value="-1"/>
+			<listitem forEach="${periodosListadod}" value="${each}">
+                <listcell label="${each.descripcion} ${each.institucion}" />
+            </listitem>
+		</listbox>
+    </hbox>
+ <hbox>
+    <button image="/images/guardar.gif" id="copiar" label="Copiar Parametros" onClick="copiando()"  />
+</hbox>
+</vbox>
+</groupbox>
+<zscript>
+    <![CDATA[
+    AnnotateDataBinder binder = new AnnotateDataBinder(ventana);
+    binder.bindBean("inobjeto", inobjeto);
+    binder.loadAll();
+
+    void update() {
+          binder.saveAll();
+          binder.loadAll();
+    }
+//FUNCIONES
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            inobjeto = (Periodo)datos.selectedItem.value;
+        }
+
+    codigo.disabled = estado;
+    descripcion.disabled = estado;
+}
+
+
+ void guardar(){
+  if(descripcion.value==""){
+    Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    return;
+ }
+
+        inobjeto.setInstitucion((Institucion)listadoi.selectedItem.value);
+        inobjeto.setSeccion((Global)seccionesL.selectedItem.value);
+        
+        if((!inobjeto.getCodigoper().equals(0)) ){
+             adm.actualizar(inobjeto);
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = inobjeto.codigoper+"";
+                  ((Listcell)children.get(1)).label = inobjeto.descripcion+ " ";
+                  ((Listcell)children.get(2)).label =(inobjeto.estado?"ACTIVO":"INACTIVO")+"";
+                  //li.appendChild(new Listcell());
+         }else{
+                inobjeto.setCodigoper(adm.getNuevaClave("Periodo","codigoper"));
+                adm.guardar(inobjeto);
+         }
+
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    binder.bindBean("inobjeto",(new Periodo(0)));
+                    binder.loadAll();
+          
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Periodos",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false; 
+       inobjeto= new Periodo();
+       inobjeto.setCodigoper(0);
+        binder.bindBean("inobjeto",inobjeto);
+        binder.loadAll();
+        estado(false,false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        binder.bindBean("inobjeto",(Periodo)datos.selectedItem.value);
+        binder.loadAll();
+        Listitem item = new Listitem();
+        item.setValue(((Periodo)datos.selectedItem.value).getInstitucion());
+        item.appendChild(new Listcell(((Periodo)datos.selectedItem.value).getInstitucion().getDenominacion()+""));
+        listadoi.appendChild(item);
+        listadoi.setSelectedItem(item);
+
+
+            item = new Listitem();
+            item.setValue(((Periodo)datos.selectedItem.value).getSeccion());
+ 
+            item.appendChild(new Listcell(((Periodo)datos.selectedItem.value).getSeccion().getDescripcion()+""));
+            seccionesL.appendChild(item);
+            seccionesL.setSelectedItem(item);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             inobjeto = (Periodo)datos.selectedItem.value;
+             adm.eliminarObjeto(Periodo.class, inobjeto.getCodigoper());
+            datos.removeItemAt(datos.getSelectedIndex());
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+   
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o from Periodo as o where o.descripcion like '%"+p+"%' order by o.descripcion");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Periodo acceIt = (Periodo) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigoper()+""));
+                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "+ acceIt.getInstitucion() + " "+acceIt.getInstitucion().getTipo() ));
+               
+                      li.appendChild(new Listcell((acceIt.getEstado()?"ACTIVO":"INACTIVO")+" "));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Global g){
+    inobjeto.setPerfil(g);
+}
+
+public void copiando(){
+     Periodo per = ((Periodo)periodosListado.selectedItem.value);
+     Periodo has = ((Periodo)periodosListado2.selectedItem.value);
+
+     if(per.equals(has)){
+             alert("Periodo de origen es igual al de destino");
+             return;
+     }
+     adm.ejecutaSql("Delete from Cursos where periodo.codigoper = '"+has.getCodigoper()+"'  ");
+     List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
+        for (Iterator it = cursos.iterator(); it.hasNext();) {
+                Cursos curso = (Cursos)it.next();
+                curso.setCodigocur(adm.getNuevaClave("Cursos","codigocur"));
+                curso.setPeriodo(has);
+                adm.guardar(curso);
+                System.out.println(""+curso);
+        }
+    adm.ejecutaSql("Delete from Actagrado where periodo.codigoper = '"+has.getCodigoper()+"'  ");
+     List actas = adm.query("Select o from Actagrado as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
+        for (Iterator it = actas.iterator(); it.hasNext();) {
+                Actagrado curso = (Actagrado)it.next();
+                 curso.setCodigo(adm.getNuevaClave("Actagrado","codigo"));
+                 curso.setPeriodo(has);
+                 adm.guardar(curso);
+            System.out.println(""+curso);
+        }
+
+adm.ejecutaSql("Delete from Equivalencias where periodo.codigoper = '"+has.getCodigoper()+"'  ");
+     List equivalencias = adm.query("Select o from Equivalencias as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
+        for (Iterator it = equivalencias.iterator(); it.hasNext();) {
+                Equivalencias curso = (Equivalencias)it.next();
+                curso.setCodigoequi(adm.getNuevaClave("Equivalencias","codigoequi"));
+                 curso.setPeriodo(has);
+                 adm.guardar(curso);
+                System.out.println(""+curso);
+        }
+adm.ejecutaSql("Delete from ParametrosGlobales where periodo.codigoper = '"+has.getCodigoper()+"'  ");
+      List parametros = adm.query("Select o from ParametrosGlobales as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
+        for (Iterator it = parametros.iterator(); it.hasNext();) {
+                ParametrosGlobales curso = (ParametrosGlobales)it.next();
+                curso.setCodigopar(adm.getNuevaClave("ParametrosGlobales","codigopar"));
+                 curso.setPeriodo(has);
+                 adm.guardar(curso);
+                System.out.println(""+curso);
+        }
+
+adm.ejecutaSql("Delete from Textos where periodo.codigoper = '"+has.getCodigoper()+"'  ");
+     List textos = adm.query("Select o from Textos as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
+        for (Iterator it = textos.iterator(); it.hasNext();) {
+                Textos curso = (Textos)it.next();
+                curso.setCodigotext(adm.getNuevaClave("Textos","codigotext"));
+                 curso.setPeriodo(has);
+                 adm.guardar(curso);
+                System.out.println(""+curso);
+        }
+
+adm.ejecutaSql("Delete from Notanotas where sistema.periodo.codigoper = '"+has.getCodigoper()+"'  ");
+adm.ejecutaSql("Delete from Sistemacalificacion where periodo.codigoper = '"+has.getCodigoper()+"'  ");
+adm.ejecutaSql("Delete from Trimestres where periodo = '"+has.getCodigoper()+"'  ");
+     List trimestres = adm.query("Select o from Trimestres as o where o.periodo = '"+per.getCodigoper()+"' order by o.codigotrim  ");
+     int i=1;
+        for (Iterator it = trimestres.iterator(); it.hasNext();) {
+                Trimestres trimes = (Trimestres)it.next();
+                System.out.println(""+trimes);
+                int codAnt =  trimes.getCodigotrim();
+                int cod = adm.getNuevaClave("Trimestres","codigotrim");
+                trimes.setCodigotrim(cod);
+                trimes.setPeriodo(has.getCodigoper());
+                adm.guardar(trimes);
+
+              List sistemas = adm.query("Select o from Sistemacalificacion as o " +
+                  " where o.periodo.codigoper = '"+per.getCodigoper()+"' and o.trimestre.codigotrim =  '"+ codAnt +"' order by o.orden  ");
+                    for (Iterator ita = sistemas.iterator(); ita.hasNext();) {
+                        Sistemacalificacion siste = (Sistemacalificacion)ita.next();
+                        siste.setTrimestre(trimes);
+                        siste.setPeriodo(has);
+                        siste.setCodigosis(adm.getNuevaClave("Sistemacalificacion","codigosis"));
+                        adm.guardar(siste);
+                        System.out.println(""+siste);
+                            Notanotas notan = new Notanotas(adm.getNuevaClave("Notanotas","codigo"));
+                            notan.setSistema(siste);
+                            notan.setNota("nota"+i);
+                            adm.guardar(notan);
+                            i++;
+                    }
+        }
+        Messagebox.show("Copia realizada con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+
+}
+
+  ]]>
+</zscript>
+</window>

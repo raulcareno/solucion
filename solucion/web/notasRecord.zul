@@ -1,0 +1,111 @@
+<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
+<?page id="main-page"?>
+<window     xmlns:y="http://www.zkoss.org/2007/yui"
+ title="Ingreso de Notas" border="normal"
+width="100%" id="principal">
+    <zscript>
+<![CDATA[
+import bean.notasRecordBean;
+import java.math.BigDecimal;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import org.zkforge.yuiext.grid.Row;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+import bean.Permisos;
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+    Permisos permiso = new Permisos();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+List cursos = adm.query("Select o from Cursos as o "+ 
+" where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia asc, o.descripcion asc");
+Cursos cr = new Cursos(-1);
+
+cursos.add(0,cr);
+notasRecordBean no = new notasRecordBean();
+
+String[][] values = new String[14][2];
+             values[0][0]= "Primero";
+             values[0][1]= "number";
+             values[1][0]= "Segundo";
+             values[1][1]= "number";
+             values[2][0]= "Tercero";
+             values[2][1]= "number";
+             values[3][0]= "Cuarto";
+             values[3][1]= "number";
+             values[4][0]= "Quinto";
+             values[4][1]= "number";
+             values[5][0]= "Sexto";
+             values[5][1]= "number";
+             values[6][0]= "Promedio";
+             values[6][1]= "readonly";
+             values[7][0]= "Primero";
+             values[7][1]= "number";
+             values[8][0]= "Segundo";
+             values[8][1]= "number";
+             values[9][0]= "Tercero";
+             values[9][1]= "number";
+             values[10][0]= "Cuarto";
+             values[10][1]= "number";
+             values[11][0]= "Quinto";
+             values[11][1]= "number";
+             values[12][0]= "Sexto";
+             values[12][1]= "number";
+             values[13][0]= "Disciplina";
+             values[13][1]= "readonly";
+guardar(){
+    notasRecordBean nso = new notasRecordBean();
+    notasRecordBean r = (notasRecordBean) datos.getRows();
+    String resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value));
+    if(resultado.equals("ok")){
+            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+             permiso.auditar("Record Notas","Actualizar",""+((Cursos)curs.selectedItem.value));
+    }else{
+        Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+}
+ 
+
+void doAdd(Cursos curso){
+
+                filas.addRow(curso);
+      
+}
+
+]]>
+    </zscript>
+    <grid width="65%">
+        <rows>
+            <row>
+                <span style="float:right"> Curso(*):</span>
+                
+                <listbox id="curs" width="420px" mold="select">
+
+                    <listitem forEach="${cursos}" value="${each}">
+                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                    </listitem>
+                </listbox>
+                     <button label="Ejecutar"   image="/images/run.gif" onClick="doAdd(((Cursos)curs.selectedItem.value))"/>
+            </row>
+
+         
+ 
+        </rows>
+    </grid>
+    <y:grid width="100%" id="datos" editable = "true">
+        <y:columns>
+            <y:column editortype="readonly" style="font-size:11px" width="20px" label ="Cod."/>
+            <y:column editortype="readonly"  width="240px" label ="Estudiante"/>
+            <y:column forEach="${values}"  width="25px" editortype="${each[1]}" label="${each[0]}" align="right"  />
+        </y:columns>
+        <y:rows id="filas" use="bean.notasRecordBean"> </y:rows>
+    </y:grid>
+    <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+</window>
+
+	

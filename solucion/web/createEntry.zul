@@ -1,0 +1,37 @@
+<zk>
+	<window id="createMyEntry"  width="350px" title="Crear Actividad" border="normal" mode="popup" apply="org.zkoss.zknewsfeed.controllers.EventCreationController" visible="false">
+		<grid>
+			<rows>
+                  <row>
+					Desde: <span><datebox id="inicio"  />
+                    <timebox id="tinicio"/></span>
+				</row>
+
+                <row>
+					Hasta:
+                    <span>
+                        <datebox id="fina"  />
+                        <timebox id="tfina" />
+                    </span>
+				</row>
+
+				<row>
+					Actividad: <textbox id="tbText" cols="40" value="" />
+				</row>
+				<row>
+					Tipo: <combobox id="cmbType">
+						 
+						<comboitem label="Academica" />
+						<comboitem label="Reunión" />
+                        <comboitem label="Recoradorio" />
+					  </combobox>
+				</row>
+				<row>
+					
+					<button id="btnAddNews" label="Crear" width="36px" height="24px"/>
+					<button id="btnCancel" label="Cancelar" width="36px" height="24px" />
+				</row>	
+			</rows>
+		</grid>
+	</window>
+</zk>

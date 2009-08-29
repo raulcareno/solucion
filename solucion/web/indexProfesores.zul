@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+ <borderlayout height="100%">
+<zscript>
+
+    import jcinform.persistencia.*;
+    Session a = Sessions.getCurrent();
+    Empleados emp = a.getAttribute("user");
+     if(emp==null){
+        Executions.sendRedirect("login.zul");
+     }
+
+ void salir(){
+        Executions.sendRedirect("login.zul");
+        Session a = Sessions.getCurrent();
+        a.removeAttribute("accesos");
+        a.removeAttribute("user");
+        a.invalidate();
+ }
+  void ingresar(String valor){
+      
+        Include inc = (Include) xcontents;
+        inc.setSrc(valor);
+ }
+
+</zscript>
+<north  size="11%" >
+<toolbar height="100%">
+<!--tablelayout width="800px" columns="2">
+	<tablechildren>
+        <panel   border="normal" collapsible="true">
+			<panelchildren  style="background-color:transparent;border:0px">
+                <vbox>
+                <image height="80px" src="images/acerca.gif"/>
+
+                </vbox>
+            </panelchildren>
+		</panel>
+		<panel   border="normal" collapsible="true">
+			<panelchildren  style="background-color:transparent;border:0px">
+                <vbox>
+				<hbox>
+                    <label value=" ${sessionScope.periodo.institucion.nombre}" style="font-size:16px;font-weight:bold;" />
+                </hbox>
+                <hbox>
+                    <label value="${sessionScope.periodo.institucion.denominacion} " style="font-size:12px;font-weight:bold;" />
+                </hbox>
+                <hbox>
+                    <label value="Periodo: " style="font-weight:bold;" />
+                    <label value="${sessionScope.periodo.descripcion}"  />
+                </hbox>
+                </vbox>
+            </panelchildren>
+		</panel>
+	</tablechildren>
+
+<tablechildren>
+		<panel   border="normal" collapsible="true">
+			<panelchildren style="background-color:transparent;border:0px">
+                <vbox>
+						<hbox>
+							<label value="Bienvenido:" style="font-weight:bold;" />
+							<label value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
+						</hbox>
+                        <hbox>
+							<label value="Perfil" style="font-weight:bold;"  />
+							<label value="${sessionScope.user.perfil.descripcion}" />
+						</hbox>
+                        <hbox>
+							<label value="Periodo: " style="font-weight:bold;" />
+							<label value="${sessionScope.periodo.descripcion}"  />
+						</hbox>
+                        <toolbarbutton  style="font-weight:bold;"  label="[Cerrar Sesión]" onClick="salir()"/>
+</vbox>
+
+            </panelchildren>
+		</panel>
+</tablechildren>
+</tablelayout-->
+<tablelayout width="800px" columns="3">
+	<tablechildren>
+<panel   border="normal" collapsible="true">
+			<panelchildren  style="background-color:transparent;border:0px">
+                <vbox>
+                        <image height="60px" id="foto0" src="images/acerca.gif"/>
+                </vbox>
+            </panelchildren>
+		</panel>
+<panel   border="normal" collapsible="true">
+			<panelchildren  style="background-color:transparent;border:0px">
+                <vbox>
+
+                <hbox>
+                    <label value="${sessionScope.periodo.institucion.denominacion} " style="color:#346B93;font-size:12px;font-weight:bold;" />
+                </hbox>
+				<hbox>
+                    <label value=" ${sessionScope.periodo.institucion.nombre}" style="color:#346B93;font-size:18px;font-weight:bold;" />
+                </hbox>
+                <hbox>
+                    <label value="Periodo ${sessionScope.periodo.descripcion}" style="color:#346B93;font-weight:bold;" />
+                </hbox>
+
+                </vbox>
+            </panelchildren>
+		</panel>
+	</tablechildren>
+
+<tablechildren>
+		<panel   border="normal" collapsible="true">
+			<panelchildren style="background-color:transparent;border:0px">
+                <vbox>
+						<hbox>
+							<label value="Bienvenido:" style="color:#346B93;font-weight:bold;" />
+							<label style="color:#346B93;" value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
+						</hbox>
+                        <hbox>
+							<label value="Perfil" style="color:#346B93;font-weight:bold;"  />
+							<label style="color:#346B93;" value="${sessionScope.user.perfil.descripcion}" />
+						</hbox>
+                        <hbox>
+							<label value="Periodo: " style="color:#346B93;font-weight:bold;" />
+							<label  style="color:#346B93;" value="${sessionScope.periodo.descripcion}"  />
+						</hbox>
+
+                </vbox>
+            </panelchildren>
+		</panel>
+</tablechildren>
+<tablechildren>
+		<panel   border="normal" collapsible="true">
+			<panelchildren style="background-color:transparent;border:0px">
+                <vbox>
+
+                        <hbox>
+                            <label  style="color:#346B93;" value=" "  />
+                        <toolbarbutton  style="color:#346B93;font-weight:bold;"  label="[Cerrar Sesión]" onClick="salir()"/>
+                        </hbox><hbox>
+                        </hbox>
+                </vbox>
+            </panelchildren>
+		</panel>
+</tablechildren>
+</tablelayout>
+
+</toolbar>
+
+</north>
+
+<west title="Menú" size="18%" flex="true" splittable="true" collapsible="true">
+         <div>
+<panel width="100%" border="normal"  title="Opciones" height="170px" collapsible="true" >
+				<panelchildren style="padding:0px;" >
+
+
+      <tree id="toc" style="border:none;" zclass="z-dottree" fixedLayout="true"
+        use="bean.LayoutTree" pageSize="-1" vflex="true" height="100%" width="100%">
+                <treechildren>
+                
+
+                    <treeitem id="ss1" label="Notas" value="/blanco.zul">
+                      <treechildren>
+                        
+                        <treeitem id="Notas"  image="/images/notas.png"  label="Registro Notas" value="/notasFuera.zul" />
+                        <treeitem id="Registro de Disciplina" image="/images/notas.png"  label="Registro Disciplinas" value="/disciplinaFuera.zul" />
+                        <treeitem id="Calendario" image="/images/calendar.gif"  label="Calendario" value="/calendar.zul" />
+                        <treeitem id="Correos" image="/images/mail.gif"  label="Envio de Tareas" value="/correo.zul"/>
+                     </treechildren>
+                    </treeitem>
+			</treechildren>
+		</tree>
+
+                          
+ 
+</panelchildren>
+</panel>
+<panel width="100%" border="normal"   height="120px" collapsible="true">
+<panelchildren>
+<toolbarbutton image="/images/candado.gif" label=" -  Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
+
+</panelchildren>
+
+</panel>
+<panel width="100%" border="normal"   collapsible="true"   title="Propiedades">
+				<panelchildren>
+				<label id="propiedad" value="propiedad"/>
+				</panelchildren>
+			</panel>
+         </div>
+        </west>
+        <center flex="true">
+
+<include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/>
+
+
+        </center>
+
+
+</borderlayout>
+ 
