@@ -1,0 +1,285 @@
+<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
+<?page id="main-page"?>
+<window     xmlns:y="http://www.zkoss.org/2007/yui"
+ title="Ingreso de Notas" border="normal"
+width="80%" id="principal">
+<zscript>
+<![CDATA[
+import bean.notas;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import org.zkforge.yuiext.grid.Row;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+List meses = adm.query("Select o from Meses as o where o.estado = true ");
+List rubros = adm.query("Select o from Invproductos as o ");
+ 
+notas no = new notas();
+
+List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  order by o.orden ");
+ 
+String[][] values = new String[sistemas.size()][2];
+Date fechaActual = new Date();
+  DateMidnight actual = new DateMidnight(fechaActual);
+
+          for (int i=0;i<sistemas.size();i++) {
+             values[i][0]= ((Sistemacalificacion)sistemas.get(i)).getAbreviatura();
+                DateMidnight inicial = new DateMidnight(((Sistemacalificacion)sistemas.get(i)).getFechainicial());
+                DateMidnight finale = new DateMidnight(((Sistemacalificacion)sistemas.get(i)).getFechafinal());
+            if(actual.compareTo(finale) <=0 && actual.compareTo(inicial) >=0){
+                values[i][1]= "number";
+  
+            }else{
+                values[i][1]= "readonly";
+
+            }
+           
+           // values[i]="number";
+          }
+guardar(){
+    notas nso = new notas();
+    notas r = (notas) datos.getRows();
+String resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)matriculasList.selectedItem.value));
+if(resultado.equals("ok")){
+    Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+ }else{
+    Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+ }
+
+}
+    void buscar2(Cursos cur){
+       List empleadosEncontrados = adm.query("Select o from Matriculas as o " +
+           "where o.curso.codigocur = '"+cur.codigocur+"'  order by o.estudiante.apellido ");
+            matriculasList.getChildren().clear();
+            bd2.value = "";
+             for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                  Matriculas estudent = (Matriculas) it.next();
+                    Listitem item = new Listitem();
+                    item.setValue(estudent);
+                    item.appendChild(new Listcell(estudent.getEstudiante().getApellido()+" "+estudent.getEstudiante().getNombre() ));
+                    matriculasList.appendChild(item);
+             }
+            Matriculas estudent = new Matriculas(-2);
+            Listitem item = new Listitem();
+            item.setValue(estudent);
+            item.appendChild(new Listcell("[TODOS]") );
+            matriculasList.appendChild(item);
+    }
+
+    void doAdd(Cursos curso, MateriaProfesor materia){
+                    filas.addRow(curso,materia);
+    }
+
+
+    public void buscarRubros() {
+ 
+        Matriculas seleccionada = (Matriculas)matriculasList.selectedItem.value;
+        Cursos acacursos = seleccionada.getCurso();
+        Meses meses = (Meses)mesesList.selectedItem.value;
+        String query = "";
+
+        if (seleccionada.getCodigomat().equals(-2) && acacursos.getCodigocur().equals(-2)) {
+            //SELECCIONO TODOS
+          query = "Select o.*  from rubros as o , cursos cur,  matriculas mat " +
+                    "where o.matricula = mat.codigomat  " +
+                    "and mat.curso = cur.codigocur " +
+                    "and mes = '" + meses.getCodigo() + "' " +
+                    "group by o.producto";
+
+        }else if (seleccionada.getCodigomat().equals(-2)  && !acacursos.getCodigocur().equals(-2)) {
+            List matriculadosporCurso = adm.query("Select o from Matriculas as o " +
+                    "where o.curso.codigocur = '" + acacursos.getCodigocur() + "'  and o.matEstado = 'Matriculado'");
+             
+            query = "Select o.*  from Rubros as o , cursos cur,  matriculas mat " +
+                    "where o.matricula = mat.codigomat  " +
+                    "and mat.curso = cur.codigocur " +
+                    "and mes = '" + meses.getCodigo() + "' " +
+                    "and cur.codigocur = '" + acacursos.getCodigocur() + "' " +
+                    "group by o.producto";
+            matriculadosporCurso = new ArrayList();
+        } else {
+
+            query = "Select o.* from Rubros as o " +
+                    "where o.matricula = '" + seleccionada.getCodigomat() + "' " +
+                    "and mes = '" + meses.getCodigo() + "'";
+        }
+        List rubros = adm.queryNativo(query, Rubros.class);
+        containerAsig = new ArrayList();
+         
+        for (Iterator it = rubros.iterator(); it.hasNext();) {
+            InvRubros invRubros = it.next();
+            if (invRubros.getBeca() > 0) {
+                invRubros.getProduto().setInvAcademico(true);
+            } else {
+                invRubros.getProducto().setInvAcademico(false);
+            }
+            if (invRubros.getOtros() > 0) {
+                invRubros.setDescuento(true);
+            } else {
+                invRubros.setDescuento(false);
+            }
+            if (invRubros.getOtros() > 0) {
+                invRubros.setDescuento(true);
+            } else {
+                invRubros.setDescuento(false);
+            }
+
+          Listitem li = new Listitem();
+          li.setValue(invRubros);
+          li.appendChild(new Listcell(invRubros.getProducto()+""));
+          li.appendChild(new Listcell(invRubros.getValor()+" "+acceIt.getNombres()));
+          li.appendChild(new Listcell(invRubros.getBeca()+""));
+          li.appendChild(new Listcell(invRubros.getDescuento()+""));
+          li.appendChild(new Listcell(""));
+          listadoRubros.appendChild(li);
+
+
+
+            //this.containerAsig.add(invRubros);
+        }
+        rubros = new ArrayList();
+        //sumar();
+
+        
+    }
+
+public void buscar(Invproductos producto){
+    rubrod.value = producto.getInvproPrecio1();
+}
+
+]]>
+</zscript>
+<grid>
+<rows>
+<row>
+ <span style="float:right"> Mes(*):</span>
+               <bandbox  width="400px" readonly="true"  id="bdm">
+                    <bandpopup>
+                    <vbox>
+                    <listbox id="mesesList" width="420px"
+                    onSelect="bdm.value=self.selectedItem.label;bdm.closeDropdown();">
+
+                        <listitem forEach="${meses}" value="${each}">
+                              <listcell label="${each.descripcion}" />
+
+                        </listitem>
+                    </listbox>
+                    </vbox>
+                    </bandpopup>
+                </bandbox>
+</row>
+<row>
+ <span style="float:right"> Curso(*):</span>
+               <bandbox  width="400px" readonly="true"  id="bd1">
+                    <bandpopup>
+                    <vbox>
+                    <listbox id="cursosList" width="420px"
+                    onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
+
+                        <listitem forEach="${cursos}" value="${each}">
+                              <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                        </listitem>
+                    </listbox>
+                    </vbox>
+                    </bandpopup>
+                </bandbox>
+</row>
+<row>
+   <span style="float:right"> Estudiantes(*):</span>
+        <span>
+               <bandbox  width="300px" readonly="true"  id="bd2">
+                    <bandpopup>
+                    <vbox>
+                    <listbox id="matriculasList" width="320px"
+                    onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();">
+
+                        <listitem forEach="${materias}" value="${each}">
+                              <listcell label="${each.descripcion}" />
+
+                        </listitem>
+                    </listbox>
+                    </vbox>
+                    </bandpopup>
+                </bandbox>
+        <button label="Ejecutar"  image="/images/run.gif" onClick="buscarRubros();"/>
+       </span> 
+</row>
+</rows>
+</grid>
+
+
+<grid>
+    <columns>
+		<column  width="350px" label="Rubro" />
+		<column width="70px"   label="Valor"/>
+		<column width="50px" label="Beca"/>
+		<column width="80px"  label="Descuento"/>
+        <column width="80px"  label="Transporte"/>
+        <column width="80px"  label="Alimentación"/>
+        <column  width="70px" label="Acción"/>
+ </columns>
+<rows>
+ <row>
+     <span>
+         <bandbox  width="300px" readonly="true"  id="bdRub">
+                    <bandpopup>
+                    <vbox>
+                    <listbox id="rubrosList" width="320px"
+                    onSelect="bdRub.value=self.selectedItem.label;bdRub.closeDropdown();buscar(((Invproductos)self.selectedItem.value))">
+                        <listitem forEach="${rubros}" value="${each}">
+                              <listcell label="${each.invproDescripcion}" />
+                        </listitem>
+                    </listbox>
+                    </vbox>
+                    </bandpopup>
+                </bandbox>
+
+     </span>
+     <span><decimalbox maxlength="4" cols="5" id="rubrod" /> </span>
+     <span><checkbox id="beca" /></span>
+     <span><checkbox id="descuento" /></span>
+     <span><checkbox id="transporte"  /></span>
+     <span><checkbox id="alimentacion"/></span>
+     <span><button label="Anadir" /></span>
+</row>
+</rows>
+</grid>
+
+    <listbox id="listadoRubros" fixedLayout="true">
+		<listhead sizable="true">
+			<listheader width="350px" label="Rubro" />
+			<listheader width="70px" label="Valor" />
+			<listheader width="50px" label="Beca" />
+			<listheader width="80px" label="Descuento"/>
+			<listheader width="80px" label="Transporte"/>
+            <listheader width="80px" label="Alimentacion"/>
+            <listheader width="70px" label="Acción"/>
+		</listhead>
+		<listitem>
+			<listcell label="ZK Studi " />
+            <listcell label="ZK Studio" />
+            <listcell label="ZK Studio 0.9.0 released." />
+            <listcell label="ZK Studio 0.9.0 released." />
+            <listcell label="ZK Studio 0.9.0 released." />
+            <listcell label="ZK Studio 0.9.0 released." />
+			 
+		</listitem>
+        <listfoot>
+             <listfooter label="TOTAL"/>
+             <listfooter label="0.00"/>
+        </listfoot>
+	</listbox>
+ <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+</window>
+
+	

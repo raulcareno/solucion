@@ -1,0 +1,44 @@
+
+<?page id="main-page"?>
+<window  title="Expanding Grid" border="normal" width="360px" id="principal">
+<zscript>
+String[][] values = {
+{"one", "1"}
+,{"two","2"}
+};
+</zscript>
+ <grid>
+<auxhead>
+		<auxheader  forEach="${values}" colspan="2">
+            <label value="${each[0]}"/>
+        </auxheader>
+ </auxhead>
+ <columns>
+
+ <column forEach="${values}">
+         <label value="${each[0]}"/>
+ </column>
+ </columns>
+ <rows id="filas" use="pruebas.ExpandingMenuItemRows">
+     <row forEach="${values}">
+         <label value="${each[0]}"/>
+         <hbox>$<decimalbox value="${each[1]}"/></hbox>
+     </row>
+<group label="Totales"/>
+			<row>
+				<label style="padding-left:15px" value="Suma:"/>
+				<decimalbox id="total" width="98%"/>
+			</row>
+			 
+ </rows>
+ </grid>
+ <button label="Add More">
+ <attribute name="onClick"><![CDATA[
+ Window win = (Window) Executions.createComponents(
+ "menu-items-popup.zul", null, null);
+ win.doModal();
+ ]]></attribute>
+ </button>
+</window>
+
+	

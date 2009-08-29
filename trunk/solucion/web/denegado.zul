@@ -1,0 +1,8 @@
+<window 
+        style="position:absolute; top:30%; left:30%"
+         border="normal" width="200px">
+<span style="color:red;aling:center;float:center">NO TIENE PERMISOS PARA INGRESAR A ESTE MODULO...!
+ 
+<image id="image" src="/images/denegado.gif" width="100px"/></span>
+
+</window>

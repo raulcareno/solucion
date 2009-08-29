@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+    <window onCreate="cargar()">
+<zscript>
+import jcinform.persistencia.*;
+import bean.Permisos;
+import jcinform.procesos.Administrador;
+import bean.Permisos;
+
+Administrador adm = new Administrador();
+
+ void cargar(){
+        Session a = Sessions.getCurrent();
+        Empleados emp = a.getAttribute("user");
+        Permisos permiso = new Permisos();
+
+        usuario.value = emp.getUsuario();
+        clave.value = permiso.decriptar(emp.getClave());
+ 
+ }
+void guardar(){
+    Session a = Sessions.getCurrent();
+    Empleados emp = a.getAttribute("user");
+  Permisos permiso = new Permisos();
+  
+        emp.setUsuario(usuario.value);
+        emp.setClave(permiso.encriptar(clave.value));
+         adm.actualizar(emp);
+ }
+
+</zscript>
+
+<grid width="30%" >
+    <rows>
+        <row spans="2">
+            Cambio de Clave Profesor
+        </row>
+        <row>
+            Usuario:
+            <textbox id="usuario" maxlength="30" cols="15"  />
+
+        </row>
+         <row>
+            Clave:
+            <textbox id="clave" maxlength="30" cols="15"  />
+        </row>
+
+    </rows>
+</grid>
+ <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+</window>
+</zk>

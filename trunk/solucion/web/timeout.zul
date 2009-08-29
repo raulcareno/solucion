@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <zscript >
+        Session a = Sessions.getCurrent();
+ void salir(){
+        a.removeAttribute("accesos");
+        a.removeAttribute("user");
+        a.invalidate();
+        Executions.sendRedirect("login.zul");
+        
+ }
+    </zscript>
+<window>
+    Su session ha expirado...!
+    <toolbarbutton  style="color:#346B93;font-weight:bold;"
+    label=" [Ingresar]" onClick="salir()"/>
+    
+</window>
+
+</zk>

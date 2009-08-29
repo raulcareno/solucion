@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window  mode="overlapped"  title="Reporte de Notas" width="81%" height="100%" border="normal"
+    maximizable="true" closable="true" sizable="true">
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+	<zscript>
+<![CDATA[
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.notas;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import org.zkforge.yuiext.grid.Row;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+List sistemas = new ArrayList();
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+
+              Sistemacalificacion stodos = new Sistemacalificacion();
+              stodos.setNombre("==========>>>>> "+trime.getDescripcion()+"");
+              int orden = 0;
+              int codigo=0;
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+
+              }
+              stodos.setOrden(orden);
+              stodos.setCodigosis(codigo);
+              stodos.setTrimestre(trime);
+              sistemas.add(stodos);
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    sistemas.add(siste);
+               }
+
+ }
+
+//List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+Sistemacalificacion stodos0 = new Sistemacalificacion(-1);
+stodos0.setNombre("[Seleccione]");
+sistemas.add(0,stodos0);
+
+
+cursos.add(0,new Cursos(-1));
+Cursos todos = new Cursos(-2);
+todos.setDescripcion("[TODOS]");
+cursos.add(todos);
+notas noti = new notas();
+
+List materias = adm.query("Select o from Global as o where o.grupo = 'zz' ");
+void buscar2(Cursos cur){
+
+            if(estudiantesCombo.disabled==false){
+                    List empleadosEncontrados = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+cur.codigocur+"'  order by o.estudiante.apellido");
+                    estudiantesCombo.getChildren().clear();
+                    Matriculas matri = new Matriculas(-1);
+                    Estudiantes es = new Estudiantes(-1);
+                    es.setApellido("[Seleccione]");
+                    es.setNombre(" ");
+                    matri.setEstudiante(es);
+                    empleadosEncontrados.add(0,matri);
+                        
+                           for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                                  Matriculas estudent = (Matriculas) it.next();
+                                    Listitem item = new Listitem();
+                                    item.setValue(estudent);
+                                    item.appendChild(new Listcell(estudent.estudiante.apellido+" "+estudent.estudiante.nombre));
+                                    estudiantesCombo.appendChild(item);
+                         }
+                            matri = new Matriculas(-2);
+                            matri.setEstudiante(es);
+                                    Listitem item = new Listitem();
+                                    item.setValue(matri);
+                                    item.appendChild(new Listcell("[TODOS]"));
+                                    estudiantesCombo.appendChild(item);
+            }
+
+if(materiasCombo.disabled==false){
+            List materiaEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"'  order by o.curso.paralelo.descripcion");
+                     materiasCombo.getChildren().clear();
+                     Listitem item = new Listitem();
+                                    item.setValue(new MateriaProfesor(-1));
+                                    item.appendChild(new Listcell());
+                                    materiasCombo.appendChild(item);
+                        for (Iterator it = materiaEncontrados.iterator(); it.hasNext();) {
+                                  MateriaProfesor matep = (MateriaProfesor) it.next();
+                                    Listitem item = new Listitem();
+                                    item.setValue(matep);
+                                    item.appendChild(new Listcell(matep.materia.descripcion));
+                                    materiasCombo.appendChild(item);
+                         }
+
+}
+        materiasCombo.setSelectedIndex(-1);
+    }
+
+ 
+      public Double redondear(Double numero, int decimales) {
+        try{
+                BigDecimal d = new BigDecimal(numero);
+        d = d.setScale(decimales, RoundingMode.HALF_UP);
+        return d.doubleValue();
+        }catch(Exception e){
+            return 0.0;
+        }
+        
+        }
+
+public JRDataSource distributivo(){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        List hoy = adm.query("SELECT mat FROM MateriaProfesor AS mat " +
+                "WHERE mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                "order by mat.curso.secuencia");
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            MateriaProfesor elem = (MateriaProfesor) it.next();
+            detalle.add(elem);
+        }
+      ReporteProfesorDataSource ds = new ReporteProfesorDataSource(detalle);
+
+
+      return ds;
+}
+public JRDataSource profesores(){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        List hoy = adm.query("SELECT mat FROM MateriaProfesor AS mat " +
+                "WHERE mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                "order by mat.curso.secuencia");
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            MateriaProfesor elem = (MateriaProfesor) it.next();
+            detalle.add(elem);
+        }
+      ReporteProfesorDataSource ds = new ReporteProfesorDataSource(detalle);
+      return ds;
+}
+ 
+
+ void showReport() {
+            Institucion insts = periodo.getInstitucion();
+             
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("titulo", titulo.value);
+            parametros.put("slogan", insts.getSlogan());
+            String tipo = reporte.getSelectedItem().getValue();
+            JRDataSource datasource = null;
+
+            if(tipo.equals("DIS")){
+                    datasource = distributivo();
+                    report.setSrc("WEB-INF/reportes/distributivo.jasper");
+            }else if(tipo.equals("PROF")){
+                    datasource = profesores();
+                    report.setSrc("WEB-INF/reportes/profesores.jasper");
+            }else if(tipo.equals("PROFC")){
+                    datasource = profesores();
+                    report.setSrc("WEB-INF/reportes/profesoresCompleto.jasper");
+            }else if(tipo.equals("CERT")){
+                    datasource = noti.promocion(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue());
+                    report.setSrc("WEB-INF/reportes/promocion.jasper");
+            }else if(tipo.equals("NMAT")){
+                    datasource = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
+                    MateriaProfesor mate = ((MateriaProfesor)materiasCombo.getSelectedItem().getValue());
+                    parametros.put("materia", mate.getMateria().getDescripcion());
+                     parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
+                    report.setSrc("WEB-INF/reportes/notaspor.jasper");
+            }else if(tipo.equals("CCAL")){
+                    parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc("WEB-INF/reportes/cuadrocalificaciones.jasper");
+            }else if(tipo.equals("CNF")){
+                    
+                    datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc("WEB-INF/reportes/cuadrofinal.jasper");
+            }else if(tipo.equals("AG")){
+                    datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"original");
+                    report.setSrc("WEB-INF/reportes/actaGrado.jasper");
+            }else if(tipo.equals("CAG")){
+                    datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"copia");
+                    report.setSrc("WEB-INF/reportes/copiaactaGrado.jasper");
+            }else if(tipo.equals("LIB")){
+
+                    datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc("WEB-INF/reportes/libreta.jasper");
+                    parametros.put("pathSubRel", "WEB-INF/reportes/libreta_sub.jasper");
+                    parametros.put("pathSubRel2", "WEB-INF/reportes/libreta_subFaltas.jasper");
+                   
+            }else if(tipo.equals("-1")){
+                   alert("No ha seleccionado ningún reporte...!");
+                    return;
+            }
+            if(!tipo.equals("-1")){
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType((String) format.getSelectedItem().getValue());
+            }
+		}
+
+void campos(String valor){
+estudiantesCombo.disabled = true;
+materiasCombo.disabled = true;
+curs.disabled = true;
+sistemasCombo.disabled = true;
+
+
+
+
+        if(valor.equals("DIS")){
+            curs.disabled = false;
+            titulo.value= "Distributivo";
+        }else if(valor.equals("NMAT")){
+            curs.disabled = false;
+            sistemasCombo.disabled = false;
+            materiasCombo.disabled = false;
+            titulo.value= "Cuadro de Notas por Materia";
+            curs.setSelectedIndex(-1);
+            materiasCombo.setSelectedIndex(-1);
+            sistemasCombo.setSelectedIndex(-1);
+curs.setSelectedIndex(0);
+        }else if(valor.equals("LIB")){
+            curs.disabled = false;
+            estudiantesCombo.disabled = false;
+            sistemasCombo.disabled = false;
+             titulo.value= "Libreta de Calificaciones";
+            //estudiantesCombo.setSelectedIndex(0);
+        }else if(valor.equals("CERT")  ){
+            curs.disabled = false;
+            estudiantesCombo.disabled = false;
+             titulo.value= "Certificado de Promocion";
+ 
+        }else if(valor.equals("CCAL")){
+            curs.disabled = false;
+            sistemasCombo.disabled = false;
+             titulo.value= "Cuadro de Calificaciones";
+        }else if(valor.equals("AG")){
+            curs.disabled = false;
+            titulo.value= "Acta de Grado";
+        }else if(valor.equals("CAG")){
+            curs.disabled = false;
+            titulo.value= "Copia de Acta de Grado";
+        }else if(valor.equals("CNF")){
+            curs.disabled = false;
+            sistemasCombo.disabled = false;
+            titulo.value= "Cuadro de Final de Calificaciones";
+        }else{
+            titulo.value= " ";
+        }
+}
+]]>
+	</zscript>
+<panel width="100%" id="parametros"  height="100%" border="normal"
+collapsible="true" title="Parametros">
+				<panelchildren>
+<grid width="100%">
+<rows>
+<row>
+     
+<span style="float:right"> Reporte:</span>
+<listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="300px"  mold="select" >
+		<listitem label="[Seleccione]" value="-1" selected="true" />
+        
+		<listitem label="Cuadro de Notas por Materia" value="NMAT" />
+		<listitem label="Libreta de Calificaciones" value="LIB" />
+		<listitem label="Cuadro de Calificaciones" value="CCAL" />
+		<listitem label="Cuadro Final de Notas" value="CNF" />
+		<listitem label="Cuadro de Disciplinas" value="CDIS"/>
+        <listitem label="Acta de Grado" value="AG"/>
+        <listitem label="Copia de Acta de Grado" value="CAG"/>
+        <listitem label="Certificado de Promoción" value="CERT"/>
+        <listitem label="=========================" value="linea" />
+    
+        <!--listitem  label="Mejor egresado(*)" value="CDIS"/>
+        <listitem label="Cuadro juntas de curso(*)" value="CDIS"/>
+        <listitem label="Cuadro de Supletorios(*)" value="CDIS"/>
+        <listitem label="Cuadro de Mejores Estudiantes por curso(*)" value="CDIS"/>
+        <listitem label="Cuadro de Promedios Finales(*)" value="CDIS"/>
+        <listitem label="Promedios Generales de 1ro a 5to (*)" value="CDIS"/-->
+        <listitem label="Distributivo" value="DIS" />
+        <listitem label="Listado de Profesores" value="PROF" />
+        <listitem label="Listado de Profesores completo" value="PROFC" />
+        
+	</listbox>
+</row>
+
+<row>
+<span style="float:right"> Curso:</span>
+        <listbox id="curs" width="300px"  mold="select"
+        onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
+
+            <listitem selected="true" forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
+        </listbox>
+ </row>
+ <row>
+<span style="float:right"> Estudiantes: </span>
+                                <listbox id="estudiantesCombo" width="300px"  mold="select" >
+                                    <listitem selected="true"  forEach="${estudiantes}" value="${each}">
+                                        <listcell  label="${each.apellidos}" />
+                                    </listitem>
+                                </listbox>
+</row>
+<row>
+<span style="float:right"> Materias: </span>
+                                <listbox id="materiasCombo" width="300px"  mold="select" >
+                                    <listitem selected="true"  forEach="${materias}" value="${each}">
+                                        <listcell label="${each.descripcion}" />
+                                        
+                                    </listitem>
+                                </listbox>
+</row>
+<row  >
+<span style="float:right"> Sistema Notas: </span>
+
+                                <listbox id="sistemasCombo" width="300px"  mold="select" >
+                                    <listitem  selected="true"  forEach="${sistemas}" value="${each}">
+                                        <listcell label="${each.nombre}" />
+                                    </listitem>
+                                </listbox>
+</row>
+
+<row>
+    <span style="float:right"> Título:</span>
+    <textbox id="titulo" value=" " cols="35"/>
+</row>
+<row>
+<span style="float:right"> Formato:</span>
+ <span> <listbox id="format" mold="select" onSelect="showReport();rep.setOpen(true);parametros.setOpen(false); " >
+		<listitem label="PDF" value="pdf" selected="true" />
+		<listitem label="XML" value="xml" />
+		<listitem label="HTML" value="html" />
+		<listitem label="Word (RTF)" value="rtf" />
+		<listitem label="Excel" value="xls" />
+		<listitem label="Excel (JXL)" value="jxl" />
+		<listitem label="CSV" value="csv" />
+		<listitem label="OpenOffice (ODT)" value="odt" unless="false"/>
+	</listbox>
+    <button label="Ejecutar!" onClick='showReport();rep.setOpen(true);parametros.setOpen(false); '/></span>
+</row>
+
+</rows>
+</grid>
+</panelchildren>
+</panel>
+<panel width="100%" id="rep"  onOpen="parametros.setOpen(true);"  height="90%" border="normal"
+collapsible="true" title="Reporte">
+				<panelchildren>
+	<jasperreport id="report" />
+ </panelchildren>
+ </panel>
+
+</zk>
+</window>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window id="win"  visible="false" border="normal"
+width="500"  maximizable="true" closable="true" sizable="true" minheight="100">
+
+      <jasperreport id="report" />
+     
+</window>

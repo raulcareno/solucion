@@ -1,0 +1,300 @@
+<window  mode="overlapped"  title="Control de Parámetros Generales" width="500px" border="normal"
+    maximizable="true" closable="true" sizable="true">
+
+ <zscript>
+  import jcinform.persistencia.ParametrosGlobales;
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.ParametrosGlobales;
+  import jcinform.persistencia.Periodo;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+
+ Session ses = Sessions.getCurrent();
+ Administrador adm = new Administrador();
+ List allEvents = adm.query("Select o from ParametrosGlobales as o where o.tipo= 0");
+ static ParametrosGlobales equi = new ParametrosGlobales();
+ Permisos permiso = new Permisos();
+ Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+ //FUNCIONES
+ void habil(){
+String p = grupo.getValue();
+            try{
+
+             vc.visible=false;
+             vn.visible=false;
+             vl.visible=false;
+             vf.visible=false;
+
+                if(p.equals("Caracter")){
+                    vc.visible=true;
+                }else if(p.equals("Numerico")){
+                    vn.visible=true;
+                }else if(p.equals("Logico")){
+                    vl.visible=true;
+                }else if(p.equals("Fecha")){
+                    vf.visible=true;
+                }
+            }catch(Exception e){}
+ }
+
+ void llenar(ParametrosGlobales equi2){
+            equi = equi2;
+            nombre.value = equi.getDescripcion();
+            String p = "Caracter";
+            try{
+             vc.visible=false;
+             vn.visible=false;
+             vl.visible=false;
+             vf.visible=false;
+              
+                if(equi.getTipo().equals("C")){
+                    p = "Caracter";
+                    vc.visible=true;
+                    valc.value = equi.getCvalor();
+                }else if(equi.getTipo().equals("N")){
+                    p = "Numerico";
+                    vn.visible=true;
+                    BigDecimal mini = new BigDecimal(equi.getNvalor());
+                    valn.value = mini;
+                }else if(equi.getTipo().equals("L")){
+                    p = "Logico";
+                    vl.visible=true;
+                    vall.checked = equi.getBvalor();
+                }else if(equi.getTipo().equals("F")){
+                    p = "Fecha";
+                    vf.visible=true;
+                    valf.value = equi.getDvalor();
+                }
+     
+}catch(Exception ea){
+    equi.setTipo("C");
+}
+   grupo.value = p;
+}
+void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+        equi = (ParametrosGlobales)datos.selectedItem.value;
+    }
+    nombre.disabled = estado;
+    grupo.disabled = estado;
+    valn.disabled = estado;
+    vall.disabled = estado;
+    valf.disabled = estado;
+    valc.disabled = estado;
+
+}
+
+
+ void guardar(){
+    if(nombre.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+    equi.setPeriodo(periodo);
+        equi.setDescripcion(nombre.value);
+        equi.setTipo(grupo.selectedItem.value);
+        String p = grupo.getValue();
+            try{
+                if(p.equals("Caracter")){
+                    equi.setCvalor(valc.value);
+                }else if(p.equals("Numerico")){
+                    equi.setNvalor(valn.value.doubleValue());
+                }else if(p.equals("Logico")){
+                    equi.setBvalor(vall.checked);
+                }else if(p.equals("Fecha")){
+                    equi.setDvalor(valf.value);
+                }
+            }catch(Exception e){}
+
+        if((!equi.getCodigopar().equals(0)) ){
+             adm.actualizar(equi);
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = equi.getCodigopar()+"";
+                  ((Listcell)children.get(1)).label = nombre.value+ "" ;
+         }else{
+                equi.setCodigopar(adm.getNuevaClave("ParametrosGlobales","codigopar"));
+                adm.guardar(equi);
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new ParametrosGlobales(0));
+  
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Parametros",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new ParametrosGlobales(0));
+        estado(false,false);
+        
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((ParametrosGlobales)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             equi = (ParametrosGlobales)datos.selectedItem.value;
+             adm.eliminarObjeto(ParametrosGlobales.class, equi.getCodigopar());
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new ParametrosGlobales(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+   void buscar(String p){
+        if(p.equals("Caracter")){
+            p = "C";
+        }else if(p.equals("Logico")){
+            p = "L";
+        }else if(p.equals("Numerico")){
+            p = "N";
+        }else if(p.equals("Fecha")){
+            p = "F";
+        }
+      
+      List equivaEncontrados = adm.query("Select o from ParametrosGlobales as o " +
+        " where o.tipo = '"+p+"' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+        datos = new Listbox();
+        int a=0;
+            for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+             }
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      ParametrosGlobales acceIt = (ParametrosGlobales) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigopar()+""));
+                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "));
+                      
+                        if(p.equals("C")){
+                            li.appendChild(new Listcell(acceIt.getCvalor()+" "));
+                        }else if(p.equals("L")){
+                            li.appendChild(new Listcell(acceIt.getBvalor()+" "));
+                        }else if(p.equals("N")){
+                            li.appendChild(new Listcell(acceIt.getNvalor()+" "));
+                        }else if(p.equals("F")){
+                            li.appendChild(new Listcell(acceIt.getDvalor()+" "));
+                        }
+
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(ParametrosGlobales g){
+equi.setPerfil(g);
+}
+  </zscript>
+<groupbox mold="3d" >
+       <caption label="Agregar" />
+	
+<grid width="100%">
+<rows> 
+<row> <span style="float:right"> Grupo(*):</span>
+     <combobox   onChange="habil()"  readonly="true"  disabled="true"  id="grupo"  width="120px">
+            <comboitem  value="C" label="Caracter"/>
+            <comboitem  value="N" label="Numerico"/>
+            <comboitem  value="L" label="Logico"/>
+            <comboitem  value="F" label="Fecha"/>
+    </combobox>
+</row>
+
+<row><span style="float:right"> Nombre(*):</span>
+        <textbox id="nombre"  maxlength="60" cols="40" disabled="true"   />
+</row>
+<row id="vc" visible="false" ><span style="float:right"> Valor(*):</span>
+        <textbox  popup="msg" id="valc"  maxlength="60" cols="40" disabled="true"/>
+</row>
+<row id="vn" visible="false" ><span style="float:right"> Valor(*):</span>
+        <decimalbox  format="#,##0.##"  id="valn" cols="10" disabled="true"/>
+</row>
+<row id="vl" visible="false" ><span style="float:right"> Valor(*):</span>
+        <checkbox id="vall"  disabled="true"/>
+</row>
+<row id="vf" visible="false" ><span style="float:right"> Valor(*):</span>
+        <datebox id="valf"  disabled="true"/>
+</row>
+
+</rows>
+</grid>
+<vbox>
+<vbox>
+<hbox>
+    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();vc.visible=true;" />
+	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+</hbox>
+</vbox>
+
+			</vbox>
+
+ </groupbox>
+<groupbox mold="3d" >
+
+       <caption label="Busquedas" />
+<vbox>
+<hbox>  Tipo:
+<combobox id="buscarText"  width="60px">
+            <comboitem  value="C" label="Caracter"/>
+            <comboitem  value="N" label="Numerico"/>
+            <comboitem  value="L" label="Logico"/>
+            <comboitem  value="F" label="Fecha"/>
+    </combobox>
+ <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+ </hbox>
+    <hbox>
+         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+			<listhead>
+                                <listheader label="Código"/>
+                                <listheader label="Nombre"/>
+                                <listheader label="Valor"/>
+
+			</listhead>
+			<listitem forEach="${allEvents}" value="${each}">
+                           <listcell label="${each.codigo}" />
+                           <listcell label="${each.descripcion}" />
+            </listitem>
+		</listbox>
+
+
+    </hbox>
+</vbox>
+</groupbox>
+	<popup id="msg" width="300px">
+		<vbox>
+			PARA QUE...:
+			<toolbarbutton label="Se ingresa manualmente la disciplina [INGRESADA]"/>
+            <toolbarbutton label="Sumatoria de el Ingreso de disciplina de todos los profesor(igual al 50%) y la disciplina del inspector el (50%) [MITAD]"/>
+            <toolbarbutton label="Sumatoria de el Ingreso de disciplina de todos los profesores más la disciplina del inspector sacamos el promedio [PROMEDIO]"/>
+            <toolbarbutton label="Promedio del ingreso de profesores más el promedio ingresado por el inspector [SUMATORIA]"/>
+
+		</vbox>
+	</popup>
+
+</window>

@@ -1,0 +1,326 @@
+
+<window  mode="overlapped"  title="Acta de Grado [Seleccione un Curso]" width="640px" border="normal"
+    maximizable="true" closable="true" sizable="true">
+    <zscript>
+
+<![CDATA[
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
+    static Actagrado matricula = new Actagrado();
+    Session ses = Sessions.getCurrent();
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    Permisos permiso = new Permisos();
+
+    List profesores = adm.query("Select o from Empleados as o ");
+    List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
+    Object media = null;
+     Session ses = Sessions.getCurrent();
+
+   List empleadosEncontrados = adm.query("Select o from Actagrado as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+//FUNCIONES
+
+void llenar(Actagrado estudent){
+    codigo.value = estudent.getCodigo();
+     formula.value = estudent.getFormula();
+     materia.value = estudent.getNombre();
+     abreviatura.value = estudent.getAbreviatura();
+     columna.value = estudent.getColumna();
+
+}
+ 
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            estudent = (Estudiantes)datos.selectedItem.value;
+        }
+   codigo.disabled = estado;
+
+    promediada.disabled = estado;
+
+    formula.disabled = estado;
+
+}
+
+
+public  String disponible(){
+   Field[] a = Notasacta.class.getDeclaredFields();
+      ArrayList arregloTodos = new ArrayList();
+
+       for (Field field : a) {
+            if(field.getName().contains("nota") && !field.getName().equals("nota")){
+                arregloTodos.add(field.getName());
+            }
+        }
+ 
+        List  notassistemas = adm.query("Select o from Actagrado as o "+
+        " where  o.periodo.codigoper = '"+periodo.getCodigoper()+"'  ");
+        ArrayList arregloAsignadas = new ArrayList();
+        for( Actagrado notanotas : notassistemas) {
+            arregloAsignadas.add(notanotas.getColumna());
+        }
+
+        for (Iterator it2 = arregloAsignadas.iterator(); it2.hasNext();) {
+            String aborrar  = it2.next().toString();
+            int i = arregloTodos.indexOf(aborrar);
+               if(i != -1)
+                  arregloTodos.remove(i);
+         }
+   return arregloTodos.get(0).toString();
+
+}
+
+ void guardar(){
+ if(materia.value==""){
+    Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    return;
+ }
+        matricula.setColumna(columna.value);
+        matricula.setCodigo(codigo.value);
+        matricula.setNombre(materia.value);
+        matricula.setAbreviatura(abreviatura.value);
+        matricula.setFormula(formula.value);
+        matricula.setPeriodo(periodo);
+ 
+
+        if((!matricula.getCodigo().equals(0)) ){
+                adm.actualizar(matricula);
+                  List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = materia.value+"";
+                  ((Listcell)children.get(1)).label = abreviatura.value ;
+         }else{
+             matricula.setCodigo(adm.getNuevaClave("Actagrado","codigo"));
+             adm.guardar(matricula);
+                  Listitem li = new Listitem();
+                  li.setValue(matricula);
+                  
+                  li.appendChild(new Listcell(matricula.getNombre()));
+                  li.appendChild(new Listcell(matricula.getAbreviatura()+""));
+                  datos.appendChild(li);
+         }
+
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                guardar.disabled=true;
+                agregar.disabled=false;
+                estado(true,false);
+                llenar(new Actagrado(0));
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Matricular",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false; llenar(new Actagrado(0));estado(false,false);
+        columna.value = disponible();
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(Actagrado acta){
+        llenar(acta);
+        modificar.disabled = false;
+        combo.value="";
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false;
+        estado(false,false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             estudent = (Actagrado)datos.selectedItem.value;
+             adm.eliminarObjeto(Actagrado.class, estudent.getCodigo());
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Actagrado(0));
+            combo.value="";
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ 
+void materias123(){
+        List empleadosEncontrados = adm.query("Select o from Actagrado as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+        materiaslista = new Listbox();
+        int a=0;
+            for (Iterator it = materiaslista.getItems().iterator(); it.hasNext();) {
+                    materiaslista.getItems().remove(a);
+            }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Actagrado acceIt = (Actagrado) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(""+acceIt.getColumna()+"()");
+                      li.appendChild(new Listcell("["+acceIt.getColumna()+"] "+acceIt.getAbreviatura()));
+                      materiaslista.appendChild(li);
+
+             }
+   
+             cerrar.visible=true;
+             verificar.visible = true;
+
+  }
+
+  void materias1232(){
+         
+        materiaslista2 = new Listbox();
+         int a=0;
+            for (Iterator it = materiaslista.getItems().iterator(); it.hasNext();) {
+                    materiaslista2.getItems().remove(a);
+            }
+              Listitem li = new Listitem();
+              li.setValue("primero");
+              li.appendChild(new Listcell("Primero"));
+              materiaslista2.appendChild(li);
+
+              li = new Listitem();
+              li.setValue("segudno");
+              li.appendChild(new Listcell("segundo"));
+              materiaslista2.appendChild(li);
+
+               li = new Listitem();
+              li.setValue("tercero");
+              li.appendChild(new Listcell("Tercero"));
+              materiaslista2.appendChild(li);
+
+               li = new Listitem();
+              li.setValue("cuarto");
+              li.appendChild(new Listcell("Cuarto"));
+              materiaslista2.appendChild(li);
+
+               li = new Listitem();
+              li.setValue("quinto");
+              li.appendChild(new Listcell("Quinto"));
+              materiaslista2.appendChild(li);
+
+               li = new Listitem();
+              li.setValue("sexto");
+              li.appendChild(new Listcell("Sexto"));
+              materiaslista2.appendChild(li);
+
+              li = new Listitem();
+              li.setValue("examenes");
+              li.appendChild(new Listcell("Examenes"));
+              materiaslista2.appendChild(li);
+
+              li = new Listitem();
+              li.setValue("equivalencia");
+              li.appendChild(new Listcell("Equivalencia"));
+              materiaslista2.appendChild(li);
+
+             verificar.visible = true;
+
+  }
+
+    void anadir(String glob){
+            formula.value = formula.value +""+ glob+" + ";
+    
+    }   ]]>
+    </zscript>
+    <groupbox   mold="3d">
+        <caption label="Datos de Acta" />
+        <grid width="100%">
+            <rows>
+                 
+                <row>
+                    <span style="float:right"> Codigo :
+                    </span><span>
+                    <intbox maxlength="14" cols="5"  readonly = "true"   disabled="true" id="codigo"  />
+                    <textbox id="columna" readonly="true" /> </span>
+                </row>
+                <row>
+                    <span style="float:right"> Nombre(*):
+                    </span>
+                    <span> 
+                        <textbox id="materia" width="350px" />
+                    </span>
+                </row>
+                <row>
+                    <span style="float:right">    Abreviatura(*):
+                    </span>
+                    <span>
+                        <textbox id="abreviatura" width="120px" />
+                    </span>
+                </row>
+
+                
+
+                <row>
+                    <span style="float:right"> Fórmula:
+                    </span>
+                    <span>
+                        <textbox rows="2" id="formula" cols="35"  disabled="true"  />
+                        <button popup="materiasacta" label="Codigos Acta" onClick=" materias123(); "/>
+                        <button popup="materiasacta2" label="Codigos Promedios" onClick=" materias1232(); "/>
+
+                         <popup    id="materiasacta" width="200px">
+                            
+                             <listbox onSelect="anadir(self.selectedItem.value)" id="materiaslista" width="100%">
+                                <listhead>
+                                    <listheader label="Materia"  sort="auto"/>
+                                </listhead>
+                                </listbox>
+                        </popup>
+                        <!--button  label="Cerrar" visible="false" id="cerrar" onClick="materiaslista.visible = false; cerrar.visible=false; verificar.visible = false;"/-->
+                        <!--button  label="Verificar" visible="false" id="verificar"/-->
+                         <popup    id="materiasacta2" width="200px">
+                                <listbox onSelect="anadir(self.selectedItem.value)" id="materiaslista2" width="45%">
+                                    <listhead>
+                                        <listheader label="Notas"  sort="auto"/>
+                                    </listhead>
+                                </listbox>
+                        </popup>
+
+                        <button   label="Cerrar" visible="false" id="cerrar2" onClick="materiaslista.visible = false; cerrar.visible=false; verificar.visible = false;"/>
+                        <button  label="Verificar" visible="false" id="verificar2"/>
+
+                    </span>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+    <groupbox  width="100%"  mold="3d" >
+        <caption label="Materias Asignadas" />
+
+                <listbox id="datos"   
+                onSelect="move((Actagrado)self.selectedItem.value);estado(true,false);eliminar.disabled=false;guardar.disabled=true" width="100%">
+                    <listhead>
+                        <listheader label="Materia"   sort="auto"/>
+                        <listheader label="Abreviatura"/>
+                    </listhead>
+                    <listitem forEach="${empleadosEncontrados}" value="${each}">
+                        <listcell label="${each.nombre}" />
+                        <listcell label="${each.abreviatura}" />
+ 
+                    </listitem>
+                </listbox>
+
+    </groupbox>
+    <vbox>
+        <hbox>
+            <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+            <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+            <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+            <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+        </hbox>
+    </vbox>
+ 
+</window>
+
+

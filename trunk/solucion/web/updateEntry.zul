@@ -1,0 +1,40 @@
+<zk>
+	<window id="updateMyEntry" width="350px" title="Actualización de Actividad" border="normal" mode="popup" apply="org.zkoss.zknewsfeed.controllers.EventUpdateController" visible="false">
+		<grid>
+			<rows>
+                <row>
+					Desde: <span><datebox id="inicio"  />
+                    <timebox id="tinicio"/></span>
+				</row>
+                
+                <row>
+					Hasta: 
+                    <span>
+                        <datebox id="fina"  />
+                        <timebox id="tfina" />
+                    </span>
+				</row>
+				<row>
+					Actividad: <textbox id="tbText"  />
+				</row>
+				<row>
+					Tipo: <combobox id="cmbType">
+						 
+						<comboitem label="Academica" />
+						<comboitem label="Reunión" />
+                        <comboitem label="Recoradorio" />
+					  </combobox>
+				</row>
+				<row>
+					
+					<button id="btnUpdateNews" label="Actualizar" width="36px" height="24px"/>
+					<span>
+                    <button id="btnDeleteNews" label="Borrar" width="36px" height="24px"/>
+
+					<button id="btnCancel" label="Cancelar" width="36px" height="24px" />
+                    </span>
+				</row>	
+			</rows>
+		</grid>
+	</window>
+</zk>

@@ -1,0 +1,22 @@
+ 
+<window title="Foto" onCreate="cargar()"   border="normal" width="15%" id="principalFoto"
+xmlns:a="http://www.zkoss.org/2005/zk/annotation">
+    <zscript><![CDATA[
+ String direccion = principalFoto.getVariable("direccion",true);
+alert(direccion);
+]]>
+    </zscript>
+
+<image id="foto0" src="${direccion}"/>
+
+ 
+         <button label="Salir" onClick="principalFoto.detach()"/>
+<zscript><![CDATA[
+public void cargar(){
+   
+ }
+]]>
+    </zscript>
+
+</window>
+

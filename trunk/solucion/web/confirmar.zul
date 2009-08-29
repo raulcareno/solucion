@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Accesos"?>
+<window  mode="overlapped" id="win" style="position:absolute; top:30%; left:30%" border="normal" width="500px" sizable="true">
+		<caption image="/images/candado.gif" label="Validación de Software"/>
+ 
+<zscript>
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.Empleados;
+  import jcinform.persistencia.Periodo;
+  import jcinform.persistencia.Institucion;
+  import bean.Permisos;
+  import jcinform.procesos.Administrador;
+  import javax.faces.context.FacesContext;
+  import bean.disco;
+  import bean.claves;
+
+ Administrador adm = new Administrador();
+ Permisos permisos = new Permisos();
+ disco dis = new disco();
+claves clavi = new claves();
+String g = dis.serial("C");
+ g = "GAEC"+g.substring(0,g.length()-3)+"ISLO"+g.substring(g.length()-3,g.length());
+
+  void ingresar(){
+    g = usuario.value;
+    g = g.substring(4,g.length());
+    g = clavi.encriptar(g);
+    
+    Institucion inst = (Institucion) adm.buscarClave(new Integer(1), Institucion.class);
+if(g.equals(clave.value)){
+    inst.setIniciales("x"+clave.value);
+    adm.actualizar(inst);
+    Messagebox.show("Clave Registrada correctamente...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+    Executions.sendRedirect("login.zul");
+}else{
+    Messagebox.show("La Clave Ingresada no está correcta...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+}
+
+
+}
+</zscript>
+		 <grid style="background-color:white">
+		<columns sizable="true" menupopup="auto">
+			<column label=" "  />
+			<column label=" "/>
+		</columns>
+		<rows>
+			<row>
+				<span style="float:right">EQUIPO No.:</span>
+                <textbox id="usuario" value="${g}" readonly="true" constraint="no empty:Usuario es requerido" maxlength="200" cols="50"  />
+			</row>
+			<row>
+				<span style="float:right">CLAVE ACCESO:</span>
+                 <textbox id="clave" constraint="no empty:Clave es requerido"  maxlength="200" cols="50"   />
+			</row>
+           
+		</rows>
+	</grid>
+       
+		<separator/>
+		<button label="validar" onClick="usuario.getValue(); clave.getValue();ingresar()"/>
+		
+	</window>
+
+	

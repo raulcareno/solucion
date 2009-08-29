@@ -1,0 +1,61 @@
+<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
+<?page id="main-page"?>
+<window xmlns:y="http://www.zkoss.org/2007/yui"  title="Cursos del Estudiante" border="normal" width="100%" id="cursosForma">
+<zscript>
+<![CDATA[
+import bean.notas;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import org.zkforge.yuiext.grid.Row;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Estudiantes user =  (Estudiantes)ses.getAttribute("user");
+
+List cursos = adm.query("SELECT distinct o FROM Matriculas as o WHERE o.estudiante.codigoest = '"+user.getCodigoest()+"'");
+ 
+void buscar2(Matriculas mat){
+try{
+            if(mat != null){
+                ses.setAttribute("matricula",mat);
+                Window win34 = (Window) Executions.createComponents("/notasEstudiantes.zul", null, null);
+win34.setVisible(true);
+                win34.setAttribute("matricula", mat);
+                //win.doModal();
+                }
+           }catch(Exception e){
+                 
+           }
+}
+]]>
+    </zscript>
+    <grid>
+        <rows>
+            <row>
+                 <listbox id="cursos" width="420px"
+                    onSelect="buscar2(((Matriculas)self.selectedItem.value));">
+                 <listitem >
+                        <listcell label="Seleccione un Curso" />
+
+                    </listitem>
+                    <listitem forEach="${cursos}" value="${each}">
+
+                        <listcell label="${each.curso.descripcion} ${each.curso.especialidad}  ${each.curso.paralelo}" />
+
+                    </listitem>
+                </listbox>
+                 
+            </row>
+
+        </rows>
+    </grid>
+
+
+</window>
+
+	

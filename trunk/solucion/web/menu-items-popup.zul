@@ -1,0 +1,11 @@
+<window id="win" title="Add Menu Item" border="normal" width="200px" closable="true">
+<zscript>
+import java.math.BigDecimal;
+doAdd(String name, BigDecimal price){
+ rows = Path.getComponent("//main-page/principal/filas");
+ rows.addRow(name, price);
+}
+</zscript>
+ <vbox>Name:<textbox id="name" value=""/> Price:<decimalbox id="price" value="0"/></vbox>
+ <button label="Add" onClick="doAdd(name.value,price.value);win.detach()"/> <button label="Cancel" onClick="win.detach()"/>
+</window>

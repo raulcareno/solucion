@@ -1,0 +1,600 @@
+<window mode="overlapped" title="Aportes por Trimestres, Bimestres, Quimestres" width="70%" height="83%" border="normal"
+    maximizable="true" closable="true" sizable="true">
+ <zscript>
+  import jcinform.persistencia.Trimestres;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.Trimestres;
+  import jcinform.persistencia.Periodo;
+  import jcinform.persistencia.Sistemacalificacion;
+import jcinform.persistencia.Notanotas;
+  import jcinform.persistencia.Trimestres;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import jcinform.persistencia.Notanotas;
+import jcinform.persistencia.Notas;
+import bsh.Interpreter;
+import bsh.EvalError;
+  import java.math.BigDecimal;
+static Sistemacalificacion empa = new Sistemacalificacion();
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+
+    Periodo per = (Periodo) ses.getAttribute("periodo");
+    List trimestres = adm.query("Select o from Trimestres as o where o.periodo  = '"+per.getCodigoper()+"'  order by o.codigotrim  ");
+
+<![CDATA[
+class SistemaTree extends Tree {
+	public void onSelect() {
+
+         Treeitem item = getSelectedItem();
+    //     String menu = item.getId();
+
+      //          if (item != null) {
+        //            System.out.println((String)item.getValue());
+          //      }
+
+	}
+	
+}
+
+public  String disponible(){
+   Field[] a = Notas.class.getDeclaredFields();
+      ArrayList arregloTodos = new ArrayList();
+
+       for (Field field : a) {
+            if(field.getName().contains("nota") && !field.getName().equals("nota")){
+                arregloTodos.add(field.getName());
+            }
+        }
+ 
+        List  notassistemas = adm.query("Select o from Notanotas as o ");
+        ArrayList arregloAsignadas = new ArrayList();
+        for (Notanotas notanotas : notassistemas) {
+            arregloAsignadas.add(notanotas.getNota());
+        }
+
+    for (Iterator it2 = arregloAsignadas.iterator(); it2.hasNext();) {
+        String aborrar  = it2.next().toString();
+        int i = arregloTodos.indexOf(aborrar);
+        //alert(i);
+        if(i != -1)
+                arregloTodos.remove(i);
+            }
+ 
+  return arregloTodos.get(0).toString();
+
+}
+
+        class MySimpleTreeNode extends SimpleTreeNode {
+                private String myData = null;
+                public MySimpleTreeNode(Object data, List children) {
+                      super(data, children);
+                      myData = data.toString();
+                }
+
+                public String toString() {
+                     return "" + myData;
+                }
+
+                public void append(String data) {
+                    myData = myData + data;
+                }
+                public String getData() {
+                    return myData;
+                }
+        }
+
+	public void onSele() {
+  
+         Treeitem item = tree.getSelectedItem();
+         String menu  = item.getLabel();
+         
+            try{
+                 menu = menu.substring(0, menu.indexOf("]"));
+            }catch(Exception error){return;}
+            
+             menu= menu.replace("[K","").replace("]", "");
+                if (item != null) {
+                        Sistemacalificacion encontrado = (Sistemacalificacion) adm.buscarClave(new Integer(menu),Sistemacalificacion.class);
+                        llenar(encontrado);
+                            Notanotas sis = (Notanotas) adm.querySimple("Select o from Notanotas as o where o.sistema.codigosis = '"+encontrado.getCodigosis()+"' ");
+                            if(sis != null){
+                                    codi.value = sis.getCodigo()+"";
+                                    nota.value = sis.getNota();
+                            }else{
+                                codi.value = "0";
+                               nota.value="";
+                            }
+                      eliminar.disabled=false;
+                }
+
+
+	}
+ 
+    List aChildren = new ArrayList();
+    List empty = new ArrayList();
+    MySimpleTreeNode a0 = new MySimpleTreeNode("", empty);
+    List children = new ArrayList();
+    MySimpleTreeNode a = new MySimpleTreeNode("", empty);
+          for(int t=0; t< trimestres.size(); t++) {
+                    Trimestres tri = trimestres.get(t);
+                    List sistemas = adm.query("Select o from Notanotas as o where o.sistema.trimestre.codigotrim = '"+tri.codigotrim+"' order by o.sistema.orden ");
+                        aChildren = new ArrayList();
+                        //+ (sis.getSistema().getFaltas()==true?"(F)":"")+
+                        for(int i=0; i< sistemas.size(); i++) {
+                                Notanotas sis = sistemas.get(i);
+                                a0 = new MySimpleTreeNode("[K"+sis.getSistema().getCodigosis()+"]"+sis.getSistema().getNombre() +" ["+sis.getNota()+"()]", empty);
+                                aChildren.add(a0);
+                       }
+	                a = new MySimpleTreeNode(""+tri.getDescripcion(), aChildren);
+                    children.add(a);
+	       }
+       MySimpleTreeNode r = new MySimpleTreeNode("Sistema", children);
+       SimpleTreeModel stm = new SimpleTreeModel(r);
+
+
+
+public void llenarArbol(){
+
+      aChildren = new ArrayList();
+      empty = new ArrayList();
+      a0 = new MySimpleTreeNode("", empty);
+      children = new ArrayList();
+      a = new MySimpleTreeNode("", empty);
+          for(int t=0; t< trimestres.size(); t++) {
+                    Trimestres tri = trimestres.get(t);
+                    List sistemas = adm.query("Select o from Notanotas as o where o.sistema.trimestre.codigotrim = '"+tri.codigotrim+"' order by o.sistema.orden ");
+                        aChildren = new ArrayList();
+                        for(int i=0; i< sistemas.size(); i++) {
+                                Notanotas sis = sistemas.get(i);
+                               a0 = new MySimpleTreeNode("[K"+sis.getSistema().getCodigosis()+"]"+sis.getSistema().getNombre() +" ["+sis.getNota()+"()]", empty);
+                                aChildren.add(a0);
+                       }
+	                a = new MySimpleTreeNode(""+tri.getDescripcion(), aChildren);
+                    children.add(a);
+	       }
+         r = new MySimpleTreeNode("Sistema", children);
+        
+    int a=0;
+int tamanio = tree.getTreechildren().getChildren().size();
+        for (int k = 0; k<tamanio; k++) {
+            tree.getTreechildren().getChildren().remove(a);
+        }
+         stm = new SimpleTreeModel(r);
+            tree.setModel(stm);
+}
+     
+
+Permisos permiso = new Permisos();
+Object media = null;
+  public void mostrarTodos(){
+       		int l = tree.getTreechildren().getChildren().size();
+            int total = tree.getItemCount();
+
+	       for(int i=0; i<l; i++) {
+try{
+                        for(int m=0;m<total;m++){
+                            int[] path ={m,i};
+                            tree.renderItemByPath(path);
+                        }
+	}finally{}
+	               
+	       }
+       }
+
+
+
+//FUNCIONES
+void llenar(Sistemacalificacion empa){
+
+   codigo.value =empa.getCodigosis();
+    nombre.value = empa.getNombre();
+    abreviatura.value = empa.getAbreviatura();
+    desde.value = empa.getFechainicial();
+    hasta.value = empa.getFechafinal();
+    orden.value = empa.getOrden();
+    seimprime.checked = empa.getSeimprime();
+    esdisciplina.checked = empa.getEsdisciplina();
+    faltas.checked = empa.getFaltas();
+    espromedio.checked = empa.getEspromedio();
+    formula.value = empa.getFormula();
+    formuladisciplina.value = empa.getFormuladisciplina();
+    //formulafaltas.value = empa.getFormulafaltas();
+    try{
+      if(empa.getNotalimite().equals(null))
+        empa.setNotalimite(0.0);
+    }catch(Exception aa){
+        empa.setNotalimite(0.0);
+    }
+
+    try{
+      if(empa.getConduca().equals(null))
+        empa.setConduca(0.0);
+    }catch(Exception aa){
+        empa.setConduca(0.0);
+    }
+
+        BigDecimal mini = new BigDecimal(empa.getNotalimite());
+        aprovechamiento.value = mini;
+         mini = new BigDecimal(empa.getConduca());
+        conducta.value = mini;
+        if(empa.getPromediofinal().equals("NI")){
+        ninguno.selected = true;
+        }else if(empa.getPromediofinal().equals("PG")){
+        promediogeneral.selected = true;
+        }else if(empa.getPromediofinal().equals("PF")){
+        promediofinal.selected = true;
+        }else if(empa.getPromediofinal().equals("SU")){
+        supletorio.selected = true;
+        }
+
+
+        if(empa.getTrimestre()!=null){
+            Listitem item = new Listitem();
+            item.setValue(empa.getTrimestre());
+            item.appendChild(new Listcell(empa.getTrimestre()+""));
+            trime.appendChild(item);
+            trime.setSelectedItem(item);
+            //bd.value = empa.getTrimestre().getDescripcion()+"";
+        }
+  
+}
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            
+        }
+
+    nombre.readonly = estado;
+    abreviatura.readonly = estado;
+    desde.disabled = estado;
+    hasta.disabled = estado;
+    seimprime.disabled = estado;
+    esdisciplina.disabled = estado;
+    aprovechamiento.readonly = estado;
+    //disciplina.disabled = estado;
+    faltas.disabled = estado;
+    orden.readonly = estado;
+    trime.disabled = estado;
+    tipo.disabled= estado;
+    formula.readonly= estado;
+    formuladisciplina.readonly = estado;
+    //formulafaltas.disabled = estado;
+conducta.readonly =estado;
+espromedio.disabled= estado;
+}
+
+
+ void guardar(){
+
+ if(verificar2() || verificar3() || verificar4()){
+ //Messagebox.show("UNA DE LAS FORMULAS INGRESADAS ESTÁN INCORRECTAS...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+ return;
+ }
+   if(nombre.value=="" || abreviatura.value=="" || desde.value=="" || hasta.value=="" || aprovechamiento.value=="" || orden.value=="" ){
+    Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    return;
+ }
+
+        empa.setCodigosis(codigo.value);
+        empa.setNombre(nombre.value);
+        empa.setAbreviatura(abreviatura.value);
+        empa.setFechainicial(desde.value);
+        empa.setFechafinal(hasta.value);
+        empa.setNotalimite((aprovechamiento.value).doubleValue());
+        empa.setConduca((conducta.value).doubleValue());
+        empa.setSeimprime(seimprime.checked);
+        empa.setEsdisciplina(esdisciplina.checked);
+        empa.setFaltas(faltas.checked);
+        empa.setEspromedio(espromedio.checked);
+
+        empa.setOrden(orden.value);
+        empa.setPromediofinal(promedios.selectedItem.value);
+
+        empa.setFormula(formula.value);
+        empa.setFormuladisciplina(formuladisciplina.value);
+        //empa.setFormulafaltas(formulafaltas.value);
+        Periodo per = (Periodo) ses.getAttribute("periodo");
+        empa.setPeriodo(per);
+        empa.setTrimestre(trime.selectedItem.value);
+
+         if((!empa.getCodigosis().equals(0) && !empa.getCodigosis().equals("")) ){
+             adm.actualizar(empa);
+ 
+         }else{
+            empa.setCodigosis(adm.getNuevaClave("Sistemacalificacion","codigosis"));
+             adm.guardar(empa);
+             llenarArbol();
+             mostrarTodos();
+
+         }
+
+         if((!codi.value.equals(0)) ){
+            Notanotas nueva = new Notanotas(new Integer(codi.value));
+            nueva.setNota(nota.value);
+            nueva.setSistema(empa);
+            adm.actualizar(nueva);
+         }else{
+            Notanotas nueva = new Notanotas();
+            nueva.setNota(nota.value);
+            nueva.setSistema(empa);
+            nueva.setCodigo(adm.getNuevaClave("Notanotas","codigo"));
+            adm.guardar(nueva);
+         }
+               // Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+             llenarArbol();
+mostrarTodos();
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Sistemacalificacion(0));
+
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Calificaciones",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+        guardar.disabled=false; 
+        llenar(new Sistemacalificacion(0));
+        estado(false,false);
+        nota.value = disponible();
+        codi.value = "0";
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Sistemacalificacion)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             adm.eliminarObjeto(Notanotas.class, new Integer(codi.value));
+             adm.eliminarObjeto(Sistemacalificacion.class, codigo.value);
+
+             llenarArbol();
+            mostrarTodos();
+             Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Sistemacalificacion as o where o.identificacion = '"+valor+"' ");
+            if(empleados.size()>0){
+                Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Sistemacalificacion object = (Sistemacalificacion)it.next();
+                        empa = object;
+                 }
+            llenar(empa);
+
+            }else{
+                empa = new Sistemacalificacion(0);
+            }
+
+        }
+    }
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o from Sistemacalificacion as o where o.apellidos like '%"+p+"%' order by o.apellidos");
+        datos = new Listbox();
+        int a=0;
+               for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Sistemacalificacion acceIt = (Sistemacalificacion) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getIdentificacion()+""));
+                      li.appendChild(new Listcell(acceIt.getApellidos()+" "+acceIt.getNombres()));
+                      li.appendChild(new Listcell(acceIt.getDireccion()+""));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Trimestres g){
+    empa.setTrimestre(g);
+}
+
+public Boolean verificar2(){
+    String formula1 = formula.value;
+     Periodo periodo = per;
+    formula1 = formula1.replace("()","");
+    if(formula1.equals("")){
+        return false;
+    }
+       String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
+        List notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.sistema.orden ");
+        Interpreter inter = new Interpreter();
+         try {
+             inter.eval(redon);
+        for (Iterator it = notas.iterator(); it.hasNext();) {
+                     Notanotas notanotas = (Notanotas)it.next();
+                    inter.eval(""+notanotas.getNota()+"=1;");
+        }
+         inter.eval(formula1+"*1");
+       
+      } catch (EvalError ex) {
+          Messagebox.show("ERROR EN FORMULA DE APROVECHAMIENTO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+          return true;
+      } 
+        return false;
+}
+public Boolean verificar3(){
+    String formula1 = formuladisciplina.value;
+     Periodo periodo = per;
+
+    formula1 = formula1.replace("()","");
+    if(formula1.equals("")){
+    return false;
+}
+       String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
+        List notas = adm.query("Select o from Notanotas as o where o.sistema.esdisciplina = true and o.sistema.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.sistema.orden ");
+        Interpreter inter = new Interpreter();
+         try {
+             inter.eval(redon);
+        for (Iterator it = notas.iterator(); it.hasNext();) {
+                     Notanotas notanotas = (Notanotas)it.next();
+                    inter.eval(""+notanotas.getNota()+"=1;");
+        }
+         inter.eval(formula1+"*1");
+       
+      } catch (EvalError ex) {
+          Messagebox.show("ERROR EN FORMULA DE DISCIPLINA...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+          return true;
+      }
+        return false;
+}
+
+public Boolean verificar4(){
+   /* String formula1 = formulafaltas.value;
+if(formula1.equals("")){
+    return false;
+}
+     Periodo periodo = per;
+    formula1 = formula1.replace("()","");
+       String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
+        List notas = adm.query("Select o from Notanotas as o where o.sistema.faltas = true and o.sistema.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.sistema.orden ");
+           
+        Interpreter inter = new Interpreter();
+         try {
+             inter.eval(redon);
+        for (Iterator it = notas.iterator(); it.hasNext();) {
+
+                     Notanotas notanotas = (Notanotas)it.next();
+                    inter.eval(""+notanotas.getNota()+"=1;");
+        }
+         inter.eval(formula1+"*1");
+         
+      } catch (EvalError ex) {
+          Messagebox.show("ERROR EN FORMULA DE FALTAS...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+          return true;
+      }*/
+        return false;
+}
+
+        ]]>
+
+</zscript>
+
+<borderlayout height="500px">
+<west maxsize="300" size="35%" splittable="true" collapsible="true">
+        <tree model="${stm}" onLoad="mostrarTodos();" onSelect="onSele();modificar.disabled= false;estado(true,false);" use="SistemaTree" id="tree" width="100%"    zclass="z-vfiletree" vflex="true" height="100%" >
+        </tree>
+</west>
+
+
+
+<center flex="true">
+<groupbox mold="3d" >
+       <caption label="Agregar" />
+
+<grid width="100%">
+<rows>
+<row><span style="float:right"> Codigo:</span>
+        <intbox id="codigo"  maxlength="60" cols="10" readonly="true"   />   </row>
+<row><span style="float:right"> Nombres(*):</span>
+        <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />   </row>
+    <row> <span style="float:right"> Abreviatura(*):</span>
+        <textbox id="abreviatura"  maxlength="60" cols="40" readonly="true"  /> </row>
+    <row> <span style="float:right"> Pase de Notas(*):</span> <span>Desde: <datebox format="dd/MMM/yyyy" id="desde"/> Hasta:<datebox  format="dd/MMM/yyyy"  id="hasta"/></span>
+         </row>
+    <row> <span style="float:right"> Límite de Notas(*):</span>
+            <span>Aprovechamiento:<decimalbox id="aprovechamiento" maxlength="5" cols="5"  format="#,##0.##"/> Disciplina:<decimalbox id="conducta" maxlength="5" cols="5" format="#,##0.##"/> </span>
+        </row>
+    <row> <span style="float:right"> Imprime en Reportes:</span>
+        <span><checkbox id="seimprime"/> Ingresa Disciplina:
+         <checkbox id="esdisciplina"/>
+  Ingresa Faltas: 
+        <checkbox id="faltas"/></span></row>
+
+    <row> <span style="float:right"> Orden(*):</span>
+        <intbox id="orden"/></row>
+ <row> <span style="float:right"> Tipo de Nota:</span>
+       <span>
+<radiogroup id="promedios">
+        <radio id="promediogeneral" value="PG" label="Promedio General"/>
+        <radio id="promediofinal" value="PF"  label="Promedio Final"/>
+        <radio id="supletorio"  value="SU" label="Supletorio"/>
+        <radio id="ninguno"  value = "NI" label="Ninguno"/>
+</radiogroup>
+</span></row>
+<row> <span style="float:right"> Se Imprime en Prom Final:</span>
+        <checkbox id="espromedio"/></row>
+ 
+ <row> <span style="float:right"> Trimestre:</span>
+
+		<listbox mold="select" id="trime" width="250px" onSelect="cargar(((Trimestres)self.selectedItem.value));">
+			<listhead>
+				<listheader label="Description"/>
+			</listhead>
+			<listitem selected="true" forEach="${trimestres}" value="${each}">
+                  <listcell label="${each.descripcion}" />
+
+            </listitem>
+		</listbox>
+		 
+
+</row>
+<row><span style="float:right"> Formula Aprovechamiento:</span>
+<span><textbox id="formula" rows="2" cols="40" />
+<button id="verificar"  label="Verificar"   onClick="verificar2();"/> </span>
+</row>
+<row><span style="float:right"> Formula Disciplina:</span>
+<span><textbox id="formuladisciplina" rows="2" cols="40" />
+<button id="verificar3"  label="Verificar"   onClick="verificar3();"/> </span>
+</row>
+ 
+<row><span style="float:right"> Codigo:</span>
+        <textbox readonly="true"  id="codi"   />
+</row>
+<row><span style="float:right"> Campo:</span>
+        <textbox readonly="true" id="nota" />
+</row>
+
+</rows>
+</grid>
+<vbox>
+<vbox>
+<hbox>
+<button    id="llsenar"  label="Expandir Árbol"   onClick="mostrarTodos();"/>
+    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+
+	
+</hbox>
+</vbox>
+
+			</vbox>
+
+ </groupbox>
+
+
+
+</center>
+</borderlayout>
+</window>

@@ -1,0 +1,58 @@
+<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
+<?page id="main-page"?>
+<window xmlns:y="http://www.zkoss.org/2007/yui"
+  title="Cursos " width="45%" id="cursosdeGrado">
+<zscript>
+<![CDATA[
+import bean.notas;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import org.zkforge.yuiext.grid.Row;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+ 
+ Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+List cursos = adm.query("Select o from Cursos as o "+ 
+" where o.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.secuencia = 6  ");
+
+void verNotasCursoEstudiante(Cursos elcurso){
+            if(elcurso != null){
+            ses.setAttribute("curso",elcurso);
+            //alert(elcurso+"");
+                    Window win = (Window) Executions.createComponents("/notasActa.zul", null, null);
+                    win.setAttribute("curso", elcurso);
+                    win.doEmbedded();
+                    //win.doPopup();
+                }
+
+}
+]]>
+    </zscript>
+    <grid>
+        <rows>
+            <row>
+                 <listbox mold="select" id="cursos"  width="420px"
+                    onSelect="verNotasCursoEstudiante(((Cursos)self.selectedItem.value));  ">
+                    <listitem>
+                        <listcell label="Seleccione un Curso" />
+                    </listitem>
+                    <listitem forEach="${cursos}" value="${each}">
+                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                    </listitem>
+                </listbox>
+                 
+            </row>
+
+        </rows>
+    </grid>
+
+
+</window>
+
+	

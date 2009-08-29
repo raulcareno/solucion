@@ -1,0 +1,85 @@
+<window  mode="overlapped"  title="Control de Auditora" width="80%" border="normal"
+    maximizable="true" closable="true" sizable="true">
+
+ <zscript>
+  import jcinform.persistencia.*;
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+
+ Session ses = Sessions.getCurrent();
+ Administrador adm = new Administrador();
+ List allEvents = adm.query("Select o from ParametrosGlobales as o where o.tipo= 0");
+ static ParametrosGlobales equi = new ParametrosGlobales();
+ Permisos permiso = new Permisos();
+ Periodo periodo = (Periodo) ses.getAttribute("periodo");
+ 
+void buscar(){
+
+String desde2 = (desde.getValue().getYear()+1900) +"-"+(desde.getValue().getMonth()+1)+"-"+desde.getValue().getDate()+" 01:00:00";
+String hasta2 = (hasta.getValue().getYear()+1900) +"-"+(hasta.getValue().getMonth()+1)+"-"+hasta.getValue().getDate()+" 23:59:59";
+
+      System.out.println("Select o from Auditoria as o where o.fecha between '"+desde2+"' and '"+hasta2+"' ");
+      List equivaEncontrados = adm.query("Select o from Auditoria as o where o.fecha between '"+desde2+"' and '"+hasta2+"' ");
+        datos = new Listbox();
+        int a=0;
+            for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+             }
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Auditoria acceIt = (Auditoria) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getUsuario().getApellidos()+" "+acceIt.getUsuario().getNombres()));
+                      li.appendChild(new Listcell(acceIt.getTipo()+" "));
+                      li.appendChild(new Listcell(acceIt.getTabla()+" "));
+                      li.appendChild(new Listcell(acceIt.getPc()+" "));
+                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+" "));
+                      li.appendChild(new Listcell(acceIt.getIp()+" "));
+                      datos.appendChild(li);
+             }
+
+    }
+ 
+  </zscript>
+ 
+<groupbox mold="3d" >
+
+       <caption label="Seleccione las fechas en las cuales desea ver los movimientos" />
+<vbox>
+<hbox>  Desde:
+ 				<datebox id="desde" format="yyyy-MM-dd"  width="100px" />
+                Hasta:
+                <datebox id="hasta" format="yyyy-MM-dd" width="100px" />
+                <button id="buscar"  label="Buscar" onClick="buscar();"/>
+ </hbox>
+    <hbox>
+         <listbox id="datos" width="100%">
+			<listhead>
+                                <listheader label="Usuario"/>
+                                <listheader label="Acción"/>
+                                <listheader label="Pantalla"/>
+                                <listheader label="Campo"/>
+                                <listheader label="Fecha"/>
+                                <listheader label="Máquina"/>
+
+			</listhead>
+			<listitem forEach="${allEvents}" value="${each}">
+                           <listcell width="70px" label="${each.usuario}" />
+                           <listcell width="30px"  label="${each.tipo}" />
+                           <listcell width="30px"  label="${each.tabla}" />
+                           <listcell width="50px" label="${each.pc}" />
+                           <listcell width="30px"  label="${each.fecha}" />
+                           <listcell width="20px"  label="${each.ip}" />
+            </listitem>
+		</listbox>
+
+
+    </hbox>
+</vbox>
+</groupbox>
+
+
+</window>

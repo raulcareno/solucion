@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="win2" title="Consulta de Notas...! " border="normal" width="350px">
+    <zscript>
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.Estudiantes;
+  import jcinform.persistencia.Periodo;
+  import jcinform.persistencia.Institucion;
+  import bean.Permisos;
+  import jcinform.procesos.Administrador;
+  import javax.faces.context.FacesContext;
+
+Administrador adm = new Administrador();
+
+void verPantall(){
+        Estudiantes user =adm.ingresoSistemaE(usuario.value, clave.value);
+            if(user != null){
+                    Session ses = Sessions.getCurrent();
+                    ses.setAttribute("user",user);
+                    Executions.sendRedirect("indexEstudiantes.zul");
+
+           }else{
+                Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                usuario.focus();
+             }
+}
+</zscript>
+	 <grid style="background-color:white">
+		<columns sizable="true" menupopup="auto">
+			<column label=" "  />
+			<column label=" "/>
+		</columns>
+		<rows>
+			<row>
+				<span style="float:right">Usuario:(*):</span>
+                <textbox onOK="clave.focus()" id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
+			</row>
+			<row>
+				<span style="float:right">Contraseña:(*):</span>
+                 <textbox  onOK="ingresarModulo.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
+			</row>
+            
+		</rows>
+	</grid>
+       
+		<separator/>
+		<button label="Ingresar" id="ingresarModulo" onClick="usuario.getValue(); clave.getValue(); verPantall();"/>
+		<button label="Cancelar" onClick="win2.detach()"/>
+
+ 
+</window>
