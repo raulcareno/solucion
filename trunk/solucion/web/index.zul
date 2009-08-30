@@ -25,11 +25,10 @@
  }
  void cambio(){
      Permisos permisos = new Permisos();
-    Periodo perio = (Periodo)periodo.selectedItem.value;
-    permisos.llenar(emp,perio);
-     //  if(emp.getTipo().equals("Interna"))
-     //      Executions.sendRedirect("login.zul");
-     //    Executions.sendRedirect("index.zul");
+     Periodo perio = (Periodo)periodo.selectedItem.value;
+      a.removeAttribute("periodo");
+      a.setAttribute("periodo",perio);
+      Executions.sendRedirect("index.zul");
  }
 void verificar(){
   Empleados user = a.getAttribute("user");
@@ -132,12 +131,13 @@ void verificar(){
                             <label  style="color:#346B93;" value="${sessionScope.periodo.descripcion}"  />
 						</hbox>
                         <hbox>
-					     <listbox  style="background-color:#D5F1FF;border-color:#D5F1FF" onSelect="cambio(); onselect:refrescar()"    width="380px"  id="periodo" mold="select">
+<!-- PERIODO -->
+					     <listbox  style="background-color:#D5F1FF;border-color:#D5F1FF" onSelect="cambio(); " width="380px"  id="periodo" mold="select">
                             <listitem forEach="${perfiles}" value="${each}">
                               <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
                             </listitem>
                         </listbox>
-							
+						
 						</hbox>
 
                 </vbox>

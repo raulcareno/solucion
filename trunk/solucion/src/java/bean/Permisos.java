@@ -58,6 +58,7 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
         //Window win = (Window) Executions.createComponents("/notasEstudiantes.zul", null, null);
        List listado = adm.query("Select o from Accesos as o where o.perfil.codigo = '"+user.getPerfil().getCodigo()+"'");
         Session a = Sessions.getCurrent();
+        
         a.setAttribute("accesos", listado);
         a.setAttribute("user", user);
         a.setAttribute("periodo",per);
@@ -95,6 +96,8 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
             }
                 return cla.encriptar(clave);
             }catch(Exception e){
+
+
                    return "";
             }
         }
