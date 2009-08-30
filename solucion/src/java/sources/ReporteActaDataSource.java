@@ -232,7 +232,7 @@ public class ReporteActaDataSource implements JRDataSource{
         }
 
         this.day = c;
-        this.month = b;
+        this.month = (b < 0?0:b);
         this.year = a;
 
     }

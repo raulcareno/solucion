@@ -60,6 +60,9 @@ import org.zkoss.zul.Listbox;
         List NoActualMatricula = adm.query("Select o from ParametrosGlobales as o " +
                 "where o.variable = 'MATRICULA' and o.periodo.codigoper = '" + periodo.getCodigoper() + "'");
         ParametrosGlobales parametros = new ParametrosGlobales();
+        if(NoActualMatricula.size()<=0){
+            alert("Falta copiar los parámetros a este Año Lectivo");
+        }
         parametros = (ParametrosGlobales) NoActualMatricula.get(0);
         int noMatri = 0;
         Double decs = parametros.getNvalor();
@@ -82,10 +85,14 @@ import org.zkoss.zul.Listbox;
         }
     }
 
-    void generarClave(){
-        if(usuario.value != ""){
+    void generarClave(Boolean boton){
+    try{
+    String uss = usuario.value;
+    if(boton==false){
+        if(uss.trim() != ""){
                 return;
         }
+    }
         String user ="";
         String caracter="1234567890";
         caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
@@ -96,16 +103,19 @@ import org.zkoss.zul.Listbox;
             clave2+=caracter.charAt(((Double)(total*Math.random())).intValue());
         }
 
-    clave.value = clave2;
-     caracter=""+apellidos.value.trim().replace(" ","");
-    caracter+="JC"+nombres.value.trim().replace(" ","");
-    numero_caracteres=6;
-    total=caracter.length();
-    user ="";
-    for(int a=0;a<numero_caracteres;a++){
-        user+=caracter.charAt(((Double)(total*Math.random())).intValue());
-    }
-    usuario.value = user;
+            clave.value = clave2;
+             caracter=""+apellidos.value.trim().replace(" ","");
+            caracter+="JC"+nombres.value.trim().replace(" ","");
+            numero_caracteres=6;
+            total=caracter.length();
+            user ="";
+            for(int a=0;a<numero_caracteres;a++){
+                user+=caracter.charAt(((Double)(total*Math.random())).intValue());
+            }
+            usuario.value = user;
+            }catch(Exception e){
+            System.out.println("ERROR EN GENERAR CLAVE"+e);
+            }
     }
 
 void llenar(Estudiantes estudent){
@@ -336,6 +346,7 @@ void estado(Boolean estado,Boolean modificar){
 
 
  void guardar(){
+ try{
              if(nombres.value=="" || apellidos.value =="" || direccion.value=="" || nacido.value=="" ){
                     Messagebox.show("Ingrese los datos del estudiante que están con (*)...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                     return;
@@ -344,6 +355,7 @@ void estado(Boolean estado,Boolean modificar){
                     Messagebox.show("Ingrese los datos del representante que estan con (*)...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                     return;
             }
+       
         representante0.setCodigorep(codigore.value);
         representante0.setIdentificacionrepre(cedulare.value);
         representante0.setNombres(nombresre.value);
@@ -384,6 +396,7 @@ void estado(Boolean estado,Boolean modificar){
             representante0.setIdentificacionfactura(representante0.getIdentificacionrepre());
         }
 
+
  Boolean repreNuevo = false;
  Boolean estuNuevo = false;
  
@@ -394,6 +407,8 @@ void estado(Boolean estado,Boolean modificar){
             adm.guardar(representante0);
             repreNuevo = true;
          }
+        
+
  //GUARDO EL ESTUDIANTE
         estudent.setRepresentante(representante0);
         estudent.setCodigoest(codigo.value);
@@ -412,7 +427,7 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setClave(permiso.encriptar(clave.value));
         estudent.setGenero(genero.selectedItem.value);
         estudent.setPendientes(false);
-        
+         
         if((!estudent.getCodigoest().equals(0))){
              adm.actualizar(estudent);
              try{
@@ -427,6 +442,7 @@ void estado(Boolean estado,Boolean modificar){
             estuNuevo = true;
          }
 
+        
 //GUARDAR MATRICULA
         matricula.setCodigomat(codigomat.value);
         matricula.setEstudiante(estudent);
@@ -440,19 +456,20 @@ void estado(Boolean estado,Boolean modificar){
             matricula.setNumero(0);
          }
 
-
             org.zkoss.image.Image nueva = foto0.getContent();
 
             matricula.setFoto(nueva.getByteData());
             matricula.setFolio(folio.value);
 
 
-        if((!matricula.getCodigomat().equals(0)) ){
 
+        if((!matricula.getCodigomat().equals(0)) ){
+            
                 if(matricula.getNumero().equals(0)){
                     matricula.setNumero(nuevaMatricula());
                 }
                 adm.actualizar(matricula);
+                
          }else{
 
                 if(matricula.getEstado().equals("Matriculado")){
@@ -470,6 +487,8 @@ void estado(Boolean estado,Boolean modificar){
              adm.guardar(matricula);
              codigomat.value = matri;
          }
+      
+
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         guardar.disabled=true;
         agregar.disabled=false;
@@ -503,7 +522,17 @@ ParametrosGlobales para = new ParametrosGlobales();
 
             }
         }
+
+        }catch(Exception e){
         
+        alert("Error:"+e);
+                 System.out.println(""+e.getCause());
+                System.out.println(""+e.getLocalizedMessage());
+                System.out.println(""+e.getMessage());
+                System.out.println(""+e.getStackTrace());
+                System.out.println(""+e.getCause());
+        }
+
     }
 
    Boolean verificar(String accion){
@@ -691,8 +720,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 }
 		void showReport(String tipo) {
 			//Preparing parameters
-            List lista = adm.query("Select o from Institucion as o");
-            Institucion insts = (Institucion) lista.get(0);
+
+            Institucion insts = periodo.getInstitucion();
+            
 			Map parametros = new HashMap();
             parametros.put("denominacion", insts.getDenominacion());
             parametros.put("nombre", insts.getNombre());
@@ -772,7 +802,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 <row>
                                                                   
                                                                     <span style="float:right"> Apellidos(*):</span>
-                                                                    <textbox id="apellidos" onBlur="generarClave();"  maxlength="60" cols="40" readonly="true"  />
+                                                                    <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40" readonly="true"  />
                                                                 </row>
                                                                 <row>
 
@@ -871,7 +901,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 </listbox>
 
                                                                 <textbox  cols="15"   readonly="true" style="background-color:transparent; border:0px;height:17px; text-align:right" value="Usuario:"/>
-                                                                <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
+                                                                <span><textbox id="usuario" maxlength="30" cols="12" readonly="true"  />
+                                                                <button label="Generar" onClick="generarClave(true);"/></span>
                                                             </row>
                                                             <row>
                                                                 <span style="float:right"> Estado (*):</span>
@@ -885,7 +916,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
 
                                                                 <textbox  cols="15"   readonly="true" style="background-color:transparent; border:0px; text-align:right" value="Clave:"/>
-                                                                <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
+                                                                <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
                                                             </row>
                                                             <row>
                                                                 <span style="float:right"> FechaMatricula(*):</span>

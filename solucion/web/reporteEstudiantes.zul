@@ -34,7 +34,6 @@ void buscar2(Cursos cur){
  public JRDataSource inscritos(String tipo){
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
-      Periodo periodo = (Periodo) ses.getAttribute("periodo");
       ArrayList detalle = new ArrayList();
         String query = "SELECT mat FROM Matriculas AS mat " +
                 "WHERE  mat.estado =  '"+tipo+"' " +
@@ -51,7 +50,6 @@ void buscar2(Cursos cur){
 public JRDataSource certificados(Cursos curso,String tipo){
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
-        Periodo periodo = (Periodo) ses.getAttribute("periodo");
                     ArrayList detalle = new ArrayList();
                     String query = "SELECT mat FROM Matriculas AS mat " +
                             "WHERE  mat.estado like '%Matriculado%' " +
