@@ -13,13 +13,13 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+
 import javax.faces.context.FacesContext;
 import jcinform.persistencia.*;
 import jcinform.persistencia.ParametrosGlobales;
 import jcinform.procesos.Administrador;
 
 import org.zkoss.image.Image;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 //import org.zkoss.image.Image;
@@ -45,7 +45,6 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
     Image mim = zkImage.getContent();
     Image nueva = mim;
  
-    
     return nueva;
     //org.zkoss.image.Image miImage2 = zkImage.getContent();
     //return miImage2;

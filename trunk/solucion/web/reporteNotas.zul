@@ -203,8 +203,8 @@ public JRDataSource profesores(){
 
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc("WEB-INF/reportes/libreta.jasper");
-                    parametros.put("pathSubRel", "WEB-INF/reportes/libreta_sub.jasper");
-                    parametros.put("pathSubRel2", "WEB-INF/reportes/libreta_subFaltas.jasper");
+                    parametros.put("pathSubRel", "reportes/libreta_sub.jasper");
+                    parametros.put("pathSubRel2", "reportes/libreta_subFaltas.jasper");
                    
             }else if(tipo.equals("-1")){
                    alert("No ha seleccionado ningún reporte...!");
