@@ -16,7 +16,7 @@
   import java.io.IOException;
   import java.util.logging.Level;
   import java.util.logging.Logger;
-
+import java.util.Vector;
 
 import sources.CustomDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -501,6 +501,8 @@ void estado(Boolean estado,Boolean modificar){
             combo.value="";
             permiso.auditar("Matriculas","Guardar",""+matricula.getCodigomat()+" "+matricula.getEstudiante().getApellido());
         //aqui trabajo la parte de pensiones
+
+//******************************** PARA CONTABLE ****************************************************************
 List parametros =  adm.query("Select o from ParametrosGlobales as o where o.variable = 'TRABAJARUBROS' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
 ParametrosGlobales para = new ParametrosGlobales();
         if(parametros.size()>0){
@@ -509,28 +511,45 @@ ParametrosGlobales para = new ParametrosGlobales();
             para.setBvalor(false);
         }
         if(para.getBvalor()){
+
+           List maestroNuevo = adm.queryNativo("SELECT IF(MAX(invmae_codigo) IS NULL,0,MAX(invmae_codigo)) +1 FROM contable.invmaestro");
+           Long maeCodigo = (Long)((Vector)maestroNuevo.get(0)).get(0);
+           Long codigoRepresentante=null;
             if(repreNuevo){
-                System.out.println(""+adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_telefono1,invmae_tipoid,invmae_nombre,invmae_numeroruc,invmae_direccion,glbemp_codigo,invmae_representante) values ( "+matricula.getCodigomat()+",'"+representante0.getTelfactura()+"','"+ representante0.getTipoidentificacion()+"','"+representante0.getNombrefactura()+"','"+representante0.getIdentificacionfactura()+"','"+representante0.getDirfactura()+"',NULL, '"+estudent.getApellido() + " " + estudent.getNombre() +"')" ));
+                System.out.println(""+adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_telefono1,invmae_tipoid,invmae_nombre,invmae_numeroruc,invmae_direccion,glbemp_codigo,invmae_codigo,invmae_grupo) values ( "+matricula.getCodigomat()+",'"+representante0.getTelfactura()+"','"+ representante0.getTipoidentificacion()+"','"+representante0.getNombrefactura()+"','"+representante0.getIdentificacionfactura()+"','"+representante0.getDirfactura()+"',NULL,"+ maeCodigo +", 'REP'  )" ));
+                codigoRepresentante = maeCodigo;
             }else{
-                List datos = adm.queryNativo("select invmae_codigo from contable.invmaestro where invmae_diascredito = "+matricula.getCodigomat()+" ");
+                List datos = adm.queryNativo("select invmae_codigo from contable.invmaestro where invmae_diascredito = "+matricula.getCodigomat()+" and invmae_grupo = 'REP' ");
                 System.out.println("ENCONTRADOS " + datos);
                 if(datos.size()>0){
-                        System.out.println(""+adm.ejecutaSqlNativo("update contable.invmaestro set invmae_telefono1='"+ representante0.getTelfactura()+ "',invmae_tipoid='"+ representante0.getTipoidentificacion()+"',invmae_nombre='"+representante0.getNombrefactura()+"', invmae_numeroruc='"+representante0.getIdentificacionfactura()+"',   invmae_direccion='"+representante0.getDirfactura()+"' , invmae_representante = '"+estudent.getApellido() + " " + estudent.getNombre() +"'  where invmae_diascredito= "+matricula.getCodigomat()+" "));
+                        codigoRepresentante = new Long( ((Vector)datos.get(0)).get(0).toString() );
+                        System.out.println(""+adm.ejecutaSqlNativo("update contable.invmaestro set invmae_telefono1='"+ representante0.getTelfactura()+ "',invmae_tipoid='"+ representante0.getTipoidentificacion()+"',invmae_nombre='"+representante0.getNombrefactura()+"', invmae_numeroruc='"+representante0.getIdentificacionfactura()+"',   invmae_direccion='"+representante0.getDirfactura()+"' , invmae_representante = '"+estudent.getApellido() + " " + estudent.getNombre() +"', invmae_grupo = 'REP'  where invmae_codigo = "+codigoRepresentante+" "));
                 }else{
-                        System.out.println(""+adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_telefono1,invmae_tipoid,invmae_nombre,invmae_numeroruc,invmae_direccion,glbemp_codigo,invmae_representante) values ( "+matricula.getCodigomat()+",'"+representante0.getTelfactura()+"','"+ representante0.getTipoidentificacion()+"','"+representante0.getNombrefactura()+"','"+representante0.getIdentificacionfactura()+"','"+representante0.getDirfactura()+"',NULL,'"+estudent.getApellido() + " " + estudent.getNombre() +"')" ));
+                        System.out.println(""+adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_telefono1,invmae_tipoid,invmae_nombre,invmae_numeroruc,invmae_direccion,glbemp_codigo,invmae_codigo,invmae_grupo) values ( "+matricula.getCodigomat()+",'"+representante0.getTelfactura()+"','"+ representante0.getTipoidentificacion()+"','"+representante0.getNombrefactura()+"','"+representante0.getIdentificacionfactura()+"','"+representante0.getDirfactura()+"',NULL,'"+ maeCodigo +"', 'REP' )" ));
+                        codigoRepresentante = maeCodigo;
                 }
-
             }
+         maestroNuevo = adm.queryNativo("SELECT IF(MAX(invmae_codigo) IS NULL,0,MAX(invmae_codigo)) +1 FROM contable.invmaestro");
+         maeCodigo = (Long)((Vector)maestroNuevo.get(0)).get(0);
+            if(estuNuevo){
+                System.out.println(""+adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_nombre,invmae_grupo,invmae_codigo,inv_invmae_codigo) values ( "+matricula.getCodigomat()+",'"+estudent.getApellido() + " " + estudent.getNombre() +"', 'EST', "+maeCodigo+", "+codigoRepresentante+" )" ));
+            }else{
+                List datos = adm.queryNativo("select invmae_codigo from contable.invmaestro where invmae_diascredito = "+matricula.getCodigomat()+"  and invmae_grupo = 'EST' ");
+                System.out.println("ENCONTRADOS " + datos);
+                if(datos.size()>0){
+                        System.out.println(""+adm.ejecutaSqlNativo("update contable.invmaestro set invmae_nombre = '"+estudent.getApellido() + " " + estudent.getNombre() +"'  where invmae_diascredito= "+matricula.getCodigomat()+" and invmae_grupo = 'EST' "));
+                }else{
+                        System.out.println(""+adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_nombre,invmae_grupo,invmae_codigo,inv_invmae_codigo) values ( "+matricula.getCodigomat()+",'"+estudent.getApellido() + " " + estudent.getNombre() +"','EST', "+maeCodigo+", "+codigoRepresentante+" )" ));
+                }
+            }
+ 
+
         }
+//*****************************************************************************
 
         }catch(Exception e){
-        
-        alert("Error:"+e);
-                 System.out.println(""+e.getCause());
-                System.out.println(""+e.getLocalizedMessage());
-                System.out.println(""+e.getMessage());
-                System.out.println(""+e.getStackTrace());
-                System.out.println(""+e.getCause());
+                alert("Error:"+e); System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
+                System.out.println(""+e.getStackTrace()); System.out.println(""+e.getCause());
         }
 
     }
@@ -727,6 +746,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             parametros.put("denominacion", insts.getDenominacion());
             parametros.put("nombre", insts.getNombre());
             parametros.put("periodo", insts.getDireccion());
+            parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
             if(tipo.equals("CM")){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
@@ -780,7 +800,6 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 <row>
                                                                     <span style="float:right"> Busqueda:</span>
                                                                     <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
-                                                                  
                                                                 </row>
                                                                 <row>
                                                                    
@@ -880,11 +899,11 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                             </row>
                                                             <row>
                                                                 <span style="float:right"> No.Mat.(*):</span>
-                                                                <span> 
-                                                                <intbox maxlength="10" readonly="true" cols="13"  id="numero"  />
+                                                                <span>
+                                                                    <intbox maxlength="10" readonly="true" cols="13"  id="numero"  />
                                                                  No.Folio (*):
-                                                                 <intbox maxlength="10" readonly="true" cols="13"  id="folio"  />
-                                                                 </span>
+                                                                    <intbox maxlength="10" readonly="true" cols="13"  id="folio"  />
+                                                                </span>
                                                                 <textbox cols="15"    readonly="true" style="background-color:transparent; border:0px;height:17px; text-align:right" value="Nacido:"/>
                                                                 <datebox id="nacido"  readonly="true"  />
                                                             </row>
@@ -901,8 +920,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 </listbox>
 
                                                                 <textbox  cols="15"   readonly="true" style="background-color:transparent; border:0px;height:17px; text-align:right" value="Usuario:"/>
-                                                                <span><textbox id="usuario" maxlength="30" cols="12" readonly="true"  />
-                                                                <button label="Generar" onClick="generarClave(true);"/></span>
+                                                                <span>
+                                                                    <textbox id="usuario" maxlength="30" cols="12" readonly="true"  />
+                                                                    <button label="Generar" onClick="generarClave(true);"/>
+                                                                </span>
                                                             </row>
                                                             <row>
                                                                 <span style="float:right"> Estado (*):</span>
@@ -927,16 +948,16 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                             </row>
                                                             <row>
                                                                 <span style="float:right"> Transporte:</span>
-                                                                <span> <checkbox id="transporte" disabled="true"/>
-                                                                <textbox id="nobus" maxlength="100" cols="40" readonly="true"  />
+                                                                <span>
+                                                                    <checkbox id="transporte" disabled="true"/>
+                                                                    <textbox id="nobus" maxlength="100" cols="40" readonly="true"  />
                                                                 </span>
-                                                                  <span style="float:right"> Interno:</span>
+                                                                <span style="float:right"> Interno:</span>
                                                                 <checkbox id="adventista" disabled="true" />
                                                             </row>
                                                             <row>
                                                                 <span style="float:right"> Observación:</span>
                                                                 <textbox rows="2" id="observacion"  readonly="true"  />
-
                                                             </row>
                                                         </rows>
                                                     </grid>
@@ -1036,13 +1057,13 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             <row>
                                 <span  style="float:right">Parentesco</span>
                                 <span>
-                                <textbox id="parentesco" maxlength="100" cols="40"  readonly="true"    />
+                                    <textbox id="parentesco" maxlength="100" cols="40"  readonly="true"    />
                                 </span>
                              
                                 <span style="color:blue">  </span>
                                 <span> </span>
                             </row>
-                         <row>
+                            <row>
                                 <span style="color:blue" >Facturar a </span>
                                 <span>
                                     <button id="padrec" label="Padre"  disabled="true" onClick="copiarp();"/>
