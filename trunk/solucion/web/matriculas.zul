@@ -30,8 +30,6 @@ import org.zkforge.yuiext.grid.Row;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
-
-
     Administrador adm = new Administrador();
     List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
     static Estudiantes estudent = new Estudiantes();
@@ -39,8 +37,7 @@ import org.zkoss.zul.Listbox;
     static Matriculas matricula = new Matriculas();
  Session ses = Sessions.getCurrent();
  Periodo periodo = (Periodo) ses.getAttribute("periodo");
-    Permisos permiso = new Permisos();
-
+ Permisos permiso = new Permisos();
     List cursos = adm.query("Select o from Cursos as o "
     + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"'  ");
 
@@ -837,7 +834,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 <row>
                                                                     
                                                                     <span style="float:right"> Teléfono:</span>
-                                                                    <textbox id="telefono" maxlength="30" cols="13"  readonly="true"  />
+                                                                    <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
 
 
                                                                 </row>
@@ -1042,9 +1039,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             </row>
                             <row>
                                 <span style="float:right"> Teléfono:</span>
-                                <textbox id="telefonore" maxlength="30" cols="13"  readonly="true"  />
+                                <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
                                 <span style="float:right"> Teléfono:</span>
-                                <textbox id="telefonopa" maxlength="30" cols="13"  readonly="true"  />
+                                <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
 
                                       
                             </row>
@@ -1133,7 +1130,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <span></span>
                                 <span></span>
                                 <span style="float:right"> Teléfono:</span>
-                                <textbox id="telefonoma" maxlength="30" cols="13"  readonly="true"  />
+                                <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
                             </row>
                             <row>
                                 <span></span>

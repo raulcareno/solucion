@@ -40,26 +40,7 @@ public class ReporteActaDataSource implements JRDataSource{
         irParaProximoAlumno = (valorAtual != null);
         return irParaProximoAlumno;
     }
-    
-//    public String valor(PeriodoLectivo periodoAct){
-//          baseComun bs = new baseComun();
-//          List<Mensajes> mensajes = bs.llegaQuery("Select o from Mensajes o " +
-//                  "where o.pelCod.pelCod = '"+periodoAct.getPelCod()+"' ");
-//                String men="";
-//                for (Iterator<Mensajes> itMens = mensajes.iterator(); itMens.hasNext();) {
-//                        Mensajes mensajes1 = itMens.next();
-//                            if(mensajes1.getMenVariable().equals("CM")){
-//                                men = mensajes1.getMenMensaje();
-//                              }
-//                }
-//
-//        return men;
-//    }
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.jasperreports.engine.JRDataSource#getFieldValue(net.sf.jasperreports.engine.JRField)
-     */
+ 
     public Object getFieldValue(JRField campo) throws JRException {
         Object valor = null;
 
@@ -113,6 +94,8 @@ public class ReporteActaDataSource implements JRDataSource{
             valor = nodo.getEstudiante().getRepresentante().getTelefono();
         }else if ("direccionRep".equals(fieldName)) {
             valor = nodo.getEstudiante().getRepresentante().getDireccion();
+        }else if ("detalle".equals(fieldName)) {
+            valor = nodo.getEstudiante().getNobus();
         }else if ("foto".equals(fieldName)) {
             try{
                 byte[] bImage = nodo.getFoto();
@@ -150,6 +133,10 @@ public class ReporteActaDataSource implements JRDataSource{
             valor = nodo.getFechamat();
         }else if ("periodo".equals(fieldName)) {
             valor = nodo.getCurso().getPeriodo().getDescripcion();
+        }else if ("seccion".equals(fieldName)) {
+            valor = nodo.getCurso().getPeriodo().getInstitucion().getTipo();
+        }else if ("jornada".equals(fieldName)) {
+            valor = nodo.getCurso().getPeriodo().getSeccion().getDescripcion();
         }else if ("genero".equals(fieldName)) {
             valor = nodo.getEstudiante().getGenero();
         }else if ("anios".equals(fieldName)) {
@@ -161,6 +148,8 @@ public class ReporteActaDataSource implements JRDataSource{
         } else if ("dias".equals(fieldName)) {
             calcularEdad(nodo.getEstudiante().getFechanacimiento());
             valor = this.day;
+        }else if ("bus".equals(fieldName)) {
+            valor = nodo.getEstudiante().getNobus();
         }else if ("sello".equals(fieldName)) {
             try{
                 byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getEscudo();
