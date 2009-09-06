@@ -64,6 +64,8 @@ public class ReporteProfesorDataSource implements JRDataSource{
             valor = nodo.getEmpleado().getDocente();
         }else if ("servicio".equals(fieldName)) {
             valor = nodo.getEmpleado().getServicio();
+        }else if ("identificacion".equals(fieldName)) {
+            valor = nodo.getEmpleado().getIdentificacion();
         }else if ("sello".equals(fieldName)) {
             try{//sello
                 byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getEscudo();

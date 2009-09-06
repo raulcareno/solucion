@@ -138,6 +138,27 @@ public JRDataSource distributivo(){
 
       return ds;
 }
+
+public JRDataSource distributivo2(){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      Periodo periodo = (Periodo) ses.getAttribute("periodo");
+      Cursos curso = ((Cursos)curs.selectedItem.value);
+        ArrayList detalle = new ArrayList();
+        List hoy = adm.query("SELECT mat FROM MateriaProfesor AS mat " +
+                "WHERE mat.curso.codigocur = '" + curso.getCodigocur() + "' " +
+                "order by mat.orden ");
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            MateriaProfesor elem = (MateriaProfesor) it.next();
+            detalle.add(elem);
+        }
+      ReporteProfesorDataSource ds = new ReporteProfesorDataSource(detalle);
+
+
+      return ds;
+}
+
+
 public JRDataSource profesores(){
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
@@ -170,6 +191,9 @@ public JRDataSource profesores(){
             if(tipo.equals("DIS")){
                     datasource = distributivo();
                     report.setSrc("WEB-INF/reportes/distributivo.jasper");
+            }else if(tipo.equals("DIS2")){
+                    datasource = distributivo2();
+                    report.setSrc("WEB-INF/reportes/firmascuadrocalificaciones.jasper");
             }else if(tipo.equals("PROF")){
                     datasource = profesores();
                     report.setSrc("WEB-INF/reportes/profesores.jasper");
@@ -189,6 +213,10 @@ public JRDataSource profesores(){
                     parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc("WEB-INF/reportes/cuadrocalificaciones.jasper");
+            }else if(tipo.equals("CCAL2")){
+                    parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc("WEB-INF/reportes/cuadrocalificaciones2.jasper");
             }else if(tipo.equals("CNF")){
                     
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
@@ -229,6 +257,9 @@ sistemasCombo.disabled = true;
         if(valor.equals("DIS")){
             curs.disabled = false;
             titulo.value= "Distributivo";
+        }else if(valor.equals("DIS2")){
+            curs.disabled = false;
+            titulo.value= "Lista de profesores por Curso";
         }else if(valor.equals("NMAT")){
             curs.disabled = false;
             sistemasCombo.disabled = false;
@@ -249,7 +280,7 @@ curs.setSelectedIndex(0);
             estudiantesCombo.disabled = false;
              titulo.value= "Certificado de Promocion";
  
-        }else if(valor.equals("CCAL")){
+        }else if(valor.equals("CCAL") || valor.equals("CCAL2")){
             curs.disabled = false;
             sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Calificaciones";
@@ -283,6 +314,7 @@ collapsible="true" title="Parametros">
 		<listitem label="Cuadro de Notas por Materia" value="NMAT" />
 		<listitem label="Libreta de Calificaciones" value="LIB" />
 		<listitem label="Cuadro de Calificaciones" value="CCAL" />
+        <listitem label="Cuadro de Calificaciones(2)" value="CCAL2" />
 		<listitem label="Cuadro Final de Notas" value="CNF" />
 		<listitem label="Cuadro de Disciplinas" value="CDIS"/>
         <listitem label="Acta de Grado" value="AG"/>
@@ -297,6 +329,7 @@ collapsible="true" title="Parametros">
         <listitem label="Cuadro de Promedios Finales(*)" value="CDIS"/>
         <listitem label="Promedios Generales de 1ro a 5to (*)" value="CDIS"/-->
         <listitem label="Distributivo" value="DIS" />
+        <listitem label="Profesores por Curso" value="DIS2" />
         <listitem label="Listado de Profesores" value="PROF" />
         <listitem label="Listado de Profesores completo" value="PROFC" />
         
