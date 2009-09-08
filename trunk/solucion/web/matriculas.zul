@@ -17,6 +17,8 @@
   import java.util.logging.Level;
   import java.util.logging.Logger;
 import java.util.Vector;
+import bean.matriculasBean;
+
 
 import sources.CustomDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -274,9 +276,7 @@ void estado(Boolean estado,Boolean modificar){
    madrecr.disabled = estado;
    subirb.disabled = estado;
    limpiar.disabled = estado;
-
    representantec.disabled = estado;
-
    codigo.readonly = estado;
     cedula.readonly = estado;
     nombres.readonly = estado;
@@ -500,6 +500,7 @@ void estado(Boolean estado,Boolean modificar){
         //aqui trabajo la parte de pensiones
 
 //******************************** PARA CONTABLE ****************************************************************
+
 List parametros =  adm.query("Select o from ParametrosGlobales as o where o.variable = 'TRABAJARUBROS' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
 ParametrosGlobales para = new ParametrosGlobales();
         if(parametros.size()>0){
@@ -509,39 +510,9 @@ ParametrosGlobales para = new ParametrosGlobales();
         }
         if(para.getBvalor()){
 
-           List maestroNuevo = adm.queryNativo("SELECT IF(MAX(invmae_codigo) IS NULL,0,MAX(invmae_codigo)) +1 FROM contable.invmaestro");
-           Long maeCodigo = (Long)((Vector)maestroNuevo.get(0)).get(0);
-           Long codigoRepresentante=null;
-            if(repreNuevo){
-                System.out.println(""+adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_telefono1,invmae_tipoid,invmae_nombre,invmae_numeroruc,invmae_direccion,glbemp_codigo,invmae_codigo,invmae_grupo) values ( "+matricula.getCodigomat()+",'"+representante0.getTelfactura()+"','"+ representante0.getTipoidentificacion()+"','"+representante0.getNombrefactura()+"','"+representante0.getIdentificacionfactura()+"','"+representante0.getDirfactura()+"',NULL,"+ maeCodigo +", 'REP'  )" ));
-                codigoRepresentante = maeCodigo;
-            }else{
-                List datos = adm.queryNativo("select invmae_codigo from contable.invmaestro where invmae_diascredito = "+matricula.getCodigomat()+" and invmae_grupo = 'REP' ");
-                System.out.println("ENCONTRADOS " + datos);
-                if(datos.size()>0){
-                        codigoRepresentante = new Long( ((Vector)datos.get(0)).get(0).toString() );
-                        System.out.println(""+adm.ejecutaSqlNativo("update contable.invmaestro set invmae_telefono1='"+ representante0.getTelfactura()+ "',invmae_tipoid='"+ representante0.getTipoidentificacion()+"',invmae_nombre='"+representante0.getNombrefactura()+"', invmae_numeroruc='"+representante0.getIdentificacionfactura()+"',   invmae_direccion='"+representante0.getDirfactura()+"' , invmae_representante = '"+estudent.getApellido() + " " + estudent.getNombre() +"', invmae_grupo = 'REP'  where invmae_codigo = "+codigoRepresentante+" "));
-                }else{
-                        System.out.println(""+adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_telefono1,invmae_tipoid,invmae_nombre,invmae_numeroruc,invmae_direccion,glbemp_codigo,invmae_codigo,invmae_grupo) values ( "+matricula.getCodigomat()+",'"+representante0.getTelfactura()+"','"+ representante0.getTipoidentificacion()+"','"+representante0.getNombrefactura()+"','"+representante0.getIdentificacionfactura()+"','"+representante0.getDirfactura()+"',NULL,'"+ maeCodigo +"', 'REP' )" ));
-                        codigoRepresentante = maeCodigo;
-                }
-            }
-         maestroNuevo = adm.queryNativo("SELECT IF(MAX(invmae_codigo) IS NULL,0,MAX(invmae_codigo)) +1 FROM contable.invmaestro");
-         maeCodigo = (Long)((Vector)maestroNuevo.get(0)).get(0);
-            if(estuNuevo){
-                System.out.println(""+adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_nombre,invmae_grupo,invmae_codigo,inv_invmae_codigo) values ( "+matricula.getCodigomat()+",'"+estudent.getApellido() + " " + estudent.getNombre() +"', 'EST', "+maeCodigo+", "+codigoRepresentante+" )" ));
-            }else{
-                List datos = adm.queryNativo("select invmae_codigo from contable.invmaestro where invmae_diascredito = "+matricula.getCodigomat()+"  and invmae_grupo = 'EST' ");
-                System.out.println("ENCONTRADOS " + datos);
-                if(datos.size()>0){
-                        System.out.println(""+adm.ejecutaSqlNativo("update contable.invmaestro set invmae_nombre = '"+estudent.getApellido() + " " + estudent.getNombre() +"'  where invmae_diascredito= "+matricula.getCodigomat()+" and invmae_grupo = 'EST' "));
-                }else{
-                        System.out.println(""+adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_nombre,invmae_grupo,invmae_codigo,inv_invmae_codigo) values ( "+matricula.getCodigomat()+",'"+estudent.getApellido() + " " + estudent.getNombre() +"','EST', "+maeCodigo+", "+codigoRepresentante+" )" ));
-                }
-            }
- 
-
-        }
+          matriculasBean mati = new matriculasBean();
+          mati.generar(repreNuevo,estuNuevo,matricula,periodo);
+         }
 //*****************************************************************************
 
         }catch(Exception e){
