@@ -181,7 +181,7 @@ void verificar(){
 
                      </treechildren>
                     </treeitem>
-                <treeitem id="ssNN7" label="Grados" value="/blanco.zul">
+                    <treeitem id="ssNN7" label="Grados" value="/blanco.zul">
                       <treechildren>
                         <treeitem id="Notas Primero-Quinto" image="/images/llave.gif"  label="Record Academico" value="/notasRecord.zul"/>
                         <treeitem id="Materias de Grado"   image="/images/distributivo.png" label="Materias de Grado" value="/materiasdeGrado.zul"/>
@@ -192,11 +192,12 @@ void verificar(){
                      </treechildren>
                     </treeitem>
 
-                    <treeitem id="ssNN1" label="Varios" value="/blanco.zul">
+                    <treeitem id="ssNN15" label="Varios" value="/blanco.zul">
                       <treechildren>
                         <treeitem id="Correos" image="/images/mail.gif"  label="Envio de Correo" value="/correoInterno.zul"/>
                         <treeitem id="Respaldos" image="/images/base.gif"   label="Respaldos" value="/respaldos.zul"/>
                         <treeitem id="Calendario" image="/images/calendar.gif"   label="Calendario" value="/calendar.zul"/>
+                        <treeitem id="Dobe" image="/images/pensum.png"   label="Dobe" value="/dobe.zul"/>
                      </treechildren>
                     </treeitem>
                     <treeitem id="ss1" label="Administración" value="/blanco.zul">

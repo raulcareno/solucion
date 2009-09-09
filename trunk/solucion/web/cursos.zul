@@ -222,7 +222,7 @@ void cargarPar(Global g){
         <textbox id="nombres"  maxlength="100" cols="40" readonly="true"   />   </row>
  <row> <span style="float:right"> Especialidad:</span>
         
-		<listbox disabled="true" id="especialidadesL" width="250px" mold="select"
+		<listbox disabled="true" id="especialidadesL" width="350px" mold="select"
 		onSelect="cargarEspe(((Global)self.selectedItem.value));">
 			<listhead>
 				<listheader label="Especialidad"/>

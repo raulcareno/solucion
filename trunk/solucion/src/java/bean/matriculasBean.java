@@ -60,15 +60,16 @@ public class matriculasBean {
                         "VALUES ( '"+cabeCodigo+"', '"+fechaActual+"', '"+fechaActual+"','"+maeCodigo+"');");
 
              //ACA EMPIEZO A ITERAR LOS PRODUCTOS ASIGNADOS A  LA MATRICULA 
-                List produ = adm.queryNativo("SELECT invpro_codigo, pro.invpro_precio1, invpro_descripcion  FROM contable.mesesproductos " +
-                        "WHERE glbemp_codigo = '"+periodo.getEmpresa()+"' AND mes = 13");
+                List produ = adm.queryNativo("SELECT pro.invpro_codigo, pro.invpro_precio1, invpro_descripcion   " +
+                        "FROM contable.mesesproductos me, contable.invproductos pro  WHERE me.glbemp_codigo = '"+periodo.getEmpresa()+"'  AND mes = 13" +
+                        " AND pro.invpro_codigo = me.invpro_codigo ");
                 for (int i  = 0;  i  < produ.size();  i ++) {
                      Vector object = (Vector) produ.get(i);
                      //obtengo una nueva clave para la detalle en movimiento
                         List  listMovi = adm.queryNativo("SELECT IF(MAX(invmov_codigo) IS NULL,0,MAX(invmov_codigo)) +1 FROM contable.invmovimientos ");
                         Long moviCodigo = (Long) ((Vector) listMovi.get(0)).get(0);
-                        adm.ejecutaSqlNativo("INSERT INTO contable.invmovimientos(invmov_codigo,invmov_descripcion,invmov_cantidad,invmov_totalmov,invpro_codigo,invcab_codigo) " +
-                             "VALUES ( '"+moviCodigo+"','"+object.get(2)+"','1',"+object.get(1)+","+object.get(0)+",'"+cabeCodigo+"')");
+                        adm.ejecutaSqlNativo("INSERT INTO contable.invmovimientos(invmov_codigo,invmov_descripcion,invmov_cantidad,invmov_totalmov,invpro_codigo,invcab_codigo,invmov_numeroorden) " +
+                             "VALUES ( '"+moviCodigo+"','"+object.get(2)+"','1',"+object.get(1)+","+object.get(0)+",'"+cabeCodigo+"', '13' )");
                      
                 }
                 
