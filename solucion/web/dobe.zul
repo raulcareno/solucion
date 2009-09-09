@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <window  id="principales" mode="overlapped"  maximizable="true"  title="Control y registro de inscripciones y matriculas" width="795px" border="normal"
+    <window  id="principales" mode="overlapped"  maximizable="true"  title="Historial de los Estudiantes" width="795px" border="normal"
      closable="true" sizable="true">
         <zscript>
 <![CDATA[
@@ -157,9 +157,9 @@ List matricula = adm.query("Select o from Matriculas as o where o.estudiante.cod
 + " and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  ");
     if(matricula.size()>0)
     {
-        llenarMatricula(matricula.get(0));
+        //llenarMatricula(matricula.get(0));
     }else{
-        llenarMatricula(new Matriculas(0));
+        //llenarMatricula(new Matriculas(0));
         //Messagebox.show("No se encuentra Inscrito ni Matriculado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
     }
 }
@@ -194,44 +194,6 @@ void llenarMatricula(Matriculas matri){
             }
 }
 
-void copiarpr(){
-     cedulare.value = cedulapa.value;
-     nombresre.value = nombrespa.value ;
-     apellidosre.value = apellidospa.value;
-     telefonore.value = telefonopa.value;
-     direccionre.value = direccionpa.value;
-}
-
-void copiarmr(){
-     cedulare.value = cedulama.value;
-     nombresre.value = nombresma.value ;
-     apellidosre.value = apellidosma.value;
-     telefonore.value = telefonoma.value;
-     direccionre.value = direccionma.value;
-}
-
-
-void copiarp(){
-     cedulafac.value = cedulapa.value;
-     nombresfac.value = apellidospa.value + " "+ nombrespa.value ;
-     telefonofac.value = telefonopa.value;
-     direccionfac.value = direccionpa.value;
-}
-
-void copiarm(){
-     cedulafac.value = cedulama.value;
-     nombresfac.value = apellidosma.value + " "+ nombresma.value ;
-     telefonofac.value = telefonoma.value;
-     direccionfac.value = direccionma.value;
-}
-
-void copiarr(){
-     cedulafac.value = cedulare.value;
-     nombresfac.value = apellidosre.value + " "+ nombresma.value ;
-     telefonofac.value = telefonore.value;
-     direccionfac.value = direccionre.value;
-}
-
 void llenarRepresentante(Representante repren){
     codigore.value = repren.getCodigorep();
     cedulare.value = repren.getIdentificacionrepre();
@@ -240,22 +202,6 @@ void llenarRepresentante(Representante repren){
     direccionre.value = repren.getDireccion();
     telefonore.value = repren.getTelefono();
     emailre.value = repren.getEmail();
-
-     Listitem item = new Listitem();
-     String tip = repren.getTipoidentificacion();
-     item.setValue(tip);
-     item.appendChild(new Listcell( (tip.equals("C")?"CEDULA":(tip.equals("R")?"RUC":"Consumidor Final")) +""));
-     tipofac.appendChild(item);
-     tipofac.setSelectedItem(item);
-     llenarConsumidor();
-     cedulafac.value = repren.getIdentificacionfactura();
-     nombresfac.value = repren.getNombrefactura();
-     telefonofac.value = repren.getTelfactura();
-     direccionfac.value = repren.getDirfactura();
-     
-    
-     
-
     cedulapa.value = repren.getIdentificacionpadre();
     nombrespa.value = repren.getNompadre();
     apellidospa.value = repren.getApepadre();
@@ -265,7 +211,6 @@ void llenarRepresentante(Representante repren){
     parentesco.value = repren.getParentesco();
     ocupacionpa.value = repren.getOcupacionpadre();
     profesionpa.value = repren.getProfesionpadre();
-
     cedulama.value = repren.getIdentificacionmadre();
     nombresma.value = repren.getNommadre();
     apellidosma.value = repren.getApemadre();
@@ -659,21 +604,25 @@ valor = valor.substring(ini+1, fin);
     }
 
 
-  void buscar(String p){
-        List empleadosEncontrados = adm.query("Select o.estudiante from Matriculas as o " +
-        " where o.estudiante.apellido like '%"+p+"%' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'   order by o.estudiante.apellido");
+   void buscar(String p){
+         List empleadosEncontrados = adm.query("Select o from Aspectos as o where o.grupo = 'DENTA'");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
                     datos.getItems().remove(a);
                 }
                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
-                      Estudiantes acceIt = (Estudiantes) it.next();
+                      Aspectos acceIt = (Aspectos) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getCedula()+""));
-                      li.appendChild(new Listcell(acceIt.getApellido()+" "+acceIt.getNombre()));
-                      li.appendChild(new Listcell(acceIt.getDireccion()+""));
+                      li.appendChild(new Listcell(acceIt.getObserva1()+" "));
+                      li.appendChild(new Listcell(acceIt.getObserva2()+" "));
+                      li.appendChild(new Listcell(acceIt.getObserva3()+" "));
+                      li.appendChild(new Listcell(acceIt.getObserva4()+" "));
+                      li.appendChild(new Listcell(acceIt.getObserva5()+" "));
+                      li.appendChild(new Listcell(acceIt.getObserva6()+" "));
+                      li.appendChild(new Listcell(acceIt.getObserva7()+" "));
+                      li.appendChild(new Listcell(acceIt.getObserva8()+" "));
                       datos.appendChild(li);
              }
 
@@ -765,11 +714,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         </zscript>
         <tabbox width="100%">
             <tabs>
-                <tab id="registro" label="Datos del Estudiante" />
-                <tab id="representante" label="Datos del Representante" />
- 
-                <tab id="busqueda" label="Busquedas" />
-                <tab id="reportes" label="Impresión" />
+                 <tab id="registro" label="Datos del Estudiante" />
+                 <tab id="representante" label="Aspecto Médico Dental" />
+                 <tab id="busqueda" label="Rendimiento Académico" />
+                 <tab id="reportes" label="Impresión" />
             </tabs>
             <tabpanels>
                 <tabpanel>
@@ -777,7 +725,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         <panelchildren>
                             <columnlayout>
                                 <columnchildren width="100%">
-                                    <panel height="420px">
+                                    <panel height="390px">
                                         <panelchildren>
                                             <borderlayout>
                                                 <center flex="true">
@@ -788,44 +736,61 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 <row>
                                                                     <span style="float:right"> Busqueda:</span>
                                                                     <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
+                                                                    <span style="float:right;color:blue"> Representante:</span>
+                                                                    <span style="float:right;color:blue"> </span>
                                                                 </row>
                                                                 <row>
                                                                    
                                                                     <span style="float:right"> Codigo :</span>
                                                                     <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
+                                                                      <span style="float:right"> Codigo :</span>
+                                                                    <intbox maxlength="14" cols="5"  readonly = "true"    id="codigore"  />
+
                                                                 </row>
                                                                 <row>
                                                                    
                                                                     <span style="float:right"> Identificación:</span>
                                                                     <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
+                                                                      <span style="float:right"> Identif.(*):</span>
+                                                                    <textbox maxlength="13" cols="10"   readonly="true" id="cedulare"  />
 
                                                                 </row>
                                                                 <row>
                                                                    
                                                                     <span style="float:right"> Nombres(*):</span>
                                                                     <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
+                                                                     <span style="float:right"> Nombres(*):</span>
+                                                                    <textbox id="nombresre"  maxlength="60" cols="40" readonly="true"   />
+
                                                                 </row>
 
                                                                 <row>
-                                                                  
-                                                                    <span style="float:right"> Apellidos(*):</span>
+                                                                  <span style="float:right"> Apellidos(*):</span>
                                                                     <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40" readonly="true"  />
+                                                                     <span style="float:right"> Apellidos(*):</span>
+                                                                    <textbox id="apellidosre"  maxlength="60" cols="40" readonly="true"  />
                                                                 </row>
                                                                 <row>
 
                                                                     <span style="float:right"> Dirección(*):</span>
                                                                     <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
+                                                                     <span style="float:right"> Dirección(*):</span>
+                                                                    <textbox id="direccionre" maxlength="100" cols="40"  readonly="true"    />
                                                                 </row>
 
                                                                 <row>
                                                                     <span style="float:right"> Email:</span>
                                                                     <textbox id="mail" maxlength="100" cols="40"  readonly="true"    />
+                                                                      <span style="float:right"> Email:</span>
+                                                                    <textbox id="emailre" maxlength="100" cols="40"  readonly="true"    />
                                                                 </row>
 
                                                                 <row>
                                                                     
                                                                     <span style="float:right"> Teléfono:</span>
                                                                     <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
+                                                                     <span style="float:right"> Teléfono:</span>
+                                                                    <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
 
 
                                                                 </row>
@@ -833,24 +798,25 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                   
                                                             </rows>
                                                         </grid>
+                                                       
                                                     </div>
                                                 </center>
-                                                <east splittable="true" size="25%"  flex="true">
+                                                <!--east splittable="true" size="25%"  flex="true">
                                                     <grid>
                                                         <rows>
                                                             <row>
                                                                 <span  style="border:1px">
                                                                     <button id="subirb" disabled="true" label="Subir Imagen">
                                                                         <attribute name="onClick">{
-                                                        Object media = Fileupload.get();
+                                                                            Object media = Fileupload.get();
 
-                                                        if (media instanceof org.zkoss.image.Image) {
-                                                             foto0.setContent(media);
+                                                                            if (media instanceof org.zkoss.image.Image) {
+                                                                                 foto0.setContent(media);
 
-                                                        } else if (media != null)
-                                                            Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
-                                                            media = null;
-                                                    }
+                                                                            } else if (media != null)
+                                                                                Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+                                                                                media = null;
+                                                                        }
                                                                         </attribute>
                                                                     </button>
 
@@ -858,10 +824,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                             </row>
                                                             <row>
                                                                 <span style="border:1px">
-
                                                                     <image border="1" height="125px" id="foto0"/>
-
-
                                                                     <vbox width="50px" height="125px" style="border:1px" id="miimagen"/>
                                                                 </span>
 
@@ -871,87 +834,81 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                         </rows>
                                                     </grid>
 								
-                                                </east>
+                                                </east -->
                                                 <south splittable="true" size="50%"  flex="true">
-                                                    <grid width="100%" height="220">
+                                                    <grid>
                                                         <rows>
                                                             <row>
-                                                                <span style="float:right"> Codigo:</span>
+                                                                <span style="color:blue" >Padre</span>
+                                                                <span></span>
+                                                                <span style="color:blue">Madre </span>
+                                                                <span> </span>
+                                                            </row>
+                                                            <row>
+                                                                <span style="float:right"> Identificación:</span>
+                                                                <textbox maxlength="10" cols="13"  readonly="true" id="cedulapa"  />
+
+                                                                <span style="float:right"> Identificación:</span>
+                                                                <textbox maxlength="10" cols="13"  readonly="true" id="cedulama"  />
+
+                                                            </row>
+
+                                                            <row>
+                                                                <span style="float:right"> Nombres:</span>
+                                                                <textbox id="nombrespa"  maxlength="60" cols="40" readonly="true"   />
+                                                                <span style="float:right"> Nombres:</span>
+                                                                <textbox id="nombresma"  maxlength="60" cols="40" readonly="true"   />
+                                                            </row>
+                                                            <row>
+                                                                <span style="float:right"> Apellidos:</span>
+                                                                <textbox id="apellidospa"  maxlength="60" cols="40" readonly="true"  />
+                                                                <span style="float:right"> Apellidos:</span>
+                                                                <textbox id="apellidosma"  maxlength="60" cols="40" readonly="true"  />
+                                                            </row>
+                                                            <row>
+                                                                <span style="float:right"> Ocupación:</span>
+                                                                <textbox id="ocupacionpa" maxlength="100" cols="40"  readonly="true"    />
+
+                                                                <span style="float:right"> Ocupación:</span>
+                                                                <textbox id="ocupacionma" maxlength="100" cols="40"  readonly="true"    />
+                                                            </row>
+                                                            <row>
+                                                                <span style="float:right"> Profesión:</span>
+                                                                <textbox id="profesionpa" maxlength="100" cols="40"  readonly="true"    />
+                                                                <span style="float:right"> Profesión:</span>
+                                                                <textbox id="profesionma" maxlength="100" cols="40"  readonly="true"    />
+
+                                                            </row>
+                                                            <row>
+                                                                <span style="float:right"> Dirección:</span>
+                                                                <textbox id="direccionpa" maxlength="100" cols="40"  readonly="true"    />
+                                                                <span style="float:right"> Dirección:</span>
+                                                                <textbox id="direccionma" maxlength="100" cols="40"  readonly="true"    />
+                                                            </row>
+                                                            <row>
+                                                                <span style="float:right"> Teléfono:</span>
+                                                                <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
+                                                                <span style="float:right"> Teléfono:</span>
+                                                                <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
+                                                            </row>
+                                                            <row>
+                                                                <span style="float:right"> Email:</span>
+                                                                <textbox id="emailpa" maxlength="100" cols="40"  readonly="true"    />
+                                                                <span style="float:right"> Email:</span>
+                                                                <textbox id="emailma" maxlength="100" cols="40"  readonly="true"    />
+                                                            </row>
+                                                            <row>
+                                                                <span  style="float:right">Parentesco</span>
                                                                 <span>
-                                                                    <intbox maxlength="14" cols="5"    disabled="true"    readonly="true" id="codigomat"  />
-                                                                    No.Mat.(*):<intbox maxlength="10" readonly="true" cols="5"  id="numero"  />
-                                                                    No.Folio (*):<intbox maxlength="10" readonly="true" cols="5"  id="folio"  />
+                                                                    <textbox id="parentesco" maxlength="100" cols="40"  readonly="true"    />
                                                                 </span>
-                                                                Género (*):
-                                                                 <combobox id="genero" readonly="true">
-                                                                    <comboitem value="Masculino" label="Masculino"/>
-                                                                    <comboitem value="Femenino" label="Femenino"/>
-                                                                </combobox>
-                                                            </row>
-                                                            <row>
-                                                                 <span style="float:right"> Curso(*):</span>
-
-                                                                <listbox mold="select" disabled="true" id="curso" width="320px">
-
-                                                                    <listitem selected="true" forEach="${cursos}" value="${each}">
-                                                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-
-                                                                    </listitem>
-                                                                </listbox>
-                                                                <textbox cols="15"    readonly="true" style="background-color:transparent; border:0px;height:17px; text-align:right" value="Nacido:"/>
-                                                                <datebox id="nacido"  readonly="true"  />
+                                                                <span style="color:blue">  </span>
+                                                                <span> </span>
                                                             </row>
 
-                                                            <row>
-                                                               <span style="float:right"> Estado (*):</span>
-                                                                <combobox readonly="true"   id="accion"  >
-                                                                    <comboitem  value="Matriculado" label="Matriculado"/>
-                                                                    <comboitem value="Inscrito" label="Inscrito"/>
-                                                                    <comboitem value="Retirado" label="Retirado"/>
-                                                                    <comboitem value="Pasee" label="Emitir Pase"/>
-                                                                    <comboitem value="Recibir" label="Recibir Pase"/>
-                                                                </combobox>
-
-                                                                <textbox  cols="15"   readonly="true" style="background-color:transparent; border:0px;height:17px; text-align:right" value="Usuario:"/>
-                                                                <span>
-                                                                    <textbox id="usuario" maxlength="30" cols="12" readonly="true"  />
-                                                                    <button label="Generar" onClick="generarClave(true);"/>
-                                                                </span>
-                                                            </row>
-                                                            <row>
-                                                                   <span style="float:right"> FechaMatricula(*):</span>
-                                                                <datebox id="fechamatricula"  readonly="true"  />
-                                                                <textbox  cols="15"   readonly="true" style="background-color:transparent; border:0px; text-align:right" value="Clave:"/>
-                                                                <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
-                                                            </row>
-                                                            <row>
-                                                              <span style="float:right"> Transporte:</span>
-                                                                <span>
-                                                                    <checkbox id="transporte" disabled="true"/>
-                                                                    <textbox id="nobus" maxlength="100" cols="40" readonly="true"  />
-                                                                </span>
-                                                                <textbox  cols="15"   readonly="true" style="background-color:transparent; border:0px;height:20px; text-align:right" value="Estado:"/>
-                                                                <checkbox id="estadoe" disabled="true"  />
-                                                            </row>
-                                                            <row>
-                                                               <span style="float:right"> %Beca:</span>
-                                                               <span>
-                                                                <decimalbox id="beca" format="###.##"   maxlength="5" cols="10" readonly="true"  />
-
-                                                                Otros Dsctos:
-                                                                <decimalbox id="otros" format="###.##"   maxlength="5" cols="10" readonly="true"  /> USD
-                                                                </span>
-                                                                <span style="float:right"> Interno:</span>
-                                                                <checkbox id="adventista" disabled="true" />
-                                                            </row>
-                                                            <row>
-                                                                <span style="float:right"> Observación:</span>
-                                                                <textbox rows="2" id="observacion"  readonly="true"  />
-                                                                <span style="float:right"> Nuevo:</span>
-                                                                <checkbox id="nuevo" disabled="true" />
-                                                            </row>
                                                         </rows>
                                                     </grid>
+                           
                                                 </south>
                         
                                             </borderlayout>
@@ -966,210 +923,40 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 </tabpanel>
                                 
                 <tabpanel>
-                    <grid>
-                        <rows>
-                            <row>
-                                <span style="color:blue" >Representante</span>
-                                <span>
-                                    <button id="padrecr" label="Padre" disabled="true" onClick="copiarpr();"/>
-                                    <button id="madrecr" label="Madre" disabled="true"  onClick="copiarmr();"/>
-                                    <button id="limpiar" label="Nuevo"  disabled="true"  onClick="limpiarRepresentante();"/>
-                                </span>
 
-                                     
-                                <span style="color:blue" >Datos del Padre</span>
-                                <span></span>
-
-
-                            </row>
-                            <row>
-                                <span style="float:right"> Busqueda(*):</span>
-
-                                <combobox id="combo2" onSelect="buscarRepresentante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoCompleteRepre"/>
-                                <span style="float:right"> Identificación:</span>
-                                <textbox maxlength="10" cols="13"  readonly="true" id="cedulapa"  />
-                            </row>
-
-                            <row>
-                                <span style="float:right"> Codigo :</span>
-                                <intbox maxlength="14" cols="5"  readonly = "true"    id="codigore"  />
-                                <span style="float:right"> Nombres:</span>
-                                <textbox id="nombrespa"  maxlength="60" cols="40" readonly="true"   />
+<groupbox mold="3d" >
+    <caption label="Busquedas" />
+<vbox>
+    <hbox> Trimestres:  <textbox id="buscarText"  maxlength="60" cols="40" />
+    <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
+    <hbox>
+         <listbox mold="paging" rows="5" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+			<listhead>
+                                <listheader width="70" label="Tipo"/>
+                                <listheader width="70"  label="Primero"/>
+                                <listheader width="70" label="Segundo"/>
+                                <listheader width="70"  label="Tercero"/>
+                                <listheader width="70"  label="Cuarto"/>
+                                <listheader width="70"  label="Quinto"/>
+                                <listheader width="70"  label="Sexto"/>
+                                <listheader width="70"  label="Séptimo"/>
+			</listhead>
+			<listitem  forEach="${allEvents}" value="${each}">
+                           <listcell label="${each.codigotrim}" />
+                           <listcell label="${each.descripcion}" />
+            </listitem>
+		</listbox>
 
 
-                            </row>
-
-                            <row>
-                                <span style="float:right"> Identif.(*):</span>
-                                <textbox maxlength="13" cols="10"   readonly="true" id="cedulare"  />
-                                <span style="float:right"> Apellidos:</span>
-                                <textbox id="apellidospa"  maxlength="60" cols="40" readonly="true"  />
-
-
-                            </row>
-                            <row>
-                                <span style="float:right"> Nombres(*):</span>
-                                <textbox id="nombresre"  maxlength="60" cols="40" readonly="true"   />
-                                <span style="float:right"> Ocupación:</span>
-                                <textbox id="ocupacionpa" maxlength="100" cols="40"  readonly="true"    />
-
-
-                            </row>
-                            <row>
-                                <span style="float:right"> Apellidos(*):</span>
-                                <textbox id="apellidosre"  maxlength="60" cols="40" readonly="true"  />
-                                <span style="float:right"> Profesión:</span>
-                                <textbox id="profesionpa" maxlength="100" cols="40"  readonly="true"    />
-
-
-                            </row>
-                            <row>
-                                <span style="float:right"> Dirección(*):</span>
-                                <textbox id="direccionre" maxlength="100" cols="40"  readonly="true"    />
-                                <span style="float:right"> Dirección:</span>
-                                <textbox id="direccionpa" maxlength="100" cols="40"  readonly="true"    />
-
-
-                            </row>
-                            <row>
-                                <span style="float:right"> Teléfono:</span>
-                                <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
-                                <span style="float:right"> Teléfono:</span>
-                                <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
-
-                                      
-                            </row>
-                            <row>
-                                <span style="float:right"> Email:</span>
-                                <textbox id="emailre" maxlength="100" cols="40"  readonly="true"    />
-                                <span style="float:right"> Email:</span>
-                                <textbox id="emailpa" maxlength="100" cols="40"  readonly="true"    />
-                            </row>
-                            <row>
-                                <span  style="float:right">Parentesco</span>
-                                <span>
-                                    <textbox id="parentesco" maxlength="100" cols="40"  readonly="true"    />
-                                </span>
-                             
-                                <span style="color:blue">  </span>
-                                <span> </span>
-                            </row>
-                            <row>
-                                <span style="color:blue" >Facturar a </span>
-                                <span>
-                                    <button id="padrec" label="Padre"  disabled="true" onClick="copiarp();"/>
-                                    <button id="madrec" label="Madre"  disabled="true"  onClick="copiarm();"/>
-                                    <button id="representantec" label="Representante" disabled="true"  onClick="copiarr();"/>
-                                </span>
-                             
-                                <span style="color:blue">Datos Madre </span>
-                                <span> </span>
-                            </row>
-                            <row>
-                                <span style="float:right"> Tipo:</span>
-                                <listbox mold="select" onSelect="llenarConsumidor();" disabled="true" id="tipofac" width="150px">
-                                    <listitem selected="true" label="Consumidor Final" value="CF">
-                                    </listitem>
-                                    <listitem label="CEDULA" value="C">
-                                    </listitem>
-                                    <listitem label="RUC" value="R">
-                                    </listitem>
-                                </listbox>
-
-                                <span style="float:right"> Identificación:</span>
-                                <textbox maxlength="10" cols="13"  readonly="true" id="cedulama"  />
-                            </row>
-                            
-                            <row>
-                                <span style="float:right"> Identificación:</span>
-                                <textbox maxlength="13" cols="13"  readonly="true" id="cedulafac"  />
-                                
-
-                                <span style="float:right"> Nombres:</span>
-                                <textbox id="nombresma"  maxlength="60" cols="40" readonly="true"   />
-                            </row>
-                           
-                            <row>
-                                <span style="float:right"> Nombre Factura:</span>
-                                <textbox id="nombresfac"  maxlength="100" cols="40" readonly="true"   />
-                                
-
-                                <span style="float:right"> Apellidos:</span>
-                                <textbox id="apellidosma"  maxlength="60" cols="40" readonly="true"  />
-                            </row>
-                           
-                            <row>
-                                <span style="float:right"> Dirección:</span>
-                                <textbox id="direccionfac" maxlength="100" cols="40"  readonly="true"    />
-                                 
-                                
-                                <span style="float:right"> Ocupación:</span>
-                                <textbox id="ocupacionma" maxlength="100" cols="40"  readonly="true"    />
-                            </row>
-                            <row>
-                                <span style="float:right"> Teléfono:</span>
-                                <textbox id="telefonofac" maxlength="30" cols="13"  readonly="true"  />
-
-                                <span style="float:right"> Profesión:</span>
-                                <textbox id="profesionma" maxlength="100" cols="40"  readonly="true"    />
-
-                            </row>
-                            <row>
-                                <span></span>
-                                <span></span>
-                                <span style="float:right"> Dirección:</span>
-                                <textbox id="direccionma" maxlength="100" cols="40"  readonly="true"    />
-                            </row>
-                            <row>
-                                <span></span>
-                                <span></span>
-                                <span style="float:right"> Teléfono:</span>
-                                <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
-                            </row>
-                            <row>
-                                <span></span>
-                                <span></span>
-                                <span style="float:right"> Email:</span>
-                                <textbox id="emailma" maxlength="100" cols="40"  readonly="true"    />
-                            </row>
-                                   
-                        </rows>
-                    </grid>
-                           
-
+    </hbox>
+</vbox>
+</groupbox>
 
                 </tabpanel>
 
                 <tabpanel>
 
-                    <panel height="370px" style="margin-bottom:10px"
-				title="Búsquedas" border="normal">
-                        <panelchildren>
-                            <vbox>
-                                <hbox>  Estudiantes:
-                                    <textbox id="buscarText"  maxlength="60" cols="40" />
-                                    <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
-                                </hbox>
-                                <hbox>
-                                    <listbox mold="paging"  pageSize="17" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-                                        <listhead>
-                                            <listheader label="Cod."/>
-                                            <listheader label="Nombres"  sort="auto"/>
-                                            <listheader label="Dirección"/>
-                                        </listhead>
-                                        <listitem forEach="${allEvents}" value="${each}">
-                                            <listcell label="${each.cedula}" />
-                                            <listcell label="${each.apellido} ${each.nombre}" />
-                                            <listcell label="${each.direccion}" />
-                                        </listitem>
-                                    </listbox>
-
-
-                                </hbox>
-                            </vbox>
-                        </panelchildren>
-                    </panel>
-
+                    
                 </tabpanel>
                 <tabpanel>
 
@@ -1191,9 +978,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
                 <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true" onClick="modificar()"/>
                 <button  image="/images/imprimir.gif" id="acta"  label="Acta" disabled="true"  onClick='showReport("AM")'/>
-                <button  image="/images/imprimir.gif" id="certificado"  label="Certificado" disabled="true"  onClick='showReport("CM")' />
                 <button  image="/images/imprimir.gif" id="claveprint"  label="Clave" disabled="true"  onClick='showReport("CL")' />
-                <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
             </hbox>
         </vbox>
     </window>
