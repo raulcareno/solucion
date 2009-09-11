@@ -777,7 +777,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         <panelchildren>
                             <columnlayout>
                                 <columnchildren width="100%">
-                                    <panel height="420px">
+                                    <panel height="390px">
                                         <panelchildren>
                                             <borderlayout>
                                                 <center flex="true">
@@ -792,12 +792,14 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 <row>
                                                                    
                                                                     <span style="float:right"> Codigo :</span>
-                                                                    <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
+                                                                    <span>
+                                                                        <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
+                                                                    Identificación:
+                                                                    <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
+                                                                     </span>
                                                                 </row>
                                                                 <row>
                                                                    
-                                                                    <span style="float:right"> Identificación:</span>
-                                                                    <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
 
                                                                 </row>
                                                                 <row>
@@ -890,14 +892,14 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                             </row>
                                                             <row>
                                                                  <span style="float:right"> Curso(*):</span>
-
+                                                                
                                                                 <listbox mold="select" disabled="true" id="curso" width="320px">
-
                                                                     <listitem selected="true" forEach="${cursos}" value="${each}">
                                                                         <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
                                                                     </listitem>
                                                                 </listbox>
+
                                                                 <textbox cols="15"    readonly="true" style="background-color:transparent; border:0px;height:17px; text-align:right" value="Nacido:"/>
                                                                 <datebox id="nacido"  readonly="true"  />
                                                             </row>

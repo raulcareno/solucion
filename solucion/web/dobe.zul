@@ -304,11 +304,11 @@ void estado(Boolean estado,Boolean modificar){
  void guardar(){
  try{
              if(nombres.value=="" || apellidos.value =="" || direccion.value=="" || nacido.value=="" ){
-                    Messagebox.show("Ingrese los datos del estudiante que están con (*)...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                    Messagebox.show("Ingrese los datos del estudiante que están con ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                     return;
             }
             if(nombresre.value=="" || apellidosre.value =="" || direccionre.value=="" ){
-                    Messagebox.show("Ingrese los datos del representante que estan con (*)...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                    Messagebox.show("Ingrese los datos del representante que estan con ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                     return;
             }
        
@@ -507,13 +507,17 @@ ParametrosGlobales para = new ParametrosGlobales();
     }
 }
  void move(){
-        llenar((Estudiantes)datos.selectedItem.value);
-        modificar.disabled = false;
-        acta.disabled = false;
-        certificado.disabled = false;
-        claveprint.disabled = false;
-        combo.value="";
-          registro.setSelected(true);
+
+        Aspectos aspecto = ((Aspectos)datos.selectedItem.value);
+        tipoaspecto.value = aspecto.getObserva1();
+        primero.value = aspecto.getObserva2();
+        segundo.value = aspecto.getObserva3();
+        tercero.value = aspecto.getObserva4();
+        cuarto.value = aspecto.getObserva5();
+        quinto.value = aspecto.getObserva6();
+        sexto.value = aspecto.getObserva7();
+        septimo.value = aspecto.getObserva8();
+          
   }
 void modificar(){
   if(verificar("Modificar")){
@@ -714,10 +718,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         </zscript>
         <tabbox width="100%">
             <tabs>
-                 <tab id="registro" label="Datos del Estudiante" />
-                 <tab id="representante" label="Aspecto Médico Dental" />
-                 <tab id="busqueda" label="Rendimiento Académico" />
-                 <tab id="reportes" label="Impresión" />
+                <tab id="registro" label="Datos del Estudiante" />
+                <tab id="representante" label="Aspecto Médico Dental" />
+                <tab id="busqueda" label="Rendimiento Académico" />
+                <tab id="reportes" label="Impresión" />
             </tabs>
             <tabpanels>
                 <tabpanel>
@@ -725,7 +729,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         <panelchildren>
                             <columnlayout>
                                 <columnchildren width="100%">
-                                    <panel height="390px">
+                                    <panel height="375px">
                                         <panelchildren>
                                             <borderlayout>
                                                 <center flex="true">
@@ -742,46 +746,47 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 <row>
                                                                    
                                                                     <span style="float:right"> Codigo :</span>
-                                                                    <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
-                                                                      <span style="float:right"> Codigo :</span>
-                                                                    <intbox maxlength="14" cols="5"  readonly = "true"    id="codigore"  />
+                                                                    <span  >
+                                                                        <intbox  maxlength="14" cols="3"  disabled="true"  readonly="true" id="codigo"  />
+                                                                    Identificación:
+                                                                        <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
+                                                                    </span>
+                                                                    <span style="float:right"> Codigo :</span>
+                                                                    <span >
+                                                                        <intbox maxlength="14" cols="3"  readonly = "true"    id="codigore"  />
+                                                                    Identificación:
+                                                                        <textbox maxlength="13" cols="13"   readonly="true" id="cedulare"  />
+                                                                    </span>
 
                                                                 </row>
+                                                                
                                                                 <row>
                                                                    
-                                                                    <span style="float:right"> Identificación:</span>
-                                                                    <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
-                                                                      <span style="float:right"> Identif.(*):</span>
-                                                                    <textbox maxlength="13" cols="10"   readonly="true" id="cedulare"  />
-
-                                                                </row>
-                                                                <row>
-                                                                   
-                                                                    <span style="float:right"> Nombres(*):</span>
+                                                                    <span style="float:right"> Nombres:</span>
                                                                     <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
-                                                                     <span style="float:right"> Nombres(*):</span>
+                                                                    <span style="float:right"> Nombres:</span>
                                                                     <textbox id="nombresre"  maxlength="60" cols="40" readonly="true"   />
 
                                                                 </row>
 
                                                                 <row>
-                                                                  <span style="float:right"> Apellidos(*):</span>
+                                                                    <span style="float:right"> Apellidos:</span>
                                                                     <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40" readonly="true"  />
-                                                                     <span style="float:right"> Apellidos(*):</span>
+                                                                    <span style="float:right"> Apellidos:</span>
                                                                     <textbox id="apellidosre"  maxlength="60" cols="40" readonly="true"  />
                                                                 </row>
                                                                 <row>
 
-                                                                    <span style="float:right"> Dirección(*):</span>
+                                                                    <span style="float:right"> Dirección:</span>
                                                                     <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
-                                                                     <span style="float:right"> Dirección(*):</span>
+                                                                    <span style="float:right"> Dirección:</span>
                                                                     <textbox id="direccionre" maxlength="100" cols="40"  readonly="true"    />
                                                                 </row>
 
                                                                 <row>
                                                                     <span style="float:right"> Email:</span>
                                                                     <textbox id="mail" maxlength="100" cols="40"  readonly="true"    />
-                                                                      <span style="float:right"> Email:</span>
+                                                                    <span style="float:right"> Email:</span>
                                                                     <textbox id="emailre" maxlength="100" cols="40"  readonly="true"    />
                                                                 </row>
 
@@ -789,7 +794,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     
                                                                     <span style="float:right"> Teléfono:</span>
                                                                     <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
-                                                                     <span style="float:right"> Teléfono:</span>
+                                                                    <span style="float:right"> Teléfono:</span>
                                                                     <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
 
 
@@ -840,19 +845,16 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                         <rows>
                                                             <row>
                                                                 <span style="color:blue" >Padre</span>
-                                                                <span></span>
+                                                                <span>
+                                                                    <span > Identificación:</span>
+                                                                    <textbox maxlength="10" cols="13"  readonly="true" id="cedulapa"  />
+                                                                </span>
                                                                 <span style="color:blue">Madre </span>
-                                                                <span> </span>
+                                                                <span>
+                                                                    <span > Identificación:</span>
+                                                                    <textbox maxlength="10" cols="13"  readonly="true" id="cedulama"  />
+                                                                </span>
                                                             </row>
-                                                            <row>
-                                                                <span style="float:right"> Identificación:</span>
-                                                                <textbox maxlength="10" cols="13"  readonly="true" id="cedulapa"  />
-
-                                                                <span style="float:right"> Identificación:</span>
-                                                                <textbox maxlength="10" cols="13"  readonly="true" id="cedulama"  />
-
-                                                            </row>
-
                                                             <row>
                                                                 <span style="float:right"> Nombres:</span>
                                                                 <textbox id="nombrespa"  maxlength="60" cols="40" readonly="true"   />
@@ -924,33 +926,80 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 
                 <tabpanel>
 
-<groupbox mold="3d" >
-    <caption label="Busquedas" />
-<vbox>
-    <hbox> Trimestres:  <textbox id="buscarText"  maxlength="60" cols="40" />
-    <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
-    <hbox>
-         <listbox mold="paging" rows="5" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-			<listhead>
-                                <listheader width="70" label="Tipo"/>
-                                <listheader width="70"  label="Primero"/>
-                                <listheader width="70" label="Segundo"/>
-                                <listheader width="70"  label="Tercero"/>
-                                <listheader width="70"  label="Cuarto"/>
-                                <listheader width="70"  label="Quinto"/>
-                                <listheader width="70"  label="Sexto"/>
-                                <listheader width="70"  label="Séptimo"/>
-			</listhead>
-			<listitem  forEach="${allEvents}" value="${each}">
-                           <listcell label="${each.codigotrim}" />
-                           <listcell label="${each.descripcion}" />
-            </listitem>
-		</listbox>
+                    <groupbox mold="3d" >
+                        <caption label="Busquedas" />
+                        <vbox>
+                            <hbox> 
+                                <grid width="100%">
+                                    <rows>
+                                        <row>
+                                            <span>Tipo</span>
+                                            <span>Primero</span>
+                                            <span>Segundo</span>
+                                            <span>Tercero</span>
+                                      
+                    
+                                        </row>
+                                        <row>
+                                            <combobox id="tipoaspecto">
+                                                <comboitem label="Peso" />
+                                                <comboitem label="Estatura" />
+                                                <comboitem label="Agudeza Auditiva" />
+                                                <comboitem label="Agudeza Visual" />
+                                                <comboitem label="Informe Medico" />
+                                                <comboitem label="Informe Dental" />
+                                            </combobox>
+                                            <textbox id="primero" />
+                                            <textbox id="segundo" />
+                                            <textbox id="tercero" />
+                                          
+
+                                        </row>
+                                        <row>
+                                          
+                                            <span>Cuarto</span>
+                                            <span>Quinto</span>
+                                            <span>Sexto</span>
+                                            <span>Septimo</span>
+
+                                        </row>
+                                        <row>
+                                              <textbox id="cuarto" />
+                                            <textbox id="quinto" />
+                                            <textbox id="sexto" />
+                                            <textbox id="septimo" />
+                                        </row>
+                                        <row>
+                                            <textbox id="buscarText"  />
+                                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                                        </row>
+
+                                    </rows>
+                                </grid>
+      
+                            </hbox>
+                            <hbox>
+                                <listbox mold="paging" rows="5" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                                    <listhead>
+                                        <listheader width="70" label="Tipo"/>
+                                        <listheader width="70"  label="Primero"/>
+                                        <listheader width="70" label="Segundo"/>
+                                        <listheader width="70"  label="Tercero"/>
+                                        <listheader width="70"  label="Cuarto"/>
+                                        <listheader width="70"  label="Quinto"/>
+                                        <listheader width="70"  label="Sexto"/>
+                                        <listheader width="70"  label="Séptimo"/>
+                                    </listhead>
+                                    <listitem  forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.codigotrim}" />
+                                        <listcell label="${each.descripcion}" />
+                                    </listitem>
+                                </listbox>
 
 
-    </hbox>
-</vbox>
-</groupbox>
+                            </hbox>
+                        </vbox>
+                    </groupbox>
 
                 </tabpanel>
 
