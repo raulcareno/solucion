@@ -227,7 +227,7 @@ void copiarm(){
 
 void copiarr(){
      cedulafac.value = cedulare.value;
-     nombresfac.value = apellidosre.value + " "+ nombresma.value ;
+     nombresfac.value = apellidosre.value + " "+ nombresre.value ;
      telefonofac.value = telefonore.value;
      direccionfac.value = direccionre.value;
 }
