@@ -50,8 +50,6 @@ public class matriculasBean {
                 adm.ejecutaSqlNativo("update contable.invmaestro set invmae_nombre = '" + matricula.getEstudiante().getApellido() + " " + matricula.getEstudiante().getNombre() + "', glbemp_codigo = " + periodo.getCodigoper() + "  where invmae_diascredito= " + matricula.getCodigomat() + " and invmae_grupo = 'EST' ");
             }else{
                 adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_nombre,invmae_grupo,invmae_codigo,inv_invmae_codigo,glbemp_codigo) values ( " + matricula.getCodigomat() + ",'" + matricula.getEstudiante().getApellido() + " " + matricula.getEstudiante().getNombre() + "','EST', " + maeCodigo + ", " + codigoRepresentante + "," + periodo.getCodigoper() + " )");
-
-                
              //obtengo una nueva clave para la cabecera
 //                List  listCabecera = adm.queryNativo("SELECT IF(MAX(invcab_codigo) IS NULL,0,MAX(invcab_codigo)) +1 FROM contable.invcabecera ");
 //                Long cabeCodigo = (Long) ((Vector) listCabecera.get(0)).get(0);
