@@ -36,18 +36,19 @@ Date fechaActual = new Date();
                 values[i][1]= "number";
   
             }else{
-                values[i][1]= "readonly";
+                values[i][1]= "number";
             }
-           
            // values[i]="number";
           }
 guardar(){
-    disciplina nso = new disciplina();
-    disciplina r = (disciplina) datos.getRows();
-    nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
-int a = Messagebox.show("Registro Almacenado con éxito...! \n Desea Visualizar los Promedios Calculados?", "Question", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
- 
-
+        disciplina nso = new disciplina();
+        disciplina r = (disciplina) datos.getRows();
+        String resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+        if(resultado.equals("ok")){
+            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+         }else{
+            Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         }
 }
 
 void buscar2(Cursos cur){
