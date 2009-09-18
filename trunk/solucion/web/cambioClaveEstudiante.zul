@@ -12,7 +12,7 @@ Administrador adm = new Administrador();
 
  void cargar(){
         Session a = Sessions.getCurrent();
-        Estudiantes emp = a.getAttribute("user");
+        Estudiantes emp = a.getAttribute("userEstudiante");
         Permisos permiso = new Permisos();
 
         usuario.value = emp.getUsuario();
@@ -21,7 +21,7 @@ Administrador adm = new Administrador();
  }
 void guardar(){
     Session a = Sessions.getCurrent();
-    Estudiantes emp = a.getAttribute("user");
+    Estudiantes emp = a.getAttribute("userEstudiante");
   Permisos permiso = new Permisos();
   
         emp.setUsuario(usuario.value);
