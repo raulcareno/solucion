@@ -162,6 +162,7 @@
                         
                         <treeitem id="Notas"  image="/images/notas.png"  label="Registro Notas" value="/notasFuera.zul" />
                         <treeitem id="Registro de Disciplina" image="/images/notas.png"  label="Registro Disciplinas" value="/disciplinaFuera.zul" />
+                        <treeitem id="Registro de Faltas" image="/images/notas.png"  label="Faltas" value="/faltas.zul" />
                         <treeitem id="Calendario" image="/images/calendar.gif"  label="Calendario" value="/calendar.zul" />
                         <treeitem id="Correos" image="/images/mail.gif"  label="Envio de Tareas" value="/correo.zul"/>
                      </treechildren>
@@ -182,7 +183,11 @@
 </panel>
 <panel width="100%" border="normal"   collapsible="true"   title="Propiedades">
 				<panelchildren>
-				<label id="propiedad" value="propiedad"/>
+
+                       <label style="font-weight:bold" value="--------- JCINFORM ---------- "/>
+                       <label value=" Soluciones Informáticas          "/>
+                       <label value="Telfs.5103-843 / 080-162-211 "/>
+                        <label id="propiedad" value=" "/>
 				</panelchildren>
 			</panel>
          </div>

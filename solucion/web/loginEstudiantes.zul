@@ -18,7 +18,7 @@ void verPantall(){
         Estudiantes user =adm.ingresoSistemaE(usuario.value, clave.value);
             if(user != null){
                     Session ses = Sessions.getCurrent();
-                    ses.setAttribute("user",user);
+                    ses.setAttribute("userEstudiante",user);
                     Executions.sendRedirect("indexEstudiantes.zul");
 
            }else{
