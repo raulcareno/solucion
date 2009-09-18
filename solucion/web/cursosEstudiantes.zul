@@ -15,7 +15,7 @@ import org.zkoss.zul.Listbox;
 
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
-Estudiantes user =  (Estudiantes)ses.getAttribute("user");
+Estudiantes user =  (Estudiantes)ses.getAttribute("userEstudiante");
 
 List cursos = adm.query("SELECT distinct o FROM Matriculas as o WHERE o.estudiante.codigoest = '"+user.getCodigoest()+"'");
  

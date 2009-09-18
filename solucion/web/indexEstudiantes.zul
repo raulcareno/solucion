@@ -12,9 +12,8 @@ Session a = Sessions.getCurrent();
  void salir(){
         Executions.sendRedirect("login.zul");
         Session a = Sessions.getCurrent();
-        a.removeAttribute("accesos");
         a.removeAttribute("userEstudiante");
-        a.invalidate();
+        //a.invalidate();
  }
 
  void ingresar(String valor){
@@ -48,7 +47,7 @@ Session a = Sessions.getCurrent();
                 <vbox>
 						<hbox>
 							<label value="Bienvenido:" style="font-weight:bold;font-size:15px;color:#346B93;" />
-							<label style="font-weight:bold;font-size:17px;color:#346B93;" value="${sessionScope.user.apellido} ${sessionScope.user.nombre}" />
+							<label style="font-weight:bold;font-size:17px;color:#346B93;" value="${sessionScope.userEstudiante.apellido} ${sessionScope.userEstudiante.nombre}" />
 						</hbox>
  
                         <toolbarbutton  style="font-weight:bold;"  label="[Cerrar Sesión]" onClick="salir()"/>
