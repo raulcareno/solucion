@@ -264,6 +264,12 @@ empa.setPerfil(g);
                                     <comboitem label="Dr."/>
                                     <comboitem label="Dra."/>
                                     <comboitem  label="Ab."/>
+                                    <comboitem  label="Hna."/>
+                                    <comboitem  label="Tglo."/>
+                                    <comboitem  label="Ing."/>
+                                    <comboitem  label="Rev."/>
+                                    <comboitem  label="Msc."/>
+                                    <comboitem  label="Phd."/>
                                 </combobox>
     
                                 <span style="float:right"> Docente:</span>

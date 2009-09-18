@@ -58,7 +58,8 @@ public JRDataSource certificados(Cursos curso,String tipo){
                     if (!curso.getCodigocur().equals(-2)) {
                         query = "Select o from Matriculas as o " +
                                 "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                                "and o.curso.codigocur = '" + curso.getCodigocur() + "'";
+                                "and o.curso.codigocur = '" + curso.getCodigocur() + "' " +
+                                " order by o.curso.secuencia,o.estudiante.apellido";
                     }
 
                     List hoy = adm.query(query);
@@ -69,7 +70,7 @@ public JRDataSource certificados(Cursos curso,String tipo){
                 JRDataSource ds = null;
                 if(tipo.equals("CM")){
                      ds = new ReporteCertificadoDataSource(detalle);
-                }else if(tipo.equals("CM2") || tipo.equals("LTRAN") || tipo.equals("LMIN")  || tipo.equals("LFEC")  || tipo.equals("LGENT")  || tipo.equals("LGEN")  || tipo.equals("LASI")  || tipo.equals("LCA")  || tipo.equals("LCAS")  || tipo.equals("AM")  || tipo.equals("LMAT")  || tipo.equals("LCLA")  || tipo.equals("LREP")  || tipo.equals("LCAR")){
+                }else if(tipo.equals("CM2") || tipo.equals("LTRAN") || tipo.equals("LINT")  || tipo.equals("LNUEV") || tipo.equals("LMIN")  || tipo.equals("LFEC")  || tipo.equals("LGENT")  || tipo.equals("LGEN")  || tipo.equals("LASI")  || tipo.equals("LCA")  || tipo.equals("LCAS")  || tipo.equals("AM")  || tipo.equals("LMAT")  || tipo.equals("LCLA")  || tipo.equals("LREP")  || tipo.equals("LCAR")){
                       ds = new ReporteActaDataSource(detalle);
                 }
             
@@ -98,6 +99,57 @@ public JRDataSource transporte(Cursos curso,String tipo){
                     }
                 JRDataSource ds = new ReporteActaDataSource(detalle);
                 
+
+            return ds;
+
+}
+public JRDataSource nuevos(Cursos curso,String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "SELECT mat FROM Matriculas AS mat " +
+                            "WHERE  mat.estado like '%Matriculado%' " +
+                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.nuevo = true  " +
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                    if (!curso.getCodigocur().equals(-2)) {
+                        query = "Select o from Matriculas as o " +
+                                "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                                "and o.curso.codigocur = '" + curso.getCodigocur() + "' and o.nuevo = true ";
+                    }
+
+                    List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = new ReporteActaDataSource(detalle);
+
+
+            return ds;
+
+}
+
+public JRDataSource internos(Cursos curso,String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "SELECT mat FROM Matriculas AS mat " +
+                            "WHERE  mat.estado like '%Matriculado%' " +
+                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.estudiante.adventista = true  " +
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                    if (!curso.getCodigocur().equals(-2)) {
+                        query = "Select o from Matriculas as o " +
+                                "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                                "and o.curso.codigocur = '" + curso.getCodigocur() + "' and o.estudiante.adventista = true ";
+                    }
+
+                    List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = new ReporteActaDataSource(detalle);
+
 
             return ds;
 
@@ -143,6 +195,14 @@ public JRDataSource transporte(Cursos curso,String tipo){
                     datasource = transporte((Cursos)curs.getSelectedItem().getValue(),"LTRAN");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/transporte.jasper");
+            }else if(tipo.equals("LNUEV")){
+                    datasource = nuevos((Cursos)curs.getSelectedItem().getValue(),"LNUEV");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/nuevos.jasper");
+            }else if(tipo.equals("LINT")){
+                    datasource = internos((Cursos)curs.getSelectedItem().getValue(),"LINT");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/internos.jasper");
             }else if(tipo.equals("LCA")){
                     datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
                     parametros.put("titulo",titulo.getValue());
@@ -244,6 +304,8 @@ void campos(String valor){
             titulo.value = "Listado de Estudiantes";
        if(valor.equals("LMIN"))
             titulo.value = "Listado de Estudiantes";
+      if(valor.equals("LINT"))
+            titulo.value = "Listado de Estudiantes";
         
 
 
@@ -257,7 +319,7 @@ void campos(String valor){
         </zscript>
         <panel width="100%" id="parametros"  height="100%" border="normal" collapsible="true" title="Parametros">
             <panelchildren>
-                <grid width="420px">
+                <grid width="550px">
                     <rows>
                         <row>
                             <span style="float:right"> Reporte:</span>
@@ -280,13 +342,15 @@ void campos(String valor){
                                 <listitem label="Listadopor Genero" value="LGEN"/>
                                 <listitem label="Listado con Años Cumplidos" value="LFEC"/>
                                 <listitem label="Listado con Folio y No. Matricula" value="LMIN"/>
+                                <listitem label="Listado de Estudiantes Nuevos" value="LNUEV"/>
                                 <listitem label="Listado de Estudiantes que Toman transporte" value="LTRAN"/>
+                                <listitem label="Listado de Estudiantes Internos" value="LINT"/>
                             </listbox>
                         </row>
 
                         <row>
                             <span style="float:right"> Curso:</span>
-                            <listbox id="curs" width="300px"  mold="select"
+                            <listbox id="curs" width="400px"  mold="select"
         onSelect="buscar2(((Cursos)self.selectedItem.value));">
 
                                 <listitem forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
