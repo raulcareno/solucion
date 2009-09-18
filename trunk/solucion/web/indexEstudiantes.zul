@@ -4,7 +4,7 @@
 <zscript>
 import jcinform.persistencia.*;
 Session a = Sessions.getCurrent();
-    Estudiantes emp = a.getAttribute("user");
+    Estudiantes emp = a.getAttribute("userEstudiante");
      if(emp==null){
         Executions.sendRedirect("login.zul");
      }
@@ -13,7 +13,7 @@ Session a = Sessions.getCurrent();
         Executions.sendRedirect("login.zul");
         Session a = Sessions.getCurrent();
         a.removeAttribute("accesos");
-        a.removeAttribute("user");
+        a.removeAttribute("userEstudiante");
         a.invalidate();
  }
 
@@ -78,7 +78,12 @@ Session a = Sessions.getCurrent();
 </panel>
 <panel width="100%" border="normal"   collapsible="true"   title="Propiedades">
 				<panelchildren>
-				<label id="propiedad" value="propiedad"/>
+				<label style="font-weight:bold" value="--------- JCINFORM ---------- "/>
+                       <label value=" Soluciones Informáticas          "/>
+                       <label value="Telfs.5103-843 / 080-162-211 "/>
+                        <label id="propiedad" value=" "/>
+
+
 				</panelchildren>
 			</panel>
          </div>
