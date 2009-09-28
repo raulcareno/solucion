@@ -26,12 +26,14 @@ void enviarCorreo(){
                 for(Iterator it = right.getItems().iterator(); it.hasNext();) {
                      Listitem object = (Listitem)it.next();
                      Estudiantes emp = object.getValue();
-                     correos += emp.getMail()+";";
+                     correos += emp.getMail()+";"+emp.getRepresentante().getMailpadre()+";"+emp.getRepresentante().getMailmadre()+";";
+                     //mailpadre; mailmadre;
                 }
                 em.setCorreos(correos);
                 em.setMensaje(mensaje.getValue());
-                em.enviarEmail(periodo);
                 em.setTema(titulo.getValue());
+                em.enviarEmail(periodo);
+                
             Messagebox.show("Correo Enviado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
             permiso.auditar("Correo","Enviar","Varios");
 }

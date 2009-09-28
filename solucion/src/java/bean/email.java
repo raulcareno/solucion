@@ -29,14 +29,14 @@ public class email {
                     while(tokens.hasMoreTokens()){
                         String str=tokens.nextToken();
                         str = str.replace(" ", "");
-                        if(!str.equals("")){
+                        if(!str.equals("") && str.contains("@")){
                             matriculados2.add(str.replace(" ", ""));
                             System.out.println(str);
                         }
                         i++;
                     }
                     if(matriculados2.size()>0)
-                           EnviarAutenticacion.EnviarCorreo(matriculados2,mensaje,obj.getInspector(),periodo.getInstitucion().getUsuariomail(),periodo.getInstitucion().getClavemail(),periodo.getInstitucion().getSmtp(),periodo.getInstitucion().getPuerto());
+                           EnviarAutenticacion.EnviarCorreo(matriculados2,mensaje,tema,periodo.getInstitucion().getUsuariomail(),periodo.getInstitucion().getClavemail(),periodo.getInstitucion().getSmtp(),periodo.getInstitucion().getPuerto());
         }
         catch(Exception e)
         {
