@@ -52,7 +52,7 @@ public  String disponible(){
             }
         }
  
-        List  notassistemas = adm.query("Select o from Notanotas as o ");
+        List  notassistemas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '"+ per.getCodigoper() +"'  ");
         ArrayList arregloAsignadas = new ArrayList();
         for (Notanotas notanotas : notassistemas) {
             arregloAsignadas.add(notanotas.getNota());
@@ -293,7 +293,14 @@ espromedio.disabled= estado;
         empa.setEspromedio(espromedio.checked);
 
         empa.setOrden(orden.value);
-        empa.setPromediofinal(promedios.selectedItem.value);
+        try{
+            empa.setPromediofinal(promedios.selectedItem.value);
+            
+        }catch(Exception e){
+        Messagebox.show("Seleccione el Tipo de nota...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return;
+        }
+        
 
         empa.setFormula(formula.value);
         empa.setFormuladisciplina(formuladisciplina.value);
