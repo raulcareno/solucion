@@ -76,6 +76,10 @@ public class ReporteActaDataSource implements JRDataSource{
             valor = nodo.getEstudiante().getRepresentante().getProfesionpadre();
         }else if ("profesionMadre".equals(fieldName)) {
             valor = nodo.getEstudiante().getRepresentante().getProfesionmadre();
+        }else if ("ocupacionMadre".equals(fieldName)) {
+            valor = nodo.getEstudiante().getRepresentante().getOcupacionmadre();
+        }else if ("ocupacionPadre".equals(fieldName)) {
+            valor = nodo.getEstudiante().getRepresentante().getOcupacionpadre();
         }else if ("direccion".equals(fieldName)) {
             valor = nodo.getEstudiante().getDireccion();
         }else if ("institutoAnterior".equals(fieldName)) {
@@ -90,8 +94,16 @@ public class ReporteActaDataSource implements JRDataSource{
             valor = nodo.getEstudiante().getRepresentante().getTelpadre();
         }else if ("telefonoMa".equals(fieldName)) {
             valor = nodo.getEstudiante().getRepresentante().getTelmadre();
+        }else if ("emailMa".equals(fieldName)) {
+            valor = nodo.getEstudiante().getRepresentante().getMailmadre();
+        }else if ("emailPa".equals(fieldName)) {
+            valor = nodo.getEstudiante().getRepresentante().getMailpadre();
+        }else if ("transporte".equals(fieldName)) {
+            valor = nodo.getEstudiante().getTransporte();
         }else if ("telefonoRep".equals(fieldName)) {
             valor = nodo.getEstudiante().getRepresentante().getTelefono();
+        }else if ("identificacion".equals(fieldName)) {
+            valor = nodo.getEstudiante().getCedula();
         }else if ("direccionRep".equals(fieldName)) {
             valor = nodo.getEstudiante().getRepresentante().getDireccion();
         }else if ("detalle".equals(fieldName)) {
