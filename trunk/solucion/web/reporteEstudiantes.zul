@@ -70,7 +70,7 @@ public JRDataSource certificados(Cursos curso,String tipo){
                 JRDataSource ds = null;
                 if(tipo.equals("CM")){
                      ds = new ReporteCertificadoDataSource(detalle);
-                }else if(tipo.equals("CM2") || tipo.equals("LTRAN") || tipo.equals("LINT")  || tipo.equals("LNUEV") || tipo.equals("LMIN")  || tipo.equals("LFEC")  || tipo.equals("LGENT")  || tipo.equals("LGEN")  || tipo.equals("LASI")  || tipo.equals("LCA")  || tipo.equals("LCAS")  || tipo.equals("AM")  || tipo.equals("LMAT")  || tipo.equals("LCLA")  || tipo.equals("LREP")  || tipo.equals("LCAR")){
+                }else if(tipo.equals("CM2") || tipo.equals("LTRAN") || tipo.equals("LINT")  || tipo.equals("LNUEV") || tipo.equals("LMIN")  || tipo.equals("LFEC")  || tipo.equals("LGENT")  || tipo.equals("LGEN")  || tipo.equals("LASI")  || tipo.equals("LCA")  || tipo.equals("LCAS")  || tipo.equals("AM")  || tipo.equals("LMAT")  || tipo.equals("LCLA")   || tipo.equals("LCLA2") || tipo.equals("LCOR")  || tipo.equals("LREP")  || tipo.equals("LCAR")){
                       ds = new ReporteActaDataSource(detalle);
                 }
             
@@ -162,7 +162,7 @@ public JRDataSource internos(Cursos curso,String tipo){
 			Map parametros = new HashMap();
             parametros.put("denominacion", insts.getDenominacion());
             parametros.put("nombre", insts.getNombre());
-            parametros.put("periodo", insts.getDireccion());
+            parametros.put("periodo", periodo.getDescripcion());
             parametros.put("slogan", insts.getSlogan());
             parametros.put("secretaria", insts.getSecretaria());
             parametros.put("rectora", insts.getRector());
@@ -240,6 +240,14 @@ public JRDataSource internos(Cursos curso,String tipo){
                     datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCLA");
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc("WEB-INF/reportes/claves.jasper");
+            }else if(tipo.equals("LCLA2")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCLA2");
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/clavePersonalCompleto.jasper");
+            }else if(tipo.equals("LCOR")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCOR");
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/concorreos.jasper");
             }else if(tipo.equals("LREP")){
                     datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
                     parametros.put("titulo",titulo.getValue());
@@ -268,7 +276,7 @@ void campos(String valor){
             curs.disabled = true;
             mates.disabled = true;
             titulo.value = "Listado de Estudiantes";
-        }else if(valor.equals("LMAT") || valor.equals("LCLA") || valor.equals("LREP") || valor.equals("LCAR")){
+        }else if(valor.equals("LMAT") || valor.equals("LCLA") || valor.equals("LCLA2") || valor.equals("LCOR") || valor.equals("LREP") || valor.equals("LCAR")){
             curs.disabled = false;
             mates.disabled = true;
             titulo.value = "Listado de Estudiantes";
@@ -290,6 +298,10 @@ void campos(String valor){
             titulo.value = "Carné Estudiantil";
         if(valor.equals("LCLA"))
             titulo.value = "Claves de Estudiantes";
+       if(valor.equals("LCLA2"))
+            titulo.value = "Claves de Estudiantes";
+      if(valor.equals("LCOR"))
+            titulo.value = "Correos";
         if(valor.equals("LREP"))
             titulo.value = "Lista de Representantes";
         if(valor.equals("LCAS"))
@@ -334,6 +346,8 @@ void campos(String valor){
                                 <listitem label="Lista de Matriculados" value="LMAT" />
                                 <listitem label="Lista de Carné Estudiantil"  value="LCAR"/>
                                 <listitem label="Lista de Claves" value="LCLA"/>
+                                <listitem label="Listado de Claves con Matricula" value="LCLA2"/>
+                                <listitem label="Listado de Correos electronicos" value="LCOR"/>
                                 <listitem label="Lista de Internos" value="LINT"/>
                                 <listitem label="Lista de Representantes" value="LREP"/>
                                 <listitem label="Lista de Estudiantes con Casilleros vacios" value="LCAS"/>

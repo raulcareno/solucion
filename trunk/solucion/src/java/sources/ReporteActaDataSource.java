@@ -82,6 +82,8 @@ public class ReporteActaDataSource implements JRDataSource{
             valor = nodo.getEstudiante().getRepresentante().getOcupacionpadre();
         }else if ("direccion".equals(fieldName)) {
             valor = nodo.getEstudiante().getDireccion();
+        }else if ("repite".equals(fieldName)) {
+            valor = nodo.getRepite();
         }else if ("institutoAnterior".equals(fieldName)) {
             valor = nodo.getInstitucion();
         }else if ("representante".equals(fieldName)) {
@@ -96,6 +98,8 @@ public class ReporteActaDataSource implements JRDataSource{
             valor = nodo.getEstudiante().getRepresentante().getTelmadre();
         }else if ("emailMa".equals(fieldName)) {
             valor = nodo.getEstudiante().getRepresentante().getMailmadre();
+        }else if ("email".equals(fieldName)) {
+            valor = nodo.getEstudiante().getMail();
         }else if ("emailPa".equals(fieldName)) {
             valor = nodo.getEstudiante().getRepresentante().getMailpadre();
         }else if ("transporte".equals(fieldName)) {

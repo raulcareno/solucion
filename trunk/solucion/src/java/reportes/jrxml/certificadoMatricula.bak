@@ -34,6 +34,9 @@
 	<field name="curso" class="java.lang.String"/>
 	<field name="sello" class="java.io.InputStream"/>
 	<field name="texto" class="java.lang.String"/>
+	<field name="jornada" class="java.lang.String"/>
+	<field name="paralelo" class="java.lang.String"/>
+	<field name="matricula" class="java.lang.String"/>
 
 
 		<group  name="estudiantes" >

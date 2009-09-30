@@ -112,9 +112,9 @@ void modificar(){
    
     <panel  title="Seleccione un Periodo">
         <panelchildren>
-            <listbox  onOK="ingresar.focus()" onSelect="buscar((Periodo)self.selectedItem.value);"   width="410px"  id="periodo" mold="select">
+            <listbox  onOK="ingresar.focus()" onSelect="buscar((Periodo)self.selectedItem.value);"   width="435px"  id="periodo" mold="select">
                 <listitem forEach="${periodos}" value="${each}">
-                    <listcell   label="${each.descripcion} ${each.institucion}" />
+                    <listcell   label="${each.descripcion} ${each.institucion}  ${each.institucion.tipo} " />
 
                 </listitem>
             </listbox>

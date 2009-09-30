@@ -94,6 +94,10 @@ public class ReporteActaGradoDataSource implements JRDataSource{
             valor = nodo.getEstudiante().getRepresentante().getProfesionpadre();
         }else if ("profesionMadre".equals(fieldName)) {
             valor = nodo.getEstudiante().getRepresentante().getProfesionmadre();
+        }else if ("ocupacionPadre".equals(fieldName)) {
+            valor = nodo.getEstudiante().getRepresentante().getOcupacionpadre();
+        }else if ("ocupacionMadre".equals(fieldName)) {
+            valor = nodo.getEstudiante().getRepresentante().getOcupacionmadre();
         }else if ("direccion".equals(fieldName)) {
             valor = nodo.getEstudiante().getDireccion();
         }else if ("institutoAnterior".equals(fieldName)) {

@@ -315,8 +315,8 @@ espromedio.disabled= estado;
          }else{
             empa.setCodigosis(adm.getNuevaClave("Sistemacalificacion","codigosis"));
              adm.guardar(empa);
-             llenarArbol();
-             mostrarTodos();
+             //llenarArbol();
+            //mostrarTodos();
 
          }
 
@@ -332,8 +332,7 @@ espromedio.disabled= estado;
             nueva.setCodigo(adm.getNuevaClave("Notanotas","codigo"));
             adm.guardar(nueva);
          }
-               // Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-             llenarArbol();
+llenarArbol();
 mostrarTodos();
                     guardar.disabled=true;
                     agregar.disabled=false;

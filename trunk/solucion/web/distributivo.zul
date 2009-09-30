@@ -16,8 +16,8 @@ Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
     Permisos permiso = new Permisos();
     List cursos = adm.query("Select o from Cursos as o  where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia,o.paralelo.descripcion, o.descripcion");
-    List profesores = adm.query("Select o from Empleados as o ");
-    List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
+    List profesores = adm.query("Select o from Empleados as o order by o.apellidos ");
+    List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' order by o.descripcion ");
     Object media = null;
  Session ses = Sessions.getCurrent();
 
@@ -294,7 +294,7 @@ Cursos cur = curs.selectedItem.value;
                             </listhead>
                         </listbox>
                         <button  label="Cerrar" visible="false" id="cerrar" onClick="materiaslista.visible = false; cerrar.visible=false; verificar.visible = false;"/>
-                        <button  label="Verificar" visible="false" id="verificar"/>
+                        <!--button  label="Verificar" visible="false" id="verificar"/-->
                     </span>
                 </row>
             </rows>
