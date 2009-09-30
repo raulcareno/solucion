@@ -42,6 +42,7 @@
 	<field name="observacion" class="java.lang.String"/>
 	<field name="jornada" class="java.lang.String"/>
 	<field name="profesor" class="java.lang.String"/>
+	<field name="regimen" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -52,7 +53,7 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="119"  isSplitAllowed="true" >
+			<band height="143"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="-5"
@@ -68,8 +69,8 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="83"
-						y="91"
+						x="84"
+						y="90"
 						width="250"
 						height="14"
 						key="textField"/>
@@ -90,7 +91,7 @@
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="77"
+						x="84"
 						y="104"
 						width="199"
 						height="14"
@@ -103,8 +104,8 @@
 				</textField>
 				<staticText>
 					<reportElement
-						x="-4"
-						y="105"
+						x="-5"
+						y="104"
 						width="80"
 						height="14"
 						key="staticText-3"/>
@@ -205,6 +206,58 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{titulo}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="-5"
+						y="118"
+						width="80"
+						height="14"
+						key="staticText-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[JORNADA:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="84"
+						y="118"
+						width="117"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{jornada}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="341"
+						y="118"
+						width="80"
+						height="14"
+						key="staticText-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[REGIMEN:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="423"
+						y="118"
+						width="100"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{regimen}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -283,9 +336,9 @@
 			<band height="57"  isSplitAllowed="true" >
 				<crosstab >
 					<reportElement
-						x="-20"
+						x="-5"
 						y="6"
-						width="550"
+						width="535"
 						height="47"
 						key="crosstab-1"/>
 					<crosstabDataset isDataPreSorted="true" >
@@ -422,7 +475,7 @@
 						height="123"
 						key="textField"
 						isPrintRepeatedValues="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Bottom" rotation="Left">
 						<font size="6"/>
 					</textElement>

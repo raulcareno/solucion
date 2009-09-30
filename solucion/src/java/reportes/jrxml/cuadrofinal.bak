@@ -29,6 +29,7 @@
 	<parameter name="titulo" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="profesor" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="perseleccionado" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="slogan" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="curso" class="java.lang.String"/>
 	<field name="estudiante" class="java.lang.String"/>
