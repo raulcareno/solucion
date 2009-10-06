@@ -97,7 +97,10 @@
                     <label value=" ${sessionScope.periodo.institucion.nombre}" style="color:#346B93;font-size:18px;font-weight:bold;" />
                 </hbox>
                 <hbox>
-                    <label value="Periodo ${sessionScope.periodo.descripcion}" style="color:#346B93;font-weight:bold;" />
+               
+                    <label value="${sessionScope.periodo.institucion.tipo}" style="color:#346B93;font-weight:bold;" />
+
+
                 </hbox>
 
                 </vbox>

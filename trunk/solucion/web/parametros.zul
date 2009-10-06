@@ -255,7 +255,7 @@ equi.setPerfil(g);
 			</vbox>
 
  </groupbox>
-<groupbox mold="3d" >
+<groupbox width="100%" mold="3d" >
 
        <caption label="Busquedas" />
 <vbox>
@@ -268,7 +268,7 @@ equi.setPerfil(g);
     </combobox>
  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
  </hbox>
-    <hbox>
+    <hbox width="100%">
          <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
 			<listhead>
                                 <listheader label="Código"/>

@@ -134,7 +134,7 @@ void ingresoSistemas(){
                  <textbox  onOK="verificar.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
 			</row>
             <row align="center" id="rperiodo" visible="false" spans="2">
-                    <listbox  onOK="btnIngresar.focus()"   width="380px"  id="periodo" mold="select">
+                    <listbox  onOK="btnIngresar.focus()"   width="395px"  id="periodo" mold="select">
                         <listitem forEach="${perfiles}" value="${each}">
                               <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
                         </listitem>
@@ -142,22 +142,38 @@ void ingresoSistemas(){
 
                   
             </row>
+            <row align="center" spans="2">
+                
+                <toolbarbutton label="¿Has olvidado tu usuario o contraseña haz click AQUI?" onClick='alert("Network")'>
+                    <attribute name="onClick">{
+                             Window win = (Window) Executions.createComponents("/recuperacionClave.zul", null, null);
+                            win.doModal();
+                        }</attribute>
+                </toolbarbutton>
+
+            </row>
             <row spans="2" align="center" >
              <span style="float:center">
-		<button label="Verificar"   image="/images/key.png"  id="verificar" onClick="usuario.getValue(); clave.getValue(); verificar()"/>
-        <button label="Ingresar Sistema"  visible="false" image="/images/ingreso.gif" id="btnIngresar" onClick="usuario.getValue(); clave.getValue(); ingresoSistemas();"/>
-        <button label="Consultar Notas" image="/images/notas.png">
+                <button label="Verificar"   image="/images/key.png"  id="verificar" onClick="usuario.getValue(); clave.getValue(); verificar()"/>
+                <button label="Ingresar Sistema"  visible="false" image="/images/ingreso.gif" id="btnIngresar" onClick="usuario.getValue(); clave.getValue(); ingresoSistemas();"/>
+                <button label="Consultar Notas" image="/images/notas.png">
                         <attribute name="onClick">{
                              Window win = (Window) Executions.createComponents("/loginEstudiantes.zul", null, null);
                             win.doModal();
                         }</attribute>
-                    </button>
-
-                    </span>
+                </button>
+                <!--button label="Olvidó su clave" image="/images/notas.png">
+                        <attribute name="onClick">{
+                             Window win = (Window) Executions.createComponents("/recuperacionClave.zul", null, null);
+                            win.doModal();
+                        }</attribute>
+                </button-->
+                
+                </span>
             </row>
              <row align="center" spans="2">
                 <label style="font-size:9px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)5103 843"/>
-              </row>
+             </row>
 		</rows>
 	</grid>
        

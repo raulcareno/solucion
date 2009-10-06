@@ -5,13 +5,61 @@ import javax.faces.model.SelectItem;
 import javax.mail.*;
 import javax.mail.internet.*;
 import jcinform.persistencia.Cursos;
+import jcinform.persistencia.Empleadoperiodo;
+import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Periodo;
+import jcinform.procesos.Administrador;
 
 public class email {
     public String correos;
     public String tema;
     public Cursos curso;
     public String mensaje;
+
+    public Boolean recuperarClave(String cedula){
+          claves val = new claves();
+            Administrador adm = new Administrador();
+            Empleados emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.identificacion = '"+cedula+"' ");
+            if(emp != null){
+                        List<Empleadoperiodo> per =  adm.query("Select o from Empleadoperiodo as o " +
+                        "where o.empleado.codigoemp = '"+emp.getCodigoemp()+"' ");
+                        Periodo periodo = new Periodo();
+                        for (Iterator<Empleadoperiodo> it = per.iterator(); it.hasNext();) {
+                                Empleadoperiodo empleadoperiodo = it.next();
+                                periodo = empleadoperiodo.getPeriodo();
+                        }
+                        if(per.size()<=0){
+                            return false;
+                        }
+                        mensaje = "<html><p> <b> Su usuario es: </b>"+emp.getUsuario() +"<p> " +
+                                "<b> Su password es:</b> "+val.desencriptar(emp.getClave()) +" <p> " +
+                                "Le recordamos que debe cambiar su clave periodicamente para su mayor seguridad" +
+                                "<p>." +
+                                "<p>" +
+                                "<p>" +
+                                "<p>." +
+                                "LA ADMINISTRACION " +
+                                "<p>" +
+                                "<p>." +
+                                "<p>" +
+                                "<p>." +
+                                "<p>" +
+                                "<p>." +
+                                "<hr>." +
+                                "Desarrollado por JCINFORM fono: 080162 211 " +
+                                "<p>" +
+                                "<hr>" +
+                                "</html> ";
+                        EnviarAutenticacion.RecuperarClave(emp.getEmail().trim(), mensaje,
+                                "RECUPERACION DE CLAVE "+emp.getApellidos() +" "+ emp.getNombres()
+                                , periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto());
+
+                        return true;
+            }else{
+                return false;
+            }
+    }
+
     public email(){
         curso = new Cursos();
         mensaje = "";
@@ -94,6 +142,34 @@ public List<SelectItem> matriculados = new ArrayList<SelectItem>();
 }
 class EnviarAutenticacion
 {
+        public static void RecuperarClave(String email,String mensaje,String tema,String emailInstitucion,String clave,String host, String puerto){
+//        String host ="smtp.gmail.com";//Suponiendo que el servidor SMTPsea la propia máquina
+        //String from ="setecompu.ec@gmail.com";
+        String from = emailInstitucion;
+//        String to = email;
+        Properties prop = new Properties();
+        prop.put("mail.host", host.trim());
+        prop.setProperty("mail.smtp.port",puerto.trim());
+        prop.setProperty("mail.smtp.starttls.enable", "true");
+        prop.put("mail.smtp.auth", "true");
+         try{
+            SMTPAutenticacion auth = new SMTPAutenticacion(emailInstitucion,clave);
+            Session session = Session.getInstance(prop , auth );
+            InternetAddress[] emailsA = new InternetAddress[1];
+            int i=0;
+            emailsA[i] = new InternetAddress(email+"");
+            System.out.println("***********************"+emailInstitucion);
+            Message msg = getTraerMensaje(session, tema, emailsA,mensaje,emailInstitucion);
+            Transport.send(msg);
+        }
+
+        catch (Exception e){
+            System.out.println("ERROR AL ENVIAR "+e);
+            ExceptionManager.ManageException(e);
+        }
+
+    }
+
     public static void EnviarCorreo(ArrayList email,String mensaje,String tema,String emailInstitucion,String clave,String host, String puerto){
 //        String host ="smtp.gmail.com";//Suponiendo que el servidor SMTPsea la propia máquina
         //String from ="setecompu.ec@gmail.com";

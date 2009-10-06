@@ -1,8 +1,8 @@
 <?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
 <?page id="main-page"?>
-<window     xmlns:y="http://www.zkoss.org/2007/yui"
+<window    maximizable="true"   mode="overlapped"       xmlns:y="http://www.zkoss.org/2007/yui"
  title="Ingreso de Notas" border="normal"
-width="100%" id="principal">
+width="80%" id="principal">
 <zscript>
 <![CDATA[
 import bean.notas;
@@ -101,6 +101,7 @@ void doAdd(Cursos curso, MateriaProfesor materia){
 </row>
 <row>
    <span style="float:right"> Materias(*):</span>
+    <span>
                <bandbox  width="300px" readonly="true"  id="bd2">
                     <bandpopup>
                     <vbox>
@@ -115,6 +116,7 @@ void doAdd(Cursos curso, MateriaProfesor materia){
                     </vbox>
                     </bandpopup>
                 </bandbox>
+                <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/> </span>
 </row>
 </rows>
 </grid>

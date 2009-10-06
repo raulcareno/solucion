@@ -39,10 +39,10 @@
             <param-value>/zkau</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
-        <init-param>
+        <!--init-param>
             <param-name>language-addon-uri</param-name>
             <param-value>/WEB-INF/lang-addon.xml</param-value>
-        </init-param>
+        </init-param-->
     </servlet>
     <servlet-mapping>
         <servlet-name>zkLoader</servlet-name>

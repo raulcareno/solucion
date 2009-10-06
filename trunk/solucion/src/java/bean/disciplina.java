@@ -231,7 +231,6 @@ String del = "Delete from Notas where matricula.curso.codigocur = '"+curso.getCo
                 if(nota.getMateria().getCodigo().equals(0)){
                         nota.setDisciplina(false);
                 }
-                
                 inter.set("nota", nota);
                 int ta = labels.size()-1;
                 for (int j = 2; j < labels.size()-1; j++) {
@@ -248,11 +247,11 @@ String del = "Delete from Notas where matricula.curso.codigocur = '"+curso.getCo
                         }
                 }
                 nota = (Notas)inter.get("nota");
-//                    Label object1 = (Label) labels.get(ta);
-//                nota.setObservacion(object1.getValue()+"");
+//              Label object1 = (Label) labels.get(ta);
+//              nota.setObservacion(object1.getValue()+"");
                 adm.guardar(nota);
-                System.out.println("FINALIZO EN: "+new Date());
-                return "ok";
+                //System.out.println("FINALIZO EN: "+new Date());
+                //return "ok";
             }catch (EvalError ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
