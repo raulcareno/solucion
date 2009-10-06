@@ -322,9 +322,9 @@ Cursos cur = curs.selectedItem.value;
     </groupbox>
     <groupbox  width="100%"  mold="3d" >
         <caption label="Materias Asignadas" />
-        <vbox>
+        <vbox width="100%">
             <hbox>  </hbox>
-            <hbox>
+            <hbox width="100%">
                 <listbox  mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                     <listhead>
                         <listheader label="Cod."/>

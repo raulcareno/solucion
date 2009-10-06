@@ -291,11 +291,11 @@ void cargarPar(Global g){
 			</vbox>
 
  </groupbox>
-<groupbox mold="3d" >
+<groupbox width="100%" mold="3d" >
     <caption label="Busquedas" />
 <vbox>
     <hbox> Curso:  <textbox id="buscarText"  maxlength="60" cols="40" />  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
-    <hbox>
+    <hbox width="100%">
          <listbox mold="paging" rows="10" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
 			<listhead>
                                 <listheader label="Cod."/>

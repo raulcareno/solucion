@@ -1174,12 +1174,12 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     <panel height="370px" style="margin-bottom:10px"
 				title="Búsquedas" border="normal">
                         <panelchildren>
-                            <vbox>
-                                <hbox>  Estudiantes:
+                            <vbox width="100%">
+                                <hbox >  Estudiantes:
                                     <textbox id="buscarText"  maxlength="60" cols="40" />
                                     <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                                 </hbox>
-                                <hbox>
+                                <hbox width="100%">
                                     <listbox mold="paging"  pageSize="17" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                                         <listhead>
                                             <listheader label="Cod."/>

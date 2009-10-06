@@ -374,11 +374,11 @@ empa.setPerfil(g);
 
                 <tabpanel>
 
-                    <groupbox mold="3d" >
+                    <groupbox  width="100%" mold="3d" >
 
                         <caption label="Busquedas" />
                         <vbox>
-                            <hbox>  Perfiles:
+                            <hbox>  Apellidos:
                                 <textbox id="buscarText"  maxlength="60" cols="40" />
                                 <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                             </hbox>

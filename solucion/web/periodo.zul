@@ -76,8 +76,8 @@
 
        <caption label="Busquedas a" />
 <vbox>
-    <hbox>  Perfiles:  <textbox id="buscarText"  maxlength="60" cols="40" />  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
-    <hbox>
+    <hbox>  Periodos:  <textbox id="buscarText"  maxlength="60" cols="40" />  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
+    <hbox width="100%">
          <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
 			<listhead>
                 <listheader label="Cod."/>
@@ -94,7 +94,7 @@
     </hbox>
 </vbox>
 </groupbox>
-<groupbox  mold="3d">
+<groupbox width="100%"  mold="3d">
 <caption label="Copiar parametros a nuevo periodo" />
 <vbox>
     <hbox> Desde </hbox>
@@ -107,7 +107,7 @@
 		</listbox>
     </hbox>
     <hbox>Hasta </hbox>
-    <hbox>
+    <hbox width="100%">
        <listbox id="periodosListado2" mold="select" >
             <listitem  label="[Seleccione]" value="-1"/>
 			<listitem forEach="${periodosListadod}" value="${each}">

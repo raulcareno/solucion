@@ -45,17 +45,17 @@ String hasta2 = (hasta.getValue().getYear()+1900) +"-"+(hasta.getValue().getMont
  
   </zscript>
  
-<groupbox mold="3d" >
+<groupbox width="100%" mold="3d" >
 
        <caption label="Seleccione las fechas en las cuales desea ver los movimientos" />
 <vbox>
-<hbox>  Desde:
+<hbox width="100%">  Desde:
  				<datebox id="desde" format="yyyy-MM-dd"  width="100px" />
                 Hasta:
                 <datebox id="hasta" format="yyyy-MM-dd" width="100px" />
                 <button id="buscar"  label="Buscar" onClick="buscar();"/>
  </hbox>
-    <hbox>
+    <hbox width="100%">
          <listbox id="datos" width="100%">
 			<listhead>
                                 <listheader label="Usuario"/>
