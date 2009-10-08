@@ -99,12 +99,19 @@ public disciplina(){
 //                                label.setValue(""+dos);
 //                             else 
                              if(j>=2){//si no es no matricl ani nombre del estudiante
-                                label.setValue(""+redondear((Double) dos,2));
+                                 Double valor = (Double) dos;
+                                   if (valor.equals(0.0)) {
+                                        label.setValue("");
+                                    } else {
+                                        label.setValue(""+redondear((Double) dos,2));
+                                    }
+                                //label.setValue(""+redondear((Double) dos,2));
                              }else {
                                  String valor = dos.toString().replace("(","").replace(")","").replace("\"","").replace(",","");
                                 label.setValue("" + valor);
                                 //label.setValue(""+dos);
                              }
+                             label.setStyle("font-size:11px;font:arial");
                                 row.appendChild(label);
                              
                          }
@@ -181,6 +188,15 @@ public disciplina(){
  public String guardar(List col,Cursos curso,MateriaProfesor materia){
      System.out.println("INICIO EN: "+new Date());
      Interpreter inter = new Interpreter();
+
+      String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
+
+      
+      try {
+        inter.eval(redon);
+     } catch (Exception e) {
+     }
+            
      Administrador adm = new Administrador();
      secuencial sec = new secuencial();
      Session ses = Sessions.getCurrent();
@@ -231,6 +247,7 @@ String del = "Delete from Notas where matricula.curso.codigocur = '"+curso.getCo
                 if(nota.getMateria().getCodigo().equals(0)){
                         nota.setDisciplina(false);
                 }
+
                 inter.set("nota", nota);
                 int ta = labels.size()-1;
                 for (int j = 2; j < labels.size()-1; j++) {
@@ -239,9 +256,15 @@ String del = "Delete from Notas where matricula.curso.codigocur = '"+curso.getCo
                     formula = formula.replace("no","nota.getNo");//EN CASO DE QUE HAYA FORMULA
                     String toda = notas.get(j-2).getNota()+"";
                     String uno = toda.substring(0,1).toUpperCase();
-                    toda = toda.substring(1, toda.length());
-
-                    inter.eval("nota.set"+(uno+toda)+"("+redondear(new Double(object1.getValue()),2)+");");
+                                        toda = toda.substring(1, toda.length());
+                                        String vaNota = object1.getValue().toString();
+                    Double aCargar = 0.0;
+                        if (vaNota.equals("")) {
+                            aCargar = 0.0;
+                        } else {
+                            aCargar = new Double(vaNota);
+                        }
+                    inter.eval("nota.set"+(uno+toda)+"("+redondear(aCargar,2)+");");
                         if(!formula.isEmpty()){
                                 inter.eval("nota.set"+(uno+toda)+"("+formula+");");
                         }

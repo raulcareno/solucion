@@ -134,6 +134,7 @@ public class notas extends Rows {
                         label.setValue("");
                     } else {
                         label.setValue("" + redondear((Double) dos, 2));
+                        
                     }
 
                 } else {
@@ -141,6 +142,7 @@ public class notas extends Rows {
                     label.setValue("" + valor);
                 }
 //                                 label.setAttribute(q, dos);
+                  label.setStyle("font-size:11px;font:arial");
                 row.appendChild(label);
 //                                 System.out.print(","+dos);
             }
