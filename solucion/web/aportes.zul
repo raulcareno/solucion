@@ -443,6 +443,7 @@ public Boolean verificar2(){
          inter.eval(formula1+"*1");
        
       } catch (EvalError ex) {
+      System.out.println(".........."+ex);
           Messagebox.show("ERROR EN FORMULA DE APROVECHAMIENTO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
           return true;
       } 
