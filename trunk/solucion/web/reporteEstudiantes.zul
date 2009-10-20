@@ -82,20 +82,39 @@ public JRDataSource transporte(Cursos curso,String tipo){
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
-                    String query = "SELECT mat FROM Matriculas AS mat " +
-                            "WHERE  mat.estado like '%Matriculado%' " +
-                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.estudiante.transporte = true  " +
-                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
-                    if (!curso.getCodigocur().equals(-2)) {
-                        query = "Select o from Matriculas as o " +
-                                "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                                "and o.curso.codigocur = '" + curso.getCodigocur() + "' and o.estudiante.transporte = true ";
-                    }
+                    if(tipo.equals("LTRAN")){
+                        String query = "SELECT mat FROM Matriculas AS mat " +
+                                "WHERE  mat.estado like '%Matriculado%' " +
+                                "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.estudiante.transporte = true  " +
+                                " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                        if (!curso.getCodigocur().equals(-2)) {
+                            query = "Select o from Matriculas as o " +
+                                    "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                                    "and o.curso.codigocur = '" + curso.getCodigocur() + "' and o.estudiante.transporte = true  order by o.curso.secuencia, o.curso.codigocur, o.estudiante.apellido";
+                        }
 
-                    List hoy = adm.query(query);
-                    for (Iterator it = hoy.iterator(); it.hasNext();) {
-                        Matriculas elem = (Matriculas) it.next();
-                        detalle.add(elem);
+                        List hoy = adm.query(query);
+                        for (Iterator it = hoy.iterator(); it.hasNext();) {
+                            Matriculas elem = (Matriculas) it.next();
+                            detalle.add(elem);
+                        }
+                    }else if(tipo.equals("LCART")){
+                        String query = "SELECT mat FROM Matriculas AS mat " +
+                                    "WHERE  mat.estado like '%Matriculado%' " +
+                                    "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                                    " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                            if (!curso.getCodigocur().equals(-2)) {
+                                query = "Select o from Matriculas as o " +
+                                        "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                                        "and o.curso.codigocur = '" + curso.getCodigocur() + "'  order by o.curso.secuencia, o.curso.codigocur, o.estudiante.apellido ";
+                            }
+
+                            List hoy = adm.query(query);
+                            for (Iterator it = hoy.iterator(); it.hasNext();) {
+                                Matriculas elem = (Matriculas) it.next();
+                                detalle.add(elem);
+                            }
+                    
                     }
                 JRDataSource ds = new ReporteActaDataSource(detalle);
                 
@@ -195,7 +214,12 @@ public JRDataSource internos(Cursos curso,String tipo){
                     datasource = transporte((Cursos)curs.getSelectedItem().getValue(),"LTRAN");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/transporte.jasper");
-            }else if(tipo.equals("LNUEV")){
+            }else if(tipo.equals("LCART")){
+                    datasource = transporte((Cursos)curs.getSelectedItem().getValue(),"LCART");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/paracarnet.jasper");
+            }
+            else if(tipo.equals("LNUEV")){
                     datasource = nuevos((Cursos)curs.getSelectedItem().getValue(),"LNUEV");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/nuevos.jasper");
@@ -345,6 +369,7 @@ void campos(String valor){
                                 <listitem label="Estudiantes Retirados" value="RET" />
                                 <listitem label="Lista de Matriculados" value="LMAT" />
                                 <listitem label="Lista de Carné Estudiantil"  value="LCAR"/>
+                                <listitem label="Listado para Carnets" value="LCART" />
                                 <listitem label="Lista de Claves" value="LCLA"/>
                                 <listitem label="Listado de Claves con Matricula" value="LCLA2"/>
                                 <listitem label="Listado de Correos electronicos" value="LCOR"/>

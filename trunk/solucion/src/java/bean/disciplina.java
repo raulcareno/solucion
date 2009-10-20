@@ -195,6 +195,8 @@ public disciplina(){
       try {
         inter.eval(redon);
      } catch (Exception e) {
+         System.out.println(""+e);
+         return "false";
      }
             
      Administrador adm = new Administrador();

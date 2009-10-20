@@ -132,7 +132,7 @@ void verificar(){
 						</hbox>
                         <hbox>
 <!-- PERIODO -->
-					     <listbox  style="background-color:#D5F1FF;border-color:#D5F1FF" onSelect="cambio(); " width="380px"  id="periodo" mold="select">
+					     <listbox  style="font-size:12px;background-color:#D5F1FF;border-color:#D5F1FF" onSelect="cambio(); " width="415px"  id="periodo" mold="select">
                             <listitem forEach="${perfiles}" value="${each}">
                               <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
                             </listitem>

@@ -22,7 +22,7 @@ String desde2 = (desde.getValue().getYear()+1900) +"-"+(desde.getValue().getMont
 String hasta2 = (hasta.getValue().getYear()+1900) +"-"+(hasta.getValue().getMonth()+1)+"-"+hasta.getValue().getDate()+" 23:59:59";
 
       System.out.println("Select o from Auditoria as o where o.fecha between '"+desde2+"' and '"+hasta2+"' ");
-      List equivaEncontrados = adm.query("Select o from Auditoria as o where o.fecha between '"+desde2+"' and '"+hasta2+"' ");
+      List equivaEncontrados = adm.query("Select o from Auditoria as o where o.fecha between '"+desde2+"' and '"+hasta2+"' order by o.fecha desc ");
         datos = new Listbox();
         int a=0;
             for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -56,14 +56,14 @@ String hasta2 = (hasta.getValue().getYear()+1900) +"-"+(hasta.getValue().getMont
                 <button id="buscar"  label="Buscar" onClick="buscar();"/>
  </hbox>
     <hbox width="100%">
-         <listbox id="datos" width="100%">
+         <listbox mold="paging"  pageSize="25"  id="datos" width="100%">
 			<listhead>
-                                <listheader label="Usuario"/>
-                                <listheader label="Acción"/>
-                                <listheader label="Pantalla"/>
-                                <listheader label="Campo"/>
-                                <listheader label="Fecha"/>
-                                <listheader label="Máquina"/>
+                                <listheader label="Usuario" sort="auto"/>
+                                <listheader label="Acción" sort="auto"/>
+                                <listheader label="Pantalla" sort="auto"/>
+                                <listheader label="Campo" sort="auto"/>
+                                <listheader label="Fecha" sort="auto"/>
+                                <listheader label="Máquina" sort="auto"/>
 
 			</listhead>
 			<listitem forEach="${allEvents}" value="${each}">

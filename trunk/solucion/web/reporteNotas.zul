@@ -211,6 +211,12 @@ public JRDataSource profesores(){
                     parametros.put("materia", mate.getMateria().getDescripcion());
                      parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
                     report.setSrc("WEB-INF/reportes/notaspor.jasper");
+            }else if(tipo.equals("NMATD")){
+                    datasource = noti.notasdisciplina(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
+                    MateriaProfesor mate = ((MateriaProfesor)materiasCombo.getSelectedItem().getValue());
+                    parametros.put("materia", mate.getMateria().getDescripcion());
+                    parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
+                    report.setSrc("WEB-INF/reportes/notaspor.jasper");
             }else if(tipo.equals("CCAL")){
                     parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
@@ -262,15 +268,15 @@ sistemasCombo.disabled = true;
         }else if(valor.equals("DIS2")){
             curs.disabled = false;
             titulo.value= "Lista de profesores por Curso";
-        }else if(valor.equals("NMAT")){
+        }else if(valor.equals("NMAT") || valor.equals("NMATD") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
             materiasCombo.disabled = false;
-            titulo.value= "Cuadro de Notas por Materia";
+            titulo.value= "Cuadro de Notas por Materia Disciplina";
             curs.setSelectedIndex(-1);
             materiasCombo.setSelectedIndex(-1);
             sistemasCombo.setSelectedIndex(-1);
-curs.setSelectedIndex(0);
+            curs.setSelectedIndex(0);
         }else if(valor.equals("LIB")){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
@@ -314,7 +320,8 @@ collapsible="true" title="Parametros">
 		<listitem label="[Seleccione]" value="-1" selected="true" />
         
 		<listitem label="Cuadro de Notas por Materia" value="NMAT" />
-		<listitem label="Libreta de Calificaciones" value="LIB" />
+        <listitem label="Cuadro de Notas por Materia Disciplina" value="NMATD" />
+        <listitem label="Libreta de Calificaciones" value="LIB" />
 		<listitem label="Cuadro de Calificaciones" value="CCAL" />
         <listitem label="Cuadro de Calificaciones(2)" value="CCAL2" />
 		<listitem label="Cuadro Final de Notas" value="CNF" />
@@ -402,6 +409,9 @@ collapsible="true" title="Reporte">
 	<jasperreport id="report" />
  </panelchildren>
  </panel>
+
+
+
 
 </zk>
 </window>
