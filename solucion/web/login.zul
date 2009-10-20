@@ -8,7 +8,7 @@
 
 <zk>
  
-<window onLoad="usuario.focus();" onCreate="usuario.focus();"  mode="overlapped" id="winLogin" style="position:absolute; top:20%; left:35%" border="normal" width="420px" sizable="true">
+<window onLoad="usuario.focus();" onCreate="usuario.focus();"  mode="overlapped" id="winLogin" style="position:absolute; top:20%; left:35%" border="normal" width="460px" sizable="true">
   
 
 <zscript>
@@ -133,10 +133,10 @@ void ingresoSistemas(){
 				<span style="float:right">Contraseña:(*):</span>
                  <textbox  onOK="verificar.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
 			</row>
-            <row align="center" id="rperiodo" visible="false" spans="2">
-                    <listbox  onOK="btnIngresar.focus()"   width="395px"  id="periodo" mold="select">
+            <row id="rperiodo" visible="false" spans="2">
+                    <listbox  onOK="btnIngresar.focus()"  style="font-size:12px"   width="435px"  id="periodo" mold="select">
                         <listitem forEach="${perfiles}" value="${each}">
-                              <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
+                              <listcell  label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
                         </listitem>
                     </listbox>
 
@@ -172,7 +172,7 @@ void ingresoSistemas(){
                 </span>
             </row>
              <row align="center" spans="2">
-                <label style="font-size:9px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)5103 843"/>
+                <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)5103 843"/>
              </row>
 		</rows>
 	</grid>

@@ -10,7 +10,7 @@
   import bean.Permisos;
 
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
+    List allEvents = adm.query("Select o from Empleados as o where o.identificacion = 0");
     static MateriaProfesor matricula = new MateriaProfesor();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -63,7 +63,7 @@ formula.value = estudent.getFormula();
  
 void estado(Boolean estado,Boolean modificar){
         if(modificar){
-            estudent = (Estudiantes)datos.selectedItem.value;
+            estudent = (MateriaProfesor)datos.selectedItem.value;
         }
    codigo.disabled = estado;
     seimprime.disabled = estado;

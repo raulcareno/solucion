@@ -1,16 +1,16 @@
 <window mode="overlapped" title="Aportes por Trimestres, Bimestres, Quimestres" width="70%" height="83%" border="normal"
     maximizable="true" closable="true" sizable="true">
  <zscript>
-  import jcinform.persistencia.Trimestres;
-  import bean.EventDAO;
-  import java.util.ArrayList;
-  import jcinform.persistencia.Trimestres;
-  import jcinform.persistencia.Periodo;
-  import jcinform.persistencia.Sistemacalificacion;
+import jcinform.persistencia.Trimestres;
+import bean.EventDAO;
+import java.util.ArrayList;
+import jcinform.persistencia.Trimestres;
+import jcinform.persistencia.Periodo;
+import jcinform.persistencia.Sistemacalificacion;
 import jcinform.persistencia.Notanotas;
-  import jcinform.persistencia.Trimestres;
-  import jcinform.procesos.Administrador;
-  import bean.Permisos;
+import jcinform.persistencia.Trimestres;
+import jcinform.procesos.Administrador;
+import bean.Permisos;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;

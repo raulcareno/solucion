@@ -34,7 +34,7 @@ import sources.ReportePromocionDataSource;
 public class notas extends Rows {
 //ArrayList listad = new ArrayList();
 
-    private Double notaDisciplina = 20.0;
+    private Double notaDisciplina = 0.0;
 
     public notas() {
     }
@@ -110,7 +110,7 @@ public class notas extends Rows {
                     "order by estudiantes.apellido";
         }
 
-//     System.out.println(""+q);
+     System.out.println(""+q);
         List nativo = adm.queryNativo(q);
         Row row = new Row();
 
@@ -478,6 +478,75 @@ public class notas extends Rows {
                 "and notas.materia = '" + materia.getCodigo() + "' and notas.disciplina = false " +
                 "where matriculas.curso = '" + curso.getCodigocur() + "' " +
                 "order by estudiantes.apellido";
+//     System.out.println(""+q);
+        List nativo = adm.queryNativo(q);
+        List<Nota> lisNotas = new ArrayList();
+        for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+            Vector vec = (Vector) itna.next();
+            //row = new Row();
+            Matriculas matriculaNo = null;
+            MateriaProfesor mprofesor = null;
+            int ksis = 0;
+            for (int j = 0; j < vec.size(); j++) {
+                Object dos = vec.get(j);
+                Double val = 0.0;
+                Nota nota = new Nota();
+                try {
+                    if (dos.equals(null)) {
+                        dos = new Double(0.0);
+                    }
+                } catch (Exception e) {
+                    dos = new Double(0.0);
+                }
+                if (j >= 1) {
+                    val = redondear((Double) dos, 2);
+                    nota.setMatricula(matriculaNo);
+                    nota.setNota(val);
+                    nota.setMateria(materia);
+                    nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
+                    lisNotas.add(nota);
+                    ksis++;
+                } else {
+                    matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
+                    //mprofesor = adm.query("Select o from ")
+                }
+            }
+        }
+        nativo = null;
+        ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotas);
+        return ds;
+
+    }
+
+    public JRDataSource notasdisciplina(Cursos curso, Global materia, Sistemacalificacion sistema) {
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+//     int tamanio=0;
+        Administrador adm = new Administrador();
+        List sistemas = adm.query("Select o from Sistemacalificacion as o " +
+                "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
+                "where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  " +
+                "and o.sistema.orden  <= '" + sistema.getOrden() + "' " +
+                "order by o.sistema.orden ");
+        String query = "";
+        for (Notanotas notass : notas) {
+            query += notass.getNota() + ",";
+        }
+        query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+        String[] values = new String[sistemas.size()];
+
+        for (int i = 0; i < sistemas.size(); i++) {
+            values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
+        }
+//    tamanio = sistemas.size();
+        //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
+        String q = "Select matriculas.codigomat, " + query + "  from matriculas " +
+                "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
+                "left join notas on matriculas.codigomat = notas.matricula " +
+                "and notas.materia = '" + materia.getCodigo() + "' and notas.disciplina = true " +
+                "where matriculas.curso = '" + curso.getCodigocur() + "' " +
+                "order by estudiantes.apellido";
 //     System.out.println(""+q); 
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
@@ -705,6 +774,11 @@ public class notas extends Rows {
         Boolean promCuantitativo = regresaVariableParametrosLogico("PROMCUAN", parametrosGlobales);
         Boolean discCuantitativo = regresaVariableParametrosLogico("DISCCUAN", parametrosGlobales);
 
+        Boolean impPromedio = regresaVariableParametrosLogico("IMPPROM", parametrosGlobales);
+        Boolean impDisciplina = regresaVariableParametrosLogico("IMPDISC", parametrosGlobales);
+        Boolean impEquivalencias = regresaVariableParametrosLogico("IMPEQU", parametrosGlobales);
+
+
 //DECIMALESDIS
 
 
@@ -754,14 +828,16 @@ public class notas extends Rows {
             //Matriculas matriculas1 = itm.next();
             String q = "Select matriculas.codigomat,notas.materia,notas.cuantitativa, " + query + "  from matriculas " +
                     "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest  " +
-                    "left join notas on matriculas.codigomat = notas.matricula " +
+                    "left join notas on matriculas.codigomat = notas.matricula  " +
+                    "and notas.materia != 0  " +
                     "where matriculas.curso = '" + curso.getCodigocur() + "'  " +
                     "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' " +
                     "and notas.seimprime = true " +
                     "and notas.promedia = true " +
-                    "and notas.disciplina = false " +
+                    "and notas.disciplina = false  " +
+                    "and notas.materia != 0 " +
                     "order by estudiantes.apellido, notas.orden";
-//                 System.out.println("NOTAS GENERALES"+q);
+                 System.out.println("NOTAS GENERALES"+q);
             List nativo = adm.queryNativo(q);
             Nota nota = new Nota();
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
@@ -813,7 +889,7 @@ public class notas extends Rows {
                 }
                 //row.setParent(this);
             }
-
+if(impPromedio){
 //IMPRIMO EL PROMEDIO 
             q = "Select matriculas.codigomat," + query2 + "  from matriculas " +
                     "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest  " +
@@ -823,9 +899,9 @@ public class notas extends Rows {
                     "and notas.seimprime = true " +
                     "and notas.promedia = true " +
                     "and notas.disciplina = false " +
-                    " and notas.cuantitativa = true " +
+                    "and notas.cuantitativa = true and notas.materia != 0 " +
                     "group by codigomat  ";
-            //System.out.println("NOTAS DE DISCIPLINA "+q);
+            System.out.println("NOTAS DE promedio "+q);
             nativo = null;
             nativo = adm.queryNativo(q);
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
@@ -872,17 +948,17 @@ public class notas extends Rows {
                 //row.setParent(this);
             }
 
-
+}
             //IMPRIMO DISCIPLINA
-
+if(impDisciplina){
             q = "Select matriculas.codigomat," + queryDisciplina + "  from matriculas " +
                     "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest  " +
                     "left join notas on matriculas.codigomat = notas.matricula " +
                     "where matriculas.curso = '" + curso.getCodigocur() + "'  " +
                     "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' " +
-                    "and notas.materia = 0  " +
+                    " and notas.materia = 0  " +
                     "group by codigomat  ";
-//            System.out.println(""+q);
+            System.out.println("DISCIPLINA "+q);
             nativo = adm.queryNativo(q);
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                 Vector vec = (Vector) itna.next();
@@ -925,7 +1001,7 @@ public class notas extends Rows {
                 }
                 //row.setParent(this);
             }
-
+}
 //IMPRIMO MATERIAS NO INCLUIDAS EN EL MINISTERIO
 
             q = "Select matriculas.codigomat,notas.materia,notas.cuantitativa, " + query + "  from matriculas " +
@@ -937,6 +1013,7 @@ public class notas extends Rows {
                     "and notas.disciplina = false " +
                     "and notas.promedia = false " +
                     "and notas.cuantitativa = true " +
+                    "and notas.materia != 0 " +
                     "order by estudiantes.apellido, notas.orden";
             //System.out.println(""+q);
             nativo = adm.queryNativo(q);
@@ -987,6 +1064,7 @@ public class notas extends Rows {
 
             ArrayList lisFaltas = new ArrayList();
             String query3 = "";
+if(impEquivalencias){
             int w = 1;
             for (int i = 0; i < equivalenciasFaltas.size(); i++) {
                 query3 += "sum(nota" + w + "),";
@@ -1030,6 +1108,8 @@ public class notas extends Rows {
                 //row.setParent(this);
 
             }
+
+        }
 
             nota.setFirma1(firma1);
             nota.setFirma2(firma2);
@@ -1669,11 +1749,21 @@ public class notas extends Rows {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-        List<ParametrosGlobales> para = adm.query("Select o from ParametrosGlobales as o where o.variable = 'TIPODISCIPLINA' ");
+        List<ParametrosGlobales> para = adm.query("Select o from ParametrosGlobales as o " +
+                "where o.variable = 'TIPODISCIPLINA' " +
+                "and o.periodo.codigoper = '"+curso0.getPeriodo().getCodigoper()+"'");
         if(para.size()>0){
             ParametrosGlobales param = para.get(0);
             tipo = param.getCvalor();
         }
+
+//        List<ParametrosGlobales> para = adm.query("Select o from ParametrosGlobales as o " +
+//                "where o.variable = 'TIPODISCIPLINA' " +
+//                "and o.periodo.codigoper = '"+curso0.getPeriodo().getCodigoper()+"'");
+//        if(para.size()>0){
+//            ParametrosGlobales param = para.get(0);
+//            tipo = param.getCvalor();
+//        }
 
         List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
                 "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
@@ -1700,7 +1790,7 @@ public class notas extends Rows {
 
             List<MateriaProfesor> maprofes = adm.query("Select o from MateriaProfesor as o " +
                     "where o.curso.codigocur = '" + ActualCurso.getCodigocur() + "' " +
-                    "and o.materia.codigo > 1 and o.opcional = true ");
+                    "and o.materia.codigo > 1 and o.ministerio = true ");
             if (maprofes.size() > 0) {
 
                 String formu = "";
@@ -1711,16 +1801,16 @@ public class notas extends Rows {
                 }
 
                 formu = formu.substring(0, formu.length() - 1);
-                if (tipo.equals("MITAD")){
+                if (tipo.contains("MITAD")){
                     formu = "(((" + formu + ")/" + maprofes.size() + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/2";
-                } else if (tipo.equals("PROMEDIO")){//
+                } else if (tipo.contains("PROMEDIO")){//
                     formu = "(((" + formu + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/(" + maprofes.size() + "+1))";
-                } else if (tipo.equals("SUMATORIA")){//PROMEDIO DE PROFESORES + PROMEDIO DE INSPECCION
+                } else if (tipo.contains("SUMATORIA")){//PROMEDIO DE PROFESORES + PROMEDIO DE INSPECCION
                     formu = "((" + formu + ")/" + maprofes.size() + "+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))";
                 }
                 List<Global> materias = adm.query("Select o from Global as o " +
                         "where o.codigo in (Select t.materia.codigo from MateriaProfesor as t" +
-                        " where t.curso.codigocur = '" + ActualCurso.getCodigocur() + "' and t.opcional = true ) " +
+                        " where t.curso.codigocur = '" + ActualCurso.getCodigocur() + "' and t.ministerio = true ) " +
                         " ");
                 String formula = formu;
 
@@ -1746,8 +1836,9 @@ public class notas extends Rows {
                 }
                 Interpreter inter = new Interpreter();
                 try {
-                    //0 DISCIPLINA INSPECTOR
-                    //-2 DISCIPLINA PROFESORES
+                    //1 DISCIPLINA INSPECTOR
+                    //0 disciplina 
+
                     for (Iterator<Global> it = Nmaterias.iterator(); it.hasNext();) {
                         Global global = it.next();
                         String q = "Select matriculas.codigomat, " + query + "  from matriculas  " +
