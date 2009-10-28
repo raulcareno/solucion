@@ -148,7 +148,7 @@ void llenar(Estudiantes estudent){
 
         if(estudent.getRepresentante()==null){
             Representante re = new Representante(0);
-            re.setTipoidentificacion("CF");
+            re.setTipoidentificacion("C");
             estudent.setRepresentante(re);
         }
         llenarRepresentante(estudent.getRepresentante());
@@ -249,7 +249,7 @@ void llenarRepresentante(Representante repren){
      Listitem item = new Listitem();
      String tip = repren.getTipoidentificacion();
      item.setValue(tip);
-     item.appendChild(new Listcell( (tip.equals("C")?"CEDULA":(tip.equals("R")?"RUC":"Consumidor Final")) +""));
+     item.appendChild(new Listcell( (tip.equals("C")?"CEDULA":"RUC") +""));
      tipofac.appendChild(item);
      tipofac.setSelectedItem(item);
      llenarConsumidor();
@@ -405,13 +405,7 @@ void estado(Boolean estado,Boolean modificar){
         representante0.setMailmadre(emailma.value);
         representante0.setProfesionmadre(profesionma.value);
         representante0.setOcupacionmadre(ocupacionma.value);
-        if(representante0.getTipoidentificacion().equals("CF")){
-             representante0.setTipoidentificacion("C");
-            representante0.setTelfactura(representante0.getTelefono());
-            representante0.setNombrefactura(representante0.getApellidos() +" "+ representante0.getNombres());
-            representante0.setDirfactura(representante0.getDireccion());
-            representante0.setIdentificacionfactura(representante0.getIdentificacionrepre());
-        }
+        
 
 
  Boolean repreNuevo = false;
@@ -643,7 +637,7 @@ valor = valor.substring(ini+1, fin);
     }
     void limpiarRepresentante(){
             Representante object = new Representante();
-            object.setTipoidentificacion("CF");
+            object.setTipoidentificacion("C");
             llenarRepresentante(object);
     }
   void verificarCedula(String valor){
@@ -691,18 +685,12 @@ void cargar(Global g){
 
 void llenarConsumidor(){
 
-if( (tipofac.selectedItem.value).equals("CF") ){
-    cedulafac.value = "9999999999999";
-    nombresfac.value = "CONSUMIDOR FINAL";
-    direccionfac.value = "S/D";
-    telefonofac.value = "9999999999999";
 
-}else{
     cedulafac.value = "";
     nombresfac.value = "";
     direccionfac.value = "";
     telefonofac.value = "";
-}
+
 
 
 }
@@ -1097,11 +1085,11 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             <row>
                                 <span style="float:right"> Tipo:</span>
                                 <listbox mold="select" onSelect="llenarConsumidor();" disabled="true" id="tipofac" width="150px">
-                                    <listitem selected="true" label="Consumidor Final" value="CF">
-                                    </listitem>
                                     <listitem label="CEDULA" value="C">
                                     </listitem>
                                     <listitem label="RUC" value="R">
+                                    </listitem>
+                                    <listitem label="PASAPORTE" value="P">
                                     </listitem>
                                 </listbox>
 

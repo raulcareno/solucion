@@ -54,6 +54,12 @@
 	<field name="meses" class="java.lang.Integer"/>
 	<field name="dias" class="java.lang.Integer"/>
 	<field name="fecha" class="java.util.Date"/>
+	<field name="ocupacionPadre" class="java.lang.String"/>
+	<field name="ocupacionMadre" class="java.lang.String"/>
+	<field name="emailMa" class="java.lang.String"/>
+	<field name="emailPa" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="repite" class="java.lang.Boolean"/>
 
 
 		<group  name="estudiantes" isStartNewPage="true" >
@@ -241,7 +247,7 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="524"  isSplitAllowed="true" >
+			<band height="530"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="7"
@@ -917,6 +923,32 @@
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd 'de' MMMMM 'de' yyyy" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="359"
+						y="512"
+						width="168"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="142"
+						y="180"
+						width="100"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Boolean"><![CDATA[$F{repite}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
