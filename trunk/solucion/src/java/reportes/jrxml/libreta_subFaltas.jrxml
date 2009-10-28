@@ -64,7 +64,8 @@
 						y="1"
 						width="530"
 						height="46"
-						key="crosstab-1"/>
+						key="crosstab-1"
+						isRemoveLineWhenBlank="true"/>
 					<crosstabHeaderCell>						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 						</cellContents>

@@ -91,7 +91,7 @@ void estado(Boolean estado,Boolean modificar){
         matricula.setEmpleado(profes.selectedItem.value);
         matricula.setSeimprime(seimprime.checked);
         matricula.setMinisterio(promediada.checked);
-        matricula.setOpcional(opcional.checked);
+        matricula.setOpcional(opcional.checked); //ingresan disciplina
         matricula.setCuantitativa(cuantitativa.checked);
 
         if((!matricula.getCodigomap().equals(0)) ){
@@ -101,6 +101,17 @@ void estado(Boolean estado,Boolean modificar){
                   ((Listcell)children.get(1)).label = (profes.selectedItem.value).getApellidos() + " "+  (profes.selectedItem.value).getNombres() ;
                   ((Listcell)children.get(2)).label = mates.selectedItem.value+ "";
                   ((Listcell)children.get(3)).label = orden.value+ "";
+                  try{
+                  String quera = "update notas set orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
+                  " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
+                  " where matricula in (SELECT codigomat FROM matriculas WHERE curso = 14) " +
+                  " and materia = 24";
+                  adm.ejecutaSqlNativo(quera);
+                  System.out.println("ACTUALIZANDO DISTRIBUTIVO NOTAS "+quera);
+                  }catch(Exception ae){
+                         System.out.println("ERROR EN ACTUALIZAR NOTAS "+ae);
+                  }
+                  
          }else{
             List existe = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+((Cursos)curs.selectedItem.value).getCodigocur()+"'  and o.materia.codigo = '"+((Global)mates.selectedItem.value).getCodigo()+"' ");
                 if(existe.size()>0){
@@ -223,15 +234,15 @@ Cursos cur = curs.selectedItem.value;
                     <span style="float:right"> Curso(*):
                     </span>
 
-                                <listbox id="curs" mold="select"  width="420px"
+                    <listbox id="curs" mold="select"  width="420px"
                                         onSelect=" buscar2(((Cursos)self.selectedItem.value));">
-                                    <listitem    forEach="${cursos}" value="${each}">
-                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-                                    </listitem>
-                                    <listitem selected="true"   value="-1">
-                                        <listcell label="[Seleccione]" />
-                                    </listitem>
-                                </listbox>
+                        <listitem    forEach="${cursos}" value="${each}">
+                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                        </listitem>
+                        <listitem selected="true"   value="-1">
+                            <listcell label="[Seleccione]" />
+                        </listitem>
+                    </listbox>
 
                 </row>
                 <row>
@@ -243,22 +254,22 @@ Cursos cur = curs.selectedItem.value;
                     <span style="float:right"> Materias(*):
                     </span>
 
-                      <listbox id="mates"  mold="select" width="320px" >
-                                    <listitem selected="true" forEach="${materias}" value="${each}">
-                                        <listcell label="${each.descripcion}" />
-                                    </listitem>
-                                </listbox>
+                    <listbox id="mates"  mold="select" width="320px" >
+                        <listitem selected="true" forEach="${materias}" value="${each}">
+                            <listcell label="${each.descripcion}" />
+                        </listitem>
+                    </listbox>
 
                 </row>
                 <row>
                     <span style="float:right"> Profesores(*):
                     </span>
 
-                                <listbox mold="select" id="profes" width="320px">
-                                    <listitem selected="true"  forEach="${profesores}" value="${each}">
-                                        <listcell label="${each.apellidos} ${each.nombres}" />
-                                    </listitem>
-                                </listbox>
+                    <listbox mold="select" id="profes" width="320px">
+                        <listitem selected="true"  forEach="${profesores}" value="${each}">
+                            <listcell label="${each.apellidos} ${each.nombres}" />
+                        </listitem>
+                    </listbox>
                             
                 </row>
                 <row>

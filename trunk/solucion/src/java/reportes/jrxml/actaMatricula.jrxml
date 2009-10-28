@@ -54,6 +54,12 @@
 	<field name="meses" class="java.lang.Integer"/>
 	<field name="dias" class="java.lang.Integer"/>
 	<field name="fecha" class="java.util.Date"/>
+	<field name="ocupacionPadre" class="java.lang.String"/>
+	<field name="ocupacionMadre" class="java.lang.String"/>
+	<field name="emailMa" class="java.lang.String"/>
+	<field name="emailPa" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="repite" class="java.lang.Boolean"/>
 
 
 		<group  name="estudiantes" isStartNewPage="true" >

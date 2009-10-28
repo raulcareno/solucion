@@ -162,7 +162,8 @@
 						y="18"
 						width="549"
 						height="32"
-						key="subreport-2"/>
+						key="subreport-2"
+						isRemoveLineWhenBlank="true"/>
 					<subreportParameter  name="listaFaltas">
 						<subreportParameterExpression><![CDATA[$F{listaFaltas}]]></subreportParameterExpression>
 					</subreportParameter>

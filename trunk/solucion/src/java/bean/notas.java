@@ -891,16 +891,23 @@ public class notas extends Rows {
             }
 if(impPromedio){
 //IMPRIMO EL PROMEDIO 
-            q = "Select matriculas.codigomat," + query2 + "  from matriculas " +
-                    "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest  " +
-                    "left join notas on matriculas.codigomat = notas.matricula " +
-                    "where matriculas.curso = '" + curso.getCodigocur() + "'  " +
-                    "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' " +
+            q = "Select matricula," + query2 + "  from notas " +
+                    "where notas.matricula = '" + matriculas1.getCodigomat() + "' " +
                     "and notas.seimprime = true " +
                     "and notas.promedia = true " +
                     "and notas.disciplina = false " +
                     "and notas.cuantitativa = true and notas.materia != 0 " +
-                    "group by codigomat  ";
+                    "group by matricula  ";
+//            q = "Select matriculas.codigomat," + query2 + "  from matriculas " +
+//                    "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest  " +
+//                    "left join notas on matriculas.codigomat = notas.matricula " +
+//                    "where matriculas.curso = '" + curso.getCodigocur() + "'  " +
+//                    "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' " +
+//                    "and notas.seimprime = true " +
+//                    "and notas.promedia = true " +
+//                    "and notas.disciplina = false " +
+//                    "and notas.cuantitativa = true and notas.materia != 0 " +
+//                    "group by codigomat  ";
             System.out.println("NOTAS DE promedio "+q);
             nativo = null;
             nativo = adm.queryNativo(q);
