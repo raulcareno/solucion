@@ -66,7 +66,7 @@ public class email {
         correos="";
     }
 
-    public void enviarEmail(Periodo periodo) {
+    public void enviarEmail(Periodo periodo,Empleados empleado) {
         Cursos obj = curso;
                 try
                 {
@@ -84,7 +84,7 @@ public class email {
                         i++;
                     }
                     if(matriculados2.size()>0)
-                           EnviarAutenticacion.EnviarCorreo(matriculados2,mensaje,tema,periodo.getInstitucion().getUsuariomail(),periodo.getInstitucion().getClavemail(),periodo.getInstitucion().getSmtp(),periodo.getInstitucion().getPuerto());
+                           EnviarAutenticacion.EnviarCorreo(matriculados2,mensaje,tema,periodo.getInstitucion().getUsuariomail(),periodo.getInstitucion().getClavemail(),periodo.getInstitucion().getSmtp(),periodo.getInstitucion().getPuerto(),empleado.getEmail());
         }
         catch(Exception e)
         {
@@ -159,7 +159,7 @@ class EnviarAutenticacion
             int i=0;
             emailsA[i] = new InternetAddress(email+"");
             System.out.println("***********************"+emailInstitucion);
-            Message msg = getTraerMensaje(session, tema, emailsA,mensaje,emailInstitucion);
+            Message msg = getTraerMensaje(session, tema, emailsA,mensaje,emailInstitucion,emailInstitucion);
             Transport.send(msg);
         }
 
@@ -170,7 +170,7 @@ class EnviarAutenticacion
 
     }
 
-    public static void EnviarCorreo(ArrayList email,String mensaje,String tema,String emailInstitucion,String clave,String host, String puerto){
+    public static void EnviarCorreo(ArrayList email,String mensaje,String tema,String emailInstitucion,String clave,String host, String puerto,String respuestaA){
 //        String host ="smtp.gmail.com";//Suponiendo que el servidor SMTPsea la propia máquina
         //String from ="setecompu.ec@gmail.com";
         String from = emailInstitucion;
@@ -192,7 +192,7 @@ class EnviarAutenticacion
                      i++;
              }
             System.out.println("***********************"+emailInstitucion);
-            Message msg = getTraerMensaje(session, tema, emailsA,mensaje,emailInstitucion);
+            Message msg = getTraerMensaje(session, tema, emailsA,mensaje,emailInstitucion,respuestaA);
             Transport.send(msg);
         }
 
@@ -203,16 +203,29 @@ class EnviarAutenticacion
 
     }
 
-    private static MimeMessage getTraerMensaje(Session session, String from,  InternetAddress[] to,String mensaje,String emailInstitucion)   {
+    private static MimeMessage getTraerMensaje(Session session, String from,  InternetAddress[] to,String mensaje,String emailInstitucion,String respuestaA)   {
         try{
 
             MimeMessage msg = new MimeMessage(session);
             msg.setSubject(""+from );
+            if(!respuestaA.equals(null) && !respuestaA.equals("")){
+                InternetAddress[] emailsA = new InternetAddress[1];
+                int i=0;
+                emailsA[i] = new InternetAddress(respuestaA+"");
+                msg.setReplyTo(emailsA);
+                //msg.setSender(new InternetAddress(respuestaA));
+                msg.setFrom(new InternetAddress(""+respuestaA));
+            }else{
+                msg.setFrom(new InternetAddress(""+emailInstitucion));
+            }
+                
+
             msg.setText(mensaje,"ISO-8859-1","html");
+            //msg.set
             //msg.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             //msg.addRecipients(Message.RecipientType.TO, new InternetAddress[] { new InternetAddress("geovanny1781@yahoo.com"), new InternetAddress("jcinform@gmail.com"),new InternetAddress("geovanny1781@hotmail.com") });
             msg.addRecipients(Message.RecipientType.BCC, to );
-            msg.setFrom(new InternetAddress(""+emailInstitucion));
+            
 
             return msg;
 

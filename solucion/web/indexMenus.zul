@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <borderlayout onCreate="verificar()"  width="100%" style="float:center"  height="100%">
+
+        <zscript>
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+
+     Administrador adm = new Administrador();
+     Session a = Sessions.getCurrent();
+     Empleados emp = a.getAttribute("user");
+     if(emp==null){
+        Executions.sendRedirect("login.zul");
+     }
+ void salir(){
+        Executions.sendRedirect("login.zul");
+       
+        a.removeAttribute("accesos");
+        a.removeAttribute("user");
+        a.invalidate();
+ }
+ void cambio(){
+     Permisos permisos = new Permisos();
+     Periodo perio = (Periodo)periodo.selectedItem.value;
+      a.removeAttribute("periodo");
+      a.setAttribute("periodo",perio);
+      Executions.sendRedirect("index.zul");
+ }
+void verificar(){
+  Empleados user = a.getAttribute("user");
+  if(user != null){
+   //cargo los periodos que tienen
+   List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'");
+             if(user.getCodigoemp().equals(-1)){
+                  equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
+             }
+                if(equivaEncontrados.size()>0){
+                            Empleadoperiodo p = new Empleadoperiodo();
+                             Periodo per = new Periodo(-1);
+                             Institucion ins = new Institucion(-1);
+                             ins.setTipo("");
+                              per.setDescripcion("[Seleccione]");
+                              p.setPeriodo(per);
+                              ins.setDenominacion("");
+                              ins.setNombre("");
+                              per.setInstitucion(ins);
+                              equivaEncontrados.add(0,p);
+                                verificar.visible = false;
+                                btnIngresar.visible = true;
+                                clave.disabled = true;
+                                usuario.disabled = true;
+                                rperiodo.visible = true;
+
+                            periodo = new Listbox();
+
+                                int a=0;
+                                      for(Iterator it =periodo.getItems().iterator(); it.hasNext();) {
+                                            periodo.getItems().remove(a);
+                                        }
+                                       for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                                              Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
+                                              Listitem li = new Listitem();
+                                              li.setValue(acceIt.getPeriodo());
+                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " "+ acceIt.getPeriodo().getInstitucion().getTipo()));
+                                              periodo.appendChild(li);
+                                     }
+
+            }else{
+                Messagebox.show("Usuario Correcto no tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                usuario.focus();
+            }
+
+
+            }else{
+                Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                usuario.focus();
+             }
+
+}
+ void ingresar(String valor){
+         Include inc = (Include) xcontents;
+        inc.setSrc(valor);
+ }
+        </zscript>
+        <north size="10%" collapsible="true" >
+            <toolbar height="100%">
+                <tablelayout width="100%" columns="5">
+                    <tablechildren>
+                        <panel>
+                            <panelchildren  style="background-color:transparent;border:0px">
+
+                                            <label value="${sessionScope.periodo.institucion.denominacion}  ${sessionScope.periodo.institucion.nombre} - " style="background:transparent; color:#346B93;font-size:18px;font-weight:bold;" />
+                                       <label value="${sessionScope.periodo.institucion.tipo} Seleccione: " style="color:#346B93;font-weight:bold;" />
+
+
+                                        <!-- PERIODO -->
+                                            <listbox  style="font-size:12px;background-color:#D5F1FF;border-color:#D5F1FF" onSelect="cambio(); " width="415px"  id="periodo" mold="select">
+                                                <listitem forEach="${perfiles}" value="${each}">
+                                                    <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
+                                                </listitem>
+                                            </listbox>
+                                                 <menubar id="menubar" width="100%">
+                                                <menu label="Matriculas" src="/images/matriculacion.gif" >
+
+                                                    <menupopup>
+                                                        <menuitem src="/images/cursos.png" label="Cursos/Niveles" onClick='ingresar("/cursos.zul")' />
+                                                        <menuitem src="/images/pensum.png" label="Matricular" onClick='ingresar("/matriculas.zul")' />
+                                                        <menuitem src="/images/dinero.gif" label="Pendientes" onClick='ingresar("/pendientes.zul")' />
+                                                        <menuitem src="/images/resultados.png" label="Reportes" onClick='ingresar("/reporteEstudiantes.zul")' />
+                                                    </menupopup>
+                                                </menu>
+
+
+                                                <menu label="Notas"  src="/images/calificar.gif" >
+                                                    <menupopup>
+                                                        <menuitem src="/images/textos.png" label="Trimestres" onClick='ingresar("/trimestres.zul")' />
+                                                        <menuitem src="/images/llave.gif" label="Calificaciones" onClick='ingresar("/aportes.zul")' />
+                                                        <menuitem src="/images/distributivo.png" label="Distributivo" onClick='ingresar("/distributivo.zul")' />
+                                                        <menuitem src="/images/notas.png" label="Notas" onClick='ingresar("/notas.zul")' />
+                                                        <menuitem src="/images/notas.png" label="Registro Disciplina" onClick='ingresar("/disciplina.zul")' />
+                                                        <menuitem src="/images/notas.png" label="Registro Faltas" onClick='ingresar("/faltas.zul")' />
+                                                        <menuitem src="/images/resultados.png" label="Reporte Notas" onClick='ingresar("/reporteNotas.zul")' />
+                                                    </menupopup>
+                                                </menu>
+
+
+
+                                                <menu label="Grados"  src="/images/grados.gif"  >
+                                                    <menupopup>
+                                                        <menuitem src="/images/llave.gif" label="Notas Primero-Quinto" onClick='ingresar("/notasRecord.zul")' />
+                                                        <menuitem src="/images/distributivo.png" label="Materias de Grado" onClick='ingresar("/materiasdeGrado.zul")' />
+                                                        <menuitem src="/images/notas.png" label="Notas de Grado" onClick='ingresar("/cursosIngresonotasGrado.zul")' />
+                                                        <menuitem src="/images/calculo.gif" label="Calculo Promedios" onClick='ingresar("/cursosCalculoPromedios.zul")' />
+                                                        <menuitem src="/images/acta.gif" label="Acta de Grado" onClick='ingresar("/materiasdeActa.zul")' />
+                                                        <menuitem src="/images/notas.png" label="Notas de Acta" onClick='ingresar("/cursosIngresonotasActa.zul")' />
+                                                    </menupopup>
+                                                </menu>
+
+                                                <menu label="Varios"  src="/images/varios.gif"  >
+                                                    <menupopup>
+                                                        <menuitem src="/images/mail.gif" label="Correos"  onClick='ingresar("/correoInterno.zul")' />
+                                                        <menuitem src="/images/base.gif" label="Respaldos" onClick='ingresar("/respaldos.zul")' />
+                                                        <menuitem src="/images/calendar.gif" label="Calendario" onClick='ingresar("/calendar.zul")' />
+                                                        <menuitem src="/images/pensum.png" label="Dobe" onClick='ingresar("/dobe.zul")' />
+
+                                                    </menupopup>
+                                                </menu>
+
+                                                <menu label="Administracion"  src="/images/administracion.gif" >
+                                                    <menupopup>
+                                                        <menuitem src="/images/key.png" label="Accesos" onClick='ingresar("/accesos.zul")' />
+                                                        <menuitem src="/images/key.png" label="Auditoria" onClick='ingresar("/auditoria.zul")' />
+                                                        <menuitem src="/images/pensum.png" label="Empleados" onClick='ingresar("/empleados.zul")' />
+                                                        <menuitem src="/images/eperiodo.png" label="EmpleadosPeriodos" onClick='ingresar("/empleadoPeriodo.zul")' />
+                                                        <menuitem src="/images/equivalencias.png" label="Equivalencias" onClick='ingresar("/equivalencias.zul")' />
+                                                        <menuitem src="/images/run.gif" label="Globales" onClick='ingresar("/globales.zul")' />
+                                                        <menuitem src="/images/institucion.png" label="Institucion" onClick='ingresar("/institucion.zul")' />
+                                                        <menuitem src="/images/textos.png" label="Parametros" onClick='ingresar("/parametros.zul")' />
+                                                        <menuitem src="/images/periodos.png" label="Años Lectivos" onClick='ingresar("/periodo.zul")' />
+                                                        <menuitem src="/images/textos.png" label="Textos" onClick='ingresar("/textos.zul")' />
+                                                    </menupopup>
+                                                </menu>
+                                                <menu label="Usuario Activo: ${sessionScope.user.apellidos} ${sessionScope.user.nombres}">
+
+                                                </menu>
+                                                <menu label="Periodo: ${sessionScope.periodo.descripcion}"/>
+
+                                                <menu label="[Salir]" onClick="salir()" />
+                                                <menu label="${sessionScope.user.perfil.descripcion}" />
+
+                                            </menubar>
+                                       
+                                        
+
+                              
+                            </panelchildren>
+                        </panel>
+                    </tablechildren>
+ 
+                  
+ 
+                </tablelayout>
+					
+            </toolbar>
+ 
+        </north>
+
+        
+        <center flex="true">
+     <div style="background:#FFEFB0">
+        
+            <fisheyebar orient="vertical" id="fsb" style="position:absolute;margin:50px 95px;" attachEdge="top" itemWidth="80"
+                        itemHeight="80" itemMaxHeight="160" itemMaxWidth="160">
+
+
+            <fisheye image="/images/matriculacion1.gif" label="Matricular" onClick='ingresar("/matriculas.zul")' />
+			<fisheye image="/images/administracion1.png" label="Reportes Matri."  onClick='ingresar("/reporteEstudiantes.zul")' />
+            
+            <fisheye image="/images/notas.png" label="Notas"  onClick='ingresar("/matriculas.zul")'/>
+            <fisheye image="/images/administracion1.png" label="Reportes Matri."  onClick='ingresar("/matriculas.zul")'/>
+            
+			
+		</fisheyebar>
+                   <include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/>
+
+               </div>
+
+
+
+               
+            
+
+    
+        </center>
+
+	
+    </borderlayout>
+
+    <script type="text/javascript">
+    function refrescar() {
+        location.reload(true);
+    }
+    </script>
+</zk>

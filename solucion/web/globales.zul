@@ -127,7 +127,7 @@ void eliminar(){
             p = "PAR";
         }
       
-        List equivaEncontrados = adm.query("Select o from Global as o where o.grupo = '"+p+"' ");
+        List equivaEncontrados = adm.query("Select o from Global as o where o.grupo = '"+p+"'  order by o.descripcion");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {

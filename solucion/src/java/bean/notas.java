@@ -98,7 +98,7 @@ public class notas extends Rows {
                 "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
                 "left join notas on matriculas.codigomat = notas.matricula " +
                 "and notas.materia = '" + materia.getMateria().getCodigo() + "' and notas.disciplina = false  " +
-                "where matriculas.curso = '" + curso.getCodigocur() + "' " +
+                "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir' ) " +
                 "order by estudiantes.apellido";
         ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1), ParametrosGlobales.class);
         if (para.getCvalor().equals("P")) {
@@ -106,7 +106,7 @@ public class notas extends Rows {
                     "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
                     "left join notas on matriculas.codigomat = notas.matricula " +
                     "and notas.materia = '" + materia.getMateria().getCodigo() + "' and notas.disciplina = false  " +
-                    "where matriculas.curso = '" + curso.getCodigocur() + "' " +
+                    "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir' )" +
                     "order by estudiantes.apellido";
         }
 
@@ -293,8 +293,11 @@ public class notas extends Rows {
         for (Iterator<MateriaProfesor> ita = maprofes.iterator(); ita.hasNext();) {
             try {
                 MateriaProfesor map = ita.next();
+                
                 //   }
-                List<Global> materias = adm.query("Select o from Global as o where o.grupo = 'MAT'");
+                List<Global> materias = adm.query("Select o from Global as o where o.grupo = 'MAT' " +
+                        "and o.codigo in (Select ma.materia.codigo from  MateriaProfesor as ma " +
+                        "where ma.curso.codigocur = '"+map.getCurso().getCodigocur()+"' ) ");
                 String formula = map.getFormula();
                 List<Global> Nmaterias = new ArrayList<Global>();
                 ArrayList vectors = new ArrayList();
@@ -315,8 +318,18 @@ public class notas extends Rows {
                 try {
                     for (Iterator<Global> it = Nmaterias.iterator(); it.hasNext();) {
                         Global global = it.next();
-                        String q = "Select matriculas.codigomat, " + query + "  from matriculas " + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " + "left join notas on matriculas.codigomat = notas.matricula " + "and notas.materia = '" + global.getCodigo() + "' " + "where matriculas.curso = '" + curso.getCodigocur() + "' " + "order by estudiantes.apellido";
+                        String q = "Select matriculas.codigomat, " + query + "  from matriculas " +
+                                "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
+                                "left join notas on matriculas.codigomat = notas.matricula " +
+                                "and notas.materia = '" + global.getCodigo() + "' and notas.disciplina = false " +
+                                "where matriculas.curso = '" + curso.getCodigocur() + "'  " +
+                                " and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir') " +
+
+                                "order by estudiantes.apellido";
+//                        
                         List nativo = adm.queryNativo(q);
+                        System.out.println("recalculo 1: "+q);
+                        System.out.println("recalculo 2: "+nativo.size());
                         inter.set("VEC" + global.getCodigo(), nativo);
                     }
                     String vector1 = (String) vectors.get(0);
@@ -833,7 +846,7 @@ public class notas extends Rows {
                     "where matriculas.curso = '" + curso.getCodigocur() + "'  " +
                     "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' " +
                     "and notas.seimprime = true " +
-                    "and notas.promedia = true " +
+                    //"and notas.promedia = true " +
                     "and notas.disciplina = false  " +
                     "and notas.materia != 0 " +
                     "order by estudiantes.apellido, notas.orden";
@@ -1010,7 +1023,7 @@ if(impDisciplina){
             }
 }
 //IMPRIMO MATERIAS NO INCLUIDAS EN EL MINISTERIO
-
+/*
             q = "Select matriculas.codigomat,notas.materia,notas.cuantitativa, " + query + "  from matriculas " +
                     "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest  " +
                     "left join notas on matriculas.codigomat = notas.matricula " +
@@ -1066,7 +1079,7 @@ if(impDisciplina){
                 }
                 //row.setParent(this);
             }
-
+*/
             //IMPRIMO EL CUADRO DE EQUIVALENCIAS
 
             ArrayList lisFaltas = new ArrayList();
@@ -1080,10 +1093,13 @@ if(impEquivalencias){
             }
             query3 = query3.substring(0, query3.length() - 1);
             //IMPRIMO LAS FALTAS
-            q = "Select " + query3 + "  from disciplina " +
+            q = "Select " + query3 + "  from disciplina, sistemacalificacion " +
                     "where matricula = '" + matriculas1.getCodigomat() + "'  " +
-                    "and sistema = '" + sistema.getCodigosis() + "' " +
+                    "and sistemacalificacion.orden <= '" + sistema.getOrden() + "' " +
+                    "and sistemacalificacion.codigosis =  sistema  " +
+
                     " group by matricula ";
+            //SELECT * FROM disciplina, sistemacalificacion WHERE sistemacalificacion.codigosis =  sistema
 //                 System.out.println(""+q);
             nativo = adm.queryNativo(q);
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {

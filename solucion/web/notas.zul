@@ -3,7 +3,7 @@
 <window   maximizable="true"   mode="overlapped"     xmlns:y="http://www.zkoss.org/2007/yui"
  title="Ingreso de Notas" border="normal"
 width="80%" id="principal">
-<zscript>
+    <zscript>
 <![CDATA[
 import bean.notas;
 import java.math.BigDecimal;
@@ -14,17 +14,46 @@ import org.zkforge.yuiext.grid.Row;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
+import sources.*;
+
+import net.sf.jasperreports.engine.JRDataSource;
 
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
-
+notas noti = new notas();
 List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
 
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 notas no = new notas();
 
-List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  order by o.orden ");
+//List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  order by o.orden ");
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+List sistemas = new ArrayList();
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+
+              Sistemacalificacion stodos = new Sistemacalificacion();
+              stodos.setNombre("==========>>>>> "+trime.getDescripcion()+"");
+              int orden = 0;
+              int codigo=0;
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+
+              }
+              stodos.setOrden(orden);
+              stodos.setCodigosis(codigo);
+              stodos.setTrimestre(trime);
+              sistemas.add(stodos);
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    sistemas.add(siste);
+               }
+
+ }
  
 String[][] values = new String[sistemas.size()][2];
 Date fechaActual = new Date();
@@ -84,61 +113,156 @@ void doAdd(Cursos curso, MateriaProfesor materia){
       
 }
 
+		void showReport(String tipo) {
+			//Preparing parameters
+            reportes.setSelected(true);
+
+            Institucion insts = periodo.getInstitucion();
+
+			Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            JRDataSource datasource = null;
+
+             datasource = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
+             MateriaProfesor mate = ((MateriaProfesor)mates.getSelectedItem().getValue());
+             parametros.put("materia", mate.getMateria().getDescripcion());
+             parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
+             parametros.put("titulo", "Notas Registradas");
+             report.setSrc("WEB-INF/reportes/notaspor.jasper");
+             
+
+            
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+                
+            
+		}
+
+        //PARA REPORTES
+public JRDataSource certificados(Matriculas matricula,String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        String query = "SELECT mat FROM Matriculas AS mat " +
+                "WHERE  mat.estado like '%Matriculado%' " +
+                "and mat.codigomat = '" + matricula.getCodigomat() + "' ";
+        List hoy = adm.query(query);
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            Matriculas elem = (Matriculas) it.next();
+            detalle.add(elem);
+        }
+        JRDataSource ds = null;
+        if(tipo.equals("CM")){
+             ds = new ReporteCertificadoDataSource(detalle);
+        }else{
+              ds = new ReporteActaDataSource(detalle);
+        }
+        return ds;
+
+}
+
+
+
 ]]>
-</zscript>
-<grid>
-<rows>
-<row>
- <span style="float:right"> Curso(*):</span>
-               <bandbox  width="400px" readonly="true"  id="bd1">
-                    <bandpopup>
-                    <vbox>
-                    <listbox id="curs" width="420px"
+    </zscript>
+    <tabbox width="100%">
+        <tabs>
+            <tab id="notasingreso" label="Notas" />
+            <tab id="reportes" label="Impresión" />
+        </tabs>
+        <tabpanels>
+            <tabpanel>
+
+
+
+                <grid>
+                    <rows>
+                        <row>
+                            <span style="float:right"> Curso(*):</span>
+                            <bandbox  width="400px" readonly="true"  id="bd1">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="curs" width="420px"
                     onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
 
-                        <listitem forEach="${cursos}" value="${each}">
-                              <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                            <listitem forEach="${cursos}" value="${each}">
+                                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
-                        </listitem>
-                    </listbox>
-                    </vbox>
-                    </bandpopup>
-                </bandbox>
-</row>
-<row>
-   <span style="float:right"> Materias(*):</span>
-   <span>
-               <bandbox  width="300px" readonly="true"  id="bd2">
-                    <bandpopup>
-                    <vbox>
-                    <listbox id="mates" width="320px"
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                        </row>
+                        <row>
+                            <span style="float:right"> Materias(*):</span>
+                            <span>
+                                <bandbox  width="300px" readonly="true"  id="bd2">
+                                    <bandpopup>
+                                        <vbox>
+                                            <listbox id="mates" width="320px"
                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
 
-                        <listitem forEach="${materias}" value="${each}">
-                              <listcell label="${each.descripcion}" />
+                                                <listitem forEach="${materias}" value="${each}">
+                                                    <listcell label="${each.descripcion}" />
 
-                        </listitem>
-                    </listbox>
-                    </vbox>
-                    </bandpopup>
-                </bandbox>
+                                                </listitem>
+                                            </listbox>
+                                        </vbox>
+                                    </bandpopup>
+                                </bandbox>
                 
+                                <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+                
+                            </span>
+                        </row>
+                    </rows>
+                </grid>
+                <y:grid width="100%" id="datos" editable = "true">
+                    <y:columns>
+                        <y:column editortype="readonly" style="font-size:11px" width="20px" label ="Mat."/>
+                        <y:column editortype="readonly"  width="480px" label ="Estudiante"/>
+                        <y:column forEach="${values}"  width="27px" editortype="${each[1]}" label="${each[0]}" align="right"  />
+                    </y:columns>
+                    <y:rows id="filas" use="bean.notas">
+                    </y:rows>
+                </y:grid>
                 <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
-                </span>
-</row>
-</rows>
-</grid>
- <y:grid width="100%" id="datos" editable = "true">
-         <y:columns>
-             <y:column editortype="readonly" style="font-size:11px" width="20px" label ="Mat."/>
-             <y:column editortype="readonly"  width="240px" label ="Estudiante"/>
-             <y:column forEach="${values}"  width="25px" editortype="${each[1]}" label="${each[0]}" align="right"  />
-         </y:columns>
-         <y:rows id="filas" use="bean.notas">
-         </y:rows>
- </y:grid>
- <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
- <button label="Recalcular"   onClick="recalculo();"/>
+            </tabpanel>
+            <tabpanel>
+                <grid width="75%">
+                    <rows>
+                        <row  spans="3">
+                            <span style="color:red;font-size:14px;">
+                                Nota: imprima una vez que haya guardado las notas, sino estas no se reflejarán en el reporte
+                            </span>
+                        </row>
+                        <row>
+                             <span style="float:right"> Aporte que desea imprimir: </span>
+
+                                <listbox id="sistemasCombo" width="300px"  mold="select" >
+                                    <listitem selected="true"  forEach="${sistemas}" value="${each}">
+                                        <listcell label="${each.nombre}" />
+                                    </listitem>
+                                </listbox>
+                                 <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                        </row>
+
+                    </rows>
+                </grid>
+               
+               
+                <jasperreport id="report" />
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
+ <!--button label="Recalcular"   onClick="recalculo();"/-->
+   
 </window>
 
 	

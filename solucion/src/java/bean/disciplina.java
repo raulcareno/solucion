@@ -68,7 +68,7 @@ public disciplina(){
             "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
             "left join notas on matriculas.codigomat = notas.matricula " +
             "and notas.materia = '"+materia.getMateria().getCodigo()+"' and notas.disciplina = "+esDiscp+" " +
-            "where matriculas.curso = '"+curso.getCodigocur()+"' " +
+            "where matriculas.curso = '"+curso.getCodigocur()+"'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir' )" +
             "order by estudiantes.apellido";
     ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1),ParametrosGlobales.class);
         if(para.getCvalor().equals("P")){
@@ -77,7 +77,7 @@ public disciplina(){
             "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
             "left join notas on matriculas.codigomat = notas.matricula " +
             "and notas.materia = '"+materia.getMateria().getCodigo()+"' and notas.disciplina = "+esDiscp+" " +
-            "where matriculas.curso = '"+curso.getCodigocur()+"' " +
+            "where matriculas.curso = '"+curso.getCodigocur()+"'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir' ) " +
             "order by estudiantes.apellido";
         }
     List nativo = adm.queryNativo(q);

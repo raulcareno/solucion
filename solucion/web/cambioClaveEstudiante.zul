@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <zk  xmlns="http://www.zkoss.org/2005/zul">
-    <window onCreate="cargar()">
+    <window  mode="overlapped" width="350px"  border="normal"  onCreate="cargar()">
 <zscript>
 import jcinform.persistencia.*;
 import bean.Permisos;
@@ -31,7 +31,7 @@ void guardar(){
 
 </zscript>
 
-<grid width="30%" >
+<grid width="100%" >
     <rows>
         <row>
             Usuario:
