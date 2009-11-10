@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
- <borderlayout height="100%">
-<zscript>
+<borderlayout height="100%">
+    <zscript>
 import jcinform.persistencia.*;
 Session a = Sessions.getCurrent();
     Estudiantes emp = a.getAttribute("userEstudiante");
@@ -25,74 +25,80 @@ Session a = Sessions.getCurrent();
         inc.setSrc(valor);
  }
 
-</zscript>
-<north  size="10%" >
-<toolbar height="100%" >
-<tablelayout width="800px" columns="2">
-	<tablechildren>
-        <panel   border="normal" collapsible="true">
-			<panelchildren  style="background-color:transparent;border:0px">
-                <vbox>
-                <image height="50px" src="images/acerca.gif"/>
-
-                </vbox>
-            </panelchildren>
-		</panel>
+    </zscript>
+    <north  size="10%" >
+        <toolbar height="100%" >
+            <tablelayout width="800px" columns="2">
+                <tablechildren>
+                    <panel   border="normal" collapsible="true">
+                        <panelchildren  style="background-color:transparent;border:0px">
+                            <vbox>
+                                <!--image height="50px" src="images/acerca.gif"/-->
+<label value="Bienvenido: " style="font-weight:bold;font-size:15px;color:#346B93;" />
+                            </vbox>
+                        </panelchildren>
+                    </panel>
 	 
-	</tablechildren>
+                </tablechildren>
 
-<tablechildren>
-		<panel   border="normal" collapsible="true">
-			<panelchildren style="background-color:transparent;border:0px">
-                <vbox>
-						<hbox>
-							<label value="Bienvenido:" style="font-weight:bold;font-size:15px;color:#346B93;" />
-							<label style="font-weight:bold;font-size:17px;color:#346B93;" value="${sessionScope.userEstudiante.apellido} ${sessionScope.userEstudiante.nombre}" />
-						</hbox>
+                <tablechildren>
+                    <panel   border="normal" collapsible="true">
+                        <panelchildren style="background-color:transparent;border:0px">
+                            <vbox>
+                                <hbox>
+                                    
+                                    <label style="font-weight:bold;font-size:17px;color:#346B93;" value="${sessionScope.userEstudiante.apellido} ${sessionScope.userEstudiante.nombre}" />
+                                </hbox>
+                                <vbox>
+                                    <toolbarbutton  style="font-weight:bold;font-color:red"  label="[Cerrar Sesión]" onClick="salir()"/>
+                                </vbox>
  
-                        <toolbarbutton  style="font-weight:bold;"  label="[Cerrar Sesión]" onClick="salir()"/>
-</vbox>
+                                
+                            </vbox>
 
-            </panelchildren>
-		</panel>
-</tablechildren>
-</tablelayout>
+                        </panelchildren>
+                    </panel>
+                </tablechildren>
+            </tablelayout>
 
-</toolbar>
+        </toolbar>
 
-</north>
+    </north>
 
-<west title="Menú" size="15%" flex="true" splittable="true" collapsible="true">
-         <div>
-<panel width="100%" border="normal"  title="Opciones" height="320px" collapsible="true" >
-				<panelchildren style="padding:0px;" >
+    <west  size="11%" flex="true" splittable="true" collapsible="true">
+        <div>
+            <panel width="100%" border="normal"  title="Servicios" height="470px" collapsible="true" >
+                <panelchildren style="padding:0px;" >
 
- <vbox>
-<toolbarbutton  image="/images/notas.png"  label=" Mis Cursos" onClick='ingresar("/cursosEstudiantes.zul")'/>
-<toolbarbutton image="/images/calendar.gif" label=" Calendario " onClick='ingresar("/calendar.zul")'/>
-<toolbarbutton image="/images/candado.gif" label=" Cambiar Clave" onClick='ingresar("/cambioClaveEstudiante.zul")'/>
-	 </vbox>
-</panelchildren>
+                    <vbox>
+                        <fisheyebar orient="vertical" id="fsb"  style="position:absolute;margin:25px 25px;"
+			attachEdge="top" itemWidth="90" itemHeight="90" itemMaxHeight="160" itemMaxWidth="160">
+                            <fisheye image="/images/miscursos.png" onClick='ingresar("/cursosEstudiantes.zul")' />
+                            <fisheye image="/images/calendarioacademico.png"  onClick='ingresar("/calendar.zul")' />
+                            <fisheye image="/images/cambioclave.png" onClick='ingresar("/cambioClaveEstudiante.zul")' />
+                        </fisheyebar>
+                    </vbox>
+                </panelchildren>
 
-</panel>
-<panel width="100%" border="normal"   collapsible="true"   title="Propiedades">
-				<panelchildren>
-				<label style="font-weight:bold" value="--------- JCINFORM ---------- "/>
-                       <label value=" Soluciones Informáticas          "/>
-                       <label value="Telfs.5103-843 / 080-162-211 "/>
-                        <label id="propiedad" value=" "/>
-
-
-				</panelchildren>
-			</panel>
-         </div>
-        </west>
-        <center flex="true">
-
-<include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/>
+            </panel>
+            <panel width="100%" border="normal"   collapsible="true"   title="Acerca de..">
+                <panelchildren>
+                    <label style="font-weight:bold" value="--------- JCINFORM ---------- "/>
+                    <label value=" Soluciones Informáticas          "/>
+                    <label value="Telfs.5103-843 / 080-162-211 "/>
+                    <label id="propiedad" value=" "/>
 
 
-        </center>
+                </panelchildren>
+            </panel>
+        </div>
+    </west>
+    <center flex="true">
+
+        <include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/>
+
+
+    </center>
 
 
 </borderlayout>

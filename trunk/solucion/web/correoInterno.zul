@@ -32,10 +32,10 @@ void enviarCorreo(){
                 em.setCorreos(correos);
                 em.setMensaje(mensaje.getValue());
                 em.setTema(titulo.getValue());
-                em.enviarEmail(periodo);
+                em.enviarEmail(periodo,user);
                 
             Messagebox.show("Correo Enviado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-            permiso.auditar("Correo","Enviar","Varios");
+           permiso.auditar("Correo",""+titulo.getValue(),""+correos);
 }
   void buscar2(Cursos p){
        List equivaEncontrados = adm.query("Select d from Matriculas as d " + 
@@ -58,6 +58,12 @@ void enviarCorreo(){
                      Estudiantes acceIt = new Estudiantes(-1);
                       Listitem li = new Listitem();
                       acceIt.setMail(para.getValue());
+                       Representante repre = new Representante(-1);
+                      repre.setEmail("");
+                      repre.setMailpadre("");
+                      repre.setMailmadre("");
+                      acceIt.setRepresentante(repre);
+
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(" "+acceIt.getMail()));
                      right.appendChild(li);
@@ -96,10 +102,10 @@ Para:
 </row>
 <row spans="2">
   <columnlayout>
-        <columnchildren width="40%">
+        <columnchildren width="50%">
             <panel title="Estudiantes">
                 <panelchildren>
-                    <listbox id="left" multiple="true" height="150px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                    <listbox id="left" multiple="true"   style="font-size:10px"  height="150px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
                         <listhead>
                             <listheader label="Estudiantes"/>
                         </listhead>
@@ -148,14 +154,14 @@ Para:
                 </panelchildren>
             </panel>
         </columnchildren>
-        <columnchildren width="40%">
+        <columnchildren width="50%">
             <panel title="Estudiantes a los que se envia" height="">
                 <panelchildren>
-                    <listbox id="right" multiple="true"  height="150px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                    <listbox id="right" multiple="true"   style="font-size:10px"   height="150px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
                         <listhead>
                             <listheader label="Estudiantes"/>
                         </listhead>
-                        <listitem  forEach="${allEvents}" value="${each}">
+                        <listitem  style="font-size:10px" forEach="${allEvents}" value="${each}">
                             <listcell label="${each.codigocur}" />
                             <listcell label="${each.especialidad}" />
                         </listitem>

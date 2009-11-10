@@ -102,10 +102,10 @@ void estado(Boolean estado,Boolean modificar){
                   ((Listcell)children.get(2)).label = mates.selectedItem.value+ "";
                   ((Listcell)children.get(3)).label = orden.value+ "";
                   try{
-                  String quera = "update notas set orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
-                  " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
-                  " where matricula in (SELECT codigomat FROM matriculas WHERE curso = 14) " +
-                  " and materia = 24";
+                      String quera = "update notas set orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
+                      " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
+                      " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + matricula.getCurso().getCodigocur() +" ) " +
+                      " and materia = "+matricula.getMateria().getCodigo()+" ";
                   adm.ejecutaSqlNativo(quera);
                   System.out.println("ACTUALIZANDO DISTRIBUTIVO NOTAS "+quera);
                   }catch(Exception ae){

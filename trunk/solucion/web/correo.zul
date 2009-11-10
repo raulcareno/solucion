@@ -12,12 +12,13 @@ import org.zkforge.yuiext.grid.Row;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
-
+  import bean.Permisos;
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 Empleados user =  (Empleados)ses.getAttribute("user");
 List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+Permisos permiso = new Permisos();
 
 void enviarCorreo(){
             email em = new email();
@@ -30,8 +31,8 @@ void enviarCorreo(){
                 em.setCorreos(correos);
                 em.setMensaje(mensaje.getValue());
                 em.setTema(titulo.getValue());
-                em.enviarEmail(periodo);
-                
+                em.enviarEmail(periodo,user);
+                permiso.auditar("Correo",""+titulo.getValue(),""+correos);
             Messagebox.show("Correo Enviado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
 }
   void buscar2(Cursos p){
@@ -55,6 +56,13 @@ void enviarCorreo(){
                      Estudiantes acceIt = new Estudiantes(-1);
                       Listitem li = new Listitem();
                       acceIt.setMail(para.getValue());
+
+                     Representante repre = new Representante(-1);
+                      repre.setEmail("");
+                      repre.setMailpadre("");
+                      repre.setMailmadre("");
+                      acceIt.setRepresentante(repre);
+                      
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(" "+acceIt.getMail()));
                      right.appendChild(li);

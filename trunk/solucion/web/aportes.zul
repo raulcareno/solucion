@@ -42,6 +42,21 @@ class SistemaTree extends Tree {
 	
 }
 
+  void verificarOrden(Integer valor){
+      if(valor == null){
+            orden.value = 0;
+      }
+            List empleados = adm.query("Select o from Sistemacalificacion as o " +
+            " where o.orden = '"+ orden.value +"' and o.periodo.codigoper = "+per.getCodigoper()+" ");
+            if(empleados.size()>0){
+                Messagebox.show("Orden ya asignado a otro aporte, cambie por favor para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                orden.value = 0;
+                orden.focus();
+            }
+    }
+
+
+
 public  String disponible(){
    Field[] a = Notas.class.getDeclaredFields();
       ArrayList arregloTodos = new ArrayList();
@@ -384,24 +399,7 @@ void eliminar(){
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
 }
-  void verificarCedula(String valor){
-      if(valor.length()>9){
-            List empleados = adm.query("Select o from Sistemacalificacion as o where o.identificacion = '"+valor+"' ");
-            if(empleados.size()>0){
-                Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-
-                for(Iterator it = empleados.iterator(); it.hasNext();) {
-                      Sistemacalificacion object = (Sistemacalificacion)it.next();
-                        empa = object;
-                 }
-            llenar(empa);
-
-            }else{
-                empa = new Sistemacalificacion(0);
-            }
-
-        }
-    }
+ 
   void buscar(String p){
         List empleadosEncontrados = adm.query("Select o from Sistemacalificacion as o where o.apellidos like '%"+p+"%' order by o.apellidos");
         datos = new Listbox();
@@ -538,11 +536,11 @@ if(formula1.equals("")){
         <checkbox id="faltas"/></span></row>
 
     <row> <span style="float:right"> Orden(*):</span>
-        <intbox id="orden"/></row>
+        <intbox id="orden"  onChange="verificarOrden(self.value)" /></row>
  <row> <span style="float:right"> Tipo de Nota:</span>
        <span>
 <radiogroup id="promedios">
-        <radio id="promediogeneral" value="PG" label="Promedio General"/>
+        <radio id="promediogeneral" value="PG" label="Promedio GeneraverificarCedulal"/>
         <radio id="promediofinal" value="PF"  label="Promedio Final"/>
         <radio id="supletorio"  value="SU" label="Supletorio"/>
         <radio id="ninguno"  value = "NI" label="Ninguno"/>
