@@ -36,7 +36,7 @@ void estado(Boolean estado,Boolean modificar){
     if(modificar){
         equi = (Textos)datos.selectedItem.value;
     }
-    mensaje.disabled = estado;
+    mensaje.readonly = estado;
 
 }
 
@@ -103,10 +103,10 @@ void cargar(Textos g){
 <rows> 
 
 <row><span style="float:right"> Nombre(*):</span>
-        <textbox id="nombre"  maxlength="60" cols="40" disabled="true"   />
+        <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />
 </row>
 <row><span style="float:right"> Mensaje(*):</span>
-        <textbox id="mensaje" rows="3" disabled="true" width="450px">
+        <textbox id="mensaje" rows="3" readonly="true" width="450px">
 			 
         </textbox>
 </row>
@@ -136,7 +136,7 @@ void cargar(Textos g){
  
  </hbox>
     <hbox>
-         <listbox onSelect="move();estado(true,false);guardar.disabled=true" id="datos"  mold="paging" pageSize="10" width="100%">
+         <listbox onSelect="move();estado(true,false);guardar.disabled=true" id="datos"  mold="paging" pageSize="10"  width="490px">
 			<listhead>
                                 <listheader label="Código"/>
                                 <listheader label="Nombre"/>

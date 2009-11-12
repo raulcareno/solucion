@@ -72,23 +72,23 @@ void estado(Boolean estado,Boolean modificar){
             empa = (Empleados)datos.selectedItem.value;
         }
  
-    identificacion.disabled = estado;
-    nombres.disabled = estado;
-    apellidos.disabled = estado;
-    direccion.disabled = estado;
-    telefono.disabled = estado;
-    movil.disabled = estado;
-    email.disabled = estado;
-    tratamiento.disabled = estado;
-    usuario.disabled = estado;
-    clave.disabled = estado;
+    identificacion.readonly = estado;
+    nombres.readonly = estado;
+    apellidos.readonly = estado;
+    direccion.readonly = estado;
+    telefono.readonly = estado;
+    movil.readonly = estado;
+    email.readonly = estado;
+    tratamiento.readonly = estado;
+    usuario.readonly = estado;
+    clave.readonly = estado;
     tipo.disabled= estado;
     estadoe.disabled= estado;
     perf.disabled = estado;
     bd.disabled = estado;
     adventista.disabled = estado;
-    servicio.disabled = estado;
-    ingreso.disabled = estado;
+    servicio.readonly = estado;
+    ingreso.disabled= estado;
     docente.disabled = estado;
 
 }
@@ -248,13 +248,13 @@ empa.setPerfil(g);
                         <rows>
                             <row>
                                 <span style="float:right"> Identificación(*):</span>
-                                <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" disabled="true" id="identificacion"  />
+                                <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="identificacion"  />
                                 <span></span>
                                 <span></span>
                             </row>
                             <row>
                                 <span style="float:right"> Tratamiento:</span>
-                                <combobox disabled="true"   id="tratamiento" width="30px">
+                                <combobox readonly="true"   id="tratamiento" width="30px">
                                     <comboitem label="Sr."/>
                                     <comboitem label="Sra."/>
                                     <comboitem label="Prof."/>
@@ -277,31 +277,31 @@ empa.setPerfil(g);
                             </row>
                             <row>
                                 <span style="float:right"> Nombres(*):</span>
-                                <textbox id="nombres"  maxlength="60" cols="40" disabled="true"   />
+                                <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
                                 <span style="float:right"> Usuario:</span>
-                                <textbox id="usuario" maxlength="30" cols="15" disabled="true"  />
+                                <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
                             </row>
                             <row>
                                 <span style="float:right"> Apellidos(*):</span>
-                                <textbox id="apellidos"  maxlength="60" cols="40" disabled="true"  />
+                                <textbox id="apellidos"  maxlength="60" cols="40" readonly="true"  />
                                 <span style="float:right"> Clave:</span>
-                                <textbox id="clave" type="password" maxlength="30" cols="15" disabled="true"  />
+                                <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
                             </row>
                             <row>
                                 <span style="float:right"> Dirección(*):</span>
-                                <textbox id="direccion" maxlength="100" cols="40"  disabled="true"    />
+                                <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
                                 <span style="float:right"> Estado:</span>
                                 <checkbox id="estadoe" disabled="true"  />
                             </row>
                             <row>
                                 <span style="float:right"> Teléfono:</span>
-                                <textbox id="telefono" maxlength="30" cols="13"  disabled="true"  />
+                                <textbox id="telefono" maxlength="30" cols="13"  readonly="true"  />
                                 <span style="float:right"> Móvil:</span>
-                                <textbox id="movil" maxlength="30" cols="13"  disabled="true"  />
+                                <textbox id="movil" maxlength="30" cols="13"  readonly="true"  />
                             </row>
                             <row>
                                 <span style="float:right"> e-mail:</span>
-                                <textbox id="email" maxlength="100" cols="40" disabled="true"  />
+                                <textbox id="email" maxlength="100" cols="40" readonly="true"  />
                                 <span style="float:right"> Perfil(*):</span>
                                 <bandbox  readonly="true"  id="bd">
                                     <bandpopup>
@@ -336,7 +336,7 @@ empa.setPerfil(g);
                                 <span style="float:right"> Fecha Ingreso:</span>
                                 <datebox id="ingreso"  disabled="true"  />
                                 <span style="float:right"> Años de Servicio:</span>
-                                <intbox id="servicio" cols="5" disabled="true"  />
+                                <intbox id="servicio" cols="5" readonly="true"  />
          
                             </row>
 

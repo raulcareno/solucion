@@ -518,12 +518,12 @@ if(formula1.equals("")){
 
 <grid width="100%">
 <rows>
-<row><span style="float:right"> Codigo:</span>
-        <intbox id="codigo"  maxlength="60" cols="10" readonly="true"   />   </row>
+
 <row><span style="float:right"> Nombres(*):</span>
-        <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />   </row>
+        <span><intbox id="codigo"  maxlength="60" cols="3" readonly="true"   />
+        <textbox id="nombre"  maxlength="60" cols="30" readonly="true"   />  </span>  </row>
     <row> <span style="float:right"> Abreviatura(*):</span>
-        <textbox id="abreviatura"  maxlength="60" cols="40" readonly="true"  /> </row>
+        <textbox id="abreviatura"  maxlength="20" cols="20" readonly="true"  /> </row>
     <row> <span style="float:right"> Pase de Notas(*):</span> <span>Desde: <datebox format="dd/MMM/yyyy" id="desde"/> Hasta:<datebox  format="dd/MMM/yyyy"  id="hasta"/></span>
          </row>
     <row> <span style="float:right"> Límite de Notas(*):</span>
@@ -536,18 +536,20 @@ if(formula1.equals("")){
         <checkbox id="faltas"/></span></row>
 
     <row> <span style="float:right"> Orden(*):</span>
-        <intbox id="orden"  onChange="verificarOrden(self.value)" /></row>
+        <span><intbox id="orden" cols="5"  onChange="verificarOrden(self.value)" />
+      Impr. en Prom Final:
+        <checkbox id="espromedio"/></span>
+     </row>
  <row> <span style="float:right"> Tipo de Nota:</span>
        <span>
 <radiogroup id="promedios">
-        <radio id="promediogeneral" value="PG" label="Promedio GeneraverificarCedulal"/>
-        <radio id="promediofinal" value="PF"  label="Promedio Final"/>
-        <radio id="supletorio"  value="SU" label="Supletorio"/>
+        <radio id="promediogeneral" value="PG" label="Prom. General"/>
+        <radio id="promediofinal" value="PF"  label="Prom. Final"/>
+        <radio id="supletorio"  value="SU" label="Suplet."/>
         <radio id="ninguno"  value = "NI" label="Ninguno"/>
 </radiogroup>
 </span></row>
-<row> <span style="float:right"> Se Imprime en Prom Final:</span>
-        <checkbox id="espromedio"/></row>
+
  
  <row> <span style="float:right"> Trimestre:</span>
 
@@ -563,21 +565,22 @@ if(formula1.equals("")){
 		 
 
 </row>
-<row><span style="float:right"> Formula Aprovechamiento:</span>
-<span><textbox id="formula" rows="2" cols="40" />
+<row><span style="float:right"> Form. Aprov.:</span>
+<span><textbox id="formula" rows="2" cols="30" />
 <button id="verificar"  label="Verificar"   onClick="verificar2();"/> </span>
 </row>
-<row><span style="float:right"> Formula Disciplina:</span>
-<span><textbox id="formuladisciplina" rows="2" cols="40" />
+<row><span style="float:right"> Form. Disc.:</span>
+<span><textbox id="formuladisciplina" rows="2" cols="30" />
 <button id="verificar3"  label="Verificar"   onClick="verificar3();"/> </span>
 </row>
  
 <row><span style="float:right"> Codigo:</span>
-        <textbox readonly="true"  id="codi"   />
+        <span> <textbox readonly="true" cols="2"  id="codi"   />
+         Campo:
+        <textbox readonly="true" id="nota" cols="10" /></span>
 </row>
-<row><span style="float:right"> Campo:</span>
-        <textbox readonly="true" id="nota" />
-</row>
+
+
 
 </rows>
 </grid>

@@ -610,10 +610,13 @@ public class notas extends Rows {
         Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o " +
                 "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
+        
         List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
                 "where  o.sistema.codigosis  = '" + sistema.getCodigosis() + "' " +
                 "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                 "order by o.sistema.orden ");
+        
+        
         String query = "";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
@@ -629,13 +632,14 @@ public class notas extends Rows {
 /*String q = "Select matricula,materia, "+query+" from notas " +
         "where matricula in (select codigomat from matriculas where  curso  =  '"+curso.getCodigocur()+"' ) " +
         " ";*/
-        String q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor " +
-                "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "' " +
+        //and matriculas.estado in ('Matriculado','Recibir','Retirado') 
+        String q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor, matriculas mat, estudiantes est " +
+                "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "'  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante " +
                 "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  )" +
                 "and notas.disciplina = false  " +
-                "order by matricula,materia_profesor.orden";
+                "order by est.apellido, materia_profesor.orden";
 
-//        System.out.println("" + q);
+        System.out.println("" + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
@@ -719,14 +723,14 @@ public class notas extends Rows {
             values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
         }
 
-        String q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor " +
-                "where notas.materia =  materia_profesor.materia " +
+        String q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est " +
+                "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante " +
                 "and materia_profesor.curso = '" + curso.getCodigocur() + "' " +
                 "and notas.promedia = true and notas.disciplina = false   " +
                 "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) " +
-                "order by matricula,materia_profesor.orden";
+                "order by  est.apellido, materia_profesor.orden";
 
-//        System.out.println("" + q);
+        System.out.println("cuadro final: " + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
@@ -1150,7 +1154,7 @@ if(impEquivalencias){
                 } else if (firma1.trim().equals("[SECRETARIA]")) {
                     nota.setFirma1(periodo.getInstitucion().getSecretaria());
                 } else if (firma1.trim().equals("[REPRESENTANTE]")) {
-                    nota.setFirma1(matriculas1.getEstudiante().getRepresentante().getApellidos() + " " + matriculas1.getEstudiante().getNombre());
+                    nota.setFirma1(matriculas1.getEstudiante().getRepresentante().getApellidos() + " " + matriculas1.getEstudiante().getRepresentante().getNombres());
                 }
 
                 if (firma2.trim().equals("[RECTOR]")) {
@@ -1162,7 +1166,7 @@ if(impEquivalencias){
                 } else if (firma2.trim().equals("[SECRETARIA]")) {
                     nota.setFirma2(periodo.getInstitucion().getSecretaria());
                 } else if (firma2.trim().equals("[REPRESENTANTE]")) {
-                    nota.setFirma2(matriculas1.getEstudiante().getRepresentante().getApellidos() + " " + matriculas1.getEstudiante().getNombre());
+                    nota.setFirma2(matriculas1.getEstudiante().getRepresentante().getApellidos() + " " + matriculas1.getEstudiante().getRepresentante().getNombres());
                 }
                 if (firma3.trim().equals("[RECTOR]")) {
                     nota.setFirma3(periodo.getInstitucion().getRector());
@@ -1173,7 +1177,7 @@ if(impEquivalencias){
                 } else if (firma3.trim().equals("[SECRETARIA]")) {
                     nota.setFirma3(periodo.getInstitucion().getSecretaria());
                 } else if (firma3.trim().equals("[REPRESENTANTE]")) {
-                    nota.setFirma3(matriculas1.getEstudiante().getRepresentante().getApellidos() + " " + matriculas1.getEstudiante().getNombre());
+                    nota.setFirma3(matriculas1.getEstudiante().getRepresentante().getApellidos() + " " + matriculas1.getEstudiante().getRepresentante().getNombres());
                 }
 
             } catch (Exception e) {

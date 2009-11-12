@@ -17,6 +17,10 @@ Administrador adm = new Administrador();
 
         usuario.value = emp.getUsuario();
         clave.value = permiso.decriptar(emp.getClave());
+        nombres.value  = emp.getApellidos();
+        apellidos.value  = emp.getNombres();
+        direccion.value  = emp.getDireccion();
+        email.value  = emp.getEmail();
  
  }
 void guardar(){
@@ -26,12 +30,15 @@ void guardar(){
   
         emp.setUsuario(usuario.value);
         emp.setClave(permiso.encriptar(clave.value));
+        emp.setDireccion(direccion.value);
+        emp.setEmail(email.value);
          adm.actualizar(emp);
+Messagebox.show("Datos Actualizados con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
  }
 
 </zscript>
-
-<grid width="30%" >
+ 
+<grid width="50%" >
     <rows>
         <row spans="2">
             Cambio de Clave Profesor
@@ -44,6 +51,17 @@ void guardar(){
          <row>
             Clave:
             <textbox id="clave" maxlength="30" cols="15"  />
+        </row>
+    
+        <row>
+            Dirección:
+            <textbox id="direccion" maxlength="50" cols="35"  />
+
+        </row>
+        <row>
+            Email:
+            <textbox id="email" maxlength="30" cols="15"  />
+
         </row>
 
     </rows>

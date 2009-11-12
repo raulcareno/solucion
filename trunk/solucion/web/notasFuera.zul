@@ -15,6 +15,8 @@ import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
   import bean.Permisos;
+  import net.sf.jasperreports.engine.JRDataSource;
+
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -23,6 +25,7 @@ List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where
    Permisos permiso = new Permisos();
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 notas no = new notas();
+notas noti = new notas();
 
 List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  order by o.orden ");
  
@@ -78,8 +81,46 @@ void doAdd(Cursos curso, MateriaProfesor materia){
       
 }
 
+		void showReport(String tipo) {
+			//Preparing parameters
+            reportes.setSelected(true);
+
+            Institucion insts = periodo.getInstitucion();
+
+			Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            JRDataSource datasource = null;
+
+             datasource = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
+             MateriaProfesor mate = ((MateriaProfesor)mates.getSelectedItem().getValue());
+             parametros.put("materia", mate.getMateria().getDescripcion());
+             parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
+             parametros.put("titulo", "Notas Registradas");
+             report.setSrc("WEB-INF/reportes/notaspor.jasper");
+
+
+
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+
+
+		}
+
 ]]>
 </zscript>
+  <tabbox width="100%">
+        <tabs>
+            <tab id="notasingreso" label="Notas" />
+            <tab id="reportes" label="Impresión" />
+        </tabs>
+        <tabpanels>
+            <tabpanel>
+
+
 <grid>
 <rows>
 <row>
@@ -130,6 +171,35 @@ void doAdd(Cursos curso, MateriaProfesor materia){
          </y:rows>
  </y:grid>
  <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+     </tabpanel>
+            <tabpanel>
+                <grid width="75%">
+                    <rows>
+                        <row  spans="3">
+                            <span style="color:red;font-size:14px;">
+                                Nota: imprima una vez que haya guardado las notas, sino estas no se reflejarán en el reporte
+                            </span>
+                        </row>
+                        <row>
+                             <span style="float:right"> Aporte que desea imprimir: </span>
+
+                                <listbox id="sistemasCombo" width="300px"  mold="select" >
+                                    <listitem selected="true"  forEach="${sistemas}" value="${each}">
+                                        <listcell label="${each.nombre}" />
+                                    </listitem>
+                                </listbox>
+                                 <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                        </row>
+
+                    </rows>
+                </grid>
+
+
+                <jasperreport id="report" />
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
+
 </window>
 
 	
