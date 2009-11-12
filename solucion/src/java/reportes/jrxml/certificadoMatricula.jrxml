@@ -36,7 +36,7 @@
 	<field name="texto" class="java.lang.String"/>
 	<field name="jornada" class="java.lang.String"/>
 	<field name="paralelo" class="java.lang.String"/>
-	<field name="matricula" class="java.lang.String"/>
+	<field name="matricula" class="java.lang.Object"/>
 	<field name="folio" class="java.lang.String"/>
 	<field name="fecha" class="java.util.Date"/>
 

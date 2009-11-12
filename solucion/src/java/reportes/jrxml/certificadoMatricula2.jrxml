@@ -36,7 +36,7 @@
 	<field name="texto" class="java.lang.String"/>
 	<field name="jornada" class="java.lang.String"/>
 	<field name="paralelo" class="java.lang.String"/>
-	<field name="matricula" class="java.lang.String"/>
+	<field name="matricula" class="java.lang.Object"/>
 	<field name="folio" class="java.lang.String"/>
 	<field name="fecha" class="java.util.Date"/>
 	<field name="seccion" class="java.lang.String"/>
@@ -291,7 +291,7 @@
 					<textElement>
 						<font fontName="Arial" size="12"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{matricula}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[""+$F{matricula}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
