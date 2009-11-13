@@ -166,6 +166,56 @@ public class ReporteActaDataSource implements JRDataSource{
             valor = this.day;
         }else if ("bus".equals(fieldName)) {
             valor = nodo.getEstudiante().getNobus();
+        }else if ("ruc".equals(fieldName)) {
+            valor = nodo.getCurso().getPeriodo().getInstitucion().getRuc();
+        }else if ("codigo".equals(fieldName)) {
+            valor = nodo.getCurso().getPeriodo().getInstitucion().getCodigo();
+        }else if ("nombreministro".equals(fieldName)) {
+            valor = nodo.getCurso().getPeriodo().getInstitucion().getMinistronombre();
+        }else if ("firmaministro".equals(fieldName)) {
+            try{
+                byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getMinistrofirma();
+                if(bImage!=null){
+                    InputStream is = new ByteArrayInputStream(bImage);
+                    valor = is;
+                }else{
+                }
+            }catch(Exception ex){
+                System.out.println("Error en foto:"+ex);
+            }
+        }else if ("logo".equals(fieldName)) {
+            try{
+                byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getMinisteriologo();
+                if(bImage!=null){
+                    InputStream is = new ByteArrayInputStream(bImage);
+                    valor = is;
+                }else{
+                }
+            }catch(Exception ex){
+                System.out.println("Error en foto:"+ex);
+            }
+        }else if ("logo2".equals(fieldName)) {
+            try{
+                byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getMinisteriologo();
+                if(bImage!=null){
+                    InputStream is = new ByteArrayInputStream(bImage);
+                    valor = is;
+                }else{
+                }
+            }catch(Exception ex){
+                System.out.println("Error en foto:"+ex);
+            }
+        }else if ("firmarector".equals(fieldName)) {
+            try{
+                byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getFirmarector();
+                if(bImage!=null){
+                    InputStream is = new ByteArrayInputStream(bImage);
+                    valor = is;
+                }else{
+                }
+            }catch(Exception ex){
+                System.out.println("Error en foto:"+ex);
+            }
         }else if ("sello".equals(fieldName)) {
             try{
                 byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getEscudo();
@@ -178,6 +228,7 @@ public class ReporteActaDataSource implements JRDataSource{
                 System.out.println("Error en foto:"+ex);
             }
         }
+
          } catch (Exception e) {
              System.out.println("en datasource Acta "+e);
         }
