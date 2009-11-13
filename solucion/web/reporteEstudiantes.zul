@@ -70,7 +70,7 @@ public JRDataSource certificados(Cursos curso,String tipo){
                 JRDataSource ds = null;
                 if(tipo.equals("CM")){
                      ds = new ReporteCertificadoDataSource(detalle);
-                }else if(tipo.equals("CM2") || tipo.equals("LTRAN") || tipo.equals("LINT")  || tipo.equals("LNUEV") || tipo.equals("LMIN")  || tipo.equals("LFEC")  || tipo.equals("LGENT")  || tipo.equals("LGEN")  || tipo.equals("LASI")  || tipo.equals("LCA")  || tipo.equals("LCAS")  || tipo.equals("AM")  || tipo.equals("LMAT")  || tipo.equals("LCLA")   || tipo.equals("LCLA2") || tipo.equals("LCOR")  || tipo.equals("LREP")  || tipo.equals("LCAR")){
+                }else if(tipo.equals("CM2") || tipo.equals("LTRAN") || tipo.equals("LINT")  || tipo.equals("LNUEV") || tipo.equals("LMIN")  || tipo.equals("LFEC")  || tipo.equals("LGENT")  || tipo.equals("LGEN")  || tipo.equals("LASI")  || tipo.equals("LCA")  || tipo.equals("LCAS")  || tipo.equals("AM")  || tipo.equals("LMAT")  || tipo.equals("LCLA")   || tipo.equals("LCLA2") || tipo.equals("LCOR")  || tipo.equals("LREP")  || tipo.equals("LCAR1") || tipo.equals("LCAR")){
                       ds = new ReporteActaDataSource(detalle);
                 }
             
@@ -280,6 +280,10 @@ public JRDataSource internos(Cursos curso,String tipo){
                     datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCAR");
                     parametros.put("titulo", "Carné Estudiantil");
                     report.setSrc("WEB-INF/reportes/carnet.jasper");
+            }else if(tipo.equals("LCAR1")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCAR");
+                    parametros.put("titulo", "Carné Estudiantil");
+                    report.setSrc("WEB-INF/reportes/carnetMinisterio.jasper");
             }else if(tipo.equals("-1")){
                 alert("No ha seleccionado ningún reporte...!");
                     return;
@@ -368,7 +372,8 @@ void campos(String valor){
                                 <listitem label="Estudiantes Matriculados" value="MAT" />
                                 <listitem label="Estudiantes Retirados" value="RET" />
                                 <listitem label="Lista de Matriculados" value="LMAT" />
-                                <listitem label="Lista de Carné Estudiantil"  value="LCAR"/>
+                                <listitem label="Lista de Carné "  value="LCAR"/>
+                                <listitem label="Lista de Carné Estudiantil"  value="LCAR1"/>
                                 <listitem label="Listado para Carnets" value="LCART" />
                                 <listitem label="Lista de Claves" value="LCLA"/>
                                 <listitem label="Listado de Claves con Matricula" value="LCLA2"/>
