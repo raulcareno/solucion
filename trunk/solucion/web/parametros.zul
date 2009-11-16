@@ -228,7 +228,7 @@ equi.setPerfil(g);
         <textbox id="nombre"  maxlength="60" cols="40" disabled="true"   />
 </row>
 <row id="vc" visible="false" ><span style="float:right"> Valor(*):</span>
-        <textbox  popup="msg" id="valc"  maxlength="60" cols="40" disabled="true"/>
+        <textbox    id="valc"  maxlength="60" cols="40" disabled="true"/>
 </row>
 <row id="vn" visible="false" ><span style="float:right"> Valor(*):</span>
         <decimalbox  format="#,##0.##"  id="valn" cols="10" disabled="true"/>
@@ -269,7 +269,7 @@ equi.setPerfil(g);
  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
  </hbox>
     <hbox width="100%">
-         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="450px">
 			<listhead>
                                 <listheader label="Código"/>
                                 <listheader label="Nombre"/>
@@ -286,7 +286,7 @@ equi.setPerfil(g);
     </hbox>
 </vbox>
 </groupbox>
-	<popup id="msg" width="300px">
+	<popup  id="msg" width="300px">
 		<vbox>
 			PARA QUE...:
 			<toolbarbutton label="Se ingresa manualmente la disciplina [INGRESADA]"/>
