@@ -35,8 +35,7 @@ List sistemas = new ArrayList();
               List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
               " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
 
-              Sistemacalificacion stodos = new Sistemacalificacion();
-              stodos.setNombre("==========>>>>> "+trime.getDescripcion()+"");
+            
               int orden = 0;
               int codigo=0;
               if(sistemas0.size() >0 ){
@@ -44,10 +43,7 @@ List sistemas = new ArrayList();
                   codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
 
               }
-              stodos.setOrden(orden);
-              stodos.setCodigosis(codigo);
-              stodos.setTrimestre(trime);
-              sistemas.add(stodos);
+
               for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
                     Sistemacalificacion siste = (Sistemacalificacion) it2.next();
                     sistemas.add(siste);
@@ -71,7 +67,7 @@ Date fechaActual = new Date();
                 //values[i][1]= "readonly";
 
             }
-           
+           System.out.println("** "+((Sistemacalificacion)sistemas.get(i)).getAbreviatura());
            // values[i]="number";
           }
 
@@ -223,11 +219,11 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         </row>
                     </rows>
                 </grid>
-                <y:grid width="100%" id="datos" editable = "true">
+                <y:grid width="110%" id="datos" editable = "true">
                     <y:columns>
                         <y:column editortype="readonly" style="font-size:11px" width="20px" label ="Mat."/>
-                        <y:column editortype="readonly"  width="480px" label ="Estudiante"/>
-                        <y:column forEach="${values}"  width="27px" editortype="${each[1]}" label="${each[0]}" align="right"  />
+                        <y:column editortype="readonly"  width="240px" label ="Estudiante"/>
+                        <y:column forEach="${values}"  width="25px" editortype="${each[1]}" label="${each[0]}" align="right"  />
                     </y:columns>
                     <y:rows id="filas" use="bean.notas">
                     </y:rows>
