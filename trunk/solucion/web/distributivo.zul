@@ -324,10 +324,7 @@ Cursos cur = curs.selectedItem.value;
                         <listheader label="Orden"   sort="auto"/>
                     </listhead>
                     <listitem forEach="${allEvents}" value="${each}">
-                        <listcell label="${each.codigomap}" />
-                        <listcell label="${each.empleado.apellidos} ${each.empleado.nombres}" />
-                        <listcell label="${each.materia}" />
-                        <listcell label="${each.orden}" />
+                     
                     </listitem>
                 </listbox>
             </hbox>
