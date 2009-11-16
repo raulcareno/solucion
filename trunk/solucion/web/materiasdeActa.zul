@@ -189,8 +189,8 @@ void materias123(){
               materiaslista2.appendChild(li);
 
               li = new Listitem();
-              li.setValue("segudno");
-              li.appendChild(new Listcell("segundo"));
+              li.setValue("segundo");
+              li.appendChild(new Listcell("Segundo"));
               materiaslista2.appendChild(li);
 
                li = new Listitem();
