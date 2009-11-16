@@ -94,7 +94,7 @@ String columnaExamen ="";
                          
                         List rec =  adm.queryNativo("Select ("+formula+") from Notasrecord " +
                                  "where estudiante = '"+matricula.getEstudiante().getCodigoest()+"' ");
-                              if(rec==null){
+                              if(rec==null || rec.size()<=0){
                                   label.setValue("");
                               }else{
                                  label.setValue("" + redondear((Double) ((Vector)rec.get(0)).get(0) , 2));
