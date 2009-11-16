@@ -11,7 +11,7 @@
         
  }
     </zscript>
-<window title="JCINFORM"  border="normal">
+<window  style="position:absolute; top:20%; left:35%"  title="JCINFORM"  border="normal">
     Su session ha expirado...!
     <toolbarbutton  style="color:#346B93;font-weight:bold;"
     label=" [Ingresar]" onClick="salir()"/>
