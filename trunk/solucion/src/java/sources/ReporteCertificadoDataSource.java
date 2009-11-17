@@ -85,6 +85,8 @@ public class ReporteCertificadoDataSource implements JRDataSource{
             valor = nodo.getNumero() ;
         }else if ("estudiante".equals(fieldName)) {
             valor = nodo.getEstudiante().getApellido() + " "+  nodo.getEstudiante().getApellido() ;
+        }else if ("fecha".equals(fieldName)) {
+            valor = nodo.getFechamat();
         }else if ("sello".equals(fieldName)) {
             try{
                 byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getEscudo();
