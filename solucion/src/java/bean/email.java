@@ -218,17 +218,12 @@ class EnviarAutenticacion
             }else{
                 msg.setFrom(new InternetAddress(""+emailInstitucion));
             }
-                
-
             msg.setText(mensaje,"ISO-8859-1","html");
             //msg.set
             //msg.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             //msg.addRecipients(Message.RecipientType.TO, new InternetAddress[] { new InternetAddress("geovanny1781@yahoo.com"), new InternetAddress("jcinform@gmail.com"),new InternetAddress("geovanny1781@hotmail.com") });
             msg.addRecipients(Message.RecipientType.BCC, to );
-            
-
             return msg;
-
         }catch (MessagingException ex)
             {
 
