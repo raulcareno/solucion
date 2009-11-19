@@ -1,0 +1,127 @@
+
+<zk>
+
+    <zscript><![CDATA[
+import bean.notas;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import bean.*;
+import jcinform.procesos.Administrador;
+import org.zkforge.yuiext.grid.Row;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+  import bean.Permisos;
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+Empleados user =  (Empleados)ses.getAttribute("user");
+List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+Permisos permiso = new Permisos();
+
+void enviarCorreo(){
+            email em = new email();
+            String correos = "";
+                for(Iterator it = right.getItems().iterator(); it.hasNext();) {
+                     Listitem object = (Listitem)it.next();
+                     Estudiantes emp = object.getValue();
+                     correos += emp.getMail()+";"+emp.getRepresentante().getMailpadre()+";"+emp.getRepresentante().getMailmadre()+";";
+                }
+                em.setCorreos(correos);
+                em.setMensaje(mensaje.getValue());
+                em.setTema(titulo.getValue());
+                em.enviarEmail(periodo,user);
+                permiso.auditar("Correo",""+titulo.getValue(),""+correos);
+            Messagebox.show("Correo Enviado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+}
+  void buscar2(Cursos p){
+       List equivaEncontrados = adm.query("Select d from Matriculas as d " + 
+       " where d.curso.codigocur = '"+p.getCodigocur()+"' and (d.estudiante.mail is not null or d.estudiante.mail <> ''  ) ");
+        left = new Listbox();
+        int a=0;
+              for(Iterator it = left.getItems().iterator(); it.hasNext();) {
+                    left.getItems().remove(a);
+                }
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Matriculas acceIt = (Matriculas) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt.getEstudiante());
+                      li.appendChild(new Listcell(acceIt.estudiante.getApellido()+" "+ acceIt.estudiante.getNombre()+" "+acceIt.estudiante.getMail()));
+                      left.appendChild(li);
+             }
+    }
+    void anadir(){
+    
+                     Estudiantes acceIt = new Estudiantes(-1);
+                      Listitem li = new Listitem();
+                      acceIt.setMail(para.getValue());
+
+                     Representante repre = new Representante(-1);
+                      repre.setEmail("");
+                      repre.setMailpadre("");
+                      repre.setMailmadre("");
+                      acceIt.setRepresentante(repre);
+                      
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(" "+acceIt.getMail()));
+                     right.appendChild(li);
+                     para.setValue(null);
+    }
+
+]]>
+    </zscript>
+
+    <borderlayout>
+        <west title="West" size="25%" flex="true" maxsize="250" splittable="true" collapsible="true">
+            <div style="background:#B8D335">
+             <tree id="tree" width="400px" rows="8">
+			<treecols sizable="true">
+				<treecol label="Name" />
+			 
+			</treecols>
+			<treechildren>
+				<treeitem >
+					<treerow>
+						<treecell  image="/images/cursos.png" label="Redactar" />
+					</treerow>
+				</treeitem>
+                <treeitem>
+					<treerow>
+						<treecell   image="/images/cursos.png" label="Bandeja de Entrada" />
+					</treerow>
+				</treeitem>
+				<treeitem>
+					<treerow>
+						<treecell  image="/images/cursos.png" label="Enviados" />
+					</treerow>
+				</treeitem>
+				<treeitem  image="/images/cursos.png" label="Eliminados" />
+                <treeitem   image="/images/cursos.png" label="Archivados" />
+			</treechildren>
+		</tree>
+            </div>
+        </west>
+		 
+        <center border="none" flex="true">
+
+            <borderlayout>
+                <north title="West" size="30%" flex="true" maxsize="250" splittable="true" collapsible="true">
+                    <div style="background:#B8D335">
+                        <label value="25%"
+						style="color:white;font-size:50px" />
+                    </div>
+                </north>
+
+                <west border="none" flex="true"  size="100%" >
+                    <div style="background:#E6D92C">
+                        <label value="cen"
+						style="color:white;font-size:50px" />
+                    </div>
+                </west>
+
+            </borderlayout>
+        </center>
+			
+    </borderlayout>
+</zk>
