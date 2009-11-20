@@ -7,6 +7,7 @@
   import jcinform.procesos.Administrador;
   import bean.Permisos;
   import java.math.BigDecimal;
+ import org.zkoss.util.media.Media;
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
     Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -25,6 +26,19 @@
 
 <row><span style="float:right"> Asunto(*):</span>
         <textbox id="titulo"  maxlength="100" cols="40" readonly="true"   />   </row>
+        <row>
+            <span style="float:right"> Archivo:</span>
+              <button label="Adjuntar " id="ima">
+                                    <attribute name="onClick">{
+
+            Media media = Fileupload.get();
+    byte[] archivo= media.getByteData();
+			//byte[] archivo=Fileupload.get().getByteData();
+			
+		}
+                                    </attribute>
+                                </button>
+        </row>
  <row> <span style="float:right"> Texto:</span>
         
 		<textbox rows="15" width="320px" id="contenido"  maxlength="100" cols="50" readonly="true"   />   </row>
