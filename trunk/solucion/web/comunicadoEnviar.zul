@@ -1,0 +1,49 @@
+<zk>
+    <window >
+ <zscript>
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    List allEvents = adm.query("Select o from Cursos as o where o.codigocur = 0");
+    
+    Permisos permiso = new Permisos();
+ 
+
+  </zscript>
+ 
+<groupbox mold="3d" >
+       <caption label="Redactar un Nuevo mensaje" />
+
+<grid width="100%">
+<rows>
+
+<row><span style="float:right"> Asunto(*):</span>
+        <textbox id="titulo"  maxlength="100" cols="40" readonly="true"   />   </row>
+ <row> <span style="float:right"> Texto:</span>
+        
+		<textbox rows="15" width="320px" id="contenido"  maxlength="100" cols="50" readonly="true"   />   </row>
+
+    
+ 
+</rows>
+</grid>
+<vbox>
+<vbox>
+<hbox>
+    <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"  disabled="true"  onClick="guardar();"/>
+    
+</hbox>
+</vbox>
+
+			</vbox>
+
+ </groupbox>
+
+</window>
+</zk>

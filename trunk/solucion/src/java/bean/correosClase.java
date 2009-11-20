@@ -11,6 +11,7 @@ import jcinform.persistencia.Correos;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Estudiantes;
 import jcinform.procesos.Administrador;
+import org.zkoss.zul.Listitem;
 
 /**
  *
@@ -26,6 +27,7 @@ public class correosClase {
         List<Correos> a = adm.query("Select o from Correos as o where o.destinatario = '"+est.getCodigoest()+"' " +
         "and  o.tiporemitente = 'P' and o.eliminado = false and o.archivado = false ");
     }
+
     
     public void bandejaProfesor(Empleados est){
         Administrador adm = new Administrador();
