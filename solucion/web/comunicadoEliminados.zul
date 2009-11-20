@@ -78,8 +78,6 @@ public void buscar(){
             <caption label="Bandeja de Eliminados" />
             <vbox>
                 <hbox>
-                    <textbox id="buscarText"  maxlength="60" cols="10" />
-                    <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Buscar" onClick='buscar()' />
                     <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Restaurar" >
 
                         <attribute name="onClick">

@@ -78,8 +78,6 @@ public void buscar(){
             <caption label="Correos Almacenados" />
             <vbox>
                 <hbox>
-                    <textbox id="buscarText"  maxlength="60" cols="10" />
-                    <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Buscar" onClick='buscar()' />
                     <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Eliminar" >
          
                         <attribute name="onClick">
