@@ -168,7 +168,26 @@ public void buscar(){
             </toolbar>
             <grid width="100%">
                 <rows>
+                    <row>
+                        <span style="float:right;weight:bold">
 
+                    <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Eliminar" >
+
+                        <attribute name="onClick">
+                                        Correos correo = (Correos)datos2.selectedItem.value;
+                                        correo.setEliminado(true);
+                                        adm.actualizar(correo);
+                                        buscar();
+                                        panel.visible = false;
+
+                        </attribute>
+
+                    </toolbarbutton>
+                          <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Responder" >
+                           </toolbarbutton>
+                        </span>
+
+                    </row>
                     <row>
                         <span style="float:right;weight:bold"> Enviado por:</span>
                         <label id="remitenten" />
