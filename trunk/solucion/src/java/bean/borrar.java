@@ -15,6 +15,7 @@ import jcinform.procesos.Administrador;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.image.AImage;
 import org.zkoss.util.media.Media;
+import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Fileupload;
 
 
@@ -35,6 +36,7 @@ void func() throws InterruptedException{
 //    String ads;
 //    ads.getBytes()
 //
+    
 
 }
  
