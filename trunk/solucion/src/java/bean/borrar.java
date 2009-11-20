@@ -5,6 +5,8 @@
 
 package bean;
 
+import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.List;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
@@ -23,11 +25,16 @@ import org.zkoss.zul.Fileupload;
 public class borrar {
 //Panel p;
 void func() throws InterruptedException{
-//    Media media = Fileupload.get();
+    Media media = Fileupload.get();
 //    media.getByteData();
 //    AImage a;
 //    a.getByteData()
-//			byte[] archivo=((AMedia) media).get;
+     
+//			byte[] archivo=(((AMedia) media).getStringData());
+//    FileOutputStream a;
+//    String ads;
+//    ads.getBytes()
+//
 
 }
  
