@@ -348,7 +348,7 @@ empa.setPerfil(g);
 			if (media instanceof org.zkoss.image.Image) {
 
 				foto0.setContent(media);
-			
+			//byte[] archivo=((AMedia) media).getByteData();
 			} else if (media != null){
 				Messagebox.show("Seleccione un Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
             }

@@ -6,11 +6,15 @@
 package bean;
 
 import java.util.List;
-import java.util.Set;
-import jcinform.persistencia.Correos;
-import jcinform.persistencia.Estudiantes;
+import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-import org.zkoss.zul.Panel;
+
+ 
+import org.zkoss.util.media.AMedia;
+import org.zkoss.image.AImage;
+import org.zkoss.util.media.Media;
+import org.zkoss.zul.Fileupload;
+
 
 /**
  *
@@ -18,6 +22,14 @@ import org.zkoss.zul.Panel;
  */
 public class borrar {
 //Panel p;
+void func() throws InterruptedException{
+//    Media media = Fileupload.get();
+//    media.getByteData();
+//    AImage a;
+//    a.getByteData()
+//			byte[] archivo=((AMedia) media).get;
+
+}
  
 
         public static void bandejaEstudiante(Estudiantes est){
