@@ -1,15 +1,17 @@
+
 <zk>
     <window >
- <zscript>
+        <zscript>
   import bean.EventDAO;
   import java.util.ArrayList;
   import jcinform.persistencia.*;
   import jcinform.procesos.Administrador;
   import bean.Permisos;
   import java.math.BigDecimal;
- import org.zkoss.util.media.Media;
- import org.zkoss.util.media.AMedia;
- import java.io.FileOutputStream;
+  import org.zkoss.util.media.Media;
+  import org.zkoss.util.media.AMedia;
+  import java.io.FileOutputStream;
+  
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
     Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -17,6 +19,7 @@
     
     Permisos permiso = new Permisos();
   byte[] data = null;
+  String destinatarios ="";
 
 public void guardar(){
     Correos correo = new Correos();
@@ -36,21 +39,36 @@ public void guardar(){
 adm.guardar(correo);
 }
 
-  </zscript>
+        </zscript>
  
-<groupbox mold="3d" >
-       <caption label="Redactar un Nuevo mensaje" />
+        <groupbox mold="3d" >
+            <caption label="Redactar un Nuevo mensaje" />
 
-<grid width="100%">
-<rows>
+            <grid width="100%">
+                <rows>
 
-<row><span style="float:right"> Asunto(*):</span>
-        <textbox id="titulo"  maxlength="100" cols="40"  />   </row>
-        <row>
-            <span style="float:right"> Archivo:</span>
-              <span>  <textbox value="" cols="30" readonly="true" id="nombrearchivo" />
-              <button label="Adjuntar " id="ima">
-                                    <attribute name="onClick">{
+                    <row>
+                        <span style="float:right"> Para (*):</span>
+                        <span>
+                            <textbox id="para"  maxlength="100" cols="40"  />
+        Click para anadir
+                        </span>
+
+                    </row>
+                    <row>
+                        <span style="float:right"> Asunto(*):</span>
+                        <span>
+                            <textbox id="titulo"  maxlength="100" cols="40"  />
+        Ej. Deber de Matematicas
+                        </span>
+
+                    </row>
+                    <row>
+                        <span style="float:right"> Archivo:</span>
+                        <span>
+                            <textbox value="" cols="30" readonly="true" id="nombrearchivo" />
+                            <button label="Adjuntar " image="images/adjunto.gif" id="ima">
+                                <attribute name="onClick">{
 
             Media media0 = Fileupload.get();
 //alert(media0.getFormat()+"00");
@@ -85,29 +103,31 @@ adm.guardar(correo);
 		}
 
 
-                                    </attribute>
-                                </button>
-                              </span>
-        </row>
- <row> <span style="float:right"> Texto:</span>
+                                </attribute>
+                            </button>
+                        </span>
+                    </row>
+                    <row>
+                        <span style="float:right;align:top"> Mensaje</span>
         
-		<textbox rows="15" width="320px" id="contenido"  maxlength="100" cols="50"  />   </row>
+                        <textbox rows="15" width="320px" id="contenido"  maxlength="100" cols="50"  />
+                    </row>
 
     
  
-</rows>
-</grid>
-<vbox>
-<vbox>
-<hbox>
-    <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"   onClick="guardar();"/>
+                </rows>
+            </grid>
+            <vbox>
+                <vbox>
+                    <hbox>
+                        <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"   onClick="guardar();"/>
     
-</hbox>
-</vbox>
+                    </hbox>
+                </vbox>
 
-			</vbox>
+            </vbox>
 
- </groupbox>
+        </groupbox>
 
-</window>
+    </window>
 </zk>
