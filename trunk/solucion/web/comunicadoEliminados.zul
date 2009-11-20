@@ -1,8 +1,7 @@
 
 <zk>
     <window  onCreate="buscar()">
-        <zscript>
-            <![CDATA[
+        <zscript>   <![CDATA[
   import bean.EventDAO;
   import java.util.ArrayList;
   import jcinform.persistencia.*;
@@ -15,10 +14,10 @@
 
     Permisos permiso = new Permisos();
      List allEvents = adm.query("Select o from Correos as o where o.destinatario = '1' " +
-        "and  o.tiporemitente = 'P' and o.eliminado = false and o.archivado = false ");
+        "and  o.tiporemitente = 'P' and o.eliminado = true and o.archivado = false ");
 public void buscar(){
      List allEvents = adm.query("Select o from Correos as o where o.destinatario = '1' " +
-        "and  o.tiporemitente = 'P' and o.eliminado = false and o.archivado = false order by o.fecha ");
+        "and  o.tiporemitente = 'P' and o.eliminado = true and o.archivado = false order by o.fecha ");
         datos2 = new Listbox();
         int a=0;
             for (Iterator it = datos2.getItems().iterator(); it.hasNext();) {
@@ -46,7 +45,7 @@ public void buscar(){
                       li.appendChild(new Listcell(acceIt.getRemitenten()+" "));
                       li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+" "));
 
-                      
+
 
                       datos2.appendChild(li);
              }
@@ -76,47 +75,19 @@ public void buscar(){
   ]]>
         </zscript>
         <groupbox  width="100%" mold="3d" >
-            <caption label="Bandeja de Entrada" />
+            <caption label="Bandeja de Eliminados" />
             <vbox>
                 <hbox>
                     <textbox id="buscarText"  maxlength="60" cols="10" />
                     <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Buscar" onClick='buscar()' />
-                    <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Eliminar" >
-         
-                        <attribute name="onClick">
-                        Set items = datos2.getSelectedItems();
-
-						if (items.isEmpty()) {
-                            return;
-						}
-                         int val = Messagebox.show("Seguro de eliminar?", "Seguridad", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
-                         if(val == 1){
-
-                                Set items = datos2.getSelectedItems();
-
-                                    List al = new ArrayList(items);
-                                    for (Iterator it = al.iterator(); it.hasNext();) {
-                                        Listitem li = (Listitem)it.next();
-                                        //li.setSelected(false);
-                                        Correos corre = (Correos)li.getValue();
-                                        corre.setEliminado(true);
-                                        adm.actualizar(corre);
-                                    }
-                                    buscar();
-						
-                        }
-                        </attribute>
-                    
-                    </toolbarbutton>
-                        <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Archivar" >
+                    <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Restaurar" >
 
                         <attribute name="onClick">
                         Set items = datos2.getSelectedItems();
-
 						if (items.isEmpty()) {
                             return;
 						}
-                        
+                         
 
                                 Set items = datos2.getSelectedItems();
 
@@ -126,16 +97,13 @@ public void buscar(){
                                         //li.setSelected(false);
                                         Correos corre = (Correos)li.getValue();
                                         corre.setEliminado(false);
-                                        corre.setArchivado(true);
                                         adm.actualizar(corre);
                                     }
                                     buscar();
 
-
-                        </attribute>
+                       </attribute>
 
                     </toolbarbutton>
-
                 </hbox>
                 <hbox width="100%">
                     <listbox mold="paging" rows="20" pageSize="20" onSelect="move();" id="datos2" width="600px" multiple="true" checkmark="true">
@@ -174,7 +142,7 @@ public void buscar(){
 
                 </rows>
             </grid>
- 
+
         	</panelchildren>
  </panel>
             </vbox>

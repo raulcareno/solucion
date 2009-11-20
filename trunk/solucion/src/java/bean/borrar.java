@@ -6,15 +6,19 @@
 package bean;
 
 import java.util.List;
+import java.util.Set;
 import jcinform.persistencia.Correos;
 import jcinform.persistencia.Estudiantes;
 import jcinform.procesos.Administrador;
+import org.zkoss.zul.Panel;
 
 /**
  *
  * @author geovanny
  */
 public class borrar {
+//Panel p;
+ 
 
         public static void bandejaEstudiante(Estudiantes est){
         Administrador adm = new Administrador();

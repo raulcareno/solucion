@@ -32,8 +32,17 @@
 						<treecell  image="/images/enviados.png" label="Enviados" />
 					</treerow>
 				</treeitem>
-				<treeitem  image="/images/eliminados.png" label="Eliminados" />
-                <treeitem   image="/images/guardar.gif" label="Archivados" />
+                <treeitem>
+					<treerow>
+						<treecell  image="/images/eliminados.png" label="Eliminados" onClick='ingresar("/comunicadoEliminados.zul")'  />
+					</treerow>
+				</treeitem>
+                <treeitem>
+					<treerow>
+						<treecell  image="/images/guardar.gif" label="Archivados" onClick='ingresar("/comunicadoArchivados.zul")'  />
+					</treerow>
+				</treeitem>
+                
 			</treechildren>
 		</tree>
             </div>
