@@ -139,7 +139,7 @@ void estado(Boolean estado,Boolean modificar){
     }
 
    Boolean verificar(String accion){
-        return permiso.verificarPermiso("Matricular",accion);
+        return permiso.verificarPermiso("Aportes",accion);
 
     }
  void nuevo(){

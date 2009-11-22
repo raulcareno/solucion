@@ -218,7 +218,7 @@ public disciplina(){
                     " and o.esdisciplina = true " +
                     "  order by o.orden ");
 
-     for (Iterator<Sistemacalificacion> it = sisFormulas.iterator(); it.hasNext();) {
+            for (Iterator<Sistemacalificacion> it = sisFormulas.iterator(); it.hasNext();) {
                 Sistemacalificacion siCal = it.next();
                 if (verificar(siCal.getFormuladisciplina(), notas)) {
                     return "Revise la formula de ['" + siCal.getNombre() + "'] del Sistema de Calificacion ";
@@ -256,7 +256,7 @@ String del = "Delete from Notas where matricula.curso.codigocur = '"+curso.getCo
 
                 inter.set("nota", nota);
                 int ta = labels.size()-1;
-                for (int j = 2; j < labels.size()-1; j++) {
+                for (int j = 2; j < labels.size(); j++) {
                     Label object1 = (Label) labels.get(j);
                     String formula = notas.get(j-2).getSistema().getFormuladisciplina();// EN CASO DE FORMULA
                     formula = formula.replace("no","nota.getNo");//EN CASO DE QUE HAYA FORMULA
@@ -490,7 +490,7 @@ public ArrayList reporteDisciplina(Cursos curso,Sistemacalificacion sistema){
                     "order by o.sistema.orden");
             List<MateriaProfesor> lista = adm.query("Select o from MateriaProfesor as o " +
                 "where o.curso.codigocur = '" + curso.getCodigocur() + "'" +
-                " and o.materia.codigo > 2  order by o.materia.descripcion");
+                " and o.materia.codigo > 2 and o.opcional = true  order by o.materia.descripcion");
             String query = "";
             String query2 = "";
             String numeroDecimales = "3";
@@ -557,11 +557,15 @@ public ArrayList reporteDisciplina(Cursos curso,Sistemacalificacion sistema){
                                 " and notas.disciplina = true  " +
                                 " ";
                            List nativo2 = adm.queryNativo(q);
+                           System.out.println("query: "+q);
                             if(nativo2.size()>0){
 
                                         Vector vec = (Vector) nativo2.get(0);
                                         inter.set("nota", coll);
                                         Object dos = vec.get(0);
+                                        if(dos ==null){
+                                            dos = new Double(0);
+                                        }
                                         Double val = new Double(dos.toString());
                                         inter.eval("nota.setN" + (i + 1) + "(" + val + ")");
                                         coll = (NotaDisciplina) inter.get("nota");
@@ -579,9 +583,9 @@ public ArrayList reporteDisciplina(Cursos curso,Sistemacalificacion sistema){
 
                  coll.setProfesores(promProfesor/lista.size());
 
-                 q = "Select " + query + "  from Notas notas " +
+                 q = "Select " + query + "  from Notas notas " + //SACO LA DISCIPLINA DEL INSPECTOR CODIGO = 1
                                 "where notas.matricula = '" + matriculas1.getCodigomat() + "' " +
-                                "and notas.materia = '0' " +
+                                "and notas.materia = '1' " +
                                 " and notas.disciplina = true  " +
                                 " ";
                          nativo = adm.queryNativo(q);
@@ -634,7 +638,8 @@ public ArrayList reporteDisciplina(Cursos curso,Sistemacalificacion sistema){
 //            DisciplinaDataSource ds = (DisciplinaDataSource) arr.get(0);
             return arr;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, "exception caught", e);
+            Logger.getLogger(disciplina.class.getName()).log(Level.SEVERE, null, e);
+//            Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, "exception caught", e);
       }
 
 return null;
