@@ -2,6 +2,7 @@
 package sources;
 import bean.NotaCollection;
 import java.util.ArrayList;
+import jcinform.persistencia.Cursos;
 import jcinform.persistencia.Global;
 import jcinform.persistencia.MateriaProfesor;
 import jcinform.persistencia.Matriculas;
@@ -17,7 +18,11 @@ private Matriculas matricula;
 private Global materia;
 private MateriaProfesor mprofesor;
 private Sistemacalificacion sistema;
-private Double nota;
+private Object nota;
+
+//para examenes de grado
+private Cursos curso;
+private String profesor;
 
 private String firma1,firma2,firma3;
 private String cargo1,cargo2,cargo3;
@@ -49,11 +54,11 @@ private String cargo1,cargo2,cargo3;
         this.matricula = matricula;
     }
 
-    public Double getNota() {
+    public Object getNota() {
         return nota;
     }
 
-    public void setNota(Double nota) {
+    public void setNota(Object nota) {
         this.nota = nota;
     }
 
@@ -132,6 +137,25 @@ private String cargo1,cargo2,cargo3;
     public void setFirma3(String firma3) {
         this.firma3 = firma3;
     }
+
+    public Cursos getCurso() {
+        return curso;
+    }
+
+    public void setCurso(Cursos curso) {
+        this.curso = curso;
+    }
+
+    public String getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(String profesor) {
+        this.profesor = profesor;
+    }
+
+
+    
      
 
 

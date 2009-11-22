@@ -166,19 +166,23 @@ public JRDataSource profesores(){
       Session ses = Sessions.getCurrent();
       Periodo periodo = (Periodo) ses.getAttribute("periodo");
         ArrayList detalle = new ArrayList();
-        List hoy = adm.query("SELECT mat FROM MateriaProfesor AS mat " +
-                "WHERE mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                "order by mat.curso.secuencia");
+        List hoy = adm.query("SELECT mat FROM Empleados AS mat " +
+                "  order by mat.apellidos");
         for (Iterator it = hoy.iterator(); it.hasNext();) {
-            MateriaProfesor elem = (MateriaProfesor) it.next();
+            Empleados elem = (Empleados) it.next();
             detalle.add(elem);
         }
-      ReporteProfesorDataSource ds = new ReporteProfesorDataSource(detalle);
+      ProfesoresDataSource ds = new ProfesoresDataSource(detalle);
       return ds;
 }
  
 
  void showReport() {
+ 
+ String tipo = reporte.getSelectedItem().getValue();
+           if(tipo.equals("linea")){
+                return;
+           }
             Institucion insts = periodo.getInstitucion();
              
             Map parametros = new HashMap();
@@ -189,7 +193,7 @@ public JRDataSource profesores(){
             parametros.put("slogan", insts.getSlogan());
             parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
             
-            String tipo = reporte.getSelectedItem().getValue();
+            
             JRDataSource datasource = null;
 
             if(tipo.equals("DIS")){
@@ -223,6 +227,10 @@ public JRDataSource profesores(){
                     parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc("WEB-INF/reportes/cuadrocalificaciones.jasper");
+
+            }else if(tipo.equals("EXAM")){
+                    datasource = noti.cuadroexamenes(curs.getSelectedItem().getValue());
+                    report.setSrc("WEB-INF/reportes/examenesgrado.jasper");
             }else if(tipo.equals("CDIS")){
                     ArrayList arreglo = discipli.reporteDisciplina(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     parametros = (HashMap) arreglo.get(1);
@@ -302,9 +310,12 @@ sistemasCombo.disabled = true;
             curs.disabled = false;
             sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Calificaciones";
-        }else if(valor.equals("AG")){
+        }else if(valor.equals("AG") ){
             curs.disabled = false;
             titulo.value= "Acta de Grado";
+        }else if(valor.equals("EXAM")){
+            curs.disabled = false;
+            titulo.value= "Examenes de Grado";
         }else if(valor.equals("CAG")){
             curs.disabled = false;
             titulo.value= "Copia de Acta de Grado";
@@ -339,9 +350,9 @@ collapsible="true" title="Parametros">
         <listitem label="Acta de Grado" value="AG"/>
         <listitem label="Copia de Acta de Grado" value="CAG"/>
         <listitem label="Certificado de Promoción" value="CERT"/>
+        <listitem label="Examenes de Grado" value="EXAM"/>
         <listitem label="=========================" value="linea" />
-    
-        <!--listitem  label="Mejor egresado(*)" value="CDIS"/>
+         <!--listitem  label="Mejor egresado(*)" value="CDIS"/>
         <listitem label="Cuadro juntas de curso(*)" value="CDIS"/>
         <listitem label="Cuadro de Supletorios(*)" value="CDIS"/>
         <listitem label="Cuadro de Mejores Estudiantes por curso(*)" value="CDIS"/>

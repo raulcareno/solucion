@@ -25,6 +25,7 @@ import org.zkoss.zul.Textbox;
 import sources.Nota;
 import sources.NotasClaseTemp;
 import sources.ReporteCertificadoDataSource;
+import sources.ReporteExamenesDataSource;
 import sources.ReporteGradoDataSource;
 import sources.ReporteNoasLibretaDataSource;
 import sources.ReporteNotasDataSource;
@@ -615,7 +616,8 @@ public class notas extends Rows {
                 "where  o.sistema.codigosis  = '" + sistema.getCodigosis() + "' " +
                 "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                 "order by o.sistema.orden ");
-        
+         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o " +
+                "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         
         String query = "";
         for (Notanotas notass : notas) {
@@ -668,7 +670,19 @@ public class notas extends Rows {
                     }
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
-                    nota.setNota(val);
+                    
+                        if (maprofesor.getCuantitativa() == false) {
+                            nota.setNota(equivalencia(dos, equivalencias));
+                        } else {
+                             nota.setNota(val.toString());
+                            if (val == 0.0) {
+                                nota.setNota("");
+                            }
+
+                        }
+                    //nota.setNota(val);
+
+
                     nota.setMprofesor(maprofesor);
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     lisNotas.add(nota);
@@ -687,6 +701,67 @@ public class notas extends Rows {
         return ds;
 
     }
+
+
+    public JRDataSource cuadroexamenes(Cursos curso) {
+//     int tamanio=0;
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+//        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        //Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
+        List<Materiasgrado> notas = adm.query("Select o from Materiasgrado as o " +
+                "where  o.curso.codigocur = '" + curso.getCodigocur() + "' " +
+                " order by o.codigo ");
+        String query = "";
+        for (Materiasgrado notass : notas) {
+            query += notass.getColumna() + ",";
+        }
+        query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+        String q = "SELECT CONCAT(est.apellido,' ',est.nombre), " + query + "   FROM notasgrado notas,matriculas mat,estudiantes est " +
+                "WHERE notas.matricula = mat.codigomat AND mat.estudiante = est.codigoest AND mat.curso = '"+curso.getCodigocur()+"'";
+        System.out.println("" + q);
+        List nativo = adm.queryNativo(q);
+        List<Nota> lisNotas = new ArrayList();
+        int i = 1;
+        for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+            Vector vec = (Vector) itna.next();
+            int ksis = 0;
+            String estudiante ="";
+            for (int j = 0; j < vec.size(); j++) {
+                Object dos = vec.get(j);
+                Double val = 0.0;
+            Nota nota = new Nota();
+                 if (j >= 1) {
+ //                   val = redondear((Double) dos, 2);
+                    nota.setCargo2(((Materiasgrado)notas.get(ksis)).getNombre());
+                    
+                    nota.setNota(redondear((Double)dos, 0).intValue());
+                        if((j+1) == vec.size()){
+                              String s = "##00.00##";
+                            DecimalFormat decimalFormat = new DecimalFormat(s);
+                            //DecimalFormat formateador = new DecimalFormat("####.###");
+                            // Esto sale en pantalla con cuatro decimales, es decir, 3,4324
+                            System.out.println ("formato: "+decimalFormat.format(redondear((Double)dos, 3)));
+                            nota.setNota(decimalFormat.format (redondear((Double)dos, 3)));
+                        }
+                    nota.setProfesor(((Materiasgrado)notas.get(ksis)).getProfesor().getApellidos() +" "+((Materiasgrado)notas.get(0)).getProfesor().getNombres() );
+                    nota.setCurso(curso);
+                    nota.setCargo1(estudiante);
+                    nota.setCargo3(""+i);
+                    lisNotas.add(nota);
+                    ksis++;
+                }  else if (j == 0) {
+                    estudiante = dos.toString();//en seteo el nombre del estudiante
+                }
+            }
+            i++;
+        }
+        nativo = null;
+        ReporteExamenesDataSource ds = new ReporteExamenesDataSource(lisNotas);
+        return ds;
+
+    }
+
 
     public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema) {
 //     int tamanio=0;
@@ -708,6 +783,10 @@ public class notas extends Rows {
                 "and o.sistema.trimestre.codigotrim =  '" + sistema.getTrimestre().getCodigotrim() + "' " +
                 "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                 "order by o.sistema.orden ");
+
+           List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o " +
+                "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        
 //Sistemacalificacion sd;
 //sd.getTrimestre().getCodigotrim();
 
@@ -755,7 +834,18 @@ public class notas extends Rows {
                     val = redondear((Double) dos, 2);
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
-                    nota.setNota(val);
+                    //nota.setNota(val);
+
+                        if (mprofesor.getCuantitativa() == false) {
+                            nota.setNota(equivalencia(dos, equivalencias));
+                        } else {
+                             nota.setNota(val.toString());
+                            if (val == 0.0) {
+                                nota.setNota("");
+                            }
+
+                        }
+
                     nota.setMprofesor(mprofesor);
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     lisNotas.add(nota);

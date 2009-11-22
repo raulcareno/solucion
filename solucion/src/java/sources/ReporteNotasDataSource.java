@@ -52,7 +52,13 @@ public class ReporteNotasDataSource implements JRDataSource{
         }else if ("tipo".equals(fieldName)) {
             valor = nodo.getSistema().getTrimestre().getDescripcion();
         }else if ("nota".equals(fieldName)) {
+
+            try {
             valor = nodo.getNota();
+            } catch (Exception e) {
+                System.out.println("fieldcargar: "+e);
+            }
+
         }else
             if ("estudiante".equals(fieldName)) {
            valor = nodo.getMatricula().getEstudiante().getApellido()+" "+ nodo.getMatricula().getEstudiante().getNombre();
