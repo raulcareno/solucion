@@ -34,7 +34,7 @@ import sources.DisciplinaDataSource;
 public class reporteDisciplina {
 
     
-public void reporteDisciplina(Cursos curso,Sistemacalificacion sistema){
+public DisciplinaDataSource reporteDisciplina(Cursos curso,Sistemacalificacion sistema){
         Administrador adm = new Administrador();
         byte[] bytes = null;
         try {
@@ -205,12 +205,12 @@ public void reporteDisciplina(Cursos curso,Sistemacalificacion sistema){
             DisciplinaDataSource ds = new DisciplinaDataSource(lisNotasC);
             lisNotas = null;
             //ReporteBecadosDataSource ds = new ReporteBecadosDataSource(listaMatriculados);
-//return ds;
+return ds;
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, "exception caught", e);
       }
 
-
+return null;
     }
 
 //    public static Object equivalencia(Object no, List<Equivalencias> equivalencias) {
