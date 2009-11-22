@@ -358,7 +358,7 @@ mostrarTodos();
     }
 
    Boolean verificar(String accion){
-        return permiso.verificarPermiso("Calificaciones",accion);
+        return permiso.verificarPermiso("Aportes",accion);
 
     }
  void nuevo(){
