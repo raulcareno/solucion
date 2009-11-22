@@ -360,10 +360,10 @@ public class notas extends Rows {
                             nota.setMatricula(new Matriculas(new Integer((Integer) labels.get(0))));
                             nota.setMateria(map.getMateria());
                             nota.setFecha(new Date());
-                            nota.setOrden(materia.getOrden());
-                            nota.setCuantitativa(materia.getCuantitativa());
-                            nota.setPromedia(materia.getMinisterio());
-                            nota.setSeimprime(materia.getSeimprime());
+                            nota.setOrden(map.getOrden());
+                            nota.setCuantitativa(map.getCuantitativa());
+                            nota.setPromedia(map.getMinisterio());
+                            nota.setSeimprime(map.getSeimprime());
                             nota.setDisciplina(false);
                             inter.set("nota", nota);
                             for (int j = 1; j < labels.size(); j++) {

@@ -1,18 +1,14 @@
 package sources;
-
 import bean.NotaDisciplina;
 import java.util.Iterator;
 import java.util.List;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
-
-/**
- *
+/***
  * @author GEOVANNY
- */
+ ***/
 public class DisciplinaDataSource implements JRDataSource {
-
     private Iterator itrAlumnos;
     private Iterator itrNodos;
     private Object valorAtual;
@@ -37,7 +33,6 @@ public class DisciplinaDataSource implements JRDataSource {
 
         if ("nombres".equals(fieldName)) {
             valor = nodo.getNombres();
-
         } else if ("curso".equals(fieldName)) {
             valor = nodo.getCurso();
         } else if ("f1".equals(fieldName)) {
@@ -109,10 +104,6 @@ public class DisciplinaDataSource implements JRDataSource {
         } else if ("estado".equals(fieldName)) {
             valor = nodo.getEstado();
         }
-
-
-
-
         return valor;
     }
 }

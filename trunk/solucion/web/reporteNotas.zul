@@ -9,6 +9,7 @@ import sources.CustomDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import sources.*;
 import bean.notas;
+import bean.disciplina;
 import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
@@ -21,6 +22,7 @@ import org.zkoss.zul.Listbox;
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
+disciplina discipli = new disciplina();
 List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
 
 List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
@@ -221,6 +223,13 @@ public JRDataSource profesores(){
                     parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc("WEB-INF/reportes/cuadrocalificaciones.jasper");
+            }else if(tipo.equals("CDIS")){
+                    ArrayList arreglo = discipli.reporteDisciplina(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    parametros = (HashMap) arreglo.get(1);
+                    parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    datasource = (DisciplinaDataSource) arreglo.get(0);
+                    report.setSrc("WEB-INF/reportes/disciplina.jasper");
+                    parametros.put("titulo",titulo.value);
             }else if(tipo.equals("CCAL2")){
                     parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
@@ -265,9 +274,10 @@ sistemasCombo.disabled = true;
         if(valor.equals("DIS")){
             curs.disabled = false;
             titulo.value= "Distributivo";
-        }else if(valor.equals("DIS2")){
+        }else if(valor.equals("DIS2") || valor.equals("CDIS")){
             curs.disabled = false;
             titulo.value= "Lista de profesores por Curso";
+            sistemasCombo.disabled = false;
         }else if(valor.equals("NMAT") || valor.equals("NMATD") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
