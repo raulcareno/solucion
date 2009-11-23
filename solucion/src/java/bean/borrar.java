@@ -5,28 +5,29 @@
 
 package bean;
 
-import java.io.FileOutputStream;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
 
  
-import org.zkoss.util.media.AMedia;
-import org.zkoss.image.AImage;
 import org.zkoss.util.media.Media;
-import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Fileupload;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 
 
 /**
- *
+ *t
  * @author geovanny
  */
 public class borrar {
 //Panel p;
 void func() throws InterruptedException{
     Media media = Fileupload.get();
+
 //    media.getByteData();
 //    AImage a;
 //    a.getByteData()
@@ -46,6 +47,21 @@ void func() throws InterruptedException{
         List<Correos> a = adm.query("Select o from Correos as o where o.destinatario = '"+est.getCodigoest()+"' " +
         "and  o.tiporemitente = 'P' and o.eliminado = false and o.archivado = false ");
             //System.out.println(""+a.get(0).getTema() + " "+ a.get(0).getRemitenten());
+         
+//        Listbox b;
+//        b.getItemCount();
+//b.getRows()
+//
+//        List al = new ArrayList(items);
+//							for (Iterator it = al.iterator(); it.hasNext();) {
+//								Listitem li = (Listitem)it.next();
+//                                li.
+//								li.setSelected(false);
+//
+
+
+//							}
+
     }
 
     /**

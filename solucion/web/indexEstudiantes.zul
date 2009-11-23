@@ -76,6 +76,7 @@ Session a = Sessions.getCurrent();
                             <fisheye image="/images/miscursos.png" onClick='ingresar("/cursosEstudiantes.zul")' />
                             <fisheye image="/images/calendarioacademico.png"  onClick='ingresar("/calendar.zul")' />
                             <fisheye image="/images/cambioclave.png" onClick='ingresar("/cambioClaveEstudiante.zul")' />
+                            <fisheye image="/images/correo.png" onClick='ingresar("/correos/comunicadoEstudianteIndex.zul")' />
                         </fisheyebar>
                     </vbox>
                 </panelchildren>

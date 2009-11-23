@@ -15,10 +15,12 @@
   byte[] data = null;
   String archivo = null;
     Permisos permiso = new Permisos();
-     List allEvents = adm.query("Select o from Correos as o where o.destinatario = '1' " +
+     Empleados estudiante =  (Empleados)ses.getAttribute("user");
+
+     List allEvents = adm.query("Select o from Correos as o where o.remitente = '"+estudiante.getCodigoemp()+"' " +
         "and  o.tiporemitente = 'P' and o.eliminado = false and o.archivado = false ");
 public void buscar(){
-     List allEvents = adm.query("Select o from Correos as o where o.destinatario = '1' " +
+     List allEvents = adm.query("Select o from Correos as o where o.remitente = '"+estudiante.getCodigoemp()+"' " +
         "and  o.tiporemitente = 'P' and o.eliminado = false and o.archivado = false order by o.fecha ");
         datos2 = new Listbox();
         int a=0;
@@ -46,7 +48,7 @@ public void buscar(){
 
                       li.appendChild(celdaimag);
 
-                      li.appendChild(new Listcell(acceIt.getRemitenten()+" "));
+                      li.appendChild(new Listcell(acceIt.getDestinatarion()+" "));
 
                       celdaimag = new Listcell(acceIt.getFecha().toLocaleString()+"");
                       if(acceIt.getAdjunto() != null)
@@ -80,9 +82,9 @@ public void buscar(){
           ((Listcell)children.get(0)).style = "color:#666666;";
           ((Listcell)children.get(1)).style = "color:#666666;";
           ((Listcell)children.get(2)).style = "color:#666666;";
-          correo.setLeido(true);
+        
          panel.visible = true;
-        adm.actualizar(correo);
+
         }
      }catch(Exception ea){}
 
@@ -90,70 +92,15 @@ public void buscar(){
   ]]>
         </zscript>
         <groupbox  width="100%" mold="3d" >
-            <caption label="Bandeja de Entrada" />
+            <caption label="Bandeja de Enviados" />
             <vbox>
                 <hbox>
-                    <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Eliminar" >
-         
-                        <attribute name="onClick">
-                        Set items = datos2.getSelectedItems();
-
-						if (items.isEmpty()) {
-                            return;
-						}
-                         int val = Messagebox.show("Seguro de eliminar?", "Seguridad", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
-                         if(val == 1){
-
-                                Set items = datos2.getSelectedItems();
-
-                                    List al = new ArrayList(items);
-                                    for (Iterator it = al.iterator(); it.hasNext();) {
-                                        Listitem li = (Listitem)it.next();
-                                        //li.setSelected(false);
-                                        Correos corre = (Correos)li.getValue();
-                                        corre.setEliminado(true);
-                                        adm.actualizar(corre);
-                                    }
-                                    buscar();
-						
-                        }
-                        </attribute>
-                    
-                    </toolbarbutton>
-                        <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Archivar" >
-
-                        <attribute name="onClick">
-                        Set items = datos2.getSelectedItems();
-
-						if (items.isEmpty()) {
-                            return;
-						}
-                        
-
-                                Set items = datos2.getSelectedItems();
-
-                                    List al = new ArrayList(items);
-                                    for (Iterator it = al.iterator(); it.hasNext();) {
-                                        Listitem li = (Listitem)it.next();
-                                        //li.setSelected(false);
-                                        Correos corre = (Correos)li.getValue();
-                                        corre.setEliminado(false);
-                                        corre.setArchivado(true);
-                                        adm.actualizar(corre);
-                                    }
-                                    buscar();
-
-
-                        </attribute>
-
-                    </toolbarbutton>
- 
                 </hbox>
                 <hbox width="100%">
-                    <listbox mold="paging" rows="20" pageSize="20" onSelect="move();" id="datos2" width="600px" multiple="true" checkmark="true">
+                    <listbox mold="paging" rows="20" pageSize="20" onSelect="move();" id="datos2" width="600px" >
                         <listhead>
                             <listheader label="Asunto"/>
-                            <listheader label="Enviado por "/>
+                            <listheader label="Enviado a "/>
                             <listheader label="Fecha"/>
                         </listhead>
                     </listbox>
@@ -171,20 +118,7 @@ public void buscar(){
                     <row>
                         <span style="float:right;weight:bold">
 
-                    <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Eliminar" >
-
-                        <attribute name="onClick">
-                                        Correos correo = (Correos)datos2.selectedItem.value;
-                                        correo.setEliminado(true);
-                                        adm.actualizar(correo);
-                                        buscar();
-                                        panel.visible = false;
-
-                        </attribute>
-
-                    </toolbarbutton>
-                          <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Responder" >
-                           </toolbarbutton>
+                   
                         </span>
 
                     </row>
@@ -200,8 +134,8 @@ public void buscar(){
                             Filedownload.save(data, "file", archivo);
                             </attribute>
                         </button>
-                        </span>  
-                        
+                        </span>
+
                     </row>
                     <row>
                         <span style="float:right"> Texto:</span>
@@ -211,7 +145,7 @@ public void buscar(){
 
                 </rows>
             </grid>
- 
+
         	</panelchildren>
  </panel>
             </vbox>

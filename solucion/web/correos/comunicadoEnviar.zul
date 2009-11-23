@@ -2,6 +2,7 @@
 <zk>
     <window >
         <zscript>
+            <![CDATA[
   import bean.EventDAO;
   import java.util.ArrayList;
   import jcinform.persistencia.*;
@@ -15,30 +16,48 @@
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
     Periodo periodo = (Periodo) ses.getAttribute("periodo");
-    List allEvents = adm.query("Select o from Cursos as o where o.codigocur = 0");
-    
+    List allEvents = adm.query("Select o from Empleados as o where o.estado = true order by o.apellidos ");
+    ses.getAttribute("");
     Permisos permiso = new Permisos();
-  byte[] data = null;
-  String destinatarios ="";
-
+    byte[] data = null;
+    String destinatarios ="";
+Estudiantes estudiante = ses.getAttribute("userEstudiante");
+  
 public void guardar(){
+ 
     Correos correo = new Correos();
     correo.setAdjunto(data);
     correo.setTema(titulo.value);
     correo.setContenido(contenido.value);
     correo.setArchivo(nombrearchivo.value);
-    correo.setRemitente(1);
-    correo.setRemitenten("");
-    correo.setDestinatario(1);
-    correo.setDestinatarion("");
-    correo.setFecha(new Date());
-    correo.setTiporemitente("P");
+    correo.setRemitente(estudiante.getCodigoest());
+    correo.setRemitenten(estudiante.getApellido()+" "+ estudiante.getNombre());
     correo.setArchivado(false);
     correo.setEliminado(false);
+    correo.setFecha(new Date());
+    correo.setTiporemitente("E");
     correo.setLeido(false);
-adm.guardar(correo);
-}
 
+            int a=0;
+            for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    Listitem li  = (Listitem)it.next();
+                    Empleados empe = (Empleados)li.getValue();
+                        correo.setDestinatario(empe.getCodigoemp());
+                        correo.setDestinatarion(empe.getApellidos()+" "+ empe.getNombres());
+                        adm.guardar(correo);
+            }
+     for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+            datos.getItems().remove(a);
+     }
+     titulo.value = "";
+     data = null;
+     nombrearchivo.value = "";
+     contenido.value = "";
+Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            
+
+}
+ ]]>
         </zscript>
  
         <groupbox mold="3d" >
@@ -46,14 +65,51 @@ adm.guardar(correo);
 
             <grid width="100%">
                 <rows>
-
                     <row>
                         <span style="float:right"> Para (*):</span>
                         <span>
-                            <textbox id="para"  maxlength="100" cols="40"  />
-        Click para anadir
+                            <listbox  mold="select" id="empleadosListado" width="420px">
+                            <listitem forEach="${allEvents}" value="${each}">
+                                <listcell label="${each.apellidos} ${each.nombres}" />
+                            </listitem>
+                            <attribute name="onSelect">
+                        Empleados empleado = (Empleados)empleadosListado.selectedItem.value;
+                        Listitem item = new Listitem();
+                        item.setValue(empleado);
+                        item.appendChild(new Listcell(empleado.getApellidos()+" "+empleado.getNombres()));
+                        datos.appendChild(item);
+             </attribute>
+                        </listbox>
+
                         </span>
 
+                    </row>
+                    <row>
+                        <span></span>
+                        <span>
+                        <listbox id="datos" multiple="true" oddRowSclass="non-odd"  width="420px" fixedLayout="true" checkmark="true">
+                            <listhead>
+                                <listheader label="Nombres"  sort="auto"/>
+                            </listhead>
+                        </listbox>
+                           <button label="Quitar Selecionados">
+                                  <attribute name="onClick">
+                        Set items = datos.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("Seleccion un Profesor para Quitar!");
+						} else {
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+								li.setSelected(false);
+                                datos.removeItemAt(li.getIndex());
+							}
+						}
+
+                                 </attribute>
+                            </button>
+
+                        </span>
                     </row>
                     <row>
                         <span style="float:right"> Asunto(*):</span>
@@ -67,12 +123,11 @@ adm.guardar(correo);
                         <span style="float:right"> Archivo:</span>
                         <span>
                             <textbox value="" cols="30" readonly="true" id="nombrearchivo" />
-                            <button label="Adjuntar " image="images/adjunto.gif" id="ima">
+                            <button label="Adjuntar " image="/images/adjunto.gif" id="ima">
                                 <attribute name="onClick">{
 
             Media media0 = Fileupload.get();
-//alert(media0.getFormat()+"00");
-//alert(media0.getName()+"00");
+
 
         if (media0 instanceof AMedia) {
                 AMedia media = (AMedia) media0;
@@ -99,7 +154,6 @@ adm.guardar(correo);
                 //out.flush();
                 //out.close();
 }
-
 		}
 
 
@@ -110,7 +164,7 @@ adm.guardar(correo);
                     <row>
                         <span style="float:right;align:top"> Mensaje</span>
         
-                        <textbox rows="15" width="320px" id="contenido"  maxlength="100" cols="50"  />
+                        <textbox rows="10"  width="420px" id="contenido"  maxlength="100" cols="50"  />
                     </row>
 
     
