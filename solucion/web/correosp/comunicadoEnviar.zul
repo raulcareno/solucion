@@ -196,20 +196,24 @@ Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Mes
                 </vbox>
 
             </vbox>
-
-
-    </window>
-    <zscript>
+  <zscript>
         public void cargando(){
+        try{
                     Session ses = Sessions.getCurrent();
                     //anado el estudianbte a responder
+                      titulo.value ="";
                     jcinform.procesos.Administrador adm = new jcinform.procesos.Administrador();
                       jcinform.persistencia.Estudiantes estud =  adm.buscarClave( ((Integer) ses.getAttribute("estudiante")), jcinform.persistencia.Estudiantes.class);
                       Listitem li = new Listitem();
                       li.setValue(estud);
                       li.appendChild(new Listcell(estud.getApellido()+" "+ estud.getNombre()));
                       datos.appendChild(li);
+                      titulo.value ="RE: "+ses.getAttribute("tema");
+                      }catch(Exception e){}
         }
 
     </zscript>
+
+    </window>
+  
 </zk>

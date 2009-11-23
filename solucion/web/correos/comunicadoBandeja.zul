@@ -186,8 +186,27 @@ public void buscar(){
                         </attribute>
 
                     </toolbarbutton>
-                          <!--toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Responder" >
-                           </toolbarbutton-->
+
+                          <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Responder" >
+                                 <attribute name="onClick">
+                                        Correos correo = (Correos)datos2.selectedItem.value;
+                                        panel.visible = false;
+                                        try{
+                                                ses.setAttribute("profesor",correo.getRemitente());
+                                                ses.setAttribute("tema",correo.getTema());
+                                                Window win34 = (Window) Executions.createComponents("/correos/comunicadoEnviar.zul", null, null);
+                                                win34.setVisible(true);
+                                                win34.setAttribute("profesor", correo.getRemitente());
+                                                win34.doModal();
+
+                                       }catch(Exception e){
+
+                                       }
+
+
+
+                        </attribute>
+                           </toolbarbutton>
                         </span>
 
                     </row>

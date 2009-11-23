@@ -1,6 +1,6 @@
 
 <zk>
-    <window >
+    <window  onCreate="cargando()" closable="true" >
         <zscript>
             <![CDATA[
   import bean.EventDAO;
@@ -60,7 +60,7 @@ Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Mes
  ]]>
         </zscript>
  
-        <groupbox mold="3d" >
+
             <caption label="Redactar un Nuevo mensaje" />
 
             <grid width="100%">
@@ -181,7 +181,23 @@ Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Mes
 
             </vbox>
 
-        </groupbox>
+      
+  <zscript>
+        public void cargando(){
+        try{
+                    Session ses = Sessions.getCurrent();
+                    //anado el estudianbte a responder
+                      titulo.value ="";
+                    jcinform.procesos.Administrador adm = new jcinform.procesos.Administrador();
+                      jcinform.persistencia.Empleados estud =  adm.buscarClave( ((Integer) ses.getAttribute("profesor")), jcinform.persistencia.Empleados.class);
+                      Listitem li = new Listitem();
+                      li.setValue(estud);
+                      li.appendChild(new Listcell(estud.getApellidos()+" "+ estud.getNombres()));
+                      datos.appendChild(li);
+                      titulo.value ="RE: "+ses.getAttribute("tema");
+                      }catch(Exception e){}
+        }
 
+    </zscript>
     </window>
 </zk>

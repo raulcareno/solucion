@@ -218,6 +218,7 @@ try{
                                         panel.visible = false;
                                         try{
                                                 ses.setAttribute("estudiante",correo.getRemitente());
+                                                ses.setAttribute("tema",correo.getTema());
                                                 Window win34 = (Window) Executions.createComponents("/correosp/comunicadoEnviar.zul", null, null);
                                                 win34.setVisible(true);
                                                 win34.setAttribute("estudiante", correo.getRemitente());
