@@ -116,24 +116,24 @@ void ingresoSistemas(){
 
 }
 </zscript>
-		 <grid style="background-color:white">
-		<columns sizable="true" menupopup="auto">
-			<column label=" "  />
-			<column label=" "/>
+		 <grid style="background:transparent;border:0px">
+		<columns style="background:transparent;border:0px" sizable="true" menupopup="auto">
+			<column style="background:transparent;border:0px"  label=" "  />
+			<column label=" "  style="background:transparent;border:0px" />
 		</columns>
 		<rows>
-            <row spans="2">
+            <row style="background:transparent;border:0px" spans="2">
  <span style="float:center"> <image src="/images/about.png" style="aling:center"/></span>
             </row>
-			<row>
-				<span style="float:right">Usuario:(*):</span>
+			<row style="background:transparent;border:0px">
+				<span style="float:right;font-weight:bold">Usuario:(*):</span>
                 <textbox onOK="clave.focus()"  id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
 			</row>
-			<row>
+			<row style="background:transparent;border:0px">
 				<span style="float:right">Contraseña:(*):</span>
                  <textbox  onOK="verificar.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
 			</row>
-            <row id="rperiodo" visible="false" spans="2">
+            <row  style="background:transparent;border:0px" id="rperiodo" visible="false" spans="2">
                     <listbox  onOK="btnIngresar.focus()"  style="font-size:12px"   width="435px"  id="periodo" mold="select">
                         <listitem forEach="${perfiles}" value="${each}">
                               <listcell  label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
@@ -142,7 +142,7 @@ void ingresoSistemas(){
 
                   
             </row>
-            <row align="center" spans="2">
+            <row align="center" spans="2"  style="background:transparent;border:0px">
                 
                 <toolbarbutton label="¿Has olvidado tu usuario o contraseña haz click AQUI?" onClick='alert("Network")'>
                     <attribute name="onClick">{
@@ -152,7 +152,7 @@ void ingresoSistemas(){
                 </toolbarbutton>
 
             </row>
-            <row spans="2" align="center" >
+            <row spans="2" align="center"  style="background:transparent;border:0px" >
              <span style="float:center">
                 <button label="Verificar"   image="/images/key.png"  id="verificar" onClick="usuario.getValue(); clave.getValue(); verificar()"/>
                 <button label="Ingresar Sistema"  visible="false" image="/images/ingreso.gif" id="btnIngresar" onClick="usuario.getValue(); clave.getValue(); ingresoSistemas();"/>
@@ -171,7 +171,7 @@ void ingresoSistemas(){
                 
                 </span>
             </row>
-             <row align="center" spans="2">
+             <row  style="background:transparent;border:0px" align="center" spans="2">
                 <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)5103 843"/>
              </row>
 		</rows>
