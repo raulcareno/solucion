@@ -1,7 +1,7 @@
 <?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
 <?page id="main-page"?>
 <window xmlns:y="http://www.zkoss.org/2007/yui"  title="Cursos del Estudiante" border="normal" width="100%" id="cursosForma">
-<zscript>
+    <zscript>
 <![CDATA[
 import bean.notas;
 import java.math.BigDecimal;
@@ -24,7 +24,7 @@ try{
             if(mat != null){
                 ses.setAttribute("matricula",mat);
                 Window win34 = (Window) Executions.createComponents("/notasEstudiantes.zul", null, null);
-win34.setVisible(true);
+                win34.setVisible(true);
                 win34.setAttribute("matricula", mat);
                 //win.doModal();
                 }
@@ -37,9 +37,9 @@ win34.setVisible(true);
     <grid>
         <rows>
             <row>
-                 <listbox id="cursos" width="420px"
+                <listbox id="cursos" width="420px"
                     onSelect="buscar2(((Matriculas)self.selectedItem.value));">
-                 <listitem >
+                    <listitem >
                         <listcell label="Seleccione un Curso" />
 
                     </listitem>

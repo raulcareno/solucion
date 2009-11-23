@@ -1,6 +1,6 @@
 
 <zk>
-    <window >
+    <window closable="true" onCreate="cargando()" >
         <zscript>
             <![CDATA[
   import bean.EventDAO;
@@ -20,6 +20,11 @@
 
     Empleados user =  (Empleados)ses.getAttribute("user");
     List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+    Cursos curso = new Cursos();
+    curso.setDescripcion("[Seleccione]");
+    cursos.add(0,curso);
+    
+                
 
     ses.getAttribute("");
     Permisos permiso = new Permisos();
@@ -81,7 +86,7 @@ Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Mes
  ]]>
         </zscript>
  
-        <groupbox mold="3d" >
+     
             <caption label="Redactar un Nuevo mensaje" />
 
             <grid width="100%">
@@ -106,6 +111,7 @@ Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Mes
                             <listhead>
                                 <listheader label="Nombres"  sort="auto"/>
                             </listhead>
+                                
                         </listbox>
                            <button label="Quitar Selecionados">
                                   <attribute name="onClick">
@@ -186,13 +192,24 @@ Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Mes
                 <vbox>
                     <hbox>
                         <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"   onClick="guardar();"/>
-    
                     </hbox>
                 </vbox>
 
             </vbox>
 
-        </groupbox>
 
     </window>
+    <zscript>
+        public void cargando(){
+                    Session ses = Sessions.getCurrent();
+                    //anado el estudianbte a responder
+                    jcinform.procesos.Administrador adm = new jcinform.procesos.Administrador();
+                      jcinform.persistencia.Estudiantes estud =  adm.buscarClave( ((Integer) ses.getAttribute("estudiante")), jcinform.persistencia.Estudiantes.class);
+                      Listitem li = new Listitem();
+                      li.setValue(estud);
+                      li.appendChild(new Listcell(estud.getApellido()+" "+ estud.getNombre()));
+                      datos.appendChild(li);
+        }
+
+    </zscript>
 </zk>
