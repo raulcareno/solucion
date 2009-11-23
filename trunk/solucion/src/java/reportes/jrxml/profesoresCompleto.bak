@@ -49,12 +49,12 @@
 		<group  name="curso" >
 			<groupExpression><![CDATA[$F{curso}]]></groupExpression>
 			<groupHeader>
-			<band height="35"  isSplitAllowed="true" >
+			<band height="21"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="19"
+						y="5"
 						width="43"
 						height="16"
 						backcolor="#FAFADE"
@@ -69,7 +69,7 @@
 					<reportElement
 						mode="Opaque"
 						x="43"
-						y="19"
+						y="5"
 						width="217"
 						height="16"
 						backcolor="#FAFADE"
@@ -84,7 +84,7 @@
 					<reportElement
 						mode="Opaque"
 						x="260"
-						y="19"
+						y="5"
 						width="165"
 						height="16"
 						backcolor="#FAFADE"
@@ -99,7 +99,7 @@
 					<reportElement
 						mode="Opaque"
 						x="710"
-						y="19"
+						y="5"
 						width="72"
 						height="16"
 						backcolor="#FAFADE"
@@ -110,26 +110,11 @@
 					</textElement>
 				<text><![CDATA[Fecha]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="0"
-						y="0"
-						width="1182"
-						height="19"
-						backcolor="#FAFADE"
-						key="textField"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{curso}]]></textFieldExpression>
-				</textField>
 				<staticText>
 					<reportElement
 						mode="Opaque"
 						x="425"
-						y="19"
+						y="5"
 						width="118"
 						height="16"
 						backcolor="#FAFADE"
@@ -144,7 +129,7 @@
 					<reportElement
 						mode="Opaque"
 						x="543"
-						y="19"
+						y="5"
 						width="167"
 						height="16"
 						backcolor="#FAFADE"
@@ -159,7 +144,7 @@
 					<reportElement
 						mode="Opaque"
 						x="782"
-						y="19"
+						y="5"
 						width="100"
 						height="16"
 						backcolor="#FAFADE"
@@ -174,7 +159,7 @@
 					<reportElement
 						mode="Opaque"
 						x="882"
-						y="19"
+						y="5"
 						width="100"
 						height="16"
 						backcolor="#FAFADE"
@@ -189,7 +174,7 @@
 					<reportElement
 						mode="Opaque"
 						x="982"
-						y="19"
+						y="5"
 						width="100"
 						height="16"
 						backcolor="#FAFADE"
@@ -204,7 +189,7 @@
 					<reportElement
 						mode="Opaque"
 						x="1082"
-						y="19"
+						y="5"
 						width="100"
 						height="16"
 						backcolor="#FAFADE"
@@ -231,13 +216,13 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="98"  isSplitAllowed="true" >
+			<band height="86"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="81"
-						y="5"
+						x="78"
+						y="3"
 						width="484"
-						height="18"
+						height="16"
 						backcolor="#FFFFFF"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -248,10 +233,10 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="77"
-						y="23"
-						width="488"
-						height="25"
+						x="78"
+						y="19"
+						width="484"
+						height="18"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -261,10 +246,10 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="82"
-						y="65"
-						width="483"
-						height="17"
+						x="78"
+						y="52"
+						width="484"
+						height="15"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -275,7 +260,7 @@
 				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="4"
-						y="4"
+						y="3"
 						width="69"
 						height="83"
 						forecolor="#000000"
@@ -286,10 +271,10 @@
 				</image>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="77"
-						y="48"
-						width="488"
-						height="17"
+						x="78"
+						y="37"
+						width="484"
+						height="15"
 						key="textField-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -299,8 +284,8 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="81"
-						y="82"
+						x="78"
+						y="67"
 						width="484"
 						height="16"
 						key="textField-7"/>
@@ -442,7 +427,7 @@
 						width="100"
 						height="18"
 						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
 						<font/>
 					</textElement>
