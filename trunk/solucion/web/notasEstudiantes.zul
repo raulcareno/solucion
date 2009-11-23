@@ -1,7 +1,7 @@
 <?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
 <?page id="estudianes"?>
 <window xmlns:y="http://www.zkoss.org/2007/yui"
-title="Notas del Estudiante" onCreate="notasd()" sizable="true"
+title="Notas del Estudiante::...." onCreate="notasd()"    mode="overlapped"   sizable="true"
 closable="true" border="normal" width="80%" id="principalNotasEstudiantes">
 <zscript>
 <![CDATA[
@@ -14,10 +14,19 @@ import org.zkforge.yuiext.grid.Row;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.notas;
+
+
 
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
+
+notas noti = new notas();
 Matriculas mat = (Matriculas)ses.getAttribute("matricula");
+ses.setAttribute("periodo",mat.getCurso().getPeriodo());
 System.out.println("MATRICULA:  "+mat);
 
 List sistemas = adm.query("Select o from Sistemacalificacion as o "+ 
@@ -34,7 +43,14 @@ String[][] values = new String[sistemas.size()][2];
 
 ]]>
     </zscript>
- 
+  <tabbox width="100%">
+        <tabs>
+            <tab id="notasingreso" label="Notas" />
+            <tab id="reportes" label="Impresión" />
+        </tabs>
+        <tabpanels>
+            <tabpanel>
+
     <grid width="100%"  id="datos">
         <columns>
             <column width="240px" label ="Materia"/>
@@ -44,14 +60,65 @@ String[][] values = new String[sistemas.size()][2];
         </rows>
     </grid>
     <button label="Salir" onClick="principalNotasEstudiantes.detach()"/>
+ </tabpanel>
+            <tabpanel>
+                <grid width="100%">
+                    <rows>
+                     
+                        <row>
+                             <span style="float:right"> Aporte que desea imprimir: </span>
 
+                                <listbox id="sistemasCombo" width="300px"  mold="select" >
+                                    <listitem selected="true"  forEach="${sistemas}" value="${each}">
+                                        <listcell label="${each.nombre}" />
+                                    </listitem>
+                                </listbox>
+                                 <button label="Ver Reporte"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                        </row>
+
+                    </rows>
+                </grid>
+
+
+                <jasperreport  height="360px" id="report" />
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
 <zscript><![CDATA[
 
 void notasd(){
         Matriculas matee = principalNotasEstudiantes.getAttribute("matricula");
         filas.addRow(matee);
 }
- 
+
+	void showReport(String tipo) {
+			//Preparing parameters
+            reportes.setSelected(true);
+
+            Institucion insts = mat.getCurso().getPeriodo().getInstitucion();
+			Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", mat.getCurso().getPeriodo().getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            parametros.put("titulo", "Libreta de Calificaciones");
+            JRDataSource datasource = null;
+
+           datasource = noti.libretas(mat.getCurso(),mat,sistemasCombo.getSelectedItem().getValue());
+            report.setSrc("WEB-INF/reportes/libretasin.jasper");
+            parametros.put("pathSubRel", "reportes/libreta_sub.jasper");
+            parametros.put("pathSubRel2", "reportes/libreta_subFaltas.jasper");
+
+
+
+
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+
+
+		}
+
 ]]>
 </zscript>
 </window>

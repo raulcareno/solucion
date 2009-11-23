@@ -191,7 +191,6 @@ void verificar(){
                         <treeitem id="Notas de Acta" image="/images/notas.png"  label="Notas de Acta" value="/cursosIngresonotasActa.zul"/>
                      </treechildren>
                     </treeitem>
-
                     <treeitem id="ssNN15" label="Varios" value="/blanco.zul">
                       <treechildren>
                         <treeitem id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correoInterno.zul"/>

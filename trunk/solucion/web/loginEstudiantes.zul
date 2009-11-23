@@ -27,27 +27,30 @@ void verPantall(){
              }
 }
 </zscript>
-	 <grid style="background-color:white">
+	 <grid style="background:transparent;border:0px">
 		<columns sizable="true" menupopup="auto">
-			<column label=" "  />
-			<column label=" "/>
+			<column style="background:transparent;border:0px" label=" "  />
+			<column style="background:transparent;border:0px" label=" "/>
 		</columns>
 		<rows>
-			<row>
+			<row style="background:transparent;border:0px">
 				<span style="float:right">Usuario:(*):</span>
                 <textbox onOK="clave.focus()" id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
 			</row>
-			<row>
+			<row style="background:transparent;border:0px">
 				<span style="float:right">Contraseña:(*):</span>
                  <textbox  onOK="ingresarModulo.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
+			</row>
+            <row spans="2"  align="center" style="background:transparent;border:0px">
+				 <span><button label="Ingresar" id="ingresarModulo"  image="/images/ingreso.gif"  onClick="usuario.getValue(); clave.getValue(); verPantall();"/>
+                 <button label="Cancelar"  image="/images/eliminar.gif"   onClick="win2.detach()"/></span>
 			</row>
             
 		</rows>
 	</grid>
        
-		<separator/>
-		<button label="Ingresar" id="ingresarModulo" onClick="usuario.getValue(); clave.getValue(); verPantall();"/>
-		<button label="Cancelar" onClick="win2.detach()"/>
+
+
 
  
 </window>
