@@ -19,27 +19,27 @@
 			<treechildren>
 				<treeitem >
 					<treerow>
-						<treecell  image="/images/nuevo.gif" label="Redactar"  onClick='ingresar("/comunicadoEnviar.zul")' />
+						<treecell  image="/images/nuevo.gif" label="Redactar"  onClick='ingresar("/correosp/comunicadoEnviar.zul")' />
 					</treerow>
 				</treeitem>
                 <treeitem>
 					<treerow>
-						<treecell   image="/images/bandeja.png" label="Bandeja de Entrada" onClick='ingresar("/comunicadoBandeja.zul")'  />
+						<treecell   image="/images/bandeja.png" label="Bandeja de Entrada" onClick='ingresar("/correosp/comunicadoBandeja.zul")'  />
 					</treerow>
 				</treeitem>
 				<treeitem>
 					<treerow>
-						<treecell  image="/images/enviados.png" label="Enviados" />
+						<treecell  image="/images/enviados.png" label="Enviados" onClick='ingresar("/correosp/comunicadoEnviados.zul")'   />
 					</treerow>
 				</treeitem>
                 <treeitem>
 					<treerow>
-						<treecell  image="/images/eliminados.png" label="Eliminados" onClick='ingresar("/comunicadoEliminados.zul")'  />
+						<treecell  image="/images/eliminados.png" label="Eliminados" onClick='ingresar("/correosp/comunicadoEliminados.zul")'  />
 					</treerow>
 				</treeitem>
                 <treeitem>
 					<treerow>
-						<treecell  image="/images/guardar.gif" label="Archivados" onClick='ingresar("/comunicadoArchivados.zul")'  />
+						<treecell  image="/images/guardar.gif" label="Archivados" onClick='ingresar("/correosp/comunicadoArchivados.zul")'  />
 					</treerow>
 				</treeitem>
                 

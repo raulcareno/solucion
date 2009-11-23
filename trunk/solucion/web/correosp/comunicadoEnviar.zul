@@ -1,0 +1,198 @@
+
+<zk>
+    <window >
+        <zscript>
+            <![CDATA[
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+  import org.zkoss.util.media.Media;
+  import org.zkoss.util.media.AMedia;
+  import java.io.FileOutputStream;
+  
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    List allEvents = adm.query("Select o from Empleados as o where o.estado = true order by o.apellidos ");
+
+    Empleados user =  (Empleados)ses.getAttribute("user");
+    List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+
+    ses.getAttribute("");
+    Permisos permiso = new Permisos();
+    byte[] data = null;
+    String destinatarios ="";
+ 
+  
+public void guardar(){
+ 
+    Correos correo = new Correos();
+    correo.setAdjunto(data);
+    correo.setTema(titulo.value);
+    correo.setContenido(contenido.value);
+    correo.setArchivo(nombrearchivo.value);
+    correo.setRemitente(user.getCodigoemp());
+    correo.setRemitenten(user.getApellidos()+" "+ user.getNombres());
+    correo.setArchivado(false);
+    correo.setEliminado(false);
+    correo.setFecha(new Date());
+    correo.setTiporemitente("P");
+    correo.setLeido(false);
+
+            int a=0;
+            for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    Listitem li  = (Listitem)it.next();
+                    Estudiantes empe = (Estudiantes)li.getValue();
+                        correo.setDestinatario(empe.getCodigoest());
+                        correo.setDestinatarion(empe.getApellido()+" "+ empe.getNombre());
+                        adm.guardar(correo);
+            }
+     for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+            datos.getItems().remove(a);
+     }
+     titulo.value = "";
+     data = null;
+     nombrearchivo.value = "";
+     contenido.value = "";
+Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            
+
+}
+
+  void buscar2(Cursos p){
+       List equivaEncontrados = adm.query("Select d from Matriculas as d " +
+       " where d.curso.codigocur = '"+p.getCodigocur()+"' ");
+        datos = new Listbox();
+        int a=0;
+              for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Matriculas acceIt = (Matriculas) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt.getEstudiante());
+                      li.appendChild(new Listcell(acceIt.estudiante.getApellido()+" "+ acceIt.estudiante.getNombre()));
+                      datos.appendChild(li);
+             }
+    }
+ ]]>
+        </zscript>
+ 
+        <groupbox mold="3d" >
+            <caption label="Redactar un Nuevo mensaje" />
+
+            <grid width="100%">
+                <rows>
+                    <row>
+                        <span style="float:right"> Para (*):</span>
+                        <span>
+                           
+                    <listbox id="curs" width="420px" mold="select"
+                    onSelect="buscar2(((Cursos)self.selectedItem.value));">
+
+                        <listitem forEach="${cursos}" value="${each}">
+                              <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                        </listitem>
+                    </listbox>
+                        </span>
+                    </row>
+                    <row>
+                        <span></span>
+                        <span>
+                        <listbox id="datos" width="420px"  mold="paging" rows="5" pageSize="10"  multiple="true" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                            <listhead>
+                                <listheader label="Nombres"  sort="auto"/>
+                            </listhead>
+                        </listbox>
+                           <button label="Quitar Selecionados">
+                                  <attribute name="onClick">
+                        Set items = datos.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("Seleccion un Profesor para Quitar!");
+						} else {
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+								li.setSelected(false);
+                                datos.removeItemAt(li.getIndex());
+							}
+						}
+
+                                 </attribute>
+                            </button>
+
+                        </span>
+                    </row>
+                    <row>
+                        <span style="float:right"> Asunto(*):</span>
+                        <span>
+                            <textbox id="titulo"  maxlength="100" cols="40"  />
+        Ej. Deber de Matematicas
+                        </span>
+
+                    </row>
+                    <row>
+                        <span style="float:right"> Archivo:</span>
+                        <span>
+                            <textbox value="" cols="30" readonly="true" id="nombrearchivo" />
+                            <button label="Adjuntar " image="/images/adjunto.gif" id="ima">
+                                <attribute name="onClick">{
+
+            Media media0 = Fileupload.get();
+        if (media0 instanceof AMedia) {
+                AMedia media = (AMedia) media0;
+               
+                //String tipo = "."+media.getFormat();
+                String nombre= media0.getName();
+                try{
+                    data = media.getByteData();
+                    
+                }catch(Exception e){
+                    try{
+                    data = media.getStringData().getBytes();
+                    }catch(Exception ax){
+
+                             Messagebox.show("No puede adjuntar este tipo de archivos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                             return;
+                    }
+                    
+
+                }
+                nombrearchivo.value = media0.getName();
+
+}
+
+		}
+
+
+                                </attribute>
+                            </button>
+                        </span>
+                    </row>
+                    <row>
+                        <span style="float:right;align:top"> Mensaje</span>
+        
+                        <textbox rows="10" width="420px" id="contenido"  maxlength="100" cols="50"  />
+                    </row>
+
+    
+ 
+                </rows>
+            </grid>
+            <vbox>
+                <vbox>
+                    <hbox>
+                        <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"   onClick="guardar();"/>
+    
+                    </hbox>
+                </vbox>
+
+            </vbox>
+
+        </groupbox>
+
+    </window>
+</zk>
