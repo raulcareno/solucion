@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+chat.zul
+
+{{IS_NOTE
+	Purpose:
+		
+	Description:
+		
+	History:
+		Mon Aug  6 12:35:50     2007, Created by robbiecheng
+}}IS_NOTE
+
+Copyright (C) 2007 Potix Corporation. All Rights Reserved.
+
+{{IS_RIGHT
+}}IS_RIGHT
+-->
+<window id="win" title="Sala de chat" width="300px" border="normal" use="chat.ChatWindow">
+	<div id="dv" visible="false" style="height: 300px; overflow:scroll">
+  		<vbox id="msgBoard"/>
+	</div>
+	<vbox id="input" visible="false">
+	 
+		<hbox>
+			<textbox id="msg" style="width:240px"/>
+			<button id="exit" label="exit" forward="onExit"/>
+		</hbox>
+	</vbox>
+	<div id="login" style="width: 200px">
+  		<vbox>
+    	<label value="Ingrese un NickName,ej. luis" style="font-weight: bold"/>
+   		<hbox>
+      		NickName:<textbox id="nickname" constraint="no empty"/>
+    	</hbox>
+    	<button label="Crear" forward="onLogin"/>
+  		</vbox>
+	</div>
+</window>
