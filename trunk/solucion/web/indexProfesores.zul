@@ -162,12 +162,12 @@
 
                     <treeitem id="ss1" label="Notas" value="/blanco.zul">
                       <treechildren>
-                        
                         <treeitem id="Notas"  image="/images/notas.png"  label="Registro Notas" value="/notasFuera.zul" />
                         <treeitem id="Registro de Disciplina" image="/images/notas.png"  label="Registro Disciplinas" value="/disciplinaFuera.zul" />
                         <treeitem id="Registro de Faltas" image="/images/notas.png"  label="Faltas" value="/faltas.zul" />
                         <treeitem id="Calendario" image="/images/calendar.gif"  label="Calendario" value="/calendar.zul" />
-                        <treeitem id="Correos" image="/images/mail.gif"  label="Envio de Tareas" value="/correo.zul"/>
+                        <treeitem id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correo.zul"/>
+                        <treeitem  id="Correo Interno" image="/images/bandeja2.png" label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
                      </treechildren>
                     </treeitem>
 			</treechildren>

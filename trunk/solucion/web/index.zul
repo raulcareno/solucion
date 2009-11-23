@@ -151,7 +151,7 @@ void verificar(){
  
 </north>
 
-<west title="Menú" size="17%" flex="true" splittable="true" collapsible="true">
+<west title="Menú" size="19%" flex="true" splittable="true" collapsible="true">
          <div>
 <panel width="100%" height="85%"  border="normal" title="Opciones"  collapsible="true" >
 				<panelchildren style="padding:0px;" >
@@ -194,11 +194,12 @@ void verificar(){
 
                     <treeitem id="ssNN15" label="Varios" value="/blanco.zul">
                       <treechildren>
-                        <treeitem id="Correos" image="/images/mail.gif"  label="Envio de Correo" value="/correoInterno.zul"/>
+                        <treeitem id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correoInterno.zul"/>
+                        <treeitem  id="Correo Interno" image="/images/bandeja2.png"   label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
                         <treeitem id="Respaldos" image="/images/base.gif"   label="Respaldos" value="/respaldos.zul"/>
                         <treeitem id="Calendario" image="/images/calendar.gif"   label="Calendario" value="/calendar.zul"/>
                         <treeitem id="Dobe" image="/images/pensum.png"   label="Dobe" value="/dobe.zul"/>
-                        <treeitem  id="Correo Interno" image="/images/mail.gif"   label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
+                        
                      </treechildren>
                     </treeitem>
                     <treeitem id="ss1" label="Administración" value="/blanco.zul">
