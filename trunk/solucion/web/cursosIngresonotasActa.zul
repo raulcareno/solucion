@@ -27,7 +27,8 @@ void verNotasCursoEstudiante(Cursos elcurso){
             //alert(elcurso+"");
                     Window win = (Window) Executions.createComponents("/notasActa.zul", null, null);
                     win.setAttribute("curso", elcurso);
-                    win.doEmbedded();
+                    win.doModal();
+                    //win.doEmbedded();
                     //win.doPopup();
                 }
 

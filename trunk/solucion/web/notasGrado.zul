@@ -1,7 +1,7 @@
 <?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
 <?page id="main-page"?>
 <window xmlns:y="http://www.zkoss.org/2007/yui"
-title="Notas del Estudiante" onCreate="notas()"
+title="Notas del Estudiante" onCreate="notas()"    mode="overlapped"  
 sizable="true"  closable="true" border="normal" width="80%" id="principalGrado">
 <zscript>
 <![CDATA[
