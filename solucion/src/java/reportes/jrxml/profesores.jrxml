@@ -49,12 +49,12 @@
 		<group  name="curso" >
 			<groupExpression><![CDATA[$F{curso}]]></groupExpression>
 			<groupHeader>
-			<band height="35"  isSplitAllowed="true" >
+			<band height="19"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="19"
+						y="3"
 						width="43"
 						height="16"
 						backcolor="#FAFADE"
@@ -69,7 +69,7 @@
 					<reportElement
 						mode="Opaque"
 						x="43"
-						y="19"
+						y="3"
 						width="217"
 						height="16"
 						backcolor="#FAFADE"
@@ -84,7 +84,7 @@
 					<reportElement
 						mode="Opaque"
 						x="260"
-						y="19"
+						y="3"
 						width="165"
 						height="16"
 						backcolor="#FAFADE"
@@ -99,7 +99,7 @@
 					<reportElement
 						mode="Opaque"
 						x="710"
-						y="19"
+						y="3"
 						width="72"
 						height="16"
 						backcolor="#FAFADE"
@@ -110,26 +110,11 @@
 					</textElement>
 				<text><![CDATA[Fecha]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="0"
-						y="0"
-						width="782"
-						height="19"
-						backcolor="#FAFADE"
-						key="textField"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{curso}]]></textFieldExpression>
-				</textField>
 				<staticText>
 					<reportElement
 						mode="Opaque"
 						x="425"
-						y="19"
+						y="3"
 						width="118"
 						height="16"
 						backcolor="#FAFADE"
@@ -144,7 +129,7 @@
 					<reportElement
 						mode="Opaque"
 						x="543"
-						y="19"
+						y="3"
 						width="167"
 						height="16"
 						backcolor="#FAFADE"
@@ -271,7 +256,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="43"
 						y="0"
