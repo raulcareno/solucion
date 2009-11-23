@@ -24,6 +24,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Textbox;
 import sources.Nota;
 import sources.NotasClaseTemp;
+import sources.NumerosaLetras;
 import sources.ReporteCertificadoDataSource;
 import sources.ReporteExamenesDataSource;
 import sources.ReporteGradoDataSource;
@@ -1314,6 +1315,29 @@ if(impEquivalencias){
 
         return "";
     }
+        public static Object equivalencia2(Object no, List<Equivalencias> equivalencias) {
+        Double nota = (Double) no;
+        ArrayList listado = new ArrayList();
+        for (Equivalencias acaEquivalencias : equivalencias) {
+            Object obj[] = new Object[3];
+            obj[0] = acaEquivalencias.getValorminimo();
+            obj[1] = acaEquivalencias.getValormaximo();
+            obj[2] = acaEquivalencias.getNombre();
+            listado.add(obj);
+        }
+
+        for (Iterator it = listado.iterator(); it.hasNext();) {
+            Object object[] = (Object[]) it.next();
+            Double mini = (Double) object[0];
+            Double maxi = (Double) object[1];
+            if (nota >= mini && nota <= maxi) {
+                //System.out.println(""+);
+                return object[2];
+            }
+        }
+
+        return "";
+    }
 
     public String regresaVariable(String variable, List<Textos> textos) {
         String dato = "";
@@ -1365,12 +1389,13 @@ if(impEquivalencias){
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
 
-
+        NumerosaLetras num = new NumerosaLetras();
         List<Actagrado> notas = adm.query("Select o from Actagrado as o " +
                 " where o.periodo.codigoper = '" + periodo.getCodigoper() + "'  order by o.codigo ");
         List<Textos> variablesVarias = adm.query("Select o from Textos as o " +
                 " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-
+        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o " +
+                "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         String cabecera1 = regresaVariable("CABEACT1", variablesVarias);
         String cabecera2 = regresaVariable("CABEACT2", variablesVarias);
         String pi1 = regresaVariable("PIEACT1", variablesVarias);
@@ -1455,14 +1480,22 @@ if(impEquivalencias){
                         val = (Double) dos;
                         String s1 = decimalFormat.format(val);
                         coll.setNota(s1);
-                        if (cuantitativa == false) {
-//                              coll.setNota(equivalencia(dos, equivalencias));
+                        Actagrado ac = ((Actagrado) notas.get(ksis));
+//                         coll.setNota(dos);
+                        if (ac.getFormula().toUpperCase().contains("EQUIVAL")) {
+                                  coll.setNota(equivalencia2(redondear(val, 0), equivalencias));
                         }
                         coll.setMatricula("" + matriculaNo.getCodigomat());
                         coll.setEstudiante(matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
                         coll.setMatriculas(matriculas1);
-                        coll.setMateria(((Actagrado) notas.get(ksis)).getNombre());
+                        
+                        coll.setMateria(ac.getNombre());
+
+
+                       
                         coll.setCabecera1(cabecera1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()));
+                        coll.setCabecera1(cabecera1.replace("[fecha]", new Date().toLocaleString()));
+                        coll.setCabecera2(cabecera2.replace("[fecha]", new Date().toLocaleString()));
                         coll.setCabecera2(cabecera2.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()));
                         coll.setPie1(pi1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()));
                         coll.setPie2(pi2.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()));
