@@ -43,9 +43,10 @@ void func() throws InterruptedException{
  
 
         public static void bandejaEstudiante(Estudiantes est){
-        Administrador adm = new Administrador();
-        List<Correos> a = adm.query("Select o from Correos as o where o.destinatario = '"+est.getCodigoest()+"' " +
-        "and  o.tiporemitente = 'P' and o.eliminado = false and o.archivado = false ");
+
+//
+//        List<Correos> a = adm.query("Select o from Correos as o where o.destinatario = '"+est.getCodigoest()+"' " +
+//        "and  o.tiporemitente = 'P' and o.eliminado = false and o.archivado = false ");
             //System.out.println(""+a.get(0).getTema() + " "+ a.get(0).getRemitenten());
          
 //        Listbox b;
