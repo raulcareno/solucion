@@ -61,6 +61,9 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
         a.setAttribute("accesos", listado);
         a.setAttribute("user", user);
         a.setAttribute("periodo",per);
+        a.setAttribute("periodo",per);
+          
+        
         auditar("-", "-", "Ingreso Sistema");
         //getServletConfig().getServletContext().getRealPath("WEB-INF/asistencia.jasper")
 //       Executions.getCurrent().getContextPath();

@@ -23,6 +23,14 @@
         inc.setSrc(valor);
  }
 
+  cargando(){
+          Session a = Sessions.getCurrent();
+            Periodo peri =  (Periodo) a.getAttribute("periodo");
+            byte[] imageData =    peri.getInstitucion().getEscudo();
+
+            foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+        }
+
 </zscript>
 <north  size="11%" >
 <toolbar height="100%">
@@ -77,12 +85,12 @@
 		</panel>
 </tablechildren>
 </tablelayout-->
-<tablelayout width="800px" columns="3">
+<tablelayout  onCreate="cargando();"  width="800px" columns="3">
 	<tablechildren>
 <panel   border="normal" collapsible="true">
 			<panelchildren  style="background-color:transparent;border:0px">
                 <vbox>
-                        <image height="60px" id="foto0" src="images/acerca.gif"/>
+                        <image height="60px" id="foto0" />
                 </vbox>
             </panelchildren>
 		</panel>
@@ -162,12 +170,13 @@
 
                     <treeitem id="ss1" label="Notas" value="/blanco.zul">
                       <treechildren>
-                        <treeitem id="Notas"  image="/images/notas.png"  label="Registro Notas" value="/notasFuera.zul" />
+                        <treeitem id="Registro de Notas"  image="/images/notas.png"  label="Registro Notas" value="/notasFuera.zul" />
                         <treeitem id="Registro de Disciplina" image="/images/notas.png"  label="Registro Disciplinas" value="/disciplinaFuera.zul" />
                         <treeitem id="Registro de Faltas" image="/images/notas.png"  label="Faltas" value="/faltas.zul" />
                         <treeitem id="Calendario" image="/images/calendar.gif"  label="Calendario" value="/calendar.zul" />
                         <treeitem id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correo.zul"/>
                         <treeitem  id="Correo Interno" image="/images/bandeja2.png" label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
+                        
                      </treechildren>
                     </treeitem>
 			</treechildren>
@@ -179,7 +188,8 @@
 </panel>
 <panel width="100%" border="normal"   height="120px" collapsible="true">
 <panelchildren>
-<toolbarbutton image="/images/candado.gif" label=" -  Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
+<separator/>
+<toolbarbutton image="/images/candado.gif" label="Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
 
 </panelchildren>
 
