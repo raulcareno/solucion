@@ -14,6 +14,7 @@ import jcinform.procesos.Administrador;
 
  
 import org.zkoss.util.media.Media;
+import org.zkoss.zkmax.zul.Tablechildren;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
@@ -43,6 +44,9 @@ void func() throws InterruptedException{
  
 
         public static void bandejaEstudiante(Estudiantes est){
+
+//            Tablechildren sds;
+//                    sds.se;
 
 //
 //        List<Correos> a = adm.query("Select o from Correos as o where o.destinatario = '"+est.getCodigoest()+"' " +

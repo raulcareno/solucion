@@ -3,7 +3,7 @@
 
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
-<borderlayout onCreate="verificar()"  width="100%" style="float:center"  height="100%">
+<borderlayout onCreate="verificar();cargando();"  width="100%" style="float:center"  height="100%">
 
 <zscript>
   import jcinform.persistencia.*;
@@ -81,6 +81,13 @@ void verificar(){
              }
 
 }
+   cargando(){
+          Session a = Sessions.getCurrent();
+            Periodo peri =  (Periodo) a.getAttribute("periodo");
+            byte[] imageData =    peri.getInstitucion().getEscudo();
+
+            foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+        }
 
 
 
@@ -92,7 +99,9 @@ void verificar(){
 <panel   border="normal" collapsible="true">
 			<panelchildren  style="background-color:transparent;border:0px">
                 <vbox>
-                        <image height="60px" id="foto0" src="images/acerca.gif"/>
+                        <!--image height="60px" id="foto0" src="images/acerca.gif"/-->
+                        <image height="60px" id="foto0" />
+
                 </vbox>
             </panelchildren>
 		</panel>
@@ -111,8 +120,13 @@ void verificar(){
                 </hbox>
                
                 </vbox>
+                 
             </panelchildren>
+
+              
+
 		</panel>
+
 	</tablechildren>
  
 <tablechildren>
@@ -146,7 +160,7 @@ void verificar(){
 </tablechildren>
  
 </tablelayout>
-					
+		  
 </toolbar>
  
 </north>
@@ -198,7 +212,7 @@ void verificar(){
                         <treeitem id="Respaldos" image="/images/base.gif"   label="Respaldos" value="/respaldos.zul"/>
                         <treeitem id="Calendario" image="/images/calendar.gif"   label="Calendario" value="/calendar.zul"/>
                         <treeitem id="Dobe" image="/images/pensum.png"   label="Dobe" value="/dobe.zul"/>
-                        <treeitem id="Registrar" image="/images/pensum.png"   label="Chat" value="/chat/chat.zul"/>
+                        <treeitem id="Registrar" image="/images/chat.JPG"   label="Chat" value="/chat/chat.zul"/>
                      </treechildren>
                     </treeitem>
                     <treeitem id="ss1" label="Administración" value="/blanco.zul">
@@ -224,10 +238,13 @@ void verificar(){
 </panel>
 <panel width="100%" border="normal"   collapsible="true"   title="Propiedades">
 				<panelchildren>
+                 
+            
                        <label style="font-weight:bold" value="--------- JCINFORM ---------- "/>
                        <label value=" Soluciones Informáticas          "/>
                        <label value="Telfs.5103-843 / 080-162-211 "/>
                         <label id="propiedad" value=" "/>
+                    
 				</panelchildren>
 			</panel>
          </div>
@@ -246,5 +263,8 @@ void verificar(){
     function refrescar() {
         location.reload(true);
     }
+
+  
+    
 </script>
  </zk>
