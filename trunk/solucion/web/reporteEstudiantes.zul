@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window  mode="overlapped"  title="Reporte de Estudiantes" width="81%" height="100%" border="normal"
+<window  mode="overlapped"  onCreate="cargando();"    title="Reporte de Estudiantes" width="81%" height="100%" border="normal"
     maximizable="true" closable="true" sizable="true">
     <zk xmlns="http://www.zkoss.org/2005/zul">
 
@@ -23,11 +23,26 @@ Permisos per = new Permisos();
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
-List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
-cursos.add(0,new Cursos(-1));
+
+Empleados user = (Empleados)ses.getAttribute("user");
+    List cursos = null;
+    
+    if(user.getTipo().equals("Interna")){
+        cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+    }else{
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+    }
+
+Cursos selec = new Cursos(-1);
+selec.setDescripcion("[Seleccione]");
+cursos.add(0,selec);
+
 Cursos todos = new Cursos(-2);
 todos.setDescripcion("[TODOS]");
-cursos.add(todos);
+
+if(user.getTipo().equals("Interna"))
+    cursos.add(todos);
+
 
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 void buscar2(Cursos cur){
@@ -305,6 +320,7 @@ rep.setOpen(true);parametros.setOpen(false);
 		}
 
 void campos(String valor){
+curs.setSelectedIndex(0);
         if(valor.equals("CM") || valor.equals("AM")){
             curs.disabled = false;
             mates.disabled = false;
@@ -373,31 +389,31 @@ void campos(String valor){
                         <row>
                             <span style="float:right"> Reporte:</span>
                             <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="300px"  mold="select" >
-                                <listitem label="[Seleccione]" value="-1" selected="true" />
-                                <listitem label="Certificado de Matricula" value="CM" />
-                                <listitem label="Certificado de Matricula(2)" value="CM2" />
-                                <listitem label="Actas de Matricula" value="AM" />
-                                <listitem label="Estudiantes Inscritos" value="INS" />
-                                <listitem label="Estudiantes Matriculados" value="MAT" />
-                                <listitem label="Estudiantes Retirados" value="RET" />
-                                <listitem label="Lista de Matriculados" value="LMAT" />
-                                <listitem label="Lista de Carné "  value="LCAR"/>
-                                <listitem label="Lista de Carné Estudiantil"  value="LCAR1"/>
-                                <listitem label="Listado para Carnets" value="LCART" />
-                                <listitem label="Lista de Claves" value="LCLA"/>
-                                <listitem label="Listado de Claves con Matricula" value="LCLA2"/>
-                                <listitem label="Listado de Correos electronicos" value="LCOR"/>
-                                <listitem label="Lista de Internos" value="LINT"/>
-                                <listitem label="Lista de Representantes" value="LREP"/>
-                                <listitem label="Lista de Estudiantes con Casilleros vacios" value="LCAS"/>
-                                <listitem label="Lista de Estudiantes 1 Casillero" value="LCA"/>
-                                <listitem label="Listado para Asistencia" value="LASI"/>
-                                <listitem label="Listadopor Genero" value="LGEN"/>
-                                <listitem label="Listado con Años Cumplidos" value="LFEC"/>
-                                <listitem label="Listado con Folio y No. Matricula" value="LMIN"/>
-                                <listitem label="Listado de Estudiantes Nuevos" value="LNUEV"/>
-                                <listitem label="Listado de Estudiantes que Toman transporte" value="LTRAN"/>
-                                <listitem label="Listado de Estudiantes Internos" value="LINT"/>
+                                <listitem  label="[Seleccione]" value="-1" selected="true" />
+                                <listitem id="CM"  label="Certificado de Matricula" value="CM" />
+                                <listitem  id="CM2" label="Certificado de Matricula(2)" value="CM2" />
+                                <listitem  id="AM" label="Actas de Matricula" value="AM" />
+                                <listitem  id="INS" label="Estudiantes Inscritos" value="INS" />
+                                <listitem  id="MAT" label="Estudiantes Matriculados" value="MAT" />
+                                <listitem id="RET"  label="Estudiantes Retirados" value="RET" />
+                                <listitem  id="LMAT" label="Lista de Matriculados" value="LMAT" />
+                                <listitem  id="LCAR" label="Lista de Carné "  value="LCAR"/>
+                                <listitem  id="LCAR1" label="Lista de Carné Estudiantil"  value="LCAR1"/>
+                                <listitem  id="LCART" label="Listado para Carnets" value="LCART" />
+                                <listitem  id="LCLA" label="Lista de Claves" value="LCLA"/>
+                                <listitem  id="LCLA2" label="Listado de Claves con Matricula" value="LCLA2"/>
+                                <listitem  id="LCOR" label="Listado de Correos electronicos" value="LCOR"/>
+                            
+                                <listitem  id="LREP" label="Lista de Representantes" value="LREP"/>
+                                <listitem  id="LCAS" label="Lista de Estudiantes con Casilleros vacios" value="LCAS"/>
+                                <listitem  id="LCA" label="Lista de Estudiantes 1 Casillero" value="LCA"/>
+                                <listitem  id="LASI" label="Listado para Asistencia" value="LASI"/>
+                                <listitem  id="LGEN" label="Listadopor Genero" value="LGEN"/>
+                                <listitem  id="LFEC" label="Listado con Años Cumplidos" value="LFEC"/>
+                                <listitem  id="LMIN" label="Listado con Folio y No. Matricula" value="LMIN"/>
+                                <listitem  id="LNUEV" label="Listado de Estudiantes Nuevos" value="LNUEV"/>
+                                <listitem  id="LTRAN" label="Listado de Estudiantes que Toman transporte" value="LTRAN"/>
+                                <listitem  id="LINT" label="Listado de Estudiantes Internos" value="LINT"/>
                             </listbox>
                         </row>
 
@@ -451,6 +467,40 @@ void campos(String valor){
             </panelchildren>
         </panel>
 	
+
+
+<zscript>
+import bean.Permisos;
+Permisos per = new Permisos();
+void cargando(){
+
+       CM.visible = per.verificarPermisoReporte("CM", "Ingresar");
+       CM2.visible = per.verificarPermisoReporte("CM2", "Ingresar");
+        AM.visible = per.verificarPermisoReporte("AM", "Ingresar");
+        INS.visible = per.verificarPermisoReporte("INS", "Ingresar");
+		MAT.visible = per.verificarPermisoReporte("MAT", "Ingresar");
+        RET.visible = per.verificarPermisoReporte("RET", "Ingresar");
+        LMAT.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
+		LCAR.visible = per.verificarPermisoReporte("LCAR", "Ingresar");
+        LCAR1.visible = per.verificarPermisoReporte("LCAR1", "Ingresar");
+        LCART.visible = per.verificarPermisoReporte("LCART", "Ingresar");
+		LCLA.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
+        LCLA2.visible = per.verificarPermisoReporte("LCLA2", "Ingresar");
+        LCOR.visible = per.verificarPermisoReporte("LCOR", "Ingresar");
+      
+        LREP.visible = per.verificarPermisoReporte("LREP", "Ingresar");
+        LCAS.visible = per.verificarPermisoReporte("LCAS", "Ingresar");
+        LCA.visible = per.verificarPermisoReporte("LCA", "Ingresar");
+        LASI.visible = per.verificarPermisoReporte("LASI", "Ingresar");
+        LGEN.visible = per.verificarPermisoReporte("LGEN", "Ingresar");
+        LFEC.visible = per.verificarPermisoReporte("LFEC", "Ingresar");
+        LMIN.visible = per.verificarPermisoReporte("LMIN", "Ingresar");
+        LNUEV.visible = per.verificarPermisoReporte("LNUEV", "Ingresar");
+        LTRAN.visible = per.verificarPermisoReporte("LTRAN", "Ingresar");
+        LINT.visible = per.verificarPermisoReporte("LINT", "Ingresar");
+
+}
+</zscript>
 
 
     </zk>

@@ -53,8 +53,8 @@ void func() throws InterruptedException{
 //        "and  o.tiporemitente = 'P' and o.eliminado = false and o.archivado = false ");
             //System.out.println(""+a.get(0).getTema() + " "+ a.get(0).getRemitenten());
          
-//        Listbox b;
-//        b.getItemCount();
+        Listbox b;
+//        b.getSelectedIndex();
 //b.getRows()
 //
 //        List al = new ArrayList(items);

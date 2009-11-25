@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window  mode="overlapped"  title="Reporte de Notas" width="81%" height="100%" border="normal"
+<window  mode="overlapped" onCreate="cargando();"  title="Reporte de Notas" width="81%" height="100%" border="normal"
     maximizable="true" closable="true" sizable="true">
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
@@ -26,7 +26,16 @@ Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 disciplina discipli = new disciplina();
-List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+
+Empleados user = (Empleados)ses.getAttribute("user");
+    List cursos = null;
+
+    if(user.getTipo().equals("Interna")){
+        cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+    }else{
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+    }
+
 
 List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
 List sistemas = new ArrayList();
@@ -60,11 +69,13 @@ Sistemacalificacion stodos0 = new Sistemacalificacion(-1);
 stodos0.setNombre("[Seleccione]");
 sistemas.add(0,stodos0);
 
-
-cursos.add(0,new Cursos(-1));
+Cursos selec = new Cursos(-1);
+selec.setDescripcion("[Seleccione]");
+cursos.add(0,selec);
 Cursos todos = new Cursos(-2);
 todos.setDescripcion("[TODOS]");
-cursos.add(todos);
+  if(user.getTipo().equals("Interna"))
+    cursos.add(todos);
 notas noti = new notas();
 
 List materias = adm.query("Select o from Global as o where o.grupo = 'zz' ");
@@ -76,7 +87,7 @@ void buscar2(Cursos cur){
                     Matriculas matri = new Matriculas(-1);
                     Estudiantes es = new Estudiantes(-1);
                     es.setApellido("[Seleccione]");
-                    es.setNombre(" ");
+                    es.setNombre("");
                     matri.setEstudiante(es);
                     empleadosEncontrados.add(0,matri);
                         
@@ -93,14 +104,20 @@ void buscar2(Cursos cur){
                                     item.setValue(matri);
                                     item.appendChild(new Listcell("[TODOS]"));
                                     estudiantesCombo.appendChild(item);
+
+                                    estudiantesCombo.setSelectedIndex(0);
             }
 
 if(materiasCombo.disabled==false){
             List materiaEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"'  order by o.curso.paralelo.descripcion");
                      materiasCombo.getChildren().clear();
                      Listitem item = new Listitem();
-                                    item.setValue(new MateriaProfesor(-1));
-                                    item.appendChild(new Listcell());
+                                    MateriaProfesor mat = new MateriaProfesor(-1);
+                                    Global gl = new Global(-1);
+                                    gl.setDescripcion("[Seleccione]");
+                                    mat.setMateria(gl);
+                                    item.setValue(mat);
+                                    item.appendChild(new Listcell("[Seleccione]"));
                                     materiasCombo.appendChild(item);
                         for (Iterator it = materiaEncontrados.iterator(); it.hasNext();) {
                                   MateriaProfesor matep = (MateriaProfesor) it.next();
@@ -109,9 +126,10 @@ if(materiasCombo.disabled==false){
                                     item.appendChild(new Listcell(matep.materia.descripcion));
                                     materiasCombo.appendChild(item);
                          }
-
+materiasCombo.setSelectedIndex(0);
 }
-        materiasCombo.setSelectedIndex(-1);
+        
+        
     }
 
  
@@ -187,10 +205,7 @@ public JRDataSource profesores(){
                 return;
            }
            
-           if(per.verificarPermisoReporte(tipo, "Ingresar") == false){
-                Messagebox.show("No tiene permisos pare ver este Reporte...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-                return;
-           }
+     
            rep.setOpen(true);parametros.setOpen(false); 
             Institucion insts = periodo.getInstitucion();
              
@@ -280,13 +295,14 @@ public JRDataSource profesores(){
 		}
 
 void campos(String valor){
-estudiantesCombo.disabled = true;
-materiasCombo.disabled = true;
-curs.disabled = true;
-sistemasCombo.disabled = true;
+        estudiantesCombo.disabled = true;
+        materiasCombo.disabled = true;
+        curs.disabled = true;
+        sistemasCombo.disabled = true;
 
       fila.visible = false;
-
+      sistemasCombo.setSelectedIndex(0);
+      curs.setSelectedIndex(0);
 
         if(valor.equals("DIS")){
             curs.disabled = false;
@@ -300,16 +316,15 @@ sistemasCombo.disabled = true;
             sistemasCombo.disabled = false;
             materiasCombo.disabled = false;
             titulo.value= "Cuadro de Notas por Materia Disciplina";
-            curs.setSelectedIndex(-1);
             materiasCombo.setSelectedIndex(-1);
-            sistemasCombo.setSelectedIndex(-1);
+            
             curs.setSelectedIndex(0);
         }else if(valor.equals("LIB")){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
             sistemasCombo.disabled = false;
              titulo.value= "Libreta de Calificaciones";
-            //estudiantesCombo.setSelectedIndex(0);
+            estudiantesCombo.setSelectedIndex(-1);
         }else if(valor.equals("CERT")  ){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
@@ -352,58 +367,55 @@ collapsible="true" title="Parametros">
 <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="300px"  mold="select" >
 		<listitem label="[Seleccione]" value="-1" selected="true" />
         
-		<listitem label="Cuadro de Notas por Materia" value="NMAT" />
-        <listitem label="Cuadro de Notas por Materia Disciplina" value="NMATD" />
-        <listitem label="Libreta de Calificaciones" value="LIB" />
-		<listitem label="Cuadro de Calificaciones" value="CCAL" />
-        <listitem label="Cuadro de Calificaciones(2)" value="CCAL2" />
-		<listitem label="Cuadro Juntas o Final" value="CNF" />
-		<listitem label="Cuadro de Disciplinas" value="CDIS"/>
-        <listitem label="Acta de Grado" value="AG"/>
-        <listitem label="Copia de Acta de Grado" value="CAG"/>
-        <listitem label="Certificado de Promoción" value="CERT"/>
-        <listitem label="Examenes de Grado" value="EXAM"/>
-        <listitem label="=========================" value="linea" />
+		<listitem id="NMAT" label="Cuadro de Notas por Materia" value="NMAT" />
+        <listitem id="NMATD"  label="Cuadro de Notas por Materia Disciplina" value="NMATD" />
+        <listitem  id="LIB" label="Libreta de Calificaciones" value="LIB" />
+		<listitem id="CCAL"  label="Cuadro de Calificaciones" value="CCAL" />
+        <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
+		<listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
+		<listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
+        <listitem  id="AG" label="Acta de Grado" value="AG"/>
+        <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
+        <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
+        <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
+        <listitem  id="linea" label="=========================" value="linea" />
          <!--listitem  label="Mejor egresado(*)" value="CDIS"/>
         <listitem label="Cuadro juntas de curso(*)" value="CDIS"/>
         <listitem label="Cuadro de Supletorios(*)" value="CDIS"/>
         <listitem label="Cuadro de Mejores Estudiantes por curso(*)" value="CDIS"/>
         <listitem label="Cuadro de Promedios Finales(*)" value="CDIS"/>
         <listitem label="Promedios Generales de 1ro a 5to (*)" value="CDIS"/-->
-        <listitem label="Distributivo" value="DIS" />
-        <listitem label="Profesores por Curso" value="DIS2" />
-        <listitem label="Listado de Profesores" value="PROF" />
-        <listitem label="Listado de Profesores completo" value="PROFC" />
+        <listitem  id="DIS" label="Distributivo" value="DIS" />
+        <listitem  id="DIS2" label="Profesores por Curso" value="DIS2" />
+        <listitem  id="PROF" label="Listado de Profesores" value="PROF" />
+        <listitem  id="PROFC" label="Listado de Profesores completo" value="PROFC" />
         
 	</listbox>
     
     </span>
 </row>
 <row id="fila" visible="false">
-    <span style="float:right"> (**)Rango Notas:</span>
-    <span>Desde: <decimalbox id="desde" value="0" cols="5" /> Hasta: <decimalbox id="hasta" value="20" cols="5"/></span>
+    <span style="float:right;color:blue"> Rango Notas:</span>
+    <span style="color:blue"> Desde: <decimalbox id="desde" value="0" cols="5" /> Hasta: <decimalbox id="hasta" value="20" cols="5"/></span>
 </row>
 
 <row>
 <span style="float:right"> Curso:</span>
-        <listbox id="curs" width="300px"  mold="select"
-        onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
-
-            <listitem selected="true" forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
+        <listbox id="curs" width="300px"  mold="select" onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
+            <listitem   forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
         </listbox>
  </row>
  <row>
 <span style="float:right"> Estudiantes: </span>
                                 <listbox id="estudiantesCombo" width="300px"  mold="select" >
-                                    <listitem selected="true"  forEach="${estudiantes}" value="${each}">
-                                        <listcell  label="${each.apellidos}" />
-                                    </listitem>
+                                    <listitem    forEach="${estudiantes}" value="${each}" label="${each.apellidos}" />
+
                                 </listbox>
 </row>
 <row>
 <span style="float:right"> Materias: </span>
                                 <listbox id="materiasCombo" width="300px"  mold="select" >
-                                    <listitem selected="true"  forEach="${materias}" value="${each}">
+                                    <listitem forEach="${materias}" value="${each}">
                                         <listcell label="${each.descripcion}" />
                                         
                                     </listitem>
@@ -413,7 +425,7 @@ collapsible="true" title="Parametros">
 <span style="float:right"> Sistema Notas: </span>
 
                                 <listbox id="sistemasCombo" width="300px"  mold="select" >
-                                    <listitem  selected="true"  forEach="${sistemas}" value="${each}">
+                                    <listitem  forEach="${sistemas}" value="${each}">
                                         <listcell label="${each.nombre}" />
                                     </listitem>
                                 </listbox>
@@ -449,7 +461,29 @@ collapsible="true" title="Reporte">
  </panelchildren>
  </panel>
 
+<zscript>
+import bean.Permisos;
+Permisos per = new Permisos();
+void cargando(){
+        NMAT.visible = per.verificarPermisoReporte("NMAT", "Ingresar");
+        NMATD.visible = per.verificarPermisoReporte("NMATD", "Ingresar");
+        LIB.visible = per.verificarPermisoReporte("LIB", "Ingresar");
+		CCAL.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
+        CCAL2.visible = per.verificarPermisoReporte("CCAL2", "Ingresar");
+		CNF.visible = per.verificarPermisoReporte("CNF", "Ingresar");
+		CDIS.visible = per.verificarPermisoReporte("CDIS", "Ingresar");
+        AG.visible = per.verificarPermisoReporte("AG", "Ingresar");
+        CAG.visible = per.verificarPermisoReporte("CAG", "Ingresar");
+        CERT.visible = per.verificarPermisoReporte("CERT", "Ingresar");
+        EXAM.visible = per.verificarPermisoReporte("EXAM", "Ingresar");
+        
+        DIS.visible = per.verificarPermisoReporte("DIS", "Ingresar");
+        DIS2.visible = per.verificarPermisoReporte("DIS2", "Ingresar");
+        PROF.visible = per.verificarPermisoReporte("PROF", "Ingresar");
+        PROFC.visible = per.verificarPermisoReporte("PROFC", "Ingresar");
 
+}
+</zscript>
 
 
 </zk>

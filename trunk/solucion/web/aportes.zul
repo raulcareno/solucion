@@ -290,7 +290,7 @@ espromedio.disabled= estado;
  //Messagebox.show("UNA DE LAS FORMULAS INGRESADAS ESTÁN INCORRECTAS...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
  return;
  }
-   if(nombre.value=="" || abreviatura.value=="" || desde.value=="" || hasta.value=="" || aprovechamiento.value=="" || orden.value=="" ){
+   if(nombre.value=="" || abreviatura.value=="" || desde.value=="" || hasta.value=="" || aprovechamiento.value=="" || orden.value== null || orden.value== 0){
     Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     return;
  }
