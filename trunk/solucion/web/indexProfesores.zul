@@ -159,7 +159,7 @@
 
 <west title="Menú" size="18%" flex="true" splittable="true" collapsible="true">
          <div>
-<panel width="100%" border="normal"  title="Opciones" height="170px" collapsible="true" >
+<panel width="100%" border="normal"  title="Opciones" height="220px" collapsible="true" >
 				<panelchildren style="padding:0px;" >
 
 
@@ -177,6 +177,8 @@
                         <treeitem id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correo.zul"/>
                         <treeitem  id="Correo Interno" image="/images/bandeja2.png" label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
                         <treeitem id="Registrar" image="/images/chat.png"   label="Chat" value="/chat/chat.zul"/>
+                        <treeitem id="Reportes Estudiantes" label="Rep.Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
+                        <treeitem id="Reportes Notas" label="Rep.Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
                         
                      </treechildren>
                     </treeitem>
