@@ -102,14 +102,15 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
             String elmodulo = "";
             try {
                     elmodulo = accesos.getModulo().substring(inicio+1, finales);
-                    System.out.println("MODULO"+elmodulo);
+                   
             } catch (Exception e) {
-                System.out.println("error leve"+e);
+                //System.out.println("error leve"+e);
                 elmodulo = accesos.getModulo();
             }
 
 
             if (elmodulo.equals(modulo)) {
+                 System.out.println("MODULO: "+elmodulo);
                 if (accion.equals("Ingresar")) {
                     return accesos.getIngresar();
                 } else if (accion.equals("Agregar")) {

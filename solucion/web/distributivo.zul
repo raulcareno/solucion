@@ -10,14 +10,24 @@
   import bean.Permisos;
 
     Administrador adm = new Administrador();
+    Session ses = Sessions.getCurrent();
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    Permisos permiso = new Permisos();
+    
     List allEvents = adm.query("Select o from Empleados as o where o.identificacion = 0");
     static MateriaProfesor matricula = new MateriaProfesor();
-Session ses = Sessions.getCurrent();
-Periodo periodo = (Periodo) ses.getAttribute("periodo");
-    Permisos permiso = new Permisos();
     List cursos = adm.query("Select o from Cursos as o  where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia,o.paralelo.descripcion, o.descripcion");
     List profesores = adm.query("Select o from Empleados as o order by o.apellidos ");
+        Empleados selecp = new Empleados(-1);
+        selecp.setApellidos("[Seleccione]");
+        selecp.setNombres("");
+        profesores.add(0,selecp);
+    
     List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' order by o.descripcion ");
+        Global selecm = new Global(-1);
+        selecm.setDescripcion("[Seleccione]");
+        materias.add(0,selecm);
+
     Object media = null;
  Session ses = Sessions.getCurrent();
 
@@ -30,7 +40,8 @@ void llenar(MateriaProfesor estudent){
     opcional.checked = estudent.getOpcional();
     cuantitativa.checked = estudent.getCuantitativa();
     orden.value = estudent.getOrden();
-formula.value = estudent.getFormula();
+    formula.value = estudent.getFormula();
+    
         if(estudent.getCurso() != null){
                 Listitem item = new Listitem();
                 item.setValue(estudent.getCurso());
@@ -71,6 +82,8 @@ void estado(Boolean estado,Boolean modificar){
     opcional.disabled = estado;
     cuantitativa.disabled = estado;
     orden.disabled = estado;
+    mates.disabled = estado;
+    profes.disabled = estado;
     formula.disabled = estado;
 
 }
@@ -79,8 +92,8 @@ void estado(Boolean estado,Boolean modificar){
  void guardar(){
 
 
- if(orden.value==""){
-    Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+ if(orden.value == null || profes.getSelectedIndex()==0 || mates.getSelectedIndex()== 0){
+    Messagebox.show("Ingrese o [Seleccione] los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     return;
  }
         matricula.setCodigomap(codigo.value);
@@ -97,10 +110,10 @@ void estado(Boolean estado,Boolean modificar){
         if((!matricula.getCodigomap().equals(0)) ){
                 adm.actualizar(matricula);
                   List children = datos.selectedItem.children;
-                  ((Listcell)children.get(0)).label = codigo.value+"";
+                  ((Listcell)children.get(0)).label = orden.value+ "";
                   ((Listcell)children.get(1)).label = (profes.selectedItem.value).getApellidos() + " "+  (profes.selectedItem.value).getNombres() ;
                   ((Listcell)children.get(2)).label = mates.selectedItem.value+ "";
-                  ((Listcell)children.get(3)).label = orden.value+ "";
+                  
                   try{
                       String quera = "update notas set orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
                       " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
@@ -122,10 +135,10 @@ void estado(Boolean estado,Boolean modificar){
              adm.guardar(matricula);
                   Listitem li = new Listitem();
                   li.setValue(matricula);
-                  li.appendChild(new Listcell(matricula.getCodigomap()+""));
+                  li.appendChild(new Listcell(orden.value+""));
                   li.appendChild(new Listcell(matricula.getEmpleado().getApellidos()+" "+matricula.getEmpleado().getNombres()));
                   li.appendChild(new Listcell(matricula.getMateria().getDescripcion()));
-                  li.appendChild(new Listcell(orden.value+""));
+                  
                   datos.appendChild(li);
          }
 
@@ -145,6 +158,9 @@ void estado(Boolean estado,Boolean modificar){
  void nuevo(){
     if(verificar("Agregar")){
        guardar.disabled=false; llenar(new MateriaProfesor(0));estado(false,false);
+       mates.setSelectedIndex(0);
+        profes.setSelectedIndex(0);
+
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
@@ -181,6 +197,9 @@ void eliminar(){
 
 
 void buscar2(Cursos cur){
+mates.setSelectedIndex(0);
+profes.setSelectedIndex(0);
+
         List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' order by o.orden");
         datos = new Listbox();
         int a=0;
@@ -191,10 +210,10 @@ void buscar2(Cursos cur){
                       MateriaProfesor acceIt = (MateriaProfesor) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getCodigomap()+""));
+                      li.appendChild(new Listcell(acceIt.getOrden()+""));
                       li.appendChild(new Listcell(acceIt.getEmpleado().getApellidos()+" "+acceIt.getEmpleado().getNombres()));
                       li.appendChild(new Listcell(acceIt.getMateria()+""));
-                        li.appendChild(new Listcell(acceIt.getOrden()+""));
+                      
                       datos.appendChild(li);
              }
 
@@ -226,14 +245,13 @@ Cursos cur = curs.selectedItem.value;
     
     }
     </zscript>
-    <groupbox   mold="3d">
-        <caption label="Datos de Matricula" />
+ 
         <grid width="100%">
             <rows>
                 <row>
                     <span style="float:right"> Curso(*):
                     </span>
-
+<span>
                     <listbox id="curs" mold="select"  width="420px"
                                         onSelect=" buscar2(((Cursos)self.selectedItem.value));">
                         <listitem    forEach="${cursos}" value="${each}">
@@ -243,29 +261,27 @@ Cursos cur = curs.selectedItem.value;
                             <listcell label="[Seleccione]" />
                         </listitem>
                     </listbox>
-
-                </row>
-                <row>
-                    <span style="float:right"> Codigo :
+                    <intbox maxlength="14" cols="2"  readonly="true"   disabled="true" id="codigo"  />
                     </span>
-                    <intbox maxlength="14" cols="5"  readonly = "true"   disabled="true" id="codigo"  />
+
                 </row>
                 <row>
                     <span style="float:right"> Materias(*):
                     </span>
-
-                    <listbox id="mates"  mold="select" width="320px" >
+                    
+                    <listbox id="mates"  disabled="true" mold="select" width="320px" >
                         <listitem selected="true" forEach="${materias}" value="${each}">
                             <listcell label="${each.descripcion}" />
                         </listitem>
                     </listbox>
+                    
 
                 </row>
                 <row>
                     <span style="float:right"> Profesores(*):
                     </span>
 
-                    <listbox mold="select" id="profes" width="320px">
+                    <listbox mold="select"   disabled="true"  id="profes" width="320px">
                         <listitem selected="true"  forEach="${profesores}" value="${each}">
                             <listcell label="${each.apellidos} ${each.nombres}" />
                         </listitem>
@@ -310,18 +326,18 @@ Cursos cur = curs.selectedItem.value;
                 </row>
             </rows>
         </grid>
-    </groupbox>
+
     <groupbox  width="100%"  mold="3d" >
-        <caption label="Materias Asignadas" />
+      
         <vbox width="100%">
             <hbox>  </hbox>
             <hbox width="100%">
                 <listbox  mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                     <listhead>
-                        <listheader label="Cod."/>
+                        <listheader label="Orden"   sort="auto"/>
                         <listheader label="Empleado"  sort="auto"/>
                         <listheader label="Materia"   sort="auto"/>
-                        <listheader label="Orden"   sort="auto"/>
+                        
                     </listhead>
                     <listitem forEach="${allEvents}" value="${each}">
                      
