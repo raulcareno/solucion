@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
-<borderlayout height="100%">
+<borderlayout height="100%" onCreate="cargando();" >
     <zscript>
 import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+
+
+
 Session a = Sessions.getCurrent();
     Estudiantes emp = a.getAttribute("userEstudiante");
      if(emp==null){
@@ -24,6 +29,17 @@ Session a = Sessions.getCurrent();
         Include inc = (Include) xcontents;
         inc.setSrc(valor);
  }
+    cargando(){
+         Administrador adm = new Administrador();
+          Session a = Sessions.getCurrent();
+            Estudiantes peri =  (Estudiantes) a.getAttribute("userEstudiante");
+            try{
+           List matricula = adm.query("Select o from Matriculas as o " +
+           " where o.estudiante.codigoest =  '"+peri.getCodigoest()+"' order by o.fechamat desc");
+            byte[] imageData =    ((Matriculas)matricula.get(0)).getFoto();
+            foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+            }catch(Exception e){}
+        }
 
     </zscript>
     <north  size="10%" >
@@ -33,12 +49,11 @@ Session a = Sessions.getCurrent();
                     <panel   border="normal" collapsible="true">
                         <panelchildren  style="background-color:transparent;border:0px">
                             <vbox>
-                                <!--image height="50px" src="images/acerca.gif"/-->
-<label value="Bienvenido: " style="font-weight:bold;font-size:15px;color:#346B93;" />
+                                  <image height="60px" id="foto0" />
                             </vbox>
                         </panelchildren>
                     </panel>
-	 
+
                 </tablechildren>
 
                 <tablechildren>
