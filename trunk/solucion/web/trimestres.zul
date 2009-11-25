@@ -28,7 +28,7 @@ void estado(Boolean estado,Boolean modificar){
         if(modificar){
             empa = (Trimestres)datos.selectedItem.value;
         }else{empa.setCodigotrim(0);}
-        nombres.disabled = estado;
+        nombres.readonly = estado;
 }
 
 
@@ -153,7 +153,7 @@ void cargarPar(Global g){
 <rows>
 
 <row><span style="float:right"> Nombres(*):</span>
-        <textbox id="nombres"  maxlength="60" cols="40" disabled="true"   />   </row>
+        <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />   </row>
   
 
 
@@ -178,7 +178,7 @@ void cargarPar(Global g){
 <vbox>
     <hbox> Trimestres:  <textbox id="buscarText"  maxlength="60" cols="40" />  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
     <hbox>
-         <listbox mold="paging" rows="5" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+         <listbox mold="paging" rows="5" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="450px">
 			<listhead>
                                 <listheader label="Cod."/>
                                 <listheader label="Nombres"/>

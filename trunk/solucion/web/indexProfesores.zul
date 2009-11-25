@@ -176,6 +176,7 @@
                         <treeitem id="Calendario" image="/images/calendar.gif"  label="Calendario" value="/calendar.zul" />
                         <treeitem id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correo.zul"/>
                         <treeitem  id="Correo Interno" image="/images/bandeja2.png" label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
+                        <treeitem id="Registrar" image="/images/chat.png"   label="Chat" value="/chat/chat.zul"/>
                         
                      </treechildren>
                     </treeitem>
