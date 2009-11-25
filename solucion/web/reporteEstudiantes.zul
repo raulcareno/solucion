@@ -198,10 +198,7 @@ public JRDataSource internos(Cursos curso,String tipo){
 //LCAS,LCA,LASI.LGEN,LGENT,LFEC,LMIN
 			//conanioscumplidos
             String tipo = reporte.getSelectedItem().getValue();
-            if(per.verificarPermisoReporte(tipo, "Ingresar") == false){
-                Messagebox.show("No tiene permisos pare ver este Reporte...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-                return;
-           }
+           
 rep.setOpen(true);parametros.setOpen(false);
             Institucion insts = periodo.getInstitucion();
 			Map parametros = new HashMap();

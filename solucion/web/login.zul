@@ -70,6 +70,7 @@ void verificar(){
                                               li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " "+ acceIt.getPeriodo().getInstitucion().getTipo()));
                                               periodo.appendChild(li);
                                      }
+                                     periodo.setSelectedIndex(0);
 
             }else{
                 Messagebox.show("Usuario Correcto no tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
