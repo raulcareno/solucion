@@ -12,9 +12,11 @@
  }
     </zscript>
 <window  style="position:absolute; top:20%; left:35%"  title="JCINFORM"  border="normal">
-    Su session ha expirado...!
+    Por su seguridad su session ha expirado...!
+    presione el boton
     <toolbarbutton  style="color:#346B93;font-weight:bold;"
     label=" [Ingresar]" onClick="salir()"/>
+    para volver a ingresar
     
 </window>
 
