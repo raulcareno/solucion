@@ -602,7 +602,7 @@ public class notas extends Rows {
 
     }
 
-    public JRDataSource cuadrocalificaciones(Cursos curso, Sistemacalificacion sistema) {
+    public JRDataSource cuadrocalificaciones(Cursos curso, Sistemacalificacion sistema,Double desde, Double hasta) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -673,6 +673,7 @@ public class notas extends Rows {
                     nota.setMateria(materiaNo);
                     
                         if (maprofesor.getCuantitativa() == false) {
+                            
                             nota.setNota(equivalencia(dos, equivalencias));
                         } else {
                              nota.setNota(val.toString());
@@ -681,7 +682,12 @@ public class notas extends Rows {
                             }
 
                         }
-                    //nota.setNota(val);
+                     if(val >= desde && val <= hasta){
+                            
+                     }else{
+                        nota.setNota("");
+                     }
+                    
 
 
                     nota.setMprofesor(maprofesor);
@@ -764,7 +770,7 @@ public class notas extends Rows {
     }
 
 
-    public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema) {
+    public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema,Double desde, Double hasta) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -844,8 +850,12 @@ public class notas extends Rows {
                             if (val == 0.0) {
                                 nota.setNota("");
                             }
-
                         }
+                 if(val >= desde && val <= hasta){
+
+                     }else{
+                        nota.setNota("");
+                     }
 
                     nota.setMprofesor(mprofesor);
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));

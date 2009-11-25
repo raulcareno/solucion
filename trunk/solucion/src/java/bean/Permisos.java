@@ -53,6 +53,7 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
 
     public void llenar(Empleados user,Periodo per){
         Administrador adm = new Administrador();
+//        adm.queryNativo(null, Accesos.class)
         //user.getCodigoemp()
         //Window win = (Window) Executions.createComponents("/notasEstudiantes.zul", null, null);
        List listado = adm.query("Select o from Accesos as o where o.perfil.codigo = '"+user.getPerfil().getCodigo()+"'");
@@ -77,6 +78,38 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
         for (Iterator<Accesos> it = accesosList.iterator(); it.hasNext();) {
             Accesos accesos = it.next();
             if (accesos.getModulo().equals(modulo)) {
+                if (accion.equals("Ingresar")) {
+                    return accesos.getIngresar();
+                } else if (accion.equals("Agregar")) {
+                    return accesos.getGuardar();
+                } else if (accion.equals("Modificar")) {
+                    return accesos.getActualizar();
+                } else if (accion.equals("Eliminar")) {
+                    return accesos.getEliminar();
+                }
+            }
+        }
+        return false;
+
+    }
+     public boolean verificarPermisoReporte(String modulo, String accion) {
+        Session a = Sessions.getCurrent();
+        List<Accesos> accesosList = (List<Accesos>) a.getAttribute("accesos");
+        for (Iterator<Accesos> it = accesosList.iterator(); it.hasNext();) {
+            Accesos accesos = it.next();
+            int  inicio = accesos.getModulo().indexOf("[");
+            int  finales = accesos.getModulo().indexOf("]");
+            String elmodulo = "";
+            try {
+                    elmodulo = accesos.getModulo().substring(inicio+1, finales);
+                    System.out.println("MODULO"+elmodulo);
+            } catch (Exception e) {
+                System.out.println("error leve"+e);
+                elmodulo = accesos.getModulo();
+            }
+
+
+            if (elmodulo.equals(modulo)) {
                 if (accion.equals("Ingresar")) {
                     return accesos.getIngresar();
                 } else if (accion.equals("Agregar")) {
