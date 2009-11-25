@@ -18,7 +18,10 @@ import org.zkforge.yuiext.grid.Row;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
+import bean.Permisos;
+Permisos per = new Permisos();
 
+         
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -183,6 +186,12 @@ public JRDataSource profesores(){
            if(tipo.equals("linea")){
                 return;
            }
+           
+           if(per.verificarPermisoReporte(tipo, "Ingresar") == false){
+                Messagebox.show("No tiene permisos pare ver este Reporte...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                return;
+           }
+           rep.setOpen(true);parametros.setOpen(false); 
             Institucion insts = periodo.getInstitucion();
              
             Map parametros = new HashMap();
@@ -223,11 +232,6 @@ public JRDataSource profesores(){
                     parametros.put("materia", mate.getMateria().getDescripcion());
                     parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
                     report.setSrc("WEB-INF/reportes/notaspor.jasper");
-            }else if(tipo.equals("CCAL")){
-                    parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
-                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
-                    report.setSrc("WEB-INF/reportes/cuadrocalificaciones.jasper");
-
             }else if(tipo.equals("EXAM")){
                     datasource = noti.cuadroexamenes(curs.getSelectedItem().getValue());
                     report.setSrc("WEB-INF/reportes/examenesgrado.jasper");
@@ -240,11 +244,16 @@ public JRDataSource profesores(){
                     parametros.put("titulo",titulo.value);
             }else if(tipo.equals("CCAL2")){
                     parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
-                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc("WEB-INF/reportes/cuadrocalificaciones2.jasper");
+            }else if(tipo.equals("CCAL")){
+                    parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    report.setSrc("WEB-INF/reportes/cuadrocalificaciones.jasper");
+
             }else if(tipo.equals("CNF")){
                     
-                    datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc("WEB-INF/reportes/cuadrofinal.jasper");
             }else if(tipo.equals("AG")){
                     datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"original");
@@ -276,7 +285,7 @@ materiasCombo.disabled = true;
 curs.disabled = true;
 sistemasCombo.disabled = true;
 
-
+      fila.visible = false;
 
 
         if(valor.equals("DIS")){
@@ -310,6 +319,7 @@ sistemasCombo.disabled = true;
             curs.disabled = false;
             sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Calificaciones";
+             fila.visible = true;
         }else if(valor.equals("AG") ){
             curs.disabled = false;
             titulo.value= "Acta de Grado";
@@ -323,6 +333,7 @@ sistemasCombo.disabled = true;
             curs.disabled = false;
             sistemasCombo.disabled = false;
             titulo.value= "Cuadro de Final de Calificaciones";
+            fila.visible = true;
         }else{
             titulo.value= " ";
         }
@@ -337,6 +348,7 @@ collapsible="true" title="Parametros">
 <row>
      
 <span style="float:right"> Reporte:</span>
+<span>
 <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="300px"  mold="select" >
 		<listitem label="[Seleccione]" value="-1" selected="true" />
         
@@ -345,7 +357,7 @@ collapsible="true" title="Parametros">
         <listitem label="Libreta de Calificaciones" value="LIB" />
 		<listitem label="Cuadro de Calificaciones" value="CCAL" />
         <listitem label="Cuadro de Calificaciones(2)" value="CCAL2" />
-		<listitem label="Cuadro Final de Notas" value="CNF" />
+		<listitem label="Cuadro Juntas o Final" value="CNF" />
 		<listitem label="Cuadro de Disciplinas" value="CDIS"/>
         <listitem label="Acta de Grado" value="AG"/>
         <listitem label="Copia de Acta de Grado" value="CAG"/>
@@ -364,6 +376,12 @@ collapsible="true" title="Parametros">
         <listitem label="Listado de Profesores completo" value="PROFC" />
         
 	</listbox>
+    
+    </span>
+</row>
+<row id="fila" visible="false">
+    <span style="float:right"> (**)Rango Notas:</span>
+    <span>Desde: <decimalbox id="desde" value="0" cols="5" /> Hasta: <decimalbox id="hasta" value="20" cols="5"/></span>
 </row>
 
 <row>
@@ -407,7 +425,7 @@ collapsible="true" title="Parametros">
 </row>
 <row>
 <span style="float:right"> Formato:</span>
- <span> <listbox id="format" mold="select" onSelect="showReport();rep.setOpen(true);parametros.setOpen(false); " >
+ <span> <listbox id="format" mold="select" onSelect="showReport();" >
 		<listitem label="PDF" value="pdf" selected="true" />
 		<listitem label="XML" value="xml" />
 		<listitem label="HTML" value="html" />
@@ -417,7 +435,7 @@ collapsible="true" title="Parametros">
 		<listitem label="CSV" value="csv" />
 		<listitem label="OpenOffice (ODT)" value="odt" unless="false"/>
 	</listbox>
-    <button label="Ejecutar!" onClick='showReport();rep.setOpen(true);parametros.setOpen(false); '/></span>
+    <button label="Ejecutar!" onClick='showReport();'/></span>
 </row>
 
 </rows>

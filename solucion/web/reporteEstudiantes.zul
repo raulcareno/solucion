@@ -17,7 +17,9 @@ import org.zkforge.yuiext.grid.Row;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
+import bean.Permisos;
 
+Permisos per = new Permisos();
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -177,6 +179,15 @@ public JRDataSource internos(Cursos curso,String tipo){
 
 		void showReport() {
 			//Preparing parameters
+
+//LCAS,LCA,LASI.LGEN,LGENT,LFEC,LMIN
+			//conanioscumplidos
+            String tipo = reporte.getSelectedItem().getValue();
+            if(per.verificarPermisoReporte(tipo, "Ingresar") == false){
+                Messagebox.show("No tiene permisos pare ver este Reporte...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                return;
+           }
+rep.setOpen(true);parametros.setOpen(false);
             Institucion insts = periodo.getInstitucion();
 			Map parametros = new HashMap();
             parametros.put("denominacion", insts.getDenominacion());
@@ -186,9 +197,7 @@ public JRDataSource internos(Cursos curso,String tipo){
             parametros.put("secretaria", insts.getSecretaria());
             parametros.put("rectora", insts.getRector());
             
-			//LCAS,LCA,LASI.LGEN,LGENT,LFEC,LMIN
-			//conanioscumplidos
-            String tipo = reporte.getSelectedItem().getValue();
+			
             JRDataSource datasource = null;
             if(tipo.equals("CM")){
                     datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"CM");
@@ -419,7 +428,7 @@ void campos(String valor){
                         <row>
                             <span style="float:right"> Formato:</span>
                             <span>
-                                <listbox id="format" mold="select" onSelect="showReport();rep.setOpen(true);parametros.setOpen(false); " >
+                                <listbox id="format" mold="select" onSelect="showReport();" >
                                     <listitem label="PDF" value="pdf" selected="true" />
                                     <listitem label="XML" value="xml" />
                                     <listitem label="HTML" value="html" />
@@ -429,7 +438,7 @@ void campos(String valor){
                                     <listitem label="CSV" value="csv" />
                                     <listitem label="OpenOffice (ODT)" value="odt" unless="false"/>
                                 </listbox>
-                                <button label="Ejecutar!" onClick='showReport();rep.setOpen(true);parametros.setOpen(false);  '/>
+                                <button label="Ejecutar!" onClick='showReport();'/>
                             </span>
                         </row>
                     </rows>
