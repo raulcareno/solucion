@@ -74,6 +74,7 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
 
     public boolean verificarPermiso(String modulo, String accion) {
         Session a = Sessions.getCurrent();
+        modulo = modulo.replace("_"," ");
         List<Accesos> accesosList = (List<Accesos>) a.getAttribute("accesos");
         for (Iterator<Accesos> it = accesosList.iterator(); it.hasNext();) {
             Accesos accesos = it.next();
@@ -94,6 +95,7 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
     }
      public boolean verificarPermisoReporte(String modulo, String accion) {
         Session a = Sessions.getCurrent();
+        modulo = modulo.replace("_"," ");
         List<Accesos> accesosList = (List<Accesos>) a.getAttribute("accesos");
         for (Iterator<Accesos> it = accesosList.iterator(); it.hasNext();) {
             Accesos accesos = it.next();
