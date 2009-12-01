@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <window  id="principales" mode="overlapped"  
-    maximizable="true"
-    title="Control y registro de inscripciones y matriculas" width="795px" border="normal"
-     closable="true" sizable="true">
+    <window id="principales" mode="overlapped"
+            maximizable="true"
+            title="Control y registro de inscripciones y matriculas"
+            width="795px"
+            border="normal"
+            closable="true" sizable="true">
         <zscript>
 <![CDATA[
   import jcinform.persistencia.Global;
@@ -20,8 +22,6 @@
   import java.util.logging.Logger;
 import java.util.Vector;
 import bean.matriculasBean;
-
-
 import sources.CustomDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import sources.*;
@@ -1218,7 +1218,6 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             </hbox>
         </vbox>
     </window>
-
  
 
 </zk>
