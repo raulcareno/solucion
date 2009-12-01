@@ -236,13 +236,20 @@ public JRDataSource profesores(){
                     datasource = noti.promocion(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue());
                     report.setSrc("WEB-INF/reportes/promocion.jasper");
             }else if(tipo.equals("NMAT")){
-                    datasource = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
+                    
+                    ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
+                    datasource = (ReporteNotasDataSource) arreglo.get(0);
+                     parametros = (HashMap) arreglo.get(1);
+                     parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     MateriaProfesor mate = ((MateriaProfesor)materiasCombo.getSelectedItem().getValue());
                     parametros.put("materia", mate.getMateria().getDescripcion());
                      parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
                     report.setSrc("WEB-INF/reportes/notaspor.jasper");
+                    parametros.put("titulo", titulo.value);
             }else if(tipo.equals("NMATD")){
-                    datasource = noti.notasdisciplina(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
+
+                    ArrayList arreglo = noti.notasdisciplina(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
+                    datasource = (ReporteNotasDataSource) arreglo.get(0);
                     MateriaProfesor mate = ((MateriaProfesor)materiasCombo.getSelectedItem().getValue());
                     parametros.put("materia", mate.getMateria().getDescripcion());
                     parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
@@ -315,9 +322,10 @@ void campos(String valor){
             curs.disabled = false;
             sistemasCombo.disabled = false;
             materiasCombo.disabled = false;
-            titulo.value= "Cuadro de Notas por Materia Disciplina";
+            titulo.value= "Cuadro de Notas por Materia";
+            if(valor.equals("NMATD"))
+                titulo.value= "Cuadro de Notas por Materia Disciplina";
             materiasCombo.setSelectedIndex(-1);
-            
             curs.setSelectedIndex(0);
         }else if(valor.equals("LIB")){
             curs.disabled = false;
