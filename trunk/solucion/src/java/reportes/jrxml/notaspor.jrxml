@@ -30,6 +30,26 @@
 	<parameter name="profesor" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="materia" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="slogan" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="eq1" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="eq2" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="eq3" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="eq4" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="ran1" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="ran2" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="ran3" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="ran4" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="val1" isForPrompting="false" class="java.lang.Long"/>
+	<parameter name="val2" isForPrompting="false" class="java.lang.Long"/>
+	<parameter name="val3" isForPrompting="false" class="java.lang.Long"/>
+	<parameter name="val4" isForPrompting="false" class="java.lang.Long"/>
+	<parameter name="por1" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="por2" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="por3" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="por4" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="eq5" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="ran5" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="val5" isForPrompting="false" class="java.lang.Long"/>
+	<parameter name="por5" isForPrompting="false" class="java.lang.Double"/>
 
 	<field name="curso" class="java.lang.String"/>
 	<field name="estudiante" class="java.lang.String"/>
@@ -266,9 +286,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="433"
+						x="438"
 						y="0"
-						width="100"
+						width="95"
 						height="18"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -293,7 +313,7 @@
 			</band>
 		</lastPageFooter>
 		<summary>
-			<band height="57"  isSplitAllowed="true" >
+			<band height="156"  isSplitAllowed="true" >
 				<crosstab >
 					<reportElement
 						x="-16"
@@ -329,7 +349,7 @@
 						x="0"
 						y="0"
 						width="127"
-						height="20"
+						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -347,7 +367,7 @@
 						x="0"
 						y="0"
 						width="127"
-						height="20"
+						height="16"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -411,15 +431,15 @@
 					<measure name="nota_Average" class="java.lang.Double" calculation="Average">
 						<measureExpression><![CDATA[$F{nota}]]></measureExpression>
 					</measure>
-					<crosstabCell width="23" height="20">
+					<crosstabCell width="23" height="15">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
-				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
 						y="0"
 						width="23"
-						height="20"
+						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -429,17 +449,17 @@
 				</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="0" height="20" columnTotalGroup="sistema">
+					<crosstabCell width="0" height="15" columnTotalGroup="sistema">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="0" height="20" columnTotalGroup="tipo">
+					<crosstabCell width="0" height="15" columnTotalGroup="tipo">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="23" height="20" rowTotalGroup="estudiante">
+					<crosstabCell width="23" height="16" rowTotalGroup="estudiante">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
 				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -447,7 +467,7 @@
 						x="0"
 						y="0"
 						width="23"
-						height="20"
+						height="16"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -457,12 +477,12 @@
 				</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="0" height="20" rowTotalGroup="estudiante" columnTotalGroup="sistema">
+					<crosstabCell width="0" height="16" rowTotalGroup="estudiante" columnTotalGroup="sistema">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="0" height="20" rowTotalGroup="estudiante" columnTotalGroup="tipo">
+					<crosstabCell width="0" height="16" rowTotalGroup="estudiante" columnTotalGroup="tipo">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
 						</cellContents>
@@ -471,6 +491,375 @@
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
 						</cellContents>
 					</whenNoDataCell>					</crosstab>
+				<staticText>
+					<reportElement
+						x="-15"
+						y="64"
+						width="65"
+						height="11"
+						key="staticText-4"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($P{eq1} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Equivalencia]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="50"
+						y="64"
+						width="42"
+						height="11"
+						key="staticText-5"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($P{eq1} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Rangos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="92"
+						y="64"
+						width="21"
+						height="11"
+						key="staticText-6"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($P{eq1} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[No.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="113"
+						y="64"
+						width="24"
+						height="11"
+						key="staticText-7"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($P{eq1} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica" size="7" isBold="false"/>
+					</textElement>
+				<text><![CDATA[%]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="-15"
+						y="75"
+						width="65"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{eq1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="-15"
+						y="87"
+						width="65"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{eq2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="-15"
+						y="99"
+						width="65"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{eq3}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="-15"
+						y="111"
+						width="65"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{eq4}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="50"
+						y="75"
+						width="42"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ran1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="50"
+						y="87"
+						width="42"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ran2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="50"
+						y="111"
+						width="42"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ran4}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="50"
+						y="99"
+						width="42"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ran3}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="92"
+						y="75"
+						width="21"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$P{val1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="92"
+						y="87"
+						width="21"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$P{val2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="92"
+						y="99"
+						width="21"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$P{val3}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="92"
+						y="111"
+						width="21"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$P{val4}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="113"
+						y="75"
+						width="24"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{por1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="113"
+						y="87"
+						width="24"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{por2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="113"
+						y="99"
+						width="24"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{por3}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="113"
+						y="111"
+						width="24"
+						height="12"
+						key="textField"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{por4}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="-15"
+						y="123"
+						width="65"
+						height="12"
+						key="textField-14"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{eq5}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="50"
+						y="123"
+						width="42"
+						height="12"
+						key="textField-15"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ran5}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="92"
+						y="123"
+						width="21"
+						height="12"
+						key="textField-16"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$P{val5}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="113"
+						y="123"
+						width="24"
+						height="12"
+						key="textField-17"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{por5}]]></textFieldExpression>
+				</textField>
 			</band>
 		</summary>
 </jasperReport>
