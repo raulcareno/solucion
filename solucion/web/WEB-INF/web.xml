@@ -5,7 +5,7 @@
            500
         </session-timeout>
     </session-config>
-    <display-name>holamundo</display-name>
+    <display-name>JCINFORM Administrador Educativo</display-name>
 
     <!-- /// -->
     <!-- DSP -->
@@ -98,7 +98,7 @@
      </init-param>
      <init-param>
           <param-name>AllowedExtensionsFile</param-name>
-          <param-value></param-value>
+          <param-value/>
      </init-param>
      <init-param>
           <param-name>DeniedExtensionsFile</param-name>
@@ -112,7 +112,7 @@
      </init-param>
      <init-param>
           <param-name>DeniedExtensionsImage</param-name>
-          <param-value></param-value>
+          <param-value/>
      </init-param>
      <init-param>
           <param-name>AllowedExtensionsFlash</param-name>
@@ -120,7 +120,7 @@
      </init-param>
      <init-param>
           <param-name>DeniedExtensionsFlash</param-name>
-          <param-value></param-value>
+          <param-value/>
      </init-param>
      <load-on-startup>1</load-on-startup>
  </servlet>
