@@ -6,10 +6,13 @@
 package sources;
 
 
+import bean.notas;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
@@ -102,6 +105,7 @@ public class ReporteNotasDataSource implements JRDataSource{
             valor = new JRBeanCollectionDataSource(nodo.getNotas());
         }
 } catch (Exception e) {
+       Logger.getLogger(ReporteNotasDataSource.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("EN DATASOURCE"+e);
         }
         return valor;

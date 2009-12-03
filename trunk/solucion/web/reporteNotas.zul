@@ -235,6 +235,9 @@ public JRDataSource profesores(){
             }else if(tipo.equals("CERT")){
                     datasource = noti.promocion(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue());
                     report.setSrc("WEB-INF/reportes/promocion.jasper");
+            }else if(tipo.equals("PCUR")){
+                    datasource = noti.promediocurso(sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc("WEB-INF/reportes/promedioporcurso.jasper");
             }else if(tipo.equals("NMAT")){
                     
                     ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
@@ -318,6 +321,9 @@ void campos(String valor){
             curs.disabled = false;
             titulo.value= "Lista de profesores por Curso";
             sistemasCombo.disabled = false;
+        }else if(valor.equals("PCUR")){
+             titulo.value= "Promedios por Curso";
+            sistemasCombo.disabled = false;
         }else if(valor.equals("NMAT") || valor.equals("NMATD") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
@@ -382,10 +388,12 @@ collapsible="true" title="Parametros">
         <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
 		<listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
 		<listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
+        <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
         <listitem  id="AG" label="Acta de Grado" value="AG"/>
         <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
         <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
         <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
+
         <listitem  id="linea" label="=========================" value="linea" />
          <!--listitem  label="Mejor egresado(*)" value="CDIS"/>
         <listitem label="Cuadro juntas de curso(*)" value="CDIS"/>
