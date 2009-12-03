@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
-<?link rel="shortcut icon" type="images/bolitas.ico" href="/bolitas.ico"?>
+ <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
 <borderlayout onCreate="verificar();cargando();cargando2();"  width="100%" style="float:center"  height="100%">

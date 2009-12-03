@@ -38,6 +38,12 @@
 	<variable name="promedio" class="java.lang.Double" resetType="Report" calculation="Average">
 		<variableExpression><![CDATA[$F{nota}]]></variableExpression>
 	</variable>
+	<variable name="SUM_nota_1" class="java.lang.Object" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{nota}]]></variableExpression>
+	</variable>
+	<variable name="SUM_nota_2" class="java.lang.Object" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{nota}]]></variableExpression>
+	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -47,7 +53,7 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="154"  isSplitAllowed="true" >
+			<band height="133"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="-16"
@@ -176,12 +182,12 @@
 				</textField>
 				<staticText>
 					<reportElement
-						x="6"
-						y="136"
-						width="80"
+						x="-3"
+						y="119"
+						width="463"
 						height="14"
 						key="staticText-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="23" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
@@ -189,16 +195,16 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="430"
-						y="136"
+						x="455"
+						y="119"
 						width="80"
 						height="14"
 						key="staticText-9"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[NOTAS]]></text>
+				<text><![CDATA[PROMEDIOS]]></text>
 				</staticText>
 			</band>
 		</pageHeader>
@@ -210,29 +216,43 @@
 			<band height="16"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="6"
+						x="20"
 						y="0"
-						width="272"
+						width="440"
 						height="16"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+						key="textField"
+						isPrintWhenDetailOverflows="true"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement>
-						<font/>
+						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{curso}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="430"
+						x="455"
 						y="0"
-						width="100"
+						width="80"
 						height="16"
 						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[""+$F{nota}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="20"
+						height="16"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[""+$F{nota}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
@@ -245,70 +265,33 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="232"  isSplitAllowed="true" >
+			<band height="23"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="430"
+						x="455"
 						y="0"
-						width="100"
+						width="80"
 						height="18"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
+					<textElement textAlignment="Right">
+						<font size="12"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{promedio}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="336"
+						x="292"
 						y="2"
-						width="80"
+						width="160"
 						height="14"
 						key="staticText-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[PROMEDIO:]]></text>
+				<text><![CDATA[MEDIA ARITMETICA:]]></text>
 				</staticText>
-				<bar3DChart>
-					<chart  hyperlinkTarget="Self" >
-					<reportElement
-						x="20"
-						y="30"
-						width="490"
-						height="187"
-						key="element-1"
-						stretchType="RelativeToTallestObject"
-						isPrintRepeatedValues="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
-					</chartLegend>
-					</chart>
-					<categoryDataset>
-						<dataset >
-						</dataset>
-						<categorySeries>
-							<seriesExpression><![CDATA[$F{curso}]]></seriesExpression>
-							<categoryExpression><![CDATA[$F{nota}]]></categoryExpression>
-							<valueExpression><![CDATA[$F{nota}]]></valueExpression>
-				<itemHyperlink >
-				</itemHyperlink>
-						</categorySeries>
-					</categoryDataset>
-					<bar3DPlot isShowLabels="true" xOffset="10.0" yOffset="7.0" >
-						<plot orientation="Horizontal" />
-						<categoryAxisFormat>
-							<axisFormat >
-							</axisFormat>
-						</categoryAxisFormat>
-						<valueAxisFormat>
-							<axisFormat >
-							</axisFormat>
-						</valueAxisFormat>
-					</bar3DPlot>
-				</bar3DChart>
 			</band>
 		</summary>
 </jasperReport>
