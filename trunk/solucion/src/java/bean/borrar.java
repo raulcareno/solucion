@@ -18,6 +18,7 @@ import org.zkoss.zkmax.zul.Tablechildren;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Tree;
 
 
 /**
@@ -74,7 +75,21 @@ void func() throws InterruptedException{
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        bandejaEstudiante(new Estudiantes(1));
+
+
+        try {     Double d = null;
+
+        Double a = null;
+        Double c = (a+d)/2;
+       
+
+        } catch (Exception e) {
+            System.out.println("CAUSA: "+e.getCause());
+            System.out.println("LOCALI"+e.getLocalizedMessage());
+            System.out.println(""+e.getMessage());
+            System.out.println(""+e);
+        }
+   
     }
 
 }

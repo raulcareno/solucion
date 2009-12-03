@@ -1,22 +1,18 @@
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
 <window mode="overlapped" title="Aportes por Trimestres, Bimestres, Quimestres" width="70%" height="83%" border="normal"
     maximizable="true" closable="true" sizable="true">
  <zscript>
-import jcinform.persistencia.Trimestres;
+
 import bean.EventDAO;
 import java.util.ArrayList;
-import jcinform.persistencia.Trimestres;
-import jcinform.persistencia.Periodo;
-import jcinform.persistencia.Sistemacalificacion;
-import jcinform.persistencia.Notanotas;
-import jcinform.persistencia.Trimestres;
+import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
 import bean.Permisos;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import jcinform.persistencia.Notanotas;
-import jcinform.persistencia.Notas;
 import bsh.Interpreter;
 import bsh.EvalError;
   import java.math.BigDecimal;
@@ -192,12 +188,12 @@ Object media = null;
             int total = tree.getItemCount();
 
 	       for(int i=0; i<l; i++) {
-try{
+                    try{
                         for(int m=0;m<total;m++){
                             int[] path ={m,i};
                             tree.renderItemByPath(path);
                         }
-	}finally{}
+                    }finally{}
 	               
 	       }
        }
@@ -422,10 +418,10 @@ void cargar(Trimestres g){
     empa.setTrimestre(g);
 }
 
-public Boolean verificar2(){
+public Boolean verificar2(){ //VERIFICO SI EL APROVEHCAMIENTO ESTA BIEN INGRESADO
     String formula1 = formula.value;
      Periodo periodo = per;
-    formula1 = formula1.replace("()","");
+  
     if(formula1.equals("")){
         return false;
     }
@@ -434,6 +430,21 @@ public Boolean verificar2(){
         Interpreter inter = new Interpreter();
          try {
              inter.eval(redon);
+              Notas nota = new Notas();
+              inter.set("nota", nota);
+              for(int x =1;x<91;x++){ //LLENO LOS DATOS DE LAS NOTANOTAS CON 1.0
+                    String llena = "nota.setNota"+x+"(1.0);";
+                    inter.eval(llena);
+              }
+            String formuPrevia = formula1.replace("nota","nota.getNota");
+            try{
+            inter.eval(formuPrevia);
+            }catch(Exception e1){
+                    Messagebox.show("ERROR EN FORMULA DE APROVECHAMIENTO...! \n Revise los '()' o que sea una nota valida ", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return true;
+            }
+
+           formula1 = formula1.replace("()","");
         for (Iterator it = notas.iterator(); it.hasNext();) {
                      Notanotas notanotas = (Notanotas)it.next();
                     inter.eval(""+notanotas.getNota()+"=1;");
@@ -451,15 +462,33 @@ public Boolean verificar3(){
     String formula1 = formuladisciplina.value;
      Periodo periodo = per;
 
-    formula1 = formula1.replace("()","");
+ 
     if(formula1.equals("")){
-    return false;
-}
+            return false;
+        }
+
+
+
        String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
         List notas = adm.query("Select o from Notanotas as o where o.sistema.esdisciplina = true and o.sistema.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.sistema.orden ");
         Interpreter inter = new Interpreter();
          try {
              inter.eval(redon);
+
+                Notas nota = new Notas();
+              inter.set("nota", nota);
+              for(int x =1;x<91;x++){ //LLENO LOS DATOS DE LAS NOTANOTAS CON 1.0
+                    String llena = "nota.setNota"+x+"(1.0);";
+                    inter.eval(llena);
+              }
+            String formuPrevia = formula1.replace("nota","nota.getNota");
+            try{
+            inter.eval(formuPrevia);
+            }catch(Exception e1){
+                    Messagebox.show("ERROR EN FORMULA DE APROVECHAMIENTO...! \n Revise los '()' o que sea una nota valida ", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return true;
+            }
+   formula1 = formula1.replace("()","");
         for (Iterator it = notas.iterator(); it.hasNext();) {
                      Notanotas notanotas = (Notanotas)it.next();
                     inter.eval(""+notanotas.getNota()+"=1;");
@@ -504,18 +533,22 @@ if(formula1.equals("")){
 
 </zscript>
 
-<borderlayout height="500px">
-<west maxsize="300" size="35%" splittable="true" collapsible="true">
-        <tree model="${stm}" onLoad="mostrarTodos();" onSelect="onSele();modificar.disabled= false;estado(true,false);" use="SistemaTree" id="tree" width="100%"    zclass="z-vfiletree" vflex="true" height="100%" >
+<borderlayout height="450px">
+<west autoscroll="true" maxsize="300" size="35%" splittable="true" collapsible="true">
+    <span>
+        <button    id="llsenar" image="/images/expandir.png" label="Expandir"   onClick="mostrarTodos();"/>
+        <tree model="${stm}" onLoad="mostrarTodos();" onSelect="onSele();modificar.disabled= false;estado(true,false);"
+        use="SistemaTree" id="tree" width="100%"    zclass="z-vfiletree"
+        vflex="true" height="400px" >
         </tree>
+    </span>
+        
 </west>
 
 
 
 <center flex="true">
-<groupbox mold="3d" >
-       <caption label="Agregar" />
-
+ 
 <grid width="100%">
 <rows>
 
@@ -567,11 +600,11 @@ if(formula1.equals("")){
 </row>
 <row><span style="float:right"> Form. Aprov.:</span>
 <span><textbox id="formula" rows="2" cols="30" />
-<button id="verificar"  label="Verificar"   onClick="verificar2();"/> </span>
+<button id="verificar"  image="/images/ok.gif"   onClick="verificar2();"/> </span>
 </row>
 <row><span style="float:right"> Form. Disc.:</span>
 <span><textbox id="formuladisciplina" rows="2" cols="30" />
-<button id="verificar3"  label="Verificar"   onClick="verificar3();"/> </span>
+<button id="verificar3"  image="/images/ok.gif"  onClick="verificar3();"/> </span>
 </row>
  
 <row><span style="float:right"> Codigo:</span>
@@ -581,28 +614,23 @@ if(formula1.equals("")){
 </row>
 
 
+<row spans="2" ><span style="float:center">
 
-</rows>
-</grid>
-<vbox>
-<vbox>
-<hbox>
-<button    id="llsenar"  label="Expandir Árbol"   onClick="mostrarTodos();"/>
     <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
     <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
 	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+ </span>
+</row>
 
-	
-</hbox>
-</vbox>
 
-			</vbox>
+</rows>
+</grid>
 
- </groupbox>
 
 
 
 </center>
 </borderlayout>
 </window>
+</zk>
