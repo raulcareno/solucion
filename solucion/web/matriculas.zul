@@ -411,9 +411,8 @@ void estado(Boolean estado,Boolean modificar){
         representante0.setOcupacionmadre(ocupacionma.value);
         
 
-
- Boolean repreNuevo = false;
- Boolean estuNuevo = false;
+         Boolean repreNuevo = false;
+         Boolean estuNuevo = false;
  
          if((!representante0.getCodigorep().equals(0))){
              adm.actualizar(representante0);
@@ -495,12 +494,15 @@ void estado(Boolean estado,Boolean modificar){
          }else{
 
                 if(matricula.getEstado().equals("Matriculado")){
-                    matricula.setNumero(nuevaMatricula());
+                    if(matricula.getNumero().equals(0)){
+                        matricula.setNumero(nuevaMatricula());
+                        numero.value = matricula.getNumero();
+                    }
                     if(folio.value == "" || folio.value == null ){
                         matricula.setFolio(matricula.getNumero());
                         folio.value = matricula.getNumero();
                     }
-                    numero.value = matricula.getNumero();
+                    
                 }else{
                     matricula.setNumero(0);
                 }
@@ -881,7 +883,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 <span>
                                                                     <intbox maxlength="14" cols="5"    disabled="true"    readonly="true" id="codigomat"  />
                                                                     No.Mat.(*):
-                                                                    <intbox maxlength="10" readonly="true" cols="5"  id="numero"  />
+                                                                    <intbox maxlength="10"   cols="5"  id="numero"  />
                                                                     No.Folio (*):
                                                                     <intbox maxlength="10" readonly="true" cols="5"  id="folio"  />
                                                                 </span>
