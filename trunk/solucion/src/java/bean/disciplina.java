@@ -603,13 +603,13 @@ public ArrayList reporteDisciplina(Cursos curso,Sistemacalificacion sistema){
                                             coll.setInspector(notaBase);
                                     }
 
-                if (tipo.equals("MITAD")) {//SUMA ENTRE PROMEDIOS DIVIDIDO PARA 2
+                if (tipo.contains("MITAD")) {//SUMA ENTRE PROMEDIOS DIVIDIDO PARA 2
                     coll.setFinali((promProfesor/lista.size()+coll.getInspector())/2);
-                } else if (tipo.equals("PROMEDIO")) {//
+                } else if (tipo.contains("PROMEDIO")) {//
                     coll.setFinali(promProfesor+coll.getInspector()/(lista.size())+1);
-                } else if (tipo.equals("SUMATORIA")) {//PROMEDIO DE PROFESORES + PROMEDIO DE INSPECCION
+                } else if (tipo.contains("SUMATORIA")) {//PROMEDIO DE PROFESORES + PROMEDIO DE INSPECCION
                     coll.setFinali(promProfesor/lista.size()+coll.getInspector());
-                }else if(tipo.equals("INGRESADA")){
+                }else if(tipo.contains("INGRESADA")){
                                     q = "Select " + query + "  from Notas notas " +
                                                 "where notas.matricula = '" + matriculas1.getCodigomat() + "' " +
                                                 "and notas.materia = '0'" +
