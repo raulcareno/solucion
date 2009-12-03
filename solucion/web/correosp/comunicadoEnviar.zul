@@ -1,5 +1,5 @@
 
-<zk>
+<zk xmlns="http://www.zkoss.org/2005/zul">
     <window closable="true" onCreate="cargando()" >
         <zscript>
             <![CDATA[
@@ -44,20 +44,44 @@ public void guardar(){
     correo.setArchivado(false);
     correo.setEliminado(false);
     correo.setFecha(new Date());
-    correo.setTiporemitente("P");
+    
     correo.setLeido(false);
 
-            int a=0;
-            for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
-                    Listitem li  = (Listitem)it.next();
-                    Estudiantes empe = (Estudiantes)li.getValue();
-                        correo.setDestinatario(empe.getCodigoest());
-                        correo.setDestinatarion(empe.getApellido()+" "+ empe.getNombre());
-                        adm.guardar(correo);
-            }
-     for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
-            datos.getItems().remove(a);
-     }
+
+        String tipo = envia.selectedItem.label;
+                if(tipo.contains("Estudiante")){
+                        int a=0;
+                        for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                                Listitem li  = (Listitem)it.next();
+                                Estudiantes empe = (Estudiantes)li.getValue();
+                                    correo.setTiporemitente("P");
+                                    correo.setDestinatario(empe.getCodigoest());
+                                    correo.setDestinatarion(empe.getApellido()+" "+ empe.getNombre());
+                                    adm.guardar(correo);
+                        }
+                        for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                                datos.getItems().remove(a);
+                        }
+
+                 }else{
+
+                        int a=0;
+                        for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                                Listitem li  = (Listitem)it.next();
+                                Empleados empe = (Empleados)li.getValue();
+                                    correo.setTiporemitente("D");
+                                    correo.setDestinatario(empe.getCodigoemp());
+                                    correo.setDestinatarion(empe.getApellidos()+" "+ empe.getNombres());
+                                    adm.guardar(correo);
+                        }
+                        for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                                datos.getItems().remove(a);
+                        }
+
+
+                 }
+
+                 
      titulo.value = "";
      data = null;
      nombrearchivo.value = "";
@@ -65,6 +89,25 @@ public void guardar(){
 Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
             
 
+}
+
+void tipo(){
+
+               
+        String tipo = envia.selectedItem.label;
+        if(tipo.contains("Estudiante")){
+            Cursos curso = (Cursos)curs.selectedItem.value;
+            buscar2(curso);
+        }else{
+         
+                        Empleados empleado = (Empleados)curs.selectedItem.value;
+                        Listitem item = new Listitem();
+                        item.setValue(empleado);
+                        item.appendChild(new Listcell(empleado.getApellidos()+" "+empleado.getNombres()));
+                        datos.appendChild(item);
+
+        }
+        
 }
 
   void buscar2(Cursos p){
@@ -83,38 +126,100 @@ Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Mes
                       datos.appendChild(li);
              }
     }
+
+
+
+void llenarCursos(){
+
+ int a1=0;
+                 for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a1);
+                }
+List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+    Cursos curso = new Cursos();
+    curso.setDescripcion("[Seleccione]");
+    Global g = new Global();
+    g.setDescripcion("");
+    curso.setEspecialidad(g);
+    curso.setParalelo(g);
+    cursos.add(0,curso);
+
+     curs = new Listbox();
+        int a=0;
+              for(Iterator it = curs.getItems().iterator(); it.hasNext();) {
+                    curs.getItems().remove(a);
+                }
+               for (Iterator it = cursos.iterator(); it.hasNext();) {
+                      Cursos acceIt = (Cursos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "+ acceIt.getEspecialidad()+ " " + acceIt.getParalelo()));
+                      curs.appendChild(li);
+             }
+
+
+}
+
+      void llenarEmpleados(){
+               int a1=0;
+                 for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a1);
+                }
+
+       List equivaEncontrados = adm.query("Select d from Empleados as d order by d.apellidos ");
+        curs = new Listbox();
+        int a=0;
+              for(Iterator it = curs.getItems().iterator(); it.hasNext();) {
+                    curs.getItems().remove(a);
+                }
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Empleados acceIt = (Empleados) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getApellidos()+" "+ acceIt.getNombres()));
+                      curs.appendChild(li);
+             }
+    }
+
  ]]>
         </zscript>
  
      
-            <caption label="Redactar un Nuevo mensaje" />
+        <caption label="Redactar un Nuevo mensaje" />
 
-            <grid width="100%">
-                <rows>
-                    <row>
-                        <span style="float:right"> Para (*):</span>
-                        <span>
+        <grid width="100%">
+            <rows>
+                <row>
+                    <span>Tipo de Destinatario: </span>
+                    <radiogroup Id="envia" >
+                        <radio  id="profesores" onCheck="llenarEmpleados()"   label="Profesores"/>
+                        <radio id = "estudiantes"  onCheck="llenarCursos()" selected="true" label="Estudiantes"/>
+                    </radiogroup>
+                </row>
+                <row>
+                    <span style="float:right"> Para (*):</span>
+                    <span>
                            
-                    <listbox id="curs" width="420px" mold="select"
-                    onSelect="buscar2(((Cursos)self.selectedItem.value));">
+                        <listbox id="curs" width="420px" mold="select"
+                    onSelect="tipo();">
 
-                        <listitem forEach="${cursos}" value="${each}">
-                              <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-                        </listitem>
-                    </listbox>
-                        </span>
-                    </row>
-                    <row>
-                        <span></span>
-                        <span>
+                            <listitem forEach="${cursos}" value="${each}">
+                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                            </listitem>
+                        </listbox>
+                    </span>
+                </row>
+                <row>
+                    <span></span>
+                    <span>
                         <listbox id="datos" width="420px"  mold="paging" rows="5" pageSize="10"  multiple="true" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
                             <listhead>
                                 <listheader label="Nombres"  sort="auto"/>
                             </listhead>
                                 
                         </listbox>
-                           <button label="Quitar Selecionados">
-                                  <attribute name="onClick">
+                        <button label="Quitar Selecionados">
+                            <attribute name="onClick">
                         Set items = datos.getSelectedItems();
 						if (items.isEmpty()) {
 							alert("Seleccion un Profesor para Quitar!");
@@ -127,25 +232,25 @@ Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Mes
 							}
 						}
 
-                                 </attribute>
-                            </button>
+                            </attribute>
+                        </button>
 
-                        </span>
-                    </row>
-                    <row>
-                        <span style="float:right"> Asunto(*):</span>
-                        <span>
-                            <textbox id="titulo"  maxlength="100" cols="40"  />
+                    </span>
+                </row>
+                <row>
+                    <span style="float:right"> Asunto(*):</span>
+                    <span>
+                        <textbox id="titulo"  maxlength="100" cols="40"  />
         Ej. Deber de Matematicas
-                        </span>
+                    </span>
 
-                    </row>
-                    <row>
-                        <span style="float:right"> Archivo:</span>
-                        <span>
-                            <textbox value="" cols="30" readonly="true" id="nombrearchivo" />
-                            <button label="Adjuntar " image="/images/adjunto.gif" id="ima">
-                                <attribute name="onClick">{
+                </row>
+                <row>
+                    <span style="float:right"> Archivo:</span>
+                    <span>
+                        <textbox value="" cols="30" readonly="true" id="nombrearchivo" />
+                        <button label="Adjuntar " image="/images/adjunto.gif" id="ima">
+                            <attribute name="onClick">{
 
             Media media0 = Fileupload.get();
         if (media0 instanceof AMedia) {
@@ -157,10 +262,11 @@ Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Mes
                     data = media.getByteData();
                     
                 }catch(Exception e){
+                System.out.println(""+e);
                     try{
-                    data = media.getStringData().getBytes();
+                            data = media.getStringData().getBytes();
                     }catch(Exception ax){
-
+                            System.out.println(""+ax);
                              Messagebox.show("No puede adjuntar este tipo de archivos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                              return;
                     }
@@ -174,45 +280,60 @@ Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Mes
 		}
 
 
-                                </attribute>
-                            </button>
-                        </span>
-                    </row>
-                    <row>
-                        <span style="float:right;align:top"> Mensaje</span>
+                            </attribute>
+                        </button>
+                        Permitidos: Word, Excel,Texto
+                    </span>
+                </row>
+                <row>
+                    <span style="float:right;align:top"> Mensaje</span>
         
-                        <textbox rows="10" width="420px" id="contenido"  maxlength="100" cols="50"  />
-                    </row>
+                    <textbox rows="10" width="420px" id="contenido"  maxlength="100" cols="50"  />
+                </row>
 
     
  
-                </rows>
-            </grid>
+            </rows>
+        </grid>
+        <vbox>
             <vbox>
-                <vbox>
-                    <hbox>
-                        <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"   onClick="guardar();"/>
-                    </hbox>
-                </vbox>
-
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"   onClick="guardar();"/>
+                </hbox>
             </vbox>
-  <zscript>
+
+        </vbox>
+        <zscript>
         public void cargando(){
         try{
                     Session ses = Sessions.getCurrent();
-                    //anado el estudianbte a responder
                       titulo.value ="";
-                    jcinform.procesos.Administrador adm = new jcinform.procesos.Administrador();
-                      jcinform.persistencia.Estudiantes estud =  adm.buscarClave( ((Integer) ses.getAttribute("estudiante")), jcinform.persistencia.Estudiantes.class);
-                      Listitem li = new Listitem();
-                      li.setValue(estud);
-                      li.appendChild(new Listcell(estud.getApellido()+" "+ estud.getNombre()));
-                      datos.appendChild(li);
+                      jcinform.procesos.Administrador adm = new jcinform.procesos.Administrador();
+                      
+                      String tipo = ses.getAttribute("tipo");
+                      if(tipo.equals("E")){
+                              jcinform.persistencia.Estudiantes estud =  adm.buscarClave( ((Integer) ses.getAttribute("estudiante")), jcinform.persistencia.Estudiantes.class);
+                              Listitem li = new Listitem();
+                              li.setValue(estud);
+                              li.appendChild(new Listcell(estud.getApellido()+" "+ estud.getNombre()));
+                              datos.appendChild(li);
+                              estudiantes.checked = true;
+                      }else{
+                             profesores.setChecked(true);
+                             llenarEmpleados();
+                             jcinform.persistencia.Empleados  estud =  adm.buscarClave( ((Integer) ses.getAttribute("estudiante")), jcinform.persistencia.Empleados.class);
+                              Listitem li = new Listitem();
+                              li.setValue(estud);
+                              li.appendChild(new Listcell(estud.getApellidos()+" "+ estud.getNombres()));
+                              datos.appendChild(li);
+                              profesores.checked = true;
+                            
+                      }
                       titulo.value ="RE: "+ses.getAttribute("tema");
                       }catch(Exception e){}
         }
 
-    </zscript>
+        </zscript>
 
     </window>
   

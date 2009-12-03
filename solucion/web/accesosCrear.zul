@@ -1,0 +1,140 @@
+<window  mode="overlapped"  title="Control de Accesos para Reportes" width="600px" border="normal"
+    maximizable="true" closable="true" sizable="true">
+
+ <zscript>
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.Accesos;
+  import jcinform.persistencia.Periodo;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+
+ Session ses = Sessions.getCurrent();
+ Periodo periodo = (Periodo) ses.getAttribute("periodo");
+ Administrador adm = new Administrador();
+ List allEvents = adm.query("Select o from Accesos  as o where o.perfil is null ");
+ static Accesos equi = new Accesos();
+ Permisos permiso = new Permisos();
+ //FUNCIONES
+ 
+
+ void llenar(Accesos equi2){
+            equi = equi2;
+             nombre.value = equi.getModulo();
+           
+ 
+}
+void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+        equi = (Accesos)datos.selectedItem.value;
+    }
+    nombre.readonly = estado;
+
+}
+
+
+ void guardar(){
+    if(nombre.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+        equi.setModulo(nombre.value);
+        equi.setPerfil(null);
+        equi.guardar(true);
+        equi.eliminar(true);
+        equi.actualizar(true);
+        equi.ingresar(true);
+        equi.setCodigoacc(adm.getNuevaClave("Accesos","codigoacc"));
+        adm.guardar(equi);
+        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        guardar.disabled=true;
+        estado(true,false);
+        llenar(new Accesos(0));
+  }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Parametros",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new Accesos(0));
+        estado(false,false);
+        
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Accesos)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       //guardar.disabled=false;
+       //estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+} 
+  
+void cargar(Accesos g){
+    equi.setPerfil(g);
+}
+  </zscript>
+<groupbox mold="3d" >
+       <caption label="Agregar" />
+	
+<grid width="100%">
+<rows> 
+
+<row><span style="float:right"> Nombre(*):</span>
+        <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />
+</row>
+ 
+ 
+
+</rows>
+</grid>
+<vbox>
+<vbox>
+<hbox>
+    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+    <button  image="/images/nuevo.gif" id="agregar"  label="Agregar" onClick="nuevo();vc.visible=true;" />
+    <button  image="/images/eliminar.gif" id="eliminar"   label="Eliminar" disabled="true"  onClick="eliminar();"/>
+</hbox>
+</vbox>
+
+			</vbox>
+
+ </groupbox>
+<groupbox mold="3d" >
+
+       <caption label="Busquedas" />
+<vbox>
+<hbox>
+
+ 
+ </hbox>
+    <hbox>
+         <listbox onSelect="move();estado(true,false);guardar.disabled=true" id="datos"  mold="paging" pageSize="18"  width="490px">
+			<listhead>
+                                <listheader label="Código"/>
+                                <listheader label="Pantall"/>
+
+			</listhead>
+			<listitem forEach="${allEvents}" value="${each}">
+                           <listcell label="${each.codigoacc}" />
+                           <listcell label="${each.modulo}" />
+            </listitem>
+		</listbox>
+
+
+    </hbox>
+</vbox>
+</groupbox>
+	
+
+</window>

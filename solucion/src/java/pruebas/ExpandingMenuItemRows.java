@@ -51,7 +51,7 @@ public class ExpandingMenuItemRows extends Rows {
              for (Iterator it = this.getVisibleChildrenIterator(); it.hasNext();) {
                 Row object = (Row) it.next();
                
-                    System.out.println(object.getChildAttrs(0));
+                    //System.out.println(object.getCh.getChildAttrs(0));
 //                    System.out.println(object.getChildAttrs(1));
                 }
  }

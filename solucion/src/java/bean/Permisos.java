@@ -159,7 +159,8 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
 
                      audi.setCodigo(adm.getNuevaClave("Auditoria", "codigo"));
                      audi.setFecha(new Date());
-                     audi.setIp(a.getClientAddr());
+                     audi.setIp(a.getLocalAddr());
+                     //.getClientAddr()
                      audi.setPc(campo);
                      audi.setUsuario(emp);
                      audi.setTabla(tabla);
