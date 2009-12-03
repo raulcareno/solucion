@@ -19,7 +19,7 @@
   
 
      List allEvents = adm.query("Select o from Correos as o where o.destinatario = '"+estudiante.getCodigoemp()+"' " +
-        "and  o.tiporemitente = 'E' and o.eliminado = false and o.archivado = false ");
+        "and  (o.tiporemitente = 'E' or o.tiporemitente = 'D') and o.eliminado = false and o.archivado = false ");
 
 
  void ingresar(String valor){
@@ -29,7 +29,7 @@
 
 public void buscar(){
      List allEvents = adm.query("Select o from Correos as o where o.destinatario = '"+estudiante.getCodigoemp()+"' " +
-        "and  o.tiporemitente = 'E' and o.eliminado = false and o.archivado = false order by o.fecha ");
+        "and   (o.tiporemitente = 'E' or o.tiporemitente = 'D') and o.eliminado = false and o.archivado = false order by o.fecha ");
         datos2 = new Listbox();
         int a=0;
             for (Iterator it = datos2.getItems().iterator(); it.hasNext();) {
@@ -219,9 +219,11 @@ try{
                                         try{
                                                 ses.setAttribute("estudiante",correo.getRemitente());
                                                 ses.setAttribute("tema",correo.getTema());
+                                                ses.setAttribute("tipo", correo.getTiporemitente());
                                                 Window win34 = (Window) Executions.createComponents("/correosp/comunicadoEnviar.zul", null, null);
-                                                win34.setVisible(true);
                                                 win34.setAttribute("estudiante", correo.getRemitente());
+                                                
+                                                win34.setVisible(true);
                                                 win34.doModal();
                                             
                                        }catch(Exception e){

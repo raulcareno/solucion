@@ -505,6 +505,9 @@ void cargando(){
         PROF.visible = per.verificarPermisoReporte("PROF", "Ingresar");
         PROFC.visible = per.verificarPermisoReporte("PROFC", "Ingresar");
 
+        PCUR.visible = per.verificarPermisoReporte("PCUR", "Ingresar");
+        MEJ.visible = per.verificarPermisoReporte("MEJ", "Ingresar");
+
 }
 </zscript>
 
