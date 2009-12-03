@@ -1,22 +1,62 @@
  
-<window title="Foto" onCreate="cargar()"   border="normal" width="15%" id="principalFoto"
+<window title="Foto"    border="normal" width="50%" id="principalFoto"
 xmlns:a="http://www.zkoss.org/2005/zk/annotation">
-    <zscript><![CDATA[
- String direccion = principalFoto.getVariable("direccion",true);
-alert(direccion);
-]]>
-    </zscript>
 
-<image id="foto0" src="${direccion}"/>
-
- 
-         <button label="Salir" onClick="principalFoto.detach()"/>
-<zscript><![CDATA[
-public void cargar(){
-   
- }
-]]>
-    </zscript>
-
+<vbox>
+	<grid width="400px">
+		<columns>
+			<column label="category" width="150px" />
+			<column label="value" />
+		</columns>
+		<rows>
+			<row>
+				<label id="c0" value="C/C++" />
+				<decimalbox id="v0" value="21.2" constraint="no empty"
+					onChange="update(0)" />
+			</row>
+			<row>
+				<label id="c1" value="VB" />
+				<decimalbox id="v1" value="10.2" constraint="no empty"
+					onChange="update(1)" />
+			</row>
+			<row>
+				<label id="c2" value="Java" />
+				<decimalbox id="v2" value="40.4" constraint="no empty"
+					onChange="update(2)" />
+			</row>
+			<row>
+				<label id="c3" value="PHP" />
+				<decimalbox id="v3" value="28.2" constraint="no empty"
+					onChange="update(3)" />
+			</row>
+		</rows>
+	</grid>
+	<checkbox label="3D Chart" checked="true"
+		onCheck="mychart.setThreeD(self.isChecked())" />
+	<chart id="mychart" title="Pie Chart Demo" width="500" height="250"
+		type="pie" threeD="true" fgAlpha="128">
+		<attribute name="onClick">
+			  String areaid = event.getArea();
+			  if (areaid != null) {
+			    Area area = self.getFellow(areaid);
+			    alert(""+area.getAttribute("entity")+": "+area.getTooltiptext());
+			  }
+		</attribute>
+		<zscript>
+			void update(int rowIndex) {
+				Label lb = (Label) self.getFellow("c"+rowIndex);
+				Decimalbox db = (Decimalbox) self.getFellow("v"+rowIndex);
+				model.setValue(lb.value, new Double(db.getValue().doubleValue()));
+		  	}
+		  	PieModel model = new SimplePieModel();
+			for(int j=0; j &lt; 4; ++j) {
+				update(j);
+		  	}
+		  	mychart.setModel(model);
+		</zscript>
+	</chart>
+	<toolbarbutton label="See More chart..." href="/userguide/data/morechart.zul" target="zkdemo"/>
+</vbox>
+		
 </window>
 
