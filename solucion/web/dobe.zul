@@ -719,7 +719,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         <tabbox width="100%">
             <tabs>
                 <tab id="registro" label="Datos del Estudiante" />
-                <tab id="representante" label="Aspecto Médico Dental" />
+                <tab id="representante" label="Aspectos Médicos" />
                 <tab id="busqueda" label="Rendimiento Académico" />
                 <tab id="reportes" label="Impresión" />
             </tabs>
@@ -729,191 +729,150 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         <panelchildren>
                             <columnlayout>
                                 <columnchildren width="100%">
-                                    <panel height="375px">
+                                    <panel>
                                         <panelchildren>
-                                            <borderlayout>
-                                                <center flex="true">
-                                                    <div id="viewer" style="overflow:auto;">
-                                                        <grid width="99%">
-                                                            <rows>
+                                          
+                                            <grid>
+                                                <rows>
 
-                                                                <row>
-                                                                    <span style="float:right"> Busqueda:</span>
-                                                                    <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
-                                                                    <span style="float:right;color:blue"> Representante:</span>
-                                                                    <span style="float:right;color:blue"> </span>
-                                                                </row>
-                                                                <row>
+                                                    <row>
+                                                        <span style="float:right"> Busqueda:</span>
+                                                        <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
+                                                        <span style="float:right;color:blue"> Representante:</span>
+                                                        <span style="float:right;color:blue"> </span>
+                                                    </row>
+                                                    <row>
                                                                    
-                                                                    <span style="float:right"> Codigo :</span>
-                                                                    <span  >
-                                                                        <intbox  maxlength="14" cols="3"  disabled="true"  readonly="true" id="codigo"  />
+                                                        <span style="float:right"> Codigo :</span>
+                                                        <span  >
+                                                            <intbox  maxlength="14" cols="3"  disabled="true"  readonly="true" id="codigo"  />
                                                                     Identificación:
-                                                                        <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
-                                                                    </span>
-                                                                    <span style="float:right"> Codigo :</span>
-                                                                    <span >
-                                                                        <intbox maxlength="14" cols="3"  readonly = "true"    id="codigore"  />
+                                                            <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
+                                                        </span>
+                                                        <span style="float:right"> Codigo :</span>
+                                                        <span >
+                                                            <intbox maxlength="14" cols="3"  readonly = "true"    id="codigore"  />
                                                                     Identificación:
-                                                                        <textbox maxlength="13" cols="13"   readonly="true" id="cedulare"  />
-                                                                    </span>
+                                                            <textbox maxlength="13" cols="13"   readonly="true" id="cedulare"  />
+                                                        </span>
 
-                                                                </row>
+                                                    </row>
                                                                 
-                                                                <row>
+                                                    <row>
                                                                    
-                                                                    <span style="float:right"> Nombres:</span>
-                                                                    <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
-                                                                    <span style="float:right"> Nombres:</span>
-                                                                    <textbox id="nombresre"  maxlength="60" cols="40" readonly="true"   />
+                                                        <span style="float:right"> Nombres:</span>
+                                                        <textbox id="nombres"  maxlength="60" cols="30" readonly="true"   />
+                                                        <span style="float:right"> Nombres:</span>
+                                                        <textbox id="nombresre"  maxlength="60" cols="30" readonly="true"   />
 
-                                                                </row>
+                                                    </row>
 
-                                                                <row>
-                                                                    <span style="float:right"> Apellidos:</span>
-                                                                    <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40" readonly="true"  />
-                                                                    <span style="float:right"> Apellidos:</span>
-                                                                    <textbox id="apellidosre"  maxlength="60" cols="40" readonly="true"  />
-                                                                </row>
-                                                                <row>
+                                                    <row>
+                                                        <span style="float:right"> Apellidos:</span>
+                                                        <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="30" readonly="true"  />
+                                                        <span style="float:right"> Apellidos:</span>
+                                                        <textbox id="apellidosre"  maxlength="60" cols="30" readonly="true"  />
+                                                    </row>
+                                                    <row>
 
-                                                                    <span style="float:right"> Dirección:</span>
-                                                                    <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
-                                                                    <span style="float:right"> Dirección:</span>
-                                                                    <textbox id="direccionre" maxlength="100" cols="40"  readonly="true"    />
-                                                                </row>
+                                                        <span style="float:right"> Dirección:</span>
+                                                        <textbox id="direccion" maxlength="100" cols="30"  readonly="true"    />
+                                                        <span style="float:right"> Dirección:</span>
+                                                        <textbox id="direccionre" maxlength="100" cols="30"  readonly="true"    />
+                                                    </row>
 
-                                                                <row>
-                                                                    <span style="float:right"> Email:</span>
-                                                                    <textbox id="mail" maxlength="100" cols="40"  readonly="true"    />
-                                                                    <span style="float:right"> Email:</span>
-                                                                    <textbox id="emailre" maxlength="100" cols="40"  readonly="true"    />
-                                                                </row>
+                                                    <row>
+                                                        <span style="float:right"> Email:</span>
+                                                        <textbox id="mail" maxlength="100" cols="30"  readonly="true"    />
+                                                        <span style="float:right"> Email:</span>
+                                                        <textbox id="emailre" maxlength="100" cols="30"  readonly="true"    />
+                                                    </row>
 
-                                                                <row>
+                                                    <row>
                                                                     
-                                                                    <span style="float:right"> Teléfono:</span>
-                                                                    <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
-                                                                    <span style="float:right"> Teléfono:</span>
-                                                                    <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
+                                                        <span style="float:right"> Teléfono:</span>
+                                                        <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
+                                                        <span style="float:right"> Teléfono:</span>
+                                                        <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
 
 
-                                                                </row>
+                                                    </row>
 
                                   
-                                                            </rows>
-                                                        </grid>
-                                                       
-                                                    </div>
-                                                </center>
-                                                <!--east splittable="true" size="25%"  flex="true">
-                                                    <grid>
-                                                        <rows>
-                                                            <row>
-                                                                <span  style="border:1px">
-                                                                    <button id="subirb" disabled="true" label="Subir Imagen">
-                                                                        <attribute name="onClick">{
-                                                                            Object media = Fileupload.get();
+                                                </rows>
+                                            </grid>
+                                       
+                                            <grid>
+                                                <rows>
+                                                    <row>
+                                                        <span style="color:blue" >Padre</span>
+                                                        <span>
+                                                            <span > Identificación:</span>
+                                                            <textbox maxlength="10" cols="13"  readonly="true" id="cedulapa"  />
+                                                        </span>
+                                                        <span style="color:blue">Madre </span>
+                                                        <span>
+                                                            <span > Identificación:</span>
+                                                            <textbox maxlength="10" cols="13"  readonly="true" id="cedulama"  />
+                                                        </span>
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right"> Nombres:</span>
+                                                        <textbox id="nombrespa"  maxlength="60" cols="30" readonly="true"   />
+                                                        <span style="float:right"> Nombres:</span>
+                                                        <textbox id="nombresma"  maxlength="60" cols="30" readonly="true"   />
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right"> Apellidos:</span>
+                                                        <textbox id="apellidospa"  maxlength="60" cols="30" readonly="true"  />
+                                                        <span style="float:right"> Apellidos:</span>
+                                                        <textbox id="apellidosma"  maxlength="60" cols="30" readonly="true"  />
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right"> Ocupación:</span>
+                                                        <textbox id="ocupacionpa" maxlength="100" cols="30"  readonly="true"    />
 
-                                                                            if (media instanceof org.zkoss.image.Image) {
-                                                                                 foto0.setContent(media);
+                                                        <span style="float:right"> Ocupación:</span>
+                                                        <textbox id="ocupacionma" maxlength="100" cols="30"  readonly="true"    />
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right"> Profesión:</span>
+                                                        <textbox id="profesionpa" maxlength="100" cols="30"  readonly="true"    />
+                                                        <span style="float:right"> Profesión:</span>
+                                                        <textbox id="profesionma" maxlength="100" cols="30"  readonly="true"    />
 
-                                                                            } else if (media != null)
-                                                                                Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
-                                                                                media = null;
-                                                                        }
-                                                                        </attribute>
-                                                                    </button>
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right"> Dirección:</span>
+                                                        <textbox id="direccionpa" maxlength="100" cols="30"  readonly="true"    />
+                                                        <span style="float:right"> Dirección:</span>
+                                                        <textbox id="direccionma" maxlength="100" cols="30"  readonly="true"    />
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right"> Teléfono:</span>
+                                                        <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
+                                                        <span style="float:right"> Teléfono:</span>
+                                                        <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right"> Email:</span>
+                                                        <textbox id="emailpa" maxlength="100" cols="30"  readonly="true"    />
+                                                        <span style="float:right"> Email:</span>
+                                                        <textbox id="emailma" maxlength="100" cols="30"  readonly="true"    />
+                                                    </row>
+                                                    <row>
+                                                        <span  style="float:right">Parentesco</span>
+                                                        <span>
+                                                            <textbox id="parentesco" maxlength="100" cols="30"  readonly="true"    />
+                                                        </span>
+                                                        <span style="color:blue">  </span>
+                                                        <span> </span>
+                                                    </row>
 
-                                                                </span>
-                                                            </row>
-                                                            <row>
-                                                                <span style="border:1px">
-                                                                    <image border="1" height="125px" id="foto0"/>
-                                                                    <vbox width="50px" height="125px" style="border:1px" id="miimagen"/>
-                                                                </span>
-
-
-
-                                                            </row>
-                                                        </rows>
-                                                    </grid>
-								
-                                                </east -->
-                                                <south splittable="true" size="50%"  flex="true">
-                                                    <grid>
-                                                        <rows>
-                                                            <row>
-                                                                <span style="color:blue" >Padre</span>
-                                                                <span>
-                                                                    <span > Identificación:</span>
-                                                                    <textbox maxlength="10" cols="13"  readonly="true" id="cedulapa"  />
-                                                                </span>
-                                                                <span style="color:blue">Madre </span>
-                                                                <span>
-                                                                    <span > Identificación:</span>
-                                                                    <textbox maxlength="10" cols="13"  readonly="true" id="cedulama"  />
-                                                                </span>
-                                                            </row>
-                                                            <row>
-                                                                <span style="float:right"> Nombres:</span>
-                                                                <textbox id="nombrespa"  maxlength="60" cols="40" readonly="true"   />
-                                                                <span style="float:right"> Nombres:</span>
-                                                                <textbox id="nombresma"  maxlength="60" cols="40" readonly="true"   />
-                                                            </row>
-                                                            <row>
-                                                                <span style="float:right"> Apellidos:</span>
-                                                                <textbox id="apellidospa"  maxlength="60" cols="40" readonly="true"  />
-                                                                <span style="float:right"> Apellidos:</span>
-                                                                <textbox id="apellidosma"  maxlength="60" cols="40" readonly="true"  />
-                                                            </row>
-                                                            <row>
-                                                                <span style="float:right"> Ocupación:</span>
-                                                                <textbox id="ocupacionpa" maxlength="100" cols="40"  readonly="true"    />
-
-                                                                <span style="float:right"> Ocupación:</span>
-                                                                <textbox id="ocupacionma" maxlength="100" cols="40"  readonly="true"    />
-                                                            </row>
-                                                            <row>
-                                                                <span style="float:right"> Profesión:</span>
-                                                                <textbox id="profesionpa" maxlength="100" cols="40"  readonly="true"    />
-                                                                <span style="float:right"> Profesión:</span>
-                                                                <textbox id="profesionma" maxlength="100" cols="40"  readonly="true"    />
-
-                                                            </row>
-                                                            <row>
-                                                                <span style="float:right"> Dirección:</span>
-                                                                <textbox id="direccionpa" maxlength="100" cols="40"  readonly="true"    />
-                                                                <span style="float:right"> Dirección:</span>
-                                                                <textbox id="direccionma" maxlength="100" cols="40"  readonly="true"    />
-                                                            </row>
-                                                            <row>
-                                                                <span style="float:right"> Teléfono:</span>
-                                                                <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
-                                                                <span style="float:right"> Teléfono:</span>
-                                                                <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
-                                                            </row>
-                                                            <row>
-                                                                <span style="float:right"> Email:</span>
-                                                                <textbox id="emailpa" maxlength="100" cols="40"  readonly="true"    />
-                                                                <span style="float:right"> Email:</span>
-                                                                <textbox id="emailma" maxlength="100" cols="40"  readonly="true"    />
-                                                            </row>
-                                                            <row>
-                                                                <span  style="float:right">Parentesco</span>
-                                                                <span>
-                                                                    <textbox id="parentesco" maxlength="100" cols="40"  readonly="true"    />
-                                                                </span>
-                                                                <span style="color:blue">  </span>
-                                                                <span> </span>
-                                                            </row>
-
-                                                        </rows>
-                                                    </grid>
+                                                </rows>
+                                            </grid>
                            
-                                                </south>
-                        
-                                            </borderlayout>
+
                                         </panelchildren>
                                     </panel>
                                 </columnchildren>
@@ -929,49 +888,59 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     <groupbox mold="3d" >
                         <caption label="Busquedas" />
                         <vbox>
-                            <hbox> 
+                            <hbox>
                                 <grid width="100%">
                                     <rows>
                                         <row>
-                                            <span>Tipo</span>
-                                            <span>Primero</span>
-                                            <span>Segundo</span>
-                                            <span>Tercero</span>
-                                      
-                    
-                                        </row>
-                                        <row>
-                                            <combobox id="tipoaspecto">
-                                                <comboitem label="Peso" />
+                                            <span>Tipo de Aspecto</span>
+                                           
+                                            <combobox id="tipoaspecto" >
+                                                <comboitem  label="Peso" />
                                                 <comboitem label="Estatura" />
                                                 <comboitem label="Agudeza Auditiva" />
                                                 <comboitem label="Agudeza Visual" />
                                                 <comboitem label="Informe Medico" />
                                                 <comboitem label="Informe Dental" />
                                             </combobox>
-                                            <textbox id="primero" />
-                                            <textbox id="segundo" />
-                                            <textbox id="tercero" />
-                                          
+                                        </row>
+                                        <row>
+                                            <span>Primero</span>
+                                            <textbox id="primero" rows="2" width="250px"  />
 
                                         </row>
                                         <row>
-                                          
-                                            <span>Cuarto</span>
-                                            <span>Quinto</span>
+                                            <span>Segundo</span>
+                                            <textbox id="segundo" rows="2" width="250px"  />
+                                        </row>
+                                        <row>
+                                            <span>Tercero</span>
+                                            <textbox id="tercero" rows="2" width="250px"  />
+                                        </row>
+                                        <row>
+                                         <span>Cuarto</span>
+                                            <textbox id="cuarto"  rows="2" width="250px" />
+                                        </row>
+                                        <row>
+                                           <span>Quinto</span>
+                                            <textbox id="quinto" rows="2" width="250px"  />
+                                        </row>
+                                        <row>
                                             <span>Sexto</span>
-                                            <span>Septimo</span>
-
+                                            <textbox id="sexto" rows="2" width="250px"  />
                                         </row>
                                         <row>
-                                              <textbox id="cuarto" />
-                                            <textbox id="quinto" />
-                                            <textbox id="sexto" />
-                                            <textbox id="septimo" />
+                                            <span>Septimo</span>
+                                            <textbox id="septimo" rows="2" width="250px" />
+                                        </row>
+                                        <row>
+                                            
+                                           
+                                            
+                                            
                                         </row>
                                         <row>
                                             <textbox id="buscarText"  />
-                                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                                            <button id="buscar"  label="Buscar Todos los Aspectos" onClick="buscar(buscarText.getValue());"/>
                                         </row>
 
                                     </rows>
