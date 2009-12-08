@@ -202,7 +202,7 @@ void verificar(){
                         <treeitem id="Accesos" image="/images/key.png" label="Accesos" value="/accesos.zul"/>
                         <treeitem id="Auditoria" image="/images/key.png" label="Auditoria" value="/auditoria.zul"/>
                         <treeitem id="Empleados" image="/images/pensum.png" label="Empleados" value="/empleados.zul" />
-                        <treeitem id="EmpleadosPeriodos" image="/images/eperiodo.png" label="Empleados Periodos" value="/empleadoPeriodo.zul" />
+                        <treeitem id="EmpleadosPeriodos" image="/images/eperiodo.png" label="Asignar Periodos" value="/empleadoPeriodo.zul" />
                         <treeitem id="Equivalencias" image="/images/equivalencias.png"  label="Equivalencias" value="/equivalencias.zul" />
                         <treeitem id="Globales" label="Globales" image="/images/run.gif"  value="/globales.zul" />
                         <treeitem id="Institucion" label="Institución" image="/images/institucion.png"  value="/institucion.zul" />
