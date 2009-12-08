@@ -101,11 +101,25 @@ void tipo(){
         }else{
          
                         Empleados empleado = (Empleados)curs.selectedItem.value;
-                        Listitem item = new Listitem();
-                        item.setValue(empleado);
-                        item.appendChild(new Listcell(empleado.getApellidos()+" "+empleado.getNombres()));
-                        datos.appendChild(item);
+                        if(empleado.getCodigoemp() == -2){
 
+                                List equivaEncontrados = adm.query("Select d from Empleados as d ");
+                                        datos = new Listbox();
+
+                                               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                                                      Empleados empleado = (Empleados) it.next();
+                                                      Listitem li = new Listitem();
+                                                      li.setValue(empleado);
+                                                      li.appendChild(new Listcell(empleado.getApellidos()+" "+empleado.getNombres()));
+                                                      datos.appendChild(li);
+                                             }
+
+                        }else{
+                                Listitem item = new Listitem();
+                                item.setValue(empleado);
+                                item.appendChild(new Listcell(empleado.getApellidos()+" "+empleado.getNombres()));
+                                datos.appendChild(item);
+                        }
         }
         
 }
@@ -179,6 +193,11 @@ List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where
                       li.appendChild(new Listcell(acceIt.getApellidos()+" "+ acceIt.getNombres()));
                       curs.appendChild(li);
              }
+                      Empleados acceIt = new Empleados(-2);
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell("[TODOS]"));
+                      curs.appendChild(li);
     }
 
  ]]>
