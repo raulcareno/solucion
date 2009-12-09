@@ -2105,7 +2105,7 @@ public class notas extends Rows {
                 "and o.sistema.esdisciplina = true " +
                 "order by o.sistema.orden ");
         String query = "";
-        if (tipo.equals("INGRESADA")) {
+        if (tipo.contains("INGRESADA")) {
             return;
         }
         //CARGO EL QUERY PARA SELECCIONAR 
@@ -2125,7 +2125,7 @@ public class notas extends Rows {
 
             List<MateriaProfesor> maprofes = adm.query("Select o from MateriaProfesor as o " +
                     "where o.curso.codigocur = '" + ActualCurso.getCodigocur() + "' " +
-                    "and o.materia.codigo > 1 and o.ministerio = true ");
+                    "and o.materia.codigo > 1 and o.opcional = true ");
             if (maprofes.size() > 0) {
 
                 String formu = "";
@@ -2145,7 +2145,7 @@ public class notas extends Rows {
                 }
                 List<Global> materias = adm.query("Select o from Global as o " +
                         "where o.codigo in (Select t.materia.codigo from MateriaProfesor as t" +
-                        " where t.curso.codigocur = '" + ActualCurso.getCodigocur() + "' and t.ministerio = true ) " +
+                        " where t.curso.codigocur = '" + ActualCurso.getCodigocur() + "' and t.opcional = true ) " +
                         " ");
                 String formula = formu;
 
@@ -2179,14 +2179,15 @@ public class notas extends Rows {
                         String q = "Select matriculas.codigomat, " + query + "  from matriculas  " +
                                 "left join  estudiantes  on matriculas.estudiante = estudiantes.codigoest " +
                                 "left join notas on matriculas.codigomat = notas.matricula " +
-                                "and notas.materia = '" + global.getCodigo() + "' and notas.disciplina = true " +
+                                "and notas.materia = '" + global.getCodigo() + "' " +
+                                "and notas.disciplina = true " +
                                 "where matriculas.curso = '" + ActualCurso.getCodigocur() + "' " +
                                 "and matriculas.estado in ('Matriculado','Recibir','Retirado') " +
                                 "order by estudiantes.apellido";
-                        System.out.println("" + q);
+//                        System.out.println("" + q);
                         List nativo = adm.queryNativo(q);
 //                        System.out.println(""+nativo);
-                        System.out.println("RESULTADO VEC:" + global.getCodigo() + "=" + nativo);
+//                        System.out.println("RESULTADO VEC:" + global.getCodigo() + "=" + nativo);
                         inter.set("VEC" + global.getCodigo(), nativo);
                     }
                     String vector1 = (String) vectors.get(0);
@@ -2221,14 +2222,14 @@ public class notas extends Rows {
                         asumar += "Vector object" + codigo + " = (Vector) " + object + ".get(k); ";
                         aconvertir += "Double N" + codigo + " = (object" + codigo + ".get(i) != null ? ((Double) object" + codigo + ".get(i)) : 0.0);";
                     }
-                    System.out.println("-------------" + aconvertir);
-                    System.out.println("-------------" + formula);
+//                    System.out.println("-------------" + aconvertir);
+//                    System.out.println("-------------" + formula);
 
                     try {
 
                         Object obtenido = inter.eval("calculado.get(0);");
 //                        N3+N4+N6+N7+N8+N12+N14+N15+N16+N18+N19+N20+N36+N32+N17)/15+(N1==NULL || N1==0 ?5.0:N1))
-                        System.out.println("N1:          " + obtenido);
+//                        System.out.println("N1:          " + obtenido);
                     } catch (Exception e) {
                         System.out.println("" + e);
                     }
@@ -2278,9 +2279,9 @@ public class notas extends Rows {
                             if (nota.getMateria().getCodigo().equals(0)) {
                                 nota.setDisciplina(false);
                             }
-                            String del = "Delete from Notas where matricula.curso.codigocur = '" + ActualCurso.getCodigocur() + "' " +
-                                    " and materia.codigo = '0' " +
+                            String del = "Delete from Notas where  materia.codigo = '0' " +
                                     " and  matricula.codigomat = '" + nota.getMatricula().getCodigomat() + "'";
+                            System.out.println(""+del);
                             adm.ejecutaSql(del);
 
                             adm.guardar(nota);
