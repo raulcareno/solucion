@@ -1,7 +1,8 @@
+
 <window  mode="overlapped"  title="Envio de Comunicados" width="780px" border="normal"
     maximizable="true" closable="true" sizable="true">
 
-        <zscript><![CDATA[
+    <zscript><![CDATA[
 import bean.notas;
 import java.math.BigDecimal;
 import bean.notas;
@@ -71,57 +72,58 @@ void enviarCorreo(){
     }
 
 ]]>
-        </zscript>
-        <grid>
-<rows>
-    <row>
- <span style="float:right"> Curso(*):</span>
+    </zscript>
+    <grid>
+        <rows>
+            <row>
+                <span style="float:right"> Curso(*):</span>
 
-                    <listbox id="curs" width="420px" mold="select"
+                <listbox id="curs" width="420px" mold="select"
                     onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
-                        <listitem value="-1">
-                              <listcell label="Seleccione" />
-                        </listitem>
-                        <listitem forEach="${cursos}" value="${each}">
-                              <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                    <listitem value="-1">
+                        <listcell label="Seleccione" />
+                    </listitem>
+                    <listitem forEach="${cursos}" value="${each}">
+                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
-                        </listitem>
-                    </listbox>
+                    </listitem>
+                </listbox>
 
-</row>
-<row>
-Titulo:<textbox id="titulo"/>
-</row>
-<row>
+            </row>
+            <row>
+Titulo:
+                <textbox id="titulo"/>
+            </row>
+            <row>
 Para:
-<span>
+                <span>
 
-    <textbox width="150px" id="para"/>
-    <button image="/images/anadir2.png" height="10px" id="anadir" label="Agregar"  onClick="anadir();"/>
-</span>
-</row>
-<row spans="2">
-  <columnlayout>
-        <columnchildren width="50%">
-            <panel title="Estudiantes">
-                <panelchildren>
-                    <listbox id="left" multiple="true"   style="font-size:10px"  height="150px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
-                        <listhead>
-                            <listheader label="Estudiantes"/>
-                        </listhead>
-                        <listitem  forEach="${allEvents}" value="${each}">
-                            <listcell label="${each.codigocur}" />
-                            <listcell label="${each.especialidad}" />
-                        </listitem>
-                    </listbox>
-                </panelchildren>
-            </panel>
-        </columnchildren>
-        <columnchildren width="100px">
-            <panel>
-                <panelchildren style="margin: 6px 4px;">
-                    <image sclass="pointer" src="/images/anadir.png" tooltiptext="Add Project">
-                        <attribute name="onClick">
+                    <textbox width="150px" id="para"/>
+                    <button image="/images/anadir2.png" height="10px" id="anadir" label="Agregar"  onClick="anadir();"/>
+                </span>
+            </row>
+            <row spans="2">
+                <columnlayout>
+                    <columnchildren width="50%">
+                        <panel title="Estudiantes">
+                            <panelchildren>
+                                <listbox id="left" multiple="true"   style="font-size:10px"  height="150px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                                    <listhead>
+                                        <listheader label="Estudiantes"/>
+                                    </listhead>
+                                    <listitem  forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.codigocur}" />
+                                        <listcell label="${each.especialidad}" />
+                                    </listitem>
+                                </listbox>
+                            </panelchildren>
+                        </panel>
+                    </columnchildren>
+                    <columnchildren width="100px">
+                        <panel>
+                            <panelchildren style="margin: 6px 4px;">
+                                <image sclass="pointer" src="/images/anadir.png" tooltiptext="Add Project">
+                                    <attribute name="onClick">
 						Set items = left.getSelectedItems();
 						if (items.isEmpty()) {
 							alert("Seleccion un Estudiante para Anadir!");
@@ -133,11 +135,11 @@ Para:
 								right.appendChild(li);
 							}
 						}
-                        </attribute>
-                    </image>
-                    <separator height="5px"/>
-                    <image sclass="pointer" src="/images/quitar.png"  tooltiptext="Remove Project">
-                        <attribute name="onClick">
+                                    </attribute>
+                                </image>
+                                <separator height="5px"/>
+                                <image sclass="pointer" src="/images/quitar.png"  tooltiptext="Remove Project">
+                                    <attribute name="onClick">
 						Set items = right.getSelectedItems();
 						if (items.isEmpty()) {
 							alert("Seleccion un Correo para Quitar!");
@@ -149,38 +151,38 @@ Para:
 								left.appendChild(li);
 							}
 						}
-                        </attribute>
-                    </image>
-                </panelchildren>
-            </panel>
-        </columnchildren>
-        <columnchildren width="50%">
-            <panel title="Estudiantes a los que se envia" height="">
-                <panelchildren>
-                    <listbox id="right" multiple="true"   style="font-size:10px"   height="150px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
-                        <listhead>
-                            <listheader label="Estudiantes"/>
-                        </listhead>
-                        <listitem  style="font-size:10px" forEach="${allEvents}" value="${each}">
-                            <listcell label="${each.codigocur}" />
-                            <listcell label="${each.especialidad}" />
-                        </listitem>
-                    </listbox>
-                </panelchildren>
-            </panel>
-        </columnchildren>
-    </columnlayout>
-</row>
+                                    </attribute>
+                                </image>
+                            </panelchildren>
+                        </panel>
+                    </columnchildren>
+                    <columnchildren width="50%">
+                        <panel title="Estudiantes a los que se envia" height="">
+                            <panelchildren>
+                                <listbox id="right" multiple="true"   style="font-size:10px"   height="150px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                                    <listhead>
+                                        <listheader label="Estudiantes"/>
+                                    </listhead>
+                                    <listitem  style="font-size:10px" forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.codigocur}" />
+                                        <listcell label="${each.especialidad}" />
+                                    </listitem>
+                                </listbox>
+                            </panelchildren>
+                        </panel>
+                    </columnchildren>
+                </columnlayout>
+            </row>
 
-<row spans="2">
-	<fckeditor  id="mensaje"/>
+            <row spans="2">
+                <fckeditor  id="mensaje"/>
 
-</row>
-<row>
-    <button height="10px" id="enviar" label="Enviar"  onClick="enviarCorreo();"/>
-</row>
+            </row>
+            <row>
+                <button height="10px" id="enviar" label="Enviar"  onClick="enviarCorreo();"/>
+            </row>
 
-</rows>
-</grid>
+        </rows>
+    </grid>
    
 </window>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <window  id="principales" mode="overlapped"  maximizable="true"  title="Historial de los Estudiantes" width="795px" border="normal"
+    <window  id="principales" mode="overlapped"  maximizable="true"  title="Historial de los Estudiantes" width="800px" border="normal"
      closable="true" sizable="true">
         <zscript>
 <![CDATA[
@@ -162,6 +162,47 @@ List matricula = adm.query("Select o from Matriculas as o where o.estudiante.cod
         //llenarMatricula(new Matriculas(0));
         //Messagebox.show("No se encuentra Inscrito ni Matriculado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
     }
+                      aspecto.value = 0;
+                      primero.value = "";
+                      segundo.value = "";
+                      tercero.value =  "";
+                      cuarto.value =  "";
+                      quinto.value =  "";
+                      sexto.value =  "";
+                      septimo.value =  "";
+                       tipoaspecto.setSelectedIndex(0);
+
+        List empleadosEncontrados = adm.query("Select o from Aspectos as o where o.grupo = 'APROV' and o.estudiante.codigoest = '"+codigo.value+"' ");
+        aspectoa.value = 0;
+        aspectod.value = 0;
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Aspectos acceIt = (Aspectos) it.next();
+                      primeroa.value = acceIt.getObserva1();
+                      segundoa.value = acceIt.getObserva2();
+                      terceroa.value = acceIt.getObserva3();
+                      cuartoa.value = acceIt.getObserva4();
+                      quintoa.value = acceIt.getObserva5();
+                      sextoa.value = acceIt.getObserva6();
+                      septimoa.value = acceIt.getObserva7();
+                      aspectoa.value = acceIt.getAspCodigo();
+
+             }
+             empleadosEncontrados = adm.query("Select o from Aspectos as o where o.grupo = 'DISCI' and o.estudiante.codigoest = '"+codigo.value+"' ");
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Aspectos acceIt = (Aspectos) it.next();
+                      primerod.value = acceIt.getObserva1();
+                      segundod.value = acceIt.getObserva2();
+                      tercerod.value = acceIt.getObserva3();
+                      cuartod.value = acceIt.getObserva4();
+                      quintod.value = acceIt.getObserva5();
+                      sextod.value = acceIt.getObserva6();
+                      septimod.value = acceIt.getObserva7();
+                      aspectod.value = acceIt.getAspCodigo();
+
+             }
+             guardara.disabled = false;
+
+
 }
 void llenarMatricula(Matriculas matri){
          codigomat.value =matri.getCodigomat();
@@ -222,263 +263,89 @@ void llenarRepresentante(Representante repren){
 
      
 }
-void estado(Boolean estado,Boolean modificar){
-        if(modificar){
-            estudent = (Estudiantes)datos.selectedItem.value;
-        }
-   padrec.disabled = estado;
-   madrec.disabled = estado;
-   padrecr.disabled = estado;
-   madrecr.disabled = estado;
-   subirb.disabled = estado;
-   limpiar.disabled = estado;
-   representantec.disabled = estado;
-   codigo.readonly = estado;
-    cedula.readonly = estado;
-    nombres.readonly = estado;
-    apellidos.readonly = estado;
-    direccion.readonly = estado;
-    telefono.readonly = estado;
-    genero.readonly = estado;
-    mail.readonly = estado;
-    nacido.readonly = estado;
-    tratamiento.readonly = estado;
-    usuario.readonly = estado;
-    clave.readonly = estado;
-    beca.readonly = estado;
-    otros.readonly = estado;
-    tipo.readonly= estado;
-    estadoe.disabled= estado;
-    perf.readonly = estado;
-    bd.readonly = estado;
-
-    codigomat.readonly = estado;
-    //numero.readonly = estado;
-    folio.readonly = estado;
-    curso.disabled = estado;
-    accion.readonly = estado;
-    fechamatricula.readonly = estado;
-    observacion.readonly= estado;
-    adventista.disabled= estado;
-    nuevo.disabled = estado;
-    transporte.disabled = estado;
-    nobus.readonly = estado;
-    cedulare.readonly = estado;
-    nombresre.readonly = estado;
-    apellidosre.readonly = estado;
-    direccionre.readonly = estado;
-    telefonore.readonly = estado;
-    emailre.readonly = estado;
-
-    tipofac.disabled = estado;
-    cedulafac.readonly = estado;
-    nombresfac.readonly = estado;
-    direccionfac.readonly = estado;
-    telefonofac.readonly = estado;
-
-
-
-   cedulapa.readonly = estado;
-    nombrespa.readonly = estado;
-    apellidospa.readonly = estado;
-    direccionpa.readonly = estado;
-    telefonopa.readonly = estado;
-    emailpa.readonly = estado;
-    parentesco.readonly = estado;
-    ocupacionpa.readonly = estado;
-    profesionpa.readonly = estado;
-
-   cedulama.readonly = estado;
-    nombresma.readonly = estado;
-    apellidosma.readonly = estado;
-    direccionma.readonly = estado;
-    telefonoma.readonly = estado;
-    emailma.readonly = estado;
-    ocupacionma.readonly = estado;
-    profesionma.readonly = estado;
-    
-
-}
+ 
 
 
  void guardar(){
  try{
-             if(nombres.value=="" || apellidos.value =="" || direccion.value=="" || nacido.value=="" ){
-                    Messagebox.show("Ingrese los datos del estudiante que están con ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-                    return;
-            }
-            if(nombresre.value=="" || apellidosre.value =="" || direccionre.value=="" ){
-                    Messagebox.show("Ingrese los datos del representante que estan con ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-                    return;
-            }
        
-        representante0.setCodigorep(codigore.value);
-        representante0.setIdentificacionrepre(cedulare.value);
-        representante0.setNombres(nombresre.value);
-        representante0.setApellidos(apellidosre.value);
-        representante0.setDireccion(direccionre.value);
-        representante0.setTelefono(telefonore.value);
-        representante0.setEmail(emailre.value);
-
-        representante0.setTipoidentificacion(tipofac.selectedItem.value);
-        representante0.setIdentificacionfactura(cedulafac.value);
-        representante0.setNombrefactura(nombresfac.value);
-        representante0.setDirfactura(direccionfac.value);
-        representante0.setTelfactura(telefonofac.value);
-
-        representante0.setIdentificacionpadre(cedulapa.value);
-        representante0.setApepadre(apellidospa.value);
-        representante0.setNompadre(nombrespa.value);
-        representante0.setTelpadre(telefonopa.value);
-        representante0.setDirpadre(direccionpa.value);
-        representante0.setMailpadre(emailpa.value);
-        representante0.setParentesco(parentesco.value);
-        representante0.setProfesionpadre(profesionpa.value);
-        representante0.setOcupacionpadre(ocupacionpa.value);
-
-        representante0.setIdentificacionmadre(cedulama.value);
-        representante0.setApemadre(apellidosma.value);
-        representante0.setNommadre(nombresma.value);
-        representante0.setTelmadre(telefonoma.value);
-        representante0.setDirmadre(direccionma.value);
-        representante0.setMailmadre(emailma.value);
-        representante0.setProfesionmadre(profesionma.value);
-        representante0.setOcupacionmadre(ocupacionma.value);
-        if(representante0.getTipoidentificacion().equals("CF")){
-             representante0.setTipoidentificacion("C");
-            representante0.setTelfactura(representante0.getTelefono());
-            representante0.setNombrefactura(representante0.getApellidos() +" "+ representante0.getNombres());
-            representante0.setDirfactura(representante0.getDireccion());
-            representante0.setIdentificacionfactura(representante0.getIdentificacionrepre());
-        }
-
-
- Boolean repreNuevo = false;
- Boolean estuNuevo = false;
- 
-         if((!representante0.getCodigorep().equals(0))){
-             adm.actualizar(representante0);
-         }else{
-            representante0.setCodigorep(adm.getNuevaClave("Representante","codigorep"));
-            adm.guardar(representante0);
-            repreNuevo = true;
-         }
-        
-
- //GUARDO EL ESTUDIANTE
-        estudent.setRepresentante(representante0);
-        estudent.setCodigoest(codigo.value);
-        estudent.setCedula(""+cedula.value);
-        estudent.setNombre(nombres.value);
-        estudent.setApellido(apellidos.value);
-        estudent.setDireccion(direccion.value);
-        estudent.setTelefono(telefono.value);
-        estudent.setMail(mail.value);
-        estudent.setFechanacimiento(nacido.value);
-        estudent.setEstado(estadoe.checked);
-        estudent.setAdventista(adventista.checked);
-        estudent.setTransporte(transporte.checked);
-        estudent.setNobus(nobus.value);
-        estudent.setUsuario(usuario.value);
-        estudent.setClave(permiso.encriptar(clave.value));
-        estudent.setGenero(genero.selectedItem.value);
-        estudent.setPendientes(false);
-         
-        if((!estudent.getCodigoest().equals(0))){
-             adm.actualizar(estudent);
-             try{
-                List children = datos.selectedItem.children;
-                  ((Listcell)children.get(0)).label = cedula.value;
-                  ((Listcell)children.get(1)).label = apellidos.value + " " + nombres.value;
-                  ((Listcell)children.get(2)).label = direccion.value;
-                  }catch(Exception e){}
-         }else{
-            estudent.setCodigoest(adm.getNuevaClave("Estudiantes","codigoest"));
-            adm.guardar(estudent);
-            estuNuevo = true;
-         }
-
-        
-//GUARDAR MATRICULA
-        matricula.setCodigomat(codigomat.value);
-        matricula.setEstudiante(estudent);
-        matricula.setObservacion(observacion.value);
-        matricula.setFechamat(fechamatricula.value);
-        matricula.setCurso(curso.selectedItem.value);
-        matricula.setNumero(numero.value);
-        matricula.setEstado(accion.value);
-        matricula.setNuevo(nuevo.checked);
-        
-        try{
-            matricula.setBeca((beca.value).doubleValue());
-            matricula.setOtros((otros.value).doubleValue());
-        }catch(Exception ea){}
-
-         if(matricula.getEstado().equals("Inscrito")){
-            matricula.setNumero(0);
-         }
-
-            org.zkoss.image.Image nueva = foto0.getContent();
-
-            matricula.setFoto(nueva.getByteData());
-            matricula.setFolio(folio.value);
-
-
-
-        if((!matricula.getCodigomat().equals(0)) ){
+             Aspectos aspe = new Aspectos();
+             aspe.setAspCodigo(aspecto.value);
+             aspe.setObserva1(primero.value);
+             aspe.setObserva2(segundo.value);
+             aspe.setObserva3(tercero.value);
+             aspe.setObserva4(cuarto.value);
+             aspe.setObserva5(quinto.value);
+             aspe.setObserva6(sexto.value);
+             aspe.setObserva7(septimo.value);
+             aspe.setGrupo(tipoaspecto.selectedItem.value);
+             aspe.setEstudiante(new Estudiantes(codigo.value));
             
-                if(matricula.getNumero().equals(0)){
-                    matricula.setNumero(nuevaMatricula());
-                }
-                adm.actualizar(matricula);
-                
-         }else{
-
-                if(matricula.getEstado().equals("Matriculado")){
-                    matricula.setNumero(nuevaMatricula());
-                    if(folio.value == "" || folio.value == null ){
-                        matricula.setFolio(matricula.getNumero());
-                        folio.value = matricula.getNumero();
-                    }
-                    numero.value = matricula.getNumero();
-                }else{
-                    matricula.setNumero(0);
-                }
-                 Integer matri = adm.getNuevaClave("Matriculas","codigomat");
-             matricula.setCodigomat(matri);
-             adm.guardar(matricula);
-             codigomat.value = matri;
+        if((!aspe.getAspCodigo().equals(0))){
+             adm.actualizar(aspe);
+          }else{
+            aspe.setAspCodigo(adm.getNuevaClave("Aspectos","aspCodigo"));
+            adm.guardar(aspe);
+            aspecto.value = aspe.getAspCodigo();
          }
-      
 
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-        guardar.disabled=true;
-        agregar.disabled=false;
-        estado(true,false);
-        //representante0.setTipoidentificacion("CF");
-        acta.disabled = false;
-        certificado.disabled = false;
-        claveprint.disabled = false;
-        //llenar(new Estudiantes(0));
-            combo.value="";
-            permiso.auditar("Matriculas","Guardar",""+matricula.getCodigomat()+" "+matricula.getEstudiante().getApellido());
-        //aqui trabajo la parte de pensiones
 
-//******************************** PARA CONTABLE ****************************************************************
 
-List parametros =  adm.query("Select o from ParametrosGlobales as o where o.variable = 'TRABAJARUBROS' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
-ParametrosGlobales para = new ParametrosGlobales();
-        if(parametros.size()>0){
-            para = parametros.get(0);
-        }else{
-            para.setBvalor(false);
+
+
+        }catch(Exception e){
+                alert("Error:"+e); System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
+                System.out.println(""+e.getStackTrace()); System.out.println(""+e.getCause());
         }
-        if(para.getBvalor()){
 
-          matriculasBean mati = new matriculasBean();
-          mati.generar(repreNuevo,estuNuevo,matricula,periodo);
+    }
+     void guardara(){
+ try{
+
+             Aspectos aspe = new Aspectos();
+             aspe.setAspCodigo(aspectoa.value);
+             aspe.setObserva1(primeroa.value);
+             aspe.setObserva2(segundoa.value);
+             aspe.setObserva3(terceroa.value);
+             aspe.setObserva4(cuartoa.value);
+             aspe.setObserva5(quintoa.value);
+             aspe.setObserva6(sextoa.value);
+             aspe.setObserva7(septimoa.value);
+             aspe.setGrupo("APROV");
+             aspe.setEstudiante(new Estudiantes(codigo.value));
+
+        if((!aspe.getAspCodigo().equals(0))){
+             adm.actualizar(aspe);
+          }else{
+            aspe.setAspCodigo(adm.getNuevaClave("Aspectos","aspCodigo"));
+            adm.guardar(aspe);
+            aspectoa.value = aspe.getAspCodigo();
          }
-//*****************************************************************************
+         aspe = new Aspectos();
+             aspe.setAspCodigo(aspectod.value);
+             aspe.setObserva1(primerod.value);
+             aspe.setObserva2(segundod.value);
+             aspe.setObserva3(tercerod.value);
+             aspe.setObserva4(cuartod.value);
+             aspe.setObserva5(quintod.value);
+             aspe.setObserva6(sextod.value);
+             aspe.setObserva7(septimod.value);
+             aspe.setGrupo("DISCI");
+             aspe.setEstudiante(new Estudiantes(codigo.value));
+
+        if((!aspe.getAspCodigo().equals(0))){
+             adm.actualizar(aspe);
+          }else{
+            aspe.setAspCodigo(adm.getNuevaClave("Aspectos","aspCodigo"));
+            adm.guardar(aspe);
+            aspectod.value = aspe.getAspCodigo();
+         }
+
+        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+
+
+
 
         }catch(Exception e){
                 alert("Error:"+e); System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
@@ -491,58 +358,10 @@ ParametrosGlobales para = new ParametrosGlobales();
         return permiso.verificarPermiso("Matricular",accion);
 
     }
- void nuevo(){
-    if(verificar("Agregar")){
-       try{
-        guardar.disabled=false;
-        llenar(new Estudiantes(0));
-        estado(false,false);
-        llenarConsumidor();
-        }catch(Exception e){
-        alert(""+e);
-        }
-
-    }else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-    }
-}
- void move(){
-
-        Aspectos aspecto = ((Aspectos)datos.selectedItem.value);
-        tipoaspecto.value = aspecto.getObserva1();
-        primero.value = aspecto.getObserva2();
-        segundo.value = aspecto.getObserva3();
-        tercero.value = aspecto.getObserva4();
-        cuarto.value = aspecto.getObserva5();
-        quinto.value = aspecto.getObserva6();
-        sexto.value = aspecto.getObserva7();
-        septimo.value = aspecto.getObserva8();
-          
-  }
-void modificar(){
-  if(verificar("Modificar")){
-       guardar.disabled=false;
-        estado(false,false);
-    }else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-    }
-}
-void eliminar(){
-  if(verificar("Eliminar")){
-        try{
-             estudent = (Estudiantes)datos.selectedItem.value;
-             adm.eliminarObjeto(Estudiantes.class, estudent.getCodigoest());
-            datos.removeItemAt(datos.getSelectedIndex());
-            llenar(new Estudiantes(0));
-            combo.value="";
-                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-        }catch(Exception e){
-            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-        }
-}else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-    }
-}
+ 
+ 
+ 
+ 
 void buscarEstudiante(String valor){
 
 int ini = valor.indexOf("[");
@@ -555,10 +374,7 @@ valor = valor.substring(ini+1, fin);
                       estudent = object;
                  }
             llenar(estudent);
-            modificar.disabled=false;
-            acta.disabled = false;
-           certificado.disabled = false;
-           claveprint.disabled = false;
+           
             }else{
                 estudent = new Estudiantes(0);
             }
@@ -588,46 +404,45 @@ valor = valor.substring(ini+1, fin);
             object.setTipoidentificacion("CF");
             llenarRepresentante(object);
     }
-  void verificarCedula(String valor){
-      if(valor.length()>9){
-            List empleados = adm.query("Select o from Estudiantes as o where o.cedula = '"+valor+"' ");
-            if(empleados.size()>0){
-                Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-
-                for(Iterator it = empleados.iterator(); it.hasNext();) {
-                      Estudiantes object = (Estudiantes)it.next();
-                        estudent = object;
-                 }
-            llenar(estudent);
-               
-            }else{
-                estudent = new Estudiantes(0);
-            }
-            
-        }
-    }
+ 
 
 
    void buscar(String p){
-         List empleadosEncontrados = adm.query("Select o from Aspectos as o where o.grupo = 'DENTA'");
-        datos = new Listbox();
-        int a=0;
-            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
-                    datos.getItems().remove(a);
-                }
+      aspecto.value = 0;
+                      primero.value = "";
+                      segundo.value = "";
+                      tercero.value =  "";
+                      cuarto.value =  "";
+                      quinto.value =  "";
+                      sexto.value =  "";
+                      septimo.value =  "";
+
+        if(tipoaspecto.selectedItem.value.equals("0")){
+             guardar.disabled = true;
+            return;
+         }
+
+                    if(codigo.value == null ){
+                            Messagebox.show("Seleccione un Estudiante...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                             tipoaspecto.setSelectedIndex(0);
+                             aspecto.value = 0;
+                             guardar.disabled=true;
+                            return;
+                    }
+                    guardar.disabled=false;
+                  
+         List empleadosEncontrados = adm.query("Select o from Aspectos as o where o.grupo = '"+p+"' and o.estudiante.codigoest = '"+codigo.value+"' ");
                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
                       Aspectos acceIt = (Aspectos) it.next();
-                      Listitem li = new Listitem();
-                      li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getObserva1()+" "));
-                      li.appendChild(new Listcell(acceIt.getObserva2()+" "));
-                      li.appendChild(new Listcell(acceIt.getObserva3()+" "));
-                      li.appendChild(new Listcell(acceIt.getObserva4()+" "));
-                      li.appendChild(new Listcell(acceIt.getObserva5()+" "));
-                      li.appendChild(new Listcell(acceIt.getObserva6()+" "));
-                      li.appendChild(new Listcell(acceIt.getObserva7()+" "));
-                      li.appendChild(new Listcell(acceIt.getObserva8()+" "));
-                      datos.appendChild(li);
+                      primero.value = acceIt.getObserva1();
+                      segundo.value = acceIt.getObserva2();
+                      tercero.value = acceIt.getObserva3();
+                      cuarto.value = acceIt.getObserva4();
+                      quinto.value = acceIt.getObserva5();
+                      sexto.value = acceIt.getObserva6();
+                      septimo.value = acceIt.getObserva7();
+                      aspecto.value = acceIt.getAspCodigo();
+
              }
 
     }
@@ -725,31 +540,27 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             </tabs>
             <tabpanels>
                 <tabpanel>
-                    <panel id="panel" framable="true" width="100%" height="100%" border="normal" >
+                    <panel id="panel"  width="100%"  border="normal" >
                         <panelchildren>
-                            <columnlayout>
-                                <columnchildren width="100%">
-                                    <panel>
-                                        <panelchildren>
-                                          
+                        
                                             <grid>
                                                 <rows>
 
                                                     <row>
                                                         <span style="float:right"> Busqueda:</span>
                                                         <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
-                                                        <span style="float:right;color:blue"> Representante:</span>
-                                                        <span style="float:right;color:blue"> </span>
+                                                        <span style="color:#FF3300;float:right;color:blue"> REPRESENTANTE</span>
+                                                        <span style="color:#FF3300;float:right;color:blue"> </span>
                                                     </row>
                                                     <row>
                                                                    
-                                                        <span style="float:right"> Codigo :</span>
+                                                        <span style="color:#FF3300;float:right"> Codigo :</span>
                                                         <span  >
                                                             <intbox  maxlength="14" cols="3"  disabled="true"  readonly="true" id="codigo"  />
                                                                     Identificación:
                                                             <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
                                                         </span>
-                                                        <span style="float:right"> Codigo :</span>
+                                                        <span style="color:#FF3300;float:right"> Codigo :</span>
                                                         <span >
                                                             <intbox maxlength="14" cols="3"  readonly = "true"    id="codigore"  />
                                                                     Identificación:
@@ -760,124 +571,119 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 
                                                     <row>
                                                                    
-                                                        <span style="float:right"> Nombres:</span>
-                                                        <textbox id="nombres"  maxlength="60" cols="30" readonly="true"   />
-                                                        <span style="float:right"> Nombres:</span>
-                                                        <textbox id="nombresre"  maxlength="60" cols="30" readonly="true"   />
+                                                        <span style="color:#FF3300;float:right"> Nombres:</span>
+                                                        <label id="nombres"  />
+                                                        <span style="color:#FF3300;float:right"> Nombres:</span>
+                                                        <label id="nombresre"  />
 
                                                     </row>
 
                                                     <row>
-                                                        <span style="float:right"> Apellidos:</span>
-                                                        <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="30" readonly="true"  />
-                                                        <span style="float:right"> Apellidos:</span>
-                                                        <textbox id="apellidosre"  maxlength="60" cols="30" readonly="true"  />
+                                                        <span style="color:#FF3300;float:right"> Apellidos:</span>
+                                                        <label id="apellidos"  />
+                                                        <span style="color:#FF3300;float:right"> Apellidos:</span>
+                                                        <label id="apellidosre"/>
                                                     </row>
                                                     <row>
 
-                                                        <span style="float:right"> Dirección:</span>
-                                                        <textbox id="direccion" maxlength="100" cols="30"  readonly="true"    />
-                                                        <span style="float:right"> Dirección:</span>
-                                                        <textbox id="direccionre" maxlength="100" cols="30"  readonly="true"    />
+                                                        <span style="color:#FF3300;float:right"> Dirección:</span>
+                                                        <label id="direccion"/>
+                                                        <span style="color:#FF3300;float:right"> Dirección:</span>
+                                                        <label id="direccionre" />
                                                     </row>
 
                                                     <row>
-                                                        <span style="float:right"> Email:</span>
-                                                        <textbox id="mail" maxlength="100" cols="30"  readonly="true"    />
-                                                        <span style="float:right"> Email:</span>
-                                                        <textbox id="emailre" maxlength="100" cols="30"  readonly="true"    />
+                                                        <span style="color:#FF3300;float:right"> Email:</span>
+                                                        <label id="mail" />
+                                                        <span style="color:#FF3300;float:right"> Email:</span>
+                                                        <label id="emailre" />
                                                     </row>
 
                                                     <row>
                                                                     
-                                                        <span style="float:right"> Teléfono:</span>
-                                                        <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
-                                                        <span style="float:right"> Teléfono:</span>
-                                                        <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
+                                                        <span style="color:#FF3300;float:right"> Teléfono:</span>
+                                                        <label id="telefono"  />
+                                                        <span style="color:#FF3300;float:right"> Teléfono:</span>
+                                                        <label id="telefonore"   />
 
 
                                                     </row>
-
-                                  
-                                                </rows>
-                                            </grid>
-                                       
-                                            <grid>
-                                                <rows>
                                                     <row>
-                                                        <span style="color:blue" >Padre</span>
+                                                         <span></span>
+                                                         <span></span>
+                                                       <span  style="color:#FF3300;float:right">Parentesco</span>
+                                                        <span>
+                                                            <label id="parentesco"   />
+                                                        </span>
+                                                    </row>
+                                       <row spans="4">
+                                           <span>
+                                                
+                                           </span>
+                                       </row>
+                                              
+                                                    <row>
+                                                        <span style="color:blue" >DATOS PADRE</span>
                                                         <span>
                                                             <span > Identificación:</span>
-                                                            <textbox maxlength="10" cols="13"  readonly="true" id="cedulapa"  />
+                                                            <label  id="cedulapa"  />
                                                         </span>
-                                                        <span style="color:blue">Madre </span>
+                                                        <span style="color:blue">DATOS MADRE</span>
                                                         <span>
                                                             <span > Identificación:</span>
-                                                            <textbox maxlength="10" cols="13"  readonly="true" id="cedulama"  />
+                                                            <label   id="cedulama"  />
                                                         </span>
                                                     </row>
                                                     <row>
-                                                        <span style="float:right"> Nombres:</span>
-                                                        <textbox id="nombrespa"  maxlength="60" cols="30" readonly="true"   />
-                                                        <span style="float:right"> Nombres:</span>
-                                                        <textbox id="nombresma"  maxlength="60" cols="30" readonly="true"   />
+                                                        <span style="color:#FF3300;float:right"> Nombres:</span>
+                                                        <label id="nombrespa"  />
+                                                        <span style="color:#FF3300;float:right"> Nombres:</span>
+                                                        <label id="nombresma"   />
                                                     </row>
                                                     <row>
-                                                        <span style="float:right"> Apellidos:</span>
-                                                        <textbox id="apellidospa"  maxlength="60" cols="30" readonly="true"  />
-                                                        <span style="float:right"> Apellidos:</span>
-                                                        <textbox id="apellidosma"  maxlength="60" cols="30" readonly="true"  />
+                                                        <span style="color:#FF3300;float:right"> Apellidos:</span>
+                                                        <label id="apellidospa"  />
+                                                        <span style="color:#FF3300;float:right"> Apellidos:</span>
+                                                        <label id="apellidosma" />
                                                     </row>
                                                     <row>
-                                                        <span style="float:right"> Ocupación:</span>
-                                                        <textbox id="ocupacionpa" maxlength="100" cols="30"  readonly="true"    />
+                                                        <span style="color:#FF3300;float:right"> Ocupación:</span>
+                                                        <label id="ocupacionpa"   />
 
-                                                        <span style="float:right"> Ocupación:</span>
-                                                        <textbox id="ocupacionma" maxlength="100" cols="30"  readonly="true"    />
+                                                        <span style="color:#FF3300;float:right"> Ocupación:</span>
+                                                        <label id="ocupacionma"/>
                                                     </row>
                                                     <row>
-                                                        <span style="float:right"> Profesión:</span>
-                                                        <textbox id="profesionpa" maxlength="100" cols="30"  readonly="true"    />
-                                                        <span style="float:right"> Profesión:</span>
-                                                        <textbox id="profesionma" maxlength="100" cols="30"  readonly="true"    />
+                                                        <span style="color:#FF3300;float:right"> Profesión:</span>
+                                                        <label id="profesionpa"/>
+                                                        <span style="color:#FF3300;float:right"> Profesión:</span>
+                                                        <label id="profesionma" />
 
                                                     </row>
                                                     <row>
-                                                        <span style="float:right"> Dirección:</span>
-                                                        <textbox id="direccionpa" maxlength="100" cols="30"  readonly="true"    />
-                                                        <span style="float:right"> Dirección:</span>
-                                                        <textbox id="direccionma" maxlength="100" cols="30"  readonly="true"    />
+                                                        <span style="color:#FF3300;float:right"> Dirección:</span>
+                                                        <label id="direccionpa"    />
+                                                        <span style="color:#FF3300;float:right"> Dirección:</span>
+                                                        <label id="direccionma"     />
                                                     </row>
                                                     <row>
-                                                        <span style="float:right"> Teléfono:</span>
-                                                        <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
-                                                        <span style="float:right"> Teléfono:</span>
-                                                        <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
+                                                        <span style="color:#FF3300;float:right"> Teléfono:</span>
+                                                        <label id="telefonopa"   />
+                                                        <span style="color:#FF3300;float:right"> Teléfono:</span>
+                                                        <label id="telefonoma"   />
                                                     </row>
                                                     <row>
-                                                        <span style="float:right"> Email:</span>
-                                                        <textbox id="emailpa" maxlength="100" cols="30"  readonly="true"    />
-                                                        <span style="float:right"> Email:</span>
-                                                        <textbox id="emailma" maxlength="100" cols="30"  readonly="true"    />
+                                                        <span style="color:#FF3300;float:right"> Email:</span>
+                                                        <label id="emailpa"  />
+                                                        <span style="color:#FF3300;float:right"> Email:</span>
+                                                        <label id="emailma"    />
                                                     </row>
-                                                    <row>
-                                                        <span  style="float:right">Parentesco</span>
-                                                        <span>
-                                                            <textbox id="parentesco" maxlength="100" cols="30"  readonly="true"    />
-                                                        </span>
-                                                        <span style="color:blue">  </span>
-                                                        <span> </span>
-                                                    </row>
+                                                     
 
                                                 </rows>
                                             </grid>
-                           
+                         
 
-                                        </panelchildren>
-                                    </panel>
-                                </columnchildren>
-				 
-                            </columnlayout>
                         </panelchildren>
                     </panel>
                             
@@ -885,52 +691,53 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 
                 <tabpanel>
 
-                    <groupbox mold="3d" >
-                        <caption label="Busquedas" />
-                        <vbox>
-                            <hbox>
+                   
                                 <grid width="100%">
                                     <rows>
                                         <row>
                                             <span>Tipo de Aspecto</span>
-                                           
-                                            <combobox id="tipoaspecto" >
-                                                <comboitem  label="Peso" />
-                                                <comboitem label="Estatura" />
-                                                <comboitem label="Agudeza Auditiva" />
-                                                <comboitem label="Agudeza Visual" />
-                                                <comboitem label="Informe Medico" />
-                                                <comboitem label="Informe Dental" />
+                                            <span>
+                                                <combobox selectedItem="0" id="tipoaspecto" onSelect='buscar(tipoaspecto.selectedItem.value+"")' >
+                                                <comboitem  label="[Seleccione]"  value="0" />
+                                                <comboitem  label="PESO" value="PESO" />
+                                                <comboitem label="ESTATURA"  value="ESTAT" />
+                                                <comboitem label="AGUDEZA AUDITIVA"  value="AUDIT" />
+                                                <comboitem label="AGUDEZA VISUAL"  value="VISUA" />
+                                                <comboitem label="INFORME MEDICO"  value="MEDIC" />
+                                                <comboitem label="INFORME DENTAL"  value="DENTA" />
                                             </combobox>
+                                            <intbox id="aspecto" cols="2" readonly="true"/>
+                                            <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"   onClick="guardar();"/>
+                                            </span>
                                         </row>
                                         <row>
                                             <span>Primero</span>
-                                            <textbox id="primero" rows="2" width="250px"  />
+                                            <textbox id="primero" rows="2" width="400px"  />
 
                                         </row>
                                         <row>
                                             <span>Segundo</span>
-                                            <textbox id="segundo" rows="2" width="250px"  />
+                                            <textbox id="segundo" rows="2" width="400px"  />
                                         </row>
                                         <row>
                                             <span>Tercero</span>
-                                            <textbox id="tercero" rows="2" width="250px"  />
+                                            <textbox id="tercero" rows="2" width="400px"  />
                                         </row>
                                         <row>
                                          <span>Cuarto</span>
-                                            <textbox id="cuarto"  rows="2" width="250px" />
+                                            <textbox id="cuarto"  rows="2" width="400px" />
                                         </row>
                                         <row>
                                            <span>Quinto</span>
-                                            <textbox id="quinto" rows="2" width="250px"  />
+                                            <textbox id="quinto" rows="2" width="400px"  />
                                         </row>
                                         <row>
                                             <span>Sexto</span>
-                                            <textbox id="sexto" rows="2" width="250px"  />
+                                            <textbox id="sexto" rows="2" width="400px"  />
                                         </row>
                                         <row>
                                             <span>Septimo</span>
-                                            <textbox id="septimo" rows="2" width="250px" />
+                                            <textbox id="septimo" rows="2" width="400px" />
                                         </row>
                                         <row>
                                             
@@ -938,47 +745,84 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                             
                                             
                                         </row>
-                                        <row>
-                                            <textbox id="buscarText"  />
-                                            <button id="buscar"  label="Buscar Todos los Aspectos" onClick="buscar(buscarText.getValue());"/>
-                                        </row>
+                                        
 
                                     </rows>
                                 </grid>
       
-                            </hbox>
-                            <hbox>
-                                <listbox mold="paging" rows="5" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-                                    <listhead>
-                                        <listheader width="70" label="Tipo"/>
-                                        <listheader width="70"  label="Primero"/>
-                                        <listheader width="70" label="Segundo"/>
-                                        <listheader width="70"  label="Tercero"/>
-                                        <listheader width="70"  label="Cuarto"/>
-                                        <listheader width="70"  label="Quinto"/>
-                                        <listheader width="70"  label="Sexto"/>
-                                        <listheader width="70"  label="Séptimo"/>
-                                    </listhead>
-                                    <listitem  forEach="${allEvents}" value="${each}">
-                                        <listcell label="${each.codigotrim}" />
-                                        <listcell label="${each.descripcion}" />
-                                    </listitem>
-                                </listbox>
-
-
-                            </hbox>
-                        </vbox>
-                    </groupbox>
 
                 </tabpanel>
 
-                <tabpanel>
+                 <tabpanel>
 
-                    
+
+                                <grid width="100%">
+                                    <rows>
+                                        <row>
+                                            <span></span>
+                                            <span>
+                                            <intbox id="aspectoa" visible="false" cols="2" readonly="true"/>
+                                            <intbox id="aspectod" visible="false" cols="2" readonly="true"/>
+                                            <button image="/images/guardar.gif" id="guardara" label="Guardar"  disabled="true" onClick="guardara();"/>
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> </span>
+                                            <span>Aprovechamiento</span>
+                                            <span>Disciplina</span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right">Primero</span>
+                                            <textbox id="primeroa" cols="6"/>
+                                            <textbox id="primerod" cols="6"/>
+
+                                        </row>
+                                        <row>
+                                            <span style="float:right">Segundo</span>
+                                            <textbox id="segundoa" cols="6"/>
+                                            <textbox id="segundod" cols="6"/>
+                                        </row>
+                                        <row>
+                                            <span style="float:right">Tercero</span>
+                                            <textbox id="terceroa" cols="6"/>
+                                            <textbox id="tercerod" cols="6"/>
+                                        </row>
+                                        <row>
+                                         <span style="float:right">Cuarto</span>
+                                            <textbox id="cuartoa" cols="6"/>
+                                            <textbox id="cuartod" cols="6"/>
+                                        </row>
+                                        <row>
+                                           <span style="float:right">Quinto</span>
+                                            <textbox id="quintoa" cols="6"/>
+                                            <textbox id="quintod" cols="6"/>
+                                        </row>
+                                        <row>
+                                            <span style="float:right">Sexto</span>
+                                            <textbox id="sextoa"  cols="6"/>
+                                            <textbox id="sextod"  cols="6"/>
+                                        </row>
+                                        <row>
+                                            <span style="float:right">Septimo</span>
+                                            <textbox id="septimoa" cols="6" />
+                                            <textbox id="septimod"  cols="6"/>
+                                        </row>
+                                        <row>
+
+
+
+
+                                        </row>
+
+
+                                    </rows>
+                                </grid>
+
+
                 </tabpanel>
                 <tabpanel>
 
-                    <panel height="370px" style="margin-bottom:10px"
+                    <panel height="395px" style="margin-bottom:10px"
 				title="Reporte" border="normal">
                         <panelchildren>
                             <jasperreport id="report" />
@@ -990,15 +834,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             </tabpanels>
         </tabbox>
 
-        <vbox>
-            <hbox>
-                <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true" onClick="modificar()"/>
-                <button  image="/images/imprimir.gif" id="acta"  label="Acta" disabled="true"  onClick='showReport("AM")'/>
-                <button  image="/images/imprimir.gif" id="claveprint"  label="Clave" disabled="true"  onClick='showReport("CL")' />
-            </hbox>
-        </vbox>
+
     </window>
 
  
