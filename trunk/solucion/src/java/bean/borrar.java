@@ -15,6 +15,7 @@ import jcinform.procesos.Administrador;
  
 import org.zkoss.util.media.Media;
 import org.zkoss.zkmax.zul.Tablechildren;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
@@ -33,6 +34,8 @@ void func() throws InterruptedException{
 //    media.getByteData();
 //    AImage a;
 //    a.getByteData()
+//    Combobox c;
+//    c.getSelectedItem().getValue()
      
 //			byte[] archivo=(((AMedia) media).getStringData());
 //    FileOutputStream a;
