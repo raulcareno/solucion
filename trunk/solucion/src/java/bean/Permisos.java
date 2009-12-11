@@ -13,7 +13,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-
+ 
+import java.util.Random;
+import java.util.Vector;
 import javax.faces.context.FacesContext;
 import jcinform.persistencia.*;
 import jcinform.persistencia.ParametrosGlobales;
@@ -50,7 +52,39 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
     //return miImage2;
     
 }
+public Boolean verificarSistema(){
+                 //VERIFICAR PERMISOS DE USO DEL SISTEMA
+         Administrador adm = new Administrador();
+            List dat = adm.queryNativo("Select o.dl from mysql.plugin as o where o.name = 'status' ");
+            try{
 
+
+            if(dat != null){
+                
+                Vector vec = (Vector) dat.get(0);
+                String valorPrevio = vec.toString().replace("[", "").replace("]","")+"";
+                String valorPrevio3 = valorPrevio.substring(4);
+                String valor = decriptar(valorPrevio3);
+                if(valor.contains("jcinform@activo")){
+                
+                    return true;
+                }else{
+//                    return;
+                 
+                    return false;
+                }
+
+            }else{
+
+                System.out.println("PERMISOS DENEGADO AL SISTEMA NO ESTA AUTORIZADO A USAR");
+                return false;
+            }
+            }catch(Exception e){
+                return false;
+            }
+
+        //VERIFICAR
+}
     public void llenar(Empleados user,Periodo per){
         Administrador adm = new Administrador();
 //        adm.queryNativo(null, Accesos.class)
@@ -75,6 +109,9 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
     public boolean verificarPermiso(String modulo, String accion) {
         Session a = Sessions.getCurrent();
         modulo = modulo.replace("_"," ");
+
+
+
         List<Accesos> accesosList = (List<Accesos>) a.getAttribute("accesos");
         for (Iterator<Accesos> it = accesosList.iterator(); it.hasNext();) {
             Accesos accesos = it.next();
@@ -112,7 +149,7 @@ public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) t
 
 
             if (elmodulo.equals(modulo)) {
-                 System.out.println("MODULO: "+elmodulo);
+//                 System.out.println("MODULO: "+elmodulo);
                 if (accion.equals("Ingresar")) {
                     return accesos.getIngresar();
                 } else if (accion.equals("Agregar")) {

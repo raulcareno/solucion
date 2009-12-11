@@ -2,16 +2,9 @@
 <?page   id="loginjx" title="Administrador Educativo" ?>
 <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <!--window  id="principalImagen">
-
-
 <separator bar="true"/-->
-
-
 <zk>
- 
-<window onLoad="usuario.focus();" onCreate="usuario.focus();"  mode="overlapped" id="winLogin" style="position:absolute; top:20%; left:35%" border="normal" width="460px" sizable="true">
-  
-
+<window onLoad="usuario.focus();" onCreate="usuario.focus();verificarSistema()"  mode="overlapped" id="winLogin" style="position:absolute; top:20%; left:35%" border="normal" width="460px" sizable="true">
 <zscript>
   import jcinform.persistencia.Global;
   import bean.EventDAO;
@@ -117,6 +110,17 @@ void ingresoSistemas(){
     
 
 }
+
+void verificarSistema(){
+        Permisos per = new Permisos();
+        if(per.verificarSistema()){
+            //Messagebox.show("PERMITIDO...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }else{
+            Messagebox.show("ACCESO DENEGADO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            Executions.sendRedirect("confirmar.zul");
+        }
+}
+
 </zscript>
 		 <grid style="background:transparent;border:0px">
 		<columns style="background:transparent;border:0px" sizable="true" menupopup="auto">
