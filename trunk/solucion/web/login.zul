@@ -4,7 +4,7 @@
 <!--window  id="principalImagen">
 <separator bar="true"/-->
 <zk>
-<window onLoad="usuario.focus();" onCreate="usuario.focus();verificarSistema()"  mode="overlapped" id="winLogin" style="position:absolute; top:20%; left:35%" border="normal" width="460px" sizable="true">
+<window onLoad="usuario.focus();" onCreate="usuario.focus();"  mode="overlapped" id="winLogin" style="position:absolute; top:20%; left:35%" border="normal" width="460px" sizable="true">
 <zscript>
   import jcinform.persistencia.Global;
   import bean.EventDAO;
