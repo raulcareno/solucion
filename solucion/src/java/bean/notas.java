@@ -692,11 +692,12 @@ public class notas extends Rows {
         "where matricula in (select codigomat from matriculas where  curso  =  '"+curso.getCodigocur()+"' ) " +
         " ";*/
         //and matriculas.estado in ('Matriculado','Recibir','Retirado') 
-        String q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor, matriculas mat, estudiantes est " +
+        String q = "Select codigomap, matricula,notas.materia, " + query + "  " +
+                "from notas, materia_profesor, matriculas mat, estudiantes est " +
                 "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "'  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante " +
-                "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  )" +
+                "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  and estado in ('Matriculado','Recibir') )" +
                 "and notas.disciplina = false  " +
-                "order by est.apellido, materia_profesor.orden";
+                "order by CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
         System.out.println("" + q);
         List nativo = adm.queryNativo(q);
@@ -990,7 +991,7 @@ public class notas extends Rows {
                 "and materia_profesor.curso = '" + curso.getCodigocur() + "' " +
                 "and notas.promedia = true and notas.disciplina = false   " +
                 "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) " +
-                "order by  est.apellido, materia_profesor.orden";
+                "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
         System.out.println("cuadro final: " + q);
         List nativo = adm.queryNativo(q);
