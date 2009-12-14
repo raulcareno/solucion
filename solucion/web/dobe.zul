@@ -200,10 +200,36 @@ List matricula = adm.query("Select o from Matriculas as o where o.estudiante.cod
                       aspectod.value = acceIt.getAspCodigo();
 
              }
+          
+llenarVisitas();
              guardara.disabled = false;
 
 
+
+
+
 }
+
+void llenarVisitas(){
+  List empleadosEncontrados = adm.query("Select o from Aspectos as o where o.grupo = 'VISIT' and o.estudiante.codigoest = '"+codigo.value+"' ");
+                datos = new Listbox();
+                int a=0;
+                    for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                            datos.getItems().remove(a);
+                        }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Aspectos acceIt = (Aspectos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString().substring(0,10)+""));
+                      li.appendChild(new Listcell(acceIt.getObserva1()));
+                      li.appendChild(new Listcell(acceIt.getObserva2()+""));
+                      datos.appendChild(li);
+             }
+
+
+}
+
 void llenarMatricula(Matriculas matri){
          codigomat.value =matri.getCodigomat();
          accion.value = matri.getEstado();
@@ -354,6 +380,39 @@ void llenarRepresentante(Representante repren){
 
     }
 
+
+ void guardareg(){
+ try{
+
+         
+
+             Aspectos aspe = new Aspectos();
+             aspe.setAspCodigo(codigovisita.value);
+             aspe.setObserva1(asunto.value);
+             aspe.setObserva2(responsable.value);
+             aspe.setObserva3(observacion.value);
+             aspe.setObserva4(resultado.value);
+             aspe.setGrupo("VISIT");
+             aspe.setEstudiante(new Estudiantes(codigo.value));
+             aspe.setFecha(fecha.value);
+        if((!aspe.getAspCodigo().equals(0))){
+             adm.actualizar(aspe);
+          }else{
+            aspe.setAspCodigo(adm.getNuevaClave("Aspectos","aspCodigo"));
+            adm.guardar(aspe);
+            codigovisita.value = aspe.getAspCodigo();
+         }
+            llenarVisitas();
+            limpiar();
+        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        
+        }catch(Exception e){
+                alert("Error:"+e); System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
+                System.out.println(""+e.getStackTrace()); System.out.println(""+e.getCause());
+        }
+
+    }
+
    Boolean verificar(String accion){
         return permiso.verificarPermiso("Matricular",accion);
 
@@ -404,7 +463,30 @@ valor = valor.substring(ini+1, fin);
             object.setTipoidentificacion("CF");
             llenarRepresentante(object);
     }
- 
+
+       void limpiar(){
+          if(codigo.value == null ){
+                Messagebox.show("Seleccione un Estudiante...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+               return;
+            }
+
+
+
+       codigovisita.value = 0;
+
+         asunto.value = "";
+         responsable.value = "";
+         fecha.value = new Date();
+         observacion.value = "";
+         resultado.value = "";
+         guardare.disabled=false;
+         codigovisita.value = 0;
+         }
+
+         void modificar(){
+                   guardare.disabled = false;
+
+            }
 
 
    void buscar(String p){
@@ -528,6 +610,18 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 		}
 
 
+  void move(){
+        Aspectos aspecto = (Aspectos)datos.selectedItem.value;
+         asunto.value = aspecto.getObserva1();
+         responsable.value = aspecto.getObserva2();
+         fecha.value = aspecto.getFecha();
+         observacion.value = aspecto.getObserva3();
+         resultado.value = aspecto.getObserva4();
+         codigovisita.value = aspecto.getAspCodigo();
+         modificar.disabled = false;
+  }
+
+
 
   ]]>
         </zscript>
@@ -536,6 +630,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <tab id="registro" label="Datos del Estudiante" />
                 <tab id="representante" label="Aspectos Médicos" />
                 <tab id="busqueda" label="Rendimiento Académico" />
+                <tab id="visita" label="Registro Visita" />
                 <tab id="reportes" label="Impresión" />
             </tabs>
             <tabpanels>
@@ -543,145 +638,145 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     <panel id="panel"  width="100%"  border="normal" >
                         <panelchildren>
                         
-                                            <grid>
-                                                <rows>
+                            <grid>
+                                <rows>
 
-                                                    <row>
-                                                        <span style="float:right"> Busqueda:</span>
-                                                        <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
-                                                        <span style="color:#FF3300;float:right;color:blue"> REPRESENTANTE</span>
-                                                        <span style="color:#FF3300;float:right;color:blue"> </span>
-                                                    </row>
-                                                    <row>
+                                    <row>
+                                        <span style="float:right"> Busqueda:</span>
+                                        <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
+                                        <span style="color:#FF3300;float:right;color:blue"> REPRESENTANTE</span>
+                                        <span style="color:#FF3300;float:right;color:blue"> </span>
+                                    </row>
+                                    <row>
                                                                    
-                                                        <span style="color:#FF3300;float:right"> Codigo :</span>
-                                                        <span  >
-                                                            <intbox  maxlength="14" cols="3"  disabled="true"  readonly="true" id="codigo"  />
+                                        <span style="color:#FF3300;float:right"> Codigo :</span>
+                                        <span  >
+                                            <intbox  maxlength="14" cols="3"  disabled="true"  readonly="true" id="codigo"  />
                                                                     Identificación:
-                                                            <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
-                                                        </span>
-                                                        <span style="color:#FF3300;float:right"> Codigo :</span>
-                                                        <span >
-                                                            <intbox maxlength="14" cols="3"  readonly = "true"    id="codigore"  />
+                                            <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
+                                        </span>
+                                        <span style="color:#FF3300;float:right"> Codigo :</span>
+                                        <span >
+                                            <intbox maxlength="14" cols="3"  readonly = "true"    id="codigore"  />
                                                                     Identificación:
-                                                            <textbox maxlength="13" cols="13"   readonly="true" id="cedulare"  />
-                                                        </span>
+                                            <textbox maxlength="13" cols="13"   readonly="true" id="cedulare"  />
+                                        </span>
 
-                                                    </row>
+                                    </row>
                                                                 
-                                                    <row>
+                                    <row>
                                                                    
-                                                        <span style="color:#FF3300;float:right"> Nombres:</span>
-                                                        <label id="nombres"  />
-                                                        <span style="color:#FF3300;float:right"> Nombres:</span>
-                                                        <label id="nombresre"  />
+                                        <span style="color:#FF3300;float:right"> Nombres:</span>
+                                        <label id="nombres"  />
+                                        <span style="color:#FF3300;float:right"> Nombres:</span>
+                                        <label id="nombresre"  />
 
-                                                    </row>
+                                    </row>
 
-                                                    <row>
-                                                        <span style="color:#FF3300;float:right"> Apellidos:</span>
-                                                        <label id="apellidos"  />
-                                                        <span style="color:#FF3300;float:right"> Apellidos:</span>
-                                                        <label id="apellidosre"/>
-                                                    </row>
-                                                    <row>
+                                    <row>
+                                        <span style="color:#FF3300;float:right"> Apellidos:</span>
+                                        <label id="apellidos"  />
+                                        <span style="color:#FF3300;float:right"> Apellidos:</span>
+                                        <label id="apellidosre"/>
+                                    </row>
+                                    <row>
 
-                                                        <span style="color:#FF3300;float:right"> Dirección:</span>
-                                                        <label id="direccion"/>
-                                                        <span style="color:#FF3300;float:right"> Dirección:</span>
-                                                        <label id="direccionre" />
-                                                    </row>
+                                        <span style="color:#FF3300;float:right"> Dirección:</span>
+                                        <label id="direccion"/>
+                                        <span style="color:#FF3300;float:right"> Dirección:</span>
+                                        <label id="direccionre" />
+                                    </row>
 
-                                                    <row>
-                                                        <span style="color:#FF3300;float:right"> Email:</span>
-                                                        <label id="mail" />
-                                                        <span style="color:#FF3300;float:right"> Email:</span>
-                                                        <label id="emailre" />
-                                                    </row>
+                                    <row>
+                                        <span style="color:#FF3300;float:right"> Email:</span>
+                                        <label id="mail" />
+                                        <span style="color:#FF3300;float:right"> Email:</span>
+                                        <label id="emailre" />
+                                    </row>
 
-                                                    <row>
+                                    <row>
                                                                     
-                                                        <span style="color:#FF3300;float:right"> Teléfono:</span>
-                                                        <label id="telefono"  />
-                                                        <span style="color:#FF3300;float:right"> Teléfono:</span>
-                                                        <label id="telefonore"   />
+                                        <span style="color:#FF3300;float:right"> Teléfono:</span>
+                                        <label id="telefono"  />
+                                        <span style="color:#FF3300;float:right"> Teléfono:</span>
+                                        <label id="telefonore"   />
 
 
-                                                    </row>
-                                                    <row>
-                                                         <span></span>
-                                                         <span></span>
-                                                       <span  style="color:#FF3300;float:right">Parentesco</span>
-                                                        <span>
-                                                            <label id="parentesco"   />
-                                                        </span>
-                                                    </row>
-                                       <row spans="4">
-                                           <span>
+                                    </row>
+                                    <row>
+                                        <span></span>
+                                        <span></span>
+                                        <span  style="color:#FF3300;float:right">Parentesco</span>
+                                        <span>
+                                            <label id="parentesco"   />
+                                        </span>
+                                    </row>
+                                    <row spans="4">
+                                        <span>
                                                 
-                                           </span>
-                                       </row>
+                                        </span>
+                                    </row>
                                               
-                                                    <row>
-                                                        <span style="color:blue" >DATOS PADRE</span>
-                                                        <span>
-                                                            <span > Identificación:</span>
-                                                            <label  id="cedulapa"  />
-                                                        </span>
-                                                        <span style="color:blue">DATOS MADRE</span>
-                                                        <span>
-                                                            <span > Identificación:</span>
-                                                            <label   id="cedulama"  />
-                                                        </span>
-                                                    </row>
-                                                    <row>
-                                                        <span style="color:#FF3300;float:right"> Nombres:</span>
-                                                        <label id="nombrespa"  />
-                                                        <span style="color:#FF3300;float:right"> Nombres:</span>
-                                                        <label id="nombresma"   />
-                                                    </row>
-                                                    <row>
-                                                        <span style="color:#FF3300;float:right"> Apellidos:</span>
-                                                        <label id="apellidospa"  />
-                                                        <span style="color:#FF3300;float:right"> Apellidos:</span>
-                                                        <label id="apellidosma" />
-                                                    </row>
-                                                    <row>
-                                                        <span style="color:#FF3300;float:right"> Ocupación:</span>
-                                                        <label id="ocupacionpa"   />
+                                    <row>
+                                        <span style="color:blue" >DATOS PADRE</span>
+                                        <span>
+                                            <span > Identificación:</span>
+                                            <label  id="cedulapa"  />
+                                        </span>
+                                        <span style="color:blue">DATOS MADRE</span>
+                                        <span>
+                                            <span > Identificación:</span>
+                                            <label   id="cedulama"  />
+                                        </span>
+                                    </row>
+                                    <row>
+                                        <span style="color:#FF3300;float:right"> Nombres:</span>
+                                        <label id="nombrespa"  />
+                                        <span style="color:#FF3300;float:right"> Nombres:</span>
+                                        <label id="nombresma"   />
+                                    </row>
+                                    <row>
+                                        <span style="color:#FF3300;float:right"> Apellidos:</span>
+                                        <label id="apellidospa"  />
+                                        <span style="color:#FF3300;float:right"> Apellidos:</span>
+                                        <label id="apellidosma" />
+                                    </row>
+                                    <row>
+                                        <span style="color:#FF3300;float:right"> Ocupación:</span>
+                                        <label id="ocupacionpa"   />
 
-                                                        <span style="color:#FF3300;float:right"> Ocupación:</span>
-                                                        <label id="ocupacionma"/>
-                                                    </row>
-                                                    <row>
-                                                        <span style="color:#FF3300;float:right"> Profesión:</span>
-                                                        <label id="profesionpa"/>
-                                                        <span style="color:#FF3300;float:right"> Profesión:</span>
-                                                        <label id="profesionma" />
+                                        <span style="color:#FF3300;float:right"> Ocupación:</span>
+                                        <label id="ocupacionma"/>
+                                    </row>
+                                    <row>
+                                        <span style="color:#FF3300;float:right"> Profesión:</span>
+                                        <label id="profesionpa"/>
+                                        <span style="color:#FF3300;float:right"> Profesión:</span>
+                                        <label id="profesionma" />
 
-                                                    </row>
-                                                    <row>
-                                                        <span style="color:#FF3300;float:right"> Dirección:</span>
-                                                        <label id="direccionpa"    />
-                                                        <span style="color:#FF3300;float:right"> Dirección:</span>
-                                                        <label id="direccionma"     />
-                                                    </row>
-                                                    <row>
-                                                        <span style="color:#FF3300;float:right"> Teléfono:</span>
-                                                        <label id="telefonopa"   />
-                                                        <span style="color:#FF3300;float:right"> Teléfono:</span>
-                                                        <label id="telefonoma"   />
-                                                    </row>
-                                                    <row>
-                                                        <span style="color:#FF3300;float:right"> Email:</span>
-                                                        <label id="emailpa"  />
-                                                        <span style="color:#FF3300;float:right"> Email:</span>
-                                                        <label id="emailma"    />
-                                                    </row>
+                                    </row>
+                                    <row>
+                                        <span style="color:#FF3300;float:right"> Dirección:</span>
+                                        <label id="direccionpa"    />
+                                        <span style="color:#FF3300;float:right"> Dirección:</span>
+                                        <label id="direccionma"     />
+                                    </row>
+                                    <row>
+                                        <span style="color:#FF3300;float:right"> Teléfono:</span>
+                                        <label id="telefonopa"   />
+                                        <span style="color:#FF3300;float:right"> Teléfono:</span>
+                                        <label id="telefonoma"   />
+                                    </row>
+                                    <row>
+                                        <span style="color:#FF3300;float:right"> Email:</span>
+                                        <label id="emailpa"  />
+                                        <span style="color:#FF3300;float:right"> Email:</span>
+                                        <label id="emailma"    />
+                                    </row>
                                                      
 
-                                                </rows>
-                                            </grid>
+                                </rows>
+                            </grid>
                          
 
                         </panelchildren>
@@ -692,132 +787,189 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <tabpanel>
 
                    
-                                <grid width="100%">
-                                    <rows>
-                                        <row>
-                                            <span>Tipo de Aspecto</span>
-                                            <span>
-                                                <combobox selectedItem="0" id="tipoaspecto" onSelect='buscar(tipoaspecto.selectedItem.value+"")' >
-                                                <comboitem  label="[Seleccione]"  value="0" />
-                                                <comboitem  label="PESO" value="PESO" />
-                                                <comboitem label="ESTATURA"  value="ESTAT" />
-                                                <comboitem label="AGUDEZA AUDITIVA"  value="AUDIT" />
-                                                <comboitem label="AGUDEZA VISUAL"  value="VISUA" />
-                                                <comboitem label="INFORME MEDICO"  value="MEDIC" />
-                                                <comboitem label="INFORME DENTAL"  value="DENTA" />
-                                            </combobox>
-                                            <intbox id="aspecto" cols="2" readonly="true"/>
-                                            <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"   onClick="guardar();"/>
-                                            </span>
-                                        </row>
-                                        <row>
-                                            <span>Primero</span>
-                                            <textbox id="primero" rows="2" width="400px"  />
+                    <grid width="100%">
+                        <rows>
+                            <row>
+                                <span>Tipo de Aspecto</span>
+                                <span>
+                                    <combobox selectedItem="0" id="tipoaspecto" onSelect='buscar(tipoaspecto.selectedItem.value+"")' >
+                                        <comboitem  label="[Seleccione]"  value="0" />
+                                        <comboitem  label="PESO" value="PESO" />
+                                        <comboitem label="ESTATURA"  value="ESTAT" />
+                                        <comboitem label="AGUDEZA AUDITIVA"  value="AUDIT" />
+                                        <comboitem label="AGUDEZA VISUAL"  value="VISUA" />
+                                        <comboitem label="INFORME MEDICO"  value="MEDIC" />
+                                        <comboitem label="INFORME DENTAL"  value="DENTA" />
+                                    </combobox>
+                                    <intbox visible="false" id="aspecto" cols="2" readonly="true"/>
+                                    
+                                </span>
+                            </row>
+                            <row>
+                                <span>Primero</span>
+                                <textbox id="primero" rows="2" width="400px"  />
 
-                                        </row>
-                                        <row>
-                                            <span>Segundo</span>
-                                            <textbox id="segundo" rows="2" width="400px"  />
-                                        </row>
-                                        <row>
-                                            <span>Tercero</span>
-                                            <textbox id="tercero" rows="2" width="400px"  />
-                                        </row>
-                                        <row>
-                                         <span>Cuarto</span>
-                                            <textbox id="cuarto"  rows="2" width="400px" />
-                                        </row>
-                                        <row>
-                                           <span>Quinto</span>
-                                            <textbox id="quinto" rows="2" width="400px"  />
-                                        </row>
-                                        <row>
-                                            <span>Sexto</span>
-                                            <textbox id="sexto" rows="2" width="400px"  />
-                                        </row>
-                                        <row>
-                                            <span>Septimo</span>
-                                            <textbox id="septimo" rows="2" width="400px" />
-                                        </row>
-                                        <row>
+                            </row>
+                            <row>
+                                <span>Segundo</span>
+                                <textbox id="segundo" rows="2" width="400px"  />
+                            </row>
+                            <row>
+                                <span>Tercero</span>
+                                <textbox id="tercero" rows="2" width="400px"  />
+                            </row>
+                            <row>
+                                <span>Cuarto</span>
+                                <textbox id="cuarto"  rows="2" width="400px" />
+                            </row>
+                            <row>
+                                <span>Quinto</span>
+                                <textbox id="quinto" rows="2" width="400px"  />
+                            </row>
+                            <row>
+                                <span>Sexto</span>
+                                <textbox id="sexto" rows="2" width="400px"  />
+                            </row>
+                            <row>
+                                <span>Septimo</span>
+                                <textbox id="septimo" rows="2" width="400px" />
+                            </row>
+                            <row>
+                                            <span></span>
+                                 <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"   onClick="guardar();"/>
                                             
-                                           
                                             
-                                            
-                                        </row>
+                            </row>
                                         
 
-                                    </rows>
-                                </grid>
+                        </rows>
+                    </grid>
       
 
                 </tabpanel>
 
-                 <tabpanel>
+                <tabpanel>
 
 
-                                <grid width="100%">
-                                    <rows>
-                                        <row>
+                    <grid width="100%">
+                        <rows>
+                            <row>
+                                <span></span>
+                                <span>
+                                    <intbox id="aspectoa" visible="false" cols="2" readonly="true"/>
+                                    <intbox id="aspectod" visible="false" cols="2" readonly="true"/>
+                                    
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right"> </span>
+                                <span>Aprovechamiento</span>
+                                <span>Disciplina </span>
+                            </row>
+                            <row>
+                                <span style="float:right">Primero</span>
+                                <textbox id="primeroa" cols="6"/>
+                                <textbox id="primerod" cols="6"/>
+
+                            </row>
+                            <row>
+                                <span style="float:right">Segundo</span>
+                                <textbox id="segundoa" cols="6"/>
+                                <textbox id="segundod" cols="6"/>
+                            </row>
+                            <row>
+                                <span style="float:right">Tercero</span>
+                                <textbox id="terceroa" cols="6"/>
+                                <textbox id="tercerod" cols="6"/>
+                            </row>
+                            <row>
+                                <span style="float:right">Cuarto</span>
+                                <textbox id="cuartoa" cols="6"/>
+                                <textbox id="cuartod" cols="6"/>
+                            </row>
+                            <row>
+                                <span style="float:right">Quinto</span>
+                                <textbox id="quintoa" cols="6"/>
+                                <textbox id="quintod" cols="6"/>
+                            </row>
+                            <row>
+                                <span style="float:right">Sexto</span>
+                                <textbox id="sextoa"  cols="6"/>
+                                <textbox id="sextod"  cols="6"/>
+                            </row>
+                            <row>
+                                <span style="float:right">Septimo</span>
+                                <textbox id="septimoa" cols="6" />
+                                <textbox id="septimod"  cols="6"/>
+                            </row>
+                            <row>
+                            <span></span>
+                                <button image="/images/guardar.gif" id="guardara" label="Guardar"  disabled="true" onClick="guardara();"/>
+
+
+                            </row>
+
+
+                        </rows>
+                    </grid>
+
+
+                </tabpanel>
+                <tabpanel>
+
+                    <panel height="395px" style="margin-bottom:10px"
+				title="Registro" border="normal">
+                        <panelchildren>
+                            <grid>
+                                <rows>
+                                    <row>
+                                        
+                                        <span>Fecha: <intbox id="codigovisita"  /></span>
+                                        <datebox id="fecha"/>
+                                    </row>
+                                    <row>
+                                        <span>Asunto:</span>
+                                        <textbox id="asunto"/>
+                                    </row>
+                                    <row>
+                                        <span>Responsable:</span>
+                                        <textbox id="responsable"/>
+                                    </row>
+                                    <row>
+                                        <span>Observación:</span>
+                                        <textbox id="observacion" rows="3" cols="60"/>
+                                    </row>
+                                    <row>
+                                        <span>Resultados:</span>
+                                        <textbox id="resultado" rows="3" cols="60"/>
+                                    </row>
+                                      <row>
                                             <span></span>
                                             <span>
-                                            <intbox id="aspectoa" visible="false" cols="2" readonly="true"/>
-                                            <intbox id="aspectod" visible="false" cols="2" readonly="true"/>
-                                            <button image="/images/guardar.gif" id="guardara" label="Guardar"  disabled="true" onClick="guardara();"/>
-                                            </span>
+                                             <button image="/images/nuevo.gif" id="nuevo" label="Agregar"  onClick="limpiar();"/>
+                                             <button image="/images/guardar.gif" id="guardare" label="Guardar"  disabled="true"   onClick="guardareg();"/>
+                                             <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true" onClick="modificar()"/></span>
                                         </row>
-                                        <row>
-                                            <span style="float:right"> </span>
-                                            <span>Aprovechamiento</span>
-                                            <span>Disciplina</span>
-                                        </row>
-                                        <row>
-                                            <span style="float:right">Primero</span>
-                                            <textbox id="primeroa" cols="6"/>
-                                            <textbox id="primerod" cols="6"/>
-
-                                        </row>
-                                        <row>
-                                            <span style="float:right">Segundo</span>
-                                            <textbox id="segundoa" cols="6"/>
-                                            <textbox id="segundod" cols="6"/>
-                                        </row>
-                                        <row>
-                                            <span style="float:right">Tercero</span>
-                                            <textbox id="terceroa" cols="6"/>
-                                            <textbox id="tercerod" cols="6"/>
-                                        </row>
-                                        <row>
-                                         <span style="float:right">Cuarto</span>
-                                            <textbox id="cuartoa" cols="6"/>
-                                            <textbox id="cuartod" cols="6"/>
-                                        </row>
-                                        <row>
-                                           <span style="float:right">Quinto</span>
-                                            <textbox id="quintoa" cols="6"/>
-                                            <textbox id="quintod" cols="6"/>
-                                        </row>
-                                        <row>
-                                            <span style="float:right">Sexto</span>
-                                            <textbox id="sextoa"  cols="6"/>
-                                            <textbox id="sextod"  cols="6"/>
-                                        </row>
-                                        <row>
-                                            <span style="float:right">Septimo</span>
-                                            <textbox id="septimoa" cols="6" />
-                                            <textbox id="septimod"  cols="6"/>
-                                        </row>
-                                        <row>
-
-
-
-
-                                        </row>
-
-
-                                    </rows>
-                                </grid>
-
+                                    <row spans="2">
+                                        <listbox mold="paging"  pageSize="17" onSelect="move();" id="datos" width="100%">
+                                            <listhead>
+                                                <listheader label="Fecha" sort="auto"/>
+                                                <listheader label="Asunto"  sort="auto"/>
+                                                <listheader label="Responsable" sort="auto"/>
+                                            </listhead>
+                                          
+                                        </listbox>
+                                    </row>
+                                </rows>
+                            </grid>
+                              
+                              
+                              
+                               
+                         
+                    
+                        </panelchildren>
+                    </panel>
 
                 </tabpanel>
                 <tabpanel>
@@ -825,11 +977,14 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     <panel height="395px" style="margin-bottom:10px"
 				title="Reporte" border="normal">
                         <panelchildren>
+                       
                             <jasperreport id="report" />
                         </panelchildren>
                     </panel>
 
                 </tabpanel>
+
+
 
             </tabpanels>
         </tabbox>
