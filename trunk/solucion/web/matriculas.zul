@@ -164,6 +164,7 @@ List matricula = adm.query("Select o from Matriculas as o where o.estudiante.cod
         llenarMatricula(matricula.get(0));
     }else{
         llenarMatricula(new Matriculas(0));
+        numero.value = 0;
         //Messagebox.show("No se encuentra Inscrito ni Matriculado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
     }
 }
@@ -173,19 +174,16 @@ void llenarMatricula(Matriculas matri){
          fechamatricula.value =matri.getFechamat();
          numero.value = matri.getNumero();
          folio.value = matri.getFolio();
-          if(matri.getNuevo()!=null){
+            if(matri.getNuevo()!=null){
                 nuevo.checked = matri.getNuevo();
             }
             if(matri.getRepite()!=null){
                 repite.checked = matri.getRepite();
             }
-
-
          try{
             beca.value = new BigDecimal(matri.getBeca());
             otros.value = new BigDecimal(matri.getOtros());
          }catch(Exception e){}
-
          observacion.value = matri.getObservacion();
             if(matri.getCurso() != null){
                     Listitem item = new Listitem();
@@ -194,7 +192,6 @@ void llenarMatricula(Matriculas matri){
                     curso.appendChild(item);
                     curso.setSelectedItem(item);
                     bd1.value = matri.getCurso().getDescripcion()+" "+ matri.getCurso().getEspecialidad()+" "+ matri.getCurso().getParalelo();
-
             }
             if(matri.getFoto() != null){
                     cargarFoto(matri.getFoto());
