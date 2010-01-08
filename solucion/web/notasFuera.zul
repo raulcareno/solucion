@@ -16,7 +16,7 @@ import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
   import bean.Permisos;
   import net.sf.jasperreports.engine.JRDataSource;
-
+import sources.*;
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -94,7 +94,11 @@ void doAdd(Cursos curso, MateriaProfesor materia){
             parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
 
-             datasource = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
+                ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
+                datasource = (ReporteNotasDataSource) arreglo.get(0);
+                parametros = (HashMap) arreglo.get(1);
+                parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+
              MateriaProfesor mate = ((MateriaProfesor)mates.getSelectedItem().getValue());
              parametros.put("materia", mate.getMateria().getDescripcion());
              parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
@@ -161,7 +165,7 @@ void doAdd(Cursos curso, MateriaProfesor materia){
 </row>
 </rows>
 </grid>
- <y:grid width="100%" id="datos" editable = "true">
+ <y:grid width="100%"   id="datos" editable = "true">
          <y:columns>
              <y:column editortype="readonly" width="20px" label ="Mat."/>
              <y:column editortype="readonly"  width="240px" label ="Estudiante"/>

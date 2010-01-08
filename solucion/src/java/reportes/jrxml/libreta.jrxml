@@ -345,12 +345,12 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{nombre}]]></textFieldExpression>
 				</textField>
-				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<image  isUsingCache="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="-6"
 						y="1"
-						width="69"
-						height="83"
+						width="66"
+						height="79"
 						forecolor="#000000"
 						key="image-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
