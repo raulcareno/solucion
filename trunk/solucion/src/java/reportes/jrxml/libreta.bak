@@ -162,7 +162,8 @@
 						y="18"
 						width="549"
 						height="32"
-						key="subreport-2"/>
+						key="subreport-2"
+						isRemoveLineWhenBlank="true"/>
 					<subreportParameter  name="listaFaltas">
 						<subreportParameterExpression><![CDATA[$F{listaFaltas}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -348,8 +349,8 @@
 					<reportElement
 						x="-6"
 						y="1"
-						width="69"
-						height="83"
+						width="66"
+						height="79"
 						forecolor="#000000"
 						key="image-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
