@@ -16,6 +16,8 @@ import jcinform.procesos.Administrador;
 import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Auxhead;
+import org.zkoss.zul.Auxheader;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Label;
@@ -26,6 +28,7 @@ public class accesos extends Rows {
 //ArrayList listad = new ArrayList();
 
     public accesos() {
+       
     }
 
     public void addRow(Global p) {
