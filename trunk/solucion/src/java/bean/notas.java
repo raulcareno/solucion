@@ -18,11 +18,16 @@ import java.util.logging.Logger;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
 import net.sf.jasperreports.engine.JRDataSource;
-import org.zkforge.yuiext.grid.Label;
-import org.zkforge.yuiext.grid.Row;
-import org.zkforge.yuiext.grid.Rows;
+//import org.zkforge.yuiext.grid.Label;
+//import org.zkforge.yuiext.grid.Row;
+//import org.zkforge.yuiext.grid.Rows;
+import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Decimalbox;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
 import sources.Nota;
 import sources.NotasClaseTemp;
 import sources.NumerosaLetras;
@@ -40,7 +45,11 @@ public class notas extends Rows {
     private Double notaDisciplina = 0.0;
 
     public notas() {
-         
+//         Grid g;
+//         Label l;
+//         Row row;
+
+//         row.getZIndex()
     }
 
     public Boolean verificar(String formula, List<Notanotas> notas) {
@@ -80,7 +89,7 @@ public class notas extends Rows {
 //     if(listad==null){
         Administrador adm = new Administrador();
         List sistemas = adm.query("Select o from Sistemacalificacion as o " +
-                "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+                "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.orden");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
         String query = "";
         for (Notanotas notass : notas) {
@@ -95,8 +104,8 @@ public class notas extends Rows {
         tamanio = sistemas.size();
         //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
         getChildren().clear();
-        Label label = null;
-
+        Decimalbox label = null;
+        Label label3 = null;
 
         String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas " +
                 "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
@@ -113,7 +122,6 @@ public class notas extends Rows {
                     "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir' )" +
                     "order by estudiantes.apellido";
         }
-
         System.out.println("" + q);
         List nativo = adm.queryNativo(q);
         Row row = new Row();
@@ -123,7 +131,8 @@ public class notas extends Rows {
             row = new Row();
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
-                label = new Label();
+                label = new Decimalbox();
+                label3 = new Label();
 //                 label.setAttribute("onBlur", "alert(this)");
                 try {
                     if (dos.equals(null)) {
@@ -135,19 +144,46 @@ public class notas extends Rows {
                 if (j >= 2) {
                     Double valor = (Double) dos;
                     if (valor.equals(0.0)) {
-                        label.setValue("");
+                        label.setValue(new BigDecimal(0));
                     } else {
-                        label.setValue("" + redondear((Double) dos, 2));
-
+                        label.setValue(new BigDecimal(redondear((Double) dos, 2)));
                     }
 
                 } else {
                     String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
-                    label.setValue("" + valor);
+                    label3.setValue("" + valor);
                 }
 //                                 label.setAttribute(q, dos);
-                label.setStyle("font-size:11px;font:arial");
-                row.appendChild(label);
+                if(j==0){
+                    label3.setStyle("width:15px;font-size:11px;font:arial; ");
+//                    label3.setReadonly(true);
+                    row.appendChild(label3);
+                }else if(j==1){
+                    label3.setStyle("width:300px;font-size:11px;font:arial; ");
+//                    label3.setReadonly(true);
+                    row.appendChild(label3);
+                }else{
+                    
+                    Date fechaActual = new Date();
+                    DateMidnight actual = new DateMidnight(fechaActual);
+                    int dat = j-2;
+                     DateMidnight inicial = new DateMidnight(((Sistemacalificacion)sistemas.get(dat)).getFechainicial());
+                     DateMidnight finale = new DateMidnight(((Sistemacalificacion)sistemas.get(dat)).getFechafinal());
+                     if(actual.compareTo(finale) <=0 && actual.compareTo(inicial) >=0){
+                                label.setDisabled(false);
+                                label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;");
+                     }else{
+                               label.setDisabled(true);
+                               label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-color:black;weigth:bold");
+
+                     }
+
+
+//                    label.setReadonly(true);
+                    row.appendChild(label);
+                }
+
+                //row.appendChild(label);
 //                                 System.out.print(","+dos);
             }
 
@@ -167,7 +203,7 @@ public class notas extends Rows {
             Matriculas ma = (Matriculas) adm.buscarClave(new Integer(((Label) labels.get(0)).getValue()), Matriculas.class);
             //nota.setMatricula(new Matriculas(new Integer(((Label) vecDato.get(0)).getValue())));
             for (int j = 2; j < labels.size(); j++) {
-                Label object1 = (Label) labels.get(j);
+                Decimalbox object1 = (Decimalbox) labels.get(j);
                 String formula = notas.get(j - 2).getSistema().getFormula(); // EN CASO DE FORMULA
                 formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
                 String toda = notas.get(j - 2).getNota() + "";
@@ -235,7 +271,7 @@ public class notas extends Rows {
                     nota.setDisciplina(false);
                     inter.set("nota", nota);
                     for (int j = 2; j < labels.size(); j++) {
-                        Label object1 = (Label) labels.get(j);
+                        Decimalbox object1 = (Decimalbox) labels.get(j);
                         String formula = notas.get(j - 2).getSistema().getFormula(); // EN CASO DE FORMULA
                         formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
                         String toda = notas.get(j - 2).getNota() + "";
@@ -329,7 +365,7 @@ public class notas extends Rows {
                                 "where matriculas.curso = '" + curso.getCodigocur() + "'  " +
                                 " and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir') " +
                                 "order by estudiantes.apellido";
-//                        
+//
                         List nativo = adm.queryNativo(q);
                         System.out.println("recalculo 1: " + q);
                         System.out.println("recalculo 2: " + nativo.size());
@@ -615,7 +651,7 @@ public class notas extends Rows {
                 "and notas.materia = '" + materia.getCodigo() + "' and notas.disciplina = true " +
                 "where matriculas.curso = '" + curso.getCodigocur() + "' and matriculas.estado in ('Matriculado','Recibir')  " +
                 "order by estudiantes.apellido";
-//     System.out.println(""+q); 
+//     System.out.println(""+q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
@@ -691,7 +727,7 @@ public class notas extends Rows {
 /*String q = "Select matricula,materia, "+query+" from notas " +
         "where matricula in (select codigomat from matriculas where  curso  =  '"+curso.getCodigocur()+"' ) " +
         " ";*/
-        //and matriculas.estado in ('Matriculado','Recibir','Retirado') 
+        //and matriculas.estado in ('Matriculado','Recibir','Retirado')
         String q = "Select codigomap, matricula,notas.materia, " + query + "  " +
                 "from notas, materia_profesor, matriculas mat, estudiantes est " +
                 "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "'  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante " +
@@ -805,7 +841,7 @@ public class notas extends Rows {
                     "order by est.apellido, materia_profesor.orden";
             System.out.println("" + q);
             List nativo = adm.queryNativo(q);
- 
+
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                 Vector vec = (Vector) itna.next();
                 Matriculas matriculaNo = new Matriculas(-1);
@@ -816,11 +852,11 @@ public class notas extends Rows {
                 lisNotas.add(n);
             }
        nativo = null;
-      
+
         }
           ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotas);
         return ds;
- 
+
 
     }
    //Promedio por curso
@@ -1184,7 +1220,7 @@ public class notas extends Rows {
                 //row.setParent(this);
             }
             if (impPromedio) {
-//IMPRIMO EL PROMEDIO 
+//IMPRIMO EL PROMEDIO
                 q = "Select matricula," + query2 + "  from notas " +
                         "where notas.matricula = '" + matriculas1.getCodigomat() + "' " +
                         "and notas.seimprime = true " +
@@ -2109,7 +2145,7 @@ public class notas extends Rows {
         if (tipo.contains("INGRESADA")) {
             return;
         }
-        //CARGO EL QUERY PARA SELECCIONAR 
+        //CARGO EL QUERY PARA SELECCIONAR
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
         }
@@ -2173,7 +2209,7 @@ public class notas extends Rows {
                 Interpreter inter = new Interpreter();
                 try {
                     //1 DISCIPLINA INSPECTOR
-                    //0 disciplina 
+                    //0 disciplina
 
                     for (Iterator<Global> it = Nmaterias.iterator(); it.hasNext();) {
                         Global global = it.next();

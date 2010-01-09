@@ -94,6 +94,7 @@ doAdd(Cursos curso, MateriaProfesor materia){
 </row>
 <row>
    <span style="float:right"> Materias(*):</span>
+   <span>
                <bandbox  width="300px" readonly="true"  id="bd2">
                     <bandpopup>
                     <vbox>
@@ -108,19 +109,20 @@ doAdd(Cursos curso, MateriaProfesor materia){
                     </vbox>
                     </bandpopup>
                 </bandbox>
+                 <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+                 </span>
 </row>
 </rows>
 </grid>
- <y:grid width="100%" id="datos"  trackMouseOver="true" editable = "true">
-         <y:columns>
-             <y:column editortype="readonly" width="20px" label ="Mat."/>
-             <y:column editortype="readonly"  width="270px" label ="Estudiante"/>
-             <y:column forEach="${values}" width="30px" editortype="${each[1]}" label="${each[0]}" align="right"  />
- 
-         </y:columns>
-         <y:rows id="filas" use="bean.disciplina">
-         </y:rows>
- </y:grid>
+ <grid width="100%" id="datos"  >
+         <columns>
+             <column width="20px" label ="Mat."/>
+             <column width="300px" label ="Estudiante"/>
+             <column forEach="${values}" label="${each[0]}" align="right"  />
+          </columns>
+         <rows id="filas" use="bean.disciplina">
+         </rows>
+ </grid>
  <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
 </window>
 

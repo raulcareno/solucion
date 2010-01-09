@@ -94,16 +94,16 @@ Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
 
 </rows>
 </grid>
- <y:grid width="100%" id="datos"  trackMouseOver="true" editable = "true">
-         <y:columns>
-             <y:column editortype="readonly" width="10%" label ="Mat."/>
-             <y:column editortype="readonly"  width="50%" label ="Estudiante"/>
-             <y:column  forEach="${values}"  width="20px"  editortype="${each[1]}" label="${each[0]}" align="right"  />
+ <grid width="100%" id="datos"  >
+         <columns>
+             <column width="10%" label ="Mat."/>
+             <column width="50%" label ="Estudiante"/>
+             <column forEach="${values}"  width="20px"  label="${each[0]}" align="right"  />
  
-         </y:columns>
-         <y:rows  id="filas" use="bean.disciplina">
-         </y:rows>
- </y:grid>
+         </columns>
+         <rows  id="filas" use="bean.disciplina">
+         </rows>
+ </grid>
  <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
   
 <zscript><![CDATA[
