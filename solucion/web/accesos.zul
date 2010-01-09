@@ -11,6 +11,8 @@ maximizable="true" closable="true" >
   import java.util.UUID;
   import jcinform.procesos.Administrador;
     import bean.Permisos;
+    import bean.accesos;
+
 //globales
 Global global = new Global();
 EventDAO evtdao = new EventDAO();
@@ -24,27 +26,16 @@ int w = 0;
 //globales
     void guardar(){
  if(verificar("Agregar")){
-          int inicio = datos.getModel().getSize();
-        Boolean estado = true;
-        int i=0;
-            while(estado==true){
-               Accesos acc = datos.getModel().getElementAt(i);
-               
-               if(acc.getCodigoacc()!=null){
-                    acc.setPerfil((Global)perfilesCombo.getSelectedItem().getValue());
-                    adm.actualizar(acc);
-                }else{
-                        acc.setPerfil((Global)perfilesCombo.getSelectedItem().getValue());
-                    acc.setCodigoacc(adm.getNuevaClave("Accesos","codigoacc"));
-                    adm.guardar(acc);
-                }
-
-                if(i==(inicio-1)){
-                    estado=false;
-                }
-                i++;
-            }
-        Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+          accesos nso = new accesos();
+        accesos r = (accesos) datos.getRows();
+        String resultado = nso.guardar(r.getChildren(),((Global)perfilesCombo.selectedItem.value));
+        if(resultado.equals("ok")){
+            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+             filas.addRow((Global)perfilesCombo.selectedItem.value);
+         }else{
+            Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         }
+        
         }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
@@ -52,36 +43,16 @@ int w = 0;
     }
 
 
-
-   Boolean verificar(String accion){
+  Boolean verificar(String accion){
         return permiso.verificarPermiso("Accesos",accion);
 
     }
- 
-    void busqueda(Global p){
-        datos.setModel(null);
-        per.value = p.getDescripcion();
-        accesosList = adm.queryNativo("SELECT * FROM accesos WHERE perfil =  '"+p.getCodigo()+"'  "+
-                    " UNION SELECT * FROM accesos WHERE (perfil IS NULL  OR perfil = 0)AND modulo NOT IN " +
-                    " (SELECT modulo FROM accesos WHERE perfil =  '"+p.getCodigo()+"'  ) ",Accesos.class);
-                for (Iterator it = accesosList.iterator(); it.hasNext();) {
-                    Accesos object = (Accesos)it.next();
-                    if(object.getPerfil()==null)
-                        object.setCodigoacc(null);
-                }
-        if(accesosList.size()>0){
-                //per.value = accesosList.get(0).getPerfil().getDescripcion();
-                // per.value = accesosList.get(0).getPerfil().getDescripcion();
-        }else{
+   
 
-            accesosList = adm.query("Select o from Accesos as o where o.perfil is null ");
-                for (Iterator it = accesosList.iterator(); it.hasNext();) {
-                    Accesos object = (Accesos)it.next();
-                    object.setCodigoacc(null);
-                }
-        }
-       ListModel mo = new SimpleListModel(accesosList.toArray());
-       datos.setModel(mo);
+    void busqueda(Global p){
+
+                filas.addRow(p);
+
     }
 
 ]]>
@@ -112,24 +83,17 @@ int w = 0;
 
 	</hbox>
 	</vbox>
- <y:grid height="300px"  editable="true"  id="datos" model="@{accesos}">
-      <y:columns>
-          <y:column  label="Cod"/>
-        <y:column  width="350px" label="Módulo"/>
-        <y:column editortype="check" label="Ingresar(Ver)"/>
-        <y:column editortype="check" label="Agregar"/>
-        <y:column editortype="check" label="Modificar"/>
-        <y:column editortype="check" label="Eliminar"/>
-      </y:columns>
-      <y:rows>
-       <y:row self="@{each=acceos}">
-           <y:label value="@{acceos.codigoacc}"/>
-           <y:label value="@{acceos.modulo}"/>
-           <y:label value="@{acceos.ingresar}"/>
-           <y:label value="@{acceos.guardar}"/>
-           <y:label value="@{acceos.actualizar}"/>
-           <y:label value="@{acceos.eliminar}"/>
-       </y:row>
-       </y:rows>
-   </y:grid>
+
+        <grid  id="datos" >
+                    <columns>
+                       <column  label="Cod"/>
+                        <column  label="Módulo"/>
+                        <column width="55px"  label="Ingresar(Ver)"/>
+                        <column  width="55px" label="Agregar"/>
+                        <column width="55px" label="Modificar"/>
+                        <column  width="55px" label="Eliminar"/>
+                    </columns>
+                    <rows id="filas" use="bean.accesos">
+                    </rows>
+                </grid>
 </window>
