@@ -48,7 +48,7 @@ List sistemas = new ArrayList();
                }
 
  }
- 
+
 String[][] values = new String[sistemas.size()][2];
 Date fechaActual = new Date();
   DateMidnight actual = new DateMidnight(fechaActual);
@@ -59,7 +59,7 @@ Date fechaActual = new Date();
                 DateMidnight finale = new DateMidnight(((Sistemacalificacion)sistemas.get(i)).getFechafinal());
             if(actual.compareTo(finale) <=0 && actual.compareTo(inicial) >=0){
                 values[i][1]= "number";
-  
+
             }else{
                values[i][1]= "number";
                 //values[i][1]= "readonly";
@@ -80,6 +80,7 @@ guardar(){
         String resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
         if(resultado.equals("ok")){
             Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
          }else{
             Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          }
@@ -90,7 +91,7 @@ void buscar2(Cursos cur){
         List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
         //bd2.getItems().clear();
 mates.getChildren().clear();
-bd2.value = ""; 
+bd2.value = "";
                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
                       MateriaProfesor estudent = (MateriaProfesor) it.next();
                         Listitem item = new Listitem();
@@ -104,7 +105,7 @@ bd2.value = "";
 void doAdd(Cursos curso, MateriaProfesor materia){
 
                 filas.addRow(curso,materia);
-      
+
 }
 
 		void showReport(String tipo) {
@@ -134,12 +135,12 @@ void doAdd(Cursos curso, MateriaProfesor materia){
 
 
 
-            
+
                 report.setParameters(parametros);
                 report.setDatasource(datasource);
                 report.setType("pdf");
-                
-            
+
+
 		}
 
         //PARA REPORTES
@@ -216,22 +217,22 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                         </vbox>
                                     </bandpopup>
                                 </bandbox>
-                
+
                                 <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
-                
+
                             </span>
                         </row>
                     </rows>
                 </grid>
-                <y:grid width="110%" id="datos" editable = "true">
-                    <y:columns>
-                        <y:column editortype="readonly" style="font-size:11px" width="20px" label ="Mat."/>
-                        <y:column editortype="readonly"  width="240px" label ="Estudiante"/>
-                        <y:column forEach="${values}"  width="25px" editortype="${each[1]}" label="${each[0]}" align="right"  />
-                    </y:columns>
-                    <y:rows id="filas" use="bean.notas">
-                    </y:rows>
-                </y:grid>
+                <grid  id="datos" >
+                    <columns>
+                        <column width="15px"   label ="Mat."/>
+                        <column width="300px" label ="Estudiante"/>
+                        <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+                    </columns>
+                    <rows id="filas" use="bean.notas">
+                    </rows>
+                </grid>
                 <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
             </tabpanel>
             <tabpanel>
@@ -255,14 +256,14 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                     </rows>
                 </grid>
-               
-               
+
+
                 <jasperreport id="report" />
             </tabpanel>
         </tabpanels>
     </tabbox>
  <!--button label="Recalcular"   onClick="recalculo();"/-->
-   
+
 </window>
 
 	

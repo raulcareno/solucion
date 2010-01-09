@@ -54,6 +54,7 @@ String resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value)
 if(resultado.equals("ok")){
     Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         permiso.auditar("Notas","Guardar",""+((Cursos)curs.selectedItem.value));
+        doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
  }else{
     Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
  }
@@ -165,15 +166,17 @@ void doAdd(Cursos curso, MateriaProfesor materia){
 </row>
 </rows>
 </grid>
- <y:grid width="100%"   id="datos" editable = "true">
-         <y:columns>
-             <y:column editortype="readonly" width="20px" label ="Mat."/>
-             <y:column editortype="readonly"  width="240px" label ="Estudiante"/>
-             <y:column forEach="${values}"  width="25px" editortype="${each[1]}" label="${each[0]}" align="right"  />
-         </y:columns>
-         <y:rows id="filas" use="bean.notas">
-         </y:rows>
- </y:grid>
+ 
+  <grid  id="datos" >
+                    <columns>
+                        <column width="15px"   label ="Mat."/>
+                        <column width="300px" label ="Estudiante"/>
+                        <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+                    </columns>
+                    <rows id="filas" use="bean.notas">
+                    </rows>
+                </grid>
+
  <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
      </tabpanel>
             <tabpanel>

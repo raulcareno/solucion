@@ -23,11 +23,13 @@ import jcinform.persistencia.ParametrosGlobales;
 import jcinform.persistencia.Periodo;
 import jcinform.persistencia.Sistemacalificacion;
 import jcinform.procesos.Administrador;
-import org.zkforge.yuiext.grid.Label;
-import org.zkforge.yuiext.grid.Row;
-import org.zkforge.yuiext.grid.Rows;
+import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Decimalbox;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
 import sources.DisciplinaDataSource;
 
 
@@ -44,7 +46,7 @@ public disciplina(){
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
           Administrador adm = new Administrador();
           List sistemas = adm.query("Select o from Sistemacalificacion as o " +
-                  "where o.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.esdisciplina = true");
+                  "where o.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.esdisciplina = true order by o.orden");
           List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
                   "where o.sistema.esdisciplina = true " +
                   "and o.sistema.periodo.codigoper = '"+periodo.getCodigoper()+"' " +
@@ -61,7 +63,9 @@ public disciplina(){
 //          }
     tamanio = sistemas.size();
     getChildren().clear();
-    Label label =null;
+      Decimalbox label = null;
+        Label label3 = null;
+        
     String vacio ="";
     String esDiscp = "true";
     if(materia.getMateria().getCodigo().equals(0)){
@@ -92,7 +96,8 @@ public disciplina(){
            int t = vec.size()-1;
                          for (int j = 0; j < vec.size(); j++) {
                              Object dos =  vec.get(j);
-                             label = new Label();
+                             label = new Decimalbox();
+                                 label3 = new Label();
                              try{ if(dos.equals(null)){dos = new Double(0.0); }
                              }catch(Exception e){ 
                                  dos = new Double(0.0);
@@ -105,18 +110,44 @@ public disciplina(){
                              if(j>=2){//si no es no matricl ani nombre del estudiante
                                  Double valor = (Double) dos;
                                    if (valor.equals(0.0)) {
-                                        label.setValue("");
+                                        label.setValue(new BigDecimal(0));
                                     } else {
-                                        label.setValue(""+redondear((Double) dos,2));
+                                        label.setValue(new BigDecimal(redondear((Double) dos,2)));
                                     }
                                 //label.setValue(""+redondear((Double) dos,2));
                              }else {
                                  String valor = dos.toString().replace("(","").replace(")","").replace("\"","").replace(",","");
-                                label.setValue("" + valor);
+                                label3.setValue("" + valor);
                                 //label.setValue(""+dos);
                              }
-                             label.setStyle("font-size:11px;font:arial");
-                                row.appendChild(label);
+                              if(j==0){
+                    label3.setStyle("width:15px;font-size:11px;font:arial; ");
+//                    label3.setReadonly(true);
+                    row.appendChild(label3);
+                }else if(j==1){
+                    label3.setStyle("width:300px;font-size:11px;font:arial; ");
+//                    label3.setReadonly(true);
+                    row.appendChild(label3);
+                }else{
+
+                    Date fechaActual = new Date();
+                    DateMidnight actual = new DateMidnight(fechaActual);
+                    int dat = j-2;
+                     DateMidnight inicial = new DateMidnight(((Sistemacalificacion)sistemas.get(dat)).getFechainicial());
+                     DateMidnight finale = new DateMidnight(((Sistemacalificacion)sistemas.get(dat)).getFechafinal());
+                     if(actual.compareTo(finale) <=0 && actual.compareTo(inicial) >=0){
+                                label.setDisabled(false);
+                                label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;");
+                     }else{
+                               label.setDisabled(true);
+                               label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-color:black;weigth:bold");
+
+                     }
+
+
+//                    label.setReadonly(true);
+                    row.appendChild(label);
+                }
                              
                          }
 
@@ -165,7 +196,7 @@ public disciplina(){
             Matriculas ma = (Matriculas) adm.buscarClave(new Integer(((Label) labels.get(0)).getValue()), Matriculas.class);
             //nota.setMatricula(new Matriculas(new Integer(((Label) vecDato.get(0)).getValue())));
             for (int j = 2; j < labels.size(); j++) {
-                Label object1 = (Label) labels.get(j);
+                Decimalbox object1 = (Decimalbox) labels.get(j);
                 String formula = notas.get(j - 2).getSistema().getFormuladisciplina(); // EN CASO DE FORMULA
                 formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
                 String toda = notas.get(j - 2).getNota() + "";
@@ -257,7 +288,7 @@ String del = "Delete from Notas where matricula.curso.codigocur = '"+curso.getCo
                 inter.set("nota", nota);
                 int ta = labels.size()-1;
                 for (int j = 2; j < labels.size(); j++) {
-                    Label object1 = (Label) labels.get(j);
+                    Decimalbox object1 = (Decimalbox) labels.get(j);
                     String formula = notas.get(j-2).getSistema().getFormuladisciplina();// EN CASO DE FORMULA
                     formula = formula.replace("no","nota.getNo");//EN CASO DE QUE HAYA FORMULA
                     String toda = notas.get(j-2).getNota()+"";
@@ -315,7 +346,8 @@ String del = "Delete from Notas where matricula.curso.codigocur = '"+curso.getCo
           query = query.substring(0, query.length()-1).replace("'","").replace("(", "").replace(")", "");
     tamanio = sistemas.size();
     getChildren().clear();
-    Label label =null;
+    Decimalbox label = null;
+        Label label3 = null;
     String vacio ="";
     String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre)," +
             " "+query+" from matriculas " +
@@ -341,7 +373,8 @@ String del = "Delete from Notas where matricula.curso.codigocur = '"+curso.getCo
            int t = vec.size()-1;
                          for (int j = 0; j < vec.size(); j++) {
                              Object dos =  vec.get(j);
-                             label = new Label();
+                              label = new Decimalbox();
+                                label3 = new Label();
                              try{ if(dos.equals(null)){dos = new Integer(0); }
                              }catch(Exception e){
                                  dos = new Integer(0);
@@ -353,22 +386,32 @@ String del = "Delete from Notas where matricula.curso.codigocur = '"+curso.getCo
                                         label.setZIndex(j);
                                         label.setAttribute("ini", 0);
                                         label.setAttribute("fin", 20);
-                                        label.setValue("");
+                                        label.setValue(new BigDecimal(0));
                                     }else{
                                         label.setAttribute("ini", 0);
                                         label.setAttribute("fin", 20);
                                         label.setZIndex(j);
-                                        label.setValue("" + ((Integer) dos));
+                                        label.setValue(new BigDecimal((Integer) dos));
                                     }
                                         //label.setValue(""+((Integer) dos));
                                  }else{
                                         String valor = dos.toString().replace("(","").replace(")","").replace("\"","").replace(",","");
-                                        label.setValue("" + valor);
+                                        label3.setValue(valor);
                                         //label.setValue(""+dos);
                                  }
 
 
-                                row.appendChild(label);
+                  if(j==0){
+                    label3.setStyle("width:15px;font-size:11px;font:arial; ");
+                    row.appendChild(label3);
+                }else if(j==1){
+                    label3.setStyle("width:300px;font-size:11px;font:arial; ");
+                    row.appendChild(label3);
+                }else{
+                    label.setDisabled(false);
+                    label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;");
+                    row.appendChild(label);
+                }
                          }
 
           row.setParent(this);
@@ -419,7 +462,7 @@ public void guardar(List col,Cursos curso,Sistemacalificacion sistema){
                 int m=1;
                 for (int j = 2; j < labels.size(); j++) {
 
-                    Label object1 = (Label) labels.get(j);
+                    Decimalbox object1 = (Decimalbox) labels.get(j);
 //                  String formula = notas.get(j-2).getSistema().getFormulafaltas();// EN CASO DE FORMULA
 //                  formula = formula.replace("no","nota.getNo");//EN CASO DE QUE HAYA FORMULA
                     String vaNota = object1.getValue().toString();
