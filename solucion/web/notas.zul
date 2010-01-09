@@ -28,28 +28,43 @@ List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 notas no = new notas();
 
 //List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  order by o.orden ");
-List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+
 List sistemas = new ArrayList();
+
+
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+String[][] cabes = new String[trimestres.size()][2];
+ 
+int k=0;
+            
  for (Iterator it = trimestres.iterator(); it.hasNext();) {
               Trimestres trime = (Trimestres) it.next();
               List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
               " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
               int orden = 0;
               int codigo=0;
+       
               if(sistemas0.size() >0 ){
                   orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
                   codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
-
+                  cabes[k][0]= trime.getDescripcion();
+                   cabes[k][1]= sistemas0.size()+"";
+              }else{
+                   cabes[k][1]= 1+"";
               }
+                 
+                 
 
               for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
                     Sistemacalificacion siste = (Sistemacalificacion) it2.next();
                     sistemas.add(siste);
                }
-
+k++;
  }
 
 String[][] values = new String[sistemas.size()][2];
+
+
 Date fechaActual = new Date();
   DateMidnight actual = new DateMidnight(fechaActual);
 
@@ -131,10 +146,6 @@ void doAdd(Cursos curso, MateriaProfesor materia){
                     parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
                     parametros.put("titulo", "Notas Registradas");
                     report.setSrc("WEB-INF/reportes/notaspor.jasper");
-
-
-
-
 
                 report.setParameters(parametros);
                 report.setDatasource(datasource);
@@ -225,6 +236,11 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     </rows>
                 </grid>
                 <grid  id="datos" >
+                       
+                    <auxhead >
+                    <auxheader label=".." colspan="2"/>
+                        <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
+                    </auxhead>
                     <columns>
                         <column width="15px"   label ="Mat."/>
                         <column width="300px" label ="Estudiante"/>

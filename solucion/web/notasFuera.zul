@@ -26,9 +26,35 @@ List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 notas no = new notas();
 notas noti = new notas();
-
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
 List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  order by o.orden ");
- 
+ String[][] cabes = new String[trimestres.size()][2];
+
+System.out.println(trimestres.size()+"");
+int k=0;
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+              int orden = 0;
+              int codigo=0;
+
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+                  cabes[k][0]= trime.getDescripcion();
+                   cabes[k][1]= sistemas0.size()+"";
+                   sistemas0 = null;
+              }else{
+                   cabes[k][1]= 1+"";
+              }
+
+
+
+             
+k++;
+ }
+
 String[][] values = new String[sistemas.size()][2];
 Date fechaActual = new Date();
   DateMidnight actual = new DateMidnight(fechaActual);
@@ -168,6 +194,10 @@ void doAdd(Cursos curso, MateriaProfesor materia){
 </grid>
  
   <grid  id="datos" >
+        <auxhead >
+                    <auxheader label=".." colspan="2"/>
+                        <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
+                    </auxhead>
                     <columns>
                         <column width="15px"   label ="Mat."/>
                         <column width="300px" label ="Estudiante"/>
