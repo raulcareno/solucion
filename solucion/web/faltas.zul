@@ -24,9 +24,36 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
 disciplina no = new disciplina();
 
 List equivalen = adm.query("Select o from Equivalencias as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  and o.grupo = 'DI'");
-List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  and o.faltas = true order by o.orden");
+ /*List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  and o.faltas = true order by o.orden");
 Sistemacalificacion siste = new Sistemacalificacion(-1);
-sistemas.add(0,siste);
+sistemas.add(0,siste);*/
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+List sistemas = new ArrayList();
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"'  and o.faltas = true  order by o.orden");
+
+              Sistemacalificacion stodos = new Sistemacalificacion();
+              stodos.setNombre("==========>>>>> "+trime.getDescripcion()+"");
+              int orden = 0;
+              int codigo=0;
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+
+              }
+              stodos.setOrden(orden);
+              stodos.setCodigosis(codigo);
+              stodos.setTrimestre(trime);
+              sistemas.add(stodos);
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    sistemas.add(siste);
+               }
+
+ }
+
 
  
 String[][] values = new String[equivalen.size()][2];
@@ -67,8 +94,9 @@ Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
 <grid>
 <rows>
  <row>
+
         <span style="float:right"> Sistema(*):</span>
-               
+  <span>
                     <listbox id="sisis" mold="select" width="420px"
                     onSelect="curs.setSelectedIndex(0)">
                         <listitem forEach="${sistemas}" value="${each}">
@@ -76,6 +104,8 @@ Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
 
                         </listitem>
                     </listbox>
+                    <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+  </span>
 
 </row>
 <row>
