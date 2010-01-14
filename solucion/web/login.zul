@@ -4,6 +4,7 @@
 <!--window  id="principalImagen">
 <separator bar="true"/-->
 <zk>
+    <div style="height:100%;background-color:#E1F4FF;">
 <window onLoad="usuario.focus();" onCreate="usuario.focus();"  mode="overlapped" id="winLogin" style="position:absolute; top:20%; left:35%" border="normal" width="460px" sizable="true">
 <zscript>
   import jcinform.persistencia.Global;
@@ -11,6 +12,7 @@
   import java.util.ArrayList;
   import jcinform.persistencia.*;
   import jcinform.persistencia.Periodo;
+  import jcinform.persistencia.Global;
   import jcinform.persistencia.Institucion;
   import bean.Permisos;
   import jcinform.procesos.Administrador;
@@ -43,6 +45,9 @@ void verificar(){
                               p.setPeriodo(per);
                               ins.setDenominacion("");
                               ins.setNombre("");
+                              Global secc = new Global();
+                              per.setSeccion(secc);
+                              secc.setDescripcion("");
                               per.setInstitucion(ins);
                               equivaEncontrados.add(0,p);
                                 verificar.visible = false;
@@ -61,7 +66,7 @@ void verificar(){
                                               Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
                                               Listitem li = new Listitem();
                                               li.setValue(acceIt.getPeriodo());
-                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " "+ acceIt.getPeriodo().getInstitucion().getTipo()));
+                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " "+ acceIt.getPeriodo().getInstitucion().getTipo()+" "+acceIt.getPeriodo().getSeccion() ));
                                               periodo.appendChild(li);
                                      }
                                      periodo.setSelectedIndex(0);
@@ -140,7 +145,7 @@ void verificarSistema(){
                  <textbox  onOK="verificar.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
 			</row>
             <row  style="background:transparent;border:0px" id="rperiodo" visible="false" spans="2">
-                    <listbox  onOK="btnIngresar.focus()"  style="font-size:12px"   width="435px"  id="periodo" mold="select">
+                    <listbox  onOK="btnIngresar.focus()"  style="font-size:11px"   width="435px"  id="periodo" mold="select">
                         <listitem forEach="${perfiles}" value="${each}">
                               <listcell  label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
                         </listitem>
@@ -186,5 +191,7 @@ void verificarSistema(){
 		<separator/>
 		
 	</window>
+    </div>
  </zk>
 	<!--/window-->
+    
