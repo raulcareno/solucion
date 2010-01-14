@@ -170,7 +170,7 @@ public class notas extends Rows {
                     int dat = j-2;
                      DateMidnight inicial = new DateMidnight(((Sistemacalificacion)sistemas.get(dat)).getFechainicial());
                      DateMidnight finale = new DateMidnight(((Sistemacalificacion)sistemas.get(dat)).getFechafinal());
-
+ 
                      if(actual.compareTo(finale) <=0 && actual.compareTo(inicial) >=0){
                                 label.setDisabled(false);
                                 label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;");
@@ -186,7 +186,7 @@ public class notas extends Rows {
 
 
 //                    label.setReadonly(true);
-                    row.appendChild(label);
+                     row.appendChild(label);
                 }
 
                 //row.appendChild(label);
