@@ -28,6 +28,7 @@ import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import org.zkoss.zul.Textbox;
 import sources.Nota;
 import sources.NotasClaseTemp;
 import sources.NumerosaLetras;
@@ -105,7 +106,7 @@ public class notas extends Rows {
         //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
         getChildren().clear();
         Decimalbox label = null;
-        Label label3 = null;
+        Textbox label3 = null;
 
         String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas " +
                 "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
@@ -132,7 +133,7 @@ public class notas extends Rows {
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
                 label = new Decimalbox();
-                label3 = new Label();
+                label3 = new Textbox();
 //                 label.setAttribute("onBlur", "alert(this)");
                 try {
                     if (dos.equals(null)) {
@@ -156,11 +157,11 @@ public class notas extends Rows {
 //                                 label.setAttribute(q, dos);
                 if(j==0){
                     label3.setStyle("width:15px;font-size:11px;font:arial; ");
-//                    label3.setReadonly(true);
+                    label3.setReadonly(true);
                     row.appendChild(label3);
                 }else if(j==1){
                     label3.setStyle("width:300px;font-size:11px;font:arial; ");
-//                    label3.setReadonly(true);
+                    label3.setReadonly(true);
                     row.appendChild(label3);
                 }else{
                     
@@ -205,7 +206,7 @@ public class notas extends Rows {
         for (int i = 0; i < col.size(); i++) {
             Row object = (Row) col.get(i);
             List labels = object.getChildren();
-            Matriculas ma = (Matriculas) adm.buscarClave(new Integer(((Label) labels.get(0)).getValue()), Matriculas.class);
+            Matriculas ma = (Matriculas) adm.buscarClave(new Integer(((Textbox) labels.get(0)).getValue()), Matriculas.class);
             //nota.setMatricula(new Matriculas(new Integer(((Label) vecDato.get(0)).getValue())));
             for (int j = 2; j < labels.size(); j++) {
                 Decimalbox object1 = (Decimalbox) labels.get(j);
@@ -266,7 +267,7 @@ public class notas extends Rows {
                     Notas nota = new Notas();
                     nota.setCodigonot(sec.generarClave());
                     List labels = object.getChildren();
-                    nota.setMatricula(new Matriculas(new Integer(((Label) labels.get(0)).getValue())));
+                    nota.setMatricula(new Matriculas(new Integer(((Textbox) labels.get(0)).getValue())));
                     nota.setMateria(materia.getMateria());
                     nota.setFecha(new Date());
                     nota.setOrden(materia.getOrden());
@@ -514,9 +515,11 @@ public class notas extends Rows {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         List sistemas = adm.query("Select o from Sistemacalificacion as o " +
-                "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
+                "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.seimprime = true  " +
+                "and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
+
         List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
-                "where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  and o.sistema.orden  <= '" + sistema.getOrden() + "' " +
+                "where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true  and o.sistema.orden  <= '" + sistema.getOrden() + "' " +
                 "order by o.sistema.orden ");
         String query = "";
         for (Notanotas notass : notas) {
@@ -633,10 +636,10 @@ public class notas extends Rows {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         List sistemas = adm.query("Select o from Sistemacalificacion as o " +
-                "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
+                "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.seimprime = true  and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
                 "where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  " +
-                "and o.sistema.orden  <= '" + sistema.getOrden() + "' " +
+                "and o.sistema.orden  <= '" + sistema.getOrden() + "' and o.sistema.seimprime = true " +
                 "order by o.sistema.orden ");
         String query = "";
         for (Notanotas notass : notas) {
@@ -713,6 +716,7 @@ public class notas extends Rows {
         List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
                 "where  o.sistema.codigosis  = '" + sistema.getCodigosis() + "' " +
                 "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                "  " +
                 "order by o.sistema.orden ");
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o " +
                 "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
@@ -735,9 +739,11 @@ public class notas extends Rows {
         //and matriculas.estado in ('Matriculado','Recibir','Retirado')
         String q = "Select codigomap, matricula,notas.materia, " + query + "  " +
                 "from notas, materia_profesor, matriculas mat, estudiantes est " +
-                "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "'  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante " +
-                "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  and estado in ('Matriculado','Recibir') )" +
-                "and notas.disciplina = false  " +
+                "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "' " +
+                " AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante " +
+                "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "' " +
+                " and estado in ('Matriculado','Recibir') )" +
+                "and notas.disciplina = false and materia_profesor.seimprime = true  " +
                 "order by CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
         System.out.println("" + q);
@@ -1001,12 +1007,13 @@ public class notas extends Rows {
         List sistemas = adm.query("Select o from Sistemacalificacion as o " +
                 "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                 "and o.orden <= '" + sistema.getOrden() + "' " +
-                "and o.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "' order by o.orden ");
+                "and o.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "' " +
+                "and o.seimprime = true order by o.orden ");
 
         List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
                 "where  o.sistema.orden  <= '" + sistema.getOrden() + "'  " +
                 "and o.sistema.trimestre.codigotrim =  '" + sistema.getTrimestre().getCodigotrim() + "' " +
-                "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true " +
                 "order by o.sistema.orden ");
 
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o " +
@@ -1030,7 +1037,7 @@ public class notas extends Rows {
         String q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est " +
                 "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante " +
                 "and materia_profesor.curso = '" + curso.getCodigocur() + "' " +
-                "and notas.promedia = true and notas.disciplina = false   " +
+                "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  " +
                 "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) " +
                 "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
@@ -1123,9 +1130,12 @@ public class notas extends Rows {
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o " +
                 "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List sistemas = adm.query("Select o from Sistemacalificacion as o " +
-                "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
+                "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                " and o.seimprime = true and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
-                " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  and o.sistema.orden <=  '" + sistema.getOrden() + "'  order by o.sistema.orden ");
+                " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  " +
+                "and o.sistema.orden <=  '" + sistema.getOrden() + "'" +
+                " and o.sistema.seimprime = true  order by o.sistema.orden ");
         String query = "";
         String query2 = "";
         String queryDisciplina = "";
