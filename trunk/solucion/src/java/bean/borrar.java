@@ -5,21 +5,13 @@
 
 package bean;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 import jcinform.persistencia.*;
-import jcinform.procesos.Administrador;
 
  
 import org.zkoss.util.media.Media;
-import org.zkoss.zkmax.zul.Tablechildren;
-import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Tree;
+import org.zkoss.zul.Treeitem;
 
 
 /**
@@ -30,6 +22,7 @@ public class borrar {
 //Panel p;
 void func() throws InterruptedException{
     Media media = Fileupload.get();
+ 
 
 //    media.getByteData();
 //    AImage a;
