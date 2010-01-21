@@ -1139,14 +1139,14 @@ public class notas extends Rows {
         String query = "";
         String query2 = "";
         String queryDisciplina = "";
-        String numeroDecimales = "3";
+        Double numeroDecimales = regresaVariableParametrosDecimal("DECIMALESPRO", parametrosGlobales);
         Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
         //DECIMALESDIS
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
         }
         for (Notanotas notass : notas) {
-            query2 += "round(cast(avg(" + notass.getNota() + ") as decimal)," + numeroDecimales + "),";
+            query2 += "round(cast(avg(" + notass.getNota() + ") as decimal(9,4))," + numeroDecimales.intValue() + "),";
         }
         for (Notanotas notass : notas) {
             queryDisciplina += "cast(round(cast(avg(" + notass.getNota() + ") as decimal)," + numeroDecimalesDisc.intValue() + ") as decimal),";
@@ -1673,7 +1673,7 @@ public class notas extends Rows {
         }
         //round(avg(nota1),3),
         for (Actagrado notass : notas) {
-            query2 += "round(cast(avg(" + notass.getColumna() + ") as decimal)," + numeroDecimales + "),";
+            query2 += "round(cast(avg(" + notass.getColumna() + ") as decimal(9,2))," + numeroDecimales + "),";
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         query2 = query2.substring(0, query2.length() - 1).replace("'", "");
