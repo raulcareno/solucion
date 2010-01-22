@@ -34,6 +34,7 @@
 	<field name="sello" class="java.io.InputStream"/>
 	<field name="matricula" class="java.lang.String"/>
 	<field name="fecha" class="java.util.Date"/>
+	<field name="observacion" class="java.lang.String"/>
 
 
 		<group  name="curso" isStartNewPage="true" >
@@ -302,6 +303,19 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{matricula}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="464"
+						y="0"
+						width="75"
+						height="16"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{observacion}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
