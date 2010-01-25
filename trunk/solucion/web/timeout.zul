@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<zk xmlns="http://www.zkoss.org/2005/zul">
+<zk xmlns:h="http://www.w3.org/1999/xhtml"
+ xmlns="http://www.zkoss.org/2005/zul">
     <zscript >
         Session a = Sessions.getCurrent();
  void salir(){
@@ -11,13 +12,27 @@
         
  }
     </zscript>
-<window  style="position:absolute; top:20%; left:35%"  title="JCINFORM"  border="normal">
-    Por su seguridad su session ha expirado...!
-    presione el boton
-    <toolbarbutton  style="color:#346B93;font-weight:bold;"
-    label=" [Ingresar]" onClick="salir()"/>
-    para volver a ingresar
+<window  style="position:absolute; top:20%; left:30%"  
+border="normal">
+    <image src="/images/about.png" style="aling:center"/>
+    <html>
     
+    
+		<attribute name="content" >
+		<p> 
+    &lt;font color=red&gt;POR SU SEGURIDAD SU SESSION HA EXPIRADO...!
+    
+    </p>
+    <p>
+        PRESIONE EL BOTÓN INGRESAR
+     PARA VOLVER A SU SESIÓN
+      &lt;/font&gt;
+
+     </p>
+		</attribute>
+    </html>
+    <toolbarbutton  style="color:#346B93;font-weight:bold;"
+    label="&gt;&gt;&gt;&gt;&gt;[INGRESAR] &lt;&lt;&lt;&lt;" onClick="salir()"/>
 </window>
 
 </zk>
