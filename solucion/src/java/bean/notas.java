@@ -25,6 +25,7 @@ import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Decimalbox;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
@@ -47,6 +48,7 @@ public class notas extends Rows {
 
     public notas() {
 //         Grid g;
+         
 //         Label l;
 //         Row row;
 
@@ -170,7 +172,7 @@ public class notas extends Rows {
                     int dat = j-2;
                      DateMidnight inicial = new DateMidnight(((Sistemacalificacion)sistemas.get(dat)).getFechainicial());
                      DateMidnight finale = new DateMidnight(((Sistemacalificacion)sistemas.get(dat)).getFechafinal());
- 
+
                      if(actual.compareTo(finale) <=0 && actual.compareTo(inicial) >=0){
                                 label.setDisabled(false);
                                 label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;");
@@ -179,6 +181,17 @@ public class notas extends Rows {
                                label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-color:black;weigth:bold");
 
                      }
+                        try{
+                            Date fecha  = ((Sistemacalificacion)sistemas.get(dat)).getFechainicial();
+                            System.out.println("FECHA INICIAL: "+fecha);
+                           if(fecha.getDate() == 0){
+                                label.setDisabled(true);
+                               label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-color:black;weigth:bold");
+                           }
+                         }catch(Exception z){
+                                label.setDisabled(true);
+                               label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-color:black;weigth:bold");
+                         }
 //                      if(inicial.compareTo(null)==0){
 //                            label.setDisabled(true);
 //                            label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-color:black;weigth:bold");
