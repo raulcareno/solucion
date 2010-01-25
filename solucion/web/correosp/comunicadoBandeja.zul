@@ -22,6 +22,9 @@
         "and  (o.tiporemitente = 'E' or o.tiporemitente = 'D') and o.eliminado = false and o.archivado = false ");
 
 
+    adm.ejecutaSqlNativo("DELETE FROM correos WHERE eliminado = TRUE  AND DATEDIFF(NOW(),fecha) > 3");
+
+
  void ingresar(String valor){
         Include inc = (Include) correoPanel;
         inc.setSrc(valor);

@@ -14,11 +14,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-import org.zkforge.yuiext.grid.Label;
-import org.zkforge.yuiext.grid.Row;
-import org.zkforge.yuiext.grid.Rows;
+import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Decimalbox;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
 
 public class notasGrado extends Rows {
 //ArrayList listad = new ArrayList();
@@ -36,7 +38,8 @@ public class notasGrado extends Rows {
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         getChildren().clear();
-        Label label = null;
+        Label label3 = null;
+         Decimalbox label = null;
         String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas " +
                 "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
                 "left join notasgrado on matriculas.codigomat = notasgrado.matricula " +
@@ -57,7 +60,8 @@ public class notasGrado extends Rows {
             row = new Row();
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
-                label = new Label();
+                 label = new Decimalbox();
+                label3 = new Label();
                 try {
                     if (dos.equals(null)) {
                         dos = new Double(0.0);
@@ -68,18 +72,31 @@ public class notasGrado extends Rows {
                 if (j >= 2) {
                     Double valor = (Double) dos;
                     if(valor.equals(0.0)){
-                        label.setValue("");
+                       label.setValue(new BigDecimal(0));
                     }else{
-                        label.setValue("" + redondear((Double) dos, 2));
+                        label.setValue(new BigDecimal(redondear((Double) dos, 2)));
                     }
                     
                 } else {
                     String valor = dos.toString().replace("(","").replace(")","").replace("\"","").replace(",","");
-                    label.setValue("" + valor);
-                    //label.setValue("" + dos);
+                    label3.setValue("" + valor);
                 }
-//                                 label.setAttribute(q, dos);
-                row.appendChild(label);
+       if(j==0){
+                    label3.setStyle("width:15px;font-size:11px;font:arial; ");
+                    //label3.setReadonly(true);
+                    row.appendChild(label3);
+                }else if(j==1){
+                    label3.setStyle("width:300px;font-size:11px;font:arial; ");
+                    //label3.setReadonly(true);
+                    row.appendChild(label3);
+                }else if(j==(vec.size()-1)){
+                    label.setDisabled(true);
+                    row.appendChild(label);
+                }else{
+
+                     row.appendChild(label);
+                }
+//                row.appendChild(label);
 //                                 System.out.print(","+dos);
             }
 
@@ -124,7 +141,7 @@ public class notasGrado extends Rows {
                     nota.setFecha(new Date());
                     inter.set("nota", nota);
                     for (int j = 2; j < labels.size(); j++) {
-                        Label object1 = (Label) labels.get(j);
+                        Decimalbox object1 = (Decimalbox) labels.get(j);
                         String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
                         formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
                         String toda = notas.get(j - 2).getColumna() + "";

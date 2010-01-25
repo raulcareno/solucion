@@ -23,6 +23,12 @@
         a.removeAttribute("user");
         a.invalidate();
  }
+   void ingresar(String valor){
+
+        Include inc = (Include) xcontents;
+        inc.setSrc(valor);
+ }
+
  void cambio(){
      Permisos permisos = new Permisos();
      Periodo perio = (Periodo)periodo.selectedItem.value;
@@ -65,7 +71,7 @@ void verificar(){
                                               Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
                                               Listitem li = new Listitem();
                                               li.setValue(acceIt.getPeriodo());
-                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " "+ acceIt.getPeriodo().getInstitucion().getTipo()));
+                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " - "+ acceIt.getPeriodo().getInstitucion().getTipo() +" [" +acceIt.getPeriodo().getSeccion()+"]"));
                                               periodo.appendChild(li);
                                      }
 
@@ -136,7 +142,11 @@ void verificar(){
 						<hbox>
 							<label value="Bienvenido:" style="color:#346B93;font-weight:bold;" />
 							<label style="color:#346B93;" value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
-                            <toolbarbutton  style="color:#346B93;font-weight:bold;"  label=" [Salir]" onClick="salir()"/>
+                            <separator/>
+                            <toolbarbutton  image="/images/exit.gif" style="color:#346B93;font-weight:bold;"  label=" [Cerrar Sesión]" onClick="salir()"/>
+                            <separator/>
+                            <toolbarbutton image="/images/candado.gif" label="Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
+
 						</hbox>
                         <hbox>
 							<label value="Perfil" style="color:#346B93;font-weight:bold;"  />

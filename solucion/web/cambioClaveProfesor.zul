@@ -55,12 +55,12 @@ Messagebox.show("Datos Actualizados con Éxito...!", "Administrador Educativo", 
     
         <row>
             Dirección:
-            <textbox id="direccion" maxlength="200" cols="35"  />
+            <textbox id="direccion" maxlength="200" cols="40"  />
 
         </row>
         <row>
             Email:
-            <textbox id="email" maxlength="200" cols="15"  />
+            <textbox id="email" maxlength="200" cols="40"  />
 
         </row>
 
