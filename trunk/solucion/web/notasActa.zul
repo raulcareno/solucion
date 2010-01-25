@@ -51,19 +51,16 @@ guardar(){
 ]]>
     </zscript>
 
-    <y:grid width="100%"  id="datos"  editable = "true">
-        <y:columns>
-           
-              <y:column editortype="readonly" style="font-size:11px" width="20px" label ="Mat."/>
-             <y:column editortype="readonly"  width="240px" label ="Estudiante"/>
-             <y:column forEach="${values}"  width="25px" editortype="${each[1]}" label="${each[0]}" align="right"  />
-
-        </y:columns>
-        <y:rows id="filas"  use="bean.notasActa">
-        </y:rows>
-
-    </y:grid>
  
+   <grid  id="datos" >
+        <columns>
+            <column width="15px"   label ="Mat."/>
+            <column width="300px" label ="Estudiante"/>
+            <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+        </columns>
+        <rows id="filas" use="bean.notasActa">
+        </rows>
+    </grid>
 <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
 <!--separator bar="true"/>
 IMPRESIÓN

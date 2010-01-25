@@ -20,6 +20,9 @@
 
      List allEvents = adm.query("Select o from Correos as o where o.destinatario = '"+estudiante.getCodigoest()+"' " +
         "and  o.tiporemitente = 'P' and o.eliminado = false and o.archivado = false ");
+         adm.ejecutaSqlNativo("DELETE FROM correos WHERE eliminado = TRUE  AND DATEDIFF(NOW(),fecha) > 3");
+
+
 public void buscar(){
      List allEvents = adm.query("Select o from Correos as o where o.destinatario = '"+estudiante.getCodigoest()+"' " +
         "and  o.tiporemitente = 'P' and o.eliminado = false and o.archivado = false order by o.fecha ");

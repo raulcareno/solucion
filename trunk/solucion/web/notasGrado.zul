@@ -1,10 +1,10 @@
 <?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
 <?page id="main-page"?>
 <window xmlns:y="http://www.zkoss.org/2007/yui"
-title="Notas del Estudiante" onCreate="notas()"    mode="overlapped"  
-sizable="true"  closable="true" border="normal" width="80%" id="principalGrado">
-<zscript>
-<![CDATA[
+        title="Notas del Estudiante" onCreate="notas()"    mode="overlapped"
+        sizable="true"  closable="true" border="normal" width="80%" id="principalGrado">
+    <zscript>
+        <![CDATA[
 import bean.notasGrado;
 import java.math.BigDecimal;
 
@@ -17,13 +17,13 @@ import org.zkoss.zul.Listbox;
 
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
- 
+
 Cursos periodo = (Cursos) ses.getAttribute("curso");
 List sistemas = adm.query("Select o from Materiasgrado as o "+
                  " where o.curso.codigocur =  '"+periodo.getCodigocur()+"' order by o.codigo ");
- 
+
 String[][] values = new String[sistemas.size()][2];
- 
+
                   for (int i=0;i<sistemas.size();i++) {
                      values[i][0]= ((Materiasgrado)sistemas.get(i)).getNombre();
                      values[i][1]= "number";
@@ -48,30 +48,27 @@ guardar(){
 
 ]]>
     </zscript>
-
-    <y:grid width="100%"  id="datos"  editable = "true">
-        <y:columns>
-           
-              <y:column editortype="readonly" style="font-size:11px" width="20px" label ="Mat."/>
-             <y:column editortype="readonly"  width="240px" label ="Estudiante"/>
-             <y:column forEach="${values}"  width="25px" editortype="${each[1]}" label="${each[0]}" align="right"  />
-
-        </y:columns>
-        <y:rows id="filas"  use="bean.notasGrado">
-        </y:rows>
-
-    </y:grid>
  
-<button label="Guardar"  image="/images/guardar.gif" onClick="guardar(); principalGrado.detach();"/>
-<zscript><![CDATA[
+    <grid  id="datos" >
+        <columns>
+            <column width="15px"   label ="Mat."/>
+            <column width="300px" label ="Estudiante"/>
+            <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+        </columns>
+        <rows id="filas" use="bean.notasGrado">
+        </rows>
+    </grid>
+
+
+    <button label="Guardar"  image="/images/guardar.gif" onClick="guardar(); principalGrado.detach();"/>
+    <zscript><![CDATA[
 
 void notas(){
         Cursos mat = principalGrado.getAttribute("curso");
         filas.addRow(mat);
 }
 
-]]>
-</zscript>
+        ]]>
+    </zscript>
 </window>
 
-	

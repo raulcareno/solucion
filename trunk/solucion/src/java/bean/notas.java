@@ -106,7 +106,7 @@ public class notas extends Rows {
         //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
         getChildren().clear();
         Decimalbox label = null;
-        Textbox label3 = null;
+        Label label3 = null;
 
         String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas " +
                 "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
@@ -133,7 +133,7 @@ public class notas extends Rows {
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
                 label = new Decimalbox();
-                label3 = new Textbox();
+                label3 = new Label();
 //                 label.setAttribute("onBlur", "alert(this)");
                 try {
                     if (dos.equals(null)) {
@@ -157,11 +157,11 @@ public class notas extends Rows {
 //                                 label.setAttribute(q, dos);
                 if(j==0){
                     label3.setStyle("width:15px;font-size:11px;font:arial; ");
-                    label3.setReadonly(true);
+//                    label3.setReadonly(true);
                     row.appendChild(label3);
                 }else if(j==1){
                     label3.setStyle("width:300px;font-size:11px;font:arial; ");
-                    label3.setReadonly(true);
+//                    label3.setReadonly(true);
                     row.appendChild(label3);
                 }else{
                     
@@ -206,7 +206,7 @@ public class notas extends Rows {
         for (int i = 0; i < col.size(); i++) {
             Row object = (Row) col.get(i);
             List labels = object.getChildren();
-            Matriculas ma = (Matriculas) adm.buscarClave(new Integer(((Textbox) labels.get(0)).getValue()), Matriculas.class);
+            Matriculas ma = (Matriculas) adm.buscarClave(new Integer(((Label) labels.get(0)).getValue()), Matriculas.class);
             //nota.setMatricula(new Matriculas(new Integer(((Label) vecDato.get(0)).getValue())));
             for (int j = 2; j < labels.size(); j++) {
                 Decimalbox object1 = (Decimalbox) labels.get(j);
@@ -267,7 +267,7 @@ public class notas extends Rows {
                     Notas nota = new Notas();
                     nota.setCodigonot(sec.generarClave());
                     List labels = object.getChildren();
-                    nota.setMatricula(new Matriculas(new Integer(((Textbox) labels.get(0)).getValue())));
+                    nota.setMatricula(new Matriculas(new Integer(((Label) labels.get(0)).getValue())));
                     nota.setMateria(materia.getMateria());
                     nota.setFecha(new Date());
                     nota.setOrden(materia.getOrden());

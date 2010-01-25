@@ -102,7 +102,7 @@
        <listbox id="periodosListado" mold="select" >
             <listitem  label="[Seleccione]" value="-1"/>
 			<listitem forEach="${periodosListadod}" value="${each}">
-                <listcell label="${each.descripcion} ${each.institucion}" />
+                <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
             </listitem>
 		</listbox>
     </hbox>
@@ -111,7 +111,7 @@
        <listbox id="periodosListado2" mold="select" >
             <listitem  label="[Seleccione]" value="-1"/>
 			<listitem forEach="${periodosListadod}" value="${each}">
-                <listcell label="${each.descripcion} ${each.institucion}" />
+                <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
             </listitem>
 		</listbox>
     </hbox>

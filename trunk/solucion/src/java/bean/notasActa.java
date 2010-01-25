@@ -4,6 +4,7 @@ import bsh.EvalError;
 import bsh.Interpreter;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,11 +15,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-import org.zkforge.yuiext.grid.Label;
-import org.zkforge.yuiext.grid.Row;
-import org.zkforge.yuiext.grid.Rows;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Decimalbox;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
 
 public class notasActa extends Rows {
 //ArrayList listad = new ArrayList();
@@ -45,7 +47,8 @@ String columnaExamen ="";
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         getChildren().clear();
-        Label label = null;
+     Decimalbox label = null;
+        Label label3 = null;
         String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas " +
                 "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
                 "left join notasacta on matriculas.codigomat = notasacta.matricula " +
@@ -68,7 +71,8 @@ String columnaExamen ="";
             Matriculas matricula = null;
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
-                label = new Label();
+                label = new Decimalbox();
+                label3 = new Label();
                 try {
                     if (dos.equals(null)) {
                         dos = new Double(0.0);
@@ -80,11 +84,12 @@ String columnaExamen ="";
                 if (j >= 2) {
 
                     Double valor = (Double) dos;
-                    if(valor.equals(0.0)){
-                        label.setValue("");
-                    }else{
-                        label.setValue("" + redondear((Double) dos, 2));
+                    if (valor.equals(0.0)) {
+                        label.setValue(new BigDecimal(0));
+                    } else {
+                        label.setValue(new BigDecimal(redondear((Double) dos, 2)));
                     }
+
                     String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
                     if(formula.contains("primero")
                             || formula.contains("segundo")
@@ -95,9 +100,9 @@ String columnaExamen ="";
                         List rec =  adm.queryNativo("Select ("+formula+") from Notasrecord " +
                                  "where estudiante = '"+matricula.getEstudiante().getCodigoest()+"' ");
                               if(rec==null || rec.size()<=0){
-                                  label.setValue("");
+                                  label.setValue(new BigDecimal(0));
                               }else{
-                                 label.setValue("" + redondear((Double) ((Vector)rec.get(0)).get(0) , 2));
+                                 label.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) , 2)));
 
                               }
                         
@@ -106,9 +111,9 @@ String columnaExamen ="";
                          List rec =  adm.queryNativo("Select ("+columnaExamen+") from Notasgrado " +
                                  "where matricula = '"+matricula.getCodigomat()+"' ");
                               if(rec==null){
-                                  label.setValue("");
+                                  label.setValue(new BigDecimal(0));
                               }else{
-                                 label.setValue("" + redondear((Double) ((Vector)rec.get(0)).get(0) , 2));
+                                 label.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) , 2)));
 
                               }
                         }catch(Exception e){
@@ -120,16 +125,32 @@ String columnaExamen ="";
                     
                 } else if(j==0) {
                     matricula = (Matriculas) adm.buscarClave(new Integer(dos.toString()),Matriculas.class);
-                    label.setValue("" + dos);
+                    label3.setValue("" + dos);
+                    
                 } else {
                     String valor = dos.toString().replace("(","").replace(")","").replace("\"","").replace(",","");
-                    label.setValue("" + valor);
+                    label3.setValue("" + valor);
+ 
                     //label.setValue("" + dos);
                 }
-//                                 label.setAttribute(q, dos);
-                row.appendChild(label);
+                  if(j==0){
+                    label3.setStyle("width:15px;font-size:11px;font:arial; ");
+                    row.appendChild(label3);
+                }else if(j==1){
+                    label3.setStyle("width:300px;font-size:11px;font:arial; ");
+                    row.appendChild(label3);
+                }else{
+                     row.appendChild(label);
+                }
+
+                //row.appendChild(label);
 //                                 System.out.print(","+dos);
             }
+
+//                                 label.setAttribute(q, dos);
+                //row.appendChild(label);
+//                                 System.out.print(","+dos);
+//            }
 
             row.setParent(this);
         }
@@ -178,7 +199,7 @@ String columnaExamen ="";
                                 "}");
                    
                     for (int j = 2; j < labels.size(); j++) {
-                        Label object1 = (Label) labels.get(j);
+                        Decimalbox object1 = (Decimalbox) labels.get(j);
                         String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
                         String formula0 = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
                         formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
