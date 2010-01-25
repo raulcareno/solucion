@@ -183,7 +183,7 @@ public class notas extends Rows {
                      }
                         try{
                             Date fecha  = ((Sistemacalificacion)sistemas.get(dat)).getFechainicial();
-                            System.out.println("FECHA INICIAL: "+fecha);
+//                            System.out.println("FECHA INICIAL: "+fecha);
                            if(fecha.getDate() == 0){
                                 label.setDisabled(true);
                                label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-color:black;weigth:bold");
