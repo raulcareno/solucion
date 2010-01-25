@@ -91,6 +91,7 @@ void buscar2(Cursos cur){
         List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"' and o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
         //bd2.getItems().clear();
 mates.getChildren().clear();
+datos.getRows().getChildren().clear();
 bd2.value = ""; 
                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
                       MateriaProfesor estudent = (MateriaProfesor) it.next();

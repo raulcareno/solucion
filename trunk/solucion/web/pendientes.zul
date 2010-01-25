@@ -57,7 +57,7 @@ void guardar(){
  
     void buscar(Cursos p){
         datos.setModel(null);
-       accesosList = adm.query("Select o.estudiante from Matriculas as o where o.curso.codigocur = '"+p.getCodigocur()+"' ");
+       accesosList = adm.query("Select o.estudiante from Matriculas as o where o.curso.codigocur = '"+p.getCodigocur()+"' order by o.estudiante.apellido ");
        ListModel mo = new SimpleListModel(accesosList.toArray());
        datos.setModel(mo);
     }
