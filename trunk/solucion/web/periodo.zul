@@ -22,17 +22,18 @@
        <caption label="Agregar" />
 <grid width="100%">
 <rows> 
-    <row>
+    <row visible="false">
         <span style="float:right"> Código(*):</span>
        <textbox id="codigo"  readonly="true" value="@{inobjeto.codigoper}" onChange="update();"/>
     </row>
     <row>
         <span style="float:right"> Año Lectivo(*):</span>
+       <span>
        <textbox id="descripcion" value="@{inobjeto.descripcion}"  onChange="update();"/>
-    </row>
-    <row>
-        <span style="float:right"> Estado(*):</span>
+    
+        Estado(*): 
 		<checkbox id="estado"    checked="@{inobjeto.estado}" onCheck="update();" />
+        </span>
     </row>
      <row>
         <span style="float:right"> Institucion(*):</span>
@@ -44,17 +45,16 @@
  <row>
 
         <span style="float:right"> Jornada:</span>
-		<listbox id="seccionesL" mold="select" >
+		<span>
+        <listbox id="seccionesL" mold="select" >
 			<listitem selected="true"  forEach="${secciones}" value="${each}">
                   <listcell label="${each.descripcion}" />
             </listitem>
 		</listbox>
- </row>
-
- <row>
-
-        <span style="float:right"> Regimen:</span>
+ 
+        Regimen:
 		 <textbox id="regimen" value="@{inobjeto.regimen}"  onChange="update();"/>
+         </span>
  </row>
  
 </rows>

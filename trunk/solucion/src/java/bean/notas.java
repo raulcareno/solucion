@@ -114,7 +114,7 @@ public class notas extends Rows {
                 "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
                 "left join notas on matriculas.codigomat = notas.matricula " +
                 "and notas.materia = '" + materia.getMateria().getCodigo() + "' and notas.disciplina = false  " +
-                "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir' ) " +
+                "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase' ) " +
                 "order by estudiantes.apellido";
         ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1), ParametrosGlobales.class);
         if (para.getCvalor().equals("P")) {
@@ -122,7 +122,7 @@ public class notas extends Rows {
                     "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
                     "left join notas on matriculas.codigomat = notas.matricula " +
                     "and notas.materia = '" + materia.getMateria().getCodigo() + "' and notas.disciplina = false  " +
-                    "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir' )" +
+                    "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase' )" +
                     "order by estudiantes.apellido";
         }
         System.out.println("" + q);
@@ -382,7 +382,7 @@ public class notas extends Rows {
                                 "left join notas on matriculas.codigomat = notas.matricula " +
                                 "and notas.materia = '" + global.getCodigo() + "' and notas.disciplina = false " +
                                 "where matriculas.curso = '" + curso.getCodigocur() + "'  " +
-                                " and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir') " +
+                                " and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase') " +
                                 "order by estudiantes.apellido";
 //
                         List nativo = adm.queryNativo(q);
@@ -560,7 +560,7 @@ public class notas extends Rows {
                     "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
                     "left join notas on matriculas.codigomat = notas.matricula " +
                     "and notas.materia = '" + materia.getCodigo() + "' and notas.disciplina = false " +
-                    "where matriculas.curso = '" + curso.getCodigocur() + "' and matriculas.estado in ('Matriculado','Recibir')  " +
+                    "where matriculas.curso = '" + curso.getCodigocur() + "' and matriculas.estado in ('Matriculado','Recibir Pase')  " +
                     "order by estudiantes.apellido";
             List resulValor = adm.queryNativo(q2);
             Long totalEstudiantes = (Long) ((Vector) resulValor.get(0)).get(0);
@@ -576,7 +576,7 @@ public class notas extends Rows {
                         "and notas.materia = '" + materia.getCodigo() + "' and notas.disciplina = false " +
                         "where matriculas.curso = '" + curso.getCodigocur() + "' and  " + notaAseleccionar + " " +
                         " BETWEEN " + equivalencias1.getValorminimo() + " AND " + equivalencias1.getValormaximo() + " " +
-                        "and matriculas.estado in ('Matriculado','Recibir')  " +
+                        "and matriculas.estado in ('Matriculado','Recibir Pase')  " +
                         "order by estudiantes.apellido";
 //                 System.out.println(""+q);
                 List valor = adm.queryNativo(q);
@@ -599,7 +599,7 @@ public class notas extends Rows {
                 "left join notas on matriculas.codigomat = notas.matricula " +
                 "and notas.materia = '" + materia.getCodigo() + "' and notas.disciplina = false " +
                 "where matriculas.curso = '" + curso.getCodigocur() + "' " +
-                "and matriculas.estado in ('Matriculado','Recibir')  " +
+                "and matriculas.estado in ('Matriculado','Recibir Pase')  " +
                 "order by estudiantes.apellido";
 //     System.out.println(""+q);
         List nativo = adm.queryNativo(q);
@@ -670,7 +670,7 @@ public class notas extends Rows {
                 "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
                 "left join notas on matriculas.codigomat = notas.matricula " +
                 "and notas.materia = '" + materia.getCodigo() + "' and notas.disciplina = true " +
-                "where matriculas.curso = '" + curso.getCodigocur() + "' and matriculas.estado in ('Matriculado','Recibir')  " +
+                "where matriculas.curso = '" + curso.getCodigocur() + "' and matriculas.estado in ('Matriculado','Recibir Pase')  " +
                 "order by estudiantes.apellido";
 //     System.out.println(""+q);
         List nativo = adm.queryNativo(q);
@@ -749,13 +749,13 @@ public class notas extends Rows {
 /*String q = "Select matricula,materia, "+query+" from notas " +
         "where matricula in (select codigomat from matriculas where  curso  =  '"+curso.getCodigocur()+"' ) " +
         " ";*/
-        //and matriculas.estado in ('Matriculado','Recibir','Retirado')
+        //and matriculas.estado in ('Matriculado','Recibir Pase','Retirado')
         String q = "Select codigomap, matricula,notas.materia, " + query + "  " +
                 "from notas, materia_profesor, matriculas mat, estudiantes est " +
                 "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "' " +
                 " AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante " +
                 "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "' " +
-                " and estado in ('Matriculado','Recibir') )" +
+                " and estado in ('Matriculado','Recibir Pase') )" +
                 "and notas.disciplina = false and materia_profesor.seimprime = true  " +
                 "order by CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
@@ -2247,7 +2247,7 @@ public class notas extends Rows {
                                 "and notas.materia = '" + global.getCodigo() + "' " +
                                 "and notas.disciplina = true " +
                                 "where matriculas.curso = '" + ActualCurso.getCodigocur() + "' " +
-                                "and matriculas.estado in ('Matriculado','Recibir','Retirado') " +
+                                "and matriculas.estado in ('Matriculado','Recibir Pase','Retirado') " +
                                 "order by estudiantes.apellido";
 //                        System.out.println("" + q);
                         List nativo = adm.queryNativo(q);
