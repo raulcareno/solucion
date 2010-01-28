@@ -158,10 +158,13 @@
 				</textField>
 				<subreport  isUsingCache="true">
 					<reportElement
+						mode="Opaque"
 						x="-10"
 						y="18"
-						width="549"
+						width="398"
 						height="32"
+						forecolor="#FFFFFF"
+						backcolor="#FFFFFF"
 						key="subreport-2"
 						isRemoveLineWhenBlank="true"/>
 					<subreportParameter  name="listaFaltas">
@@ -358,7 +361,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{nombre}]]></textFieldExpression>
 				</textField>
-				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<image  isUsingCache="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="-6"
 						y="1"

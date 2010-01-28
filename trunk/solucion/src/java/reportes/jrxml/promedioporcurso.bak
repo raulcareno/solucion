@@ -187,7 +187,7 @@
 						width="463"
 						height="14"
 						key="staticText-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="23" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
@@ -261,15 +261,11 @@
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageFooter>
-		<summary>
-			<band height="23"  isSplitAllowed="true" >
+			<band height="19"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="455"
-						y="0"
+						y="1"
 						width="80"
 						height="18"
 						key="textField"/>
@@ -282,7 +278,7 @@
 				<staticText>
 					<reportElement
 						x="292"
-						y="2"
+						y="3"
 						width="160"
 						height="14"
 						key="staticText-10"/>
@@ -292,6 +288,38 @@
 					</textElement>
 				<text><![CDATA[MEDIA ARITMETICA:]]></text>
 				</staticText>
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="632"  isSplitAllowed="true" >
+				<pieChart>
+					<chart  hyperlinkTarget="Self" >
+					<reportElement
+						x="-8"
+						y="15"
+						width="538"
+						height="617"
+						key="element-1"
+						isPrintWhenDetailOverflows="true"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
+					<font fontName="SansSerif" pdfFontName="Helvetica" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false" pdfEncoding="Cp1252"/>
+					</chartLegend>
+					</chart>
+					<pieDataset>
+						<dataset >
+						</dataset>
+						<keyExpression><![CDATA[$F{curso}]]></keyExpression>
+						<valueExpression><![CDATA[$F{nota}]]></valueExpression>
+						<labelExpression><![CDATA[$F{nota}+""]]></labelExpression>
+				<sectionHyperlink >
+				</sectionHyperlink>
+					</pieDataset>
+					<piePlot 
+isCircular="true" >
+						<plot labelRotation="40.0" />
+					</piePlot>
+				</pieChart>
 			</band>
 		</summary>
 </jasperReport>

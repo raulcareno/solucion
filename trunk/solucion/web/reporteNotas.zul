@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window  mode="overlapped" onCreate="cargando();"  title="Reporte de Notas" width="81%" height="100%" border="normal"
+<window  mode="overlapped" onCreate="cargando();"  title="Reporte de Notas"
+width="79%" height="100%" border="normal"
     maximizable="true" closable="true" sizable="true">
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
@@ -378,7 +379,7 @@ void campos(String valor){
 <panel width="100%" id="parametros"  height="100%" border="normal"
 collapsible="true" title="Parametros">
 				<panelchildren>
-<grid width="100%">
+<grid width="550px">
 <rows>
 <row>
      

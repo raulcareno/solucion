@@ -1,0 +1,29 @@
+<?page title="News Calendar" contentType="text/html;charset=UTF-8"?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<?component name="CreateDialog" macroURI="createEntry.zul"?>
+<?component name="UpdateDialog" macroURI="updateEntry.zul"?>
+<zk>
+    <script>
+        public void cargar(){
+                cal.setCurrentDate(fecha.getValue());
+        }
+    </script>
+	<window id="win" border="none" apply="org.zkoss.zknewsfeed.controllers.NewsController" height="100%" width="100%">
+		<CreateDialog id="creationDialog" />
+		<UpdateDialog id="updateDialog" />
+        <button  image='/images/semana.gif' onClick='cal.setMold("default")' label="Ver por semana" />
+        <button  image='/images/mes.gif' onClick='cal.setMold("month")' label="Ver por Mes" />
+        Cambiar mes:
+        <datebox id="fecha"  />
+        <button image='/images/ok.gif'  onClick='cal.setCurrentDate(fecha.getValue())' label="Seleccionar" />
+        
+
+			<calendars  firstDayOfWeek="Monday" mold="month"
+                    model="@{win$composer.getCalendarModel}"
+					   id="cal">
+			</calendars>
+			  
+
+	</window>
+	
+</zk>

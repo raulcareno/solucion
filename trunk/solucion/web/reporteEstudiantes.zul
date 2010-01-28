@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window  mode="overlapped"  onCreate="cargando();"    title="Reporte de Estudiantes" width="81%" height="100%" border="normal"
+<window  mode="overlapped"  onCreate="cargando();"    title="Reporte de Estudiantes" width="79%" height="100%" border="normal"
     maximizable="true" closable="true" sizable="true">
     <zk xmlns="http://www.zkoss.org/2005/zul">
 
@@ -69,14 +69,14 @@ public JRDataSource certificados(Cursos curso,String tipo){
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
                     String query = "SELECT mat FROM Matriculas AS mat " +
-                            "WHERE  mat.estado in ('Matriculado','Recibir','Retirado') " +
+                            "WHERE  mat.estado in ('Matriculado','Recibir Pase','Retirado') " +
                             "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                             " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
                     if (!curso.getCodigocur().equals(-2)) {
                         query = "Select o from Matriculas as o " +
                                 "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                                 "and o.curso.codigocur = '" + curso.getCodigocur() + "' " +
-                                " and o.estado in ('Matriculado','Recibir','Retirado') order by o.curso.secuencia,o.estudiante.apellido";
+                                " and o.estado in ('Matriculado','Recibir Pase','Retirado') order by o.curso.secuencia,o.estudiante.apellido";
                     }
 
                     List hoy = adm.query(query);
@@ -101,7 +101,7 @@ public JRDataSource transporte(Cursos curso,String tipo){
                     ArrayList detalle = new ArrayList();
                     if(tipo.equals("LTRAN")){
                         String query = "SELECT mat FROM Matriculas AS mat " +
-                                "WHERE  mat.estado  in ('Matriculado','Recibir','Retirado') " +
+                                "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado') " +
                                 "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.estudiante.transporte = true  " +
                                 " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
                         if (!curso.getCodigocur().equals(-2)) {
@@ -117,7 +117,7 @@ public JRDataSource transporte(Cursos curso,String tipo){
                         }
                     }else if(tipo.equals("LCART")){
                         String query = "SELECT mat FROM Matriculas AS mat " +
-                                    "WHERE  mat.estado  in ('Matriculado','Recibir','Retirado') " +
+                                    "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado') " +
                                     "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                                     " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
                             if (!curso.getCodigocur().equals(-2)) {
@@ -144,7 +144,7 @@ public JRDataSource nuevos(Cursos curso,String tipo){
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
                     String query = "SELECT mat FROM Matriculas AS mat " +
-                            "WHERE  mat.estado  in ('Matriculado','Recibir','Retirado') " +
+                            "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado') " +
                             "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.nuevo = true  " +
                             " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
                     if (!curso.getCodigocur().equals(-2)) {
@@ -170,7 +170,7 @@ public JRDataSource internos(Cursos curso,String tipo){
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
                     String query = "SELECT mat FROM Matriculas AS mat " +
-                            "WHERE  mat.estado  in ('Matriculado','Recibir','Retirado') " +
+                            "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado') " +
                             "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.estudiante.adventista = true  " +
                             " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
                     if (!curso.getCodigocur().equals(-2)) {

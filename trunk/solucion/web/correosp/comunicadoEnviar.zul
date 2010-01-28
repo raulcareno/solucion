@@ -1,6 +1,6 @@
 
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <window closable="true" onCreate="cargando()" >
+    <window closable="true"    maximizable="true"   onCreate="cargando()" >
         <zscript>
             <![CDATA[
   import bean.EventDAO;
@@ -209,16 +209,12 @@ List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where
         <grid width="100%">
             <rows>
                 <row>
-                    <span>Tipo de Destinatario: </span>
+                    <span style="float:right"> Para (*):</span>
+                    <span>
                     <radiogroup Id="envia" >
                         <radio  id="profesores" onCheck="llenarEmpleados()"   label="Profesores"/>
                         <radio id = "estudiantes"  onCheck="llenarCursos()" selected="true" label="Estudiantes"/>
                     </radiogroup>
-                </row>
-                <row>
-                    <span style="float:right"> Para (*):</span>
-                    <span>
-                           
                         <listbox id="curs" width="420px" mold="select"
                     onSelect="tipo();">
 
@@ -226,8 +222,9 @@ List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where
                                 <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
                             </listitem>
                         </listbox>
-                    </span>
+                           </span>
                 </row>
+               
                 <row>
                     <span></span>
                     <span>
@@ -274,8 +271,7 @@ List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where
             Media media0 = Fileupload.get();
         if (media0 instanceof AMedia) {
                 AMedia media = (AMedia) media0;
-               
-                //String tipo = "."+media.getFormat();
+               //String tipo = "."+media.getFormat();
                 String nombre= media0.getName();
                 try{
                     data = media.getByteData();
@@ -307,14 +303,11 @@ List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where
                 <row>
                     <span style="float:right;align:top"> Mensaje</span>
         
-                    <textbox rows="10" width="420px" id="contenido"  maxlength="100" cols="50"  />
+                    <textbox rows="5" width="420px" id="contenido"  maxlength="100" cols="50"  />
                 </row>
-
-    
- 
-            </rows>
-        </grid>
-        <vbox>
+<row>
+    <span></span>
+      <vbox>
             <vbox>
                 <hbox>
                     <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"   onClick="guardar();"/>
@@ -322,6 +315,12 @@ List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where
             </vbox>
 
         </vbox>
+</row>
+    
+ 
+            </rows>
+        </grid>
+      
         <zscript>
         public void cargando(){
         try{
