@@ -89,7 +89,7 @@ Session a = Sessions.getCurrent();
                         <fisheyebar orient="vertical" id="fsb"  style="position:absolute;margin:25px 25px;"
 			attachEdge="top" itemWidth="90" itemHeight="90" itemMaxHeight="160" itemMaxWidth="160">
                             <fisheye image="/images/miscursos.png" onClick='ingresar("/cursosEstudiantes.zul")' />
-                            <fisheye image="/images/calendarioacademico.png"  onClick='ingresar("/calendar.zul")' />
+                            <fisheye image="/images/calendarioacademico.png"  onClick='ingresar("/calendar_1.zul")' />
                             <fisheye image="/images/cambioclave.png" onClick='ingresar("/cambioClaveEstudiante.zul")' />
                             <fisheye image="/images/correo.png" onClick='ingresar("/correos/comunicadoEstudianteIndex.zul")' />
                         </fisheyebar>

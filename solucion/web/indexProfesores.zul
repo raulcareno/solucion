@@ -144,7 +144,9 @@
 
                         <hbox>
                             <label  style="color:#346B93;" value=" "  />
-                        <toolbarbutton  style="color:#346B93;font-weight:bold;"  label="[Cerrar Sesión]" onClick="salir()"/>
+                        <toolbarbutton image="/images/exit.gif"  style="color:#346B93;font-weight:bold;"  label="[Cerrar Sesión]" onClick="salir()"/>
+                           <separator/>
+                           <toolbarbutton image="/images/candado.gif" label="Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
                         </hbox><hbox>
                         </hbox>
                 </vbox>
@@ -159,7 +161,7 @@
 
 <west title="Menú" size="18%" flex="true" splittable="true" collapsible="true">
          <div>
-<panel width="100%" border="normal"  title="Opciones" height="220px" collapsible="true" >
+<panel width="100%" border="normal"  title="Opciones" height="290px" collapsible="true" >
 				<panelchildren style="padding:0px;" >
 
 
@@ -189,14 +191,7 @@
  
 </panelchildren>
 </panel>
-<panel width="100%" border="normal"   height="120px" collapsible="true">
-<panelchildren>
-<separator/>
-<toolbarbutton image="/images/candado.gif" label="Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
 
-</panelchildren>
-
-</panel>
 <panel width="100%" border="normal"   collapsible="true"   title="Propiedades">
 				<panelchildren>
 

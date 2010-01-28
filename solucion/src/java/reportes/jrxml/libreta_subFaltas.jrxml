@@ -14,7 +14,7 @@
 		 rightMargin="0"
 		 topMargin="0"
 		 bottomMargin="0"
-		 whenNoDataType="AllSectionsNoDetail"
+		 whenNoDataType="NoPages"
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
 	<property name="ireport.scriptlethandling" value="0" />
@@ -64,6 +64,8 @@
 						y="1"
 						width="530"
 						height="46"
+						forecolor="#FFFFFF"
+						backcolor="#FFFFFF"
 						key="crosstab-1"
 						isRemoveLineWhenBlank="true"/>
 					<crosstabHeaderCell>						<cellContents mode="Transparent">
