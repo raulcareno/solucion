@@ -71,6 +71,7 @@ return true;
          Treeitem item = getSelectedItem();
 
          String menu = item.getId();
+         
          if(menu.contains("ss")){
              if(item != null) {
                     Tabs tbs = (Tabs)getSpaceOwner().getFellow("tbs");
@@ -99,7 +100,7 @@ return true;
                     Tabs tbs = (Tabs)getSpaceOwner().getFellow("tbs");
                     if(buscar((String)item.getValue(),tbs)){
                         Tabpanels tps = (Tabpanels)getSpaceOwner().getFellow("tps");
-                            Tab newtb= new Tab(((String)item.getValue()).replace("/","").replace(".zul", ""));
+                            Tab newtb= new Tab(item.getLabel());
                             newtb.setClosable(true);
                             newtb.setSelected(true);
                             newtb.setImage(item.getImage());
@@ -120,21 +121,22 @@ return true;
 
          }else{
                 if(item != null) {
-                      Tabs tbs = (Tabs)getSpaceOwner().getFellow("tbs");
-                    if(buscar((String)item.getValue(),tbs)){
-                        Tabpanels tps = (Tabpanels)getSpaceOwner().getFellow("tps");
-                            Tab newtb= new Tab("denegado");
-                            newtb.setClosable(true);
-                            newtb.setSelected(true);
-                            newtb.setParent(tbs);
-                            newtb.setId((String)item.getValue());
-                            Tabpanel newtpl = new Tabpanel();
-                            Iframe f = new Iframe("/denegado.zul");
-                            f.setWidth("100%");
-                            f.setHeight("100%");
-                            newtpl.appendChild(f);
-                            newtpl.setParent(tps);
-                    }
+                    Messagebox.show("No tiene permisos para ingresar a este modulo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+//                      Tabs tbs = (Tabs)getSpaceOwner().getFellow("tbs");
+//                    if(buscar((String)item.getValue(),tbs)){
+//                        Tabpanels tps = (Tabpanels)getSpaceOwner().getFellow("tps");
+//                            Tab newtb= new Tab("denegado");
+//                            newtb.setClosable(true);
+//                            newtb.setSelected(true);
+//                            newtb.setParent(tbs);
+//                            newtb.setId((String)item.getValue());
+//                            Tabpanel newtpl = new Tabpanel();
+//                            Iframe f = new Iframe("/denegado.zul");
+//                            f.setWidth("100%");
+//                            f.setHeight("100%");
+//                            newtpl.appendChild(f);
+//                            newtpl.setParent(tps);
+//                    }
 
                 }
          }

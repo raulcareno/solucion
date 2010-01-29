@@ -32,7 +32,7 @@
         }
 
 </zscript>
-<north  size="11%" >
+<north  size="13%" >
 <toolbar height="100%">
 <!--tablelayout width="800px" columns="2">
 	<tablechildren>
@@ -208,10 +208,10 @@
 <!--include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/-->
 	<tabbox id="mytab" width="100%" height="350px">
 			<tabs id="tbs">
-				<tab label="Inicio"  id="blanco" Closable="true" />
+				<tab label="Inicio"  image="/images/fondo.png"  id="blanco" Closable="true" />
 			</tabs>
 			<tabpanels id="tps">
-				<tabpanel><iframe scrolling="false" width="400px" height="400px" src="/blanco.zul" /></tabpanel>
+				<tabpanel><iframe scrolling="false" width="100%" height="100%"  src="/blanco.zul" /></tabpanel>
 			</tabpanels>
 		</tabbox>
 
