@@ -22,6 +22,7 @@
    	 			newtb.setParent(tbs);
    	 			Tabpanel newtpl = new Tabpanel();
    	 			newtpl.setParent(tps);
+                mytab.getSelectedTab().detach();
     	        }
   	       void del(){
 	  			if (mytab.getSelectedPanel() != null){

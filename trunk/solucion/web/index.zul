@@ -25,8 +25,23 @@
  }
    void ingresar(String valor){
 
-        Include inc = (Include) xcontents;
-        inc.setSrc(valor);
+
+                Tab newtb= new Tab("Cambio de Clave");
+                 newtb.setSelected(true);
+                newtb.setClosable(true);
+                newtb.setImage("/images/candado.gif");
+   	 			newtb.setParent(tbs);
+
+   	 			Tabpanel newtpl = new Tabpanel();
+                  Iframe f = new Iframe(valor);
+                  f.setWidth("100%");
+                  f.setHeight("100%");
+                  newtpl.appendChild(f);
+   	 			newtpl.setParent(tps);
+
+
+
+
  }
 
  void cambio(){
