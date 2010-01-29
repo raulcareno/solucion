@@ -13,6 +13,9 @@ import org.zkoss.zul.*;
  */
 public class LayoutTree1 extends Tree implements AfterCompose {
 	public LayoutTree1() {
+//        Tabbox t;
+//        t.getTabs().getChildren().clear();
+//        get.
 	}
  
 	public void onSelect() {
