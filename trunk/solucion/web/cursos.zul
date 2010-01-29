@@ -1,4 +1,4 @@
-<window  mode="overlapped"  title="Control de Cursos" width="500px" border="normal"
+<window  mode="overlapped"  title="Control de Cursos"   border="normal"
     maximizable="true" closable="true" sizable="true">
 
  <zscript>
@@ -212,6 +212,7 @@ void cargarPar(Global g){
     empa.setParalelo(g);
 }
   </zscript>
+  <hbox>
 <groupbox mold="3d" >
        <caption label="Agregar" />
 
@@ -312,5 +313,5 @@ void cargarPar(Global g){
     </hbox>
 </vbox>
 </groupbox>
-
+</hbox>
 </window>

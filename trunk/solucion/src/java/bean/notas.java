@@ -407,7 +407,8 @@ public class notas extends Rows {
                     Vector aguardar = (Vector) inter.get("calculado");
                     //INICIO PROCESO DE GUARDAR LAS NOTAS
                     secuencial sec = new secuencial();
-                    String del = "Delete from Notas where matricula.curso.codigocur = '" + curso.getCodigocur() + "' " + "and materia.codigo = '" + map.getMateria().getCodigo() + "' ";
+                    String del = "Delete from Notas where matricula.curso.codigocur = '" + curso.getCodigocur() + "' " + " " +
+                            "and materia.codigo = '" + map.getMateria().getCodigo() + "' and disciplina = false ";
                     adm.ejecutaSql(del);
                     for (int i = 0; i < aguardar.size(); i++) {
                         try {
