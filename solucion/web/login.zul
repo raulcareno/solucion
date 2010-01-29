@@ -8,13 +8,11 @@
     <style>
 .estil{
 	height:100%;
-    
     background-image: url(./images/fondo.png);
-
 }
 </style>
  
-    <div class="estil" >
+    <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
 <window onLoad="usuario.focus();" onCreate="usuario.focus();"  mode="overlapped" id="winLogin" style="position:absolute; top:20%; left:35%" border="normal" width="460px" sizable="true">
