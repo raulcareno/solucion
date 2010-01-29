@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
+
+ <zk xmlns="http://www.zkoss.org/2005/zul">
+
  <borderlayout height="100%">
 <zscript>
 
@@ -39,6 +42,8 @@
 
             foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
         }
+
+          
 
 </zscript>
 <north  size="13%" >
@@ -215,7 +220,7 @@
         <center flex="true">
 
 <!--include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/-->
-	<tabbox id="mytab" width="100%" height="350px">
+	<tabbox id="mytab" width="100%"   context="derecho" height="350px">
 			<tabs id="tbs">
 				<tab label="Inicio"  image="/images/fondo.png"  id="blanco" Closable="true" />
 			</tabs>
@@ -228,4 +233,33 @@
 
 
 </borderlayout>
+  <menupopup id="derecho">
+		<menuitem label="Cerrar Todas" onClick="borrarTodas()" />
+        <menuseparator />
+
+	</menupopup>
+    <zscript>
+          void borrarTodas(){
+
+	 			mytab.getTabs().getChildren().clear();
+                mytab.getTabpanels().getChildren().clear();
+
+                  Tab newtb= new Tab("Inicio");
+                newtb.setSelected(true);
+                newtb.setClosable(true);
+                newtb.setImage("/images/fondo.png");
+   	 			newtb.setParent(tbs);
+
+   	 			Tabpanel newtpl = new Tabpanel();
+                  Iframe f = new Iframe("/blanco.zul");
+                  f.setWidth("100%");
+                  f.setHeight("100%");
+                  newtpl.appendChild(f);
+   	 			  newtpl.setParent(tps);
+
+  	       }
+
  
+    </zscript>
+
+     </zk>

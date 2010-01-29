@@ -141,8 +141,22 @@ return true;
                 }
          }
          }catch(Exception e){
-                    Include inc = (Include)getSpaceOwner().getFellow("xcontents");
-                    inc.setSrc("/denegado.zul");
+//                     Tabs tbs = (Tabs)getSpaceOwner().getFellow("tbs");
+//                    if(buscar("blanco",tbs)){
+//                        Tabpanels tps = (Tabpanels)getSpaceOwner().getFellow("tps");
+//                            Tab newtb= new Tab("Inicio");
+//                            newtb.setClosable(true);
+//                            newtb.setSelected(true);
+//                            newtb.setImage(item.getImage());
+//                            newtb.setParent(tbs);
+//                            newtb.setId("blanco");
+//                            Tabpanel newtpl = new Tabpanel();
+//                            Iframe f = new Iframe("./blanco.zul");
+//                            f.setWidth("100%");
+//                            f.setHeight("100%");
+//                            newtpl.appendChild(f);
+//                            newtpl.setParent(tps);
+//                    }
          }
 
 	}
