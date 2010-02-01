@@ -2,7 +2,7 @@
 <?page id="main-page"?>
 <window   maximizable="true"   mode="overlapped"     xmlns:y="http://www.zkoss.org/2007/yui"
  title="Ingreso de Notas" border="normal"
-width="80%" id="principal">
+width="100%" id="principal">
     <zscript>
 <![CDATA[
 import bean.notas;
