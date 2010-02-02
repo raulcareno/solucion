@@ -1,6 +1,6 @@
-<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
+
 <?page id="main-page"?>
-<window  mode="overlapped"  xmlns:y="http://www.zkoss.org/2007/yui"
+<window  mode="overlapped"  
  title="Ingresar Faltas Disciplinarias"
 width="60%" id="principal">
 <zscript>
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import bean.disciplina;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-import org.zkforge.yuiext.grid.Row;
+ 
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
@@ -136,20 +136,7 @@ Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
  </grid>
  <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
   
-<zscript><![CDATA[
-void ver(){
-    alert(((org.zkforge.yuiext.grid.Label)datos.getCell(datos.getSelectedIndex(),2)).getAttribute("ini")+"");
-    alert(((org.zkforge.yuiext.grid.Label)datos.getCell(datos.getSelectedIndex(),2)).getAttribute("fin")+"");
-    datos.getCell(datos.getSelectedIndex(), 2).appendChild(new Label());
-    /* alert(((org.zkforge.yuiext.grid.Label)datos.getCell(datos.getSelectedIndex(),2)).getValue()+"");
-    alert(((org.zkforge.yuiext.grid.Label)datos.getCell(datos.getSelectedIndex(),2)).getZIndex()+"");
-    alert(((org.zkforge.yuiext.grid.Label)datos.getCell(datos.getSelectedIndex(),3)).getValue()+"");
-    alert(((org.zkforge.yuiext.grid.Label)datos.getCell(datos.getSelectedIndex(),3)).getZIndex()+""); */
 
-
-}
-]]>
-</zscript>
 </window>
 
 	

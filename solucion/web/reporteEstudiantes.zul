@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window  mode="overlapped"  onCreate="cargando();"    title="Reporte de Estudiantes" width="79%" height="100%" border="normal"
-    maximizable="true" closable="true" sizable="true">
+         maximizable="true" closable="true" sizable="true">
     <zk xmlns="http://www.zkoss.org/2005/zul">
 
         <zscript>
-        <![CDATA[
+            <![CDATA[
 import sources.CustomDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import sources.*;
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-import org.zkforge.yuiext.grid.Row;
+
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
@@ -26,7 +26,7 @@ Periodo periodo = (Periodo) ses.getAttribute("periodo");
 
 Empleados user = (Empleados)ses.getAttribute("user");
     List cursos = null;
-    
+
     if(user.getTipo().equals("Interna")){
         cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
     }else{
@@ -90,7 +90,7 @@ public JRDataSource certificados(Cursos curso,String tipo){
                 }else if(tipo.equals("CM2") || tipo.equals("LTRAN") || tipo.equals("LINT")  || tipo.equals("LNUEV") || tipo.equals("LMIN")  || tipo.equals("LFEC")  || tipo.equals("LGENT")  || tipo.equals("LGEN")  || tipo.equals("LASI")  || tipo.equals("LCA")  || tipo.equals("LCAS")  || tipo.equals("AM")  || tipo.equals("LMAT")  || tipo.equals("LCLA")   || tipo.equals("LCLA2") || tipo.equals("LCOR")  || tipo.equals("LREP")  || tipo.equals("LCAR1") || tipo.equals("LCAR")){
                       ds = new ReporteActaDataSource(detalle);
                 }
-            
+
             return ds;
 
 }
@@ -131,10 +131,10 @@ public JRDataSource transporte(Cursos curso,String tipo){
                                 Matriculas elem = (Matriculas) it.next();
                                 detalle.add(elem);
                             }
-                    
+
                     }
                 JRDataSource ds = new ReporteActaDataSource(detalle);
-                
+
 
             return ds;
 
@@ -192,24 +192,24 @@ public JRDataSource internos(Cursos curso,String tipo){
 }
 
 
-		void showReport() {
-			//Preparing parameters
+        void showReport() {
+            //Preparing parameters
 
 //LCAS,LCA,LASI.LGEN,LGENT,LFEC,LMIN
-			//conanioscumplidos
+            //conanioscumplidos
             String tipo = reporte.getSelectedItem().getValue();
-           
+
 rep.setOpen(true);parametros.setOpen(false);
             Institucion insts = periodo.getInstitucion();
-			Map parametros = new HashMap();
+            Map parametros = new HashMap();
             parametros.put("denominacion", insts.getDenominacion());
             parametros.put("nombre", insts.getNombre());
             parametros.put("periodo", periodo.getDescripcion());
             parametros.put("slogan", insts.getSlogan());
             parametros.put("secretaria", insts.getSecretaria());
             parametros.put("rectora", insts.getRector());
-            
-			
+
+
             JRDataSource datasource = null;
             if(tipo.equals("CM")){
                     datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"CM");
@@ -264,7 +264,7 @@ rep.setOpen(true);parametros.setOpen(false);
                     datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"AM");
                     parametros.put("titulo", "Acta de Matricula");
                     report.setSrc("WEB-INF/reportes/actaMatricula.jasper");
-                     
+
             }else if(tipo.equals("INS")){
                     datasource = inscritos("Inscrito");
                     parametros.put("titulo", titulo.getValue());
@@ -314,7 +314,7 @@ rep.setOpen(true);parametros.setOpen(false);
                 report.setDatasource(datasource);
                 report.setType((String) format.getSelectedItem().getValue());
             }
-		}
+        }
 
 void campos(String valor){
 curs.setSelectedIndex(0);
@@ -368,7 +368,7 @@ curs.setSelectedIndex(0);
             titulo.value = "Listado de Estudiantes";
       if(valor.equals("LINT"))
             titulo.value = "Listado de Estudiantes";
-        
+
 
 
 
@@ -400,7 +400,7 @@ curs.setSelectedIndex(0);
                                 <listitem  id="LCLA" label="Lista de Claves" value="LCLA"/>
                                 <listitem  id="LCLA2" label="Listado de Claves con Matricula" value="LCLA2"/>
                                 <listitem  id="LCOR" label="Listado de Correos electronicos" value="LCOR"/>
-                            
+
                                 <listitem  id="LREP" label="Lista de Representantes" value="LREP"/>
                                 <listitem  id="LCAS" label="Lista de Estudiantes con Casilleros vacios" value="LCAS"/>
                                 <listitem  id="LCA" label="Lista de Estudiantes 1 Casillero" value="LCA"/>
@@ -417,7 +417,7 @@ curs.setSelectedIndex(0);
                         <row>
                             <span style="float:right"> Curso:</span>
                             <listbox id="curs" width="400px"  mold="select"
-        onSelect="buscar2(((Cursos)self.selectedItem.value));">
+                                     onSelect="buscar2(((Cursos)self.selectedItem.value));">
 
                                 <listitem forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
                             </listbox>
@@ -463,41 +463,41 @@ curs.setSelectedIndex(0);
                 <jasperreport id="report" />
             </panelchildren>
         </panel>
-	
 
 
-<zscript>
-import bean.Permisos;
-Permisos per = new Permisos();
-void cargando(){
 
-       CM.visible = per.verificarPermisoReporte("CM", "Ingresar");
-       CM2.visible = per.verificarPermisoReporte("CM2", "Ingresar");
-        AM.visible = per.verificarPermisoReporte("AM", "Ingresar");
-        INS.visible = per.verificarPermisoReporte("INS", "Ingresar");
-		MAT.visible = per.verificarPermisoReporte("MAT", "Ingresar");
-        RET.visible = per.verificarPermisoReporte("RET", "Ingresar");
-        LMAT.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
-		LCAR.visible = per.verificarPermisoReporte("LCAR", "Ingresar");
-        LCAR1.visible = per.verificarPermisoReporte("LCAR1", "Ingresar");
-        LCART.visible = per.verificarPermisoReporte("LCART", "Ingresar");
-		LCLA.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
-        LCLA2.visible = per.verificarPermisoReporte("LCLA2", "Ingresar");
-        LCOR.visible = per.verificarPermisoReporte("LCOR", "Ingresar");
-      
-        LREP.visible = per.verificarPermisoReporte("LREP", "Ingresar");
-        LCAS.visible = per.verificarPermisoReporte("LCAS", "Ingresar");
-        LCA.visible = per.verificarPermisoReporte("LCA", "Ingresar");
-        LASI.visible = per.verificarPermisoReporte("LASI", "Ingresar");
-        LGEN.visible = per.verificarPermisoReporte("LGEN", "Ingresar");
-        LFEC.visible = per.verificarPermisoReporte("LFEC", "Ingresar");
-        LMIN.visible = per.verificarPermisoReporte("LMIN", "Ingresar");
-        LNUEV.visible = per.verificarPermisoReporte("LNUEV", "Ingresar");
-        LTRAN.visible = per.verificarPermisoReporte("LTRAN", "Ingresar");
-        LINT.visible = per.verificarPermisoReporte("LINT", "Ingresar");
+        <zscript>
+            import bean.Permisos;
+            Permisos per = new Permisos();
+            void cargando(){
 
-}
-</zscript>
+            CM.visible = per.verificarPermisoReporte("CM", "Ingresar");
+            CM2.visible = per.verificarPermisoReporte("CM2", "Ingresar");
+            AM.visible = per.verificarPermisoReporte("AM", "Ingresar");
+            INS.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            MAT.visible = per.verificarPermisoReporte("MAT", "Ingresar");
+            RET.visible = per.verificarPermisoReporte("RET", "Ingresar");
+            LMAT.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
+            LCAR.visible = per.verificarPermisoReporte("LCAR", "Ingresar");
+            LCAR1.visible = per.verificarPermisoReporte("LCAR1", "Ingresar");
+            LCART.visible = per.verificarPermisoReporte("LCART", "Ingresar");
+            LCLA.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
+            LCLA2.visible = per.verificarPermisoReporte("LCLA2", "Ingresar");
+            LCOR.visible = per.verificarPermisoReporte("LCOR", "Ingresar");
+
+            LREP.visible = per.verificarPermisoReporte("LREP", "Ingresar");
+            LCAS.visible = per.verificarPermisoReporte("LCAS", "Ingresar");
+            LCA.visible = per.verificarPermisoReporte("LCA", "Ingresar");
+            LASI.visible = per.verificarPermisoReporte("LASI", "Ingresar");
+            LGEN.visible = per.verificarPermisoReporte("LGEN", "Ingresar");
+            LFEC.visible = per.verificarPermisoReporte("LFEC", "Ingresar");
+            LMIN.visible = per.verificarPermisoReporte("LMIN", "Ingresar");
+            LNUEV.visible = per.verificarPermisoReporte("LNUEV", "Ingresar");
+            LTRAN.visible = per.verificarPermisoReporte("LTRAN", "Ingresar");
+            LINT.visible = per.verificarPermisoReporte("LINT", "Ingresar");
+
+            }
+        </zscript>
 
 
     </zk>

@@ -1,6 +1,5 @@
-<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
 <?page id="main-page"?>
-<window xmlns:y="http://www.zkoss.org/2007/yui"
+<window
   title="Cursos " width="45%" id="cursosdeGrado">
 <zscript>
 <![CDATA[
@@ -9,7 +8,7 @@ import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-import org.zkforge.yuiext.grid.Row;
+ 
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;

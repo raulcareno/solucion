@@ -9,9 +9,7 @@ import java.util.Vector;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
 import net.sf.jasperreports.engine.JRDataSource;
-//import org.zkforge.yuiext.grid.Label;
-//import org.zkforge.yuiext.grid.Row;
-//import org.zkforge.yuiext.grid.Rows;
+ 
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
  
