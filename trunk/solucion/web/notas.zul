@@ -239,7 +239,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <grid  id="datos" >
                        
                     <auxhead >
-                    <auxheader label=".." colspan="2"/>
+                    <auxheader colspan="2">
+                        <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
+                    </auxheader>
                         <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
                     </auxhead>
                     <columns>
