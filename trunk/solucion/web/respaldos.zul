@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<zk>
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+    <window onCreate="cargar()">
     <zscript><![CDATA[
 
   import java.io.File;
@@ -11,11 +14,11 @@ import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
- 
+
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
- 
+
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
   Administrador adm = new Administrador();
@@ -28,18 +31,24 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
  public void  respaldar(){
 
   try{
+
+     String sFichero = "C:\\WINDOWS\\system32\\mysqldump.exe";
+    File fichero = new File(sFichero);
+    if (!fichero.exists()) {
+        Messagebox.show("No existe el archivo mysqldump.exe \n En el directorio  c:\\windows\\system32 \n copielo en el directorio indicado y vuelva a ejecutar", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return;
+    }
+
   List  parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'IP'");
     ParametrosGlobales para = parame.get(0);
     String ip = para.getCvalor();
 
-    parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'RESPALDOS'");
-    para = parame.get(0);
-    String direc = para.getCvalor();
-    
+    String direc = direccion.value;
+
     parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'USUARIO'");
     para = parame.get(0);
     String usuario = para.getCvalor();
-    
+
     parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'CLAVES'");
     para = parame.get(0);
     String clave = para.getCvalor();
@@ -57,45 +66,95 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
 
 }
 
-void recalculo(){
-    notas nso = new notas();
-    nso.calcularDisciplina(((Cursos)curs.selectedItem.value));
+ public void  respaldarLinux(){
+
+  try{
+  List  parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'IP'");
+    ParametrosGlobales para = parame.get(0);
+    String ip = para.getCvalor();
+
+    String direc = direccion.value;
+
+    parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'USUARIO'");
+    para = parame.get(0);
+    String usuario = para.getCvalor();
+
+    parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'CLAVES'");
+    para = parame.get(0);
+    String clave = para.getCvalor();
+
+
+
+        Date fechaActual = new Date();
+        String fec = "fecha"+fechaActual.getDate()+"-"+(fechaActual.getMonth()+1)+"-"+(fechaActual.getYear()+1900)+"_"+fechaActual.getHours()+"-"+fechaActual.getMinutes()+"-"+fechaActual.getSeconds()+"";
+  File duir = new File(direc);
+  duir.mkdir();
+  Runtime.getRuntime().exec("mysqldump -h "+ip+" --op -u "+usuario+" -p"+clave+" academico > "+direc+"//academico"+fec+".sql");
+   alert("Respaldo realizado con Éxito en: "+direc+"//respaldo"+fec+".sql ");
+ }catch(Exception e){
+ System.out.println(""+e);
+    alert("No se pudo realizar el Respaldo");
+ }
 
 }
+
+
+
 
 ]]>
     </zscript>
     <grid>
         <rows>
 
-<row>
- <span style="float:right"> Click en el boton para :</span>
- <button id="buscar"  label="Respaldar Información" onClick="respaldar();"/>
+            <row>
+                <span style="float:right"> RESPALDAR SU INFORMACIÓN, SELECCIONE EL TIPO DE SERVIDOR QUE TIENE:</span>
+                <span>
+                   
+                    <button id="buscar"  label="SI SU SERVER ES WINDOWS" image="/images/windows.png" onClick="respaldar();"/>
+                    <button id="buscar2"  label="SI SU SERVER ES LINUX" image="/images/linux.png" onClick="respaldarLinux();"/>
+                </span>
 
-</row>
+            </row>
+            <row>
+                <span style="float:right">SU RESPALDO SE UBICARÁ EN: </span>
+                 <textbox style="font-size:15px" id="direccion" />
+            </row>
+                <row spans="2">
+                <separator/>
+                <separator/>
 
-<row>
+            </row>
+            <row spans="2">
+                Una vez sacado el respaldo, copie el respaldo en un dispositivo externo, sea esto USB Flash Memory, CD Rom, Disquete, etc...
 
- <span style="float:right"> Curso(*):</span>
- <span>
-               <bandbox  width="400px" readonly="true"  id="bd1">
-                    <bandpopup>
-                    <vbox>
-                    <listbox id="curs" width="420px"
-                    onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
+            </row>
 
-                        <listitem forEach="${cursos}" value="${each}">
-                              <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+            <row spans="2">
+                <separator/>
+                <separator/>
 
-                        </listitem>
-                    </listbox>
-                    </vbox>
-                    </bandpopup>
-                </bandbox>
+            </row>
+            <row spans="2">
+                <separator/>
+                <separator/>
 
- <button label="Recalcular Disciplina"   onClick="recalculo();"/>
-</span>
-</row>
-</rows>
-   </grid>
-    </zk>
+            </row>
+            <row spans="2">
+                <separator/>
+                <separator/>
+
+            </row>
+
+
+        </rows>
+    </grid>
+    <zscript>
+          import jcinform.persistencia.*;
+        cargar(){
+        Object par = adm.query("Select o.cvalor from ParametrosGlobales as o where o.variable= 'RESPALDOS'");
+        String direc = par.get(0);
+        direccion.value = direc;
+        }
+    </zscript>
+    </window>
+</zk>

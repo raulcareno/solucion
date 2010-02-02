@@ -1,17 +1,17 @@
 <?page id="main-page"?>
 <window  
-  title="Cursos " width="70%" id="cursosdeGrado">
-<zscript>
-<![CDATA[
+    title="Cursos " width="100%" id="cursosdeGrado">
+    <zscript>
+        <![CDATA[
 import bean.Procesos;
 import java.math.BigDecimal;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
- 
+ import bean.notas;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
- 
+
  Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -20,7 +20,7 @@ List cursos = adm.query("Select o from Cursos as o "+
 " where o.periodo.codigoper = '"+periodo.getCodigoper()+"'   ");
 
 void aprovechamiento(){
-              
+
 Procesos pro = new Procesos();
 pro.aprovechamiento((Cursos)cursosList.selectedItem.value);
 Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -31,27 +31,87 @@ Procesos pro = new Procesos();
 pro.disciplina((Cursos)cursosList.selectedItem.value);
 Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
 }
+
+
+void recalculo(){
+    notas nso = new notas();
+    nso.calcularDisciplina(((Cursos)curs.selectedItem.value));
+
+}
 ]]>
     </zscript>
     <grid>
         <rows>
-            <row>
-                 <listbox mold="select" id="cursosList"  width="420px" >
-                    <listitem>
-                        <listcell label="Seleccione un Curso" />
-                    </listitem>
-                    <listitem forEach="${cursos}" value="${each}">
-                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-                    </listitem>
-                </listbox>
-               <button label="Aprovechamiento"   image="/images/run.gif" onClick="aprovechamiento();"/>
-               <button label="Disciplina"   image="/images/run.gif" onClick="disciplina()"/>
-            </row>
+            <row spans="2">
 
+                <separator/>
+
+            </row>
+            <row spans="2">
+
+                Nos permite hacer el Recalculo del Promedio final para el Record Académico
+
+            </row>
+            <row>
+                <span style="float:right"> Curso(*):</span>
+                <span>
+                    <listbox mold="select" id="cursosList"  width="420px" >
+                        <listitem>
+                            <listcell label="Seleccione un Curso" />
+                        </listitem>
+                        <listitem forEach="${cursos}" value="${each}">
+                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                        </listitem>
+                    </listbox>
+                    <button label="Aprovechamiento"   image="/images/run.gif" onClick="aprovechamiento();"/>
+                    <button label="Disciplina"   image="/images/run.gif" onClick="disciplina()"/>
+                </span>
+            </row>
+            <row spans="2">
+
+                <separator/>
+
+            </row>
+            <row spans="2">
+
+                <separator/>
+
+            </row>
+            <row spans="2">
+
+                <separator/>
+
+            </row>
+            <row spans="2">
+
+                Recalculo de notas de disciplina, en caso de usar modo de caliciación diferente a ingreso de notas de disciplina manualmente
+
+            </row>
+            <row>
+
+                <span style="float:right"> Curso(*):</span>
+                <span>
+                    <bandbox  width="400px" readonly="true"  id="bd1">
+                        <bandpopup>
+                            <vbox>
+                                <listbox id="curs" width="420px"
+                                         onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
+
+                                    <listitem forEach="${cursos}" value="${each}">
+                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                                    </listitem>
+                                </listbox>
+                            </vbox>
+                        </bandpopup>
+                    </bandbox>
+
+                    <button label="Recalcular Disciplina"   onClick="recalculo();"/>
+                </span>
+            </row>
         </rows>
     </grid>
 
 
 </window>
 
-	
