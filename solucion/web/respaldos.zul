@@ -3,7 +3,7 @@
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
     <window onCreate="cargar()">
-    <zscript><![CDATA[
+        <zscript><![CDATA[
 
   import java.io.File;
   import java.io.IOException;
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-
+import java.util.StringTokenizer;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
@@ -82,15 +82,23 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
     parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'CLAVES'");
     para = parame.get(0);
     String clave = para.getCvalor();
-
-
-
         Date fechaActual = new Date();
         String fec = "fecha"+fechaActual.getDate()+"-"+(fechaActual.getMonth()+1)+"-"+(fechaActual.getYear()+1900)+"_"+fechaActual.getHours()+"-"+fechaActual.getMinutes()+"-"+fechaActual.getSeconds()+"";
-  File duir = new File(direc);
-  duir.mkdir();
-  Runtime.getRuntime().exec("mysqldump -h "+ip+" --op -u "+usuario+" -p"+clave+" academico > "+direc+"//academico"+fec+".sql");
-   alert("Respaldo realizado con Éxito en: "+direc+"//respaldo"+fec+".sql ");
+      File duir = new File(direc);
+      duir.mkdir();
+        String ubicacion = direccion.value+"/respaldo"+fec+".sql";
+        String cnd = "mysqldump -h" + ip + " -u"+usuario+" -p"+clave+" -B academico "+" -r"+ubicacion;
+        StringTokenizer st = new StringTokenizer(cnd);
+        String[] coma = new String[st.countTokens()+1];
+        int i=0;
+        while (st.hasMoreTokens()) {
+            coma[i]=st.nextToken() ;
+            System.out.println(coma[i] +" n:" + i);
+            i++;
+        }
+        coma[7]= "-r"+ubicacion;
+        Runtime.getRuntime().exec(coma);
+        alert("Respaldo realizado con Éxito en: "+ubicacion);
  }catch(Exception e){
  System.out.println(""+e);
     alert("No se pudo realizar el Respaldo");
@@ -102,60 +110,60 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
 
 
 ]]>
-    </zscript>
-    <grid>
-        <rows>
+        </zscript>
+        <grid>
+            <rows>
 
-            <row>
-                <span style="float:right"> RESPALDAR SU INFORMACIÓN, SELECCIONE EL TIPO DE SERVIDOR QUE TIENE:</span>
-                <span>
-                   
-                    <button id="buscar"  label="SI SU SERVER ES WINDOWS" image="/images/windows.png" onClick="respaldar();"/>
-                    <button id="buscar2"  label="SI SU SERVER ES LINUX" image="/images/linux.png" onClick="respaldarLinux();"/>
-                </span>
+                <row>
+                    <span style="float:right"> RESPALDAR SU INFORMACIÓN, SELECCIONE EL TIPO DE SERVIDOR QUE TIENE:</span>
+                    <span>
 
-            </row>
-            <row>
-                <span style="float:right">SU RESPALDO SE UBICARÁ EN: </span>
-                 <textbox style="font-size:15px;color:blue" id="direccion" cols="70" />
-            </row>
+                        <button id="buscar"  label="SI SU SERVER ES WINDOWS" image="/images/windows.png" onClick="respaldar();"/>
+                        <button id="buscar2"  label="SI SU SERVER ES LINUX" image="/images/linux.png" onClick="respaldarLinux();"/>
+                    </span>
+
+                </row>
+                <row>
+                    <span style="float:right">SU RESPALDO SE UBICARÁ EN: </span>
+                    <textbox style="font-size:15px;color:blue" id="direccion" cols="70" />
+                </row>
                 <row spans="2">
-                <separator/>
-                <separator/>
+                    <separator/>
+                    <separator/>
 
-            </row>
-            <row spans="2" style="color:red">
-                <span style="color:red">
-               NOTA: Una vez sacado el respaldo, copie el respaldo en un dispositivo externo, sea esto USB Flash Memory, CD Rom, Disquete, etc...
-</span>
-            </row>
+                </row>
+                <row spans="2" style="color:red">
+                    <span style="color:red">
+                        NOTA: Una vez sacado el respaldo, copie el respaldo en un dispositivo externo, sea esto USB Flash Memory, CD Rom, Disquete, etc...
+                    </span>
+                </row>
 
-            <row spans="2">
-                <separator/>
-                <separator/>
+                <row spans="2">
+                    <separator/>
+                    <separator/>
 
-            </row>
-            <row spans="2">
-                <separator/>
-                <separator/>
+                </row>
+                <row spans="2">
+                    <separator/>
+                    <separator/>
 
-            </row>
-            <row spans="2">
-                <separator/>
-                <separator/>
+                </row>
+                <row spans="2">
+                    <separator/>
+                    <separator/>
 
-            </row>
+                </row>
 
 
-        </rows>
-    </grid>
-    <zscript>
-          import jcinform.persistencia.*;
-        cargar(){
-        Object par = adm.query("Select o.cvalor from ParametrosGlobales as o where o.variable= 'RESPALDOS'");
-        String direc = par.get(0);
-        direccion.value = direc;
-        }
-    </zscript>
+            </rows>
+        </grid>
+        <zscript>
+            import jcinform.persistencia.*;
+            cargar(){
+            Object par = adm.query("Select o.cvalor from ParametrosGlobales as o where o.variable= 'RESPALDOS'");
+            String direc = par.get(0);
+            direccion.value = direc;
+            }
+        </zscript>
     </window>
 </zk>
