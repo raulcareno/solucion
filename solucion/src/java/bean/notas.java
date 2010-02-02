@@ -25,6 +25,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
@@ -1814,6 +1815,15 @@ public class notas extends Rows {
         List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
                 " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  " +
                 "and o.sistema.promediofinal = 'PF' ");
+        try {
+            if(notas.size()<=0){
+                Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                return null;
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
         ArrayList listaMatriculados = new ArrayList();
 //        List<Nota> lisNotas = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
@@ -1835,9 +1845,9 @@ public class notas extends Rows {
                     "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' " +
                     "and notas.seimprime = true " +
                     "and notas.promedia = true " +
-                    "and notas.disciplina = false " +
+                    "and notas.disciplina = false   and notas.materia != 0  " +
                     "group by notas.matricula  ";
-//        System.out.println(""+q);
+        System.out.println(""+q);
             List nativo = adm.queryNativo(q);
             Double aprovechamiento = 0.0;
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
@@ -1846,10 +1856,10 @@ public class notas extends Rows {
                     Object dos = vec.get(j);
                     try {
                         if (dos.equals(null)) {
-                            dos = new Double(0.0);
+                            dos = new BigDecimal(0.0);
                         }
                     } catch (Exception e) {
-                        dos = new Double(0.0);
+                        dos = new BigDecimal(0.0);
                     }
 
                     BigDecimal b = (BigDecimal) dos;
@@ -1873,10 +1883,10 @@ public class notas extends Rows {
                     Object dos = vec.get(j);
                     try {
                         if (dos.equals(null)) {
-                            dos = new Double(0.0);
+                            dos = new BigDecimal(0.0);
                         }
                     } catch (Exception e) {
-                        dos = new Double(0.0);
+                        dos = new BigDecimal(0.0);
                     }
 
                     BigDecimal b = (BigDecimal) dos;
@@ -1892,7 +1902,7 @@ public class notas extends Rows {
                     "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' " +
                     "and notas.seimprime = true  " +
                     "and notas.promedia = true " +
-                    "and notas.disciplina = false " +
+                    "and notas.disciplina = false   and notas.materia != 0  " +
                     "order by estudiantes.apellido, notas.orden";
             nativo = adm.queryNativo(q);
             cabe1 = cabe1.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion() + " " + matriculas1.getCurso().getEspecialidad().getDescripcion() + " " + matriculas1.getCurso().getParalelo().getDescripcion());

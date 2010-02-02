@@ -216,6 +216,7 @@ public JRDataSource profesores(){
             parametros.put("periodo", periodo.getDescripcion());
             parametros.put("titulo", titulo.value);
             parametros.put("slogan", insts.getSlogan());
+            if(sistemasCombo.disabled == false)
             parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
             
             
