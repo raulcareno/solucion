@@ -16,7 +16,7 @@ public class email {
     public Cursos curso;
     public String mensaje;
 
-    public Boolean recuperarClave(String cedula){
+    public String recuperarClave(String cedula){
           claves val = new claves();
             Administrador adm = new Administrador();
             Empleados emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.identificacion = '"+cedula+"' ");
@@ -29,7 +29,7 @@ public class email {
                                 periodo = empleadoperiodo.getPeriodo();
                         }
                         if(per.size()<=0){
-                            return false;
+                            return "no";
                         }
                         mensaje = "<html><p> <b> Su usuario es: </b>"+emp.getUsuario() +"<p> " +
                                 "<b> Su password es:</b> "+val.desencriptar(emp.getClave()) +" <p> " +
@@ -50,13 +50,18 @@ public class email {
                                 "<p>" +
                                 "<hr>" +
                                 "</html> ";
-                        EnviarAutenticacion.RecuperarClave(emp.getEmail().trim(), mensaje,
+                       Boolean estado =  EnviarAutenticacion.RecuperarClave(emp.getEmail().trim(), mensaje,
                                 "RECUPERACION DE CLAVE "+emp.getApellidos() +" "+ emp.getNombres()
                                 , periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto());
+                            if(estado){
+                                    return "[OK] "+emp.getEmail();
+                            }else{
+                                    return "no";
 
-                        return true;
+                            }
+                        
             }else{
-                return false;
+                return "no";
             }
     }
 
@@ -142,7 +147,7 @@ public List<SelectItem> matriculados = new ArrayList<SelectItem>();
 }
 class EnviarAutenticacion
 {
-        public static void RecuperarClave(String email,String mensaje,String tema,String emailInstitucion,String clave,String host, String puerto){
+        public static Boolean RecuperarClave(String email,String mensaje,String tema,String emailInstitucion,String clave,String host, String puerto){
 //        String host ="smtp.gmail.com";//Suponiendo que el servidor SMTPsea la propia máquina
         //String from ="setecompu.ec@gmail.com";
         String from = emailInstitucion;
@@ -161,11 +166,13 @@ class EnviarAutenticacion
             System.out.println("***********************"+emailInstitucion);
             Message msg = getTraerMensaje(session, tema, emailsA,mensaje,emailInstitucion,emailInstitucion);
             Transport.send(msg);
+            return true;
         }
 
         catch (Exception e){
             System.out.println("ERROR AL ENVIAR "+e);
             ExceptionManager.ManageException(e);
+            return false;
         }
 
     }

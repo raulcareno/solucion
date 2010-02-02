@@ -17,12 +17,12 @@
 email em = new email();
 
 void verPantall(){
-       Boolean estado =  em.recuperarClave(usuario.value);
-       if(estado){
-            Messagebox.show("Se ha enviado a su correo la clave y contraseña de su cuenta...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+       String estado =  em.recuperarClave(usuario.value);
+       if(estado.contains("[OK]")){
+            Messagebox.show("Se ha enviado a su correo "+ estado.replace("[OK]","")+" la clave y contraseña de su cuenta...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
             win2.detach();
         }else{
-        Messagebox.show("No se ha podido recuperar su clave...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        Messagebox.show("No se ha podido recuperar su clave...! \n Consulte con el administrador \n posible causa NO tiene email inscrito en el sistema \n o la institución no ha configurado correctamente el email de salida", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         }
 }
     </zscript>

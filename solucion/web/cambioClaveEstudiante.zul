@@ -35,12 +35,12 @@ void guardar(){
     <rows>
         <row>
             Usuario:
-            <textbox id="usuario" maxlength="30" cols="15"  />
+            <textbox id="usuario" maxlength="20" cols="15"  />
 
         </row>
          <row>
             Clave:
-            <textbox id="clave" maxlength="30" cols="15"  />
+            <textbox id="clave" maxlength="20" cols="15"  />
         </row>
 
     </rows>

@@ -211,7 +211,7 @@ llenarVisitas();
 }
 
 void llenarVisitas(){
-  List empleadosEncontrados = adm.query("Select o from Aspectos as o where o.grupo = 'VISIT' and o.estudiante.codigoest = '"+codigo.value+"' ");
+  List empleadosEncontrados = adm.query("Select o from Aspectos as o where o.grupo = '9VISI' and o.estudiante.codigoest = '"+codigo.value+"' ");
                 datos = new Listbox();
                 int a=0;
                     for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -338,7 +338,7 @@ void llenarRepresentante(Representante repren){
              aspe.setObserva5(quintoa.value);
              aspe.setObserva6(sextoa.value);
              aspe.setObserva7(septimoa.value);
-             aspe.setGrupo("APROV");
+             aspe.setGrupo("7APRO");
              aspe.setEstudiante(new Estudiantes(codigo.value));
 
         if((!aspe.getAspCodigo().equals(0))){
@@ -357,7 +357,7 @@ void llenarRepresentante(Representante repren){
              aspe.setObserva5(quintod.value);
              aspe.setObserva6(sextod.value);
              aspe.setObserva7(septimod.value);
-             aspe.setGrupo("DISCI");
+             aspe.setGrupo("8DISC");
              aspe.setEstudiante(new Estudiantes(codigo.value));
 
         if((!aspe.getAspCodigo().equals(0))){
@@ -392,7 +392,7 @@ void llenarRepresentante(Representante repren){
              aspe.setObserva2(responsable.value);
              aspe.setObserva3(observacion.value);
              aspe.setObserva4(resultado.value);
-             aspe.setGrupo("VISIT");
+             aspe.setGrupo("9VISI");
              aspe.setEstudiante(new Estudiantes(codigo.value));
              aspe.setFecha(fecha.value);
         if((!aspe.getAspCodigo().equals(0))){
@@ -553,29 +553,25 @@ if( (tipofac.selectedItem.value).equals("CF") ){
 
 
 //PARA REPORTES
-public JRDataSource certificados(Matriculas matricula,String tipo){
+public JRDataSource certificados(){
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         ArrayList detalle = new ArrayList();
-        String query = "SELECT mat FROM Matriculas AS mat " +
-                "WHERE  mat.estado like '%Matriculado%' " +
-                "and mat.codigomat = '" + matricula.getCodigomat() + "' ";
+        String query = "SELECT mat FROM Aspectos AS mat " +
+                "WHERE  mat.estudiante.codigoest = '" + codigo.value + "' ORDER BY mat.grupo, mat.fecha ";
         List hoy = adm.query(query);
         for (Iterator it = hoy.iterator(); it.hasNext();) {
-            Matriculas elem = (Matriculas) it.next();
+            Aspectos elem = (Aspectos) it.next();
             detalle.add(elem);
         }
         JRDataSource ds = null;
-        if(tipo.equals("CM")){
-             ds = new ReporteCertificadoDataSource(detalle);
-        }else{
-              ds = new ReporteActaDataSource(detalle);
-        }
-        return ds;
+        return new ReporteDobeDataSource(detalle);
+       
+        
 
 }
-		void showReport(String tipo) {
+		void showReport() {
 			//Preparing parameters
 
             Institucion insts = periodo.getInstitucion();
@@ -586,27 +582,17 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             parametros.put("periodo", insts.getDireccion());
             parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
-            if(tipo.equals("CM")){
-                    datasource = certificados(new Matriculas(codigomat.value),tipo);
-                    report.setSrc("WEB-INF/reportes/certificadoMatricula.jasper");
-                    parametros.put("titulo", "Certificado de Matricula");
-            } else if(tipo.equals("AM")){
-                    datasource = certificados(new Matriculas(codigomat.value),tipo);
-                    parametros.put("titulo", "Acta de Matricula");
-                    report.setSrc("WEB-INF/reportes/actaMatricula.jasper");
 
-            } else if(tipo.equals("CL")){
-                    datasource = certificados(new Matriculas(codigomat.value),tipo);
-                    parametros.put("titulo", "Acta de Matricula");
-                    report.setSrc("WEB-INF/reportes/clavePersonal.jasper");
-
-            }
-            if(!tipo.equals("-1")){
+                    datasource = certificados();
+                    report.setSrc("WEB-INF/reportes/ficha.jasper");
+                    parametros.put("titulo", "Ficha de Estudiantes");
+          
+           
                 report.setParameters(parametros);
                 report.setDatasource(datasource);
                 report.setType("pdf");
                  reportes.setSelected(true);
-            }
+
 		}
 
 
@@ -631,7 +617,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <tab id="representante" label="Aspectos Médicos" />
                 <tab id="busqueda" label="Rendimiento Académico" />
                 <tab id="visita" label="Registro Visita" />
-                <tab id="reportes" label="Impresión" />
+                <tab onClick="showReport()" id="reportes" label="Impresión" />
             </tabs>
             <tabpanels>
                 <tabpanel>
@@ -794,12 +780,12 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <span>
                                     <combobox selectedItem="0" id="tipoaspecto" onSelect='buscar(tipoaspecto.selectedItem.value+"")' >
                                         <comboitem  label="[Seleccione]"  value="0" />
-                                        <comboitem  label="PESO" value="PESO" />
-                                        <comboitem label="ESTATURA"  value="ESTAT" />
-                                        <comboitem label="AGUDEZA AUDITIVA"  value="AUDIT" />
-                                        <comboitem label="AGUDEZA VISUAL"  value="VISUA" />
-                                        <comboitem label="INFORME MEDICO"  value="MEDIC" />
-                                        <comboitem label="INFORME DENTAL"  value="DENTA" />
+                                        <comboitem  label="PESO" value="1PESO" />
+                                        <comboitem label="ESTATURA"  value="2ESTA" />
+                                        <comboitem label="AGUDEZA AUDITIVA"  value="3AUDI" />
+                                        <comboitem label="AGUDEZA VISUAL"  value="4VISU" />
+                                        <comboitem label="INFORME MEDICO"  value="5MEDI" />
+                                        <comboitem label="INFORME DENTAL"  value="6DENT" />
                                     </combobox>
                                     <intbox visible="false" id="aspecto" cols="2" readonly="true"/>
                                     
