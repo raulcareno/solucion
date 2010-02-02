@@ -12,12 +12,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-import org.zkforge.yuiext.grid.Label;
-import org.zkforge.yuiext.grid.Row;
-import org.zkforge.yuiext.grid.Rows;
-import org.zkoss.zk.ui.Session;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.metainfo.EventHandler;
+ 
+import org.zkoss.zul.Decimalbox;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
 
 public class notasRecordBean extends Rows {
 //ArrayList listad = new ArrayList();
@@ -68,7 +67,9 @@ public Boolean verificar(String formula,List<Notanotas> notas){
         String query = "";
         query = "primero,segundo,tercero,cuarto,quinto,sexto,((primero+segundo+tercero+cuarto+quinto+sexto)/5),primerod,segundod,tercerd,cuartod,quintod,sextod,((primerod+segundod+tercerd+cuartod+quintod+sextod)/5)";
         getChildren().clear();
-        Label label = null;
+             Decimalbox label = null;
+        Label label3 = null;
+
         String q = "Select estudiantes.codigoest,concat(estudiantes.apellido,' ',estudiantes.nombre), "+query+" from matriculas  left join  estudiantes on matriculas.estudiante = estudiantes.codigoest  left join notasrecord on estudiantes.codigoest = notasrecord.estudiante where matriculas.curso = '"+curso.getCodigocur()+"'  order by estudiantes.apellido ";
         ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1),ParametrosGlobales.class);
         if(para.getCvalor().equals("P")){
@@ -82,7 +83,8 @@ public Boolean verificar(String formula,List<Notanotas> notas){
             row = new Row();
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
-                label = new Label();
+                 label = new Decimalbox();
+                label3 = new Label();
                 try {
                     if (dos.equals(null)) {
                         dos = new Double(0.0);
@@ -91,20 +93,38 @@ public Boolean verificar(String formula,List<Notanotas> notas){
                     dos = new Double(0.0);
                 }
                 if (j >= 2) {
-                    Double valor = (Double) dos;
-                    if(valor.equals(0.0)){
-                        label.setValue("");
-                    }else{
-                        label.setValue("" + redondear((Double) dos, 2));
+                   Double valor = (Double) dos;
+                    if (valor.equals(0.0)) {
+                        label.setValue(new BigDecimal(0));
+                    } else {
+                        label.setValue(new BigDecimal(redondear((Double) dos, 2)));
                     }
                     
                 } else {
-                    String valor = dos.toString().replace("(","").replace(")","").replace("\"","").replace(",","");
-                    label.setValue("" + valor);
+                       String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
+                    label3.setValue("" + valor);
                     //label.setValue("" + dos);
                 }
+
+                   if(j==0){
+                    label3.setStyle("width:15px;font-size:11px;font:arial; ");
+//                    label3.setReadonly(true);
+                    row.appendChild(label3);
+                }else if(j==1){
+                    label3.setStyle("width:300px;font-size:11px;font:arial; ");
+//                    label3.setReadonly(true);
+                    row.appendChild(label3);
+                }else{
+
+
+                                label.setDisabled(false);
+                                label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;");
+                    
+                     row.appendChild(label);
+                }
+
 //                                 label.setAttribute(q, dos);
-                row.appendChild(label);
+//                row.appendChild(label);
 //                                 System.out.print(","+dos);
             }
 
@@ -133,7 +153,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
                     Notasrecord nota = new Notasrecord();
                     List labels = object.getChildren();
                     nota.setEstudiante(new Estudiantes(new Integer(((Label) labels.get(0)).getValue())));
-                        Label object1 = (Label) labels.get(2);
+                        Decimalbox object1 = (Decimalbox) labels.get(2);
                         String vaNota = object1.getValue().toString();
                         Double aCargar = 0.0;
                         if (vaNota.equals(""))
@@ -143,7 +163,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
                           nota.setPrimero(aCargar);
 
                             //2
-                        object1 = (Label) labels.get(3);
+                        object1 = (Decimalbox) labels.get(3);
                          vaNota = object1.getValue().toString();
                          aCargar = 0.0;
                         if (vaNota.equals(""))
@@ -153,7 +173,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
                           nota.setSegundo(aCargar);
 
                          //3
-                        object1 = (Label) labels.get(4);
+                        object1 = (Decimalbox) labels.get(4);
                          vaNota = object1.getValue().toString();
                          aCargar = 0.0;
                         if (vaNota.equals(""))
@@ -162,7 +182,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
                             aCargar = new Double(vaNota);
                           nota.setTercero(aCargar);
                          //4
-                        object1 = (Label) labels.get(5);
+                        object1 = (Decimalbox) labels.get(5);
                          vaNota = object1.getValue().toString();
                          aCargar = 0.0;
                         if (vaNota.equals(""))
@@ -171,7 +191,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
                             aCargar = new Double(vaNota);
                           nota.setCuarto(aCargar);
                         //5
-                        object1 = (Label) labels.get(6);
+                        object1 = (Decimalbox) labels.get(6);
                          vaNota = object1.getValue().toString();
                          aCargar = 0.0;
                         if (vaNota.equals(""))
@@ -180,7 +200,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
                             aCargar = new Double(vaNota);
                           nota.setQuinto(aCargar);
                          //6
-                        object1 = (Label) labels.get(7);
+                        object1 = (Decimalbox) labels.get(7);
                          vaNota = object1.getValue().toString();
                          aCargar = 0.0;
                         if (vaNota.equals(""))
@@ -190,7 +210,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
                           nota.setSexto(aCargar);
 
                         //7DISCIPLIINA
-                        object1 = (Label) labels.get(9);
+                        object1 = (Decimalbox) labels.get(9);
                          vaNota = object1.getValue().toString();
                          aCargar = 0.0;
                         if (vaNota.equals(""))
@@ -200,7 +220,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
 
                           nota.setPrimerod(aCargar);
                          //8
-                        object1 = (Label) labels.get(10);
+                        object1 = (Decimalbox) labels.get(10);
                          vaNota = object1.getValue().toString();
                          aCargar = 0.0;
                         if (vaNota.equals(""))
@@ -209,7 +229,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
                             aCargar = new Double(vaNota);
                           nota.setSegundod(aCargar);
                          //9
-                        object1 = (Label) labels.get(11);
+                        object1 = (Decimalbox) labels.get(11);
                          vaNota = object1.getValue().toString();
                          aCargar = 0.0;
                         if (vaNota.equals(""))
@@ -219,7 +239,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
                           nota.setTercerd(aCargar);
 
                           //10
-                        object1 = (Label) labels.get(12);
+                        object1 = (Decimalbox) labels.get(12);
                          vaNota = object1.getValue().toString();
                          aCargar = 0.0;
                         if (vaNota.equals(""))
@@ -229,7 +249,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
  
                           nota.setCuartod(aCargar);
                         //11
-                        object1 = (Label) labels.get(13);
+                        object1 = (Decimalbox) labels.get(13);
                          vaNota = object1.getValue().toString();
                          aCargar = 0.0;
                         if (vaNota.equals(""))
@@ -239,7 +259,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
  
                           nota.setQuintod(aCargar);
                          //12
-                        object1 = (Label) labels.get(14);
+                        object1 = (Decimalbox) labels.get(14);
                          vaNota = object1.getValue().toString();
                          aCargar = 0.0;
                         if (vaNota.equals(""))

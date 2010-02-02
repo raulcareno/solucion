@@ -1,5 +1,5 @@
  
-<window  mode="overlapped" id="ventana"  title="Control de Institucion" width="500px" border="normal"
+<window  mode="overlapped" id="ventana"  title="Control de Institucion" width="100%" border="normal"
     maximizable="true" closable="true" sizable="true" xmlns:a="http://www.zkoss.org/2005/zk/annotation">
 
  <zscript>
@@ -25,6 +25,7 @@ void cargarVacio(){
 }
 
   </zscript>
+  <hbox>
 <groupbox mold="3d" >
        <caption label="Agregar" />
 <grid width="100%">
@@ -132,6 +133,7 @@ void cargarVacio(){
 
 
 </groupbox>
+</hbox>
 <zscript>
     AnnotateDataBinder binder = new AnnotateDataBinder(ventana);
     binder.bindBean("inobjeto", inobjeto);

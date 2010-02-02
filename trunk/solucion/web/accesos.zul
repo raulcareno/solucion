@@ -1,5 +1,4 @@
-<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
-<window  xmlns:y="http://www.zkoss.org/2007/yui"  mode="overlapped"  sizable="true" title="Control de Accesos" width="650px" border="normal"
+<window    mode="overlapped"  sizable="true" title="Control de Accesos" width="650px" border="normal"
 maximizable="true" closable="true" >
 <zscript>
      <![CDATA[

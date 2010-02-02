@@ -1,15 +1,14 @@
-<?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
+ 
 <?page id="main-page"?>
-<window     xmlns:y="http://www.zkoss.org/2007/yui"
- title="Ingreso de Notas" border="normal"
-width="100%" id="principal">
+<window    title="Ingreso de Notas" border="normal"
+            width="100%" id="principal">
     <zscript>
-<![CDATA[
+        <![CDATA[
 import bean.notasRecordBean;
 import java.math.BigDecimal;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-import org.zkforge.yuiext.grid.Row;
+
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
@@ -68,12 +67,12 @@ guardar(){
     }
 
 }
- 
+
 
 void doAdd(Cursos curso){
 
                 filas.addRow(curso);
-      
+
 }
 
 ]]>
@@ -82,30 +81,41 @@ void doAdd(Cursos curso){
         <rows>
             <row>
                 <span style="float:right"> Curso(*):</span>
-                
-                <listbox id="curs" width="420px" mold="select">
+
+                <listbox id="curs" width="420px" mold="select" onSelect="doAdd(((Cursos)curs.selectedItem.value))" >
 
                     <listitem forEach="${cursos}" value="${each}">
                         <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
                     </listitem>
                 </listbox>
-                     <button label="Ejecutar"   image="/images/run.gif" onClick="doAdd(((Cursos)curs.selectedItem.value))"/>
+                <!--button label="Ejecutar"   image="/images/run.gif" onClick="doAdd(((Cursos)curs.selectedItem.value))"/-->
+                    <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
             </row>
 
-         
- 
+
+
         </rows>
     </grid>
-    <y:grid width="100%" id="datos" editable = "true">
-        <y:columns>
-            <y:column editortype="readonly" style="font-size:11px" width="20px" label ="Cod."/>
-            <y:column editortype="readonly"  width="240px" label ="Estudiante"/>
-            <y:column forEach="${values}"  width="25px" editortype="${each[1]}" label="${each[0]}" align="right"  />
-        </y:columns>
-        <y:rows id="filas" use="bean.notasRecordBean"> </y:rows>
-    </y:grid>
+
+    <grid  id="datos" >
+        
+        <auxhead >
+            <auxheader colspan="2">
+                <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
+            </auxheader>
+            <auxheader label="APROVECHAMIENTO" colspan="7"/>
+            <auxheader label="DISCIPLINA" colspan="7"/>
+        </auxhead>
+        <columns>
+            <column width="15px"   label ="Mat."/>
+            <column width="300px" label ="Estudiante"/>
+            <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+        </columns>
+        <rows id="filas" use="bean.notasRecordBean">
+        </rows>
+    </grid>
+
     <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
 </window>
 
-	
