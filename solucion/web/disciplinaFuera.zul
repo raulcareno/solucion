@@ -1,10 +1,10 @@
 <?init class="org.zkforge.yuiext.zkplus.databind.AnnotateDataBinderInit"?>
 <?page id="main-page"?>
 <window  mode="overlapped"  maximizable="true"    xmlns:y="http://www.zkoss.org/2007/yui"
- title="Ingresar Observaciones"
-width="100%" id="principal">
-<zscript>
-<![CDATA[
+         title="Ingresar Observaciones"
+         width="100%" id="principal">
+    <zscript>
+        <![CDATA[
 import java.math.BigDecimal;
 import bean.disciplina;
 import jcinform.persistencia.*;
@@ -33,7 +33,7 @@ int k=0;
               Trimestres trime = (Trimestres) it.next();
               List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
               " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
-        
+
               if(sistemas0.size() >0 ){
 
                   cabes[k][0]= trime.getDescripcion();
@@ -53,11 +53,11 @@ Date fechaActual = new Date();
                 DateMidnight finale = new DateMidnight(((Sistemacalificacion)sistemas.get(i)).getFechafinal());
             if(actual.compareTo(finale) <=0 && actual.compareTo(inicial) >=0){
                 values[i][1]= "number";
-  
+
             }else{
                 values[i][1]= "readonly";
             }
-           
+
            // values[i]="number";
           }
 guardar(){
@@ -89,63 +89,64 @@ bd2.value = "";
 doAdd(Cursos curso, MateriaProfesor materia){
         filas.addRow(curso,materia);
 }
-]]>
-</zscript>
-<grid>
-<rows>
-<row>
- <span style="float:right"> Curso(*):</span>
-               <bandbox  width="400px" readonly="true"  id="bd1">
+        ]]>
+    </zscript>
+    <grid>
+        <rows>
+            <row>
+                <span style="float:right"> Curso(*):</span>
+                <bandbox  width="400px" readonly="true"  id="bd1">
                     <bandpopup>
-                    <vbox>
-                    <listbox id="curs" width="420px"
-                    onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
+                        <vbox>
+                            <listbox id="curs" width="420px"
+                                     onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
 
-                        <listitem forEach="${cursos}" value="${each}">
-                              <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                <listitem forEach="${cursos}" value="${each}">
+                                    <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
-                        </listitem>
-                    </listbox>
-                    </vbox>
+                                </listitem>
+                            </listbox>
+                        </vbox>
                     </bandpopup>
                 </bandbox>
-</row>
-<row>
-   <span style="float:right"> Materias(*):</span>
-   <span>
-               <bandbox  width="300px" readonly="true"  id="bd2">
-                    <bandpopup>
-                    <vbox>
-                    <listbox id="mates" width="320px"
-                    onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
+            </row>
+            <row>
+                <span style="float:right"> Materias(*):</span>
+                <span>
+                    <bandbox  width="300px" readonly="true"  id="bd2">
+                        <bandpopup>
+                            <vbox>
+                                <listbox id="mates" width="320px"
+                                         onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
 
-                        <listitem forEach="${materias}" value="${each}">
-                              <listcell label="${each.descripcion}" />
+                                    <listitem forEach="${materias}" value="${each}">
+                                        <listcell label="${each.descripcion}" />
 
-                        </listitem>
-                    </listbox>
-                    </vbox>
-                    </bandpopup>
-                </bandbox>
-                 <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
-                 </span>
-</row>
-</rows>
-</grid>
- <grid width="100%" id="datos"  >
-     <auxhead >
-                    <auxheader label=".." colspan="2"/>
-                        <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
-                    </auxhead>
-         <columns>
-             <column width="20px" label ="Mat."/>
-             <column width="300px" label ="Estudiante"/>
-             <column forEach="${values}" label="${each[0]}" align="right"  />
-          </columns>
-         <rows id="filas" use="bean.disciplina">
-         </rows>
- </grid>
- <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+                                    </listitem>
+                                </listbox>
+                            </vbox>
+                        </bandpopup>
+                    </bandbox>
+                    <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+                </span>
+            </row>
+        </rows>
+    </grid>
+    <grid width="100%" id="datos"  >
+        <auxhead >
+            <auxheader colspan="2">
+                <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
+            </auxheader>
+            <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
+        </auxhead>
+        <columns>
+            <column width="20px" label ="Mat."/>
+            <column width="300px" label ="Estudiante"/>
+            <column forEach="${values}" label="${each[0]}" align="right"  />
+        </columns>
+        <rows id="filas" use="bean.disciplina">
+        </rows>
+    </grid>
+    <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
 </window>
 
-	
