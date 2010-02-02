@@ -76,7 +76,7 @@ public class NumerosaLetras {
                 valor = ("Quince");
                 break;
             case 16:
-                valor = ("Diecis�is");
+                valor = ("Dieciséis");
                 break;
             case 17:
                 valor = ("Diecisiete");
@@ -155,7 +155,7 @@ public class NumerosaLetras {
                 valor = ("Quince");
                 break;
             case 16:
-                valor = ("Diecis�is");
+                valor = ("Dieciseis");
                 break;
             case 17:
                 valor = ("Diecisiete");
