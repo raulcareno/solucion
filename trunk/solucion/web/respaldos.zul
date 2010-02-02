@@ -117,16 +117,17 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
             </row>
             <row>
                 <span style="float:right">SU RESPALDO SE UBICARÁ EN: </span>
-                 <textbox style="font-size:15px" id="direccion" />
+                 <textbox style="font-size:15px;color:blue" id="direccion" cols="70" />
             </row>
                 <row spans="2">
                 <separator/>
                 <separator/>
 
             </row>
-            <row spans="2">
-                Una vez sacado el respaldo, copie el respaldo en un dispositivo externo, sea esto USB Flash Memory, CD Rom, Disquete, etc...
-
+            <row spans="2" style="color:red">
+                <span style="color:red">
+               NOTA: Una vez sacado el respaldo, copie el respaldo en un dispositivo externo, sea esto USB Flash Memory, CD Rom, Disquete, etc...
+</span>
             </row>
 
             <row spans="2">
