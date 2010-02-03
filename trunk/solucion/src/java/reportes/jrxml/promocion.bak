@@ -28,13 +28,14 @@
 	<parameter name="periodo" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="rectora" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="secretaria" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="slogan" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="textoParametro" class="java.lang.String"/>
 	<field name="asignatura" class="java.lang.String"/>
 	<field name="promedio" class="java.lang.Object"/>
 	<field name="letras" class="java.lang.String"/>
 	<field name="observacion" class="java.lang.String"/>
-	<field name="aprovechamiento" class="java.lang.Object"/>
+	<field name="aprovechamiento" class="java.lang.Double"/>
 	<field name="disciplina" class="java.lang.Object"/>
 	<field name="matricula" class="java.lang.Integer"/>
 	<field name="textPie" class="java.lang.String"/>
@@ -91,7 +92,7 @@
 					<reportElement
 						x="0"
 						y="151"
-						width="225"
+						width="240"
 						height="25"
 						key="staticText-4"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -102,9 +103,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="225"
+						x="240"
 						y="151"
-						width="78"
+						width="63"
 						height="25"
 						key="staticText-5"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -137,7 +138,7 @@
 					<textElement textAlignment="Center">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
 					</textElement>
-				<text><![CDATA[ESTADO]]></text>
+				<text><![CDATA[OBSERVACIÓN]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -176,12 +177,12 @@
 					<reportElement
 						x="0"
 						y="0"
-						width="225"
+						width="240"
 						height="25"
 						key="staticText-8"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
-						<font fontName="Arial" pdfFontName="Helvetica" size="11" isBold="false"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="None" rightBorderColor="#000000" rightPadding="9" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="11" isBold="true"/>
 					</textElement>
 				<text><![CDATA[APROVECHAMIENTO:]]></text>
 				</staticText>
@@ -189,38 +190,38 @@
 					<reportElement
 						x="0"
 						y="25"
-						width="225"
+						width="240"
 						height="25"
 						key="staticText-9"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
-						<font fontName="Arial" pdfFontName="Helvetica" size="11" isBold="false"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="None" rightBorderColor="#000000" rightPadding="9" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="11" isBold="true"/>
 					</textElement>
 				<text><![CDATA[DISCIPLINA:]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="###0.000" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="225"
+						x="240"
 						y="0"
-						width="78"
+						width="63"
 						height="25"
 						key="textField"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font fontName="Arial"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[""+$F{aprovechamiento}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{aprovechamiento}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="225"
+						x="240"
 						y="25"
-						width="78"
+						width="63"
 						height="25"
 						key="textField"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font fontName="Arial"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[""+$F{disciplina}]]></textFieldExpression>
 				</textField>
@@ -297,7 +298,7 @@
 						height="25"
 						key="textField"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{letrasAprovechamiento}]]></textFieldExpression>
@@ -310,7 +311,7 @@
 						height="25"
 						key="textField"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{letrasDisciplina}]]></textFieldExpression>
@@ -355,19 +356,6 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{nombre}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="48"
-						y="53"
-						width="484"
-						height="15"
-						key="textField-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="10"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{periodo}]]></textFieldExpression>
-				</textField>
 				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="-9"
@@ -393,19 +381,6 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{slogan}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="48"
-						y="68"
-						width="484"
-						height="16"
-						key="textField-9"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{titulo}]]></textFieldExpression>
-				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -413,13 +388,13 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="25"  isSplitAllowed="true" >
+			<band height="19"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
 						y="0"
-						width="225"
-						height="25"
+						width="240"
+						height="19"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="3" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -429,10 +404,10 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="225"
+						x="240"
 						y="0"
-						width="78"
-						height="25"
+						width="63"
+						height="19"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -445,10 +420,10 @@
 						x="302"
 						y="0"
 						width="132"
-						height="25"
+						height="19"
 						key="textField-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="11" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
 						<font fontName="Arial" size="11"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{letras}]]></textFieldExpression>
@@ -458,11 +433,28 @@
 						x="433"
 						y="0"
 						width="102"
-						height="25"
-						key="textField-3"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
+						height="19"
+						key="textField-3">
+							<printWhenExpression><![CDATA[new Boolean(!$F{observacion}.equals("REPROBADO"))]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="4" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
 						<font fontName="Arial" size="11"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{observacion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="433"
+						y="0"
+						width="102"
+						height="19"
+						key="textField-9">
+							<printWhenExpression><![CDATA[new Boolean($F{observacion}.equals("REPROBADO"))]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="4" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font fontName="Arial" pdfFontName="Helvetica-BoldOblique" size="11" isBold="true" isItalic="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{observacion}]]></textFieldExpression>
 				</textField>
