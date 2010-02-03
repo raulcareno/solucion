@@ -16,9 +16,11 @@ public final class DatabaseCalendarModel {
 	private SimplePieModel _simplePieModel;
 	
 	public DatabaseCalendarModel() {
+        try {
+
 		_simpleCalendarModel = new SimpleCalendarModel();
 		_simplePieModel = new SimplePieModel();
-		int counts[] = {0, 0, 0};
+		int counts[] = {0, 0, 0, 0,0};
 		java.util.List lst = dao.selectAll();
 		for(int i=0; i<lst.size(); i++) {
 			NewsItem ni = (NewsItem) lst.get(i);
@@ -28,10 +30,14 @@ public final class DatabaseCalendarModel {
 				counts[colorPos]++;
 			}
 		}
-		for(int j=0; j<3; j++) {
+		for(int j=0; j<4; j++) {
 			Integer count = new Integer(counts[j]);
 			_simplePieModel.setValue(NewsColors._type[j], count);
 		}
+
+        } catch (Exception e) {
+            System.out.println("error: en colores"+e);
+        }
 	}
 	public  SimpleCalendarModel getSimpleCalendarModel() {
 		return _simpleCalendarModel;

@@ -20,9 +20,10 @@
 				<row>
 					Tipo: <combobox id="cmbType">
 						 
-						<comboitem label="Academica" />
-						<comboitem label="Reunión" />
-                        <comboitem label="Recoradorio" />
+						<comboitem label="Academica" style="background:#FF6F6F" />
+						<comboitem label="Reunión"  style="background:#9B9BFF" />
+                        <comboitem label="Recoradorio" style="background:#00E874"  />
+                        <comboitem label="Otro" style="background:#FF9900"  />
 					  </combobox>
 				</row>
 				<row>
