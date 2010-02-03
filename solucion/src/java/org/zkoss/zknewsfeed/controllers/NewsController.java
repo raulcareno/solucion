@@ -12,7 +12,6 @@ import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zknewsfeed.models.DatabaseCalendarModel;
 import org.zkoss.zknewsfeed.models.NewsItem;
-import org.zkoss.zul.Chart;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 

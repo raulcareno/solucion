@@ -34,13 +34,13 @@ public class EventUpdateController extends GenericForwardComposer {
     Timebox tinicio;
     Timebox tfina;
 	 Permisos permiso = new Permisos();
-	String[] _colors = {"red", "green", "blue"};
+	String[] _colors = {"#FF6F6F", "#6D8EFE", "#00E874","#FF9900",};
 	
 	public void prepareWindow(int left, int top, NewsItem ni) {
 		updateMyEntry.setLeft(left + "px");
 		updateMyEntry.setTop(top + "px");
 		
-		int colorPosition = NewsColors.getColorPosition(ni.getHeaderColor());
+		int colorPosition = NewsColors.getColorPosition(ni.getContentColor());
 		
 		if(colorPosition == -1)
 			colorPosition = 0;
@@ -49,6 +49,7 @@ public class EventUpdateController extends GenericForwardComposer {
         tinicio.setValue(ni.getBeginDate());
         tfina.setValue(ni.getEndDate());
 		cmbType.setSelectedIndex(colorPosition);
+//        cmbType.setStyle("color:"+_colors[colorPosition]);
 		tbText.setValue(ni.getContent());
 	}
 	
@@ -93,8 +94,21 @@ public class EventUpdateController extends GenericForwardComposer {
 			selectedColor = 0;
 		
 		ni.setContentColor(NewsColors._colors[selectedColor]);
-		ni.setHeaderColor(NewsColors._colors[selectedColor]);
-			
+
+       String color = NewsColors._colors[selectedColor];
+        String hcolor = "";
+
+        if (color.equals("#FF6F6F")) {
+            hcolor = "red";
+        } else if (color.equals("#6D8EFE")) {
+            hcolor = "blue";
+        } else if (color.equals("#00E874")) {
+            hcolor = "green";
+        } else if (color.equals("#FF9900")) {
+            hcolor = "tomato";
+        }
+            ni.setHeaderColor(hcolor);
+
 		DatabaseCalendarModel.dao.updateNewsItem(ni);
 		DatabaseCalendarModel dcm = new DatabaseCalendarModel();
 		

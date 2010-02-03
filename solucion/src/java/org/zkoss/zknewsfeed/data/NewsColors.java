@@ -1,8 +1,8 @@
 package org.zkoss.zknewsfeed.data;
 
 public final class NewsColors {
-	public static String[] _colors = {"red", "blue", "green","yellow"};
-	public static String[] _type = {"Libre", "Académica", "Reunión", "Recordatorio"};
+	public static String[] _colors = {"#FF6F6F", "#6D8EFE", "#00E874","#FF9900",};
+	public static String[] _type = {"Académica", "Reunión", "Recordatorio","Otro"};
 	
 	public static int getColorPosition(String color) {
 		for(int i=0; i<_colors.length; i++) {
