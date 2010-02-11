@@ -341,7 +341,7 @@
 						width="535"
 						height="47"
 						key="crosstab-1"/>
-					<crosstabDataset>
+					<crosstabDataset isDataPreSorted="true" >
 						<dataset >
 						</dataset>
 					</crosstabDataset>

@@ -56,7 +56,7 @@
 					<reportElement
 						x="-5"
 						y="87"
-						width="80"
+						width="56"
 						height="20"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -67,9 +67,9 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="83"
+						x="71"
 						y="88"
-						width="250"
+						width="470"
 						height="20"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -89,9 +89,9 @@
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="79"
+						x="71"
 						y="108"
-						width="254"
+						width="262"
 						height="20"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -104,7 +104,7 @@
 					<reportElement
 						x="-5"
 						y="107"
-						width="80"
+						width="66"
 						height="20"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -115,8 +115,8 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy h:mm a" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="433"
-						y="87"
+						x="431"
+						y="110"
 						width="100"
 						height="18"
 						key="textField"/>

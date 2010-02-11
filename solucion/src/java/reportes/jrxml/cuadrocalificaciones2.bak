@@ -350,12 +350,12 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="55"
+						y="58"
 						width="131"
-						height="14"
+						height="11"
 						key="staticText-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
 					</textElement>
 				<text><![CDATA[NOMINA]]></text>
