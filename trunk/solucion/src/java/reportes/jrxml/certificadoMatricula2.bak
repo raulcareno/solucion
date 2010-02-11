@@ -36,7 +36,7 @@
 	<field name="texto" class="java.lang.String"/>
 	<field name="jornada" class="java.lang.String"/>
 	<field name="paralelo" class="java.lang.String"/>
-	<field name="matricula" class="java.lang.String"/>
+	<field name="matricula" class="java.lang.Object"/>
 	<field name="folio" class="java.lang.String"/>
 	<field name="fecha" class="java.util.Date"/>
 	<field name="seccion" class="java.lang.String"/>
@@ -202,19 +202,6 @@
 					</textElement>
 				<text><![CDATA[Secretaria(o)]]></text>
 				</staticText>
-				<staticText>
-					<reportElement
-						x="15"
-						y="46"
-						width="509"
-						height="70"
-						key="staticText-4"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Justified" lineSpacing="1_1_2">
-						<font fontName="Arial" size="12"/>
-					</textElement>
-				<text><![CDATA[La suscrita Secretaria del Colegio Particular "17 de Agosto", previo cumplimiento de las respectivas disposiciones de la Ley de Educación y Cultura y su Reglamento vigente, CERTIFICA que en los archivos de secretaría, está inscrita la siguiente matricula:]]></text>
-				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="114"
@@ -291,7 +278,7 @@
 					<textElement>
 						<font fontName="Arial" size="12"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{matricula}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[""+$F{matricula}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -449,6 +436,20 @@
 					</textElement>
 				<text><![CDATA[CERTIFICADO DE MATRICULA]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="10"
+						y="38"
+						width="520"
+						height="60"
+						backcolor="#FFFFFF"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" lineSpacing="1_1_2">
+						<font fontName="Arial" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["La suscrita Secretaria del "+ $P{denominacion} +" "+$P{denominacion} +", previo cumplimiento de las respectivas disposiciones de la Ley de Educación y Cultura y su Reglamento vigente, CERTIFICA que en los archivos de secretaría, está inscrita la siguiente matricula:"]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>

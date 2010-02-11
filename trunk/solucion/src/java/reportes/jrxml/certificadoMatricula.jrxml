@@ -205,8 +205,9 @@
 					<reportElement
 						x="46"
 						y="8"
-						width="100"
+						width="34"
 						height="18"
+						forecolor="#FFFFFF"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -216,14 +217,14 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="46"
-						y="26"
-						width="475"
+						x="20"
+						y="28"
+						width="490"
 						height="234"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement lineSpacing="Double">
-						<font/>
+					<textElement textAlignment="Justified" lineSpacing="Double">
+						<font size="12"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{texto}]]></textFieldExpression>
 				</textField>
