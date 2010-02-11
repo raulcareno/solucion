@@ -69,14 +69,14 @@ public JRDataSource certificados(Cursos curso,String tipo){
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
                     String query = "SELECT mat FROM Matriculas AS mat " +
-                            "WHERE  mat.estado in ('Matriculado','Recibir Pase','Retirado') " +
+                            "WHERE  mat.estado in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
                             "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                             " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
                     if (!curso.getCodigocur().equals(-2)) {
                         query = "Select o from Matriculas as o " +
                                 "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                                 "and o.curso.codigocur = '" + curso.getCodigocur() + "' " +
-                                " and o.estado in ('Matriculado','Recibir Pase','Retirado') order by o.curso.secuencia,o.estudiante.apellido";
+                                " and o.estado in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') order by o.curso.secuencia,o.estudiante.apellido";
                     }
 
                     List hoy = adm.query(query);
@@ -95,13 +95,40 @@ public JRDataSource certificados(Cursos curso,String tipo){
 
 }
 
+public JRDataSource pases(Cursos curso,String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "SELECT mat FROM Matriculas AS mat " +
+                            "WHERE  mat.estado in ('Recibir Pase') " +
+                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                    if (!curso.getCodigocur().equals(-2)) {
+                        query = "Select o from Matriculas as o " +
+                                "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                                "and o.curso.codigocur = '" + curso.getCodigocur() + "' " +
+                                " and o.estado in ('Recibir Pase') order by o.curso.secuencia,o.estudiante.apellido";
+                    }
+
+                    List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = new ReporteActaDataSource(detalle);
+                
+
+            return ds;
+
+}
+
 public JRDataSource transporte(Cursos curso,String tipo){
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
                     if(tipo.equals("LTRAN")){
                         String query = "SELECT mat FROM Matriculas AS mat " +
-                                "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado') " +
+                                "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
                                 "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.estudiante.transporte = true  " +
                                 " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
                         if (!curso.getCodigocur().equals(-2)) {
@@ -117,7 +144,7 @@ public JRDataSource transporte(Cursos curso,String tipo){
                         }
                     }else if(tipo.equals("LCART")){
                         String query = "SELECT mat FROM Matriculas AS mat " +
-                                    "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado') " +
+                                    "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
                                     "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                                     " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
                             if (!curso.getCodigocur().equals(-2)) {
@@ -144,7 +171,7 @@ public JRDataSource nuevos(Cursos curso,String tipo){
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
                     String query = "SELECT mat FROM Matriculas AS mat " +
-                            "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado') " +
+                            "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
                             "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.nuevo = true  " +
                             " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
                     if (!curso.getCodigocur().equals(-2)) {
@@ -170,7 +197,7 @@ public JRDataSource internos(Cursos curso,String tipo){
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
                     String query = "SELECT mat FROM Matriculas AS mat " +
-                            "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado') " +
+                            "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
                             "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.estudiante.adventista = true  " +
                             " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
                     if (!curso.getCodigocur().equals(-2)) {
@@ -231,6 +258,10 @@ rep.setOpen(true);parametros.setOpen(false);
                     datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/conmatricula.jasper");
+            }else if(tipo.equals("LPAS")){
+                    datasource = pases((Cursos)curs.getSelectedItem().getValue(),"LPAS");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/conpase.jasper");
             }else if(tipo.equals("LTRAN")){
                     datasource = transporte((Cursos)curs.getSelectedItem().getValue(),"LTRAN");
                     parametros.put("titulo", titulo.getValue());
@@ -366,6 +397,9 @@ curs.setSelectedIndex(0);
             titulo.value = "Listado de Estudiantes";
        if(valor.equals("LMIN"))
             titulo.value = "Listado de Estudiantes";
+
+       if(valor.equals("LPAS"))
+            titulo.value = "NOMINA DE ESTUDIANTES CON PASES DE OTROS COLEGIOS";
       if(valor.equals("LINT"))
             titulo.value = "Listado de Estudiantes";
 
@@ -408,6 +442,7 @@ curs.setSelectedIndex(0);
                                 <listitem  id="LGEN" label="Listadopor Genero" value="LGEN"/>
                                 <listitem  id="LFEC" label="Listado con Años Cumplidos" value="LFEC"/>
                                 <listitem  id="LMIN" label="Listado con Folio y No. Matricula" value="LMIN"/>
+                                <listitem  id="LPAS" label="Listado de Pases Recibidos" value="LPAS"/>
                                 <listitem  id="LNUEV" label="Listado de Estudiantes Nuevos" value="LNUEV"/>
                                 <listitem  id="LTRAN" label="Listado de Estudiantes que Toman transporte" value="LTRAN"/>
                                 <listitem  id="LINT" label="Listado de Estudiantes Internos" value="LINT"/>
@@ -492,6 +527,7 @@ curs.setSelectedIndex(0);
             LGEN.visible = per.verificarPermisoReporte("LGEN", "Ingresar");
             LFEC.visible = per.verificarPermisoReporte("LFEC", "Ingresar");
             LMIN.visible = per.verificarPermisoReporte("LMIN", "Ingresar");
+            LPAS.visible = per.verificarPermisoReporte("LPAS", "Ingresar");
             LNUEV.visible = per.verificarPermisoReporte("LNUEV", "Ingresar");
             LTRAN.visible = per.verificarPermisoReporte("LTRAN", "Ingresar");
             LINT.visible = per.verificarPermisoReporte("LINT", "Ingresar");

@@ -169,6 +169,7 @@ void llenarMatricula(Matriculas matri){
          fechamatricula.value =matri.getFechamat();
          numero.value = matri.getNumero();
          folio.value = matri.getFolio();
+         institucion.value = matri.getInstitucion();
             if(matri.getNuevo()!=null){
                 nuevo.checked = matri.getNuevo();
             }
@@ -326,6 +327,7 @@ void estado(Boolean estado,Boolean modificar){
     direccionre.readonly = estado;
     telefonore.readonly = estado;
     emailre.readonly = estado;
+    institucion.readonly = estado;
 
     tipofac.disabled = estado;
     cedulafac.readonly = estado;
@@ -459,6 +461,7 @@ void estado(Boolean estado,Boolean modificar){
         matricula.setEstado(accion.value);
         matricula.setNuevo(nuevo.checked);
         matricula.setRepite(repite.checked);
+        matricula.setInstitucion(institucion.value);
         
         try{
             matricula.setBeca((beca.value).doubleValue());
@@ -921,14 +924,16 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                                                             <row>
                                                                 <span style="float:right"> Estado (*):</span>
+                                                                 <span>
                                                                 <combobox readonly="true"   id="accion"  >
                                                                     <comboitem  value="Matriculado" label="Matriculado"/>
                                                                     <comboitem value="Inscrito" label="Inscrito"/>
                                                                     <comboitem value="Retirado" label="Retirado"/>
-                                                                    <comboitem value="Pasee" label="Emitir Pase"/>
-                                                                    <comboitem value="Recibir" label="Recibir Pase"/>
+                                                                    <comboitem value="Emitir Pase" label="Emitir Pase"/>
+                                                                    <comboitem value="Recibir Pase" label="Recibir Pase"/>
                                                                 </combobox>
-
+                                                                Inst. Anterior: <textbox id="institucion" readonly="true"  maxlength="30" cols="20"/>
+                                                                </span>
                                                                 <span style="float:right"> Usuario:</span>
                                                                 <span>
                                                                     <textbox id="usuario" maxlength="30" cols="12" readonly="true"  />

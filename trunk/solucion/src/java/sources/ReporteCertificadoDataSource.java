@@ -9,6 +9,7 @@ package sources;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import jcinform.persistencia.Matriculas;
@@ -41,7 +42,25 @@ public class ReporteCertificadoDataSource implements JRDataSource{
         irParaProximoAlumno = (valorAtual != null);
         return irParaProximoAlumno;
     }
-    
+    public String convertir(Date fecha){
+        String mes = "";
+            switch(fecha.getMonth()){
+                case 0: mes = "Enero"; break;
+                case 1: mes = "Febrero"; break;
+                case 2: mes = "Marzo"; break;
+                case 3: mes = "Abril"; break;
+                case 4: mes = "Mayo"; break;
+                case 5: mes = "Junio"; break;
+                case 6: mes = "Julio"; break;
+                case 7: mes = "Agosto"; break;
+                case 8: mes = "Septiembre"; break;
+                case 9: mes = "Octubre"; break;
+                case 10: mes = "Noviembre"; break;
+                case 11: mes = "Diciembre"; break;
+            }
+        
+    return fecha.getDate()+ " de "+ mes+ " del "+ (fecha.getYear()+1900);
+    }
     public String valor(Periodo periodoAct){
         List aa = new ArrayList();
         
@@ -71,10 +90,14 @@ public class ReporteCertificadoDataSource implements JRDataSource{
                 String men=valor(nodo.getCurso().getPeriodo());
 //                System.out.println("MENSAJE"+men);
                 men = men.replace("[estudiante]",nodo.getEstudiante().getApellido()+" "+nodo.getEstudiante().getNombre());
-                men = men.replace("[curso]",nodo.getCurso().getDescripcion()+" "+nodo.getCurso().getEspecialidad().getDescripcion()+" "+nodo.getCurso().getParalelo().getDescripcion());
+                men = men.replace("[curso]",nodo.getCurso().getDescripcion());
                 men = men.replace("[jornada]",nodo.getCurso().getPeriodo().getSeccion().getDescripcion());
+                men = men.replace("[especialidad]",nodo.getCurso().getEspecialidad().getDescripcion());
+                men = men.replace("[paralelo]",nodo.getCurso().getParalelo().getDescripcion());
                 men = men.replace("[matricula]",nodo.getNumero()+"");
-                men = men.replace("[fecha]",nodo.getFechamat()+"");
+                men = men.replace("[folio]",nodo.getFolio()+"");
+                men = men.replace("[fecha]",convertir(nodo.getFechamat()));
+                men = men.replace("[institucion]",nodo.getCurso().getPeriodo().getInstitucion().getDenominacion()+" "+nodo.getCurso().getPeriodo().getInstitucion().getNombre());
                 valor = men;
                 //ocupacionPadre
         }else if ("matricula".equals(fieldName)) {
