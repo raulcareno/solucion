@@ -1,5 +1,5 @@
 
-<window  width="640px">
+<window title="Seleccione un Curso para continuar"  >
     <zscript>
   import jcinform.persistencia.Global;
   import bean.EventDAO;
@@ -307,7 +307,7 @@ Cursos cur = curs.selectedItem.value;
                     <span style="float:right"> Fórmula:
                     </span>
                     <span>
-                        <textbox rows="2" id="formula" cols="35"  disabled="true"  />
+                        <textbox id="formula" cols="50"  disabled="true"  />
                         <button label="Ver" onClick=" materias123(); "/>
                         <listbox onSelect="anadir(self.selectedItem.value)" visible="false" id="materiaslista" width="45%">
                             <listhead>

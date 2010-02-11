@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window    onCreate="cargando();"    width="79%" height="100%" border="normal"
+<window    onCreate="cargando();"    height="100%" border="normal"
          >
     <zk xmlns="http://www.zkoss.org/2005/zul" >
 

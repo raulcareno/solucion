@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window   onCreate="cargando();"  title="Reporte de Notas"
+<window   onCreate="cargando();"   height="100%"  title="Reporte de Notas"
   border="normal"
    >
 <zk xmlns="http://www.zkoss.org/2005/zul">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <window id="principales" width="795px">
+    <window id="principales" >
         <zscript>
 <![CDATA[
   import jcinform.persistencia.Global;
@@ -780,7 +780,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                                                                 <row>
                                                                     <span style="float:right"> Busqueda:</span>
+                                                                    <span>
                                                                     <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
+                                                                    _Ingrese un apellido para buscar
+                                                                    </span>
                                                                 </row>
                                                                 <row>
                                                                    
@@ -814,13 +817,15 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                                                                 <row>
                                                                     <span style="float:right"> Email:</span>
-                                                                    <textbox id="mail" maxlength="100" cols="40"  readonly="true"    />
+                                                                    <span><textbox id="mail" maxlength="100" cols="30"  readonly="true"    />
+                                                                     Teléfono:
+                                                                    <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
+                                                                    </span>
                                                                 </row>
 
                                                                 <row>
                                                                     
-                                                                    <span style="float:right"> Teléfono:</span>
-                                                                    <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
+                                                                    
 
 
                                                                 </row>
@@ -830,7 +835,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                         </grid>
                                                     </div>
                                                 </center>
-                                                <east splittable="true" size="25%"  flex="true">
+                                                <east splittable="true" size="26%"  flex="true">
                                                     <grid>
                                                         <rows>
                                                             <row>
@@ -867,7 +872,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                     </grid>
 								
                                                 </east>
-                                                <south splittable="true" size="50%"  flex="true">
+                                                <south splittable="true" size="55%"  flex="true">
                                                     <grid width="100%" height="220">
                                                         <rows>
                                                             <row>
@@ -879,7 +884,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     No.Folio (*):
                                                                     <intbox maxlength="10" readonly="true" cols="5"  id="folio"  />
                                                                 </span>
-                                                                Género (*):
+
+                                                                <span style="float:right"> Género (*):</span>
                                                                 <combobox id="genero" readonly="true">
                                                                     <comboitem value="Masculino" label="Masculino"/>
                                                                     <comboitem value="Femenino" label="Femenino"/>
@@ -909,7 +915,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 </bandbox>
 
 
-                                                                <textbox cols="15"    readonly="true" style="background-color:transparent; border:0px;height:17px; text-align:right" value="Nacido:"/>
+                                                                <span style="float:right"> Fecha Nacimiento:</span>
                                                                 <datebox id="nacido"  readonly="true"  />
                                                             </row>
 
@@ -923,9 +929,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     <comboitem value="Recibir" label="Recibir Pase"/>
                                                                 </combobox>
 
-                                                                <textbox  cols="15"   readonly="true" style="background-color:transparent; border:0px;height:17px; text-align:right" value="Usuario:"/>
+                                                                <span style="float:right"> Usuario:</span>
                                                                 <span>
                                                                     <textbox id="usuario" maxlength="30" cols="12" readonly="true"  />
+
                                                                     <button label="Generar" onClick="generarClave(true);"/>
                                                                 </span>
                                                             </row>
@@ -936,7 +943,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                      Repite:
                                                                     <checkbox id="repite" disabled="true"/>
                                                                 </span>
-                                                                <textbox  cols="15"   readonly="true" style="background-color:transparent; border:0px; text-align:right" value="Clave:"/>
+                                                                <span style="float:right"> Clave:</span>
                                                                 <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
                                                             </row>
                                                             <row>
@@ -945,7 +952,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     <checkbox id="transporte" disabled="true"/>
                                                                     <textbox id="nobus" maxlength="100" cols="40" readonly="true"  />
                                                                 </span>
-                                                                <textbox  cols="15"   readonly="true" style="background-color:transparent; border:0px;height:20px; text-align:right" value="Estado:"/>
+                                                                <span style="float:right"> Activo:</span>
                                                                 <checkbox id="estadoe" disabled="true"  />
                                                             </row>
                                                             <row>
@@ -957,13 +964,13 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     <decimalbox id="otros" format="###.##"   maxlength="5" cols="10" readonly="true"  /> USD
                                                                 </span>
                                                                 <span style="float:right"> Interno:</span>
-                                                                <checkbox id="adventista" disabled="true" />
+                                                                <span><checkbox id="adventista" disabled="true" /> Nuevo:
+                                                                <checkbox id="nuevo" disabled="true" /></span>
                                                             </row>
                                                             <row>
                                                                 <span style="float:right"> Observación:</span>
                                                                 <textbox rows="2" id="observacion"  readonly="true"  />
-                                                                <span style="float:right"> Nuevo:</span>
-                                                                <checkbox id="nuevo" disabled="true" />
+                                                                
                                                             </row>
                                                         </rows>
                                                     </grid>
