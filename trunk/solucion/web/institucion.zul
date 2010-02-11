@@ -1,6 +1,5 @@
  
-<window  mode="overlapped" id="ventana"  title="Control de Institucion" width="100%" border="normal"
-    maximizable="true" closable="true" sizable="true" xmlns:a="http://www.zkoss.org/2005/zk/annotation">
+<window  id="ventana"  title="Control de Institucion" border="normal"  xmlns:a="http://www.zkoss.org/2005/zk/annotation">
 
  <zscript>
 

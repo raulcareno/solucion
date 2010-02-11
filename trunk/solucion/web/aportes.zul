@@ -1,7 +1,6 @@
 
 <zk xmlns="http://www.zkoss.org/2005/zul">
-<window mode="overlapped" title="Aportes por Trimestres, Bimestres, Quimestres" width="70%" height="83%" border="normal"
-    maximizable="true" closable="true" sizable="true">
+<window title=" " height="83%" border="normal" >
  <zscript>
 
 import bean.EventDAO;
@@ -534,7 +533,7 @@ if(formula1.equals("")){
 </zscript>
 
 <borderlayout height="450px">
-<west autoscroll="true" maxsize="300" size="35%" splittable="true" collapsible="true">
+<west autoscroll="true" maxsize="300" size="38%" splittable="true" collapsible="true">
     <span>
         <button    id="llsenar" image="/images/expandir.png" label="Expandir"   onClick="mostrarTodos();"/>
         <tree model="${stm}" onLoad="mostrarTodos();" onSelect="onSele();modificar.disabled= false;estado(true,false);"

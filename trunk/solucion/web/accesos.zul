@@ -1,5 +1,4 @@
-<window    mode="overlapped"  sizable="true" title="Control de Accesos" width="650px" border="normal"
-maximizable="true" closable="true" >
+<window    title="Control de Accesos"  border="normal" >
 <zscript>
      <![CDATA[
   import jcinform.persistencia.Global;

@@ -1,7 +1,6 @@
     
 <?page id="main-page"?>
-<window  mode="overlapped"  maximizable="true"         title="DISCIPLINA"
-         width="100%" id="principal">
+<window  id="principal">
     <zscript>
         <![CDATA[
 import java.math.BigDecimal;

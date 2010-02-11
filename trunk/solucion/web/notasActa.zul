@@ -1,7 +1,6 @@
 
 <?page id="main-page"?>
-<window title="Notas del Estudiante" onCreate="notas()"   mode="overlapped"
-sizable="true"  closable="true" border="normal" width="80%" id="principalGrado">
+<window onCreate="notas()"  id="principalGrado">
 <zscript>
 <![CDATA[
 import bean.notasActa;

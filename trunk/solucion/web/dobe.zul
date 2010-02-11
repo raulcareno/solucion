@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <window  id="principales" mode="overlapped"  maximizable="true"  title="Historial de los Estudiantes" width="800px" border="normal"
-     closable="true" sizable="true">
+    <window  id="principales"   title="Historial de los Estudiantes"   border="normal" >
         <zscript>
 <![CDATA[
   import jcinform.persistencia.Global;

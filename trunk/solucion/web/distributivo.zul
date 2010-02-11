@@ -1,6 +1,5 @@
 
-<window  mode="overlapped"  title="Control de Distributivo [Seleccione un Curso]" width="640px" border="normal"
-    maximizable="true" closable="true" sizable="true">
+<window  width="640px">
     <zscript>
   import jcinform.persistencia.Global;
   import bean.EventDAO;
@@ -294,16 +293,11 @@ Cursos cur = curs.selectedItem.value;
                     <span>
                         <checkbox label="Cuantitativa"  id="cuantitativa"  disabled="true"    />
                         <checkbox   label="Promediada"  id="promediada"  disabled="true"  />
-                    </span>
-                </row>
-                <row>
-                    <span style="float:right">
-                    </span>
-                    <span>
                         <checkbox  label="Ingresan Disciplina" id="opcional"  disabled="true"   />
                         <checkbox  label="Se Imprime" id="seimprime"  disabled="true"   />
                     </span>
                 </row>
+                
                 <row>
                     <span style="float:right"> Orden(*):
                     </span>

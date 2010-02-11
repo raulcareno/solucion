@@ -1,5 +1,4 @@
-<window  mode="overlapped"  title="Envio de Comunicados" width="780px" border="normal"
-    maximizable="true" closable="true" sizable="true">
+<window   title="Envio de Comunicados"   border="normal" >
 
         <zscript><![CDATA[
 import bean.notas;

@@ -1,8 +1,8 @@
 
 <?page id="main-page"?>
-<window  mode="overlapped"  
+<window
  title="Ingresar Faltas Disciplinarias"
-width="60%" id="principal">
+  id="principal">
 <zscript>
 <![CDATA[
 import java.math.BigDecimal;

@@ -205,7 +205,7 @@ void verificar(){
 
                     <treeitem  id="ssM" label="Matriculación" value="/blanco.zul">
                       <treechildren>
-                        <treeitem id="Cursos" label="Cursos" image="/images/cursos.png" value="/cursos.zul"/>
+                        <treeitem  id="Cursos" label="Cursos" image="/images/cursos.png" value="/cursos.zul"/>
                         <treeitem id="Matricular" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" />
                         <treeitem id="Pendientes" label="Pendientes" image="/images/dinero.gif"   value="/pendientes.zul" />
                         <treeitem id="Reportes_Estudiantes" label="Reportes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
@@ -318,7 +318,8 @@ import bean.Permisos;
 	  			
 	 			mytab.getTabs().getChildren().clear();
                 mytab.getTabpanels().getChildren().clear();
-
+                 mytab.setWidth("100%");
+                  mytab.setHeight("100%");
                   Tab newtb= new Tab("Inicio");
                 newtb.setSelected(true);
                 newtb.setClosable(true);

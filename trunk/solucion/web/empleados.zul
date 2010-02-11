@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk  xmlns="http://www.zkoss.org/2005/zul">
-    <window  mode="overlapped"   title="Registro de Empleados/Profesores ...::..." width="700px" border="normal"
-      closable="true" sizable="true">
+    <window    title="Registro de Empleados/Profesores ...::..."  border="normal" >
 
         <zscript>
      
