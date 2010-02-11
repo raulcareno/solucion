@@ -1,5 +1,5 @@
-<window  mode="overlapped"  title="Control de Auditora" width="80%" border="normal"
-    maximizable="true" closable="true" sizable="true">
+<window   title="Control de Auditora"  border="normal"
+   >
 
  <zscript>
   import jcinform.persistencia.*;

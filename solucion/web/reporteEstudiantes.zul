@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window  mode="overlapped"  onCreate="cargando();"    title="Reporte de Estudiantes" width="79%" height="100%" border="normal"
-         maximizable="true" closable="true" sizable="true">
-    <zk xmlns="http://www.zkoss.org/2005/zul">
+<window    onCreate="cargando();"    width="79%" height="100%" border="normal"
+         >
+    <zk xmlns="http://www.zkoss.org/2005/zul" >
 
         <zscript>
             <![CDATA[

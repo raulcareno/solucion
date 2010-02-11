@@ -1,6 +1,6 @@
 
-<window  mode="overlapped"  title="Control de Empleados Año Lectivo" width="900px" border="normal"
-    maximizable="true" closable="true" sizable="true">
+<window   title="Control de Empleados Año Lectivo"   border="normal"
+    >
         <zscript><![CDATA[
 
 

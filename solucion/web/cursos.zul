@@ -1,5 +1,4 @@
-<window  mode="overlapped"  title="Control de Cursos"   border="normal"
-    maximizable="true" closable="true" sizable="true">
+<window border="normal" title="Cursos"  >
 
  <zscript>
   import jcinform.persistencia.Global;

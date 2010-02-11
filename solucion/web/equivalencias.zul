@@ -1,6 +1,5 @@
  
-<window  mode="overlapped"  title="Control de Equivalencias" width="500px" border="normal"
-    maximizable="true" closable="true" sizable="true">
+<window   title="Control de Equivalencias"   border="normal" >
 
  <zscript>
   import jcinform.persistencia.Global;

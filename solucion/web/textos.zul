@@ -1,5 +1,5 @@
-<window  mode="overlapped"  title="Control de Textos para Reportes" width="600px" border="normal"
-    maximizable="true" closable="true" sizable="true">
+<window  title="Control de Textos para Reportes"  border="normal"
+    >
 
  <zscript>
   import jcinform.persistencia.Textos;

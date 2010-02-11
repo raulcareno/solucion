@@ -1,6 +1,6 @@
+<zk xmlns="http://www.zkoss.org/2005/zul">
 
-<window  mode="overlapped"  title="Envio de Comunicados" width="780px" border="normal"
-    maximizable="true" closable="true" sizable="true">
+<window  title="Envio de Comunicados"  border="normal" >
 
     <zscript><![CDATA[
 import bean.notas;
@@ -174,7 +174,7 @@ Para:
             </row>
 
             <row spans="2">
-                <fckeditor  id="mensaje"/>
+                <fckeditor    id="mensaje"/>
 
             </row>
             <row>
@@ -185,3 +185,4 @@ Para:
     </grid>
    
 </window>
+</zk>

@@ -1,5 +1,4 @@
-<window     mode="overlapped"  sizable="true" title="Control de Accesos" width="650px" border="normal"
-            maximizable="true" closable="true" >
+<window     width="650px" border="normal">
     <zscript>
         <![CDATA[
 
@@ -61,7 +60,7 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
     </zscript>
 
     <groupbox mold="3d" >
-        <caption label="Modificar" />
+        <caption label="Bloquear estudiantes para el consultar notas" />
         <vbox>
 
             <hbox>

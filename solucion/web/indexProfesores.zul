@@ -243,7 +243,8 @@
 
 	 			mytab.getTabs().getChildren().clear();
                 mytab.getTabpanels().getChildren().clear();
-
+                  mytab.setWidth("100%");
+                  mytab.setHeight("100%");
                   Tab newtb= new Tab("Inicio");
                 newtb.setSelected(true);
                 newtb.setClosable(true);

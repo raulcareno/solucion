@@ -1,8 +1,6 @@
 
 <?page id="main-page"?>
-<window  mode="overlapped"  maximizable="true"    
-         title="Ingresar Observaciones"
-         width="100%" id="principal">
+<window  id="principal">
     <zscript>
         <![CDATA[
 import java.math.BigDecimal;

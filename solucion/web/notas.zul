@@ -1,7 +1,6 @@
 
 <?page id="main-page"?>
-<window   maximizable="true"   mode="overlapped"  title="Ingreso de Notas" border="normal"
-width="100%" id="principal">
+<window id="principal">
     <zscript>
 <![CDATA[
 import bean.notas;
