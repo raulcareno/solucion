@@ -35,6 +35,8 @@ public class ReportePromocionDataSource implements JRDataSource{
         irParaProximoAlumno = (valorAtual != null);
         return irParaProximoAlumno;
     }
+
+    
     /*
      * (non-Javadoc)
      *
@@ -64,19 +66,27 @@ try{
 
         }else if ("matricula".equals(fieldName)) {
            valor = nodo.getMatricula().getCodigomat();
+        }else if ("estudiante".equals(fieldName)) {
+           valor = nodo.getMatricula().getEstudiante().getApellido()+" "+nodo.getMatricula().getEstudiante().getNombre();
         }else if ("observacion".equals(fieldName)) {
            valor = nodo.getEstadoMateria();
+        }else if ("equivalencia".equals(fieldName)) {
+           valor = nodo.getCabeceraTexto();
         }else if ("promedio".equals(fieldName)) {
             if(nodo.getMateriaProfesor().getCuantitativa()==true)
                 valor =  java.lang.Math.round((Double)nodo.getNota());
             else
-                valor = null;
+                valor = nodo.getNotaCuali();
+
+
         }else if ("aprovechamiento".equals(fieldName)) {
                 valor = nodo.getAprovechamiento();
         }else if ("disciplina".equals(fieldName)) {
                 valor = nodo.getDisciplina();
         }else if ("letrasDisciplina".equals(fieldName)) {
                 valor = num.numeros(nodo.getDisciplina());
+        }else if ("curso".equals(fieldName)) {
+                valor = nodo.getMatricula().getCurso().getDescripcion();
         }else if ("letrasAprovechamiento".equals(fieldName)) {
             String formado = num.numerosDecimales(nodo.getAprovechamiento()).toUpperCase();
             try{
