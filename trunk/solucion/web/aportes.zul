@@ -1,6 +1,6 @@
 
 <zk xmlns="http://www.zkoss.org/2005/zul">
-<window title="Calificaciones que se muestran" height="83%" border="normal" >
+<window title="Calificaciones que se muestran"  border="normal" >
  <zscript>
 
 import bean.EventDAO;

@@ -33,6 +33,8 @@ public String estudiante;
     }
       
 
+
+
     private Notas notas;
 
     public Notas getNotas() {
@@ -158,5 +160,16 @@ private String materia;
     public void setNota(Object nota) {
         this.nota = nota;
     }
+
+    private String notaCuali;
+
+    public String getNotaCuali() {
+        return notaCuali;
+    }
+
+    public void setNotaCuali(String notaCuali) {
+        this.notaCuali = notaCuali;
+    }
+    
     
 }
