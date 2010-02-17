@@ -45,7 +45,7 @@ void estado(Boolean estado,Boolean modificar){
     if(modificar){
         equi = (Global)datos.selectedItem.value;
     }
-    nombre.disabled = estado;
+    nombre.readonly = estado;
     grupo.disabled = estado;
 
 }
@@ -155,7 +155,7 @@ equi.setPerfil(g);
 <grid width="100%">
 <rows> 
 <row><span style="float:right"> Nombre(*):</span>
-        <textbox id="nombre"  maxlength="60" cols="40" disabled="true"   />   </row>
+        <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />   </row>
 <row> <span style="float:right"> Grupo(*):</span>
      <combobox   readonly="true"  disabled="true"  id="grupo"  width="120px">
             <comboitem  value="ESP" label="Especialidad"/>

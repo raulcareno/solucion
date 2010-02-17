@@ -23,6 +23,10 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
+                    <file>${file.reference.azul.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
                     <file>${file.reference.zcommon.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
@@ -176,10 +180,6 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.iText-2.0.8.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.azul.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">

@@ -78,12 +78,12 @@ void estado(Boolean estado,Boolean modificar){
     if(modificar){
         equi = (ParametrosGlobales)datos.selectedItem.value;
     }
-    nombre.disabled = estado;
+    nombre.readonly = estado;
     grupo.disabled = estado;
-    valn.disabled = estado;
+    valn.readonly = estado;
     vall.disabled = estado;
     valf.disabled = estado;
-    valc.disabled = estado;
+    valc.readonly = estado;
 
 }
 
@@ -225,13 +225,13 @@ equi.setPerfil(g);
 </row>
 
 <row><span style="float:right"> Nombre(*):</span>
-        <textbox id="nombre"  maxlength="60" cols="40" disabled="true"   />
+        <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />
 </row>
 <row id="vc" visible="false" ><span style="float:right"> Valor(*):</span>
-        <textbox    id="valc"  maxlength="60" cols="40" disabled="true"/>
+        <textbox    id="valc"  maxlength="60" cols="40" readonly="true"/>
 </row>
 <row id="vn" visible="false" ><span style="float:right"> Valor(*):</span>
-        <decimalbox  format="#,##0.##"  id="valn" cols="10" disabled="true"/>
+        <decimalbox  format="#,##0.##"  id="valn" cols="10" readonly="true"/>
 </row>
 <row id="vl" visible="false" ><span style="float:right"> Valor(*):</span>
         <checkbox id="vall"  disabled="true"/>

@@ -349,9 +349,10 @@ rep.setOpen(true);parametros.setOpen(false);
 
 void campos(String valor){
 curs.setSelectedIndex(0);
+mates.disabled = true;
         if(valor.equals("CM") || valor.equals("AM")){
             curs.disabled = false;
-            mates.disabled = false;
+            
             titulo.value = "Listado de Estudiantes";
         } else if(valor.equals("INS") || valor.equals("MAT") || valor.equals("RET") ){
             curs.disabled = true;
@@ -457,7 +458,7 @@ curs.setSelectedIndex(0);
                                 <listitem forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
                             </listbox>
                         </row>
-                        <row>
+                        <row visible="false">
                             <span style="float:right"> Estudiantes: </span>
 
                             <listbox id="mates" width="300px"  mold="select" >
