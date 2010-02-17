@@ -12,7 +12,7 @@
     import org.zkoss.image.AImage;
   import org.zkoss.image.Image;
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Institucion as o where o.identificacion = 0");
+    List allEvents = adm.query("Select o from Institucion as o where o.denominacion = 0");
     Institucion inobjeto = new Institucion();
     Permisos permiso = new Permisos();
     //FUNCIONES

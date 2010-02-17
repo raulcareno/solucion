@@ -25,6 +25,8 @@ try{
                 ses.setAttribute("matricula",mat);
                 Window win34 = (Window) Executions.createComponents("/notasEstudiantes.zul", null, null);
                 win34.setVisible(true);
+                win34.setStyle("position:absolute; top:5%; left:0%");
+                win34.setTitle("NOTAS DE: "+mat.getCurso());
                 win34.setAttribute("matricula", mat);
                 //win.doModal();
                 }

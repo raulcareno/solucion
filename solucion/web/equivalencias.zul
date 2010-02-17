@@ -15,7 +15,7 @@
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Equivalencias as o where o.identificacion = 0");
+    List allEvents = adm.query("Select o from Equivalencias as o where o.grupo = 0");
     static Equivalencias equi = new Equivalencias();
     Permisos permiso = new Permisos();
      
@@ -60,10 +60,10 @@ void estado(Boolean estado,Boolean modificar){
     if(modificar){
         equi = (Equivalencias)datos.selectedItem.value;
     }
-    nombre.disabled = estado;
-    abreviatura.disabled = estado;
-    desde.disabled = estado;
-    hasta.disabled = estado;
+    nombre.readonly = estado;
+    abreviatura.readonly  = estado;
+    desde.readonly  = estado;
+    hasta.readonly  = estado;
     grupo.disabled = estado;
 
 }
@@ -182,13 +182,13 @@ equi.setPerfil(g);
 <grid width="100%">
 <rows> 
 <row><span style="float:right"> Nombre(*):</span>
-        <textbox id="nombre"  maxlength="60" cols="40" disabled="true"   />   </row>
+        <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />   </row>
     <row> <span style="float:right"> Abreviatura(*):</span>
-        <textbox id="abreviatura"  maxlength="10" cols="10" disabled="true"  /> </row>
+        <textbox id="abreviatura"  maxlength="10" cols="10" readonly="true"  /> </row>
     <row> <span style="float:right"> Desde(*):</span>
-        <decimalbox format="#,##0.##" id="desde" maxlength="8" cols="8"  disabled="true"    /> </row>
+        <decimalbox format="#,##0.##" id="desde" maxlength="8" cols="8"  readonly="true"    /> </row>
     <row> <span style="float:right"> Hasta(*):</span>
-        <decimalbox format="#,##0.##" id="hasta" maxlength="8" cols="8"  disabled="true"  /> </row>
+        <decimalbox format="#,##0.##" id="hasta" maxlength="8" cols="8"  readonly="true"  /> </row>
     
  
 <row> <span style="float:right"> Grupo(*):</span>
