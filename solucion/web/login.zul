@@ -15,7 +15,7 @@
     <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
-<window onLoad="usuario.focus();" onCreate="usuario.focus();"  mode="overlapped" id="winLogin" style="position:absolute; top:20%; left:35%" border="normal" width="460px" sizable="true">
+<window onLoad="usuario.focus();"  onCreate="usuario.focus();"   id="winLogin" style="background-color:white;position:absolute; top:20%; left:35%" border="normal" width="460px" sizable="true">
 <zscript>
   import jcinform.persistencia.Global;
   import bean.EventDAO;
@@ -80,6 +80,11 @@ void verificar(){
                                               periodo.appendChild(li);
                                      }
                                      periodo.setSelectedIndex(0);
+                                     usuarios.visible= false;
+                                     claves.visible= false;
+                                     seleccione.visible= true;
+                                     consultar.visible =false;
+                                     olvidado.visible =false;
 
             }else{
                 Messagebox.show("Usuario Correcto no tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -146,13 +151,16 @@ void verificarSistema(){
             <row style="background:transparent;border:0px" spans="2">
  <span style="float:center"> <image src="/images/about.png" style="aling:center"/></span>
             </row>
-			<row style="background:transparent;border:0px">
+			<row style="background:transparent;border:0px"  id="usuarios" >
 				<span style="float:right;font-weight:bold">Usuario:(*):</span>
                 <textbox onOK="clave.focus()"  id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
 			</row>
-			<row style="background:transparent;border:0px">
+			<row style="background:transparent;border:0px"  id="claves" >
 				<span style="float:right">Contraseña:(*):</span>
                  <textbox  onOK="verificar.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
+			</row>
+           <row visible="false" id="seleccione"  align="center" spans="2" style="background:transparent;border:0px">
+				<label style="float:center;font-size:16px;color:red" value="SELECCIONE UN PERIODO:"></label>
 			</row>
             <row  style="background:transparent;border:0px" id="rperiodo" visible="false" spans="2">
                     <listbox  onOK="btnIngresar.focus()"  style="font-size:11px"   width="435px"  id="periodo" mold="select">
@@ -163,7 +171,7 @@ void verificarSistema(){
 
                   
             </row>
-            <row align="center" spans="2"  style="background:transparent;border:0px">
+            <row id="olvidado" align="center" spans="2"  style="background:transparent;border:0px">
                 
                 <toolbarbutton label="¿Has olvidado tu usuario o contraseña haz click AQUI?" onClick='alert("Network")'>
                     <attribute name="onClick">{
@@ -177,7 +185,7 @@ void verificarSistema(){
              <span style="float:center">
                 <button label="Verificar"   image="/images/key.png"  id="verificar" onClick="usuario.getValue(); clave.getValue(); verificar()"/>
                 <button label="Ingresar Sistema"  visible="false" image="/images/ingreso.gif" id="btnIngresar" onClick="usuario.getValue(); clave.getValue(); ingresoSistemas();"/>
-                <button label="Consultar Notas" image="/images/notas.png">
+                <button label="Consultar Notas" id="consultar" image="/images/notas.png">
                         <attribute name="onClick">{
                              Window win = (Window) Executions.createComponents("/loginEstudiantes.zul", null, null);
                             win.doModal();
