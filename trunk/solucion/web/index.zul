@@ -1,382 +1,373 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
- <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
+<?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
-<borderlayout onCreate="verificar();cargando();cargando2();"  width="100%" style="float:center"  height="100%">
+    <borderlayout onCreate="verificar();cargando();cargando2();"  width="100%" style="float:center"  height="100%">
 
-<zscript>
-  import jcinform.persistencia.*;
-  import jcinform.procesos.Administrador;
-  import bean.Permisos;
+        <zscript>
+            import jcinform.persistencia.*;
+            import jcinform.procesos.Administrador;
+            import bean.Permisos;
 
-     Administrador adm = new Administrador();
-     Session a = Sessions.getCurrent();
-     Empleados emp = a.getAttribute("user");
-     if(emp==null){
-        Executions.sendRedirect("login.zul");
-     }
- void salir(){
-        Executions.sendRedirect("login.zul");
-       
-        a.removeAttribute("accesos");
-        a.removeAttribute("user");
-        a.invalidate();
- }
-   void ingresar(String valor){
+            Administrador adm = new Administrador();
+            Session a = Sessions.getCurrent();
+            Empleados emp = a.getAttribute("user");
+            if(emp==null){
+            Executions.sendRedirect("login.zul");
+            }
+            void salir(){
+            Executions.sendRedirect("login.zul");
 
-
-                Tab newtb= new Tab("Cambio de Clave");
-                 newtb.setSelected(true);
-                newtb.setClosable(true);
-                newtb.setImage("/images/candado.gif");
-   	 			newtb.setParent(tbs);
-
-   	 			Tabpanel newtpl = new Tabpanel();
-                  Iframe f = new Iframe(valor);
-                  f.setWidth("100%");
-                  f.setHeight("100%");
-                  newtpl.appendChild(f);
-   	 			newtpl.setParent(tps);
+            a.removeAttribute("accesos");
+            a.removeAttribute("user");
+            a.invalidate();
+            }
+            void ingresar(String valor){
 
 
+            Tab newtb= new Tab("Cambio de Clave");
+            newtb.setSelected(true);
+            newtb.setClosable(true);
+            newtb.setImage("/images/candado.gif");
+            newtb.setParent(tbs);
+
+            Tabpanel newtpl = new Tabpanel();
+            Iframe f = new Iframe(valor);
+            f.setWidth("100%");
+            f.setHeight("100%");
+            newtpl.appendChild(f);
+            newtpl.setParent(tps);
 
 
- }
 
- void cambio(){
-     Permisos permisos = new Permisos();
-     Periodo perio = (Periodo)periodo.selectedItem.value;
-      a.removeAttribute("periodo");
-      a.setAttribute("periodo",perio);
-      Executions.sendRedirect("index.zul");
- }
-void verificar(){
-  Empleados user = a.getAttribute("user");
-  if(user != null){
-   //cargo los periodos que tienen
-   List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'");
-             if(user.getCodigoemp().equals(-1)){
-                  equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
-             }
-                if(equivaEncontrados.size()>0){
-                            Empleadoperiodo p = new Empleadoperiodo();
-                             Periodo per = new Periodo(-1);
-                             Institucion ins = new Institucion(-1);
-                             ins.setTipo("");
-                              per.setDescripcion("[Seleccione]");
-                              p.setPeriodo(per);
-                              Global g = new Global();
-                              g.setDescripcion("");
 
-                              ins.setDenominacion("");
-                              ins.setNombre("");
-                              per.setInstitucion(ins);
-                              per.setSeccion(g);
-                              equivaEncontrados.add(0,p);
-                                verificar.visible = false;
-                                btnIngresar.visible = true;
-                                clave.disabled = true;
-                                usuario.disabled = true;
-                                rperiodo.visible = true;
+            }
 
-                            periodo = new Listbox();
+            void cambio(){
+            Permisos permisos = new Permisos();
+            Periodo perio = (Periodo)periodo.selectedItem.value;
+            a.removeAttribute("periodo");
+            a.setAttribute("periodo",perio);
+            Executions.sendRedirect("index.zul");
+            }
+            void verificar(){
+            Empleados user = a.getAttribute("user");
+            if(user != null){
+            //cargo los periodos que tienen
+            List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'");
+            if(user.getCodigoemp().equals(-1)){
+            equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
+            }
+            if(equivaEncontrados.size()>0){
+            Empleadoperiodo p = new Empleadoperiodo();
+            Periodo per = new Periodo(-1);
+            Institucion ins = new Institucion(-1);
+            ins.setTipo("");
+            per.setDescripcion("[Seleccione]");
+            p.setPeriodo(per);
+            Global g = new Global();
+            g.setDescripcion("");
 
-                                int a=0;
-                                      for(Iterator it =periodo.getItems().iterator(); it.hasNext();) {
-                                            periodo.getItems().remove(a);
-                                        }
-                                       for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
-                                              Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
-                                              Listitem li = new Listitem();
-                                              li.setValue(acceIt.getPeriodo());
-                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " - "+ acceIt.getPeriodo().getInstitucion().getTipo() +" [" +acceIt.getPeriodo().getSeccion()+"]"));
-                                              periodo.appendChild(li);
-                                     }
+            ins.setDenominacion("");
+            ins.setNombre("");
+            per.setInstitucion(ins);
+            per.setSeccion(g);
+            equivaEncontrados.add(0,p);
+            verificar.visible = false;
+            btnIngresar.visible = true;
+            clave.disabled = true;
+            usuario.disabled = true;
+            rperiodo.visible = true;
+
+            periodo = new Listbox();
+
+            int a=0;
+            for(Iterator it =periodo.getItems().iterator(); it.hasNext();) {
+            periodo.getItems().remove(a);
+            }
+            for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+            Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
+            Listitem li = new Listitem();
+            li.setValue(acceIt.getPeriodo());
+            li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " - "+ acceIt.getPeriodo().getInstitucion().getTipo() +" [" +acceIt.getPeriodo().getSeccion()+"]"));
+            periodo.appendChild(li);
+            }
 
             }else{
-                Messagebox.show("Usuario Correcto no tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-                usuario.focus();
+            Messagebox.show("Usuario Correcto no tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            usuario.focus();
             }
 
 
             }else{
-                Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                usuario.focus();
-             }
+            Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            usuario.focus();
+            }
 
-}
-   cargando(){
-          Session a = Sessions.getCurrent();
+            }
+            cargando(){
+            Session a = Sessions.getCurrent();
             Periodo peri =  (Periodo) a.getAttribute("periodo");
             byte[] imageData =    peri.getInstitucion().getEscudo();
 
             foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+            }
+
+
+
+        </zscript>
+        <north  border="0"  style="background:#C4D5EE;"  size="9%" >
+            <toolbar height="100%">
+                <tablelayout width="100%" columns="3">
+                    <tablechildren>
+                        <panel  border="0" collapsible="true">
+                            <panelchildren  style="background-color:transparent;border:0px">
+                                <vbox>
+                                    <!--image height="60px" id="foto0" src="images/acerca.gif"/-->
+                                    <image height="45px" id="foto0" />
+                                </vbox>
+                            </panelchildren>
+                        </panel>
+                        <panel   border="normal" collapsible="true">
+                            <panelchildren  style="border: 1px;background-color:transparent;border:0px">
+                                <vbox>
+
+                                    <hbox>
+                                         <separator orient="vertical" />
+                                        <label value="${sessionScope.periodo.institucion.denominacion} " style="color:#346B93;font-size:14px;font-weight:bold;" />
+                                        <label value=" ${sessionScope.periodo.institucion.nombre}" style="color:#346B93;font-size:14px;font-weight:bold;" />
+
+                                        <label value=" - ${sessionScope.periodo.institucion.tipo}" style="color:#346B93;font-weight:bold;" />
+
+                                        <!-- PERIODO -->
+                                        <separator orient="vertical" /> |<separator orient="vertical" />
+                                        <listbox  style="font-size:10px;background-color:#D9E8FF;" onSelect="cambio(); " width="415px"  id="periodo" mold="select">
+                                            <listitem forEach="${perfiles}" value="${each}">
+                                                <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
+                                            </listitem>
+                                        </listbox>
+                                    </hbox>
+
+                                </vbox>
+
+
+                                <vbox>
+                                    <hbox>
+                                         <separator orient="vertical" />
+                                        <label style="color:#346B93;font-size:9px;font-weight:bold;" value="${sessionScope.user.perfil.descripcion}:" />
+                                        <label style="color:#346B93;font-size:9px" value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
+                                        <separator orient="vertical" /> |<separator orient="vertical" />
+                                        <label value=" PERIODO: " style="color:#346B93;font-size:9px;font-weight:bold;" />
+                                        <label  style="color:#346B93;font-size:9px;" value="${sessionScope.periodo.descripcion}"  />
+                                        <separator orient="vertical" /> | <separator orient="vertical" />
+                                        <toolbarbutton  image="/images/exit.gif" style="background:transparent;color:#346B93;font-weight:bold;font-size:9px;"  label=" [Cerrar Sesión]" onClick="salir()"/>
+                                        <separator orient="vertical" /> | <separator orient="vertical" />
+                                        <toolbarbutton style="background:transparent;font-size:9px;color:#346B93;font-weight:bold;" image="/images/candado.gif" label="Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
+
+                                        <separator orient="vertical" /> |<separator orient="vertical" />
+
+
+                                    </hbox>
+
+                                </vbox>
+                            </panelchildren>
+                        </panel>
+                    </tablechildren>
+
+                </tablelayout>
+
+            </toolbar>
+
+        </north>
+
+        <west title="Menú" size="19%" flex="true" splittable="true" collapsible="true">
+            <div>
+                <panel width="100%" height="85%"  border="normal" title="Opciones"  collapsible="true" >
+                    <panelchildren style="padding:0px;" >
+
+                        <tree id="toc" style="border:none;" zclass="z-tree" fixedLayout="true"
+                              use="bean.LayoutTree" pageSize="-1" vflex="true" height="100%" width="100%">
+                            <treechildren >
+
+                                <treeitem  id="ssM" label="Matriculación" value="/blanco.zul">
+
+                                    <treechildren>
+
+                                        <treeitem  id="Cursos" label="Cursos" image="/images/cursos.png" value="/cursos.zul"/>
+                                        <treeitem id="Matricular" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" />
+                                        <treeitem id="Pendientes" label="Pendientes" image="/images/dinero.gif"   value="/pendientes.zul" />
+                                        <treeitem id="Reportes_Estudiantes" label="Reportes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
+                                        <!--treeitem id="Rubros" label="Asignar Rubros"  image="/images/resultados.png" value="/rubros.zul" /-->
+
+                                    </treechildren>
+
+                                </treeitem>
+
+                                <treeitem id="ssN" open = "true" label="Notas" value="/blanco.zul">
+                                    <treechildren>
+                                        <treeitem id="Trimestres" label="Trim.Bim.Quim." image="/images/textos.png" value="/trimestres.zul" />
+                                        <treeitem id="Aportes" image="/images/llave.gif"  label="Aportes" value="/aportes.zul"/>
+                                        <treeitem id="Distributivo" label="Distributivo"  image="/images/distributivo.png" value="/distributivo.zul" />
+                                        <treeitem id="Registro_de_Notas" label="Notas"  image="/images/notas.png" value="/notas.zul" />
+                                        <treeitem id="Registro_de_Disciplina" image="/images/notas.png"  label="Disciplinas" value="/disciplina.zul" />
+                                        <treeitem id="Registro_de_Faltas" image="/images/notas.png"  label="Faltas" value="/faltas.zul" />
+                                        <treeitem id="Reportes_Notas" label="Reportes"  image="/images/resultados.png" value="/reporteNotas.zul" />
+
+                                    </treechildren>
+
+                                </treeitem>
+                                <treeitem id="ss1" open = "true" label="Administración" value="/blanco.zul">
+                                    <treechildren>
+                                        <treeitem id="Accesos" image="/images/key.png" label="Accesos" value="/accesos.zul"/>
+                                        <treeitem id="Auditoria" image="/images/key.png" label="Auditoria" value="/auditoria.zul"/>
+                                        <treeitem id="Empleados" image="/images/pensum.png" label="Empleados" value="/empleados.zul" />
+                                        <treeitem id="EmpleadosPeriodos" image="/images/eperiodo.png" label="Asignar Periodos" value="/empleadoPeriodo.zul" />
+                                        <treeitem id="Equivalencias" image="/images/equivalencias.png"  label="Equivalencias" value="/equivalencias.zul" />
+                                        <treeitem id="Globales" label="Globales" image="/images/run.gif"  value="/globales.zul" />
+                                        <treeitem id="Institucion" label="Institución" image="/images/institucion.png"  value="/institucion.zul" />
+                                        <treeitem id="Parametros" label="Parametros" image="/images/textos.png" value="/parametros.zul" />
+                                        <treeitem id="Periodos" label="Año Lectivo"  image="/images/periodos.png" value="/periodo.zul" />
+                                        <treeitem id="Textos" label="Textos Reportes"  image="/images/textos.png" value="/textos.zul" />
+                                    </treechildren>
+                                </treeitem>
+                                <treeitem id="ssNN7" open = "true" label="Grados" value="/blanco.zul">
+                                    <treechildren>
+                                        <treeitem id="Notas_Primero_Quinto" image="/images/llave.gif"  label="Record Academico" value="/notasRecord.zul"/>
+                                        <treeitem id="Materias_de_Grado"   image="/images/distributivo.png" label="Materias de Grado" value="/materiasdeGrado.zul"/>
+                                        <treeitem id="Notas_de_Grado"  image="/images/notas.png"  label="Notas de Grado" value="/cursosIngresonotasGrado.zul"/>
+                                        <treeitem id="Calculo_Promedios" image="/images/calculo.gif"  label="Calculo Promedios" value="/cursosCalculoPromedios.zul"/>
+                                        <treeitem id="Acta_de_Grado" image="/images/acta.gif"  label="Acta de Grado" value="/materiasdeActa.zul"/>
+                                        <treeitem id="Notas_de_Acta" image="/images/notas.png"  label="Notas de Acta" value="/cursosIngresonotasActa.zul"/>
+                                    </treechildren>
+                                </treeitem>
+                                <treeitem id="ssNN15" open = "true"  label="Varios" value="/blanco.zul">
+                                    <treechildren>
+                                        <treeitem  id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correoInterno.zul"/>
+                                        <treeitem  id="Correo_Interno" image="/images/bandeja2.png"   label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
+                                        <treeitem id="Respaldos" image="/images/base.gif"   label="Respaldos" value="/respaldos.zul"/>
+                                        <treeitem id="Calendario" image="/images/calendar.gif"   label="Calendario" value="/calendar.zul"/>
+                                        <treeitem id="Dobe" image="/images/pensum.png"   label="Dobe" value="/dobe.zul"/>
+                                        <treeitem id="Registrar" image="/images/chat.png"  label="Chat" value="/chat/chat.zul"    />
+                                    </treechildren>
+                                </treeitem>
+
+                            </treechildren>
+                        </tree>
+
+
+                    </panelchildren>
+
+                </panel>
+                <panel width="100%" border="normal"   collapsible="true"   title="Propiedades">
+                    <panelchildren>
+
+
+                        <label style="font-weight:bold" value="--------- JCINFORM ---------- "/>
+                        <label value=" Soluciones Informáticas          "/>
+                        <label value="Telfs.5103-843 / 080-162-211 "/>
+                        <label id="propiedad" value=" "/>
+
+                    </panelchildren>
+                </panel>
+            </div>
+        </west>
+        <center flex="true">
+
+            <!--include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/-->
+            <tabbox context="derecho" id="mytab" width="100%" height="100%">
+                <tabs id="tbs">
+                    <tab label="Inicio" image="/images/fondo.png"  id="blanco" Closable="true" />
+                </tabs>
+                <tabpanels id="tps">
+                    <tabpanel><iframe scrolling="false" width="100%" height="100%" src="/blanco.zul" /></tabpanel>
+                </tabpanels>
+            </tabbox>
+
+
+        </center>
+
+
+    </borderlayout>
+    <menupopup id="derecho">
+        <menuitem label="Cerrar Todas" onClick="borrarTodas()" />
+        <menuseparator />
+
+    </menupopup>
+    <script type="text/javascript">
+        function refrescar() {
+        location.reload(true);
         }
 
 
 
-</zscript>
-<north size="13%" >
-<toolbar height="100%">
-<tablelayout width="800px" columns="3">
-	<tablechildren>
-<panel   border="normal" collapsible="true">
-			<panelchildren  style="background-color:transparent;border:0px">
-                <vbox>
-                        <!--image height="60px" id="foto0" src="images/acerca.gif"/-->
-                        <image height="60px" id="foto0" />
+    </script>
+    <zscript>
+        import bean.Permisos;
 
-                </vbox>
-            </panelchildren>
-		</panel>
-<panel   border="normal" collapsible="true">
-			<panelchildren  style="background-color:transparent;border:0px">
-                <vbox>
+        void borrarTodas(){
 
-                <hbox>
-                    <label value="${sessionScope.periodo.institucion.denominacion} " style="color:#346B93;font-size:12px;font-weight:bold;" />
-                </hbox>
-				<hbox>
-                    <label value=" ${sessionScope.periodo.institucion.nombre}" style="color:#346B93;font-size:18px;font-weight:bold;" />
-                </hbox>
-                <hbox>
-                    <label value="${sessionScope.periodo.institucion.tipo}" style="color:#346B93;font-weight:bold;" />
-                </hbox>
-               
-                </vbox>
-                 
-            </panelchildren>
+        mytab.getTabs().getChildren().clear();
+        mytab.getTabpanels().getChildren().clear();
+        mytab.setWidth("100%");
+        mytab.setHeight("100%");
+        Tab newtb= new Tab("Inicio");
+        newtb.setSelected(true);
+        newtb.setClosable(true);
+        newtb.setImage("/images/fondo.png");
+        newtb.setParent(tbs);
 
-              
+        Tabpanel newtpl = new Tabpanel();
+        Iframe f = new Iframe("/blanco.zul");
+        f.setWidth("100%");
+        f.setHeight("100%");
+        newtpl.appendChild(f);
+        newtpl.setParent(tps);
 
-		</panel>
-
-	</tablechildren>
- 
-<tablechildren>
-		<panel   border="normal" collapsible="true">
-			<panelchildren style="background-color:transparent;border:0px">
-                <vbox>
-						<hbox>
-							<label value="Bienvenido:" style="color:#346B93;font-weight:bold;" />
-							<label style="color:#346B93;" value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
-                            <separator/>
-                            <toolbarbutton  image="/images/exit.gif" style="color:#346B93;font-weight:bold;"  label=" [Cerrar Sesión]" onClick="salir()"/>
-                            <separator/>
-                            <toolbarbutton image="/images/candado.gif" label="Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
-
-						</hbox>
-                        <hbox>
-							<label value="Perfil" style="color:#346B93;font-weight:bold;"  />
-							<label style="color:#346B93;" value="${sessionScope.user.perfil.descripcion}" />
-                            <label value=" Periodo: " style="color:#346B93;font-weight:bold;" />
-                            <label  style="color:#346B93;" value="${sessionScope.periodo.descripcion}"  />
-						</hbox>
-                        <hbox>
-<!-- PERIODO -->
-					     <listbox  style="font-size:12px;background-color:#D5F1FF;border-color:#D5F1FF" onSelect="cambio(); " width="415px"  id="periodo" mold="select">
-                            <listitem forEach="${perfiles}" value="${each}">
-                              <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
-                            </listitem>
-                        </listbox>
-						
-						</hbox>
-
-                </vbox>
-            </panelchildren>
-		</panel>
-</tablechildren>
- 
-</tablelayout>
-		  
-</toolbar>
- 
-</north>
-
-<west title="Menú" size="19%" flex="true" splittable="true" collapsible="true">
-         <div>
-<panel width="100%" height="85%"  border="normal" title="Opciones"  collapsible="true" >
-				<panelchildren style="padding:0px;" >
-                    
-      <tree id="toc" style="border:none;" zclass="z-tree" fixedLayout="true"
-        use="bean.LayoutTree" pageSize="-1" vflex="true" height="100%" width="100%">
-                <treechildren >
-
-                    <treeitem  id="ssM" label="Matriculación" value="/blanco.zul">
-                      <treechildren>
-                        <treeitem  id="Cursos" label="Cursos" image="/images/cursos.png" value="/cursos.zul"/>
-                        <treeitem id="Matricular" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" />
-                        <treeitem id="Pendientes" label="Pendientes" image="/images/dinero.gif"   value="/pendientes.zul" />
-                        <treeitem id="Reportes_Estudiantes" label="Reportes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
-                        <!--treeitem id="Rubros" label="Asignar Rubros"  image="/images/resultados.png" value="/rubros.zul" /-->
-                     </treechildren>
-                    </treeitem>
-
-                    <treeitem id="ssN" open = "true" label="Notas" value="/blanco.zul">
-                      <treechildren>
-                        <treeitem id="Trimestres" label="Trim.Bim.Quim." image="/images/textos.png" value="/trimestres.zul" />
-                        <treeitem id="Aportes" image="/images/llave.gif"  label="Aportes" value="/aportes.zul"/>
-                        <treeitem id="Distributivo" label="Distributivo"  image="/images/distributivo.png" value="/distributivo.zul" />
-                        <treeitem id="Registro_de_Notas" label="Notas"  image="/images/notas.png" value="/notas.zul" />
-                        <treeitem id="Registro_de_Disciplina" image="/images/notas.png"  label="Disciplinas" value="/disciplina.zul" />
-                        <treeitem id="Registro_de_Faltas" image="/images/notas.png"  label="Faltas" value="/faltas.zul" />
-                        <treeitem id="Reportes_Notas" label="Reportes"  image="/images/resultados.png" value="/reporteNotas.zul" />
-
-                     </treechildren>
-
-                    </treeitem>
-                        <treeitem id="ss1" open = "true" label="Administración" value="/blanco.zul">
-                      <treechildren>
-                        <treeitem id="Accesos" image="/images/key.png" label="Accesos" value="/accesos.zul"/>
-                        <treeitem id="Auditoria" image="/images/key.png" label="Auditoria" value="/auditoria.zul"/>
-                        <treeitem id="Empleados" image="/images/pensum.png" label="Empleados" value="/empleados.zul" />
-                        <treeitem id="EmpleadosPeriodos" image="/images/eperiodo.png" label="Asignar Periodos" value="/empleadoPeriodo.zul" />
-                        <treeitem id="Equivalencias" image="/images/equivalencias.png"  label="Equivalencias" value="/equivalencias.zul" />
-                        <treeitem id="Globales" label="Globales" image="/images/run.gif"  value="/globales.zul" />
-                        <treeitem id="Institucion" label="Institución" image="/images/institucion.png"  value="/institucion.zul" />
-                        <treeitem id="Parametros" label="Parametros" image="/images/textos.png" value="/parametros.zul" />
-                        <treeitem id="Periodos" label="Año Lectivo"  image="/images/periodos.png" value="/periodo.zul" />
-                        <treeitem id="Textos" label="Textos Reportes"  image="/images/textos.png" value="/textos.zul" />
-                     </treechildren>
-                    </treeitem>
-                    <treeitem id="ssNN7" open = "true" label="Grados" value="/blanco.zul">
-                      <treechildren>
-                        <treeitem id="Notas_Primero_Quinto" image="/images/llave.gif"  label="Record Academico" value="/notasRecord.zul"/>
-                        <treeitem id="Materias_de_Grado"   image="/images/distributivo.png" label="Materias de Grado" value="/materiasdeGrado.zul"/>
-                        <treeitem id="Notas_de_Grado"  image="/images/notas.png"  label="Notas de Grado" value="/cursosIngresonotasGrado.zul"/>
-                        <treeitem id="Calculo_Promedios" image="/images/calculo.gif"  label="Calculo Promedios" value="/cursosCalculoPromedios.zul"/>
-                        <treeitem id="Acta_de_Grado" image="/images/acta.gif"  label="Acta de Grado" value="/materiasdeActa.zul"/>
-                        <treeitem id="Notas_de_Acta" image="/images/notas.png"  label="Notas de Acta" value="/cursosIngresonotasActa.zul"/>
-                     </treechildren>
-                    </treeitem>
-                    <treeitem id="ssNN15" open = "true"  label="Varios" value="/blanco.zul">
-                      <treechildren>
-                        <treeitem  id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correoInterno.zul"/>
-                        <treeitem  id="Correo_Interno" image="/images/bandeja2.png"   label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
-                        <treeitem id="Respaldos" image="/images/base.gif"   label="Respaldos" value="/respaldos.zul"/>
-                        <treeitem id="Calendario" image="/images/calendar.gif"   label="Calendario" value="/calendar.zul"/>
-                        <treeitem id="Dobe" image="/images/pensum.png"   label="Dobe" value="/dobe.zul"/>
-                        <treeitem id="Registrar" image="/images/chat.png"  label="Chat" value="/chat/chat.zul"    />
-                     </treechildren>
-                    </treeitem>
-                
-			</treechildren>
-		</tree>
+        }
 
 
-</panelchildren>
 
-</panel>
-<panel width="100%" border="normal"   collapsible="true"   title="Propiedades">
-				<panelchildren>
-                 
-            
-                       <label style="font-weight:bold" value="--------- JCINFORM ---------- "/>
-                       <label value=" Soluciones Informáticas          "/>
-                       <label value="Telfs.5103-843 / 080-162-211 "/>
-                        <label id="propiedad" value=" "/>
-                    
-				</panelchildren>
-			</panel>
-         </div>
-        </west>
-        <center flex="true">
-               
-            <!--include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/-->
-	<tabbox context="derecho" id="mytab" width="100%" height="100%">
-			<tabs id="tbs">
-				<tab label="Inicio" image="/images/fondo.png"  id="blanco" Closable="true" />
-			</tabs>
-			<tabpanels id="tps">
-				<tabpanel><iframe scrolling="false" width="100%" height="100%" src="/blanco.zul" /></tabpanel>
-			</tabpanels>
-		</tabbox>
-       
-    
-        </center>
-
-	
-</borderlayout>
- <menupopup id="derecho">
-		<menuitem label="Cerrar Todas" onClick="borrarTodas()" />
-        <menuseparator />
-
-	</menupopup>
-    <script type="text/javascript">
-    function refrescar() {
-        location.reload(true);
-    }
-
-  
-    
-</script>
-<zscript>
-import bean.Permisos;
-
-   void borrarTodas(){
-	  			
-	 			mytab.getTabs().getChildren().clear();
-                mytab.getTabpanels().getChildren().clear();
-                 mytab.setWidth("100%");
-                  mytab.setHeight("100%");
-                  Tab newtb= new Tab("Inicio");
-                newtb.setSelected(true);
-                newtb.setClosable(true);
-                newtb.setImage("/images/fondo.png");
-   	 			newtb.setParent(tbs);
-
-   	 			Tabpanel newtpl = new Tabpanel();
-                  Iframe f = new Iframe("/blanco.zul");
-                  f.setWidth("100%");
-                  f.setHeight("100%");
-                  newtpl.appendChild(f);
-   	 			  newtpl.setParent(tps);
-
-  	       }
-           
+        Permisos per = new Permisos();
+        void cargando2(){
 
 
-Permisos per = new Permisos();
-void cargando2(){
+        Cursos.visible = per.verificarPermisoReporte("Cursos", "Ingresar");
+        Matricular.visible = per.verificarPermisoReporte("Matricular", "Ingresar");
+        Pendientes.visible = per.verificarPermisoReporte("Pendientes", "Ingresar");
+        Reportes_Estudiantes.visible = per.verificarPermisoReporte("Reportes_Estudiantes", "Ingresar");
+        Trimestres.visible = per.verificarPermisoReporte("Trimestres", "Ingresar");
+        Aportes.visible = per.verificarPermisoReporte("Aportes", "Ingresar");
+        Distributivo.visible = per.verificarPermisoReporte("Distributivo", "Ingresar");
+        Registro_de_Notas.visible = per.verificarPermisoReporte("Registro_de_Notas", "Ingresar");
+        Registro_de_Disciplina.visible = per.verificarPermisoReporte("Registro_de_Disciplina", "Ingresar");
+        Registro_de_Faltas.visible = per.verificarPermisoReporte("Registro_de_Faltas", "Ingresar");
+        Reportes_Notas.visible = per.verificarPermisoReporte("Reportes_Notas", "Ingresar");
+        Notas_Primero_Quinto.visible = per.verificarPermisoReporte("Notas_Primero_Quinto", "Ingresar");
+        Materias_de_Grado.visible = per.verificarPermisoReporte("Materias_de_Grado", "Ingresar");
+        Accesos.visible = per.verificarPermisoReporte("Accesos", "Ingresar");
+        Notas_de_Grado.visible = per.verificarPermisoReporte("Notas_de_Grado", "Ingresar");
+        Calculo_Promedios.visible = per.verificarPermisoReporte("Calculo_Promedios", "Ingresar");
+        Acta_de_Grado.visible = per.verificarPermisoReporte("Acta_de_Grado", "Ingresar");
+        Notas_de_Acta.visible = per.verificarPermisoReporte("Notas_de_Acta", "Ingresar");
+        Correos.visible = per.verificarPermisoReporte("Correos", "Ingresar");
+        Correo_Interno.visible = per.verificarPermisoReporte("Correo_Interno", "Ingresar");
+        Respaldos.visible = per.verificarPermisoReporte("Respaldos", "Ingresar");
+        Calendario.visible = per.verificarPermisoReporte("Calendario", "Ingresar");
+        Dobe.visible = per.verificarPermisoReporte("Dobe", "Ingresar");
+        Registrar.visible = per.verificarPermisoReporte("Registrar", "Ingresar");
+        Auditoria.visible = per.verificarPermisoReporte("Auditoria", "Ingresar");
+        Empleados.visible = per.verificarPermisoReporte("Empleados", "Ingresar");
+        EmpleadosPeriodos.visible = per.verificarPermisoReporte("EmpleadosPeriodos", "Ingresar");
+        Equivalencias.visible = per.verificarPermisoReporte("Equivalencias", "Ingresar");
+        Globales.visible = per.verificarPermisoReporte("Globales", "Ingresar");
+        Institucion.visible = per.verificarPermisoReporte("Institucion", "Ingresar");
+        Parametros.visible = per.verificarPermisoReporte("Parametros", "Ingresar");
+        Periodos.visible = per.verificarPermisoReporte("Periodos", "Ingresar");
+        Textos.visible = per.verificarPermisoReporte("Textos", "Ingresar");
 
 
-       Cursos.visible = per.verificarPermisoReporte("Cursos", "Ingresar");
-       Matricular.visible = per.verificarPermisoReporte("Matricular", "Ingresar");
-       Pendientes.visible = per.verificarPermisoReporte("Pendientes", "Ingresar");
-       Reportes_Estudiantes.visible = per.verificarPermisoReporte("Reportes_Estudiantes", "Ingresar");
-       Trimestres.visible = per.verificarPermisoReporte("Trimestres", "Ingresar");
-       Aportes.visible = per.verificarPermisoReporte("Aportes", "Ingresar");
-       Distributivo.visible = per.verificarPermisoReporte("Distributivo", "Ingresar");
-       Registro_de_Notas.visible = per.verificarPermisoReporte("Registro_de_Notas", "Ingresar");
-       Registro_de_Disciplina.visible = per.verificarPermisoReporte("Registro_de_Disciplina", "Ingresar");
-       Registro_de_Faltas.visible = per.verificarPermisoReporte("Registro_de_Faltas", "Ingresar");
-       Reportes_Notas.visible = per.verificarPermisoReporte("Reportes_Notas", "Ingresar");
-       Notas_Primero_Quinto.visible = per.verificarPermisoReporte("Notas_Primero_Quinto", "Ingresar");
-       Materias_de_Grado.visible = per.verificarPermisoReporte("Materias_de_Grado", "Ingresar");
-       Accesos.visible = per.verificarPermisoReporte("Accesos", "Ingresar");
-       Notas_de_Grado.visible = per.verificarPermisoReporte("Notas_de_Grado", "Ingresar");
-       Calculo_Promedios.visible = per.verificarPermisoReporte("Calculo_Promedios", "Ingresar");
-       Acta_de_Grado.visible = per.verificarPermisoReporte("Acta_de_Grado", "Ingresar");
-       Notas_de_Acta.visible = per.verificarPermisoReporte("Notas_de_Acta", "Ingresar");
-       Correos.visible = per.verificarPermisoReporte("Correos", "Ingresar");
-       Correo_Interno.visible = per.verificarPermisoReporte("Correo_Interno", "Ingresar");
-       Respaldos.visible = per.verificarPermisoReporte("Respaldos", "Ingresar");
-       Calendario.visible = per.verificarPermisoReporte("Calendario", "Ingresar");
-       Dobe.visible = per.verificarPermisoReporte("Dobe", "Ingresar");
-       Registrar.visible = per.verificarPermisoReporte("Registrar", "Ingresar");
-       Auditoria.visible = per.verificarPermisoReporte("Auditoria", "Ingresar");
-       Empleados.visible = per.verificarPermisoReporte("Empleados", "Ingresar");
-       EmpleadosPeriodos.visible = per.verificarPermisoReporte("EmpleadosPeriodos", "Ingresar");
-       Equivalencias.visible = per.verificarPermisoReporte("Equivalencias", "Ingresar");
-       Globales.visible = per.verificarPermisoReporte("Globales", "Ingresar");
-       Institucion.visible = per.verificarPermisoReporte("Institucion", "Ingresar");
-       Parametros.visible = per.verificarPermisoReporte("Parametros", "Ingresar");
-       Periodos.visible = per.verificarPermisoReporte("Periodos", "Ingresar");
-       Textos.visible = per.verificarPermisoReporte("Textos", "Ingresar");
-       
 
-
-}
-</zscript>
- </zk>
+        }
+    </zscript>
+</zk>

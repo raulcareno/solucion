@@ -13,12 +13,10 @@
 		<UpdateDialog id="updateDialog" />
         <button  image='/images/semana.gif' onClick='cal.setMold("default")' label="Ver por semana" />
         <button  image='/images/mes.gif' onClick='cal.setMold("month")' label="Ver por Mes" />
-        Cambiar mes:
+        OTRO MES:
         <datebox id="fecha"  />
         <button image='/images/ok.gif'  onClick='cal.setCurrentDate(fecha.getValue())' label="Seleccionar" />
-        
-
-			<calendars  firstDayOfWeek="Monday"
+            <calendars  firstDayOfWeek="Monday"
                     model="@{win$composer.getCalendarModel}"
 					   id="cal">
 			</calendars>
