@@ -42,12 +42,12 @@ Session a = Sessions.getCurrent();
         }
 
     </zscript>
-    <north  size="10%" >
-        <toolbar height="100%" >
+    <north style="background-image: url(./images/cabefondo.png)"  size="10%" >
+         
             <tablelayout width="800px" columns="2">
                 <tablechildren>
                     <panel   border="normal" collapsible="true">
-                        <panelchildren  style="background-color:transparent;border:0px">
+                        <panelchildren  style="background-color:transparent;border:0px;">
                             <vbox>
                                   <image height="60px" id="foto0" />
                             </vbox>
@@ -62,10 +62,10 @@ Session a = Sessions.getCurrent();
                             <vbox>
                                 <hbox>
                                     
-                                    <label style="font-weight:bold;font-size:17px;color:#346B93;" value="${sessionScope.userEstudiante.apellido} ${sessionScope.userEstudiante.nombre}" />
+                                    <label style="font-weight:bold;font-size:17px;color:white;" value="${sessionScope.userEstudiante.apellido} ${sessionScope.userEstudiante.nombre}" />
                                 </hbox>
                                 <vbox>
-                                    <toolbarbutton  style="font-weight:bold;font-color:red"  label="[Cerrar Sesión]" onClick="salir()"/>
+                                    <toolbarbutton   image="/images/exit.gif" style="font-weight:bold;color:white"  label="[Cerrar Sesión]" onClick="salir()"/>
                                 </vbox>
  
                                 
@@ -76,7 +76,7 @@ Session a = Sessions.getCurrent();
                 </tablechildren>
             </tablelayout>
 
-        </toolbar>
+
 
     </north>
 

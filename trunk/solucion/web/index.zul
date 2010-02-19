@@ -2,7 +2,6 @@
 <?page title="Administrador Educativo"?>
 <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-
     <borderlayout onCreate="verificar();cargando();cargando2();"  width="100%" style="float:center"  height="100%">
 
         <zscript>
@@ -115,10 +114,10 @@
             }
 
 
-
+ 
         </zscript>
-        <north  border="0"  style="background:#C4D5EE;"  size="9%" >
-            <toolbar height="100%">
+        <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="10%" >
+             
                 <tablelayout width="100%" columns="3">
                     <tablechildren>
                         <panel  border="0" collapsible="true">
@@ -135,14 +134,14 @@
 
                                     <hbox>
                                          <separator orient="vertical" />
-                                        <label value="${sessionScope.periodo.institucion.denominacion} " style="color:#346B93;font-size:14px;font-weight:bold;" />
-                                        <label value=" ${sessionScope.periodo.institucion.nombre}" style="color:#346B93;font-size:14px;font-weight:bold;" />
+                                        <label value="${sessionScope.periodo.institucion.denominacion} " style="color:white;font-size:14px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
+                                        <label value=" ${sessionScope.periodo.institucion.nombre}" style="color:white;font-size:14px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
 
-                                        <label value=" - ${sessionScope.periodo.institucion.tipo}" style="color:#346B93;font-weight:bold;" />
+                                        <label value=" - ${sessionScope.periodo.institucion.tipo}" style="color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
 
                                         <!-- PERIODO -->
                                         <separator orient="vertical" /> |<separator orient="vertical" />
-                                        <listbox  style="font-size:10px;background-color:#D9E8FF;" onSelect="cambio(); " width="415px"  id="periodo" mold="select">
+                                        <listbox  style="color:white;font-size:10px;background-color:#1B62A4;" onSelect="cambio(); " width="415px"  id="periodo" mold="select">
                                             <listitem forEach="${perfiles}" value="${each}">
                                                 <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
                                             </listitem>
@@ -155,15 +154,15 @@
                                 <vbox>
                                     <hbox>
                                          <separator orient="vertical" />
-                                        <label style="color:#346B93;font-size:9px;font-weight:bold;" value="${sessionScope.user.perfil.descripcion}:" />
-                                        <label style="color:#346B93;font-size:9px" value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
+                                        <label style="color:white;font-size:9px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" value="${sessionScope.user.perfil.descripcion}:" />
+                                        <label style="color:white;font-size:9px;font-family: Arial, Helvetica, sans-serif" value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
                                         <separator orient="vertical" /> |<separator orient="vertical" />
-                                        <label value=" PERIODO: " style="color:#346B93;font-size:9px;font-weight:bold;" />
-                                        <label  style="color:#346B93;font-size:9px;" value="${sessionScope.periodo.descripcion}"  />
+                                        <label value=" PERIODO: " style="color:white;font-size:9px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
+                                        <label  style="color:white;font-size:9px;" value="${sessionScope.periodo.descripcion}"  />
                                         <separator orient="vertical" /> | <separator orient="vertical" />
-                                        <toolbarbutton  image="/images/exit.gif" style="background:transparent;color:#346B93;font-weight:bold;font-size:9px;"  label=" [Cerrar Sesión]" onClick="salir()"/>
+                                        <toolbarbutton  image="/images/exit.gif" style="background:transparent;color:white;font-weight:bold;font-size:9px;font-family: Arial, Helvetica, sans-serif"  label=" [Cerrar Sesión]" onClick="salir()"/>
                                         <separator orient="vertical" /> | <separator orient="vertical" />
-                                        <toolbarbutton style="background:transparent;font-size:9px;color:#346B93;font-weight:bold;" image="/images/candado.gif" label="Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
+                                        <toolbarbutton style="background:transparent;font-size:9px;color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" image="/images/candado.gif" label="Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
 
                                         <separator orient="vertical" /> |<separator orient="vertical" />
 
@@ -177,7 +176,7 @@
 
                 </tablelayout>
 
-            </toolbar>
+
 
         </north>
 
