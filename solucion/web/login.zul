@@ -203,7 +203,7 @@ void verificarSistema(){
              <row  style="background:transparent;border:0px" align="center" spans="2">
                  <span>
                 <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)5103 843 - 080 16 22 11 "/>
-                <label style="font-size:10px;color:blue" value ="ver.1.05 act.09/02/2010"/>
+                <label style="font-size:10px;color:blue" value ="ver.1.06 act.19/02/2010"/>
                 </span>
              </row>
               

@@ -3,7 +3,7 @@
 
  <zk xmlns="http://www.zkoss.org/2005/zul">
 
- <borderlayout height="100%">
+ <borderlayout  onCreate="cargando();"   height="100%">
 <zscript>
 
     import jcinform.persistencia.*;
@@ -46,132 +46,69 @@
           
 
 </zscript>
-<north  size="13%" >
-<toolbar height="100%">
-<!--tablelayout width="800px" columns="2">
-	<tablechildren>
-        <panel   border="normal" collapsible="true">
-			<panelchildren  style="background-color:transparent;border:0px">
-                <vbox>
-                <image height="80px" src="images/acerca.gif"/>
+       <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="10%" >
 
-                </vbox>
-            </panelchildren>
-		</panel>
-		<panel   border="normal" collapsible="true">
-			<panelchildren  style="background-color:transparent;border:0px">
-                <vbox>
-				<hbox>
-                    <label value=" ${sessionScope.periodo.institucion.nombre}" style="font-size:16px;font-weight:bold;" />
-                </hbox>
-                <hbox>
-                    <label value="${sessionScope.periodo.institucion.denominacion} " style="font-size:12px;font-weight:bold;" />
-                </hbox>
-                <hbox>
-                    <label value="Periodo: " style="font-weight:bold;" />
-                    <label value="${sessionScope.periodo.descripcion}"  />
-                </hbox>
-                </vbox>
-            </panelchildren>
-		</panel>
-	</tablechildren>
+                <tablelayout width="100%" columns="3">
+                    <tablechildren>
+                        <panel  border="0" collapsible="true">
+                            <panelchildren  style="background-color:transparent;border:0px">
+                                <vbox>
+                                    <!--image height="60px" id="foto0" src="images/acerca.gif"/-->
+                                    <image height="45px" id="foto0" />
+                                </vbox>
+                            </panelchildren>
+                        </panel>
+                        <panel   border="normal" collapsible="true">
+                            <panelchildren  style="border: 1px;background-color:transparent;border:0px">
+                                <vbox>
 
-<tablechildren>
-		<panel   border="normal" collapsible="true">
-			<panelchildren style="background-color:transparent;border:0px">
-                <vbox>
-						<hbox>
-							<label value="Bienvenido:" style="font-weight:bold;" />
-							<label value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
-						</hbox>
-                        <hbox>
-							<label value="Perfil" style="font-weight:bold;"  />
-							<label value="${sessionScope.user.perfil.descripcion}" />
-						</hbox>
-                        <hbox>
-							<label value="Periodo: " style="font-weight:bold;" />
-							<label value="${sessionScope.periodo.descripcion}"  />
-						</hbox>
-                        <toolbarbutton  style="font-weight:bold;"  label="[Cerrar Sesión]" onClick="salir()"/>
-</vbox>
+                                    <hbox>
+                                         <separator orient="vertical" />
+                                        <label value="${sessionScope.periodo.institucion.denominacion} " style="color:white;font-size:14px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
+                                        <label value=" ${sessionScope.periodo.institucion.nombre}" style="color:white;font-size:14px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
 
-            </panelchildren>
-		</panel>
-</tablechildren>
-</tablelayout-->
-<tablelayout  onCreate="cargando();"  width="800px" columns="3">
-	<tablechildren>
-<panel   border="normal" collapsible="true">
-			<panelchildren  style="background-color:transparent;border:0px">
-                <vbox>
-                        <image height="60px" id="foto0" />
-                </vbox>
-            </panelchildren>
-		</panel>
-<panel   border="normal" collapsible="true">
-			<panelchildren  style="background-color:transparent;border:0px">
-                <vbox>
+                                        <label value=" - ${sessionScope.periodo.institucion.tipo}" style="color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
 
-                <hbox>
-                    <label value="${sessionScope.periodo.institucion.denominacion} " style="color:#346B93;font-size:12px;font-weight:bold;" />
-                </hbox>
-				<hbox>
-                    <label value=" ${sessionScope.periodo.institucion.nombre}" style="color:#346B93;font-size:18px;font-weight:bold;" />
-                </hbox>
-                <hbox>
-               
-                    <label value="${sessionScope.periodo.institucion.tipo}" style="color:#346B93;font-weight:bold;" />
+                                        <!-- PERIODO -->
+                                        <separator orient="vertical" /> |<separator orient="vertical" />
+                                        <listbox  style="color:white;font-size:10px;background-color:#1B62A4;" onSelect="cambio(); " width="415px"  id="periodo" mold="select">
+                                            <listitem forEach="${perfiles}" value="${each}">
+                                                <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
+                                            </listitem>
+                                        </listbox>
+                                    </hbox>
+
+                                </vbox>
 
 
-                </hbox>
+                                <vbox>
+                                    <hbox>
+                                         <separator orient="vertical" />
+                                        <label style="color:white;font-size:9px;font-weight:bold;" value="${sessionScope.user.perfil.descripcion}:" />
+                                        <label style="color:white;font-size:9px" value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
+                                        <separator orient="vertical" /> |<separator orient="vertical" />
+                                        <label value=" PERIODO: " style="color:white;font-size:9px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
+                                        <label  style="color:white;font-size:9px;" value="${sessionScope.periodo.descripcion}"  />
+                                        <separator orient="vertical" /> | <separator orient="vertical" />
+                                        <toolbarbutton  image="/images/exit.gif" style="background:transparent;color:white;font-weight:bold;font-size:9px;font-family: Arial, Helvetica, sans-serif"  label=" [Cerrar Sesión]" onClick="salir()"/>
+                                        <separator orient="vertical" /> | <separator orient="vertical" />
+                                        <toolbarbutton style="background:transparent;font-size:9px;color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" image="/images/candado.gif" label="Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
 
-                </vbox>
-            </panelchildren>
-		</panel>
-	</tablechildren>
+                                        <separator orient="vertical" /> |<separator orient="vertical" />
 
-<tablechildren>
-		<panel   border="normal" collapsible="true">
-			<panelchildren style="background-color:transparent;border:0px">
-                <vbox>
-						<hbox>
-							<label value="Bienvenido:" style="color:#346B93;font-weight:bold;" />
-							<label style="color:#346B93;" value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
-						</hbox>
-                        <hbox>
-							<label value="Perfil" style="color:#346B93;font-weight:bold;"  />
-							<label style="color:#346B93;" value="${sessionScope.user.perfil.descripcion}" />
-						</hbox>
-                        <hbox>
-							<label value="Periodo: " style="color:#346B93;font-weight:bold;" />
-							<label  style="color:#346B93;" value="${sessionScope.periodo.descripcion}"  />
-						</hbox>
 
-                </vbox>
-            </panelchildren>
-		</panel>
-</tablechildren>
-<tablechildren>
-		<panel   border="normal" collapsible="true">
-			<panelchildren style="background-color:transparent;border:0px">
-                <vbox>
+                                    </hbox>
 
-                        <hbox>
-                            <label  style="color:#346B93;" value=" "  />
-                        <toolbarbutton image="/images/exit.gif"  style="color:#346B93;font-weight:bold;"  label="[Cerrar Sesión]" onClick="salir()"/>
-                           <separator/>
-                           <toolbarbutton image="/images/candado.gif" label="Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
-                        </hbox><hbox>
-                        </hbox>
-                </vbox>
-            </panelchildren>
-		</panel>
-</tablechildren>
-</tablelayout>
+                                </vbox>
+                            </panelchildren>
+                        </panel>
+                    </tablechildren>
 
-</toolbar>
+                </tablelayout>
 
-</north>
+
+
+        </north>
 
 <west title="Menú" size="18%" flex="true" splittable="true" collapsible="true">
          <div>
