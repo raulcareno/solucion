@@ -252,6 +252,7 @@
         newtb.setSelected(true);
         newtb.setClosable(true);
         newtb.setImage("/images/fondo.png");
+        newtb.setId("blanco");
         newtb.setParent(tbs);
 
         Tabpanel newtpl = new Tabpanel();
