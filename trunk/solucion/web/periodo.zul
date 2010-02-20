@@ -1,6 +1,7 @@
 <window   id="ventana"  title="Control de Años Lectivos"   border="normal"
     xmlns:a="http://www.zkoss.org/2005/zk/annotation">
  <zscript>
+     <![CDATA[
   import jcinform.persistencia.Global;
   import bean.EventDAO; 
   import java.util.ArrayList; 
@@ -15,7 +16,7 @@
     Permisos permiso = new Permisos();
    List periodosListadod = adm.query("Select o from Periodo as o order by o.descripcion");
    
-
+]]>
   </zscript>
 
 <groupbox mold="3d" >
@@ -191,11 +192,13 @@ void estado(Boolean estado,Boolean modificar){
  void move(){
         binder.bindBean("inobjeto",(Periodo)datos.selectedItem.value);
         binder.loadAll();
-        Listitem item = new Listitem();
-        item.setValue(((Periodo)datos.selectedItem.value).getInstitucion());
-        item.appendChild(new Listcell(((Periodo)datos.selectedItem.value).getInstitucion().getDenominacion()+""));
-        listadoi.appendChild(item);
-        listadoi.setSelectedItem(item);
+
+        
+                Listitem item = new Listitem();
+                item.setValue(((Periodo)datos.selectedItem.value).getInstitucion());
+                item.appendChild(new Listcell(((Periodo)datos.selectedItem.value).getInstitucion().getDenominacion()+""));
+                listadoi.appendChild(item);
+                listadoi.setSelectedItem(item);
 
 
             item = new Listitem();
@@ -204,6 +207,8 @@ void estado(Boolean estado,Boolean modificar){
             item.appendChild(new Listcell(((Periodo)datos.selectedItem.value).getSeccion().getDescripcion()+""));
             seccionesL.appendChild(item);
             seccionesL.setSelectedItem(item);
+
+            
         modificar.disabled = false;
   }
 void modificar(){

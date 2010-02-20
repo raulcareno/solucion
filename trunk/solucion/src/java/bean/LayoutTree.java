@@ -81,8 +81,9 @@ return true;
                             newtb.setClosable(true);
                             newtb.setSelected(true);
                             newtb.setImage(item.getImage());
-                            newtb.setParent(tbs);
                             newtb.setId("blanco");
+                            newtb.setParent(tbs);
+                            
                             Tabpanel newtpl = new Tabpanel();
                             Iframe f = new Iframe("./blanco.zul");
                             f.setWidth("100%");

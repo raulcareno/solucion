@@ -85,7 +85,7 @@ if(resultado.equals("ok")){
 }
 
 void buscar2(Cursos cur){
-        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"' and o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"' and o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.materia.descripcion");
         //bd2.getItems().clear();
 mates.getChildren().clear();
 datos.getRows().getChildren().clear();

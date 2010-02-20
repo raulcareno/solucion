@@ -2,7 +2,7 @@
 <?page id="main-page"?>
 <window id="principal">
     <zscript>
-<![CDATA[
+        <![CDATA[
 import bean.notas;
 import java.math.BigDecimal;
 import bean.notas;
@@ -32,16 +32,16 @@ List sistemas = new ArrayList();
 
 List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
 String[][] cabes = new String[trimestres.size()][2];
- 
+
 int k=0;
-            
+
  for (Iterator it = trimestres.iterator(); it.hasNext();) {
               Trimestres trime = (Trimestres) it.next();
               List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
               " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
               int orden = 0;
               int codigo=0;
-       
+
               if(sistemas0.size() >0 ){
                   orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
                   codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
@@ -50,8 +50,8 @@ int k=0;
               }else{
                    cabes[k][1]= 1+"";
               }
-                 
-                 
+
+
 
               for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
                     Sistemacalificacion siste = (Sistemacalificacion) it2.next();
@@ -101,7 +101,7 @@ guardar(){
 }
 
 void buscar2(Cursos cur){
-        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.materia.descripcion");
         //bd2.getItems().clear();
 mates.getChildren().clear();
 datos.getRows().getChildren().clear();
@@ -122,13 +122,13 @@ void doAdd(Cursos curso, MateriaProfesor materia){
 
 }
 
-		void showReport(String tipo) {
-			//Preparing parameters
+        void showReport(String tipo) {
+            //Preparing parameters
             reportes.setSelected(true);
 
             Institucion insts = periodo.getInstitucion();
 
-			Map parametros = new HashMap();
+            Map parametros = new HashMap();
             parametros.put("denominacion", insts.getDenominacion());
             parametros.put("nombre", insts.getNombre());
             parametros.put("periodo", periodo.getDescripcion());
@@ -151,7 +151,7 @@ void doAdd(Cursos curso, MateriaProfesor materia){
                 report.setType("pdf");
 
 
-		}
+        }
 
         //PARA REPORTES
 public JRDataSource certificados(Matriculas matricula,String tipo){
@@ -199,7 +199,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="curs" width="420px"
-                    onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
+                                                 onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
 
                                             <listitem forEach="${cursos}" value="${each}">
                                                 <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
@@ -217,7 +217,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                     <bandpopup>
                                         <vbox>
                                             <listbox id="mates" width="320px"
-                    onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
+                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
 
                                                 <listitem forEach="${materias}" value="${each}">
                                                     <listcell label="${each.descripcion}" />
@@ -235,11 +235,11 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     </rows>
                 </grid>
                 <grid  id="datos" >
-                       
+
                     <auxhead >
-                    <auxheader colspan="2">
-                        <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
-                    </auxheader>
+                        <auxheader colspan="2">
+                            <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
+                        </auxheader>
                         <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
                     </auxhead>
                     <columns>
@@ -261,14 +261,14 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             </span>
                         </row>
                         <row>
-                             <span style="float:right"> Aporte que desea imprimir: </span>
+                            <span style="float:right"> Aporte que desea imprimir: </span>
 
-                                <listbox id="sistemasCombo" width="300px"  mold="select" >
-                                    <listitem selected="true"  forEach="${sistemas}" value="${each}">
-                                        <listcell label="${each.nombre}" />
-                                    </listitem>
-                                </listbox>
-                                 <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                            <listbox id="sistemasCombo" width="300px"  mold="select" >
+                                <listitem selected="true"  forEach="${sistemas}" value="${each}">
+                                    <listcell label="${each.nombre}" />
+                                </listitem>
+                            </listbox>
+                            <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
                         </row>
 
                     </rows>
@@ -279,8 +279,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             </tabpanel>
         </tabpanels>
     </tabbox>
- <!--button label="Recalcular"   onClick="recalculo();"/-->
+    <!--button label="Recalcular"   onClick="recalculo();"/-->
 
 </window>
 
-	

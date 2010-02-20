@@ -3,10 +3,10 @@
     <window    title="Registro de Empleados/Profesores ...::..."  border="normal" >
 
         <zscript>
-     
+            <![CDATA[
   import jcinform.persistencia.Global;
-  import bean.EventDAO; 
-  import java.util.ArrayList; 
+  import bean.EventDAO;
+  import java.util.ArrayList;
   import jcinform.persistencia.Empleados;
   import jcinform.procesos.Administrador;
   import bean.Permisos;
@@ -56,21 +56,28 @@ void llenar(Empleados empa){
             adventista.checked= empa.getAdventista();
     if(empa.getDocente()!=null)
             docente.checked= empa.getDocente();
-if(empa.getPerfil()!=null){
-    Listitem item = new Listitem();
-    item.setValue(empa.getPerfil());
-    item.appendChild(new Listcell(empa.getPerfil()+""));
-    perf.appendChild(item);
-    perf.setSelectedItem(item);
-    bd.value = empa.getPerfil()+"";
-}
+                if(empa.getPerfil()!=null){
+                  for (int i = 0; i <= perf.getItems().size(); i++) {
+                            Global tr0 = ((Global)((Listitem)perf.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigo();
+                            int segundo = empa.getPerfil().getCodigo();
+                            if(primero == segundo){
+                                perf.setSelectedItem((Listitem)perf.getItems().get(i));
+                                bd.value = empa.getPerfil()+"";
+                                break;
+                            }
+                   }
+
+
+                    
+                }
 
 }
 void estado(Boolean estado,Boolean modificar){
         if(modificar){
             empa = (Empleados)datos.selectedItem.value;
         }
- 
+
     identificacion.readonly = estado;
     nombres.readonly = estado;
     apellidos.readonly = estado;
@@ -123,8 +130,8 @@ void estado(Boolean estado,Boolean modificar){
             org.zkoss.image.Image nueva = foto0.getContent();
 
             empa.setFoto(nueva.getByteData());
-  
-        
+
+
         if((!empa.getCodigoemp().equals(0)) ){
              adm.actualizar(empa);
              try{
@@ -198,12 +205,12 @@ void eliminar(){
                         empa = object;
                  }
             llenar(empa);
-               
+
             }else{
                 empa = new Empleados(0);
-                
+
             }
-            
+
         }
         if(usuario.value==""){
                     usuario.value = (valor);
@@ -217,8 +224,8 @@ void eliminar(){
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
                     datos.getItems().remove(a);
                 }
-   
-       
+
+
                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
                       Empleados acceIt = (Empleados) it.next();
                       Listitem li = new Listitem();
@@ -233,6 +240,7 @@ void eliminar(){
 void cargar(Global g){
 empa.setPerfil(g);
 }
+]]>
         </zscript>
         <tabbox width="100%">
             <tabs>
@@ -270,7 +278,7 @@ empa.setPerfil(g);
                                     <comboitem  label="Msc."/>
                                     <comboitem  label="Phd."/>
                                 </combobox>
-    
+
                                 <span style="float:right"> Docente:</span>
                                 <checkbox id="docente" disabled="true"  />
                             </row>
@@ -306,7 +314,7 @@ empa.setPerfil(g);
                                     <bandpopup>
                                         <vbox>
                                             <listbox id="perf" width="250px"
-		onSelect="bd.value=self.selectedItem.label;cargar(((Global)self.selectedItem.value));bd.closeDropdown();">
+                                                     onSelect="bd.value=self.selectedItem.label;cargar(((Global)self.selectedItem.value));bd.closeDropdown();">
                                                 <listhead>
                                                     <listheader label="Description"/>
                                                 </listhead>
@@ -320,7 +328,7 @@ empa.setPerfil(g);
                                 </bandbox>
 
                             </row>
- 
+
                             <row>
                                 <span style="float:right"> Religión:</span>
                                 <checkbox id="adventista" disabled="true"  />
@@ -336,29 +344,29 @@ empa.setPerfil(g);
                                 <datebox id="ingreso"  disabled="true"  />
                                 <span style="float:right"> Años de Servicio:</span>
                                 <intbox id="servicio" cols="5" readonly="true"  />
-         
+
                             </row>
 
                             <row>
                                 <button label="Subir Imagen" id="ima">
                                     <attribute name="onClick">{
-			Object media = Fileupload.get();
+                                        Object media = Fileupload.get();
 
-			if (media instanceof org.zkoss.image.Image) {
+                                        if (media instanceof org.zkoss.image.Image) {
 
-				foto0.setContent(media);
-			//byte[] archivo=((AMedia) media).getByteData();
-			} else if (media != null){
-				Messagebox.show("Seleccione un Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
-            }
-		}
+                                        foto0.setContent(media);
+                                        //byte[] archivo=((AMedia) media).getByteData();
+                                        } else if (media != null){
+                                        Messagebox.show("Seleccione un Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+                                        }
+                                        }
                                     </attribute>
                                 </button>
                                 <image border="1" height="125px" id="foto0"/>
                             </row>
                         </rows>
                     </grid>
- 
+
                     <vbox>
                         <hbox>
                             <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
@@ -368,7 +376,7 @@ empa.setPerfil(g);
                         </hbox>
                     </vbox>
 
-			 
+
                 </tabpanel>
 
                 <tabpanel>

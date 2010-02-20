@@ -38,31 +38,46 @@ void llenar(Materiasgrado estudent){
   
      formula.value = estudent.getFormula();
      if(estudent.getCurso() != null){
-                Listitem item = new Listitem();
-                item.setValue(estudent.getCurso());
-                item.appendChild(new Listcell(estudent.getCurso()+""));
-                curs.appendChild(item);
-                curs.setSelectedItem(item);
+                for (int i = 0; i <= curs.getItems().size(); i++) {
+                            Cursos tr0 = ((Cursos)((Listitem)curs.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigocur();
+                            int segundo = estudent.getCurso().getCodigocur();
+                            if(primero == segundo){
+                                curs.setSelectedItem((Listitem)curs.getItems().get(i));
+                                break;
+                            }
+                   }
      }
 
      materia.value = estudent.getNombre();
      abreviatura.value = estudent.getAbreviatura();
      columna.value = estudent.getColumna();
         if(estudent.getProfesor() != null){
-                Listitem item = new Listitem();
-                item.setValue(estudent.getProfesor());
-                item.appendChild(new Listcell(estudent.getProfesor().getApellidos()+" "+estudent.getProfesor().getNombres()));
-                profes.appendChild(item);
-                profes.setSelectedItem(item);
+
+                   for (int i = 0; i <= profes.getItems().size(); i++) {
+                                    Empleados tr0 = ((Empleados)((Listitem)profes.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigoemp();
+                                    int segundo = estudent.getProfesor().getCodigoemp();
+                                    if(primero == segundo){
+                                        profes.setSelectedItem((Listitem)profes.getItems().get(i));
+                                        break;
+                                    }
+                           }
 
         }
         
          if(estudent.getProfesor2() != null){
-                Listitem item = new Listitem();
-                item.setValue(estudent.getProfesor2());
-                item.appendChild(new Listcell(estudent.getProfesor2().getApellidos()+" "+estudent.getProfesor2().getNombres()));
-                profes.appendChild(item);
-                profes.setSelectedItem(item);
+
+                     for (int i = 0; i <= encarg.getItems().size(); i++) {
+                                    Empleados tr0 = ((Empleados)((Listitem)encarg.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigoemp();
+                                    int segundo = estudent.getProfesor2().getCodigoemp();
+                                    if(primero == segundo){
+                                        encarg.setSelectedItem((Listitem)encarg.getItems().get(i));
+                                        break;
+                                    }
+                           }
+
 
         }
 
@@ -146,6 +161,7 @@ public  String disponible(){
                 agregar.disabled=false;
                 estado(true,false);
                 llenar(new Materiasgrado(0));
+                buscar2(curs.selectedItem.value);
     }
 
    Boolean verificar(String accion){
@@ -238,8 +254,8 @@ Cursos cur = curs.selectedItem.value;
     
     }   ]]>
     </zscript>
-    <groupbox   mold="3d">
-        <caption label="Datos de Matricula" />
+
+
         <grid width="100%">
             <rows>
                 <row>
@@ -306,7 +322,7 @@ Cursos cur = curs.selectedItem.value;
                     <span style="float:right"> Fórmula:
                     </span>
                     <span>
-                        <textbox rows="2" id="formula" cols="35"  disabled="true"  />
+                        <textbox rows="1" id="formula" cols="65"  disabled="true"  />
                         <button label="Ver" onClick=" materias123(); "/>
                         <listbox onSelect="anadir(self.selectedItem.value)" visible="false" id="materiaslista" width="45%">
                             <listhead>
@@ -319,13 +335,10 @@ Cursos cur = curs.selectedItem.value;
                 </row>
             </rows>
         </grid>
-    </groupbox>
-    <groupbox  width="100%"  mold="3d" >
-        <caption label="Materias Asignadas" />
-        <vbox width="100%">
-            <hbox>  </hbox>
-            <hbox width="100%">
-                <listbox  mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+
+
+
+                <listbox  mold="paging" rows="7" pageSize="7"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                     <listhead>
                         <listheader label="Cod."/>
 
@@ -334,9 +347,8 @@ Cursos cur = curs.selectedItem.value;
                     </listhead>
 
                 </listbox>
-            </hbox>
-        </vbox>
-    </groupbox>
+ 
+
     <vbox>
         <hbox>
             <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>

@@ -1,11 +1,13 @@
 <window border="normal" title="Cursos"  >
 
  <zscript>
+<![CDATA[
   import jcinform.persistencia.Global;
   import bean.EventDAO;
   import java.util.ArrayList;
   import jcinform.persistencia.Cursos;
   import jcinform.persistencia.Periodo;
+  import jcinform.persistencia.Global;
   import jcinform.procesos.Administrador;
   import bean.Permisos;
   import java.math.BigDecimal;
@@ -35,20 +37,29 @@ void llenar(Cursos empa){
     cedulatut.value = empa.getCedulatut();
 
 if(empa.getParalelo()!=null){
-        Listitem item = new Listitem();
-        item.setValue(empa.getParalelo());
-        item.appendChild(new Listcell(empa.getParalelo()+""));
-        paralelosL.appendChild(item);
-        paralelosL.setSelectedItem(item);
-
+          for (int i = 0; i <= paralelosL.getItems().size(); i++) {
+                            Global tr0 = ((Global)((Listitem)paralelosL.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigo();
+                            int segundo = empa.getParalelo().getCodigo();
+                            if(primero == segundo){
+                                paralelosL.setSelectedItem((Listitem)paralelosL.getItems().get(i));
+                                break;
+                            }
+                   }
+ 
     }
     if(empa.getEspecialidad()!=null){
-        Listitem item = new Listitem();
-        item.setValue(empa.getEspecialidad());
-        item.appendChild(new Listcell(empa.getEspecialidad()+""));
-        especialidadesL.appendChild(item);
-        especialidadesL.setSelectedItem(item);
 
+            for (int i = 0; i <= especialidadesL.getItems().size(); i++) {
+                    Global tr0 = ((Global)((Listitem)especialidadesL.getItems().get(i)).getValue());
+                    int primero = tr0.getCodigo();
+                    int segundo = empa.getEspecialidad().getCodigo();
+                    if(primero == segundo){
+                        especialidadesL.setSelectedItem((Listitem)especialidadesL.getItems().get(i));
+                        break;
+                    }
+           }
+ 
     }
  
 
@@ -210,6 +221,8 @@ void cargarSec(Global g){
 void cargarPar(Global g){
     empa.setParalelo(g);
 }
+        ]]>
+
   </zscript>
   <hbox>
 <groupbox mold="3d" >

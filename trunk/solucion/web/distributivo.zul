@@ -1,6 +1,6 @@
 
 <window title="Seleccione un Curso para continuar"  >
-    <zscript>
+    <zscript><![CDATA[
   import jcinform.persistencia.Global;
   import bean.EventDAO;
   import java.util.ArrayList;
@@ -42,28 +42,39 @@ void llenar(MateriaProfesor estudent){
     formula.value = estudent.getFormula();
     
         if(estudent.getCurso() != null){
-                Listitem item = new Listitem();
-                item.setValue(estudent.getCurso());
-                item.appendChild(new Listcell(estudent.getCurso()+""));
-                curs.appendChild(item);
-                curs.setSelectedItem(item);
-                //bd1.value = estudent.getCurso().getDescripcion()+" "+ estudent.getCurso().getEspecialidad()+" "+ estudent.getCurso().getParalelo();
+                     for (int i = 0; i <= curs.getItems().size(); i++) {
+                            Cursos tr0 = ((Cursos)((Listitem)curs.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigocur();
+                            int segundo = estudent.getCurso().getCodigocur();
+                            if(primero == segundo){
+                                curs.setSelectedItem((Listitem)curs.getItems().get(i));
+                                break;
+                            }
+                   }
         }
     if(estudent.getMateria() != null){
-                Listitem item = new Listitem();
-                item.setValue(estudent.getMateria());
-                item.appendChild(new Listcell(estudent.getMateria()+""));
-                mates.appendChild(item);
-                mates.setSelectedItem(item);
-                //bd2.value = estudent.getMateria().getDescripcion()+"";
+
+              for (int i = 0; i <= mates.getItems().size(); i++) {
+                            Global tr0 = ((Global)((Listitem)mates.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigo();
+                            int segundo = estudent.getMateria().getCodigo();
+                            if(primero == segundo){
+                                mates.setSelectedItem((Listitem)mates.getItems().get(i));
+                                break;
+                            }
+                   }
+
         }
         if(estudent.getEmpleado() != null){
-                Listitem item = new Listitem();
-                item.setValue(estudent.getEmpleado());
-                item.appendChild(new Listcell(estudent.getEmpleado().getApellidos()+" "+estudent.getEmpleado().getNombres()));
-                profes.appendChild(item);
-                profes.setSelectedItem(item);
-                //bd3.value = estudent.getEmpleado().getApellidos()+" "+estudent.getEmpleado().getNombres();
+                for (int i = 0; i <= profes.getItems().size(); i++) {
+                            Empleados tr0 = ((Empleados)((Listitem)profes.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigoemp();
+                            int segundo = estudent.getEmpleado().getCodigoemp();
+                            if(primero == segundo){
+                                profes.setSelectedItem((Listitem)profes.getItems().get(i));
+                                break;
+                            }
+                   }
         }
 
         
@@ -108,11 +119,7 @@ void estado(Boolean estado,Boolean modificar){
 
         if((!matricula.getCodigomap().equals(0)) ){
                 adm.actualizar(matricula);
-                  List children = datos.selectedItem.children;
-                  ((Listcell)children.get(0)).label = orden.value+ "";
-                  ((Listcell)children.get(1)).label = (profes.selectedItem.value).getApellidos() + " "+  (profes.selectedItem.value).getNombres() ;
-                  ((Listcell)children.get(2)).label = mates.selectedItem.value+ "";
-                  
+ 
                   try{
                       String quera = "update notas set orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
                       " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
@@ -132,13 +139,7 @@ void estado(Boolean estado,Boolean modificar){
                 }
              matricula.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
              adm.guardar(matricula);
-                  Listitem li = new Listitem();
-                  li.setValue(matricula);
-                  li.appendChild(new Listcell(orden.value+""));
-                  li.appendChild(new Listcell(matricula.getEmpleado().getApellidos()+" "+matricula.getEmpleado().getNombres()));
-                  li.appendChild(new Listcell(matricula.getMateria().getDescripcion()));
-                  
-                  datos.appendChild(li);
+               
          }
 
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -146,6 +147,7 @@ void estado(Boolean estado,Boolean modificar){
                 agregar.disabled=false;
                 estado(true,false);
                 llenar(new MateriaProfesor(0));
+                buscar2(curs.selectedItem.value);
 
 
     }
@@ -212,6 +214,10 @@ profes.setSelectedIndex(0);
                       li.appendChild(new Listcell(acceIt.getOrden()+""));
                       li.appendChild(new Listcell(acceIt.getEmpleado().getApellidos()+" "+acceIt.getEmpleado().getNombres()));
                       li.appendChild(new Listcell(acceIt.getMateria()+""));
+                      li.appendChild(new Listcell((acceIt.getCuantitativa()?"SI":"NO")+""));
+                      li.appendChild(new Listcell((acceIt.getMinisterio()?"SI":"NO")+""));
+                      li.appendChild(new Listcell((acceIt.getOpcional()?"SI":"NO")+""));
+                      li.appendChild(new Listcell((acceIt.getSeimprime()?"SI":"NO")+""));
                       
                       datos.appendChild(li);
              }
@@ -243,6 +249,7 @@ Cursos cur = curs.selectedItem.value;
     formula.value = formula.value +"MA"+ glob.getCodigo()+" + ";
     
     }
+]]>
     </zscript>
  
         <grid width="100%">
@@ -331,6 +338,10 @@ Cursos cur = curs.selectedItem.value;
                         <listheader label="Orden"   sort="auto"/>
                         <listheader label="Empleado"  sort="auto"/>
                         <listheader label="Materia"   sort="auto"/>
+                        <listheader label="Cuant."   sort="auto"/>
+                        <listheader label="Prom."   sort="auto"/>
+                        <listheader label="Disc."   sort="auto"/>
+                        <listheader label="Impr."   sort="auto"/>
                         
                     </listhead>
                     <listitem forEach="${allEvents}" value="${each}">
