@@ -3,6 +3,7 @@
 <window title="Calificaciones que se muestran"  border="normal" >
  <zscript>
 
+<![CDATA[
 import bean.EventDAO;
 import java.util.ArrayList;
 import jcinform.persistencia.*;
@@ -22,7 +23,6 @@ static Sistemacalificacion empa = new Sistemacalificacion();
     Periodo per = (Periodo) ses.getAttribute("periodo");
     List trimestres = adm.query("Select o from Trimestres as o where o.periodo  = '"+per.getCodigoper()+"'  order by o.codigotrim  ");
 
-<![CDATA[
 class SistemaTree extends Tree {
 	public void onSelect() {
 
@@ -108,7 +108,7 @@ public  String disponible(){
                  menu = menu.substring(0, menu.indexOf("]"));
             }catch(Exception error){return;}
             
-             menu= menu.replace("[K","").replace("]", "");
+             menu= menu.replace("[","").replace("]", "");
                 if (item != null) {
                         Sistemacalificacion encontrado = (Sistemacalificacion) adm.buscarClave(new Integer(menu),Sistemacalificacion.class);
                         llenar(encontrado);
@@ -138,7 +138,7 @@ public  String disponible(){
                         //+ (sis.getSistema().getFaltas()==true?"(F)":"")+
                         for(int i=0; i< sistemas.size(); i++) {
                                 Notanotas sis = sistemas.get(i);
-                                a0 = new MySimpleTreeNode("[K"+sis.getSistema().getCodigosis()+"]"+sis.getSistema().getNombre() +" ["+sis.getNota()+"()]", empty);
+                                a0 = new MySimpleTreeNode("["+sis.getSistema().getCodigosis()+"]"+sis.getSistema().getNombre() +" ["+sis.getNota()+"()]", empty);
                                 aChildren.add(a0);
                        }
 	                a = new MySimpleTreeNode(""+tri.getDescripcion(), aChildren);
@@ -162,7 +162,7 @@ public void llenarArbol(){
                         aChildren = new ArrayList();
                         for(int i=0; i< sistemas.size(); i++) {
                                 Notanotas sis = sistemas.get(i);
-                               a0 = new MySimpleTreeNode("[K"+sis.getSistema().getCodigosis()+"]"+sis.getSistema().getNombre() +" ["+sis.getNota()+"()]", empty);
+                               a0 = new MySimpleTreeNode("["+sis.getSistema().getCodigosis()+"]"+sis.getSistema().getNombre() +" ["+sis.getNota()+"()]", empty);
                                 aChildren.add(a0);
                        }
 	                a = new MySimpleTreeNode(""+tri.getDescripcion(), aChildren);
@@ -243,16 +243,17 @@ void llenar(Sistemacalificacion empa){
         supletorio.selected = true;
         }
 
-
         if(empa.getTrimestre()!=null){
-            Listitem item = new Listitem();
-            item.setValue(empa.getTrimestre());
-            item.appendChild(new Listcell(empa.getTrimestre()+""));
-            trime.appendChild(item);
-            trime.setSelectedItem(item);
-            //bd.value = empa.getTrimestre().getDescripcion()+"";
+         for (int i = 0; i <= trime.getItems().size(); i++) {
+                    Trimestres tr0 = ((Trimestres)((Listitem)trime.getItems().get(i)).getValue());
+                    int primero = tr0.getCodigotrim();
+                    int segundo = empa.getTrimestre().getCodigotrim();
+                    if(primero == segundo){
+                        trime.setSelectedItem((Listitem)trime.getItems().get(i));
+                        break;
+                    }
+                }
         }
-  
 }
 void estado(Boolean estado,Boolean modificar){
         if(modificar){

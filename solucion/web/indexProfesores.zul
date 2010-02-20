@@ -112,7 +112,7 @@
 
 
         </zscript>
-        <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="10%" >
+        <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="56px" >
 
             <tablelayout width="100%" columns="3">
                 <tablechildren>

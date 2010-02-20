@@ -5,13 +5,14 @@
 
 package bean;
 
+import java.util.Iterator;
 import jcinform.persistencia.*;
 
  
 import org.zkoss.util.media.Media;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Treeitem;
+import org.zkoss.zul.Listitem;
 
 
 /**
@@ -22,6 +23,15 @@ public class borrar {
 //Panel p;
 void func() throws InterruptedException{
     Media media = Fileupload.get();
+
+//    Listbox l;
+//    l.getItems().get(0);
+//    Iterator a = l.getItems().size();
+//    a.hasNext();
+//    Listitem ite = l.getItems().get(index);
+//    ite.getValue()
+
+
  
 
 //    media.getByteData();
