@@ -1,4 +1,3 @@
-
 <?page id="main-page"?>
 <window id="principal">
     <zscript>
@@ -8,12 +7,10 @@ import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
 import sources.*;
-
 import net.sf.jasperreports.engine.JRDataSource;
 
 Administrador adm = new Administrador();

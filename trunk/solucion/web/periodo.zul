@@ -128,15 +128,14 @@
     binder.loadAll();
 
     void update() {
-          binder.saveAll();
-          binder.loadAll();
+      binder.saveAll();
+      binder.loadAll();
     }
 //FUNCIONES
 void estado(Boolean estado,Boolean modificar){
         if(modificar){
             inobjeto = (Periodo)datos.selectedItem.value;
         }
-
     codigo.disabled = estado;
     descripcion.disabled = estado;
 }
@@ -193,7 +192,7 @@ void estado(Boolean estado,Boolean modificar){
         binder.bindBean("inobjeto",(Periodo)datos.selectedItem.value);
         binder.loadAll();
 
-        
+     
                 Listitem item = new Listitem();
                 item.setValue(((Periodo)datos.selectedItem.value).getInstitucion());
                 item.appendChild(new Listcell(((Periodo)datos.selectedItem.value).getInstitucion().getDenominacion()+""));
