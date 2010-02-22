@@ -269,7 +269,7 @@ equi.setPerfil(g);
  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
  </hbox>
     <hbox width="100%">
-         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="450px">
+         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="800px">
 			<listhead>
                                 <listheader label="Código"/>
                                 <listheader label="Nombre"/>

@@ -31,7 +31,7 @@ border="normal">
      </p>
 		</attribute>
     </html>
-    <toolbarbutton  style="color:#346B93;font-weight:bold;"
+    <toolbarbutton target="_top"  style="color:#346B93;font-weight:bold;"
     label="&gt;&gt;&gt;&gt;&gt;[INGRESAR] &lt;&lt;&lt;&lt;" onClick="salir()"/>
 </window>
 
