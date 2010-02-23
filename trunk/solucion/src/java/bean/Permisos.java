@@ -9,9 +9,12 @@ package bean;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
  
 import java.util.Random;
@@ -33,8 +36,8 @@ import org.zkoss.zk.ui.Sessions;
 public class Permisos {
     claves cla = new claves();
     public Permisos(){
-
-    }
+        }
+    public static ArrayList usuarios;
 
 public org.zkoss.image.Image devolverImagen(String imageName,byte[] imageData) throws IOException
 {
@@ -92,12 +95,27 @@ public Boolean verificarSistema(){
         //Window win = (Window) Executions.createComponents("/notasEstudiantes.zul", null, null);
        List listado = adm.query("Select o from Accesos as o where o.perfil.codigo = '"+user.getPerfil().getCodigo()+"'");
         Session a = Sessions.getCurrent();
-        
+   
         a.setAttribute("accesos", listado);
         a.setAttribute("user", user);
         a.setAttribute("periodo",per);
-        a.setAttribute("periodo",per);
-          
+//        a.setAttribute("periodo",per);
+        if(usuarios == null){
+            usuarios = new ArrayList();
+        }else{
+            boolean estado = false;
+            for (Iterator it = usuarios.iterator(); it.hasNext();) {
+                Empleados object = (Empleados)it.next();
+                    if(object.equals(user)){
+                        estado = true;
+                        break;
+                    }
+            }
+            if(!estado)
+                usuarios.add(user);
+        }
+//        usuarios.add(user);
+
         
         auditar("-", "-", "Ingreso Sistema");
         //getServletConfig().getServletContext().getRealPath("WEB-INF/asistencia.jasper")
