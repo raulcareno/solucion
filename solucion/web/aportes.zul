@@ -19,7 +19,7 @@ import bsh.EvalError;
 static Sistemacalificacion empa = new Sistemacalificacion();
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
-
+Permisos permiso = new Permisos();
     Periodo per = (Periodo) ses.getAttribute("periodo");
     List trimestres = adm.query("Select o from Trimestres as o where o.periodo  = '"+per.getCodigoper()+"'  order by o.codigotrim  ");
 
@@ -180,7 +180,7 @@ int tamanio = tree.getTreechildren().getChildren().size();
 }
      
 
-Permisos permiso = new Permisos();
+
 Object media = null;
   public void mostrarTodos(){
        		int l = tree.getTreechildren().getChildren().size();
@@ -343,6 +343,7 @@ espromedio.disabled= estado;
             nueva.setCodigo(adm.getNuevaClave("Notanotas","codigo"));
             adm.guardar(nueva);
          }
+         permiso.auditar("Aportes","Guardar",""+nombre.value);
 llenarArbol();
 mostrarTodos();
                     guardar.disabled=true;
@@ -384,7 +385,7 @@ void eliminar(){
         try{
              adm.eliminarObjeto(Notanotas.class, new Integer(codi.value));
              adm.eliminarObjeto(Sistemacalificacion.class, codigo.value);
-
+                permiso.auditar("Aportes","Eliminar",""+nombre.value);
              llenarArbol();
             mostrarTodos();
              Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);

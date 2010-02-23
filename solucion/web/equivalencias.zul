@@ -94,6 +94,8 @@ void estado(Boolean estado,Boolean modificar){
              adm.guardar(equi);
 
          }
+
+         permiso.auditar("Equivalencias","Guardar",""+nombre.value);
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                     guardar.disabled=true;
                     agregar.disabled=false;
@@ -133,6 +135,7 @@ void eliminar(){
         try{
              equi = (Equivalencias)datos.selectedItem.value;
              adm.eliminarObjeto(Equivalencias.class, equi.getCodigoequi());
+             permiso.auditar("Equivalencias","Eliminar",""+nombre.value);
             datos.removeItemAt(datos.getSelectedIndex());
             llenar(new Equivalencias(0));
                 Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);

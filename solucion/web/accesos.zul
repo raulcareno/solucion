@@ -28,6 +28,7 @@ int w = 0;
         accesos r = (accesos) datos.getRows();
         String resultado = nso.guardar(r.getChildren(),((Global)perfilesCombo.selectedItem.value));
         if(resultado.equals("ok")){
+            permiso.auditar("Accesos","Guardar",""+perfilesCombo.selectedItem.value);
             Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
              filas.addRow((Global)perfilesCombo.selectedItem.value);
          }else{

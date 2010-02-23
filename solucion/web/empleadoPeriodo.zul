@@ -47,7 +47,7 @@ void estado(Boolean estado,Boolean modificar){
                  nuevo.setPeriodo(per);
                  adm.guardar(nuevo);
                 }
-        
+        permiso.auditar("Asignar Periodos","Guardar",""+per.getDescripcion());
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                     guardar.disabled=true;
                     agregar.disabled=false;

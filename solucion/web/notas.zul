@@ -11,6 +11,7 @@ import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
 import sources.*;
+import bean.Permisos;
 import net.sf.jasperreports.engine.JRDataSource;
 
 Administrador adm = new Administrador();
@@ -18,7 +19,7 @@ Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 notas noti = new notas();
 List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
-
+ Permisos permiso = new Permisos();
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 notas no = new notas();
 
@@ -91,6 +92,7 @@ guardar(){
         if(resultado.equals("ok")){
             Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
             doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+            permiso.auditar("Notas Internas","Guardar",""+((Cursos)curs.selectedItem.value)+" "+((MateriaProfesor)mates.selectedItem.value).getMateria());
          }else{
             Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          }

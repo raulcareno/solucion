@@ -141,15 +141,18 @@ void estado(Boolean estado,Boolean modificar){
                   ((Listcell)children.get(2)).label = direccion.value;
                   }catch(Exception e){}
          }else{
+
              adm.guardar(empa);
          }
               Boolean a = true;
             if(a){
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                permiso.auditar("Empleados","Guardar",""+apellidos.value+" "+nombres.value);
                     guardar.disabled=true;
                     agregar.disabled=false;
                     estado(true,false);
                     llenar(new Empleados(0));
+                    
             }else{
                 Messagebox.show("No se pudo almacenar...X", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
             }
@@ -184,6 +187,7 @@ void eliminar(){
         try{
              empa = (Empleados)datos.selectedItem.value;
              adm.eliminarObjeto(Empleados.class, empa.getCodigoemp());
+             permiso.auditar("Empleados","Eliminar",""+apellidos.value+" "+nombres.value);
             datos.removeItemAt(datos.getSelectedIndex());
             llenar(new Empleados(0));
                 Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
