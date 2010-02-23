@@ -16,7 +16,7 @@
 				</row>
 
 				<row>
-					Actividad: <textbox id="tbText" cols="40" value="" />
+					Actividad: <textbox id="tbText" rows="3" cols="37"   value="" />
 				</row>
 				<row>
 					Tipo: <combobox id="cmbType">
