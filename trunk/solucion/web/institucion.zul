@@ -182,7 +182,7 @@ void estado(Boolean estado,Boolean modificar){
             inobjeto.setCodigoinst(adm.getNuevaClave("Institucion","codigoinst"));
              adm.guardar(inobjeto);
          }
-
+                permiso.auditar("Institucion","Guardar",""+denominacion.value+" "+nombre.value);
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                     guardar.disabled=true;
                     agregar.disabled=false;
@@ -233,6 +233,7 @@ void eliminar(){
             datos.removeItemAt(datos.getSelectedIndex());
            
                 Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                permiso.auditar("Institucion","Eliminar",""+denominacion.value+" "+nombre.value);
         }catch(Exception e){
             Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         }

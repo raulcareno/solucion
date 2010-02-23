@@ -32,6 +32,7 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
         pendientes r = (pendientes) datos.getRows();
         String resultado = nso.guardar(r.getChildren());
         if(resultado.equals("ok")){
+           permiso.auditar("Pendientes","Guardar",""+curs.selectedItem.value);
             Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
          }else{
             Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
