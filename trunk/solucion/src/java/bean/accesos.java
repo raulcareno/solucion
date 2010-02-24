@@ -1,25 +1,14 @@
 package bean;
 
-import bsh.EvalError;
-import bsh.Interpreter;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
 
-import org.joda.time.DateMidnight;
-import org.zkoss.zk.ui.Session;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Auxhead;
-import org.zkoss.zul.Auxheader;
 import org.zkoss.zul.Checkbox;
-import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
