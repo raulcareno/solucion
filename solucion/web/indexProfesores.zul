@@ -33,10 +33,11 @@
                 a.invalidate();
             }
             void ingresar(String valor){
-
+                try{
                 Tab newtb= new Tab("Cambio de Clave");
                 newtb.setSelected(true);
                 newtb.setClosable(true);
+                  newtb.setId("cclave");
                 newtb.setImage("/images/candado.gif");
                 newtb.setParent(tbs);
                 Tabpanel newtpl = new Tabpanel();
@@ -45,6 +46,11 @@
                 f.setHeight("100%");
                 newtpl.appendChild(f);
                 newtpl.setParent(tps);
+                  }catch(Exception e){
+
+                                Messagebox.show("VENTANA YA ABIERTA", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                  }
             }
 
             cargando(){

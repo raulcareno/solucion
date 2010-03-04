@@ -3,7 +3,6 @@
 <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <borderlayout onCreate="verificar();cargando();cargando2();"  width="100%" style="float:center"  height="100%">
-
         <zscript>
             import jcinform.persistencia.*;
             import jcinform.procesos.Administrador;
@@ -23,24 +22,25 @@
             a.invalidate();
             }
             void ingresar(String valor){
+            try{
+                        Tab newtb= new Tab("Cambio de Clave");
+                        newtb.setSelected(true);
+                        newtb.setClosable(true);
+                        newtb.setId("cclave");
+                        newtb.setImage("/images/candado.gif");
+                        newtb.setParent(tbs);
 
+                        Tabpanel newtpl = new Tabpanel();
+                        Iframe f = new Iframe(valor);
+                        f.setWidth("100%");
+                        f.setHeight("100%");
+                        newtpl.appendChild(f);
+                        newtpl.setParent(tps);
+                        }catch(Exception e){
 
-            Tab newtb= new Tab("Cambio de Clave");
-            newtb.setSelected(true);
-            newtb.setClosable(true);
-            newtb.setImage("/images/candado.gif");
-            newtb.setParent(tbs);
+                                Messagebox.show("VENTANA YA ABIERTA", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
 
-            Tabpanel newtpl = new Tabpanel();
-            Iframe f = new Iframe(valor);
-            f.setWidth("100%");
-            f.setHeight("100%");
-            newtpl.appendChild(f);
-            newtpl.setParent(tps);
-
-
-
-
+                        }
             }
 
             void cambio(){
@@ -219,7 +219,7 @@
                                 <treeitem id="ss1" open = "true" label="Administración" value="/blanco.zul">
                                     <treechildren>
                                         <treeitem id="Accesos" image="/images/key.png" label="Accesos" value="/accesos.zul"/>
-                                        <treeitem id="Auditoria" image="/images/key.png" label="Auditoria" value="/auditoria.zul"/>
+                                        <treeitem id="Auditoria" image="/images/auditoria.gif" label="Auditoria" value="/auditoria.zul"/>
                                         <treeitem id="Empleados" image="/images/pensum.png" label="Empleados" value="/empleados.zul" />
                                         <treeitem id="EmpleadosPeriodos" image="/images/eperiodo.png" label="Asignar Periodos" value="/empleadoPeriodo.zul" />
                                         <treeitem id="Equivalencias" image="/images/equivalencias.png"  label="Equivalencias" value="/equivalencias.zul" />

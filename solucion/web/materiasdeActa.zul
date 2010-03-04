@@ -1,7 +1,6 @@
 
-<window  title="Acta de Grado [Seleccione un Curso]"  border="normal" >
+<window  title="Acta de Grado"  border="normal" >
     <zscript>
-
 <![CDATA[
   import jcinform.persistencia.Global;
   import bean.EventDAO;
@@ -105,6 +104,7 @@ public  String disponible(){
                   datos.appendChild(li);
          }
 
+                permiso.auditar("Acta de Grado","Guardar",""+materia.value+" ");
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                 guardar.disabled=true;
                 agregar.disabled=false;
@@ -142,6 +142,7 @@ void eliminar(){
         try{
              estudent = (Actagrado)datos.selectedItem.value;
              adm.eliminarObjeto(Actagrado.class, estudent.getCodigo());
+             permiso.auditar("Acta de Grado","Eliminar",""+materia.value+" ");
             datos.removeItemAt(datos.getSelectedIndex());
             llenar(new Actagrado(0));
             combo.value="";
@@ -300,7 +301,7 @@ void materias123(){
                 <listbox id="datos"   
                 onSelect="move((Actagrado)self.selectedItem.value);estado(true,false);eliminar.disabled=false;guardar.disabled=true" width="100%">
                     <listhead>
-                        <listheader label="Materia"   sort="auto"/>
+                        <listheader label="Nombres"   sort="auto"/>
                         <listheader label="Abreviatura"/>
                     </listhead>
                     <listitem forEach="${empleadosEncontrados}" value="${each}">

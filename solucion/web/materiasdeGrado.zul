@@ -156,6 +156,7 @@ public  String disponible(){
                   datos.appendChild(li);
          }
 
+            permiso.auditar("Materias de Grado","Guardar",""+materia.value+" ");
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                 guardar.disabled=true;
                 agregar.disabled=false;
