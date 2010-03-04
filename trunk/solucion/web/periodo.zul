@@ -18,6 +18,13 @@
    
 ]]>
   </zscript>
+   <tabbox width="100%">
+            <tabs>
+                <tab id="registro" label="Crear Periodos" />
+                <tab id="representante" label="Copiar parametros" />
+            </tabs>
+            <tabpanels>
+                <tabpanel>
 
 <groupbox mold="3d" >
        <caption label="Agregar" />
@@ -95,6 +102,9 @@
     </hbox>
 </vbox>
 </groupbox>
+</tabpanel>
+<tabpanel>
+
 <groupbox width="100%"  mold="3d">
 <caption label="Copiar parametros a nuevo periodo" />
 <vbox>
@@ -121,6 +131,9 @@
 </hbox>
 </vbox>
 </groupbox>
+</tabpanel>
+ </tabpanels>
+   </tabbox>
 <zscript>
     <![CDATA[
     AnnotateDataBinder binder = new AnnotateDataBinder(ventana);

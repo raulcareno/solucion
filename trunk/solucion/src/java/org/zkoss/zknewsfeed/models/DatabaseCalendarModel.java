@@ -1,6 +1,5 @@
 package org.zkoss.zknewsfeed.models;
 
-import org.zkoss.calendar.api.CalendarEvent;
 import org.zkoss.calendar.impl.SimpleCalendarModel;
 import org.zkoss.zknewsfeed.data.NewsColors;
 import org.zkoss.zknewsfeed.database.NewsDAO;

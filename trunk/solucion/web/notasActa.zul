@@ -1,6 +1,6 @@
 
 <?page id="main-page"?>
-<window onCreate="notas()"  id="principalGrado">
+<window onCreate="notas()" closable="true" border="normal" title="Registro de notas de grado"  id="principalGrado">
 <zscript>
 <![CDATA[
 import bean.notasActa;
