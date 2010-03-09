@@ -1187,7 +1187,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                     <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                                 </hbox>
                                 <hbox width="100%">
-                                    <listbox mold="paging"  pageSize="17" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                                    <listbox mold="paging"  rows="15"   pageSize="15" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                                         <listhead>
                                             <listheader label="Cod."/>
                                             <listheader label="Nombres"  sort="auto"/>

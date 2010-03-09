@@ -15,7 +15,7 @@
     <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
-<window onLoad="usuario.focus();"  onCreate="usuario.focus();"   id="winLogin" style="background-color:#96A437;position:absolute; top:20%; left:35%;" border="normal" width="460px" sizable="true">
+<window onLoad="usuario.focus();"  onCreate="usuario.focus();"   id="winLogin" style="background-color:#ff5b0b;position:absolute; top:20%; left:35%;" border="normal" width="460px" sizable="true">
 <zscript>
   import jcinform.persistencia.Global;
   import bean.EventDAO;
@@ -200,7 +200,7 @@ void verificarSistema(){
              <row  style="background:white;border:0px" align="center" spans="2">
                  <span>
                 <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)5103 843 - 080 16 22 11 "/>
-                <label style="font-size:10px;color:blue" value ="ver.1.06 act.19/02/2010"/>
+                <label style="font-size:10px;color:blue" value ="ver.1.06 act.08/03/2010"/>
                 </span>
              </row>
               

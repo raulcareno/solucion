@@ -55,7 +55,7 @@ void buscar2(Cursos cur){
         String query = "SELECT mat FROM Matriculas AS mat " +
                 "WHERE  mat.estado =  '"+tipo+"' " +
                 "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
       List hoy = adm.query(query);
       for(Iterator it = hoy.iterator(); it.hasNext();) {
             Matriculas elem = (Matriculas) it.next();
@@ -71,12 +71,12 @@ public JRDataSource certificados(Cursos curso,String tipo){
                     String query = "SELECT mat FROM Matriculas AS mat " +
                             "WHERE  mat.estado in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
                             "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido,mat.estudiante.nombre";
                     if (!curso.getCodigocur().equals(-2)) {
                         query = "Select o from Matriculas as o " +
                                 "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                                 "and o.curso.codigocur = '" + curso.getCodigocur() + "' " +
-                                " and o.estado in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') order by o.curso.secuencia,o.estudiante.apellido";
+                                " and o.estado in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') order by o.curso.secuencia,o.estudiante.apellido,o.estudiante.nombre";
                     }
 
                     List hoy = adm.query(query);
@@ -102,12 +102,12 @@ public JRDataSource pases(Cursos curso,String tipo){
                     String query = "SELECT mat FROM Matriculas AS mat " +
                             "WHERE  mat.estado in ('Recibir Pase') " +
                             "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
                     if (!curso.getCodigocur().equals(-2)) {
                         query = "Select o from Matriculas as o " +
                                 "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                                 "and o.curso.codigocur = '" + curso.getCodigocur() + "' " +
-                                " and o.estado in ('Recibir Pase') order by o.curso.secuencia,o.estudiante.apellido";
+                                " and o.estado in ('Recibir Pase') order by o.curso.secuencia,o.estudiante.apellido,o.estudiante.nombre";
                     }
 
                     List hoy = adm.query(query);
@@ -130,11 +130,11 @@ public JRDataSource transporte(Cursos curso,String tipo){
                         String query = "SELECT mat FROM Matriculas AS mat " +
                                 "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
                                 "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.estudiante.transporte = true  " +
-                                " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                                " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
                         if (!curso.getCodigocur().equals(-2)) {
                             query = "Select o from Matriculas as o " +
                                     "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                                    "and o.curso.codigocur = '" + curso.getCodigocur() + "' and o.estudiante.transporte = true  order by o.curso.secuencia, o.curso.codigocur, o.estudiante.apellido";
+                                    "and o.curso.codigocur = '" + curso.getCodigocur() + "' and o.estudiante.transporte = true  order by o.curso.secuencia, o.curso.codigocur, o.estudiante.apellido,o.estudiante.nombre";
                         }
 
                         List hoy = adm.query(query);
@@ -146,11 +146,11 @@ public JRDataSource transporte(Cursos curso,String tipo){
                         String query = "SELECT mat FROM Matriculas AS mat " +
                                     "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
                                     "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                                    " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                                    " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
                             if (!curso.getCodigocur().equals(-2)) {
                                 query = "Select o from Matriculas as o " +
                                         "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                                        "and o.curso.codigocur = '" + curso.getCodigocur() + "'  order by o.curso.secuencia, o.curso.codigocur, o.estudiante.apellido ";
+                                        "and o.curso.codigocur = '" + curso.getCodigocur() + "'  order by o.curso.secuencia, o.curso.codigocur, o.estudiante.apellido,o.estudiante.nombre ";
                             }
 
                             List hoy = adm.query(query);
@@ -173,7 +173,7 @@ public JRDataSource nuevos(Cursos curso,String tipo){
                     String query = "SELECT mat FROM Matriculas AS mat " +
                             "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
                             "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.nuevo = true  " +
-                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
                     if (!curso.getCodigocur().equals(-2)) {
                         query = "Select o from Matriculas as o " +
                                 "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
@@ -199,7 +199,7 @@ public JRDataSource internos(Cursos curso,String tipo){
                     String query = "SELECT mat FROM Matriculas AS mat " +
                             "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
                             "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.estudiante.adventista = true  " +
-                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido";
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
                     if (!curso.getCodigocur().equals(-2)) {
                         query = "Select o from Matriculas as o " +
                                 "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
