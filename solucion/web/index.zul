@@ -121,10 +121,10 @@
                 <tablelayout width="100%" columns="3">
                     <tablechildren>
                         <panel  border="0" collapsible="true">
-                            <panelchildren  style="background-color:transparent;border:0px">
+                            <panelchildren  style="background-color:transparent;border:0px;position:absolute; left:96%">
                                 <vbox>
                                     <!--image height="60px" id="foto0" src="images/acerca.gif"/-->
-                                    <image height="45px" id="foto0" />
+                                    <image height="45px"  id="foto0" />
                                 </vbox>
                             </panelchildren>
                         </panel>
@@ -196,7 +196,7 @@
                                         <treeitem  id="Cursos" label="Cursos" image="/images/cursos.png" value="/cursos.zul"/>
                                         <treeitem id="Matricular" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" />
                                         <treeitem id="Pendientes" label="Pendientes" image="/images/dinero.gif"   value="/pendientes.zul" />
-                                        <treeitem id="Reportes_Estudiantes" label="Reportes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
+                                        <treeitem id="Reportes_Estudiantes" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
                                         <!--treeitem id="Rubros" label="Asignar Rubros"  image="/images/resultados.png" value="/rubros.zul" /-->
 
                                     </treechildren>
@@ -211,7 +211,7 @@
                                         <treeitem id="Registro_de_Notas" label="Notas"  image="/images/notas.png" value="/notas.zul" />
                                         <treeitem id="Registro_de_Disciplina" image="/images/notas.png"  label="Disciplinas" value="/disciplina.zul" />
                                         <treeitem id="Registro_de_Faltas" image="/images/notas.png"  label="Faltas" value="/faltas.zul" />
-                                        <treeitem id="Reportes_Notas" label="Reportes"  image="/images/resultados.png" value="/reporteNotas.zul" />
+                                        <treeitem id="Reportes_Notas" label="Reportes Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
 
                                     </treechildren>
 
@@ -276,7 +276,7 @@
             <!--include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/-->
             <tabbox context="derecho" id="mytab" width="100%" height="100%">
                 <tabs id="tbs">
-                    <tab label="Inicio" image="/images/fondo.png"  id="blanco" Closable="true" />
+                    <tab label="Inicio" image="/images/inicio.png"  id="blanco" Closable="true" />
                 </tabs>
                 <tabpanels id="tps">
                     <tabpanel><iframe scrolling="false" width="100%" height="100%" src="/blanco.zul" /></tabpanel>
@@ -313,7 +313,7 @@
         Tab newtb= new Tab("Inicio");
         newtb.setSelected(true);
         newtb.setClosable(true);
-        newtb.setImage("/images/fondo.png");
+        newtb.setImage("/images/inicio.png");
          newtb.setId("blanco");
         newtb.setParent(tbs);
        

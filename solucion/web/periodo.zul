@@ -46,8 +46,8 @@
      <row>
         <span style="float:right"> Institucion(*):</span>
  
-     <listbox id="listadoi"  width="320px" mold="select">
-                 <listitem  selected="true" forEach="${instObjetos}" value="${each}"  label="${each.denominacion} ${each.nombre}" />
+     <listbox id="listadoi"  width="420px" mold="select">
+                 <listitem  selected="true" forEach="${instObjetos}" value="${each}"  label="${each.denominacion} ${each.nombre} - ${each.tipo}" />
        </listbox>
  </row>
  <row>
@@ -150,7 +150,7 @@ void estado(Boolean estado,Boolean modificar){
             inobjeto = (Periodo)datos.selectedItem.value;
         }
     codigo.disabled = estado;
-    descripcion.disabled = estado;
+    descripcion.readonly = estado;
 }
 
 
@@ -208,7 +208,7 @@ void estado(Boolean estado,Boolean modificar){
      
                 Listitem item = new Listitem();
                 item.setValue(((Periodo)datos.selectedItem.value).getInstitucion());
-                item.appendChild(new Listcell(((Periodo)datos.selectedItem.value).getInstitucion().getDenominacion()+""));
+                item.appendChild(new Listcell(((Periodo)datos.selectedItem.value).getInstitucion().getDenominacion()+" "+((Periodo)datos.selectedItem.value).getInstitucion().getNombre()+" - "+((Periodo)datos.selectedItem.value).getInstitucion().getTipo()+" "));
                 listadoi.appendChild(item);
                 listadoi.setSelectedItem(item);
 
