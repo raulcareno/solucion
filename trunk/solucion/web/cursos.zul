@@ -224,7 +224,7 @@ void cargarPar(Global g){
         ]]>
 
   </zscript>
-  <hbox>
+
 <groupbox mold="3d" >
        <caption label="Agregar" />
 
@@ -300,9 +300,7 @@ void cargarPar(Global g){
     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
 </hbox>
 </vbox>
-
-			</vbox>
-
+</vbox>
  </groupbox>
 <groupbox width="100%" mold="3d" >
     <caption label="Busquedas" />
@@ -313,17 +311,14 @@ void cargarPar(Global g){
 			<listhead>
                                 <listheader label="Cod."/>
                                 <listheader label="Nombres"/>
-
 			</listhead>
 			<listitem  forEach="${allEvents}" value="${each}">
                            <listcell label="${each.codigocur}" />
                            <listcell label="${each.especialidad}" />
             </listitem>
 		</listbox>
-
-
     </hbox>
 </vbox>
 </groupbox>
-</hbox>
+ 
 </window>
