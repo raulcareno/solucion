@@ -244,7 +244,7 @@
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="2" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font fontName="Times New Roman" pdfFontName="Times-Roman" isItalic="false" pdfEncoding ="Cp1252"/>
+						<font fontName="Times New Roman" pdfFontName="Courier-BoldOblique" isItalic="false" pdfEncoding ="Cp1252"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{usuario}]]></textFieldExpression>
 				</textField>
@@ -257,7 +257,7 @@
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="2" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font fontName="Times New Roman" pdfFontName="Times-Roman" isItalic="false" pdfEncoding ="Cp1252"/>
+						<font fontName="Times New Roman" pdfFontName="Courier-BoldOblique" isItalic="false" pdfEncoding ="Cp1252"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{clave}]]></textFieldExpression>
 				</textField>
