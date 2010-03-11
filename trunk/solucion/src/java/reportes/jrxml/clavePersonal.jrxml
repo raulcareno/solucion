@@ -257,7 +257,7 @@
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font fontName="Arial"/>
+						<font fontName="Arial" pdfFontName="Times-Roman"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{usuario}]]></textFieldExpression>
 				</textField>
@@ -270,7 +270,7 @@
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font fontName="Arial"/>
+						<font fontName="Arial" pdfFontName="Times-Roman"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{clave}]]></textFieldExpression>
 				</textField>
