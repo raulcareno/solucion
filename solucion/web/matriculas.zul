@@ -92,7 +92,7 @@ import org.zkoss.zul.Listbox;
         }
     }
         String user ="";
-        String caracter="1234567890";
+        String caracter="JCINFORM";
         caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
         int numero_caracteres=10;
         int total=caracter.length();
@@ -101,7 +101,7 @@ import org.zkoss.zul.Listbox;
             clave2+=caracter.charAt(((Double)(total*Math.random())).intValue());
         }
 
-            clave.value = clave2;
+            clave.value = clave2.toUpperCase();
              caracter=""+apellidos.value.trim().replace(" ","");
             caracter+="JC"+nombres.value.trim().replace(" ","");
             numero_caracteres=6;
@@ -110,7 +110,7 @@ import org.zkoss.zul.Listbox;
             for(int a=0;a<numero_caracteres;a++){
                 user+=caracter.charAt(((Double)(total*Math.random())).intValue());
             }
-            usuario.value = user;
+            usuario.value = user.toUpperCase();
             }catch(Exception e){
             System.out.println("ERROR EN GENERAR CLAVE"+e);
             }
