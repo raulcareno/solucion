@@ -54,7 +54,7 @@ import org.zkoss.zul.Listbox;
  Session ses = Sessions.getCurrent();
 
  List periodosListadod = adm.query("Select o from Periodo as o order by o.descripcion");
- 
+
  //Periodo periodo = (Periodo) ses.getAttribute("periodo");
  Permisos permiso = new Permisos();
    // List cursos = adm.query("Select o from Cursos as o "
@@ -134,7 +134,7 @@ import org.zkoss.zul.Listbox;
             }
     }
 
-void llenar(Estudiantes estudent){
+void llenar(Inscripciones estudent){
     codigo.value = estudent.getCodigoest();
     cedula.value = estudent.getCedula();
     nombres.value = estudent.getNombre();
@@ -146,53 +146,12 @@ void llenar(Estudiantes estudent){
     mail.value = estudent.getMail();
     usuario.value = estudent.getUsuario();
     nobus.value = estudent.getNobus();
-
-
     clave.value = permiso.decriptar(estudent.getClave());
-          if(estudent.getEstado()!=null){
-                estadoe.checked= estudent.getEstado();
-            }
-            if(estudent.getAdventista()!=null){
 
-                adventista.checked = estudent.getAdventista();
-            }
-            if(estudent.getTransporte()!=null){
-                transporte.checked = estudent.getTransporte();
-            }
+ }
 
 
-
-
-        if(estudent.getRepresentante()==null){
-            Representante re = new Representante(0);
-            re.setTipoidentificacion("C");
-            estudent.setRepresentante(re);
-        }
-        llenarRepresentante(estudent.getRepresentante());
-
-List matricula = adm.query("Select o from Matriculas as o where o.estudiante.codigoest = '"+estudent.getCodigoest()+"' "
-+ " and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  ");
-    if(matricula.size()>0)
-    {
-        llenarMatricula(matricula.get(0));
-    }else{
-        llenarMatricula(new Matriculas(0));
-        numero.value = 0;
-        //Messagebox.show("No se encuentra Inscrito ni Matriculado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-    }
-}
-
-
-void estado(Boolean estado,Boolean modificar){
-        if(modificar){
-            estudent = (Estudiantes)datos.selectedItem.value;
-        }
-  
-
-   limpiar.disabled = estado;
-   representantec.disabled = estado;
-   codigo.readonly = estado;
-    cedula.readonly = estado;
+void estado(Boolean estado){
     nombres.readonly = estado;
     apellidos.readonly = estado;
     direccion.readonly = estado;
@@ -201,38 +160,24 @@ void estado(Boolean estado,Boolean modificar){
     mail.readonly = estado;
     nacido.readonly = estado;
     tratamiento.readonly = estado;
-    usuario.readonly = estado;
-    clave.readonly = estado;
     beca.readonly = estado;
     otros.readonly = estado;
     tipo.readonly= estado;
-    estadoe.disabled= estado;
-    perf.readonly = estado;
-    bd.readonly = estado;
+    institucion.readonly= estado;
 
- 
-
-    tipofac.disabled = estado;
-    cedulafac.readonly = estado;
-    nombresfac.readonly = estado;
-    direccionfac.readonly = estado;
-    telefonofac.readonly = estado;
- 
 }
 
 
  void guardar(){
  try{
-             if(nombres.value=="" || apellidos.value =="" || direccion.value=="" || nacido.value=="" ){
-                    Messagebox.show("Ingrese los datos del estudiante que están con (*)...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-                    return;
-            }
-          
 
-   
+ if(cpaingresado.getValue() != cpa.value){
+        Messagebox.show("ERROR AL VALIDAR TEXTO DE LA IMAGEN ...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        return;
+ }
+
 
  //GUARDO EL ESTUDIANTE
-        estudent.setRepresentante(representante0);
         estudent.setCodigoest(codigo.value);
         estudent.setCedula(""+cedula.value);
         estudent.setNombre(nombres.value);
@@ -241,47 +186,28 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setTelefono(telefono.value);
         estudent.setMail(mail.value);
         estudent.setFechanacimiento(nacido.value);
-        estudent.setEstado(estadoe.checked);
-        estudent.setAdventista(adventista.checked);
-        estudent.setTransporte(transporte.checked);
-        estudent.setNobus(nobus.value);
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
         estudent.setGenero(genero.selectedItem.value);
-        estudent.setPendientes(false);
+
 
         if((!estudent.getCodigoest().equals(0))){
              adm.actualizar(estudent);
-             try{
-                List children = datos.selectedItem.children;
-                  ((Listcell)children.get(0)).label = cedula.value;
-                  ((Listcell)children.get(1)).label = apellidos.value + " " + nombres.value;
-                  ((Listcell)children.get(2)).label = direccion.value;
-                  }catch(Exception e){}
          }else{
             estudent.setCodigoest(adm.getNuevaClave("Estudiantes","codigoest"));
             adm.guardar(estudent);
-            estuNuevo = true;
          }
 
- 
+
 
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         guardar.disabled=true;
         agregar.disabled=false;
         estado(true,false);
-        //representante0.setTipoidentificacion("CF");
-        acta.disabled = false;
-        certificado.disabled = false;
-        certificado2.disabled = false;
+
         claveprint.disabled = false;
-        //llenar(new Estudiantes(0));
-            combo.value="";
-            permiso.auditar("Matriculas","Guardar",""+matricula.getCodigomat()+" "+matricula.getEstudiante().getApellido());
-        //aqui trabajo la parte de pensiones
 
 
- 
 
         }catch(Exception e){
                 alert("Error:"+e); System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
@@ -309,7 +235,7 @@ void estado(Boolean estado,Boolean modificar){
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
 }
- 
+
 void modificar(){
     if(verificar("Modificar")){
        guardar.disabled=false;
@@ -318,29 +244,52 @@ void modificar(){
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
 }
- 
+
 
 
   void verificarCedula(String valor){
       if(valor.length()>9){
-            List empleados = adm.query("Select o from Estudiantes as o where o.cedula = '"+valor+"' ");
+            List empleados = adm.query("Select o from Inscripciones as o where o.cedula = '"+valor+"' ");
             if(empleados.size()>0){
                 Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-
+                Inscripciones inscrip = new Inscripciones();
                 for(Iterator it = empleados.iterator(); it.hasNext();) {
-                      Estudiantes object = (Estudiantes)it.next();
-                        estudent = object;
+                      Inscripciones object = (Inscripciones)it.next();
+                        inscrip = object;
+                        break;
                  }
-            llenar(estudent);
-
+                llenar(inscrip);
+                estado(true);
             }else{
-                estudent = new Estudiantes(0);
+
+                estado(false);
+                cedula.readonly = true;
+
             }
 
         }
     }
 
+void buscar2(Periodo cur){
+        List empleadosEncontrados = adm.query("Select o from Cursos as o where o.periodo.codigoper  = '"+cur.codigoper+"' order by o.secuencia");
+        //bd2.getItems().clear();
+        curso.getChildren().clear();
+        Cursos se = new Cursos();
+        Global g = new Global(); g.setDescripcion("");
+        se.setParalelo(g);
+        se.setEspecialidad(g);
+        se.setDescripcion("[Seleccione]");
+          empleadosEncontrados.add(0,se);
 
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Cursos estudent = (Cursos) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent+""));
+                        curso.appendChild(item);
+             }
+
+    }
   void buscar(String p){
         List empleadosEncontrados = adm.query("Select o.estudiante from Matriculas as o " +
         " where o.estudiante.apellido like '%"+p+"%' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'   order by o.estudiante.apellido");
@@ -439,6 +388,30 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
   ]]>
         </zscript>
+              <window width="98%" height="99%" style="position:absolute;left:1%;background-color:#FFCC99"  id="previo" mode="overlapped" border="normale" title="PREVIO" closable="true">
+
+                                <grid>
+                                    <rows>
+                                        <row  style="background:#FFCC99;border:0px" > </row>
+                                        <row  style="background:#FFCC99;border:0px" >
+                                            REQUISITOS PREVIOS PARA PROCEDER A LA INSCRIPCIÓN:
+                                            DEBE POSEER LA SIGUIENTE INFORMACIÓN:
+                                        </row>
+                                        <row  style="background:#FFCC99;border:0px;color:yellow" >
+                                            * Cedula de identidad del estudiante(NO del representante y otra persona)
+                                        </row>
+                                        <row  style="background:#FFCC99;border:0px" >
+                                            * Un Correo electrónico en cualquier servidor de correo que desee ej. hotmail,yahoo,gmail, etc.
+                                        </row>
+                                        <row  style="background:#FFCC99;border:0px" > </row>
+                                        <row  style="background:#FFCC99;border:0px" >
+                                            <button label="CERRAR" onClick="previo.visible = false"/>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </window>
+
+
         <tabbox width="100%">
             <tabs>
                 <tab id="registro" label="Datos del Estudiante" />
@@ -448,7 +421,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <tabpanel>
                     <panel id="panel"   width="100%" height="98%"  >
                         <panelchildren>
-
+                      
 
 
                             <grid>
@@ -457,30 +430,25 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                     <row  style="background:transparent;border:0px" >
                                         <span style="float:right"> Periodo a Inscribir:</span>
                                         <span>
-                                                   <listbox id="periodosListado" mold="select" >
-                                                        <listitem  label="[Seleccione]" value="-1"/>
-                                                        <listitem forEach="${periodosListadod}" value="${each}">
-                                                            <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
-                                                        </listitem>
-                                                    </listbox>
-                                              
+                                            <listbox id="periodosListado" mold="select"   onSelect="buscar2(((Periodo)self.selectedItem.value)); self.disabled=true" >
+                                                <listitem  label="[Seleccione]" value="-1"/>
+                                                <listitem forEach="${periodosListadod}" value="${each}">
+                                                    <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
+                                                </listitem>
+                                            </listbox>
+
                                         </span>
                                     </row>
-                                         <row  style="background:transparent;border:0px" >
+                                    <row  style="background:transparent;border:0px" >
                                         <span style="float:right">    <label value="Curso(*):" id="t10"/></span>
 
-                                        <bandbox  width="320px" readonly="false"  id="bd1">
-                                            <bandpopup>
-                                                <vbox>
-                                                    <listbox id="curso" width="460px"
-                                                             onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
-                                                        <listitem selected="true" forEach="${cursos}" value="${each}">
-                                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-                                                        </listitem>
-                                                    </listbox>
-                                                </vbox>
-                                            </bandpopup>
-                                        </bandbox>
+
+                                        <listbox mold="select" onSelect="cedula.readonly =false;self.disabled=true"  id="curso" width="460px">
+                                            <listitem selected="true" forEach="${cursos}" value="${each}">
+                                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                            </listitem>
+                                        </listbox>
+
                                     </row>
                                     <row  style="background:transparent;border:0px" >
                                         <span style="float:right">
@@ -488,80 +456,81 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                         </span>
 
                                         <span>
-                                            <intbox  visible="false" maxlength="14" cols="5"  disabled="true"  readonly="false" id="codigo"  />
+                                            <intbox  visible="false" maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
 
-                                            <textbox maxlength="10" cols="13" onFocus="changeStyle(t1)"  constraint="no empty: Ingrese su número de cédula para poder proceder a la iscripción, no podra completar su inscripcion si no ingresa este campo"   onBlur="changeStyle(t1) " onChange="verificarCedula(self.value)" readonly="false" id="cedula"  />
+                                            <textbox maxlength="10" cols="13" onFocus="changeStyle(t1)"  constraint="no empty: Ingrese su número de cédula para poder proceder a la iscripción, no podra completar su inscripcion si no ingresa este campo"   onBlur="changeStyle(t1) " onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
                                         </span>
                                     </row>
                                     <row  style="background:transparent;border:0px" >
                                         <span style="float:right">
                                             <label value="Nombres(*):" id="t2"/>
                                         </span>
-                                        <textbox id="nombres" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="40" readonly="false"   />
-                                    </row>
-
-                                    <row  style="background:transparent;border:0px" >
-
-                                        <span style="float:right">    <label value="Apellidos(*):" id="t3"/></span>
-                                        <textbox id="apellidos"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3);nombres.getValue(); self.getValue();generarClave(false);"  maxlength="60" cols="40" readonly="false"  />
+                                        <span>
+                                            <textbox id="nombres" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2);apellidos.getValue(); self.getValue();generarClave(false); self.value = nombres.getValue().toUpperCase()"   maxlength="60" cols="20" readonly="true"   />
+                                            <label value="Apellidos(*):" id="t3"/>
+                                            <textbox id="apellidos"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3);nombres.getValue(); self.getValue();generarClave(false); self.value = apellidos.getValue().toUpperCase()"  maxlength="60" cols="20" readonly="true"  />
+                                        </span>
                                     </row>
                                     <row  style="background:transparent;border:0px" >
 
                                         <span style="float:right">    <label value="Dirección(*):" id="t4"/></span>
-                                        <textbox id="direccion" onFocus="changeStyle(t4)" onBlur="changeStyle(t4) "  constraint="no empty: Ingrese una dirección, no podra completar su inscripcion si no ingresa este campo"  maxlength="100" cols="40"  readonly="false"    />
+                                        <textbox id="direccion" onFocus="changeStyle(t4)" onBlur="changeStyle(t4) "  constraint="no empty: Ingrese una dirección, no podra completar su inscripcion si no ingresa este campo"  maxlength="100" cols="52"  readonly="true"    />
                                     </row>
 
                                     <row  style="background:transparent;border:0px" >
 
                                         <span style="float:right">    <label value="Email(*):" id="t5"/></span>
-                                        <span><textbox id="mail"  onFocus="changeStyle(t5)"  onBlur="changeStyle(t5) " constraint="/.+@.+\.[a-z]+/: Ingrese un email valido, necesario para confirmar su inscripcion"  maxlength="100" cols="30"  readonly="false"    />
+                                        <span><textbox id="mail"  onFocus="changeStyle(t5)"  onBlur="changeStyle(t5) " constraint="/.+@.+\.[a-z]+/: Ingrese un email valido, necesario para confirmar su inscripcion"  maxlength="100" cols="30"  readonly="true"    />
                                             <label value="Teléfono" id="t55"/>
-                                            <textbox  onFocus="changeStyle(t55)"   onBlur="changeStyle(t55) " id="telefono" maxlength="50" cols="13"  readonly="false"  />
+                                            <textbox  onFocus="changeStyle(t55)"   onBlur="changeStyle(t55) " id="telefono" maxlength="50" cols="13"  readonly="true"  />
                                         </span>
                                     </row>
                                     <row  style="background:transparent;border:0px" >
 
                                         <span style="float:right">    <label value="Género(*):" id="t6"/></span>
-                                        <combobox width="60px" id="genero"  onFocus="changeStyle(t6)"  onBlur="changeStyle(t6) " constraint="no empty: Seleccione un Género, no podra completar su inscripcion si no ingresa este campo"    readonly="false">
-                                            <comboitem value="Masculino" label="Masculino"/>
-                                            <comboitem  value="Femenino" label="Femenino"/>
-                                        </combobox>
-                                    </row>
-                                    <row  style="background:transparent;border:0px" >
-                                        <span style="float:right">    <label value="Fecha Nacimiento(*):" id="t7"/></span>
-                                        <datebox id="nacido" onFocus="changeStyle(t7)" onBlur="changeStyle(t7) "  constraint="no empty: Seleccione una fecha, no podra completar su inscripcion si no ingresa este campo"    readonly="false"  />
+                                        <span>
+                                            <combobox width="60px" id="genero"  onFocus="changeStyle(t6)"   onBlur="changeStyle(t6) " constraint="no empty: Seleccione un Género, no podra completar su inscripcion si no ingresa este campo"    readonly="true">
+                                                <comboitem value="Masculino" label="Masculino"/>
+                                                <comboitem  value="Femenino" label="Femenino"/>
+                                            </combobox>
+
+                                            <label value="Fecha Nacimiento(*):" id="t7"/>
+                                            <datebox id="nacido" onFocus="changeStyle(t7)" onBlur="changeStyle(t7) "  constraint="no empty: Seleccione una fecha, no podra completar su inscripcion si no ingresa este campo"    readonly="true"  />
+                                        </span>
                                     </row>
 
                                     <row  style="background:transparent;border:0px" >
                                         <span style="float:right">    <label value="Usuario:" id="t8"/></span>
                                         <span>
                                             <textbox id="usuario"   maxlength="30" cols="12" readonly="true"  />
+                                            <span>    <label value="Clave:" id="t9"/></span>
+                                            <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
                                             <button label="Generar" onClick="generarClave(true);"/>
                                         </span>
                                     </row>
-                                    <row  style="background:transparent;border:0px" >
-                                        <span style="float:right">    <label value="Clave:" id="t9"/></span>
-                                        <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
-                                    </row>
-                               
+
                                     <row  style="background:transparent;border:0px" >
                                         <span style="float:right">    <label value="Instituto Anterior:" id="t11"/></span>
-                                        <textbox id="institucion"  onBlur="changeStyle(t11) " onFocus="changeStyle(t11)" readonly="false"  maxlength="30" cols="20"/>
+                                        <textbox id="institucion"  onBlur="changeStyle(t11) " onFocus="changeStyle(t11)" readonly="true"  maxlength="30" cols="20"/>
                                     </row>
-                                    <row>
+                                    <row  style="background:transparent;border:0px">
 
-                                        <span style="float:right">    <label value="Copie lo que ve en la imagen(*):" id="t12"/></span>
-                                        <span><textbox  onFocus="changeStyle(t12)"  onBlur="changeStyle(t12) "  value="" constraint="no empty: Ingrese este campo con lo que se muestra en la imagen"  width="150px"  onChange="cpa.value = self.value"/>
-                                            SOLO MAYUSCULAS
+                                        <span style="float:right">    <label value="Introduce el código(*):" id="t12"/></span>
+                                        <span><textbox id="cpaingresado"  onFocus="changeStyle(t12)"  onBlur="changeStyle(t12) "  value="" constraint="no empty: Ingrese este campo con lo que se muestra en la imagen"  width="150px"  onChange="cpa.value = self.value"/>
+
                                         </span>
                                     </row>
-                                    <row>
-                                        <span>
+                                    <row  style="background:transparent;border:0px">
+                                        <span style="float:right">CODIGO:
                                         </span>
                                         <span>
 
-                                            <captcha id="cpa" style="bgColor:white" exclude="0123456789abcdefghijklmnoñpqrstuvwxyz"   noise="false" length="5" width="200px" height="50px"/>
-                                        <button label="Otra imagen" onClick="cpa.randomValue();" /></span>
+                                            <captcha id="cpa" style="bgColor:white" exclude="021lABCDEFGHIJKLMNÑOPQRSTUVWXYZ"   noise="false" length="5" width="200px" height="50px"/>
+                                        <button label="Otra Código" onClick="cpa.randomValue();" /></span>
+                                    </row>
+                                    <row>
+                                        <span></span>
+                                        <button image="/images/guardar.gif" id="guardar" label="INSCRIBIR" width="190px"  height="40px"  onClick="guardar();"/>
                                     </row>
 
 
@@ -592,13 +561,6 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             </tabpanels>
         </tabbox>
 
-        <vbox>
-            <hbox>
-                <button image="/images/guardar.gif" id="guardar" label="Guardar"  onClick="guardar();"/>
-                <button  image="/images/imprimir.gif" id="acta"  label="Imprimir"   onClick='showReport("AM")'/>
-                <button  image="/images/imprimir.gif" id="claveprint"  label="Clave"  onClick='showReport("CL")' />
-            </hbox>
-        </vbox>
     </window>
 
 
