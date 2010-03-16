@@ -6,7 +6,6 @@
         </session-timeout>
     </session-config>
     <display-name>JCINFORM Administrador Educativo</display-name>
-
     <!-- /// -->
     <!-- DSP -->
     <servlet>
@@ -19,7 +18,6 @@
         <url-pattern>*.dsp</url-pattern>
     </servlet-mapping>
     <!-- /// -->
-
     <!-- //// -->
     <!-- ZK -->
     <listener>
@@ -62,89 +60,80 @@
         <url-pattern>/zkau/*</url-pattern>
     </servlet-mapping>
     <!-- /ESTO ANADI PARA FCKEDITOR/// -->
-
     <servlet>
-     <servlet-name>Connector</servlet-name>
-     <servlet-class>
+        <servlet-name>Connector</servlet-name>
+        <servlet-class>
           org.zkforge.fckez.connector.ConnectorServlet
      </servlet-class>
-     <init-param>
-          <param-name>baseDir</param-name>
-          <param-value>/UserFiles/</param-value>
-     </init-param>
-     <init-param>
-          <param-name>debug</param-name>
-          <param-value>false</param-value>
-     </init-param>
-     <load-on-startup>2</load-on-startup>
- </servlet>
-
- <servlet>
-     <servlet-name>SimpleUploader</servlet-name>
-     <servlet-class>
+        <init-param>
+            <param-name>baseDir</param-name>
+            <param-value>/UserFiles/</param-value>
+        </init-param>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>SimpleUploader</servlet-name>
+        <servlet-class>
           org.zkforge.fckez.uploader.SimpleUploaderServlet
      </servlet-class>
-     <init-param>
-          <param-name>baseDir</param-name>
-          <param-value>/UserFiles/</param-value>
-     </init-param>
-     <init-param>
-          <param-name>debug</param-name>
-          <param-value>false</param-value>
-     </init-param>
-     <init-param>
-          <param-name>enabled</param-name>
-          <param-value>true</param-value>
-     </init-param>
-     <init-param>
-          <param-name>AllowedExtensionsFile</param-name>
-          <param-value/>
-     </init-param>
-     <init-param>
-          <param-name>DeniedExtensionsFile</param-name>
-          <param-value>
+        <init-param>
+            <param-name>baseDir</param-name>
+            <param-value>/UserFiles/</param-value>
+        </init-param>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <init-param>
+            <param-name>enabled</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>AllowedExtensionsFile</param-name>
+            <param-value/>
+        </init-param>
+        <init-param>
+            <param-name>DeniedExtensionsFile</param-name>
+            <param-value>
  php|php3|php5|phtml|asp|aspx|ascx|jsp|cfm|cfc|pl|bat|exe|dll|reg|cgi
           </param-value>
-     </init-param>
-     <init-param>
-          <param-name>AllowedExtensionsImage</param-name>
-          <param-value>jpg|gif|jpeg|png|bmp</param-value>
-     </init-param>
-     <init-param>
-          <param-name>DeniedExtensionsImage</param-name>
-          <param-value/>
-     </init-param>
-     <init-param>
-          <param-name>AllowedExtensionsFlash</param-name>
-          <param-value>swf|fla</param-value>
-     </init-param>
-     <init-param>
-          <param-name>DeniedExtensionsFlash</param-name>
-          <param-value/>
-     </init-param>
-     <load-on-startup>1</load-on-startup>
- </servlet>
-
- <servlet-mapping>
-     <servlet-name>Connector</servlet-name>
-     <url-pattern>
+        </init-param>
+        <init-param>
+            <param-name>AllowedExtensionsImage</param-name>
+            <param-value>jpg|gif|jpeg|png|bmp</param-value>
+        </init-param>
+        <init-param>
+            <param-name>DeniedExtensionsImage</param-name>
+            <param-value/>
+        </init-param>
+        <init-param>
+            <param-name>AllowedExtensionsFlash</param-name>
+            <param-value>swf|fla</param-value>
+        </init-param>
+        <init-param>
+            <param-name>DeniedExtensionsFlash</param-name>
+            <param-value/>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Connector</servlet-name>
+        <url-pattern>
  <!--/zkau/web/js/ext/FCKeditor/editor/filemanager/browser/default/connectors/jsp/connector -->
-/zkau/web/js/ext/FCKeditor/editor/filemanager/connectors/* 
+/zkau/web/js/ext/FCKeditor/editor/filemanager/connectors/*
      </url-pattern>
- </servlet-mapping>
- <servlet-mapping>
-     <servlet-name>SimpleUploader</servlet-name>
-     <url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SimpleUploader</servlet-name>
+        <url-pattern>
  /zkau/web/js/ext/FCKeditor/editor/filemanager/upload/simpleuploader
      </url-pattern>
- </servlet-mapping>
-
-
-
+    </servlet-mapping>
     <!-- FIN DE EL FCKEDITOR -->
-
-
-
     <mime-mapping>
         <extension>doc</extension>
         <mime-type>application/vnd.ms-word</mime-type>
@@ -213,7 +202,6 @@
         <extension>zul</extension>
         <mime-type>text/html</mime-type>
     </mime-mapping>
-    
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
