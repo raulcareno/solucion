@@ -48,7 +48,7 @@ import org.zkoss.zul.Listbox;
 
     Administrador adm = new Administrador();
     List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
-    static Estudiantes estudent = new Estudiantes();
+    static Inscripciones estudent = new Inscripciones();
     static Representante representante0 = new Representante();
     static Matriculas matricula = new Matriculas();
  Session ses = Sessions.getCurrent();
@@ -171,13 +171,18 @@ void estado(Boolean estado){
  void guardar(){
  try{
 
- if(cpaingresado.getValue() != cpa.value){
+ 
+String cpai = cpaingresado.value;
+String cpa = cpa.getValue();
+ if(!cpai.equals(cpa)){
         Messagebox.show("ERROR AL VALIDAR TEXTO DE LA IMAGEN ...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         return;
  }
 
 
  //GUARDO EL ESTUDIANTE
+        nombres.value = nombres.value.toUpperCase();
+        apellidos.value = apellidos.value.toUpperCase();
         estudent.setCodigoest(codigo.value);
         estudent.setCedula(""+cedula.value);
         estudent.setNombre(nombres.value);
@@ -191,19 +196,19 @@ void estado(Boolean estado){
         estudent.setGenero(genero.selectedItem.value);
 
 
-        if((!estudent.getCodigoest().equals(0))){
-             adm.actualizar(estudent);
-         }else{
-            estudent.setCodigoest(adm.getNuevaClave("Estudiantes","codigoest"));
+//        if((!estudent.getCodigoest().equals(0))){
+  //           adm.actualizar(estudent);
+    //     }else{
+            estudent.setCodigoest(adm.getNuevaClave("Inscripciones","codigoest"));
             adm.guardar(estudent);
-         }
+      //   }
 
 
 
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         guardar.disabled=true;
         agregar.disabled=false;
-        estado(true,false);
+        estado(true);
 
         claveprint.disabled = false;
 
@@ -260,10 +265,12 @@ void modificar(){
                  }
                 llenar(inscrip);
                 estado(true);
+                guardar.disabled=true;
             }else{
 
                 estado(false);
                 cedula.readonly = true;
+                guardar.disabled=false;
 
             }
 
@@ -398,7 +405,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                             DEBE POSEER LA SIGUIENTE INFORMACIÓN:
                                         </row>
                                         <row  style="background:#FFCC99;border:0px;color:yellow" >
-                                            * Cedula de identidad del estudiante(NO del representante y otra persona)
+                                            * Cedula de identidad del estudiante(NO del representante y NI otra persona)
                                         </row>
                                         <row  style="background:#FFCC99;border:0px" >
                                             * Un Correo electrónico en cualquier servidor de correo que desee ej. hotmail,yahoo,gmail, etc.
@@ -466,9 +473,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                             <label value="Nombres(*):" id="t2"/>
                                         </span>
                                         <span>
-                                            <textbox id="nombres" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2);apellidos.getValue(); self.getValue();generarClave(false); self.value = nombres.getValue().toUpperCase()"   maxlength="60" cols="20" readonly="true"   />
+                                            <textbox id="nombres" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="20" readonly="true"   />
                                             <label value="Apellidos(*):" id="t3"/>
-                                            <textbox id="apellidos"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3);nombres.getValue(); self.getValue();generarClave(false); self.value = apellidos.getValue().toUpperCase()"  maxlength="60" cols="20" readonly="true"  />
+                                            <textbox id="apellidos"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3);nombres.getValue(); self.getValue();generarClave(false); "  maxlength="60" cols="20" readonly="true"  />
                                         </span>
                                     </row>
                                     <row  style="background:transparent;border:0px" >
@@ -516,7 +523,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                     <row  style="background:transparent;border:0px">
 
                                         <span style="float:right">    <label value="Introduce el código(*):" id="t12"/></span>
-                                        <span><textbox id="cpaingresado"  onFocus="changeStyle(t12)"  onBlur="changeStyle(t12) "  value="" constraint="no empty: Ingrese este campo con lo que se muestra en la imagen"  width="150px"  onChange="cpa.value = self.value"/>
+                                        <span><textbox id="cpaingresado" maxlength="5"  onFocus="changeStyle(t12)"  onBlur="changeStyle(t12) " constraint="no empty: Ingrese este campo con lo que se muestra en la imagen"  width="150px"/>
 
                                         </span>
                                     </row>
@@ -524,13 +531,12 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                         <span style="float:right">CODIGO:
                                         </span>
                                         <span>
-
-                                            <captcha id="cpa" style="bgColor:white" exclude="021lABCDEFGHIJKLMNÑOPQRSTUVWXYZ"   noise="false" length="5" width="200px" height="50px"/>
-                                        <button label="Otra Código" onClick="cpa.randomValue();" /></span>
+                                            <captcha id="cpa" style="background-color:white" exclude="021lABCDEFGHIJKLMNÑOPQRSTUVWXYZ" noise="false" length="5" width="125px" height="45px"/>
+                                        <button label="Otro Código" onClick="cpa.randomValue();" /></span>
                                     </row>
                                     <row>
                                         <span></span>
-                                        <button image="/images/guardar.gif" id="guardar" label="INSCRIBIR" width="190px"  height="40px"  onClick="guardar();"/>
+                                        <button image="/images/guardar.gif" id="guardar" disabled="true" label="INSCRIBIR" width="190px"  height="40px"  onClick="guardar();"/>
                                     </row>
 
 
