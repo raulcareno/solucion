@@ -520,6 +520,19 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                         <span style="float:right">    <label value="Instituto Anterior:" id="t11"/></span>
                                         <textbox id="institucion"  onBlur="changeStyle(t11) " onFocus="changeStyle(t11)" readonly="true"  maxlength="30" cols="20"/>
                                     </row>
+                                    <row>
+
+                                    <span style="float:right">    <label value="Aprovechamiento:" id="tA"/></span>
+            						<span>
+                                       <div style="color:blue"> <spinner value="20" cols="2" id="aprovechamiento"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero,min 0 max 20" />
+                                       ¿Fue usted abanderado de su Instituto?: <checkbox id="abanderado" /></div>
+                                        
+                                    </span>
+                                    </row>
+                                    <row>
+                                        <span></span>
+                                        <div style="color:red">Recuerde que la información proporcionada debe ser REAL, en caso de salir favorecido, su información será verificada y en caso de no cumplir con los requisitos se ANULARÁ su inscripción y matrícula </div>
+                                    </row>
                                     <row  style="background:transparent;border:0px">
 
                                         <span style="float:right">    <label value="Introduce el código(*):" id="t12"/></span>
@@ -536,7 +549,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                     </row>
                                     <row>
                                         <span></span>
-                                        <button image="/images/guardar.gif" id="guardar" disabled="true" label="INSCRIBIR" width="190px"  height="40px"  onClick="guardar();"/>
+                                        <button image="/images/guardar.gif" id="guardar" disabled="true" label="INSCRIBIR" width="190px"  height="40px"  onClick="nombres.getValue();apellidos.getValue();direccion.getValue();mail.getValue();genero.getValue();nacido.getValue();cpaingresado.getValue();aprovechamiento.getValue();guardar();"/>
                                     </row>
 
 
