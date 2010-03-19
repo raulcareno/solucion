@@ -18,7 +18,7 @@ import bsh.EvalError;
   import java.math.BigDecimal;
 static Sistemacalificacion empa = new Sistemacalificacion();
   Session ses = Sessions.getCurrent();
-    Administrador adm = new Administrador();
+     Administrador adm = new Administrador();
 Permisos permiso = new Permisos();
     Periodo per = (Periodo) ses.getAttribute("periodo");
     List trimestres = adm.query("Select o from Trimestres as o where o.periodo  = '"+per.getCodigoper()+"'  order by o.codigotrim  ");
