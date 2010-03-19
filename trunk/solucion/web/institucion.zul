@@ -16,6 +16,12 @@
     Institucion inobjeto = new Institucion();
     Permisos permiso = new Permisos();
     //FUNCIONES
+
+            Session a = Sessions.getCurrent();
+            jcinform.persistencia.Empleados emp = a.getAttribute("user");
+            if(emp==null) Executions.sendRedirect("login.zul");
+
+
 void cargarEscudo(byte[] imageData){
   foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
 }

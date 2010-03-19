@@ -9,6 +9,10 @@
   import jcinform.procesos.Administrador;
   import bean.Permisos;
     Administrador adm = new Administrador();
+    Session a = Sessions.getCurrent();
+            jcinform.persistencia.Empleados emp = a.getAttribute("user");
+            if(emp==null) Executions.sendRedirect("login.zul");
+
     List allEvents = adm.query("Select o from Periodo as o where o.codigoper = 0");
     List instObjetos = adm.query("Select o from Institucion as o ");
     List secciones = adm.query("Select o from Global as o where o.grupo = 'SEC'");
