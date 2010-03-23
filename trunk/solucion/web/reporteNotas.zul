@@ -252,7 +252,8 @@ public JRDataSource profesores(){
                     ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
                     datasource = (ReporteNotasDataSource) arreglo.get(0);
                      parametros = (HashMap) arreglo.get(1);
-                     parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     MateriaProfesor mate = ((MateriaProfesor)materiasCombo.getSelectedItem().getValue());
                     parametros.put("materia", mate.getMateria().getDescripcion());
                      parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
@@ -272,16 +273,19 @@ public JRDataSource profesores(){
             }else if(tipo.equals("CDIS")){
                     ArrayList arreglo = discipli.reporteDisciplina(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     parametros = (HashMap) arreglo.get(1);
-                    parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     datasource = (DisciplinaDataSource) arreglo.get(0);
                     report.setSrc("WEB-INF/reportes/disciplina.jasper");
                     parametros.put("titulo",titulo.value);
             }else if(tipo.equals("CCAL2")){
-                    parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc("WEB-INF/reportes/cuadrocalificaciones2.jasper");
             }else if(tipo.equals("CCAL")){
-                    parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc("WEB-INF/reportes/cuadrocalificaciones.jasper");
 
