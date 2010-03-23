@@ -54,10 +54,10 @@ public class ReporteActaDataSource implements JRDataSource{
         if ("curso".equals(fieldName)){
             valor = nodo.getCurso().toString();
         }else if ("estudiante".equals(fieldName)) {
-            String estado = (nodo.getEstado().substring(0,1).equals("R")?"(R)":(nodo.getEstado().substring(0,1).equals("E")?"(PE)":""));
+            String estado = (nodo.getEstado().equals("Retirado")?"(R)":(nodo.getEstado().equals("Emitir Pase")?"(PE)":""));
             valor = nodo.getEstudiante().getApellido() + " "+ nodo.getEstudiante().getNombre()+" "+estado;
         }else if ("nombres".equals(fieldName)) {
-            String estado = (nodo.getEstado().substring(0,1).equals("R")?"(R)":(nodo.getEstado().substring(0,1).equals("E")?"(PE)":""));
+            String estado = (nodo.getEstado().equals("Retirado")?"(R)":(nodo.getEstado().equals("Emitir Pase")?"(PE)":""));
             valor = nodo.getEstudiante().getApellido() + " "+ nodo.getEstudiante().getNombre()+" "+estado;
         }else if ("edad".equals(fieldName)) {
             Date fecha = nodo.getEstudiante().getFechanacimiento();

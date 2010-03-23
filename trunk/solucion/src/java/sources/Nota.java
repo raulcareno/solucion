@@ -26,6 +26,7 @@ private String profesor;
 
 private String firma1,firma2,firma3;
 private String cargo1,cargo2,cargo3;
+private Integer contador;
 
     public MateriaProfesor getMprofesor() {
         return mprofesor;
@@ -152,6 +153,14 @@ private String cargo1,cargo2,cargo3;
 
     public void setProfesor(String profesor) {
         this.profesor = profesor;
+    }
+
+    public Integer getContador() {
+        return contador;
+    }
+
+    public void setContador(Integer contador) {
+        this.contador = contador;
     }
 
 

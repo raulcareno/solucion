@@ -3,14 +3,9 @@
 <zk xmlns:h="http://www.w3.org/1999/xhtml"
  xmlns="http://www.zkoss.org/2005/zul">
     <zscript >
-        Session a = Sessions.getCurrent();
- void salir(){
-        a.removeAttribute("accesos");
-        a.removeAttribute("user");
-        a.invalidate();
-        Executions.sendRedirect("login.zul");
-        
- }
+       
+        //Executions.sendRedirect("login.zul");
+
     </zscript>
 <window  style="position:absolute; top:20%; left:30%"  
 border="normal">
@@ -31,8 +26,10 @@ border="normal">
      </p>
 		</attribute>
     </html>
-    <toolbarbutton target="_top"  style="color:#346B93;font-weight:bold;"
-    label="&gt;&gt;&gt;&gt;&gt;[INGRESAR] &lt;&lt;&lt;&lt;" onClick="salir()"/>
+    <separator orient="vertical" width="180px"/>
+    <button target="_top" label="INGRESAR"  image="/images/ingreso.gif"  style="font-size:20px;color:#346B93;font-weight:bold;"   href="./login.zul"></button>
+ 
+          
 </window>
 
 </zk>
