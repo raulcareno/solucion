@@ -54,6 +54,8 @@ public class ReporteNotasDataSource implements JRDataSource{
             valor = nodo.getSistema().getAbreviatura();
         }else if ("tipo".equals(fieldName)) {
             valor = nodo.getSistema().getTrimestre().getDescripcion();
+        }else if ("contador".equals(fieldName)) {
+            valor = nodo.getContador();
         }else if ("nota".equals(fieldName)) {
 
             try {
@@ -64,7 +66,9 @@ public class ReporteNotasDataSource implements JRDataSource{
 
         }else
             if ("estudiante".equals(fieldName)) {
-           valor = nodo.getMatricula().getEstudiante().getApellido()+" "+ nodo.getMatricula().getEstudiante().getNombre();
+           //valor = nodo.getMatricula().getEstudiante().getApellido()+" "+ nodo.getMatricula().getEstudiante().getNombre();
+           String estado = (nodo.getMatricula().getEstado().equals("Retirado")?"(R)":(nodo.getMatricula().getEstado().equals("Emitir Pase")?"(PE)":""));
+            valor = nodo.getMatricula().getEstudiante().getApellido() + " "+ nodo.getMatricula().getEstudiante().getNombre()+" "+estado;
         }else    if ("matricula".equals(fieldName)) {
            valor = nodo.getMatricula().getCodigomat();
         }else if ("curso".equals(fieldName)) {

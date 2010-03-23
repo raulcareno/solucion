@@ -29,8 +29,19 @@
   import jcinform.procesos.Administrador;
   //import javax.faces.context.FacesContext;
    
+ Session a = Sessions.getCurrent();
+ 
+        a.removeAttribute("accesos");
+        a.removeAttribute("user");
+        a.removeAttribute("periodo");
+
+        //a.invalidate();
+
 
  Administrador adm = new Administrador();
+
+
+
  List perfiles = adm.query("Select o from Periodo as o where o.estado = true");
   Periodo per = new Periodo(-1);
   per.setDescripcion("[Seleccione]");
@@ -84,6 +95,7 @@ void verificar(){
                                      usuarios.visible= false;
                                      claves.visible= false;
                                      seleccione.visible= true;
+                                     cancelar.visible = true;
                                      consultar.visible =false;
                                      olvidado.visible =false;
 
@@ -183,12 +195,14 @@ void verificarSistema(){
              <span style="float:center">
                 <button label="Verificar"   image="/images/key.png"  id="verificar" onClick="usuario.getValue(); clave.getValue(); verificar()"/>
                 <button label="Ingresar Sistema"  visible="false" image="/images/ingreso.gif" id="btnIngresar" onClick="usuario.getValue(); clave.getValue(); ingresoSistemas();"/>
+
                 <button label="Consultar Notas" id="consultar" image="/images/notas.png">
                         <attribute name="onClick">{
                              Window win = (Window) Executions.createComponents("/loginEstudiantes.zul", null, null);
                             win.doModal();
                         }</attribute>
                 </button>
+                <button target="_top" label="Cancelar" id="cancelar"  visible="false"  image="/images/exit.gif"  href="./login.zul"></button>
                 <!--button label="Olvidó su clave" image="/images/notas.png">
                         <attribute name="onClick">{
                              Window win = (Window) Executions.createComponents("/recuperacionClave.zul", null, null);
