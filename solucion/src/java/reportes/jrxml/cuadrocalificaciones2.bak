@@ -385,7 +385,20 @@
 						</crosstabRowHeader>
 						<crosstabTotalRowHeader>
 						<cellContents mode="Transparent">
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#0C0505" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#080606"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+				<staticText>
+					<reportElement
+						x="26"
+						y="1"
+						width="118"
+						height="14"
+						key="staticText-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[# ESTUDIANTES:]]></text>
+				</staticText>
 						</cellContents>
 						</crosstabTotalRowHeader>
 					</rowGroup>
@@ -464,6 +477,9 @@
 					<measure name="profesor" class="java.lang.String">
 						<measureExpression><![CDATA[$F{profesor}]]></measureExpression>
 					</measure>
+					<measure name="riesgos" class="java.lang.Integer" calculation="Count">
+						<measureExpression><![CDATA[(!$F{nota}.equals("")?new Integer(1):null)]]></measureExpression>
+					</measure>
 					<crosstabCell width="22" height="11">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -510,7 +526,7 @@
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="22" height="131" rowTotalGroup="numero">
+					<crosstabCell width="22" height="17" rowTotalGroup="numero">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -518,20 +534,34 @@
 						x="0"
 						y="0"
 						width="22"
-						height="131"
-						key="textField"
-						isPrintRepeatedValues="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Bottom" rotation="Left">
-						<font size="6"/>
+						height="17"
+						key="textField">
+							<printWhenExpression><![CDATA[new Boolean(!$V{riesgos}.equals(new Integer(0)))]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{profesor}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{riesgos}]]></textFieldExpression>
 				</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="68" height="131" rowTotalGroup="numero" columnTotalGroup="materia">
+					<crosstabCell width="68" height="17" rowTotalGroup="numero" columnTotalGroup="materia">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="68"
+						height="17"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{riesgos_materia_ALL}]]></textFieldExpression>
+				</textField>
 						</cellContents>
 					</crosstabCell>
 					<whenNoDataCell>						<cellContents mode="Transparent">
