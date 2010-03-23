@@ -122,13 +122,17 @@ public class notas extends Rows {
                     + "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase' or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' )"
                     + "order by estudiantes.apellido";
         }
-        System.out.println("" + q);
+//        System.out.println("" + q);
         List nativo = adm.queryNativo(q);
         Row row = new Row();
-
+String Shabilitado = "color:black;font-weight:bold;width:30px;font:arial;font-size:12px;text-align:right;";
+String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
+String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             row = new Row();
+            Boolean deshabilitado = false;
+            String color = "black";
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
                 label = new Decimalbox();
@@ -151,56 +155,68 @@ public class notas extends Rows {
 
                 } else {
                     String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
-                    valor = valor.replace("[Emitir Pase]","(PE)");
-                    valor = valor.replace("[Retirado]","(R)");
-                    valor = valor.replace("[Recibir Pase]","(PR)");
-                    valor = valor.replace("[Matriculado]","");
+                    valor = valor.replace("[Emitir Pase]", "(PE)");
+                    valor = valor.replace("[Retirado]", "(R)");
+                    valor = valor.replace("[Recibir Pase]", "(PR)");
+                    valor = valor.replace("[Matriculado]", "");
                     label3.setValue("" + valor);
                 }
 //                                 label.setAttribute(q, dos);
+
                 if (j == 0) {
-                    label3.setStyle("width:15px;font-size:11px;font:arial; ");
+                    label3.setStyle(" ");
 //                    label3.setReadonly(true);
                     row.appendChild(label3);
                 } else if (j == 1) {
                     label3.setStyle("width:300px;font-size:11px;font:arial; ");
 //                    label3.setReadonly(true);
+                    if (label3.getValue().contains("(PE)")) {
+                        label3.setStyle("color:red;width:300px;font-size:11px;font:arial; ");
+                        color = "red";
+                        deshabilitado = true;
+                    }else if (label3.getValue().contains("(R)")) {
+                        label3.setStyle("color:blue;width:300px;font-size:11px;font:arial; ");
+                        color = "blue";
+                        deshabilitado = true;
+                    }
+
                     row.appendChild(label3);
                 } else {
+                    if (!deshabilitado) {
+                        Date fechaActual = new Date();
+                        DateMidnight actual = new DateMidnight(fechaActual);
+                        int dat = j - 2;
+                        DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
+                        DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
 
-                    Date fechaActual = new Date();
-                    DateMidnight actual = new DateMidnight(fechaActual);
-                    int dat = j - 2;
-                    DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
-                    DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
+                        if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
+                            label.setDisabled(false);
+                            label.setStyle(Shabilitado);
+                        } else {
+                            label.setDisabled(true);
+                            label.setStyle(Sdeshabilitado);
 
-                    if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
-                        label.setDisabled(false);
-                        label.setStyle("color:blue;width:30px;font:arial;font-size:11px;text-align:right;");
+                        }
+                        try {
+                            Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
+//                            System.out.println("FECHA INICIAL: "+fecha);
+                            if (fecha.getDate() == 0) {
+                                label.setDisabled(true);
+                                label.setStyle(Sdeshabilitado);
+                            }
+                        } catch (Exception z) {
+                            label.setDisabled(true);
+                            label.setStyle(Sdeshabilitado);
+                        }
+
                     } else {
                         label.setDisabled(true);
-                        label.setStyle("color:black;width:30px;font:arial;font-size:11px;text-align:right;background:transparent;font-color:black;font-weigth:bold");
+                        label.setStyle("color: "+color+" !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
 
                     }
-                    try {
-                        Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
-//                            System.out.println("FECHA INICIAL: "+fecha);
-                        if (fecha.getDate() == 0) {
-                            label.setDisabled(true);
-                            label.setStyle("color:black;width:30px;font:arial;font-size:11px;text-align:right;background:transparent;font-color:black;font-weigth:bold");
-                        }
-                    } catch (Exception z) {
-                        label.setDisabled(true);
-                        label.setStyle("color:black;width:30px;font:arial;font-size:11px;text-align:right;background:transparent;font-color:black;font-weigth:bold");
-                    }
-//                      if(inicial.compareTo(null)==0){
-//                            label.setDisabled(true);
-//                            label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-color:black;weigth:bold");
-//                     }
 
-
-//                    label.setReadonly(true);
                     row.appendChild(label);
+
                 }
 
                 //row.appendChild(label);
