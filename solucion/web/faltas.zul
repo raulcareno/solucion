@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import bean.disciplina;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
- 
+ import bean.Permisos;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
@@ -20,7 +20,7 @@ Periodo periodo = (Periodo) ses.getAttribute("periodo");
 List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
  Cursos curS = new Cursos(-1);
  cursos.add(0,curS);
-
+Permisos permiso = new Permisos();
 disciplina no = new disciplina();
 
 List equivalen = adm.query("Select o from Equivalencias as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  and o.grupo = 'DI'");
@@ -71,6 +71,12 @@ guardar(){
 
 }
 
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Registro de Faltas",accion);
+ }
+
+
 void buscar2(Cursos cur){
         List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' and o.opcional = true order by o.orden");
         //bd2.getItems().clear();
@@ -86,6 +92,10 @@ void buscar2(Cursos cur){
 
     }
 doAdd(Cursos curso){
+ if(!verificar("Agregar")){
+                guardar1.disabled=true;
+                guardar2.disabled=true;
+            }
 Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
         filas.addFaltas(curso,sistema);
 }
@@ -104,7 +114,7 @@ Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
 
                         </listitem>
                     </listbox>
-                    <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+                    <button label="Guardar"  id="guardar1" image="/images/guardar.gif" onClick="guardar();"/>
   </span>
 
 </row>
@@ -134,7 +144,7 @@ Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
          <rows  id="filas" use="bean.disciplina">
          </rows>
  </grid>
- <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+ <button label="Guardar"   id="guardar2"   image="/images/guardar.gif" onClick="guardar();"/>
   
 
 </window>

@@ -13,5 +13,5 @@ public class DynamicTabs  extends Tabs {
         Tab t = new Tab("ad");
         t.setWidth("10%");
         t.setParent(this);
-    }
+       }
 }

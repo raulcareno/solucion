@@ -11,10 +11,11 @@ import jcinform.procesos.Administrador;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
-
+ import bean.Permisos;
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
+Permisos permiso = new Permisos();
 
 List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
@@ -71,6 +72,10 @@ guardar(){
          }
 }
 
+  Boolean verificar(String accion){
+        return permiso.verificarPermiso("Registro de Disciplina",accion);
+ }
+
 void buscar2(Cursos cur){
         List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' and o.opcional = true order by o.orden");
         //bd2.getItems().clear();
@@ -86,6 +91,10 @@ bd2.value = "";
 
     }
 doAdd(Cursos curso, MateriaProfesor materia){
+        if(!verificar("Agregar")){
+                guardar1.disabled=true;
+                guardar2.disabled=true;
+            }
         filas.addRow(curso,materia);
 }
 
@@ -128,7 +137,7 @@ doAdd(Cursos curso, MateriaProfesor materia){
                             </vbox>
                         </bandpopup>
                     </bandbox>
-                    <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+                    <button label="Guardar"   id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
                 </span>
             </row>
         </rows>
@@ -148,6 +157,6 @@ doAdd(Cursos curso, MateriaProfesor materia){
         <rows id="filas" use="bean.disciplina">
         </rows>
     </grid>
-    <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+    <button label="Guardar"   id="guardar2"  image="/images/guardar.gif" onClick="guardar();"/>
 </window>
 
