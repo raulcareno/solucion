@@ -37,6 +37,7 @@
 	<field name="observacion" class="java.lang.String"/>
 	<field name="jornada" class="java.lang.String"/>
 	<field name="seccion" class="java.lang.String"/>
+	<field name="regimen" class="java.lang.String"/>
 
 
 		<group  name="curso" isStartNewPage="true" >
@@ -184,7 +185,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{seccion}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{regimen}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement

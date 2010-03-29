@@ -1,29 +1,20 @@
 package org.zkoss.zknewsfeed.controllers;
 
 import bean.Permisos;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Map;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.zkoss.calendar.Calendars;
 import org.zkoss.calendar.event.CalendarsEvent;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zknewsfeed.data.NewsColors;
 import org.zkoss.zknewsfeed.models.DatabaseCalendarModel;
 import org.zkoss.zknewsfeed.models.NewsItem;
-import org.zkoss.zul.Chart;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
 import org.zkoss.zul.Window;
-import org.zkoss.zul.impl.XulElement;
 
 public class EventUpdateController extends GenericForwardComposer {
 	Window updateMyEntry;

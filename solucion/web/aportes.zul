@@ -207,6 +207,8 @@ void llenar(Sistemacalificacion empa){
     abreviatura.value = empa.getAbreviatura();
     desde.value = empa.getFechainicial();
     hasta.value = empa.getFechafinal();
+    desdei.value = empa.getFechainti();
+    hastai.value = empa.getFechaintf();
     orden.value = empa.getOrden();
     seimprime.checked = empa.getSeimprime();
     esdisciplina.checked = empa.getEsdisciplina();
@@ -264,6 +266,8 @@ void estado(Boolean estado,Boolean modificar){
     abreviatura.readonly = estado;
     desde.disabled = estado;
     hasta.disabled = estado;
+    desdei.disabled = estado;
+    hastai.disabled = estado;
     seimprime.disabled = estado;
     esdisciplina.disabled = estado;
     aprovechamiento.readonly = estado;
@@ -286,7 +290,7 @@ espromedio.disabled= estado;
  //Messagebox.show("UNA DE LAS FORMULAS INGRESADAS ESTÁN INCORRECTAS...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
  return;
  }
-   if(nombre.value=="" || abreviatura.value=="" || desde.value=="" || hasta.value=="" || aprovechamiento.value=="" || orden.value== null || orden.value== 0){
+   if(nombre.value=="" || abreviatura.value=="" || desde.value=="" || hasta.value=="" || desdei.value=="" || hastai.value=="" || aprovechamiento.value=="" || orden.value== null || orden.value== 0){
     Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     return;
  }
@@ -296,6 +300,8 @@ espromedio.disabled= estado;
         empa.setAbreviatura(abreviatura.value);
         empa.setFechainicial(desde.value);
         empa.setFechafinal(hasta.value);
+        empa.setFechainti(desdei.value);
+        empa.setFechaintf(hastai.value);
         empa.setNotalimite((aprovechamiento.value).doubleValue());
         empa.setConduca((conducta.value).doubleValue());
         empa.setSeimprime(seimprime.checked);
@@ -559,6 +565,8 @@ if(formula1.equals("")){
     <row> <span style="float:right"> Abreviatura(*):</span>
         <textbox id="abreviatura"  maxlength="20" cols="20" readonly="true"  /> </row>
     <row> <span style="float:right"> Pase de Notas(*):</span> <span>Desde: <datebox format="dd/MMM/yyyy" id="desde"/> Hasta:<datebox  format="dd/MMM/yyyy"  id="hasta"/></span>
+         </row>
+    <row> <span style="float:right"> Pase de Secretaria(*):</span> <span>Desde: <datebox format="dd/MMM/yyyy" id="desdei"/> Hasta:<datebox  format="dd/MMM/yyyy"  id="hastai"/></span>
          </row>
     <row> <span style="float:right"> Límite de Notas(*):</span>
             <span>Aprovechamiento:<decimalbox id="aprovechamiento" maxlength="5" cols="5"  format="#,##0.##"/> Disciplina:<decimalbox id="conducta" maxlength="5" cols="5" format="#,##0.##"/> </span>

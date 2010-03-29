@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk  xmlns="http://www.zkoss.org/2005/zul">
-    <window    title="Inscripciones nuevo periodo Lectivo" style="background:red;position:absolute;left:15%;top:5%" mode="overlapped" width="60%"  border="normal" >
+    <window      width="60%"  border="normal" >
         <style dynamic="true">
             .z-label.focus {
             color:#006699;
@@ -342,7 +342,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         ArrayList detalle = new ArrayList();
         String query = "SELECT mat FROM Matriculas AS mat " +
                 "WHERE  mat.estado like '%Matriculado%' " +
-                "and mat.codigomat = '" + matricula.getCodigomat() + "' ";
+                "and mat.codigomat = '" + matricula.getCodigomat() + "' order by mat.estudiante.apellido, mat.estudiante.nombre";
         List hoy = adm.query(query);
         for (Iterator it = hoy.iterator(); it.hasNext();) {
             Matriculas elem = (Matriculas) it.next();
