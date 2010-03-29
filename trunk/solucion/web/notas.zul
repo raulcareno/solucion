@@ -85,7 +85,14 @@ notas nso = new notas();
 nso.calcularDisciplina(((Cursos)curs.selectedItem.value),"N1");
 
 }
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Registro de Notas",accion);
+
+    }
+
 guardar(){
+  
+
     notas nso = new notas();
     notas r = (notas) datos.getRows();
         String resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
@@ -116,6 +123,10 @@ bd2.value = "";
     }
 
 void doAdd(Cursos curso, MateriaProfesor materia){
+            if(!verificar("Agregar")){
+                guardar1.disabled=true;
+                guardar2.disabled=true;
+            }
 
                 filas.addRow(curso,materia);
 
@@ -227,7 +238,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                     </bandpopup>
                                 </bandbox>
 
-                                <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+                                <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
 
                             </span>
                         </row>
@@ -249,7 +260,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     <rows id="filas" use="bean.notas">
                     </rows>
                 </grid>
-                <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+                <button label="Guardar"   id="guardar2" image="/images/guardar.gif" onClick="guardar();"/>
             </tabpanel>
             <tabpanel>
                 <grid width="75%">

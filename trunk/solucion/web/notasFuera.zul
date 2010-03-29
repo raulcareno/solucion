@@ -101,10 +101,19 @@ bd2.value = "";
     }
 
 void doAdd(Cursos curso, MateriaProfesor materia){
-
+        if(!verificar("Agregar")){
+                guardar1.disabled=true;
+                guardar2.disabled=true;
+            }
                 filas.addRow(curso,materia);
       
 }
+
+Boolean verificar(String accion){
+        //Registro de Disciplina
+        return permiso.verificarPermiso("Registro de Notas",accion);
+
+    }
 
 		void showReport(String tipo) {
 			//Preparing parameters
@@ -186,7 +195,7 @@ void doAdd(Cursos curso, MateriaProfesor materia){
                     </vbox>
                     </bandpopup>
                 </bandbox>
-                <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/> </span>
+                <button label="Guardar"  id="guardar1" image="/images/guardar.gif" onClick="guardar();"/> </span>
 </row>
 </rows>
 </grid>
@@ -207,7 +216,7 @@ void doAdd(Cursos curso, MateriaProfesor materia){
                     </rows>
                 </grid>
 
- <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+ <button label="Guardar"  id="guardar2"   image="/images/guardar.gif" onClick="guardar();"/>
      </tabpanel>
             <tabpanel>
                 <grid width="75%">
