@@ -85,6 +85,7 @@ public class notas extends Rows {
     public void addRow(Cursos curso, MateriaProfesor materia) {
         int tamanio = 0;
         Session ses = Sessions.getCurrent();
+        Empleados empleado = (Empleados)ses.getAttribute("user");
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
 //     if(listad==null){
         Administrador adm = new Administrador();
@@ -188,7 +189,11 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                         int dat = j - 2;
                         DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
                         DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
-
+                                if(empleado.getTipo().equals("Interna")){
+                                    inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
+                                    finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
+                                    
+                                }
                         if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
                             label.setDisabled(false);
                             label.setStyle(Shabilitado);
@@ -199,6 +204,11 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                         }
                         try {
                             Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
+                            if(empleado.getTipo().equals("Interna")){
+                                    fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainti();
+
+
+                                }
 //                            System.out.println("FECHA INICIAL: "+fecha);
                             if (fecha.getDate() == 0) {
                                 label.setDisabled(true);
