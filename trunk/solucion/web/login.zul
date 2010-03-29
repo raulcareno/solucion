@@ -159,7 +159,7 @@ void verificarSistema(){
 	 
 		<rows>
             <row style="background:transparent;border:0px" spans="2">
- <span style="float:center"> <image src="/images/about.png" style="aling:center"/></span>
+ <span style="float:center"> <image src="/images/about.jpg" style="aling:center"/></span>
             </row>
 			<row style="background:transparent;border:0px"  id="usuarios" >
 				<span style="float:right;font-weight:bold">Usuario:(*):</span>

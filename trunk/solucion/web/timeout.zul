@@ -9,11 +9,9 @@
     </zscript>
 <window  style="position:absolute; top:20%; left:30%"  
 border="normal">
-    <image src="/images/about.png" style="aling:center"/>
+    <image src="/images/about.jpg" style="aling:center"/>
     <html>
-    
-    
-		<attribute name="content" >
+        		<attribute name="content" >
 		<p> 
     &lt;font color=red&gt;POR SU SEGURIDAD SU SESSION HA EXPIRADO...!
     
