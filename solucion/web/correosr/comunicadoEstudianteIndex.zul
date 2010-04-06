@@ -1,0 +1,72 @@
+
+<zk>
+<zscript>
+ void ingresar(String valor){
+        Include inc = (Include) correoPanel;
+        inc.setSrc(valor);
+ }
+</zscript>
+ 
+
+    <borderlayout>
+        <west title="Opciones" size="17%" flex="true" maxsize="250" splittable="true" collapsible="true">
+            <div style="background:#B8D335">
+             <tree id="tree" width="400px" height="100%" rows="8">
+			<treecols sizable="true">
+				<treecol label="" />
+			 
+			</treecols>
+			<treechildren>
+				<treeitem >
+					<treerow>
+						<treecell  image="/images/nuevo.gif" label="Redactar"  onClick='ingresar("/correosr/comunicadoEnviar.zul")' />
+					</treerow>
+				</treeitem>
+                <treeitem>
+					<treerow>
+						<treecell   image="/images/bandeja.png" label="Bandeja de Entrada" onClick='ingresar("/correosr/comunicadoBandeja.zul")'  />
+					</treerow>
+				</treeitem>
+				<treeitem>
+					<treerow>
+						<treecell  image="/images/enviados.png" label="Enviados" onClick='ingresar("/correosr/comunicadoEnviados.zul")'   />
+					</treerow>
+				</treeitem>
+                <treeitem>
+					<treerow>
+						<treecell  image="/images/eliminados.png" label="Eliminados" onClick='ingresar("/correosr/comunicadoEliminados.zul")'  />
+					</treerow>
+				</treeitem>
+                <treeitem>
+					<treerow>
+						<treecell  image="/images/guardar.gif" label="Archivados" onClick='ingresar("/correosr/comunicadoArchivados.zul")'  />
+					</treerow>
+				</treeitem>
+                
+			</treechildren>
+		</tree>
+            </div>
+        </west>
+		 
+        <center border="none" flex="true">
+            <include style="padding:3px;" width="99%" id="correoPanel" src="${requestScope.correoPanel}" />
+            <!-- <borderlayout>
+                <north title="West" size="30%" flex="true" maxsize="250" splittable="true" collapsible="true">
+                    <div style="background:#B8D335">
+                        <label value="25%"
+						style="color:white;font-size:50px" />
+                    </div>
+                </north>
+
+                <west border="none" flex="true"  size="100%" >
+                    <div style="background:#E6D92C">
+                        <label value="cen"
+						style="color:white;font-size:50px" />
+                    </div>
+                </west>
+
+            </borderlayout-->
+        </center>
+			
+    </borderlayout>
+</zk>

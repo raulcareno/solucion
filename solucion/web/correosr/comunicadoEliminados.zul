@@ -1,8 +1,7 @@
 
 <zk>
     <window  onCreate="buscar()">
-        <zscript>
-            <![CDATA[
+        <zscript>   <![CDATA[
   import bean.EventDAO;
   import java.util.ArrayList;
   import jcinform.persistencia.*;
@@ -12,12 +11,16 @@
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
     Periodo periodo = (Periodo) ses.getAttribute("periodo");
-   Empleados estudiante =  (Empleados)ses.getAttribute("user");
+  Representante estudiante = ses.getAttribute("userRepresentante");
     Permisos permiso = new Permisos();
-     List allEvents = null;
-public void buscar(){//busco si me ha enviado un profesor o un profesor 
-     List allEvents = adm.query("Select o from Correos as o where o.destinatario =  '"+estudiante.getCodigoemp()+"'  " +
-        "and (o.tiporemitente = 'E' or o.tiporemitente = 'D'  or o.tiporemitente = 'X')  and o.eliminado = false and o.archivado = true order by o.fecha ");
+     List allEvents = adm.query("Select o from Correos as o where o.destinatario =  '"+estudiante.getCodigorep()+"'  " +
+        "and  o.tiporemitente = 'P' and o.eliminado = true and o.archivado = false ");
+
+         adm.ejecutaSqlNativo("DELETE FROM correos WHERE eliminado = TRUE  AND DATEDIFF(NOW(),fecha) > 3");
+
+public void buscar(){
+     List allEvents = adm.query("Select o from Correos as o where o.destinatario =  '"+estudiante.getCodigorep()+"'  " +
+        "and  o.tiporemitente = 'X' and o.eliminado = true and o.archivado = false order by o.fecha ");
         datos2 = new Listbox();
         int a=0;
             for (Iterator it = datos2.getItems().iterator(); it.hasNext();) {
@@ -45,7 +48,7 @@ public void buscar(){//busco si me ha enviado un profesor o un profesor
                       li.appendChild(new Listcell(acceIt.getRemitenten()+" "));
                       li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+" "));
 
-                      
+
 
                       datos2.appendChild(li);
              }
@@ -75,19 +78,17 @@ public void buscar(){//busco si me ha enviado un profesor o un profesor
   ]]>
         </zscript>
         <groupbox  width="100%" mold="3d" >
-            <caption label="Correos Almacenados" />
+            <caption label="Bandeja de Eliminados" />
             <vbox>
                 <hbox>
-                    <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Eliminar" >
-         
+                    <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Restaurar" >
+
                         <attribute name="onClick">
                         Set items = datos2.getSelectedItems();
-
 						if (items.isEmpty()) {
                             return;
 						}
-                         int val = Messagebox.show("¿Seguro de eliminar?", "Seguridad", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
-                         if(val == 1){
+                         
 
                                 Set items = datos2.getSelectedItems();
 
@@ -96,18 +97,14 @@ public void buscar(){//busco si me ha enviado un profesor o un profesor
                                         Listitem li = (Listitem)it.next();
                                         //li.setSelected(false);
                                         Correos corre = (Correos)li.getValue();
-                                        corre.setEliminado(true);
-                                        corre.setArchivado(false);
+                                        corre.setEliminado(false);
                                         adm.actualizar(corre);
                                     }
                                     buscar();
-						
-                        }
-                        </attribute>
-                    
-                    </toolbarbutton>
-                    
 
+                       </attribute>
+
+                    </toolbarbutton>
                 </hbox>
                 <hbox width="100%">
                     <listbox mold="paging" rows="20" pageSize="20" onSelect="move();" id="datos2" width="600px" multiple="true" checkmark="true">
@@ -146,7 +143,7 @@ public void buscar(){//busco si me ha enviado un profesor o un profesor
 
                 </rows>
             </grid>
- 
+
         	</panelchildren>
  </panel>
             </vbox>

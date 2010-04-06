@@ -61,11 +61,17 @@ k++;
 
 ]]>
     </zscript>
+    <!--button label="Salir" image="/images/exit.gif" onClick="principalNotasEstudiantes.detach()"/-->
   <tabbox width="100%">
         <tabs>
             <tab id="notasingreso" label="Notas" />
             <tab id="reportes" label="Impresión" />
+            
         </tabs>
+        	<toolbar width="90px">
+			<toolbarbutton label="SALIR" image="/images/exit.gif" onClick='principalNotasEstudiantes.detach()' />
+
+		</toolbar>
         <tabpanels>
             <tabpanel>
 
@@ -81,7 +87,7 @@ k++;
         <rows id="filas"  use="bean.notasConsultas">
         </rows>
     </grid>
-    <button label="Salir" onClick="principalNotasEstudiantes.detach()"/>
+    <button label="Salir" image="/images/exit.gif" onClick="principalNotasEstudiantes.detach()"/>
  </tabpanel>
             <tabpanel>
                 <grid width="100%">

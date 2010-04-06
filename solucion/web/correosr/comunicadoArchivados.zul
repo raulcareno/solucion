@@ -12,12 +12,16 @@
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
     Periodo periodo = (Periodo) ses.getAttribute("periodo");
-   Empleados estudiante =  (Empleados)ses.getAttribute("user");
+  Representante estudiante = ses.getAttribute("userRepresentante");
     Permisos permiso = new Permisos();
      List allEvents = null;
-public void buscar(){//busco si me ha enviado un profesor o un profesor 
-     List allEvents = adm.query("Select o from Correos as o where o.destinatario =  '"+estudiante.getCodigoemp()+"'  " +
-        "and (o.tiporemitente = 'E' or o.tiporemitente = 'D'  or o.tiporemitente = 'X')  and o.eliminado = false and o.archivado = true order by o.fecha ");
+     //enviado desde
+     //p = profesor
+     //d = de otro profesor
+     
+public void buscar(){
+     List allEvents = adm.query("Select o from Correos as o where o.destinatario =  '"+estudiante.getCodigorep()+"'  " +
+        "and  o.tiporemitente = 'X' and o.eliminado = false and o.archivado = true order by o.fecha ");
         datos2 = new Listbox();
         int a=0;
             for (Iterator it = datos2.getItems().iterator(); it.hasNext();) {
