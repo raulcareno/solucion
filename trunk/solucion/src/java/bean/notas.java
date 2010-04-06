@@ -409,7 +409,7 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                                 + "left join notas on matriculas.codigomat = notas.matricula "
                                 + "and notas.materia = '" + global.getCodigo() + "' and notas.disciplina = false "
                                 + "where matriculas.curso = '" + curso.getCodigocur() + "'  "
-                                + " and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase') "
+                                + " and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase'  or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' ) "
                                 + "order by estudiantes.apellido";
 //
                         List nativo = adm.queryNativo(q);
@@ -1990,7 +1990,7 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                     + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
                     + "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' "
                     + "and notas.seimprime = true  "
-                    + "and notas.promedia = true "
+                    + " "
                     + "and notas.disciplina = false   and notas.materia != 0  "
                     + "order by estudiantes.apellido, notas.orden";
             nativo = adm.queryNativo(q);
@@ -2560,21 +2560,13 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                             adm.guardar(nota);
 
                         } catch (EvalError ex) {
-                            System.out.println("" + ex.getErrorSourceFile());
-                            System.out.println("1: " + ex.getMessage());
-                            System.out.println("2: " + ex.getErrorText());
-                            System.out.println("3: " + ex.getScriptStackTrace());
-                            System.out.println("4: " + ex.getCause());
+                 
                             Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
 
                 } catch (EvalError ex) {
-                    System.out.println("7: " + ex.getErrorSourceFile());
-                    System.out.println("8: " + ex.getMessage());
-                    System.out.println("9: " + ex.getErrorText());
-                    System.out.println("10: " + ex.getScriptStackTrace());
-                    System.out.println("11: " + ex.getCause());
+            
                     Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

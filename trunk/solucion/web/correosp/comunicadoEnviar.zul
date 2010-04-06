@@ -58,6 +58,11 @@ public void guardar(){
                                     correo.setDestinatario(empe.getCodigoest());
                                     correo.setDestinatarion(empe.getApellido()+" "+ empe.getNombre());
                                     adm.guardar(correo);
+
+                                    correo.setTiporemitente("X");
+                                    correo.setDestinatario(empe.getRepresentante().getCodigorep());
+                                    correo.setDestinatarion(empe.getRepresentante().getApellidos()+" "+ empe.getRepresentante().getNombres()+" -EST-  "+ empe.getNombre());
+                                    adm.guardar(correo);
                         }
                         for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
                                 datos.getItems().remove(a);

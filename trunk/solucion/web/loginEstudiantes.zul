@@ -1,56 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="win2" title="SERVICIOS...! " border="normal" width="350px">
+        <zscript>
 
-<window id="win2" title="Consulta de Notas...! " border="normal" width="350px">
-    <zscript>
-  import jcinform.persistencia.Global;
-  import bean.EventDAO;
-  import java.util.ArrayList;
-  import jcinform.persistencia.Estudiantes;
-  import jcinform.persistencia.Periodo;
-  import jcinform.persistencia.Institucion;
-  import bean.Permisos;
-  import jcinform.procesos.Administrador;
-  import javax.faces.context.FacesContext;
+<![CDATA[
+            import jcinform.persistencia.Global;
+            import bean.EventDAO;
+            import java.util.ArrayList;
+            import jcinform.persistencia.*;
+            import bean.Permisos;
+            import jcinform.procesos.Administrador;
+            import javax.faces.context.FacesContext;
 
-Administrador adm = new Administrador();
+            Administrador adm = new Administrador();
 
-void verPantall(){
-        Estudiantes user =adm.ingresoSistemaE(usuario.value, clave.value);
-            if(user != null){
+    void verPantall(){
+            String tipo = pantalla.selectedItem.value+"";
+            if(tipo.equals("e")){
+                    Estudiantes user =adm.ingresoSistemaE(usuario.value, clave.value);
+                    if(user != null){
                     Session ses = Sessions.getCurrent();
                     ses.setAttribute("userEstudiante",user);
                     Executions.sendRedirect("indexEstudiantes.zul");
-
-           }else{
+            }else{
                 Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                 usuario.focus();
-             }
-}
-</zscript>
-	 <grid style="background:transparent;border:0px">
-		<columns sizable="true" menupopup="auto">
-			<column style="background:transparent;border:0px" label=" "  />
-			<column style="background:transparent;border:0px" label=" "/>
-		</columns>
-		<rows>
-			<row style="background:transparent;border:0px">
-				<span style="float:right">Usuario:(*):</span>
-                <textbox onOK="clave.focus()" id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
-			</row>
-			<row style="background:transparent;border:0px">
-				<span style="float:right">Contraseña:(*):</span>
-                 <textbox  onOK="ingresarModulo.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
-			</row>
-            <row spans="2"  align="center" style="background:transparent;border:0px">
-				 <span><button label="Ingresar" id="ingresarModulo"  image="/images/ingreso.gif"  onClick="usuario.getValue(); clave.getValue(); verPantall();"/>
-                 <button label="Cancelar"  image="/images/eliminar.gif"   onClick="win2.detach()"/></span>
-			</row>
+            }
+            }else{//PANTALLA DEL REPRESENTANTE
+                Representante user =adm.ingresoSistemaR(usuario.value, clave.value);
+                if(user != null){
+                Session ses = Sessions.getCurrent();
+                ses.setAttribute("userRepresentante",user);
+                Executions.sendRedirect("indexRepresentantes.zul");
             
-		</rows>
-	</grid>
-       
+            }else{
+                Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                usuario.focus();
+            }
+
+
+            }
+
+  }
+                ]]>
+
+        </zscript>
+        <grid style="background:transparent;border:0px">
+            <columns sizable="true" menupopup="auto">
+                <column style="background:transparent;border:0px" label=" "  />
+                <column style="background:transparent;border:0px" label=" "/>
+            </columns>
+            <rows>
+
+
+                <row style="background:transparent;border:0px">
+                    <span style="float:right">Usuario:(*):</span>
+                    <textbox onOK="clave.focus()" id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
+                </row>
+                <row style="background:transparent;border:0px">
+                    <span style="float:right">Contraseña:(*):</span>
+                    <textbox  onOK="ingresarModulo.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
+                </row>
+                <row spans="2">
+                    <separator   />
+                </row>
+                <row  style="background:transparent;border:0px" >
+                    <span style="color:blue;float:right">¿Usted es? :</span>
+                    <radiogroup orient="vertical" Id="pantalla" >
+                        <radio  value="e" selected="true" id="e" label="Estudiante"/>
+                        <radio value="r" label="Representante"  id="r" />
+                    </radiogroup>
+
+                </row>
+
+                <row spans="2"  align="center" style="background:transparent;border:0px">
+                    <span><button label="Ingresar" id="ingresarModulo"  image="/images/ingreso.gif"  onClick="usuario.getValue(); clave.getValue(); verPantall();"/>
+                    <button label="Cancelar"  image="/images/eliminar.gif"   onClick="win2.detach()"/></span>
+                </row>
+                <row spans="2">
+                    <separator />
+                </row>
+            </rows>
+        </grid>
 
 
 
- 
-</window>
+
+
+    </window>
+</zk>

@@ -12,12 +12,18 @@
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
     Periodo periodo = (Periodo) ses.getAttribute("periodo");
-   Empleados estudiante =  (Empleados)ses.getAttribute("user");
+  byte[] data = null;
+  String archivo = null;
     Permisos permiso = new Permisos();
-     List allEvents = null;
-public void buscar(){//busco si me ha enviado un profesor o un profesor 
-     List allEvents = adm.query("Select o from Correos as o where o.destinatario =  '"+estudiante.getCodigoemp()+"'  " +
-        "and (o.tiporemitente = 'E' or o.tiporemitente = 'D'  or o.tiporemitente = 'X')  and o.eliminado = false and o.archivado = true order by o.fecha ");
+    Representante estudiante = ses.getAttribute("userRepresentante");
+    List allEvents = adm.query("Select o from Correos as o where o.destinatario = '"+estudiante.getCodigorep()+"' " +
+        "and  o.tiporemitente = 'X' and o.eliminado = false and o.archivado = false ");
+         adm.ejecutaSqlNativo("DELETE FROM correos WHERE eliminado = TRUE  AND DATEDIFF(NOW(),fecha) > 3");
+
+
+public void buscar(){
+     List allEvents = adm.query("Select o from Correos as o where o.destinatario = '"+estudiante.getCodigorep()+"' " +
+        "and  o.tiporemitente = 'X' and o.eliminado = false and o.archivado = false order by o.fecha ");
         datos2 = new Listbox();
         int a=0;
             for (Iterator it = datos2.getItems().iterator(); it.hasNext();) {
@@ -36,16 +42,20 @@ public void buscar(){//busco si me ha enviado un profesor o un profesor
                        }
 
                       Listcell celdaimag = new Listcell(acceIt.getTema()+"");
+
                       if(acceIt.getLeido()==false)
                         celdaimag.setImage("/images/pendiente.png");
                       else
                         celdaimag.setImage("/images/leido.png");
+
                       li.appendChild(celdaimag);
 
                       li.appendChild(new Listcell(acceIt.getRemitenten()+" "));
-                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+" "));
 
-                      
+                      celdaimag = new Listcell(acceIt.getFecha().toLocaleString()+"");
+                      if(acceIt.getAdjunto() != null)
+                        celdaimag.setImage("/images/adjunto.gif");
+                      li.appendChild(celdaimag);
 
                       datos2.appendChild(li);
              }
@@ -60,6 +70,15 @@ public void buscar(){//busco si me ha enviado un profesor o un profesor
           titulo.value = correo.tema;
           contenido.value = correo.contenido;
           remitenten.value = correo.remitenten;
+          data = correo.getAdjunto();
+          archivo = correo.getArchivo();
+          if(correo.getAdjunto() != null){
+             descargarb.visible = true;
+          }else{
+            descargarb.visible = false;
+          }
+
+
           List children = datos2.selectedItem.children;
           ((Listcell)children.get(0)).image = "/images/leido.png";
           ((Listcell)children.get(0)).style = "color:#666666;";
@@ -75,7 +94,7 @@ public void buscar(){//busco si me ha enviado un profesor o un profesor
   ]]>
         </zscript>
         <groupbox  width="100%" mold="3d" >
-            <caption label="Correos Almacenados" />
+            <caption label="Bandeja de Entrada" />
             <vbox>
                 <hbox>
                     <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Eliminar" >
@@ -86,7 +105,7 @@ public void buscar(){//busco si me ha enviado un profesor o un profesor
 						if (items.isEmpty()) {
                             return;
 						}
-                         int val = Messagebox.show("¿Seguro de eliminar?", "Seguridad", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
+                         int val = Messagebox.show("Seguro de eliminar?", "Seguridad", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
                          if(val == 1){
 
                                 Set items = datos2.getSelectedItems();
@@ -97,7 +116,6 @@ public void buscar(){//busco si me ha enviado un profesor o un profesor
                                         //li.setSelected(false);
                                         Correos corre = (Correos)li.getValue();
                                         corre.setEliminado(true);
-                                        corre.setArchivado(false);
                                         adm.actualizar(corre);
                                     }
                                     buscar();
@@ -106,8 +124,34 @@ public void buscar(){//busco si me ha enviado un profesor o un profesor
                         </attribute>
                     
                     </toolbarbutton>
-                    
+                        <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Archivar" >
 
+                        <attribute name="onClick">
+                        Set items = datos2.getSelectedItems();
+
+						if (items.isEmpty()) {
+                            return;
+						}
+                        
+
+                                Set items = datos2.getSelectedItems();
+
+                                    List al = new ArrayList(items);
+                                    for (Iterator it = al.iterator(); it.hasNext();) {
+                                        Listitem li = (Listitem)it.next();
+                                        //li.setSelected(false);
+                                        Correos corre = (Correos)li.getValue();
+                                        corre.setEliminado(false);
+                                        corre.setArchivado(true);
+                                        adm.actualizar(corre);
+                                    }
+                                    buscar();
+
+
+                        </attribute>
+
+                    </toolbarbutton>
+ 
                 </hbox>
                 <hbox width="100%">
                     <listbox mold="paging" rows="20" pageSize="20" onSelect="move();" id="datos2" width="600px" multiple="true" checkmark="true">
@@ -117,7 +161,6 @@ public void buscar(){//busco si me ha enviado un profesor o un profesor
                             <listheader label="Fecha"/>
                         </listhead>
                     </listbox>
-
 
                 </hbox>
                 <panel visible ="false" id="panel" framable="true" width="590px" height="270px"
@@ -129,14 +172,59 @@ public void buscar(){//busco si me ha enviado un profesor o un profesor
             </toolbar>
             <grid width="100%">
                 <rows>
+                    <row>
+                        <span style="float:right;weight:bold">
 
+                    <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Eliminar" >
+
+                        <attribute name="onClick">
+                                        Correos correo = (Correos)datos2.selectedItem.value;
+                                        correo.setEliminado(true);
+                                        adm.actualizar(correo);
+                                        buscar();
+                                        panel.visible = false;
+
+                        </attribute>
+
+                    </toolbarbutton>
+
+                          <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Responder" >
+                                 <attribute name="onClick">
+                                        Correos correo = (Correos)datos2.selectedItem.value;
+                                        panel.visible = false;
+                                        try{
+                                                ses.setAttribute("profesor",correo.getRemitente());
+                                                ses.setAttribute("tema",correo.getTema());
+                                                Window win34 = (Window) Executions.createComponents("/correos/comunicadoEnviar.zul", null, null);
+                                                win34.setVisible(true);
+                                                win34.setAttribute("profesor", correo.getRemitente());
+                                                win34.doModal();
+
+                                       }catch(Exception e){
+
+                                       }
+
+
+
+                        </attribute>
+                           </toolbarbutton>
+                        </span>
+
+                    </row>
                     <row>
                         <span style="float:right;weight:bold"> Enviado por:</span>
                         <label id="remitenten" />
                     </row>
                     <row>
                         <span style="float:right"> Asunto:</span>
-                        <label id="titulo"  />
+                        <span ><label id="titulo"  />
+                        <button image="/images/adjunto.gif" id="descargarb" label="Descargar">
+                            <attribute name="onClick">
+                            Filedownload.save(data, "file", archivo);
+                            </attribute>
+                        </button>
+                        </span>  
+                        
                     </row>
                     <row>
                         <span style="float:right"> Texto:</span>

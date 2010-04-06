@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="principales" onCreate="buscar()" >
+        <zscript>
+            <![CDATA[
+
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.util.logging.Level;
+  import java.util.logging.Logger;
+import java.util.Vector;
+import bean.matriculasBean;
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.notas;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
+    static Estudiantes estudent = new Estudiantes();
+    static Representante representante0 = new Representante();
+    static Matriculas matricula = new Matriculas();
+ Session ses = Sessions.getCurrent();
+ Representante repses =  (Representante) ses.getAttribute("userRepresentante");
+
+  void buscar(){
+        List empleadosEncontrados = adm.query("Select DISTINCT o.estudiante from Matriculas as o " +
+        " where o.estudiante.representante.codigorep = "+repses.getCodigorep()+" order by o.estudiante.apellido ");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Estudiantes acceIt = (Estudiantes) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      /*Listcell ima = new Listcell("");
+                      li.setHeight("15px");
+                      byte[] imageData =    acceIt.getFoto();
+
+                      ima.setImageContent(new org.zkoss.image.AImage("fotito", imageData));
+                      ima.setHeight("15px");
+//                      ima.setWidth("30");
+*/
+                      li.appendChild(new Listcell(acceIt.getApellido()+" "+acceIt.getNombre()));
+                      //li.appendChild(new Listcell(acceIt.getCurso()+""));
+                      //li.appendChild(ima);
+                      datos.appendChild(li);
+             }
+
+    }
+    void move(){
+    Estudiantes estu = (Estudiantes)datos.selectedItem.value;
+         List empleadosEncontrados = adm.query("Select o from Matriculas as o " +
+        " where o.estudiante.codigoest = "+estu.getCodigoest()+" order by o.estudiante.apellido ");
+        datos2 = new Listbox();
+        int a=0;
+            for (Iterator it = datos2.getItems().iterator(); it.hasNext();) {
+                    datos2.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Matriculas acceIt = (Matriculas) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      /*Listcell ima = new Listcell("");
+                      li.setHeight("15px");
+                      byte[] imageData =    acceIt.getFoto();
+
+                      ima.setImageContent(new org.zkoss.image.AImage("fotito", imageData));
+                      ima.setHeight("15px");
+//                      ima.setWidth("30");
+*/
+                      li.appendChild(new Listcell(acceIt.getCurso()+""));
+                      //li.appendChild(ima);
+                      datos2.appendChild(li);
+             }
+    }
+
+    void buscar2(Matriculas mat){
+try{
+            if(mat != null){
+                ses.setAttribute("matricula",mat);
+                Window win34 = (Window) Executions.createComponents("/notasEstudiantes.zul", null, null);
+                win34.setVisible(true);
+                win34.setStyle("position:absolute; top:0%; left:0%");
+                win34.setTitle(""+mat.getEstudiante().getApellido()+" "+mat.getEstudiante().getNombre()+" ===== "+" "+mat.getCurso());
+                win34.setAttribute("matricula", mat);
+                //win34.doPopup();
+                //win.doModal();
+                }
+           }catch(Exception e){
+
+           }
+}
+
+
+
+
+  ]]>
+        </zscript>
+        <separator></separator>
+        <span style="font-weigth:bold">HAGA UN CLICK PARA VER INFORMACIÓN</span>
+        <grid style="margin-left:25px;background-color:transparent; border:0px" width="700px">
+            <rows>
+                <row style="background-color:transparent; border:0px">
+                    <panel height="200px" width="350px"   framable="true" title="Estudiantes">
+                        <panelchildren>
+
+                            <listbox mold="paging"  rows="8"  onSelect="move();" id="datos">
+                                <listitem   height="28px"   forEach="${allEvents}" value="${each}">
+                                    <listcell label="${each.cedula}" />
+                                    <listcell label="${each.apellido} ${each.nombre}" />
+                                    <listcell label="${each.direccion}" />
+                                </listitem>
+                            </listbox>
+
+
+                        </panelchildren>
+                    </panel>
+                    <panel   height="200px" width="300px" framable="true" title="Niveles" >
+                        <panelchildren>
+
+                            <listbox mold="paging"  rows="8" onSelect="buscar2(((Matriculas)self.selectedItem.value));" id="datos2" >
+                                <listitem   height="28px"   forEach="${allEvents}" value="${each}">
+                                    <listcell label="${each.cedula}" />
+                                    <listcell label="${each.apellido} ${each.nombre}" />
+                                    <listcell label="${each.direccion}" />
+                                </listitem>
+                            </listbox>
+
+
+                        </panelchildren>
+                    </panel>
+                </row>
+            </rows>
+        </grid>
+
+
+    </window>
+
+
+</zk>

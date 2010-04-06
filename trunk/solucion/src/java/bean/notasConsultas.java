@@ -104,6 +104,7 @@ public void addRow(Matriculas matriculas1) {
                 }  else {
                     label.setValue("" + dos);
                 }
+                label.setStyle("font-size:11px");
 //                                 label.setAttribute(q, dos);
               if(j!=1)
                 row.appendChild(label);

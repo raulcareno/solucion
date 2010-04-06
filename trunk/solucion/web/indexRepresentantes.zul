@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<borderlayout height="100%" onCreate="cargando();" >
+    <zscript>
+import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+
+
+
+Session a = Sessions.getCurrent();
+    Representante emp = a.getAttribute("userRepresentante");
+     if(emp==null){
+        Executions.sendRedirect("login.zul");
+     }
+     
+ void salir(){
+        Executions.sendRedirect("login.zul");
+        Session a = Sessions.getCurrent();
+        a.removeAttribute("userRepresentante");
+        //a.invalidate();
+ }
+
+ void ingresar(String valor){
+ 
+     if(emp.getEstado()){
+            Messagebox.show("Proceso bloqueado por la administración, acerquese a las oficinas..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return;
+     }
+        Include inc = (Include) xcontents;
+        inc.setSrc(valor);
+ }
+    cargando(){
+         Administrador adm = new Administrador();
+          Session a = Sessions.getCurrent();
+            Representante peri =  (Representante) a.getAttribute("userRepresentante");
+            /*try{
+           List matricula = adm.query("Select o from Matriculas as o " +
+           " where o.estudiante.codigoest =  '"+peri.getCodigoest()+"' order by o.fechamat desc");
+            byte[] imageData =    ((Matriculas)matricula.get(0)).getFoto();
+            foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+            }catch(Exception e){}*/
+        }
+
+    </zscript>
+    <north style="background-image: url(./images/cabefondo.png)"  size="10%" >
+         
+            <tablelayout width="800px" columns="2">
+            
+
+                <tablechildren>
+                    <panel   border="normal" collapsible="true">
+                        <panelchildren style="background-color:transparent;border:0px">
+                            <vbox>
+                                <hbox>
+                                    
+                                    <label style="font-weight:bold;font-size:17px;color:white;" value="Bienvenido: ${sessionScope.userRepresentante.nombres} ${sessionScope.userRepresentante.apellidos} " />
+                                </hbox>
+                                <vbox>
+                                    <toolbarbutton   image="/images/exit.gif" style="font-weight:bold;color:white"  label="[Cerrar Sesión]" onClick="salir()"/>
+                                </vbox>
+ 
+                                
+                            </vbox>
+
+                        </panelchildren>
+                    </panel>
+                </tablechildren>
+            </tablelayout>
+
+
+
+    </north>
+
+    <west  size="11%" flex="true" splittable="true" collapsible="true">
+        <div>
+            <panel width="100%" border="normal"  title="Servicios" height="470px" collapsible="true" >
+                <panelchildren style="padding:0px;" >
+
+                    <vbox>
+                        <fisheyebar orient="vertical" id="fsb"  style="position:absolute;margin:25px 25px;"
+			attachEdge="top" itemWidth="90" itemHeight="90" itemMaxHeight="160" itemMaxWidth="160">
+                            <fisheye image="/images/estudiantes.png" onClick='ingresar("/estudiantesRepresentante.zul")' />
+                            <fisheye image="/images/calendarioacademico.png"  onClick='ingresar("/calendar_1.zul")' />
+                            <fisheye image="/images/cambioclave.png" onClick='ingresar("/cambioClaveRepresentante.zul")' />
+                            <fisheye image="/images/correo.png" onClick='ingresar("/correosr/comunicadoEstudianteIndex.zul")' />
+                        </fisheyebar>
+                    </vbox>
+                </panelchildren>
+
+            </panel>
+            <panel width="100%" border="normal"   collapsible="true"   title="Acerca de..">
+                <panelchildren>
+                    <label style="font-weight:bold" value="--------- JCINFORM ---------- "/>
+                    <label value=" Soluciones Informáticas          "/>
+                    <label value="Telfs.5103-843 / 080-162-211 "/>
+                    <label id="propiedad" value=" "/>
+
+
+                </panelchildren>
+            </panel>
+        </div>
+    </west>
+    <center flex="true">
+
+        <include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/>
+
+
+    </center>
+
+
+</borderlayout>
+ 

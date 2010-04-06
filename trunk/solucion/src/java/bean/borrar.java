@@ -7,11 +7,13 @@ package bean;
 
 import java.util.Iterator;
 import jcinform.persistencia.*;
+import org.zkoss.image.AImage;
 
  
 import org.zkoss.util.media.Media;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 
 
@@ -23,6 +25,13 @@ public class borrar {
 //Panel p;
 void func() throws InterruptedException{
     Media media = Fileupload.get();
+    Listcell c = null;
+    AImage a= null;
+
+//    c.setImageContent(a);
+    
+    
+    //c.setImageContent(null);
 
 //    Listbox l;
 //    l.getItems().get(0);
