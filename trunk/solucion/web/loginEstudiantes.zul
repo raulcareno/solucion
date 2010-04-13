@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <window id="win2" title="SERVICIOS...! " border="normal" width="350px">
         <zscript>
