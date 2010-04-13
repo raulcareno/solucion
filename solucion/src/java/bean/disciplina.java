@@ -478,7 +478,8 @@ public class disciplina extends Rows {
 //               "where o.sistema.faltas = true " +
 //               " and o.sistema.periodo.codigoper = '"+periodo.getCodigoper()+"'  " +
 //               "order by o.sistema.orden ");
-        String del = "Delete from Disciplina where matricula.curso.codigocur = '" + curso.getCodigocur() + "' "
+        String del = "Delete from Disciplina where matricula.curso.codigocur = '" + curso.getCodigocur() + "' " +
+                "and sistema.codigosis = '"+sistema.getCodigosis()+"' "
                 + "   ";
         adm.ejecutaSql(del);
         for (int i = 0; i < col.size(); i++) {

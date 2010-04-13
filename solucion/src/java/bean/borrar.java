@@ -6,7 +6,9 @@
 package bean;
 
 import java.util.Iterator;
+import java.util.List;
 import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
 import org.zkoss.image.AImage;
 
  
@@ -14,7 +16,6 @@ import org.zkoss.util.media.Media;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
 
 
 /**
@@ -84,27 +85,36 @@ void func() throws InterruptedException{
 //							}
 
     }
-
+static claves cla = new claves();
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
 
+        Administrador adm = new Administrador();
+        List<Representante> estu = adm.query("Select o from Representante as o");
+        for (Iterator<Representante> it = estu.iterator(); it.hasNext();) {
+            Representante estudiantes = it.next();
+            estudiantes.setClave(encriptar(estudiantes.getUsuario()));
+            adm.actualizar(estudiantes);
 
-        try {     Double d = null;
-
-        Double a = null;
-        Double c = (a+d)/2;
-       
-
-        } catch (Exception e) {
-            System.out.println("CAUSA: "+e.getCause());
-            System.out.println("LOCALI"+e.getLocalizedMessage());
-            System.out.println(""+e.getMessage());
-            System.out.println(""+e);
         }
+        
    
+    }
+       public static String encriptar(String clave) {
+        try {
+
+            if (clave.equals(null) || clave.equals("")) {
+                return "";
+            }
+            return cla.encriptar(clave);
+        } catch (Exception e) {
+
+
+            return "";
+        }
     }
 
 }
