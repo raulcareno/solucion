@@ -183,6 +183,7 @@ int tamanio = tree.getTreechildren().getChildren().size();
 
 Object media = null;
   public void mostrarTodos(){
+  try{
        		int l = tree.getTreechildren().getChildren().size();
             int total = tree.getItemCount();
 
@@ -195,6 +196,7 @@ Object media = null;
                     }finally{}
 	               
 	       }
+           }catch(Exception ea){System.out.println("aportes: index-1:"+ea);}
        }
 
 
