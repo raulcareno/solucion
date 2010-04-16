@@ -340,7 +340,8 @@
 						width="613"
 						height="29"
 						key="crosstab-1"
-						stretchType="RelativeToTallestObject"/>
+						stretchType="RelativeToTallestObject"
+						positionType="Float"/>
 					<crosstabDataset isDataPreSorted="true" >
 						<dataset >
 						</dataset>

@@ -87,7 +87,7 @@ public JRDataSource certificados(Cursos curso,String tipo){
                 JRDataSource ds = null;
                 if(tipo.equals("CM")){
                      ds = new ReporteCertificadoDataSource(detalle);
-                }else if(tipo.equals("CM2") || tipo.equals("LTRAN") || tipo.equals("LINT")  || tipo.equals("LNUEV") || tipo.equals("LMIN")  || tipo.equals("LFEC")  || tipo.equals("LGENT")  || tipo.equals("LGEN")  || tipo.equals("LASI")  || tipo.equals("LCA")  || tipo.equals("LCAS")  || tipo.equals("AM")  || tipo.equals("LMAT")  || tipo.equals("LCLA")   || tipo.equals("LCLA2") || tipo.equals("LCOR")  || tipo.equals("LREP")  || tipo.equals("LCAR1") || tipo.equals("LCAR")){
+                }else if(tipo.equals("CM2") || tipo.equals("LTRAN") || tipo.equals("LINT")  || tipo.equals("LNUEV") || tipo.equals("LMIN")  || tipo.equals("LFEC")  || tipo.equals("LGENT")  || tipo.equals("LGEN")  || tipo.equals("LASI")  || tipo.equals("LCA")  || tipo.equals("LCAS")  || tipo.equals("AM")  || tipo.equals("LMAT")  || tipo.equals("LCLA")   || tipo.equals("LCLA2") || tipo.equals("LCLA3") || tipo.equals("LCLA4") ||tipo.equals("LCOR")  || tipo.equals("LREP")  || tipo.equals("LCAR1") || tipo.equals("LCAR")){
                       ds = new ReporteActaDataSource(detalle);
                 }
 
@@ -320,6 +320,14 @@ rep.setOpen(true);parametros.setOpen(false);
                     datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCLA2");
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc("WEB-INF/reportes/clavePersonalCompleto.jasper");
+            }else if(tipo.equals("LCLA3")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCLA2");
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/clavesRepre.jasper");
+            }else if(tipo.equals("LCLA4")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCLA2");
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/clavePersonalCompletoRepre.jasper");
             }else if(tipo.equals("LCOR")){
                     datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCOR");
                     parametros.put("titulo",titulo.getValue());
@@ -432,8 +440,10 @@ mates.disabled = true;
                                 <listitem  id="LCAR" label="Lista de Carné "  value="LCAR"/>
                                 <listitem  id="LCAR1" label="Lista de Carné Estudiantil"  value="LCAR1"/>
                                 <listitem  id="LCART" label="Listado para Carnets" value="LCART" />
-                                <listitem  id="LCLA" label="Lista de Claves" value="LCLA"/>
-                                <listitem  id="LCLA2" label="Listado de Claves con Matricula" value="LCLA2"/>
+                                <listitem  id="LCLA" label="Lista de Claves (Todos)" value="LCLA"/>
+                                <listitem  id="LCLA2" label="Listado de Claves con Matricula(Individual)" value="LCLA2"/>
+                                <listitem  id="LCLA3" label="Lista de Claves de Representante(Todos)" value="LCLA3"/>
+                                <listitem  id="LCLA4" label="Listado de Claves de Representante Curso(Individual)" value="LCLA4"/>
                                 <listitem  id="LCOR" label="Listado de Correos electronicos" value="LCOR"/>
 
                                 <listitem  id="LREP" label="Lista de Representantes" value="LREP"/>
@@ -519,6 +529,8 @@ mates.disabled = true;
             LCART.visible = per.verificarPermisoReporte("LCART", "Ingresar");
             LCLA.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
             LCLA2.visible = per.verificarPermisoReporte("LCLA2", "Ingresar");
+            LCLA3.visible = per.verificarPermisoReporte("LCLA3", "Ingresar");
+            LCLA4.visible = per.verificarPermisoReporte("LCLA4", "Ingresar");
             LCOR.visible = per.verificarPermisoReporte("LCOR", "Ingresar");
 
             LREP.visible = per.verificarPermisoReporte("LREP", "Ingresar");
