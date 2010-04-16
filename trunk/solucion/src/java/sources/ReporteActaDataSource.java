@@ -129,6 +129,10 @@ public class ReporteActaDataSource implements JRDataSource{
             valor = nodo.getEstudiante().getUsuario();
         }else if ("clave".equals(fieldName)) {
             valor = permiso.decriptar(nodo.getEstudiante().getClave());
+        }else if ("usuarior".equals(fieldName)) {
+            valor = nodo.getEstudiante().getRepresentante().getUsuario();
+        }else if ("claver".equals(fieldName)) {
+            valor = permiso.decriptar(nodo.getEstudiante().getRepresentante().getClave());
         }else if ("matricula".equals(fieldName)) {
              String codigo = nodo.getNumero()+"";
                 while(codigo.length()<5){

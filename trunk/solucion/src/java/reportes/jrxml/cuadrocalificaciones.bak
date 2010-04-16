@@ -94,7 +94,7 @@
 					<reportElement
 						x="52"
 						y="97"
-						width="203"
+						width="308"
 						height="14"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
