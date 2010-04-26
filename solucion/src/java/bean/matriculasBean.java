@@ -4,87 +4,181 @@
  */
 package bean;
 
-import com.linuxense.javadbf.DBFException;
-import com.linuxense.javadbf.DBFField;
-import com.linuxense.javadbf.DBFReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Periodo;
 import jcinform.procesos.Administrador;
+import org.xBaseJ.DBF;
+import org.xBaseJ.fields.CharField;
+import org.xBaseJ.fields.DateField;
+import org.xBaseJ.fields.Field;
+import org.xBaseJ.fields.NumField;
+import org.xBaseJ.xBaseJException;
 
-/**
- *
- * @author geovanny
- */
 public class matriculasBean {
 
     Administrador adm = new Administrador();
+    NumField CODIGO = null;
+    CharField CODIGOM = null;
+    CharField CEDULA = null;
+    CharField APELLIDOS = null;
+    CharField NOMBRES = null;
+    CharField SEXO = null;
+    CharField DIRECCION = null;
+    CharField TELEFONO = null;
+    CharField CELULAR = null;
+    DateField FECHANAC = null;
+    CharField INSANT = null;
+    CharField NIVEL = null;
+    DateField FECHAING = null;
+    CharField NOMFAC = null;
+    CharField DIRECFAC = null;
+    CharField RUCFAC = null;
+    CharField TELFAC = null;
+    DBF db;
 
     public matriculasBean() {
-    }
-
-    public void generar(Boolean repreNuevo, Boolean estuNuevo, Matriculas matricula, Periodo periodo) {
-//        if (repreNuevo) {
-//            adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_telefono1,invmae_tipoid,invmae_nombre,invmae_numeroruc,invmae_direccion,glbemp_codigo,invmae_codigo,invmae_grupo,glbemp_codigo,invmae_activo) values ( " + matricula.getEstudiante().getRepresentante().getCodigorep() + ",'" + matricula.getEstudiante().getRepresentante().getTelfactura() + "','" + matricula.getEstudiante().getRepresentante().getTipoidentificacion() + "','" + matricula.getEstudiante().getRepresentante().getNombrefactura() + "','" + matricula.getEstudiante().getRepresentante().getIdentificacionfactura() + "','" + matricula.getEstudiante().getRepresentante().getDirfactura() + "'," + periodo.getCodigoper() + "," + maeCodigo + ", 'REP', 1 )");
-//
-//        } else {
-//            List datos = adm.queryNativo("select invmae_codigo from contable.invmaestro where invmae_diascredito = " + matricula.getEstudiante().getRepresentante().getCodigorep() + " and invmae_grupo = 'REP' ");
-//            System.out.println("ENCONTRADOS " + datos);
-//            if (datos.size() > 0) {
-//                codigoRepresentante = new Long(((Vector) datos.get(0)).get(0).toString());
-//                adm.ejecutaSqlNativo("update contable.invmaestro set invmae_telefono1='" + matricula.getEstudiante().getRepresentante().getTelfactura() + "',invmae_tipoid='" + matricula.getEstudiante().getRepresentante().getTipoidentificacion() + "',invmae_nombre='" + matricula.getEstudiante().getRepresentante().getNombrefactura() + "', invmae_numeroruc='" + matricula.getEstudiante().getRepresentante().getIdentificacionfactura() + "',   invmae_direccion='" + matricula.getEstudiante().getRepresentante().getDirfactura() + "' , invmae_representante = '" + matricula.getEstudiante().getApellido() + " " + matricula.getEstudiante().getNombre() + "', invmae_grupo = 'REP', glbemp_codigo = " + periodo.getCodigoper() + ", invmae_activo = 1  where invmae_codigo = " + codigoRepresentante + " ");
-//            } else {
-//                adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_telefono1,invmae_tipoid,invmae_nombre,invmae_numeroruc,invmae_direccion,glbemp_codigo,invmae_codigo,invmae_grupo,invmae_activo) values ( " + matricula.getEstudiante().getRepresentante().getCodigorep() + ",'" + matricula.getEstudiante().getRepresentante().getTelfactura() + "','" + matricula.getEstudiante().getRepresentante().getTipoidentificacion() + "','" + matricula.getEstudiante().getRepresentante().getNombrefactura() + "','" + matricula.getEstudiante().getRepresentante().getIdentificacionfactura() + "','" + matricula.getEstudiante().getRepresentante().getDirfactura() + "'," + periodo.getCodigoper() + ",'" + maeCodigo + "', 'REP',1 )");
-//                codigoRepresentante = maeCodigo;
-//            }
-//        }
-//        maestroNuevo = adm.queryNativo("SELECT IF(MAX(invmae_codigo) IS NULL,0,MAX(invmae_codigo)) +1 FROM contable.invmaestro");
-//        maeCodigo = (Long) ((Vector) maestroNuevo.get(0)).get(0);
-//        if (estuNuevo) {
-//            adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_nombre,invmae_grupo,invmae_codigo,inv_invmae_codigo,glbemp_codigo,invmae_activo) values ( " + matricula.getEstudiante().getCodigoest() + ",'" + matricula.getEstudiante().getApellido() + " " + matricula.getEstudiante().getNombre() + "', 'EST', " + maeCodigo + ", " + codigoRepresentante + "," + periodo.getCodigoper() + ", 1 )");
-//        } else {
-//            List datos = adm.queryNativo("select invmae_codigo from contable.invmaestro where invmae_diascredito = " + matricula.getEstudiante().getCodigoest() + "  and invmae_grupo = 'EST' ");
-//            if (datos.size() > 0) {
-//                adm.ejecutaSqlNativo("update contable.invmaestro set invmae_nombre = '" + matricula.getEstudiante().getApellido() + " " + matricula.getEstudiante().getNombre() + "', glbemp_codigo = " + periodo.getCodigoper() + ", invmae_activo = 1  where invmae_diascredito= " + matricula.getEstudiante().getCodigoest() + " and invmae_grupo = 'EST' ");
-//
-//            } else {
-//                adm.ejecutaSqlNativo("insert into contable.invmaestro (invmae_diascredito,invmae_nombre,invmae_grupo,invmae_codigo,inv_invmae_codigo,glbemp_codigo,invmae_activo) values ( " + matricula.getEstudiante().getCodigoest() + ",'" + matricula.getEstudiante().getApellido() + " " + matricula.getEstudiante().getNombre() + "','EST', " + maeCodigo + ", " + codigoRepresentante + "," + periodo.getCodigoper() + ",1 )");
-//
-//
-//            }
-//        }
-    }
-
-    public void leerPdf() {
         try {
-            System.out.println("Iniciamos proceso");
-            InputStream inputStream = new FileInputStream(new String("/home/geovanny/Escritorio/interfase.dbf"));
-            DBFReader reader = new DBFReader(inputStream);
-            // get the field count if you want for some reasons like the following
-//            int numberOfFields = reader.getFieldCount();
-//            for (int i = 0; i < numberOfFields; i++) {
-//                DBFField field = reader.getField(i);
-//                System.out.print(i+"::"+field.getName()+"   ");
-//            }
-            System.out.println("*********************************************");
-            Object[] rowObjects;
-            while ((rowObjects = reader.nextRecord()) != null) {
-                System.out.println("*********************************************");
-                System.out.print(((String)rowObjects[0]).trim());
-//                System.out.print(((String)rowObjects[3]).trim()+" "+((String)rowObjects[4]).trim()+"");
-                
-                
-            }
-            inputStream.close();
+//            DBF db2 = new DBF("/home/geovanny/Escritorio/base1.dbf");
+            db = new DBF("/home/geovanny/Escritorio/base2.dbf");
+
+
+        } catch (xBaseJException ex) {
+            Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+    }
+
+    public void generar(Boolean repreNuevo, Boolean estuNuevo, Matriculas matricula, Periodo periodo) {
+        //concatenarPdf();
+             concatenarPdf();
+        actualizar(matricula);
+
+
+    }
+
+    void llenar(Matriculas matricula) {
+        try {
+
+            try {CODIGO.put(matricula.getEstudiante().getCodigoest());} catch (Exception asdx) {}
+            try {CODIGOM.put(matricula.getNumero() + "");} catch (Exception asdx) {}
+            try {CEDULA.put(matricula.getEstudiante().getCedula());} catch (Exception asdx) {}
+            try {APELLIDOS.put(matricula.getEstudiante().getApellido());} catch (Exception asdx) {}
+            try {NOMBRES.put(matricula.getEstudiante().getNombre());} catch (Exception asdx) {}
+            try {SEXO.put(matricula.getEstudiante().getGenero());} catch (Exception asdx) {}
+            try {DIRECCION.put(matricula.getEstudiante().getDireccion());} catch (Exception asdx) {}
+            try {TELEFONO.put(matricula.getEstudiante().getTelefono());} catch (Exception asdx) {}
+            try {CELULAR.put(matricula.getEstudiante().getTelefono());} catch (Exception asdx) {}
+            try {FECHANAC.put(matricula.getEstudiante().getFechanacimiento());} catch (Exception asdx) {}
+            try {INSANT.put(matricula.getInstitucion());} catch (Exception asdx) {}
+            try {FECHAING.put(matricula.getFechamat());} catch (Exception asdx) {}
+            try {NIVEL.put(matricula.getCurso() + "");} catch (Exception asdx) {}
+            try {NOMFAC.put(matricula.getEstudiante().getRepresentante().getNombrefactura());} catch (Exception asdx) {}
+            try {DIRECFAC.put(matricula.getEstudiante().getRepresentante().getDirfactura());} catch (Exception asdx) {}
+            try {RUCFAC.put(matricula.getEstudiante().getRepresentante().getIdentificacionfactura());} catch (Exception asdx) {}
+            try {TELFAC.put(matricula.getEstudiante().getRepresentante().getTelfactura());} catch (Exception asdx) {}
+            
+
+        }  catch (ArrayIndexOutOfBoundsException ex) {
+            Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+void todos(){
+    Administrador adm = new Administrador();
+          List<Matriculas> estu = adm.query("Select o from Matriculas as o ");
+            for (Iterator<Matriculas> it = estu.iterator(); it.hasNext();) {
+               Matriculas matriculas = it.next();
+                agregar(matriculas);
+           }
+}
+    void actualizar(Matriculas matricula) {
+        try {
+
+            Field f;
+            String codigo = matricula.getEstudiante().getCodigoest() + "";
+            System.out.println("NO DE REGISTROS"+db.getRecordCount());
+            if(db.getRecordCount() ==0 ){
+                todos();
+                return;
+            }
+            for (int i = 1; i <= db.getRecordCount(); i++) {
+                db.gotoRecord(i);
+//                for (int j = 1; j <= db.getFieldCount(); j++) {
+                f = db.getField(1);
+
+                if (codigo.equals("" + f.get().trim())) {
+                    db.getCurrentRecordNumber();
+//                    concatenarPdf();
+                    llenar(matricula);
+                    db.undelete();
+                    db.update();
+                    return;
+//                    }
+//                    System.out.print(f.getName() + "(" + f.get().trim() + ")");
+                }
+
+            }
+            agregar(matricula);
+
+        } catch (xBaseJException ex) {
+            System.out.println("" + ex);
+            Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.out.println("" + ex);
+            Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
+
+    void agregar(Matriculas matricula) {
+        try {
+//            concatenarPdf();
+            llenar(matricula);
+            db.write();
+//            db.close();
+        } catch (xBaseJException ex) {
+            Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void concatenarPdf() {
+        try {
+            System.out.println("Iniciamos asignacion ..");
+            CODIGO = (NumField) db.getField("CODIGO");
+            CODIGOM = (CharField) db.getField("CODIGOM");
+            CEDULA = (CharField) db.getField("CEDULA");
+            APELLIDOS = (CharField) db.getField("APELLIDOS");
+            NOMBRES = (CharField) db.getField("NOMBRES");
+            SEXO = (CharField) db.getField("SEXO");
+            DIRECCION = (CharField) db.getField("DIRECCION");
+            TELEFONO = (CharField) db.getField("TELEFONO");
+            CELULAR = (CharField) db.getField("CELULAR");
+            FECHANAC = (DateField) db.getField("FECHANAC");
+            INSANT = (CharField) db.getField("INSANT");
+            NIVEL = (CharField) db.getField("NIVEL");
+            FECHAING = (DateField) db.getField("FECHAING");
+            NOMFAC = (CharField) db.getField("NOMFAC");
+            DIRECFAC = (CharField) db.getField("DIRECFAC");
+            RUCFAC = (CharField) db.getField("RUCFAC");
+            TELFAC = (CharField) db.getField("TELFAC");
+            
+        } catch (xBaseJException ex) {
+            Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+
+
+
+    }
+}

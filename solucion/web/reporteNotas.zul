@@ -216,6 +216,8 @@ public JRDataSource profesores(){
             parametros.put("periodo", periodo.getDescripcion());
             parametros.put("titulo", titulo.value);
             parametros.put("slogan", insts.getSlogan());
+            parametros.put("secretaria", insts.getSecretaria());
+            parametros.put("rectora", insts.getRector());
             if(sistemasCombo.disabled == false)
                 parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
             if(filamodalidad.visible == true)
@@ -283,6 +285,11 @@ public JRDataSource profesores(){
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc("WEB-INF/reportes/cuadrocalificaciones2.jasper");
+            }else if(tipo.equals("CCAL3")){
+                    //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    report.setSrc("WEB-INF/reportes/cuadrocalificaciones3.jasper");
             }else if(tipo.equals("CCAL")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
@@ -373,7 +380,7 @@ void campos(String valor){
             estudiantesCombo.disabled = false;
              titulo.value= "Certificado de Conducta";
              filamodalidad.visible = true;
-        }else if(valor.equals("CCAL") || valor.equals("CCAL2")){
+        }else if(valor.equals("CCAL") || valor.equals("CCAL2") || valor.equals("CCAL3")){
             curs.disabled = false;
             sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Calificaciones";
@@ -416,6 +423,7 @@ collapsible="true" title="Parametros">
         <listitem  id="LIB2" label="Libreta de Calificaciones(2)" value="LIB2" />
 		<listitem id="CCAL"  label="Cuadro de Calificaciones" value="CCAL" />
         <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
+        <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
 		<listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
 		<listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
         <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
@@ -524,6 +532,7 @@ void cargando(){
         LIB2.visible = per.verificarPermisoReporte("LIB", "Ingresar");
 		CCAL.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
         CCAL2.visible = per.verificarPermisoReporte("CCAL2", "Ingresar");
+        CCAL3.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
 		CNF.visible = per.verificarPermisoReporte("CNF", "Ingresar");
 		CDIS.visible = per.verificarPermisoReporte("CDIS", "Ingresar");
         AG.visible = per.verificarPermisoReporte("AG", "Ingresar");
