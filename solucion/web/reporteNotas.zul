@@ -405,12 +405,12 @@ void campos(String valor){
 }
 ]]>
 	</zscript>
-<panel width="100%" id="parametros"  height="100%" border="normal"
+<panel width="100%" id="parametros"  height="60%" border="normal"
 collapsible="true" title="Parametros">
 				<panelchildren>
-<grid width="550px">
+<grid  style="background:transparent;border:1px" width="550px">
 <rows>
-<row>
+<row  style="background:transparent;border:0px">
      
 <span style="float:right"> Reporte:</span>
 <span>
@@ -450,30 +450,30 @@ collapsible="true" title="Parametros">
     
     </span>
 </row>
-<row id="fila" visible="false">
+<row  style="background:transparent;border:0px" id="fila" visible="false">
     <span style="float:right;color:blue"> Rango Notas:</span>
     <span style="color:blue"> Desde: <decimalbox id="desde" value="0" cols="5" /> Hasta: <decimalbox id="hasta" value="20" cols="5"/></span>
 </row>
 
 
-<row>
+<row  style="background:transparent;border:0px">
 <span style="float:right"> Curso:</span>
         <listbox id="curs" width="300px"  mold="select" onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
             <listitem   forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
         </listbox>
  </row>
- <row>
+ <row  style="background:transparent;border:0px">
 <span style="float:right"> Estudiantes: </span>
                                 <listbox id="estudiantesCombo" width="300px"  mold="select" >
                                     <listitem    forEach="${estudiantes}" value="${each}" label="${each.apellidos}" />
 
                                 </listbox>
 </row>
-<row id="filamodalidad" visible="false">
+<row  style="background:transparent;border:0px" id="filamodalidad" visible="false">
     <span style="float:right;color:blue"> MODALIDAD:</span>
     <span style="color:blue"> <textbox id="modalidad" value="BÁSICA"  cols="20" /></span>
 </row>
-<row>
+<row  style="background:transparent;border:0px">
 <span style="float:right"> Materias: </span>
                                 <listbox id="materiasCombo" width="300px"  mold="select" >
                                     <listitem forEach="${materias}" value="${each}">
@@ -482,7 +482,7 @@ collapsible="true" title="Parametros">
                                     </listitem>
                                 </listbox>
 </row>
-<row  >
+<row  style="background:transparent;border:0px" >
 <span style="float:right"> Sistema Notas: </span>
 
                                 <listbox id="sistemasCombo" width="300px"  mold="select" >
@@ -492,11 +492,11 @@ collapsible="true" title="Parametros">
                                 </listbox>
 </row>
 
-<row>
+<row  style="background:transparent;border:0px">
     <span style="float:right"> Título:</span>
     <textbox id="titulo" value=" " cols="35"/>
 </row>
-<row>
+<row  style="background:transparent;border:0px">
 <span style="float:right"> Formato:</span>
  <span> <listbox id="format" mold="select" onSelect="showReport();" >
 		<listitem label="PDF" value="pdf" selected="true" />

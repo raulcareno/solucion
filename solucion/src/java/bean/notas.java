@@ -23,12 +23,10 @@ import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Decimalbox;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
-import org.zkoss.zul.Textbox;
 import sources.Nota;
 import sources.NotasClaseTemp;
 import sources.NumerosaLetras;
@@ -108,12 +106,13 @@ public class notas extends Rows {
         Decimalbox label = null;
         Label label3 = null;
 
-        String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre,'[',matriculas.estado,']'), " + query + "  from matriculas "
+        String q = "Select distinct matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre,'[',matriculas.estado,']'), " + query + "  from matriculas "
                 + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                 + "left join notas on matriculas.codigomat = notas.matricula "
                 + "and notas.materia = '" + materia.getMateria().getCodigo() + "' and notas.disciplina = false  "
                 + "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase'  or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' ) "
                 + "order by estudiantes.apellido";
+        System.out.println(""+q);
         ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1), ParametrosGlobales.class);
         if (para.getCvalor().equals("P")) {
             q = "Select matriculas.codigomat,(estudiantes.apellido,' ',estudiantes.nombre,'(',matriculas.estado,')'), " + query + "  from matriculas "
@@ -236,9 +235,6 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
             row.setParent(this);
         }
         nativo = null;
-
-
-
     }
 
     public String validar(List col, List<Notanotas> notas) {
@@ -793,7 +789,6 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                 + " and estado in ('Matriculado','Recibir Pase','Emitir Pase','Retirado') )"
                 + "and notas.disciplina = false and materia_profesor.seimprime = true  "
                 + "order by CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
-
         System.out.println("" + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
@@ -1194,6 +1189,14 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
                 + "and o.sistema.orden <=  '" + sistema.getOrden() + "'"
                 + " and o.sistema.seimprime = true  order by o.sistema.orden ");
+        if(notas.size()<=0){
+            try {
+                Messagebox.show("No hay nada que imprimir...! \n Revise en la pantalla Aportes si existen notas a imprimir", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                return null;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         String query = "";
         String query2 = "";
         String queryDisciplina = "";
@@ -1368,7 +1371,7 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                         + "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' "
                         + " and notas.materia = 0  "
                         + "group by codigomat  ";
-                System.out.println("DISCIPLINA " + q);
+//                System.out.println("DISCIPLINA " + q);
                 nativo = adm.queryNativo(q);
                 for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                     Vector vec = (Vector) itna.next();
@@ -1412,84 +1415,55 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                     //row.setParent(this);
                 }
             }
-//IMPRIMO MATERIAS NO INCLUIDAS EN EL MINISTERIO
-/*
-            q = "Select matriculas.codigomat,notas.materia,notas.cuantitativa, " + query + "  from matriculas " +
-            "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest  " +
-            "left join notas on matriculas.codigomat = notas.matricula " +
-            "where matriculas.curso = '" + curso.getCodigocur() + "'  " +
-            "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' " +
-            "and notas.seimprime = true " +
-            "and notas.disciplina = false " +
-            "and notas.promedia = false " +
-            "and notas.cuantitativa = true " +
-            "and notas.materia != 0 " +
-            "order by estudiantes.apellido, notas.orden";
-            //System.out.println(""+q);
-            nativo = adm.queryNativo(q);
-            for (Iterator itna = nativo.iterator(); itna.hasNext();) {
-            Vector vec = (Vector) itna.next();
-            Matriculas matriculaNo = null;
-            Boolean cuantitativa = false;
-            Global mate = new Global();
-            int ksis = 0;
-            for (int j = 0; j < vec.size(); j++) {
-            Object dos = vec.get(j);
-            Double val = 0.0;
-            NotaCollection coll = new NotaCollection();
-            try {
-            if (dos.equals(null)) {
-            dos = new Double(0.0);
-            }
-            } catch (Exception e) {
-            dos = new Double(0.0);
-            System.out.println("" + e);
-            }
-            if (j >= 3) {
-            val = (Double) dos;
-            coll.setNota(dos);
-            if (cuantitativa == false) {
-            coll.setNota(equivalencia(dos, equivalencias));
-            }
-            coll.setMateria(mate.getDescripcion());
-            coll.setMatricula("" + matriculaNo.getCodigomat());
-            coll.setEstudiante(matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
-            coll.setSistema(((Sistemacalificacion) sistemas.get(ksis)).getAbreviatura());
-            coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion());
-            lisNotasC.add(coll);
-            ksis++;
-            } else if (j >= 2) {
-            //System.out.println(""+dos);
-            cuantitativa = (Boolean) dos;
-            } else if (j >= 1) {
-            mate = (Global) adm.buscarClave((Integer) dos, Global.class);
-            } else {
-            matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
-            }
-            }
-            //row.setParent(this);
-            }
-             */
-            //IMPRIMO EL CUADRO DE EQUIVALENCIAS
+
+            //IMPRIMO EL CUADRO DE EQUIVALENCIAS DE FALTAS
 
             ArrayList lisFaltas = new ArrayList();
             String query3 = "";
-            if (impEquivalencias) {
+            String query4 = "";
+            if (impEquivalencias){
                 int w = 1;
                 for (int i = 0; i < equivalenciasFaltas.size(); i++) {
                     query3 += "sum(nota" + w + "),";
+                    query4 += "sum(nota" + w + "),";
                     w++;
-
                 }
+
                 query3 = query3.substring(0, query3.length() - 1);
+                query4 = query4.substring(0, query4.length() - 1);
                 //IMPRIMO LAS FALTAS
+                q = "Select " + query4 + ", tri.descripcion from disciplina, sistemacalificacion  sis, trimestres tri "
+                        + "where matricula = '" + matriculas1.getCodigomat() + "' and sis.trimestre = tri.codigotrim   "
+                        + "and sis.orden <= '" + sistema.getOrden() + "'   AND sis.codigosis = disciplina.sistema  and sis.seimprime = true  "
+                        + "  group by tri.codigotrim  order by  tri.codigotrim, sis.orden "
+                        + " ";
+//                System.out.println(""+q);
+                        nativo = adm.queryNativo(q);
+                for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                    Vector vec = (Vector) itna.next();
+                    int ksis = 0;
+                    for (int j = 0; j < vec.size()-1; j++) {
+                        Object dos = vec.get(j);
+                        NotaCollection coll = new NotaCollection();
+                        coll.setNota(dos);
+                        coll.setMateria(equivalenciasFaltas.get(ksis).getNombre());
+                        coll.setMatricula("" + matriculas1.getCodigomat());
+                        coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
+                        coll.setSistema(""+vec.get(vec.size()-1));
+                        lisFaltas.add(coll);
+                        ksis++;
+                    }
+                    //row.setParent(this);
+                }
+
+
                 q = "Select " + query3 + "  from disciplina, sistemacalificacion "
                         + "where matricula = '" + matriculas1.getCodigomat() + "'  "
                         + "and sistemacalificacion.orden <= '" + sistema.getOrden() + "' "
-                        + "and sistemacalificacion.codigosis =  sistema  "
+                        + "and sistemacalificacion.codigosis =  sistema  and sistemacalificacion.seimprime = true  "
                         + " group by matricula ";
                 //SELECT * FROM disciplina, sistemacalificacion WHERE sistemacalificacion.codigosis =  sistema
-//                 System.out.println(""+q);
+////                 System.out.println(""+q);
                 nativo = adm.queryNativo(q);
                 for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                     Vector vec = (Vector) itna.next();
@@ -1498,9 +1472,10 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                         Object dos = vec.get(j);
                         NotaCollection coll = new NotaCollection();
                         coll.setNota(dos);
-                        coll.setMateria(equivalenciasFaltas.get(ksis).getAbreviatura());
+                        coll.setMateria(equivalenciasFaltas.get(ksis).getNombre());
                         coll.setMatricula("" + matriculas1.getCodigomat());
                         coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
+                        coll.setSistema("Totales");
                         lisFaltas.add(coll);
                         ksis++;
                     }
@@ -1511,9 +1486,10 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                     for (int i = 0; i < equivalenciasFaltas.size(); i++) {
                         NotaCollection coll = new NotaCollection();
                         coll.setNota(0);
-                        coll.setMateria(equivalenciasFaltas.get(i).getAbreviatura());
+                        coll.setMateria(equivalenciasFaltas.get(i).getNombre());
                         coll.setMatricula("" + matriculas1.getCodigomat());
                         coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
+                        coll.setSistema("Totales");
                         lisFaltas.add(coll);
 
                     }
@@ -2412,7 +2388,9 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                 if (tipo.contains("MITAD")) {
                     formu = "(((" + formu + ")/" + maprofes.size() + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/2";
                 } else if (tipo.contains("PROMEDIO")) {//
-                    formu = "(((" + formu + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/(" + maprofes.size() + "+1))";
+                    formu = "(((" + formu + ")" + ")/(" + maprofes.size() + "))";
+                    //formu = "(((" + formu + ")/" + maprofes.size() + ") +" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/2";
+                    //formu = "(((" + formu + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/(" + maprofes.size() + "))";
                 } else if (tipo.contains("SUMATORIA")) {//PROMEDIO DE PROFESORES + PROMEDIO DE INSPECCION
                     formu = "((" + formu + ")/" + maprofes.size() + "+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))";
                 }
@@ -2541,7 +2519,7 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                                 String toda = notas.get(j - 1).getNota() + "";
                                 String uno = toda.substring(0, 1).toUpperCase();
                                 toda = toda.substring(1, toda.length());
-                                inter.eval("nota.set" + (uno + toda) + "(" + redondear(new Double(object1), 2) + ");");
+                                inter.eval("nota.set" + (uno + toda) + "(" + redondear(new Double(object1), 0) + ");");
                             }
                             nota = (Notas) inter.get("nota");
                             nota.setCuantitativa(true);

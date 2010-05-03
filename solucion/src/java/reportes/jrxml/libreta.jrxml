@@ -82,6 +82,7 @@
 						width="183"
 						height="13"
 						key="textField"
+						positionType="Float"
 						isRemoveLineWhenBlank="true"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Top">
@@ -96,6 +97,7 @@
 						width="183"
 						height="13"
 						key="textField"
+						positionType="Float"
 						isRemoveLineWhenBlank="true"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Top">
@@ -110,6 +112,7 @@
 						width="182"
 						height="13"
 						key="textField"
+						positionType="Float"
 						isRemoveLineWhenBlank="true"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Top">
@@ -123,7 +126,8 @@
 						y="126"
 						width="184"
 						height="15"
-						key="textField"/>
+						key="textField"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Top">
 						<font/>
@@ -136,7 +140,8 @@
 						y="126"
 						width="182"
 						height="15"
-						key="textField"/>
+						key="textField"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Top">
 						<font/>
@@ -149,7 +154,8 @@
 						y="126"
 						width="181"
 						height="15"
-						key="textField"/>
+						key="textField"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Top">
 						<font/>
@@ -161,7 +167,7 @@
 						mode="Opaque"
 						x="-10"
 						y="18"
-						width="398"
+						width="540"
 						height="32"
 						forecolor="#FFFFFF"
 						backcolor="#FFFFFF"
@@ -192,7 +198,8 @@
 						y="50"
 						width="541"
 						height="45"
-						key="staticText-6"/>
+						key="staticText-6"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="9"/>

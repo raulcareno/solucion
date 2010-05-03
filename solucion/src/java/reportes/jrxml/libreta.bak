@@ -74,11 +74,11 @@
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="158"  isSplitAllowed="true" >
+			<band height="141"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="-14"
-						y="127"
+						y="112"
 						width="183"
 						height="13"
 						key="textField"
@@ -92,7 +92,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="171"
-						y="127"
+						y="112"
 						width="183"
 						height="13"
 						key="textField"
@@ -106,7 +106,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="357"
-						y="127"
+						y="112"
 						width="182"
 						height="13"
 						key="textField"
@@ -120,7 +120,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="-15"
-						y="141"
+						y="126"
 						width="184"
 						height="15"
 						key="textField"/>
@@ -133,7 +133,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="171"
-						y="141"
+						y="126"
 						width="182"
 						height="15"
 						key="textField"/>
@@ -146,7 +146,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="358"
-						y="141"
+						y="126"
 						width="181"
 						height="15"
 						key="textField"/>
@@ -189,15 +189,15 @@
 				<staticText>
 					<reportElement
 						x="-11"
-						y="57"
-						width="388"
-						height="20"
+						y="50"
+						width="541"
+						height="45"
 						key="staticText-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<text><![CDATA[La suma de las materias con (*) corresponden al promedio de Idioma Extranjero]]></text>
+				<text><![CDATA[Observación: _____________________________________________________________________________________________ __________________________________________________________________________________________________________ __________________________________________________________________________________________________________]]></text>
 				</staticText>
 			</band>
 			</groupFooter>

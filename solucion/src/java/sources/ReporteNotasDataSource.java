@@ -60,9 +60,9 @@ public class ReporteNotasDataSource implements JRDataSource{
 
             try {
             valor = nodo.getNota();
-                System.out.println("NOTA: "+valor);
+//                System.out.println("NOTA: "+valor);
             } catch (Exception e) {
-                System.out.println("fieldcargar: "+e);
+//                System.out.println("fieldcargar: "+e);
             }
 
         }else
@@ -71,7 +71,7 @@ public class ReporteNotasDataSource implements JRDataSource{
 
            String estado = (nodo.getMatricula().getEstado().equals("Retirado")?"(R)":(nodo.getMatricula().getEstado().equals("Emitir Pase")?"(PE)":""));
             valor = nodo.getMatricula().getEstudiante().getApellido() + " "+ nodo.getMatricula().getEstudiante().getNombre()+" "+estado;
-            System.out.println("estudiante: "+valor);
+//            System.out.println("estudiante: "+valor);
         }else    if ("matricula".equals(fieldName)) {
            valor = nodo.getMatricula().getCodigomat();
         }else if ("curso".equals(fieldName)) {

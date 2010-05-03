@@ -212,6 +212,9 @@
                                         <treeitem id="Registro_de_Disciplina" image="/images/notas.png"  label="Disciplinas" value="/disciplina.zul" />
                                         <treeitem id="Registro_de_Faltas" image="/images/notas.png"  label="Faltas" value="/faltas.zul" />
                                         <treeitem id="Reportes_Notas" label="Reportes Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
+                                        <treeitem id="Parametros_Autoevaluacion" image="/images/textos.png"  label="Parametros Rendimiento" value="/perfil.zul" />
+                                        <treeitem id="Registrar_Autoevaluacion" image="/images/notas.png"  label="Rendimiento" value="/registrarPerfil.zul" />
+
 
                                     </treechildren>
 

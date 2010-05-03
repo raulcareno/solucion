@@ -7,6 +7,7 @@ import javax.mail.internet.*;
 import jcinform.persistencia.Cursos;
 import jcinform.persistencia.Empleadoperiodo;
 import jcinform.persistencia.Empleados;
+import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Periodo;
 import jcinform.procesos.Administrador;
 
@@ -60,6 +61,106 @@ public class email {
 
                             }
                         
+            }else{
+                return "no";
+            }
+    }
+
+        public String recuperarClaveE(String usuario){
+          claves val = new claves();
+            Administrador adm = new Administrador();
+            List<Matriculas>  llista = adm.query("Select o from Matriculas as o where o.estudiante.usuario = '"+usuario+"' ");
+            if(llista.size()<=0)
+                return "nouser";
+
+            Matriculas matriculaNo = llista.get(0);
+            if(matriculaNo != null){
+                        Periodo periodo = new Periodo();
+                       periodo = matriculaNo.getCurso().getPeriodo();
+                        if(periodo != null ){
+                           
+                        }else{
+                            return "no";
+                        }
+                        mensaje = "<html><p> <b> Su usuario es: </b>"+matriculaNo.getEstudiante().getUsuario() +"<p> " +
+                                "<b> Su password es:</b> "+val.desencriptar(matriculaNo.getEstudiante().getClave()) +" <p> " +
+                                "Le recordamos que debe cambiar su clave periodicamente para su mayor seguridad" +
+                                "<p>." +
+                                "<p>" +
+                                "<p>" +
+                                "<p>." +
+                                "LA ADMINISTRACION " +
+                                "<p>" +
+                                "<p>." +
+                                "<p>" +
+                                "<p>." +
+                                "<p>" +
+                                "<p>." +
+                                "<hr>." +
+                                "Desarrollado por JCINFORM fono: 080162 211 " +
+                                "<p>" +
+                                "<hr>" +
+                                "</html> ";
+                       Boolean estado =  EnviarAutenticacion.RecuperarClave(matriculaNo.getEstudiante().getMail().trim(), mensaje,
+                                "RECUPERACION DE CLAVE "+matriculaNo.getEstudiante().getApellido() +" "+ matriculaNo.getEstudiante().getNombre()
+                                , periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto());
+                            if(estado){
+                                    return "[OK] "+matriculaNo.getEstudiante().getMail();
+                            }else{
+                                    return "no";
+
+                            }
+
+            }else{
+                return "no";
+            }
+    }
+
+            public String recuperarClaveR(String usuario){
+          claves val = new claves();
+            Administrador adm = new Administrador();
+            List<Matriculas>  lista = adm.query("Select o from Matriculas as o where o.estudiante.representante.identificacionrepre = '"+usuario+"' ");
+
+             if(lista.size()<=0)
+                return "nouser";
+          Matriculas matriculaNo = lista.get(0);
+            if(matriculaNo != null){
+                        Periodo periodo = new Periodo();
+                       periodo = matriculaNo.getCurso().getPeriodo();
+                        if(periodo != null ){
+
+                        }else{
+                            return "no";
+                        }
+                        mensaje = "<html><p> <b> Su usuario es: </b>"+matriculaNo.getEstudiante().getRepresentante().getUsuario() +"<p> " +
+                                "<b> Su password es:</b> "+val.desencriptar(matriculaNo.getEstudiante().getRepresentante().getClave()) +" <p> " +
+                                "Le recordamos que debe cambiar su clave periodicamente para su mayor seguridad" +
+                                "<p>." +
+                                "<p>" +
+                                "<p>" +
+                                "<p>." +
+                                "LA ADMINISTRACION " +
+                                "<p>" +
+                                "<p>." +
+                                "<p>" +
+                                "<p>." +
+                                "<p>" +
+                                "<p>." +
+                                "<hr>." +
+                                "Desarrollado por JCINFORM fono: 080162 211 " +
+                                "<p>" +
+                                "<hr>" +
+                                "</html> ";
+                       Boolean estado =  EnviarAutenticacion.RecuperarClave(matriculaNo.getEstudiante().getRepresentante().getEmail(), mensaje,
+                                "RECUPERACION DE CLAVE "+matriculaNo.getEstudiante().getRepresentante().getApellidos() +" "+ matriculaNo.getEstudiante().getRepresentante().getNombres()
+                                , periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto());
+                            if(estado){
+                                    return "[OK] "+matriculaNo.getEstudiante().getRepresentante().getEmail();
+                            }else{
+                                    return "no";
+
+                            }
+
             }else{
                 return "no";
             }
@@ -176,6 +277,7 @@ class EnviarAutenticacion
         }
 
     }
+        
 
     public static void EnviarCorreo(ArrayList email,String mensaje,String tema,String emailInstitucion,String clave,String host, String puerto,String respuestaA){
 //        String host ="smtp.gmail.com";//Suponiendo que el servidor SMTPsea la propia máquina

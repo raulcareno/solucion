@@ -228,7 +228,9 @@ equi.setPerfil(g);
         <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />
 </row>
 <row id="vc" visible="false" ><span style="float:right"> Valor(*):</span>
-        <textbox    id="valc"  maxlength="60" cols="40" readonly="true"/>
+        <span><textbox    id="valc"  maxlength="60" cols="40" readonly="true"/>
+        INGRESADA
+        </span>
 </row>
 <row id="vn" visible="false" ><span style="float:right"> Valor(*):</span>
         <decimalbox  format="#,##0.##"  id="valn" cols="10" readonly="true"/>
