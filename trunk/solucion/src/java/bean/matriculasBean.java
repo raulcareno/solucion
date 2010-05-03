@@ -46,7 +46,6 @@ public class matriculasBean {
 //            DBF db2 = new DBF("/home/geovanny/Escritorio/base1.dbf");
             db = new DBF("/home/geovanny/Escritorio/base2.dbf");
 
-
         } catch (xBaseJException ex) {
             Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -55,12 +54,24 @@ public class matriculasBean {
     }
 
     public void generar(Boolean repreNuevo, Boolean estuNuevo, Matriculas matricula, Periodo periodo) {
-        //concatenarPdf();
-             concatenarPdf();
-        actualizar(matricula);
+        try {
+            //concatenarPdf();
+            concatenarPdf();
+            if (estuNuevo) {
+                if (db.getRecordCount() == 0) {
+                    todos();
+                    return;
+                }
+                agregar(matricula);
+            } else {
+                actualizar(matricula);
+            }
+            db.close();
+        } catch (IOException ex) {
+            Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-
-    }
+   }
 
     void llenar(Matriculas matricula) {
         try {
@@ -106,6 +117,10 @@ void todos(){
                 todos();
                 return;
             }
+            db.read();
+//            if(matricula.getEstudiante().getCodigoest().equals(new Integer(585))){
+//                System.out.println("AGUANTATE UN CHANCE.....................");
+//            }
             for (int i = 1; i <= db.getRecordCount(); i++) {
                 db.gotoRecord(i);
 //                for (int j = 1; j <= db.getFieldCount(); j++) {
@@ -138,6 +153,10 @@ void todos(){
     void agregar(Matriculas matricula) {
         try {
 //            concatenarPdf();
+//             if(matricula.getEstudiante().getCodigoest().equals(new Integer(585))){
+//                System.out.println("AGUANTATE UN CHANCE.....................");
+//            }
+            concatenarPdf();
             llenar(matricula);
             db.write();
 //            db.close();

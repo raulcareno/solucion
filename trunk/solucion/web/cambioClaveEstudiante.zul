@@ -3,6 +3,7 @@
 <zk  xmlns="http://www.zkoss.org/2005/zul">
     <window  mode="overlapped" width="350px"  border="normal"  onCreate="cargar()">
 <zscript>
+              <![CDATA[
 import jcinform.persistencia.*;
 import bean.Permisos;
 import jcinform.procesos.Administrador;
@@ -17,6 +18,11 @@ Administrador adm = new Administrador();
 
         usuario.value = emp.getUsuario();
         clave.value = permiso.decriptar(emp.getClave());
+        try{
+            email.value = emp.getMail();
+        }catch(Exception e){
+            //email.value = "jcinform@gmail.com";
+        }
  
  }
 void guardar(){
@@ -26,25 +32,50 @@ void guardar(){
   
         emp.setUsuario(usuario.value);
         emp.setClave(permiso.encriptar(clave.value));
+        emp.setMail(email.value);
          adm.actualizar(emp);
+         alert("Cambio Realizado...!");
  }
 
+ void verificarDisponibilidad(){
+    Session a = Sessions.getCurrent();
+    Estudiantes emp = a.getAttribute("userEstudiante");
+    Permisos permiso = new Permisos();
+    List estudiantes =  adm.query("Select o from Estudiantes as o where o.usuario = '"+usuario.value+"' and o.codigoest <> '"+emp.getCodigoest()+"' ");
+        if(estudiantes.size()>0){
+            alert("Nombre de Usuario ya existe...");
+            usuario.value="";
+            usuario.focus= true;
+
+
+        }
+ }
+
+  ]]>
 </zscript>
 
 <grid width="100%" >
     <rows>
         <row>
             Usuario:
-            <textbox id="usuario" maxlength="20" cols="15"  />
+            <textbox id="usuario" constraint="no empty: Ingrese un usuario"  onBlur="usuario.getValue();verificarDisponibilidad()" maxlength="20" cols="15"  />
 
         </row>
          <row>
             Clave:
-            <textbox id="clave" maxlength="20" cols="15"  />
+            <textbox id="clave" constraint="no empty: Ingrese una clave"   maxlength="20" cols="15"  />
         </row>
+<row spans="2"><span style="color:red">En caso de que extravie su clave se enviará un email a este correo</span>
+        </row>
+        <row>
+            Email:
+            <span><textbox id="email" maxlength="100" cols="25"  />
+            </span>
+        </row>
+        
 
     </rows>
 </grid>
- <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+ <button label="Guardar"  image="/images/guardar.gif" onClick="usuario.getValue(); clave.getValue();guardar();"/>
 </window>
 </zk>

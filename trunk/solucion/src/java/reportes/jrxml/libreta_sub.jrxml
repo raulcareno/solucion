@@ -112,7 +112,7 @@
 						<dataset >
 						</dataset>
 					</crosstabDataset>
-					<crosstabHeaderCell>						<cellContents backcolor="#E5EFF6" mode="Opaque">
+					<crosstabHeaderCell>						<cellContents backcolor="#F9F9FB" mode="Opaque">
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 				<staticText>
 					<reportElement
@@ -155,7 +155,7 @@
 						y="0"
 						width="129"
 						height="15"
-						backcolor="#E5EFF6"
+						backcolor="#F9F9FB"
 						key="textField-1">
 							<printWhenExpression><![CDATA[new Boolean($V{materia}.toUpperCase().equals("PROMEDIO") || $V{materia}.toUpperCase().equals("DISCIPLINA") )]]></printWhenExpression>
 						</reportElement>
@@ -182,7 +182,7 @@
 						y="0"
 						width="25"
 						height="18"
-						backcolor="#E5EFF6"
+						backcolor="#F9F9FB"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -207,7 +207,7 @@
 						y="0"
 						width="25"
 						height="16"
-						backcolor="#E5EFF6"
+						backcolor="#F9F9FB"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -247,7 +247,7 @@
 						y="0"
 						width="25"
 						height="15"
-						backcolor="#E5EFF6"
+						backcolor="#F9F9FB"
 						key="textField-1">
 							<printWhenExpression><![CDATA[new Boolean($V{materia}.toUpperCase().equals("PROMEDIO") || $V{materia}.toUpperCase().equals("DISCIPLINA") )]]></printWhenExpression>
 						</reportElement>

@@ -30,6 +30,8 @@
 	<parameter name="profesor" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="perseleccionado" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="slogan" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="rectora" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="secretaria" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="curso" class="java.lang.String"/>
 	<field name="estudiante" class="java.lang.String"/>
@@ -274,60 +276,58 @@
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="22"  isSplitAllowed="true" >
+			<band height="67"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="439"
-						y="3"
-						width="70"
-						height="18"
-						key="textField"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font size="8"/>
+						x="30"
+						y="25"
+						width="180"
+						height="20"
+						key="textField-14"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Pág. " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{rectora}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="510"
-						y="3"
-						width="49"
-						height="18"
-						key="textField"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
+						x="380"
+						y="25"
+						width="180"
+						height="20"
+						key="textField-15"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{secretaria}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="0"
-						y="1"
-						width="150"
+						x="71"
+						y="43"
+						width="110"
 						height="20"
-						key="staticText-4"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+						key="staticText-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
 						<font/>
 					</textElement>
-				<text><![CDATA[]]></text>
+				<text><![CDATA[RECTOR(A)]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="230"
-						y="2"
-						width="152"
+						x="416"
+						y="45"
+						width="110"
 						height="20"
-						key="staticText-5"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+						key="staticText-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
 						<font/>
 					</textElement>
-				<text><![CDATA[]]></text>
+				<text><![CDATA[SECRETARIA]]></text>
 				</staticText>
 			</band>
 		</pageFooter>

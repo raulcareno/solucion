@@ -15,13 +15,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.persistencia.Cursos;
 import jcinform.persistencia.Disciplina;
+import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Equivalencias;
 import jcinform.persistencia.MateriaProfesor;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Notanotas;
 import jcinform.persistencia.Notas;
 import jcinform.persistencia.ParametrosGlobales;
+import jcinform.persistencia.Perfil;
 import jcinform.persistencia.Periodo;
+import jcinform.persistencia.Resultadoperfil;
 import jcinform.persistencia.Sistemacalificacion;
 import jcinform.procesos.Administrador;
 import org.joda.time.DateMidnight;
@@ -29,6 +32,8 @@ import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import sources.DisciplinaDataSource;
@@ -43,6 +48,7 @@ public class disciplina extends Rows {
         int tamanio = 0;
 //     if(listad==null){
         Session ses = Sessions.getCurrent();
+        Empleados empleado = (Empleados)ses.getAttribute("user");
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
@@ -154,6 +160,12 @@ public class disciplina extends Rows {
                         int dat = j - 2;
                         DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
                         DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
+                                if(empleado.getTipo().equals("Interna")){
+                                    inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
+                                    finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
+
+                                }
+
                         if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
                             label.setDisabled(false);
                             label.setStyle("color:black;font-weight:bold;width:30px;font:arial;font-size:12px;text-align:right;");
@@ -355,7 +367,144 @@ public class disciplina extends Rows {
 
 
     }
+ public void addPerfil(Cursos curso,Sistemacalificacion sistema) {
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Administrador adm = new Administrador();
 
+        getChildren().clear();
+        Label label = null;
+        Label label3 = null;
+
+        Listbox combo = new Listbox();
+        Listitem item = new Listitem("USUALMENTE");
+
+
+        List <Matriculas> matriculas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+curso.getCodigocur()+"' order by o.estudiante.apellido, o.estudiante.nombre ");
+          Row row = new Row();
+          try{
+        for (Iterator<Matriculas> it = matriculas.iterator(); it.hasNext();) {
+            Matriculas matriculas1 = it.next();
+            row = new Row();
+            String q = "SELECT valor FROM perfil LEFT JOIN resultadoperfil ON resultadoperfil.perfil = perfil.codigo and matricula = '"+matriculas1.getCodigomat()+"' " +
+                    " AND resultadoperfil.periodo = '"+sistema.getCodigosis()+"' " +
+                    "where perfil.periodo = '"+periodo.getCodigoper()+"' ";
+            System.out.println("QUERY;   "+q);
+            List nativo = adm.queryNativo(q);
+                        label3 = new Label(""+matriculas1.getCodigomat());
+                        row.appendChild(label3);
+                        label3 = new Label(""+matriculas1.getEstudiante().getApellido()+" "+matriculas1.getEstudiante().getNombre());
+                        row.appendChild(label3);
+
+                for (Iterator it1 = nativo.iterator(); it1.hasNext();) {
+
+                    Vector vec = (Vector) it1.next();
+                    Object dos = vec.get(0);
+                    if(dos == null){
+                        dos = "SIEMPRE";
+                    }
+                    combo = new Listbox();
+                    combo.setMold("select");
+                    combo.setRows(1);
+                    combo.setStyle("font-size:9px;");
+
+                    item = new Listitem("SIEMPRE");
+                    item.setValue("SIEMPRE");
+                    combo.appendChild(item);
+
+                    item = new Listitem("CASI SIEMPRE");
+                    item.setValue("CASI SIEMPRE");
+                    combo.appendChild(item);
+
+                    item = new Listitem("USUALMENTE");
+                    item.setValue("USUALMENTE");
+                    combo.appendChild(item);
+
+                    item = new Listitem("A VECES");
+                    item.setValue("A VECES");
+                    combo.appendChild(item);
+
+                    item = new Listitem("RARA VEZ");
+                    item.setValue("RARA VEZ");
+                    combo.appendChild(item);
+
+                    item = new Listitem("NUNCA");
+                    item.setValue("NUNCA");
+                    combo.appendChild(item);
+
+                    item = new Listitem(dos+"");
+                    item.setValue(dos+"");
+                    combo.appendChild(item);
+                    combo.setSelectedItem(item);
+
+                    row.appendChild(combo);
+
+
+                }
+//                    row = new Row();
+
+                    row.setParent(this);
+
+                nativo = null;
+
+        }
+
+
+          } catch (Exception ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+
+
+    }
+
+    public void guardarPerfil(List col, Cursos curso, Sistemacalificacion sistema ) {
+        System.out.println("INICIO EN: " + new Date());
+        Interpreter inter = new Interpreter();
+        Administrador adm = new Administrador();
+        secuencial sec = new secuencial();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List perfiles = adm.query("Select o from Perfil as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"' ");
+
+//        query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+
+        String del = "Delete from Resultadoperfil " +
+                "where matricula.curso.codigocur = '" + curso.getCodigocur() + "' " +
+                "and periodo.codigosis = '"+sistema.getCodigosis()+"' " ;
+        adm.ejecutaSql(del);
+        for (int i = 0; i < col.size(); i++) {
+            try {
+                Row object = (Row) col.get(i);
+                Resultadoperfil nota = new Resultadoperfil();
+
+                List labels = object.getChildren();
+                nota.setMatricula(new Matriculas(new Integer(((Label) labels.get(0)).getValue())));
+                nota.setPeriodo(sistema);
+
+                inter.set("nota", nota);
+
+                for(int j = 2; j < labels.size(); j++){
+                    Listbox  object1 = (Listbox) labels.get(j);
+                    String vaNota = object1.getSelectedItem().getValue().toString();
+                    nota.setValor(vaNota);
+                    nota.setPerfil((Perfil)perfiles.get(j-2));
+                    adm.guardar(nota);
+
+                }
+//                nota = (Resultadoperfil) inter.get("nota");
+
+
+//                adm.guardar(nota);
+            } catch (EvalError ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        System.out.println("FINALIZO EN: " + new Date());
+
+
+    }
+    
     public Double redondear(Double numero, int decimales) {
         try {
             BigDecimal d = new BigDecimal(numero);

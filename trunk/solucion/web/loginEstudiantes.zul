@@ -4,7 +4,7 @@
     <window id="win2" title="SERVICIOS...! " border="normal" width="350px">
         <zscript>
 
-<![CDATA[
+            <![CDATA[
             import jcinform.persistencia.Global;
             import bean.EventDAO;
             import java.util.ArrayList;
@@ -12,7 +12,7 @@
             import bean.Permisos;
             import jcinform.procesos.Administrador;
             import javax.faces.context.FacesContext;
-
+  import bean.email;
             Administrador adm = new Administrador();
 
     void verPantall(){
@@ -33,7 +33,7 @@
                 Session ses = Sessions.getCurrent();
                 ses.setAttribute("userRepresentante",user);
                 Executions.sendRedirect("indexRepresentantes.zul");
-            
+
             }else{
                 Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                 usuario.focus();
@@ -43,14 +43,68 @@
             }
 
   }
+
+
+       void recuperarClaves(){
+        email em = new email();
+        String tipo = pantallaRec.selectedItem.value+"";
+        
+        if(tipo.equals("e")){
+             String estado =  em.recuperarClaveE(usuarioRec.value);
+             if(estado.equals("nouser")){
+                    Messagebox.show("No existe el usuario: "+usuarioRec.value, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return; 
+               }
+
+                if(estado.contains("[OK]")){
+                        Messagebox.show("Se ha enviado a su correo "+ estado.replace("[OK]","")+" la clave y contraseña de su cuenta...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                        recuperarGrid.visible = false;
+                        login.visible = true;
+                }else{
+                        Messagebox.show("No se ha podido recuperar su clave...! \n Consulte con el administrador \n posible causa NO tiene email inscrito en el sistema \n o la institución no ha configurado correctamente el email de salida", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                }
+        }else{
+                String estado =  em.recuperarClaveR(usuarioRec.value);
+                 if(estado.equals("nouser")){
+                    Messagebox.show("No existe el usuario con cédula: "+usuarioRec.value, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return;
+               }
+
+                if(estado.contains("[OK]")){
+                        Messagebox.show("Se ha enviado a su correo "+ estado.replace("[OK]","")+" la clave y contraseña de su cuenta...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                        recuperarGrid.visible = false;
+                        login.visible = true;
+                }else{
+                        Messagebox.show("No se ha podido recuperar su clave...! \n Consulte con el administrador \n posible causa NO tiene email inscrito en el sistema \n o la institución no ha configurado correctamente el email de salida", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                }
+
+
+        }
+
+
+        }
+
+    void ver(){
+        String tipo = pantallaRec.selectedItem.value+"";
+            if(tipo.equals("e")){
+                 usuarioR.visible = true;
+                cedulaR.visible = false;
+                 
+            }else{
+                usuarioR.visible = false;
+                cedulaR.visible = true;
+                
+
+            }
+
+
+        }
+
+
                 ]]>
 
         </zscript>
-        <grid style="background:transparent;border:0px">
-            <columns sizable="true" menupopup="auto">
-                <column style="background:transparent;border:0px" label=" "  />
-                <column style="background:transparent;border:0px" label=" "/>
-            </columns>
+        <grid id="login" style="background:transparent;border:0px">
             <rows>
 
 
@@ -78,13 +132,58 @@
                     <span><button label="Ingresar" id="ingresarModulo"  image="/images/ingreso.gif"  onClick="usuario.getValue(); clave.getValue(); verPantall();"/>
                     <button label="Cancelar"  image="/images/eliminar.gif"   onClick="win2.detach()"/></span>
                 </row>
+                <row id="olvidado" align="center" spans="2"  style="background:transparent;border:0px">
+
+                    <toolbarbutton label="¿Perdiste tu contraseña haz click AQUI?" onClick='alert("Network")'>
+                        <attribute name="onClick">{
+                            recuperarGrid.visible= true;
+                            login.visible = false;
+                        }</attribute>
+                    </toolbarbutton>
+
+                </row>
                 <row spans="2">
                     <separator />
                 </row>
             </rows>
         </grid>
 
+        <grid visible="false" id="recuperarGrid" style="background-color:white">
+                    <rows>
 
+                <row style="background:transparent;border:0px"  spans="2">
+                    <separator bar="true"   />
+                </row>
+                <row style="background:transparent;border:0px">
+                    <span style="float:right"><label id="usuarioR" value="Usuario:(*):" style="color:red" />
+                    <label visible="false" id="cedulaR" value="Cédula:(*):" style="color:blue" /></span>
+                    <textbox   id="usuarioRec" constraint="no empty: Usuario/Cedula  necesaria para recuperar" maxlength="20" cols="15"  />
+                </row>
+                <row style="background:transparent;border:0px">
+                    <span style="float:right">¿Usted es? :</span>
+                    <radiogroup orient="vertical" onCheck="ver()" Id="pantallaRec" >
+                        <radio style="color:red"  value="e" selected="true" id="eRec" label="Estudiante"/>
+                        <radio style="color:blue"    value="r" label="Representante"  id="rRec" />
+                    </radiogroup>
+
+                </row>
+                <row style="background:transparent;border:0px"  spans="2">
+                    <separator bar="true"   />
+                </row>
+                <row spans="2"  style="background:transparent;border:0px" align="center">
+                    <span>
+                    <button label="Recuperar Clave" id="ingresarModulo2" onClick="usuarioRec.getValue(); recuperarClaves();"/>
+                    <button label="Cancelar"   image="/images/eliminar.gif" >
+                          <attribute name="onClick">{
+                            recuperarGrid.visible= false;
+                            login.visible = true;
+                        }</attribute>
+                    </button>
+                    </span>
+                </row>
+
+            </rows>
+        </grid>
 
 
 

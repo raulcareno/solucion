@@ -23,10 +23,8 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
 Permisos permiso = new Permisos();
 disciplina no = new disciplina();
 
-List equivalen = adm.query("Select o from Equivalencias as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  and o.grupo = 'DI'");
- /*List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  and o.faltas = true order by o.orden");
-Sistemacalificacion siste = new Sistemacalificacion(-1);
-sistemas.add(0,siste);*/
+List equivalen = adm.query("Select o from Perfil as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  ");
+
 List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
 List sistemas = new ArrayList();
  for (Iterator it = trimestres.iterator(); it.hasNext();) {
@@ -35,7 +33,7 @@ List sistemas = new ArrayList();
               " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"'  and o.faltas = true  order by o.orden");
 
               Sistemacalificacion stodos = new Sistemacalificacion();
-              stodos.setNombre("=>"+trime.getDescripcion()+"");
+              stodos.setNombre("==========>>>>> "+trime.getDescripcion()+"");
               int orden = 0;
               int codigo=0;
               if(sistemas0.size() >0 ){
@@ -59,13 +57,13 @@ List sistemas = new ArrayList();
 String[][] values = new String[equivalen.size()][2];
 
           for (int i=0;i<equivalen.size();i++) {
-             values[i][0]= ((Equivalencias)equivalen.get(i)).getAbreviatura();
-             values[i][1]= "number";
+             values[i][0]= ((Perfil)equivalen.get(i)).getNombre();
+             values[i][1]= "String";
            }
 guardar(){
     disciplina nso = new disciplina();
     disciplina r = (disciplina) datos.getRows();
-    nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),(Sistemacalificacion)sisis.selectedItem.value);
+    nso.guardarPerfil(r.getChildren(),((Cursos)curs.selectedItem.value),(Sistemacalificacion)sisis.selectedItem.value);
     int a = Messagebox.show("Registro Almacenado con éxito...! \n ", "Administrador ", Messagebox.OK, Messagebox.QUESTION);
  
 
@@ -97,7 +95,7 @@ doAdd(Cursos curso){
                 guardar2.disabled=true;
             }
 Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
-        filas.addFaltas(curso,sistema);
+        filas.addPerfil(curso,sistema);
 }
 ]]>
 </zscript>
@@ -134,11 +132,12 @@ Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
 
 </rows>
 </grid>
- <grid width="100%" id="datos"  >
+ <grid  id="datos"  >
          <columns>
-             <column width="10%" label ="Mat."/>
-             <column width="50%" label ="Estudiante"/>
-             <column forEach="${values}"  width="20px"  label="${each[0]}" align="right"  />
+             <column width="10px" label ="Mat."/>
+             <column width="400px" label ="Estudiante"/>
+             <column style="height:50px" forEach="${values}"  align="justify" label="${each[0]}" >
+             </column>
  
          </columns>
          <rows  id="filas" use="bean.disciplina">
