@@ -1,6 +1,8 @@
-<window border="normal" title="Cursos"  >
 
- <zscript>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window border="normal" title="Cursos"  >
+
+        <zscript>
 <![CDATA[
   import jcinform.persistencia.Global;
   import bean.EventDAO;
@@ -229,104 +231,116 @@ void cargarPar(Global g){
 }
         ]]>
 
-  </zscript>
+        </zscript>
+ 
 
-<groupbox mold="3d" >
-       <caption label="Agregar" />
+        <grid width="100%">
+            <rows>
 
-<grid width="100%">
-<rows>
-
-<row><span style="float:right"> Nombres(*):</span>
-        <textbox id="nombres"  maxlength="100" cols="40" readonly="true"   />   </row>
- <row> <span style="float:right"> Especialidad:</span>
-        
-		<listbox disabled="true" id="especialidadesL" width="350px" mold="select"
+                <row>
+                    <span style="float:right"> Nombres(*):</span>
+                    <textbox id="nombres"  maxlength="100" cols="40" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Especialidad:</span>
+                    <span>
+                        <listbox disabled="true" id="especialidadesL" width="300px" mold="select"
 		onSelect="cargarEspe(((Global)self.selectedItem.value));">
-			<listhead>
-				<listheader label="Especialidad"/>
-			</listhead>
-			<listitem selected="true"  forEach="${especialidades}" value="${each}">
-                  <listcell label="${each.descripcion}" />
+                            <listhead>
+                                <listheader label="Especialidad"/>
+                            </listhead>
+                            <listitem selected="true"  forEach="${especialidades}" value="${each}">
+                                <listcell label="${each.descripcion}" />
 
-            </listitem>
-		</listbox>
-
-
-</row>
-<row> <span style="float:right"> Paralelo:</span>
-         <span>
-		<listbox id="paralelosL"  disabled="true"  mold="select"
+                            </listitem>
+                        </listbox>
+                        <listbox id="paralelosL"  disabled="true"  mold="select"
                 onSelect="cargarPar(((Global)self.selectedItem.value));">
-			<listhead>
-				<listheader label="Paralelos"/>
-			</listhead>
-			<listitem selected="true" forEach="${paralelos}" value="${each}">
-                  <listcell label="${each.descripcion}" />
-            </listitem>
-		</listbox>
+                            <listhead>
+                                <listheader label="Paralelos"/>
+                            </listhead>
+                            <listitem selected="true" forEach="${paralelos}" value="${each}">
+                                <listcell label="${each.descripcion}" />
+                            </listitem>
+                        </listbox>
+                    </span>
 
+
+
+                </row>
  
-		 
-</span>
-</row>
 
-    <row> <span style="float:right"> Orden(*):</span>
-        <span>
-        <spinner value="1" cols="2" id="secuencia"  constraint="no negative,no zero,min 0 max 20" />
-            <!--intbox id="secuencia"  maxlength="60" cols="10" readonly="true"  /-->
-        Nota Aprobación(*):
-        <decimalbox id="aprobacion" maxlength="100" cols="10"  readonly="true"    />
-        </span>
-    </row>
+                <row>
+                    <span style="float:right"> Orden(*):</span>
+                    <span>
+                        <spinner value="1" cols="2" id="secuencia"  constraint="no negative,no zero,min 0 max 20" />
+                        <separator orient="vertical" bar="true"  />
+                        Aprueba con:
+                        <decimalbox id="aprobacion" maxlength="5" cols="3"  readonly="true"    /> pts.
+                        <separator orient="vertical" bar="true"  />
+                                Pierde con:
+                        <decimalbox id="minima" maxlength="5" cols="3"  readonly="true"  /> pts.
+                    </span>
+                </row>
 
-    <row> <span style="float:right"> Nota Mínima:</span>
-        <decimalbox id="minima" maxlength="30" cols="10"  readonly="true"  /> </row>
-    <row> <span style="float:right"> Inspector:</span>
-      <span>   <textbox id="inspector" maxlength="100" cols="35"  readonly="true"  />
+                <row>  </row>
+                <row>
+                    <span style="float:right"> Inspector:</span>
+                    <span>
+                        <textbox id="inspector" maxlength="100" cols="35"  readonly="true"  />
       CI: 
-        <textbox id="cedulaiden" maxlength="13" cols="13" readonly="true"  /></span>
-    </row>
-    <row> <span style="float:right"> Tutor:</span>
-     <span>   <textbox id="tutor" maxlength="100" cols="35"  readonly="true"  />
+                        <textbox id="cedulaiden" maxlength="13" cols="13" readonly="true"  />
+                    </span>
+                </row>
+                <row>
+                    <span style="float:right"> Tutor:</span>
+                    <span>
+                        <textbox id="tutor" maxlength="100" cols="35"  readonly="true"  />
       CI:
-        <textbox id="cedulatut" maxlength="13" cols="13" readonly="true"  /></span>
-   </row>
+                        <textbox id="cedulatut" maxlength="13" cols="13" readonly="true"  />
+                    </span>
+                </row>
 
- <row> <span style="float:right"> Pase de Notas:</span>
-<span>Desde: <datebox disabled="true" format="dd/MMM/yyyy" id="desde"/> Hasta:<datebox  disabled="true"  format="dd/MMM/yyyy"  id="hasta"/></span>
-         </row>
+                <row visible="false">
+                    <span style="float:right"> Pase de Notas:</span>
+                    <span>Desde:
+                        <datebox disabled="true" format="dd/MMM/yyyy" id="desde"/> Hasta:
+                        <datebox  disabled="true"  format="dd/MMM/yyyy"  id="hasta"/>
+                    </span>
+                </row>
+
+                <row spans="2">
+                    <span>
+                        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    </span>
+                </row>
+            </rows>
+        </grid>
+
+        <groupbox width="100%" mold="3d" >
+            <caption label="Busquedas" />
+            <vbox>
+                <hbox> Curso:
+                    <textbox id="buscarText"  maxlength="60" cols="40" />
+                    <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                </hbox>
+                <hbox width="100%">
+                    <listbox mold="paging" rows="10" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                        <listhead>
+                            <listheader label="Cod."/>
+                            <listheader label="Nombres"/>
+                        </listhead>
+                        <listitem  forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.codigocur}" />
+                            <listcell label="${each.especialidad}" />
+                        </listitem>
+                    </listbox>
+                </hbox>
+            </vbox>
+        </groupbox>
  
-</rows>
-</grid>
-<vbox>
-<vbox>
-<hbox>
-    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-</hbox>
-</vbox>
-</vbox>
- </groupbox>
-<groupbox width="100%" mold="3d" >
-    <caption label="Busquedas" />
-<vbox>
-    <hbox> Curso:  <textbox id="buscarText"  maxlength="60" cols="40" />  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
-    <hbox width="100%">
-         <listbox mold="paging" rows="10" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-			<listhead>
-                                <listheader label="Cod."/>
-                                <listheader label="Nombres"/>
-			</listhead>
-			<listitem  forEach="${allEvents}" value="${each}">
-                           <listcell label="${each.codigocur}" />
-                           <listcell label="${each.especialidad}" />
-            </listitem>
-		</listbox>
-    </hbox>
-</vbox>
-</groupbox>
- 
-</window>
+    </window>
+</zk>

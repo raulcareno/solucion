@@ -220,13 +220,14 @@ public JRDataSource internos(Cursos curso,String tipo){
 
 
         void showReport() {
-            //Preparing parameters
-
-//LCAS,LCA,LASI.LGEN,LGENT,LFEC,LMIN
+        //Preparing parameters
+        ver.visible = false;
+        reportese.visible = true;
+        //LCAS,LCA,LASI.LGEN,LGENT,LFEC,LMIN
             //conanioscumplidos
             String tipo = reporte.getSelectedItem().getValue();
 
-rep.setOpen(true);parametros.setOpen(false);
+//rep.setOpen(true);parametros.setOpen(false);
             Institucion insts = periodo.getInstitucion();
             Map parametros = new HashMap();
             parametros.put("denominacion", insts.getDenominacion());
@@ -428,11 +429,11 @@ mates.disabled = true;
 
 ]]>
         </zscript>
-        <panel width="100%" id="parametros"  height="100%" border="normal" collapsible="true" title="Parametros">
+        <panel width="100%" id="parametros"  height="100%" border="normal" collapsible="true" >
             <panelchildren>
-                <grid width="550px">
+                <grid id="ver"  width="100%"   height="100%" >
                     <rows>
-                        <row>
+                        <row  style="background:transparent;border:0px" >
                             <span style="float:right"> Reporte:</span>
                             <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="300px"  mold="select" >
                                 <listitem  label="[Seleccione]" value="-1" selected="true" />
@@ -467,7 +468,7 @@ mates.disabled = true;
                             </listbox>
                         </row>
 
-                        <row>
+                        <row style="background:transparent;border:0px" >
                             <span style="float:right"> Curso:</span>
                             <listbox id="curs" width="400px"  mold="select"
                                      onSelect="buscar2(((Cursos)self.selectedItem.value));">
@@ -475,7 +476,7 @@ mates.disabled = true;
                                 <listitem forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
                             </listbox>
                         </row>
-                        <row visible="false">
+                        <row  style="background:transparent;border:0px" visible="false">
                             <span style="float:right"> Estudiantes: </span>
 
                             <listbox id="mates" width="300px"  mold="select" >
@@ -486,36 +487,47 @@ mates.disabled = true;
 
 
                         </row>
-                        <row>
+                        <row style="background:transparent;border:0px" >
                             <span style="float:right"> Titulo: </span>
-                            <textbox id="titulo" width="280px" />
-                        </row>
-
-                        <row>
-                            <span style="float:right"> Formato:</span>
+                            <div><textbox id="titulo" width="280px" />
                             <span>
                                 <listbox id="format" mold="select" onSelect="showReport();" >
                                     <listitem label="PDF" value="pdf" selected="true" />
                                     <listitem label="XML" value="xml" />
                                     <listitem label="HTML" value="html" />
-                                    <listitem label="Word (RTF)" value="rtf" />
+                                    <listitem label="Word(RTF)" value="rtf" />
                                     <listitem label="Excel" value="xls" />
-                                    <listitem label="Excel (JXL)" value="jxl" />
+                                    <listitem label="Excel(JXL)" value="jxl" />
                                     <listitem label="CSV" value="csv" />
-                                    <listitem label="OpenOffice (ODT)" value="odt" unless="false"/>
+                                    <listitem label="Op.Off. ODT" value="odt" unless="false"/>
                                 </listbox>
                                 <button label="Ejecutar!" onClick='showReport();'/>
                             </span>
+                            </div>
                         </row>
+                       
                     </rows>
                 </grid>
+                 <grid id="reportese" visible="false" width="100%" height="100%">
+                     <rows>
+                         <row   spans="2">
+                             <button  image="/images/eliminar.gif"  label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);'/>
+                         </row>
+
+                        <row   spans="2">
+                            <div height="280px">
+                                <jasperreport width="100%" height="100%" id="report" />
+                            </div>
+
+                        </row>
+
+                    </rows>
+                </grid>
+
             </panelchildren>
+
         </panel>
-        <panel width="100%" onOpen="parametros.setOpen(true);" id="rep"  height="90%" border="normal" collapsible="true" maximizable="true"   title="Reporte">
-            <panelchildren>
-                <jasperreport id="report" />
-            </panelchildren>
-        </panel>
+        
 
 
 
