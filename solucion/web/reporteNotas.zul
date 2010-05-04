@@ -301,6 +301,10 @@ public JRDataSource profesores(){
                     
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc("WEB-INF/reportes/cuadrofinal.jasper");
+            }else if(tipo.equals("CNF2")){
+
+                    datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    report.setSrc("WEB-INF/reportes/cuadrofinal2.jasper");
             }else if(tipo.equals("AG")){
                     datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"original");
                     report.setSrc("WEB-INF/reportes/actaGrado.jasper");
@@ -317,7 +321,7 @@ public JRDataSource profesores(){
             }else if(tipo.equals("LIB2")){
 
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
-                    report.setSrc("WEB-INF/reportes/libreta.jasper");
+                    report.setSrc("WEB-INF/reportes/libreta2.jasper");
                     parametros.put("pathSubRel", "reportes/libreta_subPequeno.jasper");
                     parametros.put("pathSubRel2", "reportes/libreta_subFaltas.jasper");
 
@@ -395,7 +399,7 @@ void campos(String valor){
         }else if(valor.equals("CAG")){
             curs.disabled = false;
             titulo.value= "Copia de Acta de Grado";
-        }else if(valor.equals("CNF")){
+        }else if(valor.equals("CNF") || valor.equals("CNF2") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
             titulo.value= "Cuadro de Final de Calificaciones";
@@ -425,6 +429,7 @@ void campos(String valor){
                                     <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
                                     <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
                                     <listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
+                                    <listitem  id="CNF2" label="Cuadro Juntas o Final (2)" value="CNF2" />
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
                                     <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
                                     <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
@@ -529,7 +534,7 @@ void campos(String valor){
                          </row>
 
                         <row   spans="2">
-                            <div height="280px">
+                            <div height="380px">
                                 <jasperreport width="100%" height="100%" id="report" />
                             </div>
 
@@ -553,6 +558,7 @@ void cargando(){
         CCAL2.visible = per.verificarPermisoReporte("CCAL2", "Ingresar");
         CCAL3.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
 		CNF.visible = per.verificarPermisoReporte("CNF", "Ingresar");
+        CNF2.visible = per.verificarPermisoReporte("CNF", "Ingresar");
 		CDIS.visible = per.verificarPermisoReporte("CDIS", "Ingresar");
         AG.visible = per.verificarPermisoReporte("AG", "Ingresar");
         CAG.visible = per.verificarPermisoReporte("CAG", "Ingresar");

@@ -515,7 +515,7 @@ mates.disabled = true;
                          </row>
 
                         <row   spans="2">
-                            <div height="280px">
+                            <div height="380px">
                                 <jasperreport width="100%" height="100%" id="report" />
                             </div>
 
