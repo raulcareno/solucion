@@ -77,7 +77,7 @@ public class disciplina extends Rows {
         if (materia.getMateria().getCodigo().equals(0)) {
             esDiscp = "false";
         }
-        String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre,'[',matriculas.estado,']'),"
+        String q = "Select distinct matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre,'[',matriculas.estado,']'),"
                 + " " + query + " from matriculas "
                 + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                 + "left join notas on matriculas.codigomat = notas.matricula "
@@ -533,7 +533,7 @@ public class disciplina extends Rows {
         Decimalbox label = null;
         Label label3 = null;
         String vacio = "";
-        String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre),"
+        String q = "Select distinct matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre),"
                 + " " + query + " from matriculas "
                 + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                 + "left join disciplina on matriculas.codigomat = disciplina.matricula and disciplina.sistema = '" + sistema.getCodigosis() + "'  "

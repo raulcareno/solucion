@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window   onCreate="cargando();"   height="100%"  title="Reporte de Notas"
+<window   onCreate="cargando();"   height="100%" 
   border="normal"
    >
-<zk xmlns="http://www.zkoss.org/2005/zul">
+    <zk xmlns="http://www.zkoss.org/2005/zul">
 
-	<zscript>
+        <zscript>
 <![CDATA[
 import sources.CustomDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -200,14 +200,15 @@ public JRDataSource profesores(){
  
 
  void showReport() {
- 
+    
  String tipo = reporte.getSelectedItem().getValue();
            if(tipo.equals("linea")){
                 return;
            }
-           
+    ver.visible = false;
+        reportese.visible = true;
      
-           rep.setOpen(true);parametros.setOpen(false); 
+           //rep.setOpen(true);parametros.setOpen(false);
             Institucion insts = periodo.getInstitucion();
              
             Map parametros = new HashMap();
@@ -404,125 +405,143 @@ void campos(String valor){
         }
 }
 ]]>
-	</zscript>
-<panel width="100%" id="parametros"  height="60%" border="normal"
-collapsible="true" title="Parametros">
-				<panelchildren>
-<grid  style="background:transparent;border:1px" width="550px">
-<rows>
-<row  style="background:transparent;border:0px">
+        </zscript>
+        <panel width="100%" id="parametros"  height="100%" border="normal">
+            <panelchildren>
+                <grid  id="ver" style="background:transparent;border:1px" width="550px">
+                    <rows>
+                        <row  style="background:transparent;border:0px">
      
-<span style="float:right"> Reporte:</span>
-<span>
-<listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="300px"  mold="select" >
-		<listitem label="[Seleccione]" value="-1" selected="true" />
+                            <span style="float:right"> Reporte:</span>
+                            <span>
+                                <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="300px"  mold="select" >
+                                    <listitem label="[Seleccione]" value="-1" selected="true" />
         
-		<listitem id="NMAT" label="Cuadro de Notas por Materia" value="NMAT" />
-        <listitem id="NMATD"  label="Cuadro de Notas por Materia Disciplina" value="NMATD" />
-        <listitem  id="LIB" label="Libreta de Calificaciones" value="LIB" />
-        <listitem  id="LIB2" label="Libreta de Calificaciones(2)" value="LIB2" />
-		<listitem id="CCAL"  label="Cuadro de Calificaciones" value="CCAL" />
-        <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
-        <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
-		<listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
-		<listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
-        <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
-        <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
-        <listitem  id="AG" label="Acta de Grado" value="AG"/>
-        <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
-        <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
-        <listitem  id="CERD" label="Certificado de Disciplina" value="CERD"/>
-        <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
+                                    <listitem id="NMAT" label="Cuadro de Notas por Materia" value="NMAT" />
+                                    <listitem id="NMATD"  label="Cuadro de Notas por Materia Disciplina" value="NMATD" />
+                                    <listitem  id="LIB" label="Libreta de Calificaciones" value="LIB" />
+                                    <listitem  id="LIB2" label="Libreta de Calificaciones(2)" value="LIB2" />
+                                    <listitem id="CCAL"  label="Cuadro de Calificaciones" value="CCAL" />
+                                    <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
+                                    <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
+                                    <listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
+                                    <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
+                                    <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
+                                    <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
+                                    <listitem  id="AG" label="Acta de Grado" value="AG"/>
+                                    <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
+                                    <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
+                                    <listitem  id="CERD" label="Certificado de Disciplina" value="CERD"/>
+                                    <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
 
-        <listitem  id="linea" label="=========================" value="linea" />
+                                    <listitem  id="linea" label="=========================" value="linea" />
          <!--listitem  label="Mejor egresado(*)" value="CDIS"/>
         <listitem label="Cuadro juntas de curso(*)" value="CDIS"/>
         <listitem label="Cuadro de Supletorios(*)" value="CDIS"/>
         <listitem label="Cuadro de Mejores Estudiantes por curso(*)" value="CDIS"/>
         <listitem label="Cuadro de Promedios Finales(*)" value="CDIS"/>
         <listitem label="Promedios Generales de 1ro a 5to (*)" value="CDIS"/-->
-        <listitem  id="DIS" label="Distributivo" value="DIS" />
-        <listitem  id="DIS2" label="Profesores por Curso" value="DIS2" />
-        <listitem  id="PROF" label="Listado de Profesores" value="PROF" />
-        <listitem  id="PROFC" label="Listado de Profesores completo" value="PROFC" />
+                                    <listitem  id="DIS" label="Distributivo" value="DIS" />
+                                    <listitem  id="DIS2" label="Profesores por Curso" value="DIS2" />
+                                    <listitem  id="PROF" label="Listado de Profesores" value="PROF" />
+                                    <listitem  id="PROFC" label="Listado de Profesores completo" value="PROFC" />
         
-	</listbox>
+                                </listbox>
     
-    </span>
-</row>
-<row  style="background:transparent;border:0px" id="fila" visible="false">
-    <span style="float:right;color:blue"> Rango Notas:</span>
-    <span style="color:blue"> Desde: <decimalbox id="desde" value="0" cols="5" /> Hasta: <decimalbox id="hasta" value="20" cols="5"/></span>
-</row>
+                            </span>
+                        </row>
+                        <row  style="background:transparent;border:0px" id="fila" visible="false">
+                            <span style="float:right;color:blue"> Rango Notas:</span>
+                            <span style="color:blue"> Desde:
+                                <decimalbox id="desde" value="0" cols="5" /> Hasta:
+                                <decimalbox id="hasta" value="20" cols="5"/>
+                            </span>
+                        </row>
 
 
-<row  style="background:transparent;border:0px">
-<span style="float:right"> Curso:</span>
-        <listbox id="curs" width="300px"  mold="select" onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
-            <listitem   forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
-        </listbox>
- </row>
- <row  style="background:transparent;border:0px">
-<span style="float:right"> Estudiantes: </span>
-                                <listbox id="estudiantesCombo" width="300px"  mold="select" >
-                                    <listitem    forEach="${estudiantes}" value="${each}" label="${each.apellidos}" />
+                        <row  style="background:transparent;border:0px">
+                            <span style="float:right"> Curso:</span>
+                            <listbox id="curs" width="300px"  mold="select" onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
+                                <listitem   forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
+                            </listbox>
+                        </row>
+                        <row  style="background:transparent;border:0px">
+                            <span style="float:right"> Estudiantes: </span>
+                            <listbox id="estudiantesCombo" width="300px"  mold="select" >
+                                <listitem    forEach="${estudiantes}" value="${each}" label="${each.apellidos}" />
 
-                                </listbox>
-</row>
-<row  style="background:transparent;border:0px" id="filamodalidad" visible="false">
-    <span style="float:right;color:blue"> MODALIDAD:</span>
-    <span style="color:blue"> <textbox id="modalidad" value="BÁSICA"  cols="20" /></span>
-</row>
-<row  style="background:transparent;border:0px">
-<span style="float:right"> Materias: </span>
-                                <listbox id="materiasCombo" width="300px"  mold="select" >
-                                    <listitem forEach="${materias}" value="${each}">
-                                        <listcell label="${each.descripcion}" />
+                            </listbox>
+                        </row>
+                        <row  style="background:transparent;border:0px" id="filamodalidad" visible="false">
+                            <span style="float:right;color:blue"> MODALIDAD:</span>
+                            <span style="color:blue">
+                                <textbox id="modalidad" value="BÁSICA"  cols="20" />
+                            </span>
+                        </row>
+                        <row  style="background:transparent;border:0px">
+                            <span style="float:right"> Materias: </span>
+                            <listbox id="materiasCombo" width="300px"  mold="select" >
+                                <listitem forEach="${materias}" value="${each}">
+                                    <listcell label="${each.descripcion}" />
                                         
-                                    </listitem>
-                                </listbox>
-</row>
-<row  style="background:transparent;border:0px" >
-<span style="float:right"> Sistema Notas: </span>
+                                </listitem>
+                            </listbox>
+                        </row>
+                        <row  style="background:transparent;border:0px" >
+                            <span style="float:right"> Sistema Notas: </span>
 
-                                <listbox id="sistemasCombo" width="300px"  mold="select" >
-                                    <listitem  forEach="${sistemas}" value="${each}">
-                                        <listcell label="${each.nombre}" />
-                                    </listitem>
-                                </listbox>
-</row>
+                            <listbox id="sistemasCombo" width="300px"  mold="select" >
+                                <listitem  forEach="${sistemas}" value="${each}">
+                                    <listcell label="${each.nombre}" />
+                                </listitem>
+                            </listbox>
+                        </row>
 
-<row  style="background:transparent;border:0px">
-    <span style="float:right"> Título:</span>
-    <textbox id="titulo" value=" " cols="35"/>
-</row>
-<row  style="background:transparent;border:0px">
-<span style="float:right"> Formato:</span>
- <span> <listbox id="format" mold="select" onSelect="showReport();" >
-		<listitem label="PDF" value="pdf" selected="true" />
-		<listitem label="XML" value="xml" />
-		<listitem label="HTML" value="html" />
-		<listitem label="Word (RTF)" value="rtf" />
-		<listitem label="Excel" value="xls" />
-		<listitem label="Excel (JXL)" value="jxl" />
-		<listitem label="CSV" value="csv" />
-		<listitem label="OpenOffice (ODT)" value="odt" unless="false"/>
-	</listbox>
-    <button label="Ejecutar!" onClick='showReport();'/></span>
-</row>
+                        <row  style="background:transparent;border:0px">
+                            <span style="float:right"> Título:</span>
+                            <span>
+                                <textbox id="titulo" value=" " cols="30"/>
+                                <span>
+                                    <listbox id="format" mold="select" onSelect="showReport();" >
+                                        <listitem label="PDF" value="pdf" selected="true" />
+                                        <listitem label="XML" value="xml" />
+                                        <listitem label="HTML" value="html" />
+                                        <listitem label="Word (RTF)" value="rtf" />
+                                        <listitem label="Excel" value="xls" />
+                                        <listitem label="Excel (JXL)" value="jxl" />
+                                        <listitem label="CSV" value="csv" />
+                                        <listitem label="Op.Off(ODT)" value="odt" unless="false"/>
+                                    </listbox>
+                                    <button label="Ejecutar!" onClick='showReport();'/>
+                                </span>
 
-</rows>
-</grid>
-</panelchildren>
-</panel>
-<panel width="100%" id="rep"  onOpen="parametros.setOpen(true);"  height="90%" border="normal"
-collapsible="true" title="Reporte">
-				<panelchildren>
-	<jasperreport id="report" />
- </panelchildren>
- </panel>
+                            </span>
+                        </row>
 
-<zscript>
+                      
+                    </rows>
+                </grid>
+
+                 <grid id="reportese" visible="false" width="100%" height="100%">
+                     <rows>
+                         <row   spans="2">
+                             <button  image="/images/eliminar.gif"  label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true)'/>
+                         </row>
+
+                        <row   spans="2">
+                            <div height="280px">
+                                <jasperreport width="100%" height="100%" id="report" />
+                            </div>
+
+                        </row>
+
+                    </rows>
+                </grid>
+            </panelchildren>
+        </panel>
+
+
+        <zscript>
 import bean.Permisos;
 Permisos per = new Permisos();
 void cargando(){
@@ -550,8 +569,8 @@ void cargando(){
         MEJ.visible = per.verificarPermisoReporte("MEJ", "Ingresar");
 
 }
-</zscript>
+        </zscript>
 
 
-</zk>
+    </zk>
 </window>

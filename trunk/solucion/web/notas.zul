@@ -275,7 +275,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                             <listbox id="sistemasCombo" width="300px"  mold="select" >
                                 <listitem selected="true"  forEach="${sistemas}" value="${each}">
-                                    <listcell label="${each.nombre}" />
+                                    <listcell label="${each.trimestre} - ${each.nombre}" />
                                 </listitem>
                             </listbox>
                             <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
