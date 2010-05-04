@@ -45,7 +45,11 @@ public class pendientes extends Rows {
             label3.setParent(row);
 
             label = new Checkbox();
+            try{
             label.setChecked(vec.getPendientes());
+            }catch(Exception e){
+                label.setChecked(false);
+            }
             label.setParent(row);
 
             row.setParent(this);
