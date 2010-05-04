@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <window id="win2" title="SERVICIOS...! " border="normal" width="350px">
+    <style>
+.estil{
+	height:100%;
+    background-image: url(./images/fondo.png);
+    background-repeat: repeat-y;
+    background-repeat: repeat-x;
+
+
+}
+</style>
+
+    <div  class="estil" >
+    <window mode="overlapped" id="win2" title="SERVICIOS...! "  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal" width="350px">
         <zscript>
 
             <![CDATA[
@@ -130,7 +142,7 @@
 
                 <row spans="2"  align="center" style="background:transparent;border:0px">
                     <span><button label="Ingresar" id="ingresarModulo"  image="/images/ingreso.gif"  onClick="usuario.getValue(); clave.getValue(); verPantall();"/>
-                    <button label="Cancelar"  image="/images/eliminar.gif"   onClick="win2.detach()"/></span>
+                    <!--button label="Cancelar"  image="/images/eliminar.gif"   onClick="win2.detach()"/--></span>
                 </row>
                 <row id="olvidado" align="center" spans="2"  style="background:transparent;border:0px">
 
@@ -142,7 +154,7 @@
                     </toolbarbutton>
 
                 </row>
-                <row spans="2">
+                <row spans="2"  style="background:transparent;border:0px">
                     <separator />
                 </row>
             </rows>
@@ -184,8 +196,22 @@
 
             </rows>
         </grid>
+<grid>
+    <rows>
+           <row  style="background:white;border:0px" align="center" spans="2">
+                 <span>
+                <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)5103 843 - 080 16 22 11 "/>
+                <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
+                </span>
+             </row>
+              
+    </rows>
+
+
+</grid>
 
 
 
     </window>
+    </div>
 </zk>
