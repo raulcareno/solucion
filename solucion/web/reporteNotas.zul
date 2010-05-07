@@ -534,7 +534,7 @@ void campos(String valor){
                          </row>
 
                         <row   spans="2">
-                            <div height="380px">
+                            <div height="600px">
                                 <jasperreport width="100%" height="100%" id="report" />
                             </div>
 
