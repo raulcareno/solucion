@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<zk  xmlns="http://www.zkoss.org/2005/zul">
-    <window    title="Registro de Empleados/Profesores ...::..."  border="normal" >
 
+
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+<?script type="text/javascript" src="/js/jquery.maskedinput.js"?>
+<?script type="text/javascript" src="/js/jquery.min.js"?>
+<?script type="text/javascript" src="/js/masks.js"?>
+    <window    title="Registro de Empleados/Profesores ...::..."  border="normal" >
+       <attribute name="onCreate">
+            String command = "applyPhoneMask('"+telefono.getUuid()+"');";
+            Clients.evalJavaScript(command);
+      </attribute>
         <zscript>
             <![CDATA[
   import jcinform.persistencia.Global;

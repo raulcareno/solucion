@@ -1,0 +1,28 @@
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+<?script type="text/javascript" src="/js/jquery.js"?>
+<?script type="text/javascript" src="/js/jquery.maskedinput.js"?>
+<script type="text/javascript">
+	   jQuery.noConflict();
+		function applyMask(compId, mask){
+			compId = '#' + compId;
+			jQuery(compId).mask(mask);
+     
+
+		}
+</script>
+<window title="My Win">
+	<attribute name="onCreate">
+		String maskCommand = "applyMask('" + zipCode.getUuid() + "','99-999-9999');applyMask('" + phone.getUuid() + "','(999) 999-999')";
+		Clients.evalJavaScript(maskCommand);
+	</attribute>
+	<textbox tooltip="estoes "  id="zipCode" >
+	</textbox>
+	<textbox id="phone" >
+	</textbox>
+    <button><attribute name="onClick">{
+    phone.value ="080201522";
+            }
+        </attribute>
+        </button>
+</window>
+</zk>

@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
+import org.zkoss.zul.Textbox;
 
 
 //import org.zkoss.util.media.Media;
@@ -25,6 +26,7 @@ public class borrar {
 
        public static void main(String[] args) {
            String a = "ms";
+           
            StringBuffer st = new StringBuffer();
                 st.append("m");
                 st.append("s");

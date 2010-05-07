@@ -8,6 +8,7 @@ import jcinform.persistencia.Cursos;
 import jcinform.persistencia.Empleadoperiodo;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Matriculas;
+import jcinform.persistencia.ParametrosGlobales;
 import jcinform.persistencia.Periodo;
 import jcinform.procesos.Administrador;
 
@@ -176,6 +177,11 @@ public class email {
         Cursos obj = curso;
                 try
                 {
+                    Administrador adm = new Administrador();
+                    List  parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'IPPUBLICA'");
+                    ParametrosGlobales para = (ParametrosGlobales) parame.get(0);
+                    String ip = para.getCvalor();
+                    mensaje = mensaje.replace("/solucion","http://"+ ip+"/solucion");
                 String direcciones = correos;
                 StringTokenizer tokens=new StringTokenizer(direcciones, ";");
                 ArrayList matriculados2 = new ArrayList();
@@ -327,6 +333,7 @@ class EnviarAutenticacion
             }else{
                 msg.setFrom(new InternetAddress(""+emailInstitucion));
             }
+            
             msg.setText(mensaje,"ISO-8859-1","html");
             //msg.set
             //msg.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
