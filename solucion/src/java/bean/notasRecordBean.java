@@ -118,7 +118,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
 
 
                                 label.setDisabled(false);
-                                label.setStyle("width:30px;font:arial;font-size:12px;text-align:right;");
+                                label.setStyle("width:40px;font:arial;font-size:11px;text-align:right;");
                     
                      row.appendChild(label);
                 }
