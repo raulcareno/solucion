@@ -1,0 +1,112 @@
+<window     width="650px" border="normal">
+    <zscript>
+        <![CDATA[
+
+  import bean.EventDAO;
+  import java.util.ArrayList;
+    import jcinform.persistencia.*;
+  import java.util.Iterator;
+  import java.util.UUID;
+  import jcinform.procesos.Administrador;
+    import bean.Permisos;
+    import bean.pendientes;
+
+//globales
+Global global = new Global();
+EventDAO evtdao = new EventDAO();
+List perfiles = evtdao.perfiles();
+Permisos permiso = new Permisos();
+Administrador adm = new Administrador();
+
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+List accesos = new ArrayList();
+int w = 0;
+ ListModel model = new SimpleListModel(accesos.toArray());
+//globales
+List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+
+    void guardar(){
+        if(verificar("Agregar")){
+        pendientes nso = new pendientes();
+        pendientes r = (pendientes) datos.getRows();
+        String resultado = nso.guardar2(r.getChildren());
+        if(resultado.equals("ok")){
+           permiso.auditar("Pendientes","Guardar",""+curs.selectedItem.value);
+            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+         }else{
+            Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         }
+
+        }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+    }
+
+
+  Boolean verificar(String accion){
+        return permiso.verificarPermiso("Accesos",accion);
+
+    }
+
+
+    void busqueda(Cursos p){
+
+                filas.addRow2(p);
+
+    }
+
+        ]]>
+    </zscript>
+
+    <groupbox mold="3d" >
+        <caption label="Bloquear estudiantes para el consultar notas" />
+        <vbox>
+
+            <hbox>
+
+                <span style="float:right"> Cursos(*):</span>
+                <bandbox  width="400px" readonly="true"  id="bd1">
+                    <bandpopup>
+                        <vbox>
+                            <listbox id="curs" width="420px"
+                                     onSelect="bd1.value=self.selectedItem.label;busqueda(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
+
+                                <listitem forEach="${cursos}" value="${each}">
+                                    <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                                </listitem>
+                            </listbox>
+                        </vbox>
+                    </bandpopup>
+                </bandbox>
+
+                <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
+            </hbox>
+        </vbox>
+
+
+    </groupbox>
+
+
+    <vbox>
+
+        <hbox>
+
+
+        </hbox>
+    </vbox>
+
+    <grid  id="datos" >
+        <columns>
+            <column  label="Cod"/>
+            <column  label="Estudiantes"/>
+            <column  label="Identificacion"/>
+            <column  label="Dirección"/>
+            <column  label="Teléfono"/>
+        </columns>
+        <rows id="filas" use="bean.pendientes">
+        </rows>
+    </grid>
+</window>

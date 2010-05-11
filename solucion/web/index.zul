@@ -195,6 +195,7 @@
 
                                         <treeitem  id="Cursos" label="Cursos" image="/images/cursos.png" value="/cursos.zul"/>
                                         <treeitem id="Matricular" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" />
+                                        <treeitem id="Actualizacion" label="Actualizar" image="/images/pensum.png"  value="/actualizacion.zul" />
                                         <treeitem id="Pendientes" label="Pendientes" image="/images/dinero.gif"   value="/pendientes.zul" />
                                         <treeitem id="Reportes_Estudiantes" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
                                         <!--treeitem id="Rubros" label="Asignar Rubros"  image="/images/resultados.png" value="/rubros.zul" /-->
