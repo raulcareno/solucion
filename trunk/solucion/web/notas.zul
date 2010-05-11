@@ -91,18 +91,20 @@ nso.calcularDisciplina(((Cursos)curs.selectedItem.value),"N1");
     }
 
 guardar(){
-  
-
+  guardar1.disabled=true;
+  guardar2.disabled=false;
     notas nso = new notas();
     notas r = (notas) datos.getRows();
         String resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
         if(resultado.equals("ok")){
-            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
             doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
             permiso.auditar("Notas Internas","Guardar",""+((Cursos)curs.selectedItem.value)+" "+((MateriaProfesor)mates.selectedItem.value).getMateria());
          }else{
             Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          }
+   guardar1.disabled=false;
+   guardar2.disabled=false;
 
 }
 

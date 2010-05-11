@@ -75,9 +75,10 @@ guardar(){
     notas r = (notas) datos.getRows();
 String resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
 if(resultado.equals("ok")){
+     doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
     Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         permiso.auditar("Notas","Guardar",""+((Cursos)curs.selectedItem.value)+" "+((MateriaProfesor)mates.selectedItem.value).getMateria());
-        doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+        
  }else{
     Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
  }

@@ -20,6 +20,10 @@ private MateriaProfesor mprofesor;
 private Sistemacalificacion sistema;
 private Object nota;
 
+private Object optativa;
+private Double aprovechamiento;
+private Double disciplina;
+
 //para examenes de grado
 private Cursos curso;
 private String profesor;
@@ -31,6 +35,8 @@ private Integer contador;
     public MateriaProfesor getMprofesor() {
         return mprofesor;
     }
+
+
 
 
 
@@ -161,6 +167,30 @@ private Integer contador;
 
     public void setContador(Integer contador) {
         this.contador = contador;
+    }
+
+    public Double getAprovechamiento() {
+        return aprovechamiento;
+    }
+
+    public void setAprovechamiento(Double aprovechamiento) {
+        this.aprovechamiento = aprovechamiento;
+    }
+
+    public Object getOptativa() {
+        return optativa;
+    }
+
+    public void setOptativa(Object optativa) {
+        this.optativa = optativa;
+    }
+
+    public Double getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(Double disciplina) {
+        this.disciplina = disciplina;
     }
 
 
