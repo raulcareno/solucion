@@ -83,7 +83,7 @@ public class notas extends Rows {
     public void addRow(Cursos curso, MateriaProfesor materia) {
         int tamanio = 0;
         Session ses = Sessions.getCurrent();
-        Empleados empleado = (Empleados)ses.getAttribute("user");
+        Empleados empleado = (Empleados) ses.getAttribute("user");
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
 //     if(listad==null){
         Administrador adm = new Administrador();
@@ -112,7 +112,7 @@ public class notas extends Rows {
                 + "and notas.materia = '" + materia.getMateria().getCodigo() + "' and notas.disciplina = false  "
                 + "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase'  or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' ) "
                 + "order by estudiantes.apellido";
-        System.out.println(""+q);
+        System.out.println("" + q);
         ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1), ParametrosGlobales.class);
         if (para.getCvalor().equals("P")) {
             q = "Select matriculas.codigomat,(estudiantes.apellido,' ',estudiantes.nombre,'(',matriculas.estado,')'), " + query + "  from matriculas "
@@ -125,9 +125,9 @@ public class notas extends Rows {
 //        System.out.println("" + q);
         List nativo = adm.queryNativo(q);
         Row row = new Row();
-String Shabilitado = "color:black;font-weight:bold;width:30px;font:arial;font-size:12px;text-align:right;";
-String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
-String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
+        String Shabilitado = "color:black;font-weight:bold;width:30px;font:arial;font-size:12px;text-align:right;";
+        String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
+        String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             row = new Row();
@@ -174,7 +174,7 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                         label3.setStyle("color:red;width:300px;font-size:11px;font:arial; ");
                         color = "red";
                         deshabilitado = true;
-                    }else if (label3.getValue().contains("(R)")) {
+                    } else if (label3.getValue().contains("(R)")) {
                         label3.setStyle("color:blue;width:300px;font-size:11px;font:arial; ");
                         color = "blue";
                         deshabilitado = true;
@@ -188,11 +188,11 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                         int dat = j - 2;
                         DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
                         DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
-                                if(empleado.getTipo().equals("Interna")){
-                                    inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
-                                    finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
-                                    
-                                }
+                        if (empleado.getTipo().equals("Interna")) {
+                            inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
+                            finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
+
+                        }
                         if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
                             label.setDisabled(false);
                             label.setStyle(Shabilitado);
@@ -203,11 +203,11 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                         }
                         try {
                             Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
-                            if(empleado.getTipo().equals("Interna")){
-                                    fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainti();
+                            if (empleado.getTipo().equals("Interna")) {
+                                fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainti();
 
 
-                                }
+                            }
 //                            System.out.println("FECHA INICIAL: "+fecha);
                             if (fecha.getDate() == 0) {
                                 label.setDisabled(true);
@@ -220,7 +220,7 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
 
                     } else {
                         label.setDisabled(true);
-                        label.setStyle("color: "+color+" !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+                        label.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
 
                     }
 
@@ -1069,6 +1069,27 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true "
                 + "order by o.sistema.orden ");
 
+        List<Notanotas> notaFinal = adm.query("Select o from Notanotas as o "
+                + "where  o.sistema.codigosis = '"+sistema.getCodigosis()+"'  "
+                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true");
+        if(notaFinal.size()<=0){
+            try {
+                Messagebox.show("No ha parametrizado el Promedio Final en Aportes...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                return null;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+            Notanotas nfinal = notaFinal.get(0);
+        if (notas.size() <= 0) {
+            try {
+                Messagebox.show("No han nada que imprimir Aportes en 0 ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                return null;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
 
@@ -1079,6 +1100,7 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
         String query = "";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
+
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         String[] values = new String[sistemas.size()];
@@ -1103,6 +1125,8 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
             Matriculas matriculaNo = null;
             Global materiaNo = null;
             MateriaProfesor mprofesor = null;
+            Double aprovecha = 0.0;
+            Double disciplina = 0.0;
             int ksis = 0;
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
@@ -1125,6 +1149,8 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                         nota.setNota(equivalencia(dos, equivalencias));
                     } else {
                         nota.setNota(val.toString());
+//                        aprovecha+=val;
+//                        System.out.println(matriculaNo+":::"+aprovecha);
                         if (val == 0.0) {
                             nota.setNota("");
                         }
@@ -1136,10 +1162,23 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
 
                     nota.setMprofesor(mprofesor);
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
+                    nota.setAprovechamiento(aprovecha);
+                    nota.setDisciplina(disciplina);
                     lisNotas.add(nota);
                     ksis++;
                 } else if (j == 1) {
+                    
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
+                    List valor = adm.queryNativo("SELECT CAST(AVG("+nfinal.getNota()+")as decimal (9,3)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE ");
+                    if(valor.size()>0)
+                        aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+                    //System.out.println("SELECT CAST(("+nfinal.getNota()+")as decimal (9,0)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND materia = 0 ");
+                    valor = adm.queryNativo("SELECT CAST(IF("+nfinal.getNota()+" is null,0,"+nfinal.getNota()+")as decimal (9,0)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND materia = 0 ");
+                    System.out.println(""+valor);
+                    if(valor.size()>0)
+                        disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+//                    disciplina = aprovecha;
+                    
                 } else if (j == 2) {
                     materiaNo = (Global) adm.buscarClave((Integer) dos, Global.class);
                 } else if (j == 0) {
@@ -1189,7 +1228,7 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
                 + "and o.sistema.orden <=  '" + sistema.getOrden() + "'"
                 + " and o.sistema.seimprime = true  order by o.sistema.orden ");
-        if(notas.size()<=0){
+        if (notas.size() <= 0) {
             try {
                 Messagebox.show("No hay nada que imprimir...! \n Revise en la pantalla Aportes si existen notas a imprimir", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                 return null;
@@ -1421,7 +1460,7 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
             ArrayList lisFaltas = new ArrayList();
             String query3 = "";
             String query4 = "";
-            if (impEquivalencias){
+            if (impEquivalencias) {
                 int w = 1;
                 for (int i = 0; i < equivalenciasFaltas.size(); i++) {
                     query3 += "sum(nota" + w + "),";
@@ -1438,18 +1477,18 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                         + "  group by tri.codigotrim  order by  tri.codigotrim, sis.orden "
                         + " ";
 //                System.out.println(""+q);
-                        nativo = adm.queryNativo(q);
+                nativo = adm.queryNativo(q);
                 for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                     Vector vec = (Vector) itna.next();
                     int ksis = 0;
-                    for (int j = 0; j < vec.size()-1; j++) {
+                    for (int j = 0; j < vec.size() - 1; j++) {
                         Object dos = vec.get(j);
                         NotaCollection coll = new NotaCollection();
                         coll.setNota(dos);
                         coll.setMateria(equivalenciasFaltas.get(ksis).getNombre());
                         coll.setMatricula("" + matriculas1.getCodigomat());
                         coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
-                        coll.setSistema(""+vec.get(vec.size()-1));
+                        coll.setSistema("" + vec.get(vec.size() - 1));
                         lisFaltas.add(coll);
                         ksis++;
                     }
@@ -2538,13 +2577,13 @@ String Sdeshabilitadorojo = "color: red !important; cursor: default !important; 
                             adm.guardar(nota);
 
                         } catch (EvalError ex) {
-                 
+
                             Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
 
                 } catch (EvalError ex) {
-            
+
                     Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

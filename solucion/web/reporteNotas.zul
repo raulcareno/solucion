@@ -207,7 +207,7 @@ public JRDataSource profesores(){
            }
     ver.visible = false;
         reportese.visible = true;
-     
+     cerrar.setVisible(true);
            //rep.setOpen(true);parametros.setOpen(false);
             Institucion insts = periodo.getInstitucion();
              
@@ -219,6 +219,9 @@ public JRDataSource profesores(){
             parametros.put("slogan", insts.getSlogan());
             parametros.put("secretaria", insts.getSecretaria());
             parametros.put("rectora", insts.getRector());
+            parametros.put("jornada", periodo.getSeccion().getDescripcion() );
+            parametros.put("regimen", periodo.getRegimen());
+
             if(sistemasCombo.disabled == false)
                 parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
             if(filamodalidad.visible == true)
@@ -507,17 +510,39 @@ void campos(String valor){
                             <span>
                                 <textbox id="titulo" value=" " cols="30"/>
                                 <span>
-                                    <listbox id="format" mold="select" onSelect="showReport();" >
-                                        <listitem label="PDF" value="pdf" selected="true" />
-                                        <listitem label="XML" value="xml" />
-                                        <listitem label="HTML" value="html" />
-                                        <listitem label="Word (RTF)" value="rtf" />
-                                        <listitem label="Excel" value="xls" />
-                                        <listitem label="Excel (JXL)" value="jxl" />
-                                        <listitem label="CSV" value="csv" />
-                                        <listitem label="Op.Off(ODT)" value="odt" unless="false"/>
-                                    </listbox>
-                                    <button label="Ejecutar!" onClick='showReport();'/>
+                                    <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
+                                        <bandpopup>
+                                           <vbox>
+                                                <listbox width="90px" id="format"  onSelect="bd.value=self.selectedItem.label; bd.close();showReport();">
+                                                    <listitem  value="pdf" selected="true">
+                                                        <listcell  image="/images/pdf.png" label="PDF" />
+                                                    </listitem>
+                                                    <listitem value="rtf">
+                                                        <listcell  image="/images/word.gif" label="Word" />
+                                                    </listitem>
+                                                    <listitem value="xls">
+                                                        <listcell  image="/images/excel.gif"  label="Excel" />
+                                                    </listitem>
+                                                    <listitem value="jxl">
+                                                        <listcell  image="/images/excel.gif" label="JXL" />
+                                                    </listitem>
+                                                    <listitem value="csv">
+                                                        <listcell  image="/images/csv.gif" label="CSV" />
+                                                    </listitem>
+                                                    <listitem value="odt">
+                                                        <listcell  image="/images/open.png" label="OpenOfic" />
+                                                    </listitem>
+                                                    <listitem value="xml">
+                                                        <listcell  image="/images/xml.gif" label="XML" />
+                                                    </listitem>
+                                                    <listitem value="html">
+                                                        <listcell  image="/images/html.gif" label="HTML" />
+                                                    </listitem>
+                                                </listbox>
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
+                                    <button label="Ejecutar...!" image="/images/run.gif" onClick='showReport();'/>
                                 </span>
 
                             </span>
@@ -527,11 +552,11 @@ void campos(String valor){
                     </rows>
                 </grid>
 
-                 <grid id="reportese" visible="false" width="100%" height="100%">
-                     <rows>
-                         <row   spans="2">
-                             <button  image="/images/eliminar.gif"  label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true)'/>
-                         </row>
+                <grid id="reportese" visible="false" width="100%" height="100%">
+                    <rows>
+                        <row   spans="2">
+                            <button  image="/images/eliminar.gif" id="cerrar"   label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
+                        </row>
 
                         <row   spans="2">
                             <div height="600px">
