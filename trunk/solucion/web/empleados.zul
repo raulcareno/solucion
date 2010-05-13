@@ -6,10 +6,10 @@
 <?script type="text/javascript" src="/js/jquery.min.js"?>
 <?script type="text/javascript" src="/js/masks.js"?>
     <window    title="Registro de Empleados/Profesores ...::..."  border="normal" >
-       <attribute name="onCreate">
+       <!--attribute name="onCreate">
             String command = "applyPhoneMask('"+telefono.getUuid()+"');";
             Clients.evalJavaScript(command);
-      </attribute>
+      </attribute-->
         <zscript>
             <![CDATA[
   import jcinform.persistencia.Global;

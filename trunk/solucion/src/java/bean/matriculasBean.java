@@ -5,6 +5,8 @@
 package bean;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,8 +22,8 @@ import org.xBaseJ.fields.NumField;
 import org.xBaseJ.xBaseJException;
 
 public class matriculasBean {
-
     Administrador adm = new Administrador();
+    Periodo per = new Periodo();
     NumField CODIGO = null;
     CharField CODIGOM = null;
     CharField CEDULA = null;
@@ -56,6 +58,7 @@ public class matriculasBean {
     public void generar(Boolean repreNuevo, Boolean estuNuevo, Matriculas matricula, Periodo periodo) {
         try {
             //concatenarPdf();
+            per = periodo;
             concatenarPdf();
             if (estuNuevo) {
                 if (db.getRecordCount() == 0) {
@@ -72,6 +75,21 @@ public class matriculasBean {
         }
 
    }
+public String rFecha (Date fecha){
+    String dia = fecha.getDate()+"";
+    String mes = ""+ (fecha.getMonth()+1);
+    String anio = ""+(fecha.getYear()+1900);
+
+    if(dia.length()<2){
+        dia = "0"+dia;
+    }
+    if(mes.length()<2){
+        mes = "0"+mes;
+    }
+    return anio+mes+dia;
+
+    
+}
 
     void llenar(Matriculas matricula) {
         try {
@@ -85,7 +103,10 @@ public class matriculasBean {
             try {DIRECCION.put(matricula.getEstudiante().getDireccion());} catch (Exception asdx) {}
             try {TELEFONO.put(matricula.getEstudiante().getTelefono());} catch (Exception asdx) {}
             try {CELULAR.put(matricula.getEstudiante().getTelefono());} catch (Exception asdx) {}
-            try {FECHANAC.put(matricula.getEstudiante().getFechanacimiento());} catch (Exception asdx) {}
+            try {
+                FECHANAC.put(rFecha(matricula.getEstudiante().getFechanacimiento()));
+                System.out.println("___________________________---");
+            } catch (Exception asdx) {Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, asdx);}
             try {INSANT.put(matricula.getInstitucion());} catch (Exception asdx) {}
             try {FECHAING.put(matricula.getFechamat());} catch (Exception asdx) {}
             try {NIVEL.put(matricula.getCurso() + "");} catch (Exception asdx) {}
@@ -101,7 +122,7 @@ public class matriculasBean {
     }
 void todos(){
     Administrador adm = new Administrador();
-          List<Matriculas> estu = adm.query("Select o from Matriculas as o ");
+          List<Matriculas> estu = adm.query("Select o from Matriculas as o where o.curso.periodo.codigoper = '"+per.getCodigoper()+"' ");
             for (Iterator<Matriculas> it = estu.iterator(); it.hasNext();) {
                Matriculas matriculas = it.next();
                 agregar(matriculas);
