@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <window  style="position: absolute; left:150px" onCreonCreate="timer.stop();"    width="60%"  border="normal" >
+    <window  style="position: absolute; left:30px" onCreonCreate="timer.stop();"    width="85%"  border="normal" >
         <style dynamic="true">
             .z-label.focus {
             color:#006699;
@@ -56,7 +56,8 @@ java.util.Date fecha = new java.util.Date();
 String fechaString = (fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+(fecha.getDate());
 
  List periodosListadod = adm.queryNativo("Select o.* from Periodo as o where o.web = true and '"+fechaString+"' between o.fechai and o.fechaf order by o.descripcion",Periodo.class);
-
+if(periodosListadod.size()<= 0)
+    Executions.sendRedirect("592981728937491234.zul");
  //Periodo periodo = (Periodo) ses.getAttribute("periodo");
  Permisos permiso = new Permisos();
    // List cursos = adm.query("Select o from Cursos as o "
@@ -166,6 +167,12 @@ void estado(Boolean estado){
     otros.readonly = estado;
     tipo.readonly= estado;
     institucion.readonly= estado;
+cedular.readonly= estado;
+    nombresr.readonly = estado;
+    apellidosr.readonly = estado;
+    direccionr.readonly = estado;
+    telefonor.readonly = estado;
+    mailr.readonly = estado;
 
 }
 
@@ -196,17 +203,6 @@ String cpa = cpa.getValue();
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
         estudent.setGenero(genero.selectedItem.value);
-
-
-//        if((!estudent.getCodigoest().equals(0))){
-  //           adm.actualizar(estudent);
-    //     }else{
-            estudent.setCodigoest(adm.getNuevaClave("Inscripciones","codigoest"));
-            adm.guardar(estudent);
-      //   }
-
-
-
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         guardar.disabled=true;
         agregar.disabled=false;
@@ -481,7 +477,13 @@ void seleccionPeriodo(){
                             </span>
                         </row>
 
- 
+ <row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
+    <span style="color:blue">DATOS DEL ESTUDIANTE</span>
+
+</row>
+<row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
+    <separator bar="true"/>
+</row>
                         <row  style="background:#DFF5F5;border:0px" >
                             <span style="float:right">
                                 <label value="Identificación(*):" id="t1"/>
@@ -547,8 +549,8 @@ void seleccionPeriodo(){
                                         Ejemplo: "andresperez@hotmail.com" se le enviará su nombre de usuario y contraseña a este correo de salir favorecido en el sorteo
                                     </html>
                                 </popup>
-                                <label value="Teléfono" id="t55"/>
-                                <textbox  onFocus="changeStyle(t55)"   onBlur="changeStyle(t55) " id="telefono" maxlength="50" cols="13"  readonly="true"  />
+                                <label value="Teléfonos" id="t55"/>
+                                <textbox  onFocus="changeStyle(t55)"   onBlur="changeStyle(t55) " id="telefono" maxlength="50" cols="10"  readonly="true"  />
                                 <image src="/images/information.png" tooltip="telefonost" popup="telefonost" style="cursor: pointer" />
                                 <popup id="telefonost" width="300px">
                                     <html>
@@ -557,6 +559,10 @@ void seleccionPeriodo(){
                                 </popup>
                             </span>
                         </row>
+
+
+
+
                         <row  style="background:#DFF5F5;border:0px" >
 
                             <span style="float:right">
@@ -601,6 +607,8 @@ void seleccionPeriodo(){
                                 </popup>
                             </span>
                         </row>
+
+
                         <row  style="background:#DFF5F5;border:0px" >
 
                             <span style="float:right">
@@ -615,6 +623,103 @@ void seleccionPeriodo(){
                                         
                             </span>
                         </row>
+                        <row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
+    <separator bar="true"/>
+</row>
+
+<row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
+    <span style="color:blue">DATOS DEL REPRESENTANTE</span>
+
+</row>
+<row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
+    <separator bar="true"/>
+</row>
+<!-- *************************************REPRESENTANTE************************************************ -->
+
+                          <row  style="background:#DFF5F5;border:0px" >
+                            <span style="float:right">
+                                <label value="Identificación(*):" id="t1r"/>
+                            </span>
+
+                            <span>
+                                <textbox maxlength="10" cols="13" onFocus="changeStyle(t1r)"  constraint="no empty: Ingrese su número de cédula para poder proceder a la iscripción, no podra completar su inscripcion si no ingresa este campo"   onBlur="changeStyle(t1r) " onChange="verificarCedula(self.value)" readonly="true" id="cedular"  />
+                                <image src="/images/information.png" tooltip="cedulatr" popup="cedulatr" style="cursor: pointer" />
+                                <popup id="cedulatr" width="300px">
+                                    <html>
+                                            Por favor ingrese una identificación para continuar válida de 10 dígitos Ejemplo: 1709700548 esto nos permitirá brindarle un mejor servicio
+                                    </html>
+                                </popup>
+
+
+                            </span>
+                        </row>
+                        <row  style="background:#DFF5F5;border:0px" >
+                            <span style="float:right">
+                                <label value="Nombres(*):" id="t2r"/>
+                            </span>
+                            <span>
+                                <textbox id="nombresr" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2r);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="20" readonly="true"   />
+                                <label value="Apellidos(*):" id="t3r"/>
+                                <textbox id="apellidosr"  onFocus="changeStyle(t3r)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3r);nombres.getValue(); self.getValue();generarClave(false); "  maxlength="60" cols="20" readonly="true"  />
+                                <image src="/images/information.png" tooltip="nombrestr" popup="nombrestr" style="cursor: pointer" />
+                                <popup id="nombrestr" width="300px">
+                                    <html>
+                                        Ejemplo: "JUAN DARIO PEREZ GOMEZ"
+                                    </html>
+                                </popup>
+                            </span>
+                        </row>
+                        <row  style="background:#DFF5F5;border:0px" >
+
+                            <span style="float:right">
+                                <label value="Dirección(*):" id="t4r"/>
+                            </span>
+                            <span>
+                                <textbox id="direccionr" onFocus="changeStyle(t4r)" onBlur="changeStyle(t4r) "  constraint="no empty: Ingrese una dirección, no podra completar su inscripcion si no ingresa este campo"  maxlength="100" cols="57"  readonly="true"    />
+                                <image src="/images/information.png" tooltip="direcciontr" popup="direcciontr" style="cursor: pointer" />
+                                <popup id="direcciontr" width="300px">
+                                    <html>
+                                        Ejemplo: "Av. 10 de Agosto N67-71 y Colón"
+                                    </html>
+                                </popup>
+
+                            </span>
+                        </row>
+
+                        <row  style="background:#DFF5F5;border:0px" >
+
+                            <span style="float:right">
+                                <label value="Email(*):" id="t5r"/>
+                            </span>
+                            <span>
+                                <textbox id="mailr"  onFocus="changeStyle(t5r)"  onBlur="changeStyle(t5r) " constraint="/.+@.+\.[a-z]+/: Ingrese un email valido, necesario para confirmar su inscripcion"  maxlength="100" cols="30"  readonly="true"    />
+                                <image src="/images/information.png" tooltip="mailtr" popup="mailtr" style="cursor: pointer" />
+                                <popup id="mailtr" width="300px">
+                                    <html>
+                                        Ejemplo: "andresperez@hotmail.com" se le enviará su nombre de usuario y contraseña a este correo de salir favorecido en el sorteo
+                                    </html>
+                                </popup>
+                                <label value="Teléfono" id="t55r"/>
+                                <textbox  onFocus="changeStyle(t55r)"   onBlur="changeStyle(t55) " id="telefonor" maxlength="50" cols="10"  readonly="true"  />
+                                <image src="/images/information.png" tooltip="telefonostr" popup="telefonostr" style="cursor: pointer" />
+                                <popup id="telefonostr" width="300px">
+                                    <html>
+                                        Ejemplo: "025103843"
+                                    </html>
+                                </popup>
+                            </span>
+                        </row>
+
+
+
+<!-- *************************************REPRESENTANTE123************************************************ -->
+
+
+
+
+
+
+
                         <row  style="background:#DFF5F5;border:0px" >
                             <span></span>
                             <div style="color:red">Recuerde que la información proporcionada debe ser REAL, en caso de salir favorecido, su información será verificada y en caso de no cumplir con los requisitos se ANULARÁ su inscripción y matrícula </div>

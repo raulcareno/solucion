@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml"
+ xmlns="http://www.zkoss.org/2005/zul">
+    <zscript >
+       
+        //Executions.sendRedirect("login.zul");
+
+    </zscript>
+<window  style="position:absolute; top:20%; left:30%"  
+border="normal">
+    <image src="/images/about.jpg" style="aling:center"/>
+    <html>
+        		<attribute name="content" >
+		<p> 
+    &lt;font color=red&gt;AUN NO ESTAN HABILITADAS LAS INCRIPCIONES ESPERE A LA FECHA SEÑALADA...!
+    
+    </p>
+    <p>
+    GRACIAS POR SU COMPRENSIÓN
+      &lt;/font&gt;
+
+     </p>
+		</attribute>
+    </html>
+    <separator orient="vertical" width="180px"/>
+    
+ 
+          
+</window>
+
+</zk>
