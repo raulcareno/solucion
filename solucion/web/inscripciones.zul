@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<zk  xmlns="http://www.zkoss.org/2005/zul">
-    <window      width="60%"  border="normal" >
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window  style="position: absolute; left:150px" onCreonCreate="timer.stop();"    width="60%"  border="normal" >
         <style dynamic="true">
             .z-label.focus {
             color:#006699;
@@ -52,8 +52,10 @@ import org.zkoss.zul.Listbox;
     static Representante representante0 = new Representante();
     static Matriculas matricula = new Matriculas();
  Session ses = Sessions.getCurrent();
+java.util.Date fecha = new java.util.Date();
+String fechaString = (fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+(fecha.getDate());
 
- List periodosListadod = adm.query("Select o from Periodo as o order by o.descripcion");
+ List periodosListadod = adm.queryNativo("Select o.* from Periodo as o where o.web = true and '"+fechaString+"' between o.fechai and o.fechaf order by o.descripcion",Periodo.class);
 
  //Periodo periodo = (Periodo) ses.getAttribute("periodo");
  Permisos permiso = new Permisos();
@@ -391,196 +393,276 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             }
         }
 
+void seleccionPeriodo(){
+        
+        try{
+        String valor = ""+periodosListado.selectedItem.value;
+        if(valor.equals("-1")){
+            alert("NO HAY PERIODOS DISPONIBLES PARA INSCRIPCIONES ");
 
+        }else{
+            cedula.readonly =false;
+            self.disabled=true;
+           fecha = new Date();
+           String minutos = fecha.getMinutes()+"";
+            if(minutos.length() < 2)
+                    minutos = "0"+minutos;
+            String segundos = fecha.getSeconds()+"";
+            if(segundos.length() < 2)
+                segundos="0"+segundos;
+           pm.value = 0;
+            now.setValue("INCIO: "+fecha.getHours()+":"+minutos+":"+segundos);
+            timer.start();
+        }
+        }catch(Exception e){
+
+        }
+}
 
   ]]>
         </zscript>
-              <window width="98%" height="99%" style="position:absolute;left:1%;background-color:#FFCC99"  id="previo" mode="overlapped" border="normale" title="PREVIO" closable="true">
 
-                                <grid>
-                                    <rows>
-                                        <row  style="background:#FFCC99;border:0px" > </row>
-                                        <row  style="background:#FFCC99;border:0px" >
-                                            REQUISITOS PREVIOS PARA PROCEDER A LA INSCRIPCIÓN:
-                                            DEBE POSEER LA SIGUIENTE INFORMACIÓN:
-                                        </row>
-                                        <row  style="background:#FFCC99;border:0px;color:yellow" >
-                                            * Cedula de identidad del estudiante(NO del representante y NI otra persona)
-                                        </row>
-                                        <row  style="background:#FFCC99;border:0px" >
-                                            * Un Correo electrónico en cualquier servidor de correo que desee ej. hotmail,yahoo,gmail, etc.
-                                        </row>
-                                        <row  style="background:#FFCC99;border:0px" > </row>
-                                        <row  style="background:#FFCC99;border:0px" >
-                                            <button label="CERRAR" onClick="previo.visible = false"/>
-                                        </row>
-                                    </rows>
-                                </grid>
-                            </window>
-
-
-        <tabbox width="100%">
-            <tabs>
-                <tab id="registro" label="Datos del Estudiante" />
-                <tab id="reportes" label="Impresión" />
-            </tabs>
-            <tabpanels>
-                <tabpanel>
-                    <panel id="panel"   width="100%" height="98%"  >
-                        <panelchildren>
+        <panel  id="panel"     width="100%" height="98%"  >
+            <panelchildren>
                       
 
+                <span style="font: verdana 15px"> Periodo a Inscribir:</span>
+                <span>
+                    <listbox id="periodosListado" mold="select"   onSelect="seleccionPeriodo();" >
+                        <listitem  label="[Seleccione]" value="-1"/>
+                        <listitem forEach="${periodosListadod}" value="${each}">
+                            <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
+                        </listitem>
+                    </listbox>
 
-                            <grid>
-                                <rows  >
+                </span>
+                <grid  id="datosGrid">
+                    <rows>
+                        <row   spans="2" style="background:#DFF5F5;border:0px;color:blue" >
+                            <span style="font-size:15px">
+                                <html>Usted tendrá un máximo de 30 minutos para completar la información despues de este tiempo se cerrará la sesión y tendrá que volver a ingresar para registrar sus datos
+            
+                                </html>
+                                                               
+                                <separator></separator>
+                                <label style="font-size:15px;color:green" id="now" />
+                                <label style="font-size:15px;color:blue" id="now3" />
+                                
+ <label style="font-size:15px;color:red" id="now2" value="SU TIEMPO:" />
 
-                                    <row  style="background:transparent;border:0px" >
-                                        <span style="float:right"> Periodo a Inscribir:</span>
-                                        <span>
-                                            <listbox id="periodosListado" mold="select"   onSelect="buscar2(((Periodo)self.selectedItem.value)); self.disabled=true" >
-                                                <listitem  label="[Seleccione]" value="-1"/>
-                                                <listitem forEach="${periodosListadod}" value="${each}">
-                                                    <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
-                                                </listitem>
-                                            </listbox>
+                                 <timer id="timer" delay="1000" repeats="true">
+                                    <attribute name="onTimer">
+                                            <![CDATA[
+                                      Date fechaFinal = new Date();
+                                        String minutos = fechaFinal.getMinutes()+"";
+                                        if(minutos.length()<2)
+                                                minutos = "0"+minutos;
+                                        String segundos = fechaFinal.getSeconds()+"";
+                                        if(segundos.length()<2)
+                                            segundos="0"+segundos;
+                                        now3.setValue("ACTUAL: "+fechaFinal.getHours()+":"+minutos+":"+segundos);
+                                             long tiempoInicial=fecha.getTime();
+                                            long tiempoFinal=fechaFinal.getTime();
+                                            long resta=tiempoFinal - tiempoInicial;
+                                            //el metodo getTime te devuelve en mili segundos para saberlo en mins debes hacer
+                                            resta=resta /(1000*60);
+                                            String Resta = resta+"";
+                                            if(Resta.length()<2)
+                                                Resta="0"+Resta;
+                                            now2.setValue("SU TIEMPO: "+Resta+"");
+                                            if(Resta.equals("30")){
+                                                Executions.sendRedirect("inscripciones.zul");
+                                            }
+                                          ]]>
+                                    </attribute>
+                                </timer>
+                                <separator bar="true" />
 
-                                        </span>
-                                    </row>
-                                    <row  style="background:transparent;border:0px" >
-                                        <span style="float:right">    <label value="Curso(*):" id="t10"/></span>
+                            </span>
+                        </row>
 
+ 
+                        <row  style="background:#DFF5F5;border:0px" >
+                            <span style="float:right">
+                                <label value="Identificación(*):" id="t1"/>
+                            </span>
 
-                                        <listbox mold="select" onSelect="cedula.readonly =false;self.disabled=true"  id="curso" width="460px">
-                                            <listitem selected="true" forEach="${cursos}" value="${each}">
-                                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-                                            </listitem>
-                                        </listbox>
+                            <span>
+                                <intbox  visible="false" maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
 
-                                    </row>
-                                    <row  style="background:transparent;border:0px" >
-                                        <span style="float:right">
-                                            <label value="Identificación(*):" id="t1"/>
-                                        </span>
+                                <textbox maxlength="10" cols="13" onFocus="changeStyle(t1)"  constraint="no empty: Ingrese su número de cédula para poder proceder a la iscripción, no podra completar su inscripcion si no ingresa este campo"   onBlur="changeStyle(t1) " onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
+                                <image src="/images/information.png" tooltip="cedulat" popup="cedulat" style="cursor: pointer" />
+                                <popup id="cedulat" width="300px">
+                                    <html>
+                                            Por favor ingrese una identificación para continuar válida de 10 dígitos Ejemplo: 1709700548 esto nos permitirá brindarle un mejor servicio
+                                    </html>
+                                </popup>
 
-                                        <span>
-                                            <intbox  visible="false" maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
+                               
+                            </span>
+                        </row>
+                        <row  style="background:#DFF5F5;border:0px" >
+                            <span style="float:right">
+                                <label value="Nombres(*):" id="t2"/>
+                            </span>
+                            <span>
+                                <textbox id="nombres" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="20" readonly="true"   />
+                                <label value="Apellidos(*):" id="t3"/>
+                                <textbox id="apellidos"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3);nombres.getValue(); self.getValue();generarClave(false); "  maxlength="60" cols="20" readonly="true"  />
+                                <image src="/images/information.png" tooltip="nombrest" popup="nombrest" style="cursor: pointer" />
+                                <popup id="nombrest" width="300px">
+                                    <html>
+                                        Ejemplo: "JUAN DARIO PEREZ GOMEZ"
+                                    </html>
+                                </popup>
+                            </span>
+                        </row>
+                        <row  style="background:#DFF5F5;border:0px" >
 
-                                            <textbox maxlength="10" cols="13" onFocus="changeStyle(t1)"  constraint="no empty: Ingrese su número de cédula para poder proceder a la iscripción, no podra completar su inscripcion si no ingresa este campo"   onBlur="changeStyle(t1) " onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
-                                        </span>
-                                    </row>
-                                    <row  style="background:transparent;border:0px" >
-                                        <span style="float:right">
-                                            <label value="Nombres(*):" id="t2"/>
-                                        </span>
-                                        <span>
-                                            <textbox id="nombres" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="20" readonly="true"   />
-                                            <label value="Apellidos(*):" id="t3"/>
-                                            <textbox id="apellidos"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3);nombres.getValue(); self.getValue();generarClave(false); "  maxlength="60" cols="20" readonly="true"  />
-                                        </span>
-                                    </row>
-                                    <row  style="background:transparent;border:0px" >
+                            <span style="float:right">
+                                <label value="Dirección(*):" id="t4"/>
+                            </span>
+                            <span>
+                                <textbox id="direccion" onFocus="changeStyle(t4)" onBlur="changeStyle(t4) "  constraint="no empty: Ingrese una dirección, no podra completar su inscripcion si no ingresa este campo"  maxlength="100" cols="57"  readonly="true"    />
+                                <image src="/images/information.png" tooltip="direcciont" popup="direcciont" style="cursor: pointer" />
+                                <popup id="direcciont" width="300px">
+                                    <html>
+                                        Ejemplo: "Av. 10 de Agosto N67-71 y Colón"
+                                    </html>
+                                </popup>
 
-                                        <span style="float:right">    <label value="Dirección(*):" id="t4"/></span>
-                                        <textbox id="direccion" onFocus="changeStyle(t4)" onBlur="changeStyle(t4) "  constraint="no empty: Ingrese una dirección, no podra completar su inscripcion si no ingresa este campo"  maxlength="100" cols="52"  readonly="true"    />
-                                    </row>
+                            </span>
+                        </row>
 
-                                    <row  style="background:transparent;border:0px" >
+                        <row  style="background:#DFF5F5;border:0px" >
 
-                                        <span style="float:right">    <label value="Email(*):" id="t5"/></span>
-                                        <span><textbox id="mail"  onFocus="changeStyle(t5)"  onBlur="changeStyle(t5) " constraint="/.+@.+\.[a-z]+/: Ingrese un email valido, necesario para confirmar su inscripcion"  maxlength="100" cols="30"  readonly="true"    />
-                                            <label value="Teléfono" id="t55"/>
-                                            <textbox  onFocus="changeStyle(t55)"   onBlur="changeStyle(t55) " id="telefono" maxlength="50" cols="13"  readonly="true"  />
-                                        </span>
-                                    </row>
-                                    <row  style="background:transparent;border:0px" >
+                            <span style="float:right">
+                                <label value="Email(*):" id="t5"/>
+                            </span>
+                            <span>
+                                <textbox id="mail"  onFocus="changeStyle(t5)"  onBlur="changeStyle(t5) " constraint="/.+@.+\.[a-z]+/: Ingrese un email valido, necesario para confirmar su inscripcion"  maxlength="100" cols="30"  readonly="true"    />
+                                <image src="/images/information.png" tooltip="mailt" popup="mailt" style="cursor: pointer" />
+                                <popup id="mailt" width="300px">
+                                    <html>
+                                        Ejemplo: "andresperez@hotmail.com" se le enviará su nombre de usuario y contraseña a este correo de salir favorecido en el sorteo
+                                    </html>
+                                </popup>
+                                <label value="Teléfono" id="t55"/>
+                                <textbox  onFocus="changeStyle(t55)"   onBlur="changeStyle(t55) " id="telefono" maxlength="50" cols="13"  readonly="true"  />
+                                <image src="/images/information.png" tooltip="telefonost" popup="telefonost" style="cursor: pointer" />
+                                <popup id="telefonost" width="300px">
+                                    <html>
+                                        Ejemplo: "025103843"
+                                    </html>
+                                </popup>
+                            </span>
+                        </row>
+                        <row  style="background:#DFF5F5;border:0px" >
 
-                                        <span style="float:right">    <label value="Género(*):" id="t6"/></span>
-                                        <span>
-                                            <combobox width="60px" id="genero"  onFocus="changeStyle(t6)"   onBlur="changeStyle(t6) " constraint="no empty: Seleccione un Género, no podra completar su inscripcion si no ingresa este campo"    readonly="true">
-                                                <comboitem value="Masculino" label="Masculino"/>
-                                                <comboitem  value="Femenino" label="Femenino"/>
-                                            </combobox>
+                            <span style="float:right">
+                                <label value="Género(*):" id="t6"/>
+                            </span>
+                            <span>
+                                <combobox width="60px" id="genero"  onFocus="changeStyle(t6)"   onBlur="changeStyle(t6) " constraint="no empty: Seleccione un Género, no podra completar su inscripcion si no ingresa este campo"    readonly="true">
+                                    <comboitem value="Masculino" label="Masculino"/>
+                                    <comboitem  value="Femenino" label="Femenino"/>
+                                </combobox>
 
-                                            <label value="Fecha Nacimiento(*):" id="t7"/>
-                                            <datebox id="nacido" onFocus="changeStyle(t7)" onBlur="changeStyle(t7) "  constraint="no empty: Seleccione una fecha, no podra completar su inscripcion si no ingresa este campo"    readonly="true"  />
-                                        </span>
-                                    </row>
+                                <label value="Fecha Nacimiento(*):" id="t7"/>
+                                <datebox id="nacido" onFocus="changeStyle(t7)" onBlur="changeStyle(t7) "  constraint="no empty: Seleccione una fecha, no podra completar su inscripcion si no ingresa este campo"    readonly="true"  />
+                            </span>
+                        </row>
 
-                                    <row  style="background:transparent;border:0px" >
-                                        <span style="float:right">    <label value="Usuario:" id="t8"/></span>
-                                        <span>
-                                            <textbox id="usuario"   maxlength="30" cols="12" readonly="true"  />
-                                            <span>    <label value="Clave:" id="t9"/></span>
-                                            <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
-                                            <button label="Generar" onClick="generarClave(true);"/>
-                                        </span>
-                                    </row>
+                        <row  style="background:#DFF5F5;border:0px" >
+                            <span style="float:right">
+                                <label value="Usuario:" id="t8"/>
+                            </span>
+                            <span>
+                                <textbox id="usuario"   maxlength="30" cols="12" readonly="true"  />
+                                <span>
+                                    <label value="Clave:" id="t9"/>
+                                </span>
+                                <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
+                                <button label="Generar" onClick="generarClave(true);"/>
+                            </span>
+                        </row>
 
-                                    <row  style="background:transparent;border:0px" >
-                                        <span style="float:right">    <label value="Instituto Anterior:" id="t11"/></span>
-                                        <textbox id="institucion"  onBlur="changeStyle(t11) " onFocus="changeStyle(t11)" readonly="true"  maxlength="30" cols="20"/>
-                                    </row>
-                                    <row>
+                        <row  style="background:#DFF5F5;border:0px" >
+                            <span style="float:right">
+                                <label value="Instituto Anterior:" id="t11"/>
+                            </span>
+                            <span>
+                                <textbox id="institucion"  onBlur="changeStyle(t11) " onFocus="changeStyle(t11)" readonly="true"  maxlength="100" cols="50"/>
+                                <image src="/images/information.png" tooltip="institutot" popup="institutot" style="cursor:pointer" />
+                                <popup id="institutot" width="300px">
+                                    <html>
+                                        Ejemplo: "Escuela Mercedes de Jesús Molina"
+                                    </html>
+                                </popup>
+                            </span>
+                        </row>
+                        <row  style="background:#DFF5F5;border:0px" >
 
-                                    <span style="float:right">    <label value="Aprovechamiento:" id="tA"/></span>
-            						<span>
-                                       <div style="color:blue"> <spinner value="20" cols="2" id="aprovechamiento"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero,min 0 max 20" />
-                                       ¿Fue usted abanderado de su Instituto?: <checkbox id="abanderado" /></div>
+                            <span style="float:right">
+                                <label value="Aprovechamiento:" id="tA"/>
+                            </span>
+                            <span>
+                                <div style="color:blue">
+                                    <spinner value="20" cols="2" id="aprovechamiento"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero,min 0 max 20" />
+                                       ¿Fue usted abanderado de su Instituto?: 
+                                    <checkbox id="abanderado" />
+                                </div>
                                         
-                                    </span>
-                                    </row>
-                                    <row>
-                                        <span></span>
-                                        <div style="color:red">Recuerde que la información proporcionada debe ser REAL, en caso de salir favorecido, su información será verificada y en caso de no cumplir con los requisitos se ANULARÁ su inscripción y matrícula </div>
-                                    </row>
-                                    <row  style="background:transparent;border:0px">
+                            </span>
+                        </row>
+                        <row  style="background:#DFF5F5;border:0px" >
+                            <span></span>
+                            <div style="color:red">Recuerde que la información proporcionada debe ser REAL, en caso de salir favorecido, su información será verificada y en caso de no cumplir con los requisitos se ANULARÁ su inscripción y matrícula </div>
+                        </row>
+                        <row  style="background:#DFF5F5;border:0px">
 
-                                        <span style="float:right">    <label value="Introduce el código(*):" id="t12"/></span>
-                                        <span><textbox id="cpaingresado" maxlength="5"  onFocus="changeStyle(t12)"  onBlur="changeStyle(t12) " constraint="no empty: Ingrese este campo con lo que se muestra en la imagen"  width="150px"/>
+                            <span style="float:right">
+                                <label value="Introduce el código(*):" id="t12"/>
+                            </span>
+                            <span>
+                                <textbox id="cpaingresado" maxlength="5"  onFocus="changeStyle(t12)"  onBlur="changeStyle(t12) " constraint="no empty: Ingrese este campo con lo que se muestra en la imagen"  width="150px"/>
 
-                                        </span>
-                                    </row>
-                                    <row  style="background:transparent;border:0px">
-                                        <span style="float:right">CODIGO:
-                                        </span>
-                                        <span>
-                                            <captcha id="cpa" style="background-color:white" exclude="021lABCDEFGHIJKLMNÑOPQRSTUVWXYZ" noise="false" length="5" width="125px" height="45px"/>
-                                        <button label="Otro Código" onClick="cpa.randomValue();" /></span>
-                                    </row>
-                                    <row>
-                                        <span></span>
-                                        <button image="/images/guardar.gif" id="guardar" disabled="true" label="INSCRIBIR" width="190px"  height="40px"  onClick="nombres.getValue();apellidos.getValue();direccion.getValue();mail.getValue();genero.getValue();nacido.getValue();cpaingresado.getValue();aprovechamiento.getValue();guardar();"/>
-                                    </row>
-
-
-                                </rows>
-                            </grid>
-
-
+                            </span>
+                        </row>
+                        <row  style="background:#DFF5F5;border:0px">
+                            <span style="float:right">CODIGO:
+                            </span>
+                            <span>
+                                <captcha id="cpa" style="background-color:white" exclude="ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz" noise="false" length="5" width="125px" height="45px"/>
+                                <button label="Otro Código" onClick="cpa.randomValue();" />
+                            </span>
+                        </row>
+                        <row style="background:#DFF5F5;border:0px" >
+                            <span></span>
+                            <button image="/images/guardar.gif" id="guardar" disabled="true" label="INSCRIBIR" width="190px"  height="40px"  onClick="nombres.getValue();apellidos.getValue();direccion.getValue();mail.getValue();genero.getValue();nacido.getValue();cpaingresado.getValue();aprovechamiento.getValue();guardar();"/>
+                        </row>
 
 
-                        </panelchildren>
-                    </panel>
-
-                </tabpanel>
+                    </rows>
+                </grid>
 
 
 
-                <tabpanel>
 
-                    <panel height="370px" style="margin-bottom:10px">
+            </panelchildren>
+        </panel>
 
-                        <panelchildren>
-                            <jasperreport id="report" />
-                        </panelchildren>
-                    </panel>
 
-                </tabpanel>
+        <panel height="370px" style="margin-bottom:10px">
 
-            </tabpanels>
-        </tabbox>
+            <panelchildren>
+                <jasperreport id="report" />
+            </panelchildren>
+        </panel>
+
+              
 
     </window>
-
+    
 
 </zk>

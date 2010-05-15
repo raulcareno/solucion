@@ -4,11 +4,7 @@
  */
 package bean;
 
-import java.util.Iterator;
-import java.util.List;
-import jcinform.persistencia.*;
-import jcinform.procesos.Administrador;
-import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Progressmeter;
 
 
 //import org.zkoss.util.media.Media;
@@ -23,7 +19,8 @@ import org.zkoss.zul.Textbox;
 public class borrar {
 //Panel p;
 
-
+//Progressmeter p;
+//p.set
        public static void main(String[] args) {
            String a = "ms";
            
