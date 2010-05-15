@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml"
+ xmlns="http://www.zkoss.org/2005/zul">
+    <zscript >
+       
+        //Executions.sendRedirect("login.zul");
+
+    </zscript>
+<window width="500px"  style="position:absolute; top:20%; left:20%"
+border="normal">
+   
+    <image src="/images/about.jpg" style="aling:center"/>
+    <separator  bar="true" />
+    <label style="color:blue" value="INSCRIPCION REALIZADA CON ÉXITO..."/>
+    <separator orient="horizontal" bar="true" />
+        Se le ha enviado un correo electronico con los datos de INSCRIPCION, 
+        los que deberá IMPRIMIR y presentar conjuntamente con su documentación los días señalados
+        <separator  />
+        <separator  />
+        MUCHAS GRACIAS...!
+    <separator/>
+    <separator  />
+    Atentamente,
+    <separator  />
+    La Administración
+      
+    <separator bar="true" />
+    
+ 
+          
+</window>
+
+</zk>
