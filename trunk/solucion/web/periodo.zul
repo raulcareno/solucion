@@ -63,9 +63,20 @@
                   <listcell label="${each.descripcion}" />
             </listitem>
 		</listbox>
- 
+
         Regimen:
 		 <textbox id="regimen" value="@{inobjeto.regimen}"  onChange="update();"/>
+         </span>
+ </row>
+ <row>
+
+        <span style="float:right"> Habilitar Inscripciones:</span>
+		<span>
+        <checkbox id="web" checked="@{inobjeto.web}." onCheck="update();"  disabled="true"  />
+        Desde:
+        <datebox id="desde"  value="@{inobjeto.fechai}" format="dd/MM/yyyy"  onChange="update();"  readonly="true"  />
+        Hasta:
+		 <datebox id="hasta"  value="@{inobjeto.fechaf}"  format="dd/MM/yyyy"   onChange="update();"  readonly="true"  />
          </span>
  </row>
  
@@ -154,6 +165,11 @@ void estado(Boolean estado,Boolean modificar){
             inobjeto = (Periodo)datos.selectedItem.value;
         }
     codigo.disabled = estado;
+    web.disabled= estado;
+    desde.disabled=estado;
+    hasta.disabled=estado;
+    seccionesL.disabled=estado;
+    regimen.disabled=estado;
     descripcion.readonly = estado;
 }
 
