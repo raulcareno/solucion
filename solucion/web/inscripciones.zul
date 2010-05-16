@@ -36,6 +36,7 @@ import sources.CustomDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import sources.*;
 import bean.notas;
+import bean.secuencial;
 import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
@@ -47,6 +48,7 @@ import org.zkoss.zul.Listbox;
 
 
     Administrador adm = new Administrador();
+     secuencial sec = new secuencial();
     List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
     static Inscripciones estudent = new Inscripciones();
     static Representante representante0 = new Representante();
@@ -192,7 +194,8 @@ String cpa = cpa.getValue();
  //GUARDO EL ESTUDIANTE
         nombres.value = nombres.value.toUpperCase();
         apellidos.value = apellidos.value.toUpperCase();
-        estudent.setCodigoest(codigo.value);
+        String nCodigo = sec.generarClave();
+        estudent.setCodigoest(nCodigo);
         estudent.setCedula(""+cedula.value);
         estudent.setNombre(nombres.value);
         estudent.setApellido(apellidos.value);
@@ -203,6 +206,7 @@ String cpa = cpa.getValue();
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
         estudent.setGenero(genero.selectedItem.value);
+        adm.guardar(estudent);
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         guardar.disabled=true;
         agregar.disabled=false;
@@ -332,32 +336,9 @@ void llenarConsumidor(){
 
 
 
-//PARA REPORTES
-public JRDataSource certificados(Matriculas matricula,String tipo){
-      Administrador adm = new Administrador();
-      Session ses = Sessions.getCurrent();
-        Periodo periodo = (Periodo) ses.getAttribute("periodo");
-        ArrayList detalle = new ArrayList();
-        String query = "SELECT mat FROM Matriculas AS mat " +
-                "WHERE  mat.estado like '%Matriculado%' " +
-                "and mat.codigomat = '" + matricula.getCodigomat() + "' order by mat.estudiante.apellido, mat.estudiante.nombre";
-        List hoy = adm.query(query);
-        for (Iterator it = hoy.iterator(); it.hasNext();) {
-            Matriculas elem = (Matriculas) it.next();
-            detalle.add(elem);
-        }
-        JRDataSource ds = null;
-        if(tipo.equals("CM")){
-             ds = new ReporteCertificadoDataSource(detalle);
-        }else{
-              ds = new ReporteActaDataSource(detalle);
-        }
-        return ds;
-
-}
-        void showReport(String tipo) {
+        void showReport() {
             //Preparing parameters
-
+Periodo periodo = periodosListado.selectedItem.value;
             Institucion insts = periodo.getInstitucion();
 
             Map parametros = new HashMap();
@@ -366,28 +347,36 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             parametros.put("periodo", periodo.getDescripcion());
             parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
-            if(tipo.equals("CM")){
-                    datasource = certificados(new Matriculas(codigomat.value),tipo);
-                    report.setSrc("WEB-INF/reportes/certificadoMatricula.jasper");
-                    parametros.put("titulo", "Certificado de Matricula");
-            } else if(tipo.equals("AM")){
-                    datasource = certificados(new Matriculas(codigomat.value),tipo);
-                    parametros.put("titulo", "Acta de Matricula");
-                    report.setSrc("WEB-INF/reportes/actaMatricula.jasper");
+            
+                   report.setSrc("WEB-INF/reportes/inscripcion.jasper");
+                     
+        parametros.put("cedula",""+cedula.value);
+        parametros.put("codigo",""+codigo.value);
+        parametros.put("estudiante",""+nombres.value+" "+apellidos.value);
+        parametros.put("direccion",""+direccion.value);
+        parametros.put("institutoAnterior",""+institucion.value);
+        parametros.put("email",""+mail.value);
+        parametros.put("fechaNacimiento",nacido.value);
+        parametros.put("aprovechamiento",""+aprovechamiento.value);
+        //parametros.put("representante",""+nombresr.value+" "+apellidosr.value);
+        
+        
+        /* 
+        estudent.setTelefono(telefono.value);
+        estudent.setMail(mail.value);
+        estudent.setFechanacimiento(nacido.value);
+        estudent.setUsuario(usuario.value);
+        estudent.setClave(permiso.encriptar(clave.value));
+        estudent.setGenero(genero.selectedItem.value); */
 
-            } else if(tipo.equals("CL")){
-                    datasource = certificados(new Matriculas(codigomat.value),tipo);
-                    parametros.put("titulo", "Acta de Matricula");
-                    report.setSrc("WEB-INF/reportes/clavePersonal.jasper");
 
-            }
-            if(!tipo.equals("-1")){
+
+
+            
                 report.setParameters(parametros);
-                report.setDatasource(datasource);
-                report.setType("pdf");
-                 reportes.setSelected(true);
+                report.setDatasource(null);
+                report.setType("html");
             }
-        }
 
 void seleccionPeriodo(){
         
@@ -490,7 +479,7 @@ void seleccionPeriodo(){
                             </span>
 
                             <span>
-                                <intbox  visible="false" maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
+                                <textbox  visible="false" maxlength="100" cols="5"  disabled="true"  readonly="true" id="codigo"  />
 
                                 <textbox maxlength="10" cols="13" onFocus="changeStyle(t1)"  constraint="no empty: Ingrese su número de cédula para poder proceder a la iscripción, no podra completar su inscripcion si no ingresa este campo"   onBlur="changeStyle(t1) " onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
                                 <image src="/images/information.png" tooltip="cedulat" popup="cedulat" style="cursor: pointer" />
@@ -745,6 +734,7 @@ void seleccionPeriodo(){
                         <row style="background:#DFF5F5;border:0px" >
                             <span></span>
                             <button image="/images/guardar.gif" id="guardar" disabled="true" label="INSCRIBIR" width="190px"  height="40px"  onClick="nombres.getValue();apellidos.getValue();direccion.getValue();mail.getValue();genero.getValue();nacido.getValue();cpaingresado.getValue();aprovechamiento.getValue();guardar();"/>
+                            <button image="/images/imprimir.gif" id="imprimir" disabled="false" label="IMPRIMIR" width="190px"  height="40px"  onClick="showReport();"/>
                         </row>
 
 
