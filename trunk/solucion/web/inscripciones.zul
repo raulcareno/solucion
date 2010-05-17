@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <window  style="position: absolute; left:30px" onCreonCreate="timer.stop();"    width="85%"  border="normal" >
+    <style>
+
+    .barra {
+           scrollbar-3dlight-color:;
+           scrollbar-arrow-color:;
+           scrollbar-base-color:;
+           scrollbar-darkshadow-color:;
+           scrollbar-face-color:;
+           scrollbar-highlight-color:;
+           scrollbar-shadow-color:
+          }
+        </style>
+
+    <window   onCreonCreate="timer.stop();"  width="85%">
         <style dynamic="true">
             .z-label.focus {
             color:#006699;
@@ -192,6 +205,7 @@ String cpa = cpa.getValue();
 
 
  //GUARDO EL ESTUDIANTE
+        Periodo periodo = periodosListado.selectedItem.value;
         nombres.value = nombres.value.toUpperCase();
         apellidos.value = apellidos.value.toUpperCase();
         String nCodigo = sec.generarClave();
@@ -202,14 +216,26 @@ String cpa = cpa.getValue();
         estudent.setDireccion(direccion.value);
         estudent.setTelefono(telefono.value);
         estudent.setMail(mail.value);
+        
+        estudent.setCedular(cedular.value);
+        estudent.setNombre(nombresr.value);
+        estudent.setApellido(apellidosr.value);
+        estudent.setDireccion(direccionr.value);
+        estudent.setTelefono(telefonor.value);
+        estudent.setMail(mailr.value);
+
         estudent.setFechanacimiento(nacido.value);
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
         estudent.setGenero(genero.selectedItem.value);
+        estudent.setPeriodo(periodo.getCodigoper());
         adm.guardar(estudent);
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                //showrReport();
+        
         guardar.disabled=true;
         agregar.disabled=false;
+        imprimir.disabled=true;
         estado(true);
 
         claveprint.disabled = false;
@@ -255,6 +281,8 @@ void modificar(){
 
 
   void verificarCedula(String valor){
+    
+    imprimir.disabled=true;
       if(valor.length()>9){
             List empleados = adm.query("Select o from Inscripciones as o where o.cedula = '"+valor+"' ");
             if(empleados.size()>0){
@@ -268,6 +296,8 @@ void modificar(){
                 llenar(inscrip);
                 estado(true);
                 guardar.disabled=true;
+                imprimir.disabled=false;
+                
             }else{
 
                 estado(false);
@@ -337,6 +367,9 @@ void llenarConsumidor(){
 
 
         void showReport() {
+        panel.visible = false;
+        report.visible = true;
+        bimprimir.visible=true;
             //Preparing parameters
 Periodo periodo = periodosListado.selectedItem.value;
             Institucion insts = periodo.getInstitucion();
@@ -350,15 +383,15 @@ Periodo periodo = periodosListado.selectedItem.value;
             
                    report.setSrc("WEB-INF/reportes/inscripcion.jasper");
                      
-        parametros.put("cedula",""+cedula.value);
-        parametros.put("codigo",""+codigo.value);
-        parametros.put("estudiante",""+nombres.value+" "+apellidos.value);
-        parametros.put("direccion",""+direccion.value);
-        parametros.put("institutoAnterior",""+institucion.value);
-        parametros.put("email",""+mail.value);
-        parametros.put("fechaNacimiento",nacido.value);
-        parametros.put("aprovechamiento",""+aprovechamiento.value);
-        //parametros.put("representante",""+nombresr.value+" "+apellidosr.value);
+            parametros.put("cedula",""+cedula.value);
+            parametros.put("codigo",""+codigo.value);
+            parametros.put("estudiante",""+nombres.value+" "+apellidos.value);
+            parametros.put("direccion",""+direccion.value);
+            parametros.put("institutoAnterior",""+institucion.value);
+            parametros.put("email",""+mail.value);
+            parametros.put("fechaNacimiento",nacido.value);
+            parametros.put("aprovechamiento",""+aprovechamiento.value);
+            //parametros.put("representante",""+nombresr.value+" "+apellidosr.value);
         
         
         /* 
@@ -403,11 +436,27 @@ void seleccionPeriodo(){
 
         }
 }
+void imprision(){
+Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.value+"");
+    /* try{
+            if(mat != null){
+                Window win34 = (Window) Executions.createComponents("/592981728937491235.zul", null, null);
+                win34.setVisible(true);
+                win34.setStyle("position:absolute; top:5%; left:0%");
+                win34.setAttribute("code",codigo.value);
+                //win.doModal();
+                }
+           }catch(Exception e){
+           } */
+
+
+}
+
 
   ]]>
         </zscript>
 
-        <panel  id="panel"     width="100%" height="98%"  >
+        <panel  id="panel"  width="100%" height="750px"  >
             <panelchildren>
                       
 
@@ -433,9 +482,9 @@ void seleccionPeriodo(){
                                 <label style="font-size:15px;color:green" id="now" />
                                 <label style="font-size:15px;color:blue" id="now3" />
                                 
- <label style="font-size:15px;color:red" id="now2" value="SU TIEMPO:" />
+                                <label style="font-size:15px;color:red" id="now2" value="SU TIEMPO:" />
 
-                                 <timer id="timer" delay="1000" repeats="true">
+                                <timer id="timer" delay="1000" repeats="true">
                                     <attribute name="onTimer">
                                             <![CDATA[
                                       Date fechaFinal = new Date();
@@ -466,13 +515,13 @@ void seleccionPeriodo(){
                             </span>
                         </row>
 
- <row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
-    <span style="color:blue">DATOS DEL ESTUDIANTE</span>
+                        <row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
+                            <span style="color:blue">DATOS DEL ESTUDIANTE</span>
 
-</row>
-<row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
-    <separator bar="true"/>
-</row>
+                        </row>
+                        <row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
+                            <separator bar="true"/>
+                        </row>
                         <row  style="background:#DFF5F5;border:0px" >
                             <span style="float:right">
                                 <label value="Identificación(*):" id="t1"/>
@@ -613,19 +662,19 @@ void seleccionPeriodo(){
                             </span>
                         </row>
                         <row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
-    <separator bar="true"/>
-</row>
+                            <separator bar="true"/>
+                        </row>
 
-<row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
-    <span style="color:blue">DATOS DEL REPRESENTANTE</span>
+                        <row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
+                            <span style="color:blue">DATOS DEL REPRESENTANTE</span>
 
-</row>
-<row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
-    <separator bar="true"/>
-</row>
+                        </row>
+                        <row spans="2" style="background:#DFF5F5;border:0px;left:30px;" >
+                            <separator bar="true"/>
+                        </row>
 <!-- *************************************REPRESENTANTE************************************************ -->
 
-                          <row  style="background:#DFF5F5;border:0px" >
+                        <row  style="background:#DFF5F5;border:0px" >
                             <span style="float:right">
                                 <label value="Identificación(*):" id="t1r"/>
                             </span>
@@ -733,8 +782,12 @@ void seleccionPeriodo(){
                         </row>
                         <row style="background:#DFF5F5;border:0px" >
                             <span></span>
-                            <button image="/images/guardar.gif" id="guardar" disabled="true" label="INSCRIBIR" width="190px"  height="40px"  onClick="nombres.getValue();apellidos.getValue();direccion.getValue();mail.getValue();genero.getValue();nacido.getValue();cpaingresado.getValue();aprovechamiento.getValue();guardar();"/>
-                            <button image="/images/imprimir.gif" id="imprimir" disabled="false" label="IMPRIMIR" width="190px"  height="40px"  onClick="showReport();"/>
+                            <span>
+                                <button image="/images/guardar.gif" id="guardar" disabled="true" label="INSCRIBIR" width="190px"  height="40px"  onClick="nombres.getValue();apellidos.getValue();direccion.getValue();mail.getValue();genero.getValue();nacido.getValue();cpaingresado.getValue();aprovechamiento.getValue();guardar();"/>
+                                <button image="/images/imprimir.gif" id="imprimir" disabled="true" label="IMPRIMIR" width="190px"  height="40px"  onClick="imprision();"/>
+
+                            </span>
+                            
                         </row>
 
 
@@ -748,15 +801,8 @@ void seleccionPeriodo(){
         </panel>
 
 
-        <panel height="370px" style="margin-bottom:10px">
-
-            <panelchildren>
-                <jasperreport id="report" />
-            </panelchildren>
-        </panel>
-
-              
-
+	   
+        
     </window>
     
 

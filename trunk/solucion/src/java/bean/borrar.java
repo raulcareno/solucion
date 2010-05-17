@@ -4,7 +4,8 @@
  */
 package bean;
 
-import org.zkoss.zul.Progressmeter;
+import jcinform.persistencia.Inscripciones;
+import jcinform.procesos.Administrador;
 
 
 //import org.zkoss.util.media.Media;
@@ -27,7 +28,8 @@ public class borrar {
            StringBuffer st = new StringBuffer();
                 st.append("m");
                 st.append("s");
-
+Administrador adm = new Administrador();
+Inscripciones inscrp = (Inscripciones) adm.buscarClave(adm, null);
            if(a.contains(st))
                System.out.println("ENTRO");
            else
