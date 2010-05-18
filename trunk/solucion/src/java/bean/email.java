@@ -7,6 +7,7 @@ import javax.mail.internet.*;
 import jcinform.persistencia.Cursos;
 import jcinform.persistencia.Empleadoperiodo;
 import jcinform.persistencia.Empleados;
+import jcinform.persistencia.Inscripciones;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.ParametrosGlobales;
 import jcinform.persistencia.Periodo;
@@ -197,6 +198,46 @@ public class email {
                     }
                     if(matriculados2.size()>0)
                            EnviarAutenticacion.EnviarCorreo(matriculados2,mensaje,tema,periodo.getInstitucion().getUsuariomail(),periodo.getInstitucion().getClavemail(),periodo.getInstitucion().getSmtp(),periodo.getInstitucion().getPuerto(),empleado.getEmail());
+        }
+        catch(Exception e)
+        {
+            System.out.println(""+e);
+        }
+
+    }
+
+        public void enviarEmailInscripcion(String direcciones,String codigo) {
+        Cursos obj = curso;
+                try
+                {
+                       Administrador adm = new Administrador();
+                    List  parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'IPPUBLICA'");
+                    Inscripciones estudent = (Inscripciones) adm.buscarClave(codigo,Inscripciones.class);
+                    ParametrosGlobales para = (ParametrosGlobales) parame.get(0);
+                    String ip = para.getCvalor();
+
+                Periodo periodo = (Periodo) adm.buscarClave(estudent.getPeriodo(),Periodo.class);
+                StringTokenizer tokens=new StringTokenizer(direcciones, ";");
+                ArrayList matriculados2 = new ArrayList();
+                    int i=0;
+                    while(tokens.hasMoreTokens()){
+                        String str=tokens.nextToken();
+                        str = str.replace(" ", "");
+                        if(!str.equals("") && str.contains("@")){
+                            matriculados2.add(str.replace(" ", ""));
+                            System.out.println(str);
+                        }
+                        i++;
+                    }
+                    String mensaj = "<html> Gracias <b> "+estudent.getApellido()+" "+estudent.getNombre()+" " +
+                            "<p> Su inscripción se ha realizado con " +
+                            "éxito, para poder reimprimir el " +
+                            "comprobante puede acceder desde " +
+                            "el siguiente enlace: <a href = \"http://"+ ip+"/solucion" + "/592981728937491235.zul?AASL2KSO348934934="+estudent.getCodigoest()+"\"> http://"+ ip+"/solucion" + "/592981728937491235.zul?AASL2KSO348934934="+estudent.getCodigoest()+"  </a> "+
+                            "si no funcionará por favor copie y pegue la dirección" +
+                            " en su navegador preferido. </html>";
+                    if(matriculados2.size()>0)
+                           EnviarAutenticacion.EnviarCorreo(matriculados2,mensaj,periodo.getInstitucion().getNombre()+" - INSCRIPCION" ,periodo.getInstitucion().getUsuariomail(),periodo.getInstitucion().getClavemail(),periodo.getInstitucion().getSmtp(),periodo.getInstitucion().getPuerto(),"jcinform@gmail.com");
         }
         catch(Exception e)
         {

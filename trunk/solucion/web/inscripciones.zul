@@ -58,10 +58,12 @@ import jcinform.procesos.Administrador;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
+import bean.email;
 
 
     Administrador adm = new Administrador();
      secuencial sec = new secuencial();
+     email ema = new email();
     List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
     static Inscripciones estudent = new Inscripciones();
     static Representante representante0 = new Representante();
@@ -159,12 +161,23 @@ void llenar(Inscripciones estudent){
     apellidos.value = estudent.getApellido();
     direccion.value = estudent.getDireccion();
     telefono.value = estudent.getTelefono();
+    cedular.value = estudent.getCedular();
+    nombresr.value = estudent.getNombrer();
+    apellidosr.value = estudent.getApellidor();
+    direccionr.value = estudent.getDireccionr();
+    telefonor.value = estudent.getTelefonor();
+    mailr.value = estudent.getMailr();
+    discapacidad.checked = estudent.getDiscapacidad();
+    tdiscapacidad.value = estudent.getTdiscapacidad();
+    aprovechamiento.value = new BigDecimal(estudent.getAprovechamiento());
     genero.value = estudent.getGenero();
     nacido.value = estudent.getFechanacimiento();
     mail.value = estudent.getMail();
     usuario.value = estudent.getUsuario();
     nobus.value = estudent.getNobus();
     clave.value = permiso.decriptar(estudent.getClave());
+
+    
 
  }
 
@@ -188,6 +201,7 @@ cedular.readonly= estado;
     direccionr.readonly = estado;
     telefonor.readonly = estado;
     mailr.readonly = estado;
+    aprovechamiento.readonly = estado;
 
 }
 
@@ -209,6 +223,7 @@ String cpa = cpa.getValue();
         nombres.value = nombres.value.toUpperCase();
         apellidos.value = apellidos.value.toUpperCase();
         String nCodigo = sec.generarClave();
+        codigo.value = nCodigo.trim();
         estudent.setCodigoest(nCodigo);
         estudent.setCedula(""+cedula.value);
         estudent.setNombre(nombres.value);
@@ -216,26 +231,31 @@ String cpa = cpa.getValue();
         estudent.setDireccion(direccion.value);
         estudent.setTelefono(telefono.value);
         estudent.setMail(mail.value);
+        estudent.setInstanterior(institucion.value);
+        estudent.setAprovechamiento((aprovechamiento.value).doubleValue());
         
         estudent.setCedular(cedular.value);
-        estudent.setNombre(nombresr.value);
-        estudent.setApellido(apellidosr.value);
-        estudent.setDireccion(direccionr.value);
-        estudent.setTelefono(telefonor.value);
-        estudent.setMail(mailr.value);
+        estudent.setNombrer(nombresr.value);
+        estudent.setApellidor(apellidosr.value);
+        estudent.setDireccionr(direccionr.value);
+        estudent.setTelefonor(telefonor.value);
+        estudent.setMailr(mailr.value);
 
         estudent.setFechanacimiento(nacido.value);
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
         estudent.setGenero(genero.selectedItem.value);
         estudent.setPeriodo(periodo.getCodigoper());
-        adm.guardar(estudent);
-        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-                //showrReport();
+        estudent.setDiscapacidad(discapacidad.checked);
+        estudent.setTdiscapacidad(tdiscapacidad.value);
         
+        adm.guardar(estudent);
+
+        ema.enviarEmailInscripcion(estudent.getMailr()+";"+estudent.getMail()+";",estudent.getCodigoest());
+        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         guardar.disabled=true;
         agregar.disabled=false;
-        imprimir.disabled=true;
+        imprimir.disabled=false;
         estado(true);
 
         claveprint.disabled = false;
@@ -391,17 +411,7 @@ Periodo periodo = periodosListado.selectedItem.value;
             parametros.put("email",""+mail.value);
             parametros.put("fechaNacimiento",nacido.value);
             parametros.put("aprovechamiento",""+aprovechamiento.value);
-            //parametros.put("representante",""+nombresr.value+" "+apellidosr.value);
-        
-        
-        /* 
-        estudent.setTelefono(telefono.value);
-        estudent.setMail(mail.value);
-        estudent.setFechanacimiento(nacido.value);
-        estudent.setUsuario(usuario.value);
-        estudent.setClave(permiso.encriptar(clave.value));
-        estudent.setGenero(genero.selectedItem.value); */
-
+ 
 
 
 
@@ -654,7 +664,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             </span>
                             <span>
                                 <div style="color:blue">
-                                    <spinner value="20" cols="2" id="aprovechamiento"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero,min 0 max 20" />
+                                    <decimalbox cols="5" id="aprovechamiento" readonly="true"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero" />
                                        ¿Fue usted abanderado de su Instituto?: 
                                     <checkbox id="abanderado" />
                                 </div>
@@ -743,6 +753,25 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 <popup id="telefonostr" width="300px">
                                     <html>
                                         Ejemplo: "025103843"
+                                    </html>
+                                </popup>
+                            </span>
+                        </row>
+
+
+                           <row  style="background:#DFF5F5;border:0px" >
+
+                            <span style="float:right">
+                                <label value="¿Posee Discapacidad?" id="t16"/>
+                            </span>
+                            <span>
+                                
+                                <checkbox id="discapacidad" onCheck="tdiscapacidad.readonly = self.checked? false: true" />
+                                <textbox  onFocus="changeStyle(t16)"   onBlur="changeStyle(t16) " id="tdiscapacidad" maxlength="50" cols="20" rows="2"  readonly="true"  />
+                                <image src="/images/information.png" tooltip="discapacidadt" popup="discapacidadt" style="cursor: pointer" />
+                                <popup id="discapacidadt" width="300px">
+                                    <html>
+                                        Describa si tiene algún tipo de discapacidad Ejem. Visual, Auditiva...
                                     </html>
                                 </popup>
                             </span>
