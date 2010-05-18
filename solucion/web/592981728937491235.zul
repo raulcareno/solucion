@@ -39,28 +39,13 @@ void notasd(){
             parametros.put("estudiante",""+estudent.getNombre()+" "+estudent.getApellido());
             parametros.put("direccion",""+estudent.getDireccion());
             parametros.put("institutoAnterior",""+estudent.getInstanterior());
-            parametros.put("email",""+estudent.getMail(););
+            parametros.put("email",""+estudent.getMail());
             parametros.put("fechaNacimiento",estudent.getFechanacimiento());
             parametros.put("aprovechamiento",""+estudent.getAprovechamiento());
             parametros.put("representante",""+estudent.getNombrer()+" "+estudent.getApellidor());
             parametros.put("direccionRep",""+estudent.getDireccionr());
             parametros.put("telefonoRep",""+estudent.getTelefonor());
             parametros.put("emailRep",""+estudent.getMailr());
-            //parametros.put("representante",""+nombresr.value+" "+apellidosr.value);
-
-
-        /*
-        estudent.setTelefono(telefono.value);
-        estudent.setMail(mail.value);
-        estudent.setFechanacimiento(nacido.value);
-        estudent.setUsuario(usuario.value);
-        estudent.setClave(permiso.encriptar(clave.value));
-        estudent.setGenero(genero.selectedItem.value); */
-
-
-
-
-
                 report.setParameters(parametros);
                 report.setDatasource(null);
                 report.setType("html");
