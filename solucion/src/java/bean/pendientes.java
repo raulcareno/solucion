@@ -77,7 +77,7 @@ public class pendientes extends Rows {
 
             label = new Textbox();
             label.setMaxlength(10);
-            label.setCols(10);
+            label.setCols(15);
             try {
 
                 label.setValue(vec.getCedula());
