@@ -1,11 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+ 
 package bean;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -41,12 +37,13 @@ public class matriculasBean {
     CharField DIRECFAC = null;
     CharField RUCFAC = null;
     CharField TELFAC = null;
+    NumField CNIVEL = null;
     DBF db;
 
     public matriculasBean() {
         try {
 //            DBF db2 = new DBF("/home/geovanny/Escritorio/base1.dbf");
-            db = new DBF("/home/geovanny/Escritorio/base2.dbf");
+            db = new DBF("/home/rousseau/base/interface.dbf");
 
         } catch (xBaseJException ex) {
             Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -114,6 +111,7 @@ public String rFecha (Date fecha){
             try {DIRECFAC.put(matricula.getEstudiante().getRepresentante().getDirfactura());} catch (Exception asdx) {}
             try {RUCFAC.put(matricula.getEstudiante().getRepresentante().getIdentificacionfactura());} catch (Exception asdx) {}
             try {TELFAC.put(matricula.getEstudiante().getRepresentante().getTelfactura());} catch (Exception asdx) {}
+            try {CNIVEL.put(matricula.getCurso().getCodigocur());} catch (Exception asdx) {}
             
 
         }  catch (ArrayIndexOutOfBoundsException ex) {
@@ -122,7 +120,8 @@ public String rFecha (Date fecha){
     }
 void todos(){
     Administrador adm = new Administrador();
-          List<Matriculas> estu = adm.query("Select o from Matriculas as o where o.curso.periodo.codigoper = '"+per.getCodigoper()+"' ");
+          List estu = adm.query("Select o from Matriculas as o where o.estado = 'Matriculado' ");
+          System.out.println(""+estu);
             for (Iterator<Matriculas> it = estu.iterator(); it.hasNext();) {
                Matriculas matriculas = it.next();
                 agregar(matriculas);
@@ -134,8 +133,8 @@ void todos(){
             Field f;
             String codigo = matricula.getEstudiante().getCodigoest() + "";
             System.out.println("NO DE REGISTROS"+db.getRecordCount());
-            if(db.getRecordCount() ==0 ){
-                todos();
+              if(db.getRecordCount() ==0 ){
+            todos();
                 return;
             }
             db.read();
@@ -209,6 +208,7 @@ void todos(){
             DIRECFAC = (CharField) db.getField("DIRECFAC");
             RUCFAC = (CharField) db.getField("RUCFAC");
             TELFAC = (CharField) db.getField("TELFAC");
+            CNIVEL = (NumField) db.getField("CNIVEL");
             
         } catch (xBaseJException ex) {
             Logger.getLogger(matriculasBean.class.getName()).log(Level.SEVERE, null, ex);
