@@ -34,6 +34,9 @@ void notasd(){
             parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
             report.setSrc("WEB-INF/reportes/inscripcion.jasper");
+            if((""+estudent.getCedula()).equals(null) || (""+estudent.getCedula()).equals("")){
+                    estudent.setCedula(estudent.getCedular());
+            }
             parametros.put("cedula",""+estudent.getCedula());
             parametros.put("codigo",""+valor);
             parametros.put("estudiante",""+estudent.getNombre()+" "+estudent.getApellido());
