@@ -72,7 +72,8 @@
 
         <span style="float:right"> Habilitar Inscripciones:</span>
 		<span>
-        <checkbox id="web" checked="@{inobjeto.web}." onCheck="update();"  disabled="true"  />
+        <checkbox id="web" checked="@{inobjeto.web}" onCheck="update();" disabled="true"  />
+
         Desde:
         <datebox id="desde"  value="@{inobjeto.fechai}" format="dd/MM/yyyy"  onChange="update();"  readonly="true"  />
         Hasta:
