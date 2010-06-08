@@ -216,6 +216,26 @@ cedular.readonly= estado;
     disciplina5.readonly= estado;
     disciplina6.readonly= estado;
 
+    cedulap.readonly= estado;
+    nombresp.readonly = estado;
+    apellidosp.readonly = estado;
+    direccionp.readonly = estado;
+    telefonop.readonly = estado;
+    mailp.readonly = estado;
+    trabajop.readonly = estado;
+    profesionp.readonly = estado;
+    celularp.readonly = estado;
+
+     cedulam.readonly= estado;
+    nombresm.readonly = estado;
+    apellidosm.readonly = estado;
+    direccionm.readonly = estado;
+    telefonom.readonly = estado;
+    mailm.readonly = estado;
+    trabajom.readonly = estado;
+    profesionm.readonly = estado;
+    celularm.readonly = estado;
+
 }
 
 
@@ -523,13 +543,13 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                 <grid  id="datosGrid" >
                     <rows>
 
-                        <row style="background:#6699CC;border:0px;color:red" >
+                        <row align="left"  style="background:#6699CC;border:0px;color:red" >
                             <div style="color:white;font-size:15px;font-weight:bold">IMPORTANTE LEER ANTES DE CONTINUAR: </div>
                             <span style="float:right;font-size:11px">
                                 <button onClick="informacion.detach()" label="CERRAR" image="/images/exit.gif" />
                             </span>
                         </row>
-                        <row   spans="2" style="background:#E4EDF6;border:0px;color:blue" >
+                        <row align="left"    spans="2" style="background:#E4EDF6;border:0px;color:blue" >
                             <span style="font-size:15px">
     
                                 <div style="color:black;font-size:15px">Recuerde que la información proporcionada debe ser REAL, en caso de salir favorecido, su información será verificada y  de no cumplir con los requisitos se ANULARÁ su inscripción y matrícula, también se ANULARÁ  a quienes se hayan inscrito más de una vez. </div>
@@ -550,7 +570,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                        
                     <grid   id="datosGrid" >
                         <rows>
-                            <row spans="2" style="background:#6699CC;border:0px;color:blue" >
+                            <row align="left"  spans="2" style="background:#6699CC;border:0px;color:blue" >
                                 <span>
                                     <listbox id="periodosListado" mold="select" style="font-size:15px"  onSelect="seleccionPeriodo();" >
                                         <listitem  label="[SELECCIONE UN PERIODO PARA CONTINUAR]" value="-1"/>
@@ -564,7 +584,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
 
                             </row>
-                            <row   spans="2" style="background:#6699CC;border:0px;color:blue" >
+                            <row align="left"    spans="2" style="background:#6699CC;border:0px;color:blue" >
                                 <span style="font-size:11px">
                                     <separator></separator>
                                     <label style="font-size:15px;color:white" id="now3" />
@@ -600,15 +620,15 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
                           
-                            <row spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
+                            <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
                                 <separator bar="true"/>
                             </row>
-                            <row spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
+                            <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
                                 <span style="color:blue">DATOS DEL ESTUDIANTE</span>
 
                             </row>
                         
-                            <row    style="background:#E4EDF6;border:0px" >
+                            <row align="left"     style="background:#E4EDF6;border:0px" >
                                 <span style="float:right">
                                     <label  style="font-size:11px" value="Identificación:" id="t1"/>
                                 </span>
@@ -628,7 +648,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                
                                 </span>
                             </row>
-                            <row    style="background:#E4EDF6;border:0px" >
+                            <row align="left"     style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label value="Nombres(*):" id="t2"/>
                                 </span>
@@ -644,7 +664,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </popup>
                                 </span>
                             </row>
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="Dirección(*):" id="t4"/>
@@ -661,7 +681,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="Email(*):" id="t5"/>
@@ -688,7 +708,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
 
 
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="Género(*):" id="t6"/>
@@ -704,7 +724,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row  visible="false" style="background:#E4EDF6;border:0px" >
+                            <row align="left"   visible="false" style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label value="Usuario:" id="t8"/>
                                 </span>
@@ -718,7 +738,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label value="Instituto Anterior:" id="t11"/>
                                 </span>
@@ -733,7 +753,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
                                 <label value=""/>
                                 <span>
                                     <label value="Aprov."/>
@@ -741,7 +761,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     <label value="Disciplina"/>
                                 </span>
                             </row>
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="Séptimo:" id="tA"/>
@@ -754,7 +774,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                         
                                 </span>
                             </row>
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="Sexto:" id="tA016"/>
@@ -766,7 +786,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </div>
                                 </span>
                             </row>
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="Quinto" id="tA015"/>
@@ -778,7 +798,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </div>
                                 </span>
                             </row>
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="¿Posee Discapacidad?" id="t16"/>
@@ -794,7 +814,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </popup>
                                 </span>
                             </row>
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="TipoDiscapacidad" id="t160"/>
@@ -807,20 +827,20 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
+                            <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
                                 <separator bar="true"/>
                             </row>
 
 <!-- ************************************* DATOS PADRE  ************************************************ -->
 
-                            <row spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
+                            <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
                                 <span style="color:blue">DATOS DEL PADRE</span>
 
                             </row>
 
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
-                                    <label value="Identificación(*):" id="t1p"/>
+                                    <label value="Identificación:" id="t1p"/>
                                 </span>
 
                                 <span>
@@ -835,14 +855,14 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                                 </span>
                             </row>
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
-                                    <label value="Nombres(*):" id="t2p"/>
+                                    <label value="Nombres:" id="t2p"/>
                                 </span>
                                 <span>
-                                    <textbox id="nombresp" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2p)"  onBlur="changeStyle(t2p);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="20" readonly="true"   />
-                                    <label value="Apellidos(*):" id="t3p"/>
-                                    <textbox id="apellidosp"  onFocus="changeStyle(t3p)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3p);nombres.getValue(); self.getValue();generarClave(false); "  maxlength="60" cols="20" readonly="true"  />
+                                    <textbox id="nombresp"  onFocus="changeStyle(t2p)"  onBlur="changeStyle(t2p);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="20" readonly="true"   />
+                                    <label value="Apellidos:" id="t3p"/>
+                                    <textbox id="apellidosp"  onFocus="changeStyle(t3p)"  onBlur="changeStyle(t3p);nombres.getValue(); self.getValue();generarClave(false); "  maxlength="60" cols="20" readonly="true"  />
                                     <image src="/images/information.png" height="16px" width="16px" tooltip="nombrestp" popup="nombrestp" style="cursor: pointer" />
                                     <popup id="nombrestp" width="300px">
                                         <html>
@@ -851,10 +871,10 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </popup>
                                 </span>
                             </row>
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
-                                    <label value="Dirección(*):" id="t4p"/>
+                                    <label value="Dirección:" id="t4p"/>
                                 </span>
                                 <span>
                                     <textbox id="direccionp" onFocus="changeStyle(t4p)" onBlur="changeStyle(t4p) "  constraint="no empty: Ingrese una dirección, no podra completar su inscripcion si no ingresa este campo"  maxlength="100" cols="57"  readonly="true"    />
@@ -868,7 +888,45 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row  style="background:#E4EDF6;border:0px" >
+                              <row align="left"   style="background:#E4EDF6;border:0px" >
+
+                                <span style="float:right;font-size:11px">
+                                    <label value="Profesión:" id="t4pr"/>
+                                </span>
+                                <span>
+                                    <textbox id="profesionp" onFocus="changeStyle(t4pr)" onBlur="changeStyle(t4pr) "  maxlength="100" cols="57"  readonly="true"    />
+                                    <image src="/images/information.png" height="16px" width="16px" tooltip="profesiontp" popup="profesiontp" style="cursor: pointer" />
+                                    <popup id="profesiontp" width="300px">
+                                        <html>
+                                        Ejemplo: "Ing. en Sistemas, Abogado, Agricultor"
+                                        </html>
+                                    </popup>
+
+                                </span>
+                            </row>
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
+
+                                <span style="float:right;font-size:11px">
+                                    <label value="Lug.Trabajo:" id="t4pl"/>
+                                </span>
+                                <span>
+                                    <textbox id="trabajop" onFocus="changeStyle(t4pl)" onBlur="changeStyle(t4pl) " maxlength="100" cols="30"  readonly="true"    />
+                                   <image src="/images/information.png" height="16px" width="16px" tooltip="trabajotp" popup="trabajotp" style="cursor: pointer" />
+                                    <popup id="trabajotp" width="300px">
+                                        <html>
+                                        Ejemplo: "Emprea de Textilos Sto.Domingo"
+                                        </html>
+                                    </popup>
+                                 <label value="Celular:" id="t4pc"/>
+
+                                 <textbox  onFocus="changeStyle(t4pc)"   onBlur="changeStyle(t4pc) " id="celularp" maxlength="50" cols="10"  readonly="true"  />
+                                    
+                                 
+
+                                </span>
+                            </row>
+
+                            <row align="left"  style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="Email:" id="t5p"/>
@@ -892,23 +950,23 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-    <row spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
+    <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
                                 <separator bar="true"/>
                             </row>
 
 
-                            <row spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
+                            <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
                                 <span style="color:blue">DATOS DE LA MADRE</span>
 
                             </row>
 
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label value="Identificación(*):" id="t1m"/>
                                 </span>
 
                                 <span>
-                                    <textbox maxlength="10" cols="13" onFocus="changeStyle(t1m)"  constraint="no empty: Ingrese su número de cédula para poder proceder a la iscripción, no podra completar su inscripcion si no ingresa este campo"   onBlur="changeStyle(t1r) " readonly="true" id="cedulam"  />
+                                    <textbox maxlength="10" cols="13" onFocus="changeStyle(t1m)"   onBlur="changeStyle(t1r) " readonly="true" id="cedulam"  />
                                     <image src="/images/information.png" height="16px" width="16px" tooltip="cedulatm" popup="cedulatm" style="cursor: pointer" />
                                     <popup id="cedulatm" width="300px">
                                         <html>
@@ -916,33 +974,33 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                         </html>
                                     </popup>
 
-                            <row  style="background:#E4EDF6;border:0px">
+                           
 
                                 </span>
                             </row>
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label value="Nombres(*):" id="t2m"/>
                                 </span>
                                 <span>
-                                    <textbox id="nombresm" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2m);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="20" readonly="true"   />
+                                    <textbox id="nombresm"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2m);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="20" readonly="true"   />
                                     <label value="Apellidos(*):" id="t3m"/>
                                     <textbox id="apellidosm"  onFocus="changeStyle(t3m)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3m);nombres.getValue(); self.getValue();generarClave(false); "  maxlength="60" cols="20" readonly="true"  />
                                     <image src="/images/information.png" height="16px" width="16px" tooltip="nombrestm" popup="nombrestm" style="cursor: pointer" />
                                     <popup id="nombrestm" width="300px">
                                         <html>
-                                        Ejemplo: "JUAN DARIO PEREZ GOMEZ"
+                                        Ejemplo: "MARIA AUGUSTA VALLEJO"
                                         </html>
                                     </popup>
                                 </span>
                             </row>
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="Dirección(*):" id="t4m"/>
                                 </span>
                                 <span>
-                                    <textbox id="direccionm" onFocus="changeStyle(t4m)" onBlur="changeStyle(t4m) "  constraint="no empty: Ingrese una dirección, no podra completar su inscripcion si no ingresa este campo"  maxlength="100" cols="57"  readonly="true"    />
+                                    <textbox id="direccionm" onFocus="changeStyle(t4m)" onBlur="changeStyle(t4m) "  maxlength="100" cols="57"  readonly="true"    />
                                     <image src="/images/information.png" height="16px" width="16px" tooltip="direcciontr" popup="direcciontm" style="cursor: pointer" />
                                     <popup id="direcciontm" width="300px">
                                         <html>
@@ -952,8 +1010,44 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                                 </span>
                             </row>
+   <row align="left"   style="background:#E4EDF6;border:0px" >
 
-                            <row  style="background:#E4EDF6;border:0px" >
+                                <span style="float:right;font-size:11px">
+                                    <label value="Profesión:" id="t4mr"/>
+                                </span>
+                                <span>
+                                    <textbox id="profesionm" onFocus="changeStyle(t4mr)" onBlur="changeStyle(t4mr) "  maxlength="100" cols="57"  readonly="true"    />
+                                    <image src="/images/information.png" height="16px" width="16px" tooltip="profesiontm" popup="profesiontm" style="cursor: pointer" />
+                                    <popup id="profesiontm" width="300px">
+                                        <html>
+                                        Ejemplo: "Ing. en Sistemas, Abogado, Agricultor"
+                                        </html>
+                                    </popup>
+
+                                </span>
+                            </row>
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
+
+                                <span style="float:right;font-size:11px">
+                                    <label value="Lug.Trabajo:" id="t4ml"/>
+                                </span>
+                                <span>
+                                    <textbox id="trabajom" onFocus="changeStyle(t4ml)" onBlur="changeStyle(t4ml) " maxlength="100" cols="30"  readonly="true"    />
+                                   <image src="/images/information.png" height="16px" width="16px" tooltip="trabajotm" popup="trabajotm" style="cursor: pointer" />
+                                    <popup id="trabajotm" width="300px">
+                                        <html>
+                                        Ejemplo: "Emprea de Textilos Sto.Domingo"
+                                        </html>
+                                    </popup>
+                                 <label value="Celular:" id="t4mc"/>
+
+                                 <textbox  onFocus="changeStyle(t4mc)"   onBlur="changeStyle(t4mc) " id="celularm" maxlength="50" cols="10"  readonly="true"  />
+
+
+
+                                </span>
+                            </row>
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="Email:" id="t5m"/>
@@ -977,17 +1071,17 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-    <row spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
+    <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
                                 <separator bar="true"/>
                             </row>
                          
 
-                            <row spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
+                            <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
                                 <span style="color:blue">DATOS DEL REPRESENTANTE</span>
 
                             </row>
 
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label value="Identificación(*):" id="t1r"/>
                                 </span>
@@ -1004,7 +1098,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                                 </span>
                             </row>
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label value="Nombres(*):" id="t2r"/>
                                 </span>
@@ -1020,7 +1114,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </popup>
                                 </span>
                             </row>
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="Dirección(*):" id="t4r"/>
@@ -1037,7 +1131,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row  style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label value="Email:" id="t5r"/>
@@ -1067,11 +1161,11 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
 
 <!-- ************************************* SECCION GUARDAR ************************************************ -->
-                            <row spans="2" style="background:#E4EDF6;border:0px">
+                            <row align="left"  spans="2" style="background:#E4EDF6;border:0px">
                                 <separator bar="true"/>
                             </row>
 
-                            <row  style="background:#E4EDF6;border:0px">
+                            <row align="left"   style="background:#E4EDF6;border:0px">
 
                                 <span style="float:right;font-size:11px">
                                     <label value="Introduce el código(*):" id="t12"/>
@@ -1089,7 +1183,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
                            
-                            <row style="background:#E4EDF6;border:0px" >
+                            <row align="left"  style="background:#E4EDF6;border:0px" >
                                 <span></span>
                                 <span>
                                     <button image="/images/guardar.gif" id="guardar" disabled="false" label="INSCRIBIR" width="190px"  height="40px"  onClick="nombres.getValue();apellidos.getValue();direccion.getValue();mail.getValue();genero.getValue();nacido.getValue();cpaingresado.getValue();aprovechamiento.getValue();guardar();"/>
