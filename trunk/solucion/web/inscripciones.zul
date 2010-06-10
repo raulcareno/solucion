@@ -178,15 +178,51 @@ void llenar(Inscripciones estudent){
     discapacidad.checked = estudent.getDiscapacidad();
     tdiscapacidad.value = estudent.getTdiscapacidad();
     aprovechamiento.value = new BigDecimal(estudent.getAprovechamiento());
+    aprovechamiento5.value = new BigDecimal(estudent.getAprovechamiento5());
+    aprovechamiento6.value = new BigDecimal(estudent.getAprovechamiento6());
+    disciplina.value = new BigDecimal(estudent.getDiscplina());
+    disciplina5.value = new BigDecimal(estudent.getDisciplina5());
+    disciplina6.value = new BigDecimal(estudent.getDisciplina6());
+
     genero.value = estudent.getGenero();
     nacido.value = estudent.getFechanacimiento();
     mail.value = estudent.getMail();
     usuario.value = estudent.getUsuario();
     nobus.value = estudent.getNobus();
     clave.value = permiso.decriptar(estudent.getClave());
+//PADRES
+try{
+        //if(apellidosp.value != "" ){
 
-    
-
+            cedulap.value = estudent.getCedulap();
+            nombresp.value = estudent.getNombrepa();
+            apellidosp.value = estudent.getApellidopa();
+            direccionp.value = estudent.getDireccionpa();
+            telefonop.value = estudent.getTelefonopa();
+            mailp.value = estudent.getCorrepa();
+            profesionp.value = estudent.getTrabajopa();
+            trabajop.value = estudent.getLugarpa();
+        //}
+        }catch(Exception e){
+        System.out.println("ERROR AL CARGAR PADRE"+e);
+        }
+       //MAMA
+       try{
+        //  if(apellidosm.value != ""){
+                cedulam.value = estudent.getCedulam();
+                nombresm.value = estudent.getNombrema();
+                apellidosm.value = estudent.getApellidma();
+                direccionm.value = estudent.getDireccionma();
+                telefonom.value = estudent.getTelefonoma();
+                mailm.value = estudent.getCorreoma();
+                profesionm.value = estudent.getTrabajoma();
+                trabajom.value = estudent.getLugarma();
+                discapacidad.checked = estudent.getDiscapacidad();
+                tdiscapacidad.value = estudent.getTdiscapacidad();
+        //}
+        }catch(Exception e){
+            System.out.println("ERROR AL CARGAR mADRE"+e);
+        }
  }
 
 
@@ -268,6 +304,13 @@ String cpa = cpa.getValue();
         estudent.setMail(mail.value);
         estudent.setInstanterior(institucion.value);
         estudent.setAprovechamiento((aprovechamiento.value).doubleValue());
+        estudent.setAprovechamiento5((aprovechamiento5.value).doubleValue());
+        estudent.setAprovechamiento6((aprovechamiento6.value).doubleValue());
+        estudent.setDiscplina((disciplina.value).doubleValue());
+        estudent.setDisciplina5((disciplina5.value).doubleValue());
+        estudent.setDisciplina6((disciplina6.value).doubleValue());
+
+
 
       //representante
         estudent.setCedular(cedular.value);
@@ -422,7 +465,7 @@ void modificar(){
                         inscrip = object;
                         break;
                  }
-                 int vales = Messagebox.show("NO se ha guardado el registro, estudiante ya INSCRITO anteriormente...! \n NOMBRES: "+inscrip.getApellido() + " "+ inscrip.getNombre()+" \n REPRESENTANTE: "+inscrip.getApellidor()+" "+inscrip.getNombrer()+" \n ¿Desea volver a inscribirse?" , "Administrador Educativo", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
+                 int vales = Messagebox.show("ESTUDIANTE YA INSCRITO ANTERIORMENTE...! \n NOMBRES: "+inscrip.getApellido() + " "+ inscrip.getNombre()+" \n ¿Desea volver a crear una nueva inscripción? \n Recuerde que no puede inscribirse más de una vez si lo hace se ANULARÁ su inscripción" , "Administrador Educativo", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
                   if(vales > 1){//no va a inscribir va a cancelar la operacion
                     llenar(inscrip);
                           estado(true);
@@ -703,7 +746,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 <span>
                                     <textbox id="nombres" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="20" readonly="true"   />
                                     <label  style="font-size:11px" value="Apellidos(*):" id="t3"/>
-                                    <textbox id="apellidos"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3);nombres.getValue(); self.getValue();generarClave(false); "  maxlength="60" cols="20" readonly="true"  />
+                                    <textbox id="apellidos"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3);nombres.getValue(); self.getValue();generarClave(false); verificarNombres();"  maxlength="60" cols="20" readonly="true"  />
                                     <image src="/images/information.png" height="16px" width="16px" tooltip="nombrest" popup="nombrest" style="cursor: pointer" />
                                     <popup id="nombrest" width="300px">
                                         <html>
@@ -816,8 +859,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                                 <span>
                                     <div style="color:blue">
-                                        <decimalbox cols="5" id="aprovechamiento" readonly="true"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero" />
-                                        <decimalbox cols="5" id="disciplina" readonly="true"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero" />
+                                        <decimalbox cols="5" id="aprovechamiento" readonly="true"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="disciplina" readonly="true"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative" />
                                     </div>
                                         
                                 </span>
@@ -829,8 +872,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                                 <span>
                                     <div style="color:blue">
-                                        <decimalbox cols="5" id="aprovechamiento6" readonly="true"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative,no zero" />
-                                        <decimalbox cols="5" id="disciplina6" readonly="true"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative,no zero" />
+                                        <decimalbox cols="5" id="aprovechamiento6" readonly="true"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="disciplina6" readonly="true"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative" />
                                     </div>
                                 </span>
                             </row>
@@ -841,8 +884,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                                 <span>
                                     <div style="color:blue">
-                                        <decimalbox cols="5" id="aprovechamiento5" readonly="true"   onBlur="changeStyle(tA015) " onFocus="changeStyle(tA015)"  constraint="no negative,no zero" />
-                                        <decimalbox cols="5" id="disciplina5" readonly="true"   onBlur="changeStyle(tA015) " onFocus="changeStyle(tA015)"  constraint="no negative,no zero" />
+                                        <decimalbox cols="5" id="aprovechamiento5" readonly="true"   onBlur="changeStyle(tA015) " onFocus="changeStyle(tA015)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="disciplina5" readonly="true"   onBlur="changeStyle(tA015) " onFocus="changeStyle(tA015)"  constraint="no negative" />
                                     </div>
                                 </span>
                             </row>
