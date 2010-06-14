@@ -206,7 +206,7 @@ public class email {
 
     }
 
-        public void enviarEmailInscripcion(String direcciones,String codigo) {
+        public void enviarEmailInscripcion(String direcciones,String codigo){
         Cursos obj = curso;
                 try
                 {
@@ -349,7 +349,9 @@ class EnviarAutenticacion
              }
             System.out.println("***********************"+emailInstitucion);
             Message msg = getTraerMensaje(session, tema, emailsA,mensaje,emailInstitucion,respuestaA);
+             System.out.println("I: "+ (new Date().toLocaleString()));
             Transport.send(msg);
+            System.out.println("F: "+ (new Date().toLocaleString()));
         }
 
         catch (Exception e){
