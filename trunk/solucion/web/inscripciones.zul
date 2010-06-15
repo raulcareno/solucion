@@ -350,8 +350,8 @@ String cpa = cpa.getValue();
         
         adm.guardar(estudent);
 
-        ema.enviarEmailInscripcion(estudent.getMailr()+";"+estudent.getMail()+";",estudent.getCodigoest());
-        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        ema.enviarEmailInscripcion(estudent.getMailr()+";"+estudent.getMail()+";"+estudent.getCorrepa()+";"+estudent.getCorreoma()+";",estudent.getCodigoest());
+        Messagebox.show("Registro Almacenado con Éxito...! \n se ha enviado un email a su cuenta de correo", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         guardar.disabled=true;
         agregar.disabled=false;
         imprimir.disabled=false;
@@ -836,6 +836,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 <span>
                                     <textbox id="institucion"  onBlur="changeStyle(t11) " onFocus="changeStyle(t11)" readonly="true"  maxlength="100" cols="50"/>
                                     <image src="/images/information.png" height="16px" width="16px" tooltip="institutot" popup="institutot" style="cursor:pointer" />
+                                    <separator bar="true" orient="vertical"/>
+                                    <label  style="font-size:11px" value="(Deje en blanco si es de prebasica)"/>
                                     <popup id="institutot" width="300px">
                                         <html>
                                         Ejemplo: "Escuela Mercedes de Jesús Molina"
@@ -850,6 +852,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     <label style="font-size:11px"  value="Aprov."/>
                                     <separator bar="true" orient="vertical"/>
                                     <label  style="font-size:11px" value="Disciplina"/>
+                                    <separator bar="true" orient="vertical"/>
+                                    <label  style="font-size:11px" value="(Deje en cero si es de prebasica)"/>
                                 </span>
                             </row>
                             <row align="left"   style="background:#E4EDF6;border:0px" >
@@ -859,8 +863,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                                 <span>
                                     <div style="color:blue">
-                                        <decimalbox cols="5" id="aprovechamiento" readonly="true"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative" />
-                                        <decimalbox cols="5" id="disciplina" readonly="true"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="aprovechamiento" readonly="true" value="0"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="disciplina" readonly="true"  value="0"  onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative" />
                                     </div>
                                         
                                 </span>
@@ -872,8 +876,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                                 <span>
                                     <div style="color:blue">
-                                        <decimalbox cols="5" id="aprovechamiento6" readonly="true"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative" />
-                                        <decimalbox cols="5" id="disciplina6" readonly="true"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="aprovechamiento6" readonly="true" value="0"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="disciplina6" readonly="true" value="0"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative" />
                                     </div>
                                 </span>
                             </row>
@@ -884,8 +888,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                                 <span>
                                     <div style="color:blue">
-                                        <decimalbox cols="5" id="aprovechamiento5" readonly="true"   onBlur="changeStyle(tA015) " onFocus="changeStyle(tA015)"  constraint="no negative" />
-                                        <decimalbox cols="5" id="disciplina5" readonly="true"   onBlur="changeStyle(tA015) " onFocus="changeStyle(tA015)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="aprovechamiento5" readonly="true"  value="0"  onBlur="changeStyle(tA015) " onFocus="changeStyle(tA015)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="disciplina5" readonly="true"  value="0"  onBlur="changeStyle(tA015) " onFocus="changeStyle(tA015)"  constraint="no negative" />
                                     </div>
                                 </span>
                             </row>
