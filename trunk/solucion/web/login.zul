@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page   id="loginjx" title="Administrador Educativo" ?>
-<?link rel="shortcut icon" type="image/icono" href="images/icono.jpg"?>
+<?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <!--window  id="principalImagen">
 <separator bar="true"/-->
 
 <zk>
- <style>
+    <style>
 .estil{
 	height:100%;
-    background-image: url(./images/fondo.png);
+    background-image: url(./images/fondo.jpg);
     background-repeat: repeat-y;
     background-repeat: repeat-x;
     
     
 }
-</style>
+    </style>
  
     <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
-<window onLoad="usuario.focus();"  onCreate="usuario.focus();"   id="winLogin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" width="460px" sizable="true">
-<zscript>
+        <window onLoad="usuario.focus();"  onCreate="usuario.focus();"   id="winLogin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" width="460px" sizable="true">
+            <zscript>
   import jcinform.persistencia.Global;
   import bean.EventDAO;
   import java.util.ArrayList;
@@ -91,7 +91,7 @@ void verificar(){
                                               Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
                                               Listitem li = new Listitem();
                                               li.setValue(acceIt.getPeriodo());
-                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " - "+ acceIt.getPeriodo().getInstitucion().getTipo()+" ["+acceIt.getPeriodo().getSeccion()+"]" ));
+                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + "-"+ acceIt.getPeriodo().getInstitucion().getTipo()+"["+acceIt.getPeriodo().getSeccion()+"]" ));
                                               periodo.appendChild(li);
                                      }
                                      periodo.setSelectedIndex(0);
@@ -157,50 +157,53 @@ void verificarSistema(){
         }
 }
 
-</zscript>
-		 <grid style="background-color:transparent;border:0px">
+            </zscript>
+            <grid style="background-color:transparent;border:0px">
 	 
-		<rows style="background:transparent;border:0px">
-            <row style="background:transparent;border:0px" spans="2">
- <span style="float:center"> <image src="/images/about.jpg" style="aling:center"/></span>
-            </row>
-			<row style="background:transparent;border:0px"  id="usuarios" >
-				<span style="float:right;font-weight:bold">Usuario:(*):</span>
-                <textbox onOK="clave.focus()"  id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
-			</row>
-			<row style="background:transparent;border:0px"  id="claves" >
-				<span style="float:right">Contraseña:(*):</span>
-                 <textbox  onOK="verificar.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
-			</row>
-           <row visible="false" id="seleccione"  align="center" spans="2" style="background:transparent;border:0px">
-				<label style="float:center;font-size:16px;color:red" value="SELECCIONE UN PERIODO:"></label>
-			</row>
-            <row  style="background:transparent;border:0px" id="rperiodo" visible="false" spans="2">
-                    <listbox  onOK="btnIngresar.focus()"  style="font-size:11px"   width="435px"  id="periodo" mold="select">
-                        <listitem forEach="${perfiles}" value="${each}">
-                              <listcell  label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
-                        </listitem>
-                    </listbox>
+                <rows style="background:transparent;border:0px">
+                    <row style="background:transparent;border:0px" spans="2">
+                        <span style="float:center">
+                            <image src="/images/about.jpg" style="aling:center"/>
+                        </span>
+                    </row>
+                    <row style="background:transparent;border:0px"  id="usuarios" >
+                        <span style="float:right;font-weight:bold">Usuario:(*):</span>
+                        <textbox onOK="clave.focus()"  id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
+                    </row>
+                    <row style="background:transparent;border:0px"  id="claves" >
+                        <span style="float:right">Contraseña:(*):</span>
+                        <textbox  onOK="verificar.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
+                    </row>
+                    <row visible="false" id="seleccione"  align="center" spans="2" style="background:transparent;border:0px">
+                        <label style="float:center;font-size:16px;color:red" value="SELECCIONE UN PERIODO:"></label>
+                    </row>
+                    <row  style="background:transparent;border:0px" id="rperiodo" visible="false" spans="2">
+                        <listbox  onOK="btnIngresar.focus()"  style="font-size:11px"   width="435px"  id="periodo" mold="select">
+                            <listitem forEach="${perfiles}" value="${each}">
+                                <listcell  label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
+                            </listitem>
+                        </listbox>
 
                   
-            </row>
-            <row id="olvidado" align="center" spans="2"  style="background:transparent;border:0px">
+                    </row>
+                    <row id="olvidado" align="center" spans="2"  style="background:transparent;border:0px">
                 
-                <toolbarbutton label="¿Ha olvidado su usuario o contraseña haz click AQUI?" onClick='alert("Network")'>
-                    <attribute name="onClick">{
+                        <toolbarbutton label="¿Ha olvidado su usuario o contraseña haz click AQUI?" onClick='alert("Network")'>
+                            <attribute name="onClick">{
                              Window win = (Window) Executions.createComponents("/recuperacionClave.zul", null, null);
                             win.doModal();
-                        }</attribute>
-                </toolbarbutton>
+                        }
+                            </attribute>
+                        </toolbarbutton>
 
-            </row>
-            <row spans="2" align="center"  style="background:transparent;border:0px" >
-             <span style="float:center">
-                <button label="Verificar"   image="/images/key.png"  id="verificar" onClick="usuario.getValue(); clave.getValue(); verificar()"/>
-                <button label="Ingresar Sistema"  visible="false" image="/images/ingreso.gif" id="btnIngresar" onClick="usuario.getValue(); clave.getValue(); ingresoSistemas();"/>
+                    </row>
+                    <row spans="2" align="center"  style="background:transparent;border:0px" >
+                        <span style="float:center">
+                            <button label="Verificar"  height="30px" width="150px"  image="/images/key.png"  id="verificar" onClick="usuario.getValue(); clave.getValue(); verificar()"/>
+                            <button label="Ingresar Sistema" height="30px" width="150px"   visible="false" image="/images/ingreso.gif" id="btnIngresar" onClick="usuario.getValue(); clave.getValue(); ingresoSistemas();"/>
 
-                <button target="_top" label="Consultar Notas"  image="/images/notas.png"  href="./loginEstudiantes.zul"></button>
-                <button target="_top" label="Cancelar" id="cancelar"  visible="false"  image="/images/exit.gif"  href="./login.zul"></button>
+                            <button target="_top" height="30px" width="150px"  label="Consultar Notas"  image="/images/notas.png"  href="./loginEstudiantes.zul"></button>
+                            <button target="_top" height="30px" width="150px"  label="Cancelar" id="cancelar"  visible="false"  image="/images/exit.gif"  href="./login.zul"></button>
                 <!--button label="Olvidó su clave" image="/images/notas.png">
                         <attribute name="onClick">{
                              Window win = (Window) Executions.createComponents("/recuperacionClave.zul", null, null);
@@ -208,30 +211,32 @@ void verificarSistema(){
                         }</attribute>
                 </button-->
                 
-                </span>
-            </row>
+                        </span>
+                    </row>
 
               
                 
             
-		</rows>
-	</grid>
-    <grid><rows>  <row  style="background:white;border:0px" align="center" spans="2">
-                 <span>
-                <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)5103 843 - 080 16 22 11 "/>
-                <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
-                </span>
-             </row>
+                </rows>
+            </grid>
+            <grid>
+                <rows>
+                    <row  style="background:white;border:0px" align="center" spans="2">
+                        <span>
+                            <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)5103 843 - 080 16 22 11 "/>
+                            <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
+                        </span>
+                    </row>
 
 
 
-		</rows>
-	</grid>
+                </rows>
+            </grid>
        
 	 
 		
-	</window>
+        </window>
     </div>
- </zk>
+</zk>
 	<!--/window-->
     

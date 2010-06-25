@@ -308,6 +308,9 @@ public JRDataSource profesores(){
 
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc("WEB-INF/reportes/cuadrofinal2.jasper");
+            }else if(tipo.equals("CNF3")){
+                    datasource = noti.cuadrofinal3(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    report.setSrc("WEB-INF/reportes/cuadrofinal2.jasper");
             }else if(tipo.equals("AG")){
                     datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"original");
                     report.setSrc("WEB-INF/reportes/actaGrado.jasper");
@@ -327,6 +330,12 @@ public JRDataSource profesores(){
                     report.setSrc("WEB-INF/reportes/libreta2.jasper");
                     parametros.put("pathSubRel", "reportes/libreta_subPequeno.jasper");
                     parametros.put("pathSubRel2", "reportes/libreta_subFaltas.jasper");
+
+            }else if(tipo.equals("LIB3")){
+                    datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc("WEB-INF/reportes/libreta3.jasper");
+                    parametros.put("pathSubRel", "reportes/libreta_sub.jasper");
+                    parametros.put("pathSubRel2", "reportes/libreta_sub.jasper");
 
             }else if(tipo.equals("-1")){
                    alert("No ha seleccionado ningún reporte...!");
@@ -372,7 +381,7 @@ void campos(String valor){
                 titulo.value= "Cuadro de Notas por Materia Disciplina";
             materiasCombo.setSelectedIndex(-1);
             curs.setSelectedIndex(0);
-        }else if(valor.equals("LIB") || valor.equals("LIB2")){
+        }else if(valor.equals("LIB") || valor.equals("LIB2") || valor.equals("LIB3")){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
             sistemasCombo.disabled = false;
@@ -402,7 +411,7 @@ void campos(String valor){
         }else if(valor.equals("CAG")){
             curs.disabled = false;
             titulo.value= "Copia de Acta de Grado";
-        }else if(valor.equals("CNF") || valor.equals("CNF2") ){
+        }else if(valor.equals("CNF") || valor.equals("CNF2") || valor.equals("CNF3") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
             titulo.value= "Cuadro de Final de Calificaciones";
@@ -428,11 +437,13 @@ void campos(String valor){
                                     <listitem id="NMATD"  label="Cuadro de Notas por Materia Disciplina" value="NMATD" />
                                     <listitem  id="LIB" label="Libreta de Calificaciones" value="LIB" />
                                     <listitem  id="LIB2" label="Libreta de Calificaciones(2)" value="LIB2" />
+                                    <listitem  id="LIB3" label="Libreta de Calificaciones(3)" value="LIB3" />
                                     <listitem id="CCAL"  label="Cuadro de Calificaciones" value="CCAL" />
                                     <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
                                     <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
                                     <listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
                                     <listitem  id="CNF2" label="Cuadro Juntas o Final (2)" value="CNF2" />
+                                    <listitem  id="CNF3" label="Cuadro Final" value="CNF3" />
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
                                     <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
                                     <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
@@ -579,11 +590,13 @@ void cargando(){
         NMATD.visible = per.verificarPermisoReporte("NMATD", "Ingresar");
         LIB.visible = per.verificarPermisoReporte("LIB", "Ingresar");
         LIB2.visible = per.verificarPermisoReporte("LIB", "Ingresar");
+        LIB3.visible = per.verificarPermisoReporte("LIB", "Ingresar");
 		CCAL.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
         CCAL2.visible = per.verificarPermisoReporte("CCAL2", "Ingresar");
         CCAL3.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
 		CNF.visible = per.verificarPermisoReporte("CNF", "Ingresar");
         CNF2.visible = per.verificarPermisoReporte("CNF", "Ingresar");
+        CNF3.visible = per.verificarPermisoReporte("CNF", "Ingresar");
 		CDIS.visible = per.verificarPermisoReporte("CDIS", "Ingresar");
         AG.visible = per.verificarPermisoReporte("AG", "Ingresar");
         CAG.visible = per.verificarPermisoReporte("CAG", "Ingresar");

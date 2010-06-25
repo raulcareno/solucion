@@ -4,7 +4,7 @@
     <style>
 .estil{
 	height:100%;
-    background-image: url(./images/fondo.png);
+    background-image: url(./images/fondo.jpg);
     background-repeat: repeat-y;
     background-repeat: repeat-x;
 
