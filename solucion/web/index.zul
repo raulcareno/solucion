@@ -137,7 +137,7 @@
                                         <label value="${sessionScope.periodo.institucion.denominacion} " style="color:white;font-size:14px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
                                         <label value=" ${sessionScope.periodo.institucion.nombre}" style="color:white;font-size:14px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
 
-                                        <label value=" - ${sessionScope.periodo.institucion.tipo}" style="color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
+                                        <label value=" - ${sessionScope.periodo.institucion.tipo} - ${sessionScope.periodo.seccion.descripcion}" style="color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
 
                                         <!-- PERIODO -->
                                         <separator orient="vertical" /> |<separator orient="vertical" />

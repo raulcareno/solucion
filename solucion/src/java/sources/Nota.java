@@ -21,6 +21,10 @@ private Sistemacalificacion sistema;
 private Object nota;
 
 private Object optativa;
+
+private Object promedioFinal;
+private Object disciplinaFinal;
+
 private Double aprovechamiento;
 private Double disciplina;
 
@@ -191,6 +195,22 @@ private Integer contador;
 
     public void setDisciplina(Double disciplina) {
         this.disciplina = disciplina;
+    }
+
+    public Object getDisciplinaFinal() {
+        return disciplinaFinal;
+    }
+
+    public void setDisciplinaFinal(Object disciplinaFinal) {
+        this.disciplinaFinal = disciplinaFinal;
+    }
+
+    public Object getPromedioFinal() {
+        return promedioFinal;
+    }
+
+    public void setPromedioFinal(Object promedioFinal) {
+        this.promedioFinal = promedioFinal;
     }
 
 
