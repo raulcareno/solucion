@@ -74,7 +74,7 @@ public class notasGrado extends Rows {
                     if(valor.equals(0.0)){
                        label.setValue(new BigDecimal(0));
                     }else{
-                        label.setValue(new BigDecimal(redondear((Double) dos, 2)));
+                        label.setValue(new BigDecimal(redondear((Double) dos, 3)));
                     }
                     
                 } else {
@@ -154,7 +154,7 @@ public class notasGrado extends Rows {
                         } else {
                             aCargar = new Double(vaNota);
                         }
-                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(aCargar, 2) + ");");
+                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(aCargar, 3) + ");");
                         if (!formula.isEmpty()) {
                             inter.eval("nota.set" + (uno + toda) + "(" + formula + ");");
                         }

@@ -57,7 +57,22 @@ public class Procesos {
                     Matriculas matriculas1 = it.next();
                     List val = adm.queryNativo("select avg(" + no.getNota() + ")  from notas " +
                             "where matricula = '" + matriculas1.getCodigomat() + "' " +
-                            "and promedia = true and disciplina = false  ");
+                            " and promedia = true "
+                            + "and seimprime = true "
+                            + "and cuantitativa = true  "
+                            + "and materia != 0 "
+                            + "and disciplina = false  ");
+
+                    /*
+                     "where notas.matricula = '" + matriculas1.getCodigomat() + "' "
+                        + "and notas.seimprime = true "
+                        + "and notas.promedia = true "
+                        + "and notas.disciplina = false "
+                        + "and notas.cuantitativa = true and notas.materia != 0 "
+                        + "group by matricula  
+
+                     */
+
                      //       System.out.println(matriculas1.getEstudiante().getApellido()+": " + ((Vector)val.get(0)).get(0));
                     Double  promedio =  (Double) ((Vector)val.get(0)).get(0);
                     if(promedio == null){

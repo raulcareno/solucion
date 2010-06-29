@@ -97,7 +97,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
                     if (valor.equals(0.0)) {
                         label.setValue(new BigDecimal(0));
                     } else {
-                        label.setValue(new BigDecimal(redondear((Double) dos, 2)));
+                        label.setValue(new BigDecimal(redondear((Double) dos, 3)));
                     }
                     
                 } else {

@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="4.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="17"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -112,13 +112,13 @@
 							<textField isBlankWhenNull="false">
 								<reportElement key="textField" x="0" y="0" width="129" height="15"/>
 								<box leftPadding="2">
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
-									<font fontName="Arial"/>
+									<font fontName="SansSerif" size="8"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{materia}.toUpperCase()]]></textFieldExpression>
 							</textField>
@@ -127,13 +127,13 @@
 									<printWhenExpression><![CDATA[new Boolean($V{materia}.toUpperCase().equals("PROMEDIO") || $V{materia}.toUpperCase().equals("DISCIPLINA"))]]></printWhenExpression>
 								</reportElement>
 								<box leftPadding="2">
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
-									<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
+									<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{materia}.replace("(N)","").toUpperCase()]]></textFieldExpression>
 							</textField>
@@ -142,13 +142,13 @@
 									<printWhenExpression><![CDATA[new Boolean($V{materia}.toUpperCase().contains("(N)") )]]></printWhenExpression>
 								</reportElement>
 								<box leftPadding="2">
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
-									<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
+									<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{materia}.replace("(N)","").toUpperCase()]]></textFieldExpression>
 							</textField>
@@ -171,15 +171,15 @@
 								<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField isBlankWhenNull="false">
-								<reportElement key="textField" mode="Opaque" x="0" y="0" width="25" height="18" backcolor="#F9F9FB"/>
+								<reportElement key="textField" mode="Opaque" x="0" y="0" width="20" height="18" backcolor="#F9F9FB"/>
 								<box>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+									<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{tipo}]]></textFieldExpression>
 							</textField>
@@ -202,15 +202,15 @@
 								<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField isBlankWhenNull="true">
-								<reportElement key="textField" mode="Opaque" x="0" y="0" width="25" height="16" backcolor="#F9F9FB"/>
+								<reportElement key="textField" mode="Opaque" x="0" y="0" width="20" height="16" backcolor="#F9F9FB"/>
 								<box>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+									<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{sistema}]]></textFieldExpression>
 							</textField>
@@ -223,7 +223,7 @@
 				<measure name="nota_Nothing" class="java.lang.Object">
 					<measureExpression><![CDATA[$F{nota}]]></measureExpression>
 				</measure>
-				<crosstabCell width="25" height="15">
+				<crosstabCell width="20" height="15">
 					<cellContents mode="Transparent">
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -232,7 +232,7 @@
 							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField isBlankWhenNull="false">
-							<reportElement key="textField-1" x="0" y="0" width="25" height="15">
+							<reportElement key="textField-1" x="0" y="0" width="20" height="15">
 								<printWhenExpression><![CDATA[new Boolean(!$V{materia}.equals("0.0"))]]></printWhenExpression>
 							</reportElement>
 							<box>
@@ -242,22 +242,22 @@
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font fontName="Arial" size="8"/>
+								<font fontName="SansSerif" size="8"/>
 							</textElement>
 							<textFieldExpression class="java.lang.String"><![CDATA[""+$V{nota_Nothing}]]></textFieldExpression>
 						</textField>
 						<textField isBlankWhenNull="false">
-							<reportElement key="textField-1" mode="Opaque" x="0" y="0" width="25" height="15" backcolor="#F9F9FB">
+							<reportElement key="textField-1" mode="Opaque" x="0" y="0" width="20" height="15" backcolor="#F9F9FB">
 								<printWhenExpression><![CDATA[new Boolean($V{materia}.toUpperCase().equals("PROMEDIO") || $V{materia}.toUpperCase().equals("DISCIPLINA") )]]></printWhenExpression>
 							</reportElement>
 							<box>
-								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+								<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 							</textElement>
 							<textFieldExpression class="java.lang.String"><![CDATA[""+$V{nota_Nothing}]]></textFieldExpression>
 						</textField>

@@ -21,9 +21,9 @@ List cursos = adm.query("Select o from Cursos as o "+
 
 void aprovechamiento(){
 
-Procesos pro = new Procesos();
-pro.aprovechamiento((Cursos)cursosList.selectedItem.value);
-Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        Procesos pro = new Procesos();
+        pro.aprovechamiento((Cursos)cursosList.selectedItem.value);
+        Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
 
 }
 void disciplina(){
