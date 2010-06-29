@@ -87,7 +87,7 @@ String columnaExamen ="";
                     if (valor.equals(0.0)) {
                         label.setValue(new BigDecimal(0));
                     } else {
-                        label.setValue(new BigDecimal(redondear((Double) dos, 2)));
+                        label.setValue(new BigDecimal(redondear((Double) dos, 3)));
                     }
 
                     String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
@@ -102,7 +102,7 @@ String columnaExamen ="";
                               if(rec==null || rec.size()<=0){
                                   label.setValue(new BigDecimal(0));
                               }else{
-                                 label.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) , 2)));
+                                 label.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) ,3)));
 
                               }
                         
@@ -113,7 +113,7 @@ String columnaExamen ="";
                               if(rec==null){
                                   label.setValue(new BigDecimal(0));
                               }else{
-                                 label.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) , 2)));
+                                 label.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) , 3)));
 
                               }
                         }catch(Exception e){
@@ -213,7 +213,7 @@ String columnaExamen ="";
                         } else {
                             aCargar = new Double(vaNota);
                         }
-                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(aCargar, 2) + ");");
+                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(aCargar, 3) + ");");
                         if (!formula.isEmpty() && !formula0.contains("primero")
                             && !formula0.contains("segundo")
                             && !formula0.contains("tercero")
