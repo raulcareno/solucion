@@ -562,18 +562,32 @@ void campos(String valor){
                       
                     </rows>
                 </grid>
+<zscript>
+                    public void aumentar(){
+                    String tamanio = report.height.replace("px","").replace("%","");
+                       Integer t = new Integer(tamanio);
+                       report.height = (t+100)+"px";
+                    }
+                    public void reducir(){
+                    String tamanio = report.height.replace("px","").replace("%","");
+                       Integer t = new Integer(tamanio);
+                       report.height = (t-100)+"px";
+                    }
 
+                </zscript>
                 <grid id="reportese" visible="false" width="100%" height="100%">
                     <rows>
                         <row   spans="2">
-                            <button  image="/images/eliminar.gif" id="cerrar"   label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
-                        </row>
+                            <span>
+                                    <button  image="/images/eliminar.gif" id="cerrar"   label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
+                                    <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
+                                     <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
+                             </span>
+
+                       </row>
 
                         <row   spans="2">
-                            <div height="600px">
-                                <jasperreport width="100%" height="100%" id="report" />
-                            </div>
-
+                                <jasperreport width="100%" height="500px" id="report" />
                         </row>
 
                     </rows>
