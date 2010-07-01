@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import jcinform.persistencia.Cursos;
 import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Inscripciones;
 import jcinform.persistencia.Matriculas;
@@ -41,6 +42,7 @@ public class Sorteo extends GenericComposer implements Serializable {
     Intbox totalAbanderados;
     Intbox totalOtros;
     Listbox periodo;
+    Listbox cursos;
     ArrayList favorecidos;
 //    Progressmeter cargando;
 
@@ -57,6 +59,8 @@ public class Sorteo extends GenericComposer implements Serializable {
         desde = (Decimalbox) win.getFellow("desde");
         hasta = (Decimalbox) win.getFellow("hasta");
         periodo = (Listbox) win.getFellow("periodosListado");
+        cursos = (Listbox) win.getFellow("cursosListado");
+
 //        cargando = (Progressmeter)win.getFellow("cargando");
     }
 
@@ -147,7 +151,7 @@ public class Sorteo extends GenericComposer implements Serializable {
             r.setMailmadre(o.getMail());
             r.setMailpadre(o.getMail());
             r.setNombrefactura("");
-            r.setNombres(o.getNombre());
+            r.setNombres(o.getNombrer());
             r.setNommadre(o.getNombrema());
             r.setNompadre(o.getNombrepa());
             r.setOcupacionmadre(o.getLugarma());
@@ -159,6 +163,8 @@ public class Sorteo extends GenericComposer implements Serializable {
             r.setTelmadre(o.getTelefonoma());
             r.setTelpadre(o.getTelefonopa());
             r.setTipoidentificacion("C");
+            r.setUsuario(generarClave(o.getApellidor(), o.getNombrer()));
+            r.setClave(generarClave(o.getApellidor(), o.getNombrer()));
 adm.guardar(r);
             Estudiantes n = new Estudiantes();
             n.setCodigoest(adm.getNuevaClave("Estudiantes", "codigoest"));
@@ -175,11 +181,13 @@ adm.guardar(r);
             n.setPendientes(false);
             n.setTelefono(o.getTelefono());
             n.setRepresentante(r);
+            n.setUsuario(generarClave(o.getApellido(), o.getNombre()));
+            n.setClave(generarClave(o.getApellido(), o.getNombre()));
 adm.guardar(n);
 
         Matriculas m = new Matriculas(adm.getNuevaClave("Matriculas", "codigomat"));
         m.setBeca(0.0);
-        m.setCurso(null);
+        m.setCurso((Cursos) cursos.getSelectedItem().getValue());
         m.setEstado("Matriculado");
         m.setEstudiante(n);
         m.setFechains(new Date());
@@ -195,6 +203,21 @@ adm.guardar(n);
  i++;
         }
     }
+        String generarClave(String apellidos, String nombres){
+     
+         
+        String caracter="JCINFRM";
+        caracter+="JCQWERTYUIO"+apellidos+nombres+"PASDFGHJKLZXCVBNM";
+        int numero_caracteres=5;
+        int total=caracter.length();
+                   String  clave2="";
+                        for(int a=0;a<numero_caracteres;a++){
+                            clave2+=caracter.charAt(((Double)(total*Math.random())).intValue());
+                        }
+                   return clave2.toLowerCase();
+    }
+
+
 
     private int numeroAzar(int minimo, int maximo) {
 

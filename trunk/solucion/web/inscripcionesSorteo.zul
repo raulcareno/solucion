@@ -56,191 +56,14 @@ import org.zkoss.zul.Listbox;
  Session ses = Sessions.getCurrent();
 
 
- //Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
  Permisos permiso = new Permisos();
-   // List cursos = adm.query("Select o from Cursos as o "
-    //+ " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"'  ");
-
-    Object media = null;
-
-
-        //FUNCIONES
-        void cargarFoto(byte[] imageData){
-          foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
-        }
-        void cargarVacio(){
-          foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
-        }
-       Integer nuevaMatricula() {
-       Administrador adm = new Administrador();
-
-        List NoActualMatricula = adm.query("Select o from ParametrosGlobales as o " +
-                "where o.variable = 'MATRICULA' and o.periodo.codigoper = '" + periodo.getCodigoper() + "'");
-        ParametrosGlobales parametros = new ParametrosGlobales();
-        if(NoActualMatricula.size()<=0){
-            alert("Falta copiar los parámetros a este Año Lectivo");
-        }
-        parametros = (ParametrosGlobales) NoActualMatricula.get(0);
-        int noMatri = 0;
-        Double decs = parametros.getNvalor();
-        Long val = java.lang.Math.round(decs);
-        noMatri = Integer.valueOf(val.toString());
-        noMatri += 1;
-        List  numeroYa = adm.query("Select o from Matriculas as o " +
-                "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                "and o.numero = '" + noMatri + "'");
-        if (numeroYa.size() > 0) {
-            Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o " +
-                    "where o.curso.periodo.codigoper= '" + periodo.getCodigoper() + "'"  );
-            parametros.setNvalor(new Double(nClave + 1));
-            adm.actualizar(parametros);
-            return nClave + 1;
-        } else {
-            parametros.setNvalor(new Double(noMatri));
-            adm.actualizar(parametros);
-            return noMatri;
-        }
-    }
-
-    void generarClave(Boolean boton){
-    try{
-            String uss = usuario.value;
-            if(boton==false){
-                if(uss.trim() != ""){
-                        return;
-                }
-            }
-        String user ="";
-        String caracter="JCINFORM";
-        caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
-        int numero_caracteres=10;
-        int total=caracter.length();
-                   String  clave2="";
-                        for(int a=0;a<numero_caracteres;a++){
-                            clave2+=caracter.charAt(((Double)(total*Math.random())).intValue());
-                        }
-
-                    clave.value = clave2.toUpperCase();
-                     caracter=""+apellidos.value.trim().replace(" ","");
-                    caracter+="JC"+nombres.value.trim().replace(" ","");
-                    numero_caracteres=6;
-                    total=caracter.length();
-                    user ="";
-                    for(int a=0;a<numero_caracteres;a++){
-                        user+=caracter.charAt(((Double)(total*Math.random())).intValue());
-                    }
-            usuario.value = user.toUpperCase();
-            }catch(Exception e){
-                    System.out.println("ERROR EN GENERAR CLAVE"+e);
-            }
-    }
-
-void llenar(Inscripciones estudent){
-    codigo.value = estudent.getCodigoest();
-    cedula.value = estudent.getCedula();
-    nombres.value = estudent.getNombre();
-    apellidos.value = estudent.getApellido();
-    direccion.value = estudent.getDireccion();
-    telefono.value = estudent.getTelefono();
-    genero.value = estudent.getGenero();
-    nacido.value = estudent.getFechanacimiento();
-    mail.value = estudent.getMail();
-    usuario.value = estudent.getUsuario();
-    nobus.value = estudent.getNobus();
-    clave.value = permiso.decriptar(estudent.getClave());
-
- }
-
-
-void estado(Boolean estado){
-    nombres.readonly = estado;
-    apellidos.readonly = estado;
-    direccion.readonly = estado;
-    telefono.readonly = estado;
-    genero.readonly = estado;
-    mail.readonly = estado;
-    nacido.readonly = estado;
-    tratamiento.readonly = estado;
-    beca.readonly = estado;
-    otros.readonly = estado;
-    tipo.readonly= estado;
-    institucion.readonly= estado;
-
-}
-
-
- void guardar(){
- try{
-
- 
-String cpai = cpaingresado.value;
-String cpa = cpa.getValue();
- if(!cpai.equals(cpa)){
-        Messagebox.show("ERROR AL VALIDAR TEXTO DE LA IMAGEN ...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-        return;
- }
-
-
- //GUARDO EL ESTUDIANTE
-        nombres.value = nombres.value.toUpperCase();
-        apellidos.value = apellidos.value.toUpperCase();
-        estudent.setCodigoest(codigo.value);
-        estudent.setCedula(""+cedula.value);
-        estudent.setNombre(nombres.value);
-        estudent.setApellido(apellidos.value);
-        estudent.setDireccion(direccion.value);
-        estudent.setTelefono(telefono.value);
-        estudent.setMail(mail.value);
-        estudent.setFechanacimiento(nacido.value);
-        estudent.setUsuario(usuario.value);
-        estudent.setClave(permiso.encriptar(clave.value));
-        estudent.setGenero(genero.selectedItem.value);
-
-
-//        if((!estudent.getCodigoest().equals(0))){
-  //           adm.actualizar(estudent);
-    //     }else{
-            estudent.setCodigoest(adm.getNuevaClave("Inscripciones","codigoest"));
-            adm.guardar(estudent);
-      //   }
-
-
-
-        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-        guardar.disabled=true;
-        agregar.disabled=false;
-        estado(true);
-
-        claveprint.disabled = false;
-
-
-
-        }catch(Exception e){
-                alert("Error:"+e); System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
-                System.out.println(""+e.getStackTrace()); System.out.println(""+e.getCause());
-        }
-
-    }
-
+  
    Boolean verificar(String accion){
         return permiso.verificarPermiso("Matricular",accion);
 
     }
- void nuevo(){
-    if(verificar("Agregar")){
-       try{
-        guardar.disabled=false;
-        llenar(new Estudiantes(0));
-        estado(false,false);
-        llenarConsumidor();
-        }catch(Exception e){
-        alert(""+e);
-        }
-
-    }else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-    }
-}
+ 
 
 void modificar(){
     if(verificar("Modificar")){
@@ -252,36 +75,12 @@ void modificar(){
 }
 
 
-
-  void verificarCedula(String valor){
-      if(valor.length()>9){
-            List empleados = adm.query("Select o from Inscripciones as o where o.cedula = '"+valor+"' ");
-            if(empleados.size()>0){
-                Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-                Inscripciones inscrip = new Inscripciones();
-                for(Iterator it = empleados.iterator(); it.hasNext();) {
-                      Inscripciones object = (Inscripciones)it.next();
-                        inscrip = object;
-                        break;
-                 }
-                llenar(inscrip);
-                estado(true);
-                guardar.disabled=true;
-            }else{
-
-                estado(false);
-                cedula.readonly = true;
-                guardar.disabled=false;
-
-            }
-
-        }
-    }
+ 
 
 void buscar2(Periodo cur){
         List empleadosEncontrados = adm.query("Select o from Cursos as o where o.periodo.codigoper  = '"+cur.codigoper+"' order by o.secuencia");
         //bd2.getItems().clear();
-        curso.getChildren().clear();
+        cursosListado.getChildren().clear();
         Cursos se = new Cursos();
         Global g = new Global(); g.setDescripcion("");
         se.setParalelo(g);
@@ -294,46 +93,16 @@ void buscar2(Periodo cur){
                         Listitem item = new Listitem();
                         item.setValue(estudent);
                         item.appendChild(new Listcell(estudent+""));
-                        curso.appendChild(item);
+                        cursosListado.appendChild(item);
              }
 
     }
-  void buscar(String p){
-        List empleadosEncontrados = adm.query("Select o.estudiante from Matriculas as o " +
-        " where o.estudiante.apellido like '%"+p+"%' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'   order by o.estudiante.apellido");
-        datos = new Listbox();
-        int a=0;
-            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
-                    datos.getItems().remove(a);
-                }
-               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
-                      Estudiantes acceIt = (Estudiantes) it.next();
-                      Listitem li = new Listitem();
-                      li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getCedula()+""));
-                      li.appendChild(new Listcell(acceIt.getApellido()+" "+acceIt.getNombre()));
-                      li.appendChild(new Listcell(acceIt.getDireccion()+""));
-                      datos.appendChild(li);
-             }
-
-    }
+   
 void cargar(Global g){
     estudent.setPerfil(g);
 }
 
-void llenarConsumidor(){
-
-
-    cedulafac.value = "";
-    nombresfac.value = "";
-    direccionfac.value = "";
-    telefonofac.value = "";
-
-
-
-}
-
-
+ 
 
 //PARA REPORTES
 public JRDataSource certificados(Matriculas matricula,String tipo){
@@ -416,17 +185,31 @@ public sorti(){
                                 <rows  >
 <row spans="2">
      <span>
-                                    <listbox id="periodosListado" mold="select" style="font-size:15px"   >
+                                    <listbox id="periodosListado" mold="select" onSelect="buscar2(self.selectedItem.value)" style="font-size:15px"   >
                                         <listitem  label="[SELECCIONE UN PERIODO PARA CONTINUAR]" value="-1"/>
                                         <listitem forEach="${periodosListadod}" value="${each}">
                                             <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
                                         </listitem>
                                     </listbox>
-                                    <image src="/images/selec.png" />
+                                     
 
 
                                 </span>
 </row>
+<row spans="2">
+     <span>
+                                    <listbox id="cursosListado" mold="select" style="font-size:15px"   >
+                                        <listitem  label="[SELECCIONE UN CURSO]" value="-1"/>
+                                        <listitem forEach="${cursosListadod}" value="${each}">
+                                             
+                                        </listitem>
+                                    </listbox>
+                                     
+
+
+                                </span>
+</row>
+
                                     <row  style="background:transparent;border:0px" >
                                         <span style="float:right">
                                         <div style="color:red">
