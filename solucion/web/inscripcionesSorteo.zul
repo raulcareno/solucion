@@ -48,13 +48,13 @@ import org.zkoss.zul.Listbox;
 
 
     Administrador adm = new Administrador();
+    List periodosListadod = adm.queryNativo("Select o.* from Periodo as o where o.web = true  order by o.descripcion",Periodo.class);
     List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
     static Inscripciones estudent = new Inscripciones();
     static Representante representante0 = new Representante();
     static Matriculas matricula = new Matriculas();
  Session ses = Sessions.getCurrent();
 
- List periodosListadod = adm.query("Select o from Periodo as o order by o.descripcion");
 
  //Periodo periodo = (Periodo) ses.getAttribute("periodo");
  Permisos permiso = new Permisos();
@@ -414,7 +414,19 @@ public sorti(){
  
                             <grid>
                                 <rows  >
+<row spans="2">
+     <span>
+                                    <listbox id="periodosListado" mold="select" style="font-size:15px"   >
+                                        <listitem  label="[SELECCIONE UN PERIODO PARA CONTINUAR]" value="-1"/>
+                                        <listitem forEach="${periodosListadod}" value="${each}">
+                                            <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
+                                        </listitem>
+                                    </listbox>
+                                    <image src="/images/selec.png" />
 
+
+                                </span>
+</row>
                                     <row  style="background:transparent;border:0px" >
                                         <span style="float:right">
                                         <div style="color:red">
@@ -429,7 +441,7 @@ public sorti(){
                                         <div style="color:red">
                                         <label value="Nota Base para matriculación automática" id="t8"/> </div>
                                         </span>
-                                            <span> <decimalbox value="18.99" cols="4" id="base"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero" />
+                                            <span> <decimalbox value="999" cols="4" id="base"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero" />
                                       Estos se matricularán automáticamente sin sorteo</span>
                                          
                                     </row>
@@ -439,8 +451,8 @@ public sorti(){
 
                                     <span style="float:right">    <label value="Estudiantes solo entre: " id="tA"/></span>
             						<span>
-                                       <decimalbox value="16" cols="4" id="desde"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero" /> y
-                                       <decimalbox value="18.99" cols="4" id="hasta"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero" />
+                                       <decimalbox value="0" cols="4" id="desde"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative" /> y
+                                       <decimalbox value="20" cols="4" id="hasta"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero" />
                                        
                                         
                                     </span>
