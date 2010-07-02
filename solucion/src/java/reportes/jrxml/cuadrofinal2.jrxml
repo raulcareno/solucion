@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="11"/>
+	<property name="ireport.x" value="1056"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -201,7 +201,7 @@
 	<summary>
 		<band height="150" splitType="Stretch">
 			<crosstab>
-				<reportElement key="crosstab-1" x="0" y="7" width="1521" height="47"/>
+				<reportElement key="crosstab-1" x="0" y="7" width="1804" height="47"/>
 				<crosstabDataset isDataPreSorted="true"/>
 				<crosstabHeaderCell>
 					<cellContents mode="Transparent">
