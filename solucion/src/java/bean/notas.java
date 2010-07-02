@@ -2053,7 +2053,14 @@ public class notas extends Rows {
 
         List<Actagrado> notas = adm.query("Select o from Actagrado as o "
                 + " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.esfinal = true  order by o.codigo ");
-
+if(notas.size()<=0){
+            try {
+                Messagebox.show("No se ha parametrizado el PROMEDIO en el Acta de Grado \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                return null;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+}
         String query = "";
         String query2 = "";
 //        notas.get(0).getSistema().getOrden()
