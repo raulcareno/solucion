@@ -27,6 +27,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import sources.DisciplinaDataSource;
 import sources.Nota;
 import sources.NotasClaseTemp;
 import sources.NumerosaLetras;
@@ -1986,7 +1987,7 @@ public class notas extends Rows {
                         coll.setNota(s1);
                         Actagrado ac = ((Actagrado) notas.get(ksis));
 //                         coll.setNota(dos);
-                        if (ac.getFormula().toUpperCase().contains("EQUIVAL")) {
+                        if (ac.getFormula().toUpperCase().contains("EQUIVAL") || ac.getFormula().toUpperCase().contains("equival")) {
                             coll.setNota(equivalencia2(redondear(val, 0), equivalencias));
                         }
                         coll.setMatricula("" + matriculaNo.getCodigomat());
@@ -2043,6 +2044,75 @@ public class notas extends Rows {
         return ds;
 
     }
+
+
+    public JRDataSource reporteMejor(Cursos curso) {
+     Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+        List<Actagrado> notas = adm.query("Select o from Actagrado as o "
+                + " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.esfinal = true  order by o.codigo ");
+
+        String query = "";
+        String query2 = "";
+//        notas.get(0).getSistema().getOrden()
+        String numeroDecimales = "3";
+        for (Actagrado notass : notas) {
+            query += notass.getColumna() + ",";
+        }
+        //round(avg(nota1),3),
+        for (Actagrado notass : notas) {
+            query2 += "round(cast(avg(" + notass.getColumna() + ") as decimal(9,2))," + numeroDecimales + "),";
+        }
+        query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+        query2 = query2.substring(0, query2.length() - 1).replace("'", "");
+        Actagrado acColumna = notas.get(0);
+        String columna = acColumna.getColumna();
+       //String columna  = "get"+acColumna.getColumna().substring(0,1).toUpperCase()+acColumna.getColumna().substring(1,acColumna.getColumna().length());
+       List<Notasacta> notasA = adm.query(" SELECT o FROM Notasacta as o where o.matricula.curso.secuencia = 6 "
+               + "and o.matricula.curso.periodo.codigoper = '"+curso.getPeriodo().getCodigoper()+"' "
+               + "and  o.matricula.estado NOT in ('Retirado','Anulado','anulado','Eliminado','Inscrito') ORDER BY o."+columna+" DESC");
+       ArrayList lisNotasC = new ArrayList();
+       for (Iterator<Notasacta> it = notasA.iterator(); it.hasNext();) {
+            Notasacta notasacta = it.next();
+            NotaDisciplina aCargar = new NotaDisciplina();
+            if(columna.equals("nota1"))
+                aCargar.setN1(notasacta.getNota1());
+            if(columna.equals("nota2"))
+                aCargar.setN1(notasacta.getNota2());
+            if(columna.equals("nota3"))
+                aCargar.setN1(notasacta.getNota3());
+            if(columna.equals("nota4"))
+                aCargar.setN1(notasacta.getNota4());
+            if(columna.equals("nota5"))
+                aCargar.setN1(notasacta.getNota5());
+            if(columna.equals("nota6"))
+                aCargar.setN1(notasacta.getNota6());
+            if(columna.equals("nota7"))
+                aCargar.setN1(notasacta.getNota7());
+            if(columna.equals("nota8"))
+                aCargar.setN1(notasacta.getNota8());
+            if(columna.equals("nota9"))
+                aCargar.setN1(notasacta.getNota9());
+            if(columna.equals("nota10"))
+                aCargar.setN1(notasacta.getNota10());
+            if(columna.equals("nota11"))
+                aCargar.setN1(notasacta.getNota12());
+            if(columna.equals("nota12"))
+                aCargar.setN1(notasacta.getNota12());
+            if(columna.equals("nota13"))
+                aCargar.setN1(notasacta.getNota13());
+            aCargar.setNombres(notasacta.getMatricula().getEstudiante().getApellido()+" "+ notasacta.getMatricula().getEstudiante().getNombre());
+
+                lisNotasC.add(aCargar);
+        }
+
+        DisciplinaDataSource ds = new DisciplinaDataSource(lisNotasC);
+        return ds;
+
+    }
+
 
     public String regresaTexto(String variable, List<Textos> textos) {
         for (Iterator<Textos> it = textos.iterator(); it.hasNext();) {

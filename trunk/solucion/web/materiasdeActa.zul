@@ -32,7 +32,10 @@ void llenar(Actagrado estudent){
      materia.value = estudent.getNombre();
      abreviatura.value = estudent.getAbreviatura();
      columna.value = estudent.getColumna();
-
+     if(estudent.getEsfinal()!=null)
+        esfinal.checked = estudent.getEsfinal();
+        else
+        esfinal.checked = false;
 }
  
 void estado(Boolean estado,Boolean modificar){
@@ -86,6 +89,7 @@ public  String disponible(){
         matricula.setAbreviatura(abreviatura.value);
         matricula.setFormula(formula.value);
         matricula.setPeriodo(periodo);
+        matricula.setEsfinal(esfinal.checked);
  
 
         if((!matricula.getCodigo().equals(0)) ){
@@ -255,6 +259,8 @@ void materias123(){
                     </span>
                     <span>
                         <textbox id="abreviatura" width="120px" />
+                        Es Promedio: 
+                        <checkbox id="esfinal" />
                     </span>
                 </row>
 
