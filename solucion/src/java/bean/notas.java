@@ -1071,9 +1071,9 @@ public class notas extends Rows {
                 + "order by o.sistema.orden ");
 
         List<Notanotas> notaFinal = adm.query("Select o from Notanotas as o "
-                + "where  o.sistema.codigosis = '"+sistema.getCodigosis()+"'  "
+                + "where  o.sistema.codigosis = '" + sistema.getCodigosis() + "'  "
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true");
-        if(notaFinal.size()<=0){
+        if (notaFinal.size() <= 0) {
             try {
                 Messagebox.show("No ha parametrizado el Promedio Final en Aportes...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                 return null;
@@ -1081,7 +1081,7 @@ public class notas extends Rows {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-            Notanotas nfinal = notaFinal.get(0);
+        Notanotas nfinal = notaFinal.get(0);
         if (notas.size() <= 0) {
             try {
                 Messagebox.show("No han nada que imprimir Aportes en 0 ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
@@ -1168,18 +1168,20 @@ public class notas extends Rows {
                     lisNotas.add(nota);
                     ksis++;
                 } else if (j == 1) {
-                    
+
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
-                    List valor = adm.queryNativo("SELECT CAST(AVG("+nfinal.getNota()+")as decimal (9,3)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE ");
-                    if(valor.size()>0)
+                    List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE ");
+                    if (valor.size() > 0) {
                         aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+                    }
                     //System.out.println("SELECT CAST(("+nfinal.getNota()+")as decimal (9,0)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND materia = 0 ");
-                    valor = adm.queryNativo("SELECT CAST(IF("+nfinal.getNota()+" is null,0,"+nfinal.getNota()+")as decimal (9,0)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND materia = 0 ");
-                    System.out.println(""+valor);
-                    if(valor.size()>0)
+                    valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
+                    System.out.println("" + valor);
+                    if (valor.size() > 0) {
                         disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+                    }
 //                    disciplina = aprovecha;
-                    
+
                 } else if (j == 2) {
                     materiaNo = (Global) adm.buscarClave((Integer) dos, Global.class);
                 } else if (j == 0) {
@@ -1192,7 +1194,6 @@ public class notas extends Rows {
         return ds;
 
     }
-
 
     public JRDataSource cuadrofinal3(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta) {
 //     int tamanio=0;
@@ -1207,7 +1208,6 @@ public class notas extends Rows {
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + " and o.orden <= '" + sistema.getOrden() + "' "
- 
                 + "and o.seimprime = true and o.espromedio = true order by o.orden ");
 
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
@@ -1216,9 +1216,9 @@ public class notas extends Rows {
                 + "and o.sistema.espromedio = true order by o.sistema.orden ");
 
         List<Notanotas> notaFinal = adm.query("Select o from Notanotas as o "
-                + "where  o.sistema.codigosis = '"+sistema.getCodigosis()+"'  "
+                + "where  o.sistema.codigosis = '" + sistema.getCodigosis() + "'  "
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'    and o.sistema.espromedio = true");
-        if(notaFinal.size()<=0){
+        if (notaFinal.size() <= 0) {
             try {
                 Messagebox.show("No ha parametrizado el Promedio Final en Aportes...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                 return null;
@@ -1226,7 +1226,7 @@ public class notas extends Rows {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-            Notanotas nfinal = notaFinal.get(0);
+        Notanotas nfinal = notaFinal.get(0);
         if (notas.size() <= 0) {
             try {
                 Messagebox.show("No han nada que imprimir Aportes en 0 ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
@@ -1322,14 +1322,16 @@ public class notas extends Rows {
 
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
 //                    System.out.println("SELECT DE PROMEDIO:  SELECT CAST(AVG("+nfinal.getNota()+")as decimal (9,3)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE ");
-                    List valor = adm.queryNativo("SELECT CAST(AVG("+nfinal.getNota()+")as decimal (9,3)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
-                    if(valor.size()>0)
+                    List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
+                    if (valor.size() > 0) {
                         aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+                    }
                     //System.out.println("SELECT CAST(("+nfinal.getNota()+")as decimal (9,0)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND materia = 0 ");
-                    valor = adm.queryNativo("SELECT CAST(IF("+nfinal.getNota()+" is null,0,"+nfinal.getNota()+")as decimal (9,0)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND materia = 0 ");
+                    valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
 //                    System.out.println(""+valor);
-                    if(valor.size()>0)
+                    if (valor.size() > 0) {
                         disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+                    }
 //                    disciplina = aprovecha;
 
                 } else if (j == 2) {
@@ -1344,7 +1346,6 @@ public class notas extends Rows {
         return ds;
 
     }
-
 
     public JRDataSource libretas(Cursos curso, Matriculas matri, Sistemacalificacion sistema) {
 //     int tamanio=0; -2
@@ -1439,7 +1440,7 @@ public class notas extends Rows {
             System.out.println("NOTAS GENERALES" + q);
             List nativo = adm.queryNativo(q);
             Nota nota = new Nota();
-             Object promedioFinal = null,disciplinaFinal = null;
+            Object promedioFinal = null, disciplinaFinal = null;
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                 Vector vec = (Vector) itna.next();
                 Matriculas matriculaNo = null;
@@ -1489,7 +1490,7 @@ public class notas extends Rows {
                 }
                 //row.setParent(this);
             }
-           
+
             if (impPromedio) {
 //IMPRIMO EL PROMEDIO
                 q = "Select matricula," + query2 + "  from notas "
@@ -1499,7 +1500,7 @@ public class notas extends Rows {
                         + "and notas.disciplina = false "
                         + "and notas.cuantitativa = true and notas.materia != 0 "
                         + "group by matricula  ";
-                 System.out.println("NOTAS DE promedio " + q);
+                System.out.println("NOTAS DE promedio " + q);
                 nativo = null;
                 nativo = adm.queryNativo(q);
                 for (Iterator itna = nativo.iterator(); itna.hasNext();) {
@@ -2045,22 +2046,21 @@ public class notas extends Rows {
 
     }
 
-
     public JRDataSource reporteMejor(Cursos curso) {
-     Administrador adm = new Administrador();
+        Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
 
         List<Actagrado> notas = adm.query("Select o from Actagrado as o "
                 + " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.esfinal = true  order by o.codigo ");
-if(notas.size()<=0){
+        if (notas.size() <= 0) {
             try {
                 Messagebox.show("No se ha parametrizado el PROMEDIO en el Acta de Grado \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                 return null;
             } catch (InterruptedException ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
-}
+        }
         String query = "";
         String query2 = "";
 //        notas.get(0).getSistema().getOrden()
@@ -2076,50 +2076,62 @@ if(notas.size()<=0){
         query2 = query2.substring(0, query2.length() - 1).replace("'", "");
         Actagrado acColumna = notas.get(0);
         String columna = acColumna.getColumna();
-       //String columna  = "get"+acColumna.getColumna().substring(0,1).toUpperCase()+acColumna.getColumna().substring(1,acColumna.getColumna().length());
-       List<Notasacta> notasA = adm.query(" SELECT o FROM Notasacta as o where o.matricula.curso.secuencia = 6 "
-               + "and o.matricula.curso.periodo.codigoper = '"+curso.getPeriodo().getCodigoper()+"' "
-               + "and  o.matricula.estado NOT in ('Retirado','Anulado','anulado','Eliminado','Inscrito') ORDER BY o."+columna+" DESC");
-       ArrayList lisNotasC = new ArrayList();
-       for (Iterator<Notasacta> it = notasA.iterator(); it.hasNext();) {
+        //String columna  = "get"+acColumna.getColumna().substring(0,1).toUpperCase()+acColumna.getColumna().substring(1,acColumna.getColumna().length());
+        List<Notasacta> notasA = adm.query(" SELECT o FROM Notasacta as o where o.matricula.curso.secuencia = 6 "
+                + "and o.matricula.curso.periodo.codigoper = '" + curso.getPeriodo().getCodigoper() + "' "
+                + "and  o.matricula.estado NOT in ('Retirado','Anulado','anulado','Eliminado','Inscrito') ORDER BY o." + columna + " DESC");
+        ArrayList lisNotasC = new ArrayList();
+        for (Iterator<Notasacta> it = notasA.iterator(); it.hasNext();) {
             Notasacta notasacta = it.next();
             NotaDisciplina aCargar = new NotaDisciplina();
-            if(columna.equals("nota1"))
+            if (columna.equals("nota1")) {
                 aCargar.setN1(notasacta.getNota1());
-            if(columna.equals("nota2"))
+            }
+            if (columna.equals("nota2")) {
                 aCargar.setN1(notasacta.getNota2());
-            if(columna.equals("nota3"))
+            }
+            if (columna.equals("nota3")) {
                 aCargar.setN1(notasacta.getNota3());
-            if(columna.equals("nota4"))
+            }
+            if (columna.equals("nota4")) {
                 aCargar.setN1(notasacta.getNota4());
-            if(columna.equals("nota5"))
+            }
+            if (columna.equals("nota5")) {
                 aCargar.setN1(notasacta.getNota5());
-            if(columna.equals("nota6"))
+            }
+            if (columna.equals("nota6")) {
                 aCargar.setN1(notasacta.getNota6());
-            if(columna.equals("nota7"))
+            }
+            if (columna.equals("nota7")) {
                 aCargar.setN1(notasacta.getNota7());
-            if(columna.equals("nota8"))
+            }
+            if (columna.equals("nota8")) {
                 aCargar.setN1(notasacta.getNota8());
-            if(columna.equals("nota9"))
+            }
+            if (columna.equals("nota9")) {
                 aCargar.setN1(notasacta.getNota9());
-            if(columna.equals("nota10"))
+            }
+            if (columna.equals("nota10")) {
                 aCargar.setN1(notasacta.getNota10());
-            if(columna.equals("nota11"))
+            }
+            if (columna.equals("nota11")) {
                 aCargar.setN1(notasacta.getNota12());
-            if(columna.equals("nota12"))
+            }
+            if (columna.equals("nota12")) {
                 aCargar.setN1(notasacta.getNota12());
-            if(columna.equals("nota13"))
+            }
+            if (columna.equals("nota13")) {
                 aCargar.setN1(notasacta.getNota13());
-            aCargar.setNombres(notasacta.getMatricula().getEstudiante().getApellido()+" "+ notasacta.getMatricula().getEstudiante().getNombre());
+            }
+            aCargar.setNombres(notasacta.getMatricula().getEstudiante().getApellido() + " " + notasacta.getMatricula().getEstudiante().getNombre());
 
-                lisNotasC.add(aCargar);
+            lisNotasC.add(aCargar);
         }
 
         DisciplinaDataSource ds = new DisciplinaDataSource(lisNotasC);
         return ds;
 
     }
-
 
     public String regresaTexto(String variable, List<Textos> textos) {
         for (Iterator<Textos> it = textos.iterator(); it.hasNext();) {
