@@ -35,6 +35,8 @@
 	<field name="cargo1" class="java.lang.String"/>
 	<field name="cargo2" class="java.lang.String"/>
 	<field name="cargo3" class="java.lang.String"/>
+	<field name="promedioFinal" class="java.lang.Object"/>
+	<field name="disciplinaFinal" class="java.lang.Object"/>
 	<group name="matricula" isStartNewPage="true">
 		<groupExpression><![CDATA[$F{matricula}]]></groupExpression>
 		<groupHeader>
