@@ -2181,7 +2181,7 @@ public class notas extends Rows {
             String pier = reprobado;
 
             boolean estadoEstudiante = true;
-            String q = "Select round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal)," + 3 + ") from matriculas "
+            String q = "Select round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal(8,4))," + 3 + ") from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
                     + "left join notas on matriculas.codigomat = notas.matricula "
                     + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
@@ -2210,7 +2210,7 @@ public class notas extends Rows {
                 }
             }
 
-            q = "Select  round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal)," + 3 + ")  from matriculas "
+            q = "Select  round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal(8,4))," + 3 + ")  from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
                     + "left join notas on matriculas.codigomat = notas.matricula "
                     + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
