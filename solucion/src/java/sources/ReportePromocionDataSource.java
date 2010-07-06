@@ -84,7 +84,7 @@ try{
         }else if ("disciplina".equals(fieldName)) {
                 valor = nodo.getDisciplina();
         }else if ("letrasDisciplina".equals(fieldName)) {
-                valor = num.numeros(nodo.getDisciplina());
+                valor = num.numeros(nodo.getDisciplina()).toUpperCase();
         }else if ("curso".equals(fieldName)) {
                 valor = nodo.getMatricula().getCurso().getDescripcion();
         }else if ("letrasAprovechamiento".equals(fieldName)) {
