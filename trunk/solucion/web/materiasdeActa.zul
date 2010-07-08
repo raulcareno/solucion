@@ -34,8 +34,13 @@ void llenar(Actagrado estudent){
      columna.value = estudent.getColumna();
      if(estudent.getEsfinal()!=null)
         esfinal.checked = estudent.getEsfinal();
-        else
+     else
         esfinal.checked = false;
+
+        if(estudent.getImprimecuadro()!=null)
+        imprime.checked = estudent.getImprimecuadro();
+     else
+        imprime.checked = false;
 }
  
 void estado(Boolean estado,Boolean modificar){
@@ -90,7 +95,7 @@ public  String disponible(){
         matricula.setFormula(formula.value);
         matricula.setPeriodo(periodo);
         matricula.setEsfinal(esfinal.checked);
- 
+        matricula.setImprimecuadro(imprime.checked);
 
         if((!matricula.getCodigo().equals(0)) ){
                 adm.actualizar(matricula);
@@ -261,6 +266,8 @@ void materias123(){
                         <textbox id="abreviatura" width="120px" />
                         Es Promedio: 
                         <checkbox id="esfinal" />
+                        Se imprime en listado general:
+                        <checkbox id="imprime" />
                     </span>
                 </row>
 

@@ -317,6 +317,11 @@ public JRDataSource profesores(){
             }else if(tipo.equals("CAG")){
                     datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"copia");
                     report.setSrc("WEB-INF/reportes/copiaactaGrado.jasper");
+            }else if(tipo.equals("LAG")){
+                    ArrayList arreglo = noti.actaGradoTodos(curs.getSelectedItem().getValue());
+                    datasource = (ActaGeneralDataSource) arreglo.get(0);
+                    parametros = (HashMap) arreglo.get(1);
+                    report.setSrc("WEB-INF/reportes/actaslistado.jasper");
             }else if(tipo.equals("LIB")){
 
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
@@ -417,6 +422,9 @@ void campos(String valor){
         }else if(valor.equals("CAG")){
             curs.disabled = false;
             titulo.value= "Copia de Acta de Grado";
+        }else if(valor.equals("LAG")){
+            curs.disabled = false;
+            titulo.value= "Listado de Actas de Grado";
         }else if(valor.equals("CNF") || valor.equals("CNF2") || valor.equals("CNF3") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
@@ -455,6 +463,7 @@ void campos(String valor){
                                     <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
                                     <listitem  id="AG" label="Acta de Grado" value="AG"/>
                                     <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
+                                    <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
                                     <listitem  id="CERD" label="Certificado de Disciplina" value="CERD"/>
                                     <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
@@ -620,6 +629,7 @@ void cargando(){
 		CDIS.visible = per.verificarPermisoReporte("CDIS", "Ingresar");
         AG.visible = per.verificarPermisoReporte("AG", "Ingresar");
         CAG.visible = per.verificarPermisoReporte("CAG", "Ingresar");
+        LAG.visible = per.verificarPermisoReporte("AG", "Ingresar");
         CERT.visible = per.verificarPermisoReporte("CERT", "Ingresar");
         CERD.visible = per.verificarPermisoReporte("CERD", "Ingresar");
         EXAM.visible = per.verificarPermisoReporte("EXAM", "Ingresar");
