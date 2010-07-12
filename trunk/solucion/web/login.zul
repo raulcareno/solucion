@@ -37,7 +37,7 @@
         a.removeAttribute("accesos");
         a.removeAttribute("user");
         a.removeAttribute("periodo");
-
+//a.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
         //a.invalidate();
 
 

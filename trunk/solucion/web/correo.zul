@@ -1,3 +1,4 @@
+<zk xmlns="http://www.zkoss.org/2005/zul">
 <window   title="Envio de Comunicados"   border="normal" >
 
         <zscript><![CDATA[
@@ -171,7 +172,8 @@ Para:
 </row>
 
 <row spans="2">
-	<fckeditor  id="mensaje"/>
+   
+	<fckeditor   id="mensaje"/>
 
 </row>
 <row>
@@ -182,3 +184,4 @@ Para:
 </grid>
    
 </window>
+</zk>

@@ -34,6 +34,7 @@
                     if(user != null){
                     Session ses = Sessions.getCurrent();
                     ses.setAttribute("userEstudiante",user);
+                    //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
                     Executions.sendRedirect("indexEstudiantes.zul");
             }else{
                 Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -44,6 +45,7 @@
                 if(user != null){
                 Session ses = Sessions.getCurrent();
                 ses.setAttribute("userRepresentante",user);
+                //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
                 Executions.sendRedirect("indexRepresentantes.zul");
 
             }else{

@@ -2177,7 +2177,8 @@ public class notas extends Rows {
         ArrayList lisNotasC = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
 
-        matriculas = adm.query("Select o from Matriculas as o where o.curso.secuencia = 6 order by o.estudiante.apellido,o.estudiante.nombre");
+        matriculas = adm.query("Select o from Matriculas as o "
+                + "where o.curso.secuencia = 6 and o.curso.periodo.codigoper = '"+curso.getPeriodo().getCodigoper()+"' order by o.estudiante.apellido,o.estudiante.nombre");
         parametros.put("n1", "OCTAVO");
         parametros.put("n2", "NOVENO");
         parametros.put("n3", "DECIMO");
