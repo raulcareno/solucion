@@ -4,8 +4,11 @@
  */
 package bean;
 
+import java.util.Locale;
 import jcinform.persistencia.Inscripciones;
 import jcinform.procesos.Administrador;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 
 
 //import org.zkoss.util.media.Media;
@@ -34,7 +37,9 @@ Inscripciones inscrp = (Inscripciones) adm.buscarClave(adm, null);
                System.out.println("ENTRO");
            else
                System.out.println("NO ");
-
+Session ses = Sessions.getCurrent();
+                    ses.setAttribute("userEstudiante","");
+                    ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
 //           matriculasBean matricula = new matriculasBean();
 //           Administrador adm = new Administrador();
 //
