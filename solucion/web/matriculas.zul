@@ -979,7 +979,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                         <comboitem value="Inscrito" label="Inscrito"/>
                                                                         <comboitem value="Retirado" label="Retirado"/>
                                                                         <comboitem value="Emitir Pase" label="Emitir Pase"/>
-                                                                        <comboitem value="Recibir Pase" label="Recibir Pase"/>
+                                                                            <comboitem value="Recibir Pase" label="Recibir Pase"/>
                                                                         <comboitem value="Anulado" label="Anulado"/>
                                                                     </combobox>
                                                                     Inst. Anterior: <textbox id="institucion" readonly="true"  maxlength="30" cols="20"/>

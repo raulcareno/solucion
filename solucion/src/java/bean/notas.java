@@ -1951,7 +1951,7 @@ public class notas extends Rows {
         ArrayList lisNotasC = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
 
-        matriculas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '" + curso.getCodigocur() + "'");
+        matriculas = adm.query("Select o from Matriculas as o where  o.estado in ('Matriculado','Recibir Pase') and   o.curso.codigocur = '" + curso.getCodigocur() + "'");
 
         for (Matriculas matriculas1 : matriculas) {
             //Matriculas matriculas1 = itm.next();
@@ -2168,7 +2168,7 @@ public class notas extends Rows {
         }
         //round(avg(nota1),3),
         for (Actagrado notass : notas) {
-            query2 += "round(cast(avg(" + notass.getColumna() + ") as decimal(9,2))," + numeroDecimales + "),";
+            query2 += "round(cast(avg(" + notass.getColumna() + ") as decimal(9,3))," + numeroDecimales + "),";
         }
 //        query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         query2 = query2.substring(0, query2.length() - 1).replace("'", "");
@@ -2178,7 +2178,7 @@ public class notas extends Rows {
         List<Matriculas> matriculas = new ArrayList();
 
         matriculas = adm.query("Select o from Matriculas as o "
-                + "where o.curso.secuencia = 6 and o.curso.periodo.codigoper = '"+curso.getPeriodo().getCodigoper()+"' order by o.estudiante.apellido,o.estudiante.nombre");
+                + "where o.estado in ('Matriculado','Recibir Pase') and  o.curso.secuencia = 6 and o.curso.periodo.codigoper = '"+curso.getPeriodo().getCodigoper()+"' order by o.estudiante.apellido,o.estudiante.nombre");
         parametros.put("n1", "OCTAVO");
         parametros.put("n2", "NOVENO");
         parametros.put("n3", "DECIMO");

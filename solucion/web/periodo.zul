@@ -278,7 +278,7 @@ void eliminar(){
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getCodigoper()+""));
-                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "+ acceIt.getInstitucion() + " "+acceIt.getInstitucion().getTipo() ));
+                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "+ acceIt.getInstitucion() + " "+acceIt.getInstitucion().getTipo() +" "+ acceIt.getSeccion().getDescripcion() ));
                
                       li.appendChild(new Listcell((acceIt.getEstado()?"ACTIVO":"INACTIVO")+" "));
                       datos.appendChild(li);
