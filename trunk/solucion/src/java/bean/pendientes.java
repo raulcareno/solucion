@@ -1,7 +1,9 @@
 package bean;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.persistencia.*;
@@ -10,6 +12,9 @@ import jcinform.procesos.Administrador;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Radio;
+import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
@@ -59,7 +64,11 @@ public class pendientes extends Rows {
 
         Administrador adm = new Administrador();
         List accesosList = adm.query("Select o.estudiante from Matriculas as o where o.curso.codigocur = '" + p.getCodigocur() + "' order by o.estudiante.apellido ");
-        Textbox label = null;
+        Textbox cedulaText = null;
+        Radiogroup grupo = null;
+        Radio radioPerdio = null;
+        Radio radioSuspenso = null;
+//        radio.setParent(grupo);
         Label label3 = null;
         getChildren().clear();
         Row row = new Row();
@@ -75,16 +84,30 @@ public class pendientes extends Rows {
             label3.setValue("" + vec.getApellido() + " " + vec.getNombre());
             label3.setParent(row);
 
-            label = new Textbox();
-            label.setMaxlength(10);
-            label.setCols(15);
+            cedulaText = new Textbox();
+            cedulaText.setMaxlength(10);
+            cedulaText.setCols(15);
             try {
 
-                label.setValue(vec.getCedula());
+                cedulaText.setValue(vec.getCedula());
             } catch (Exception e) {
-                label.setValue("");
+                cedulaText.setValue("");
             }
-            label.setParent(row);
+            cedulaText.setParent(row);
+
+             grupo = new Radiogroup();
+
+             radioPerdio = new Radio("Perdio");
+             radioPerdio.setChecked(vec.getPerdio());
+             radioPerdio.setParent(grupo);
+             
+             radioSuspenso = new Radio("Suspenso");
+             radioSuspenso.setChecked(vec.getSuspenso());
+             radioSuspenso.setParent(grupo);
+
+
+             grupo.setParent(row);
+
             row.setParent(this);
 
         }
@@ -141,6 +164,50 @@ public class pendientes extends Rows {
             }
         }
         return "ok";
+
+    }
+
+
+    public void buscarPerdidos(Cursos curso){
+Administrador adm = new Administrador();
+List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+                + " where o.sistema.periodo.codigoper = '" + curso.getPeriodo().getCodigoper() + "'  "
+                + "and o.sistema.promediofinal = 'PF' ");
+        try {
+            if (notas.size() <= 0) {
+                Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                return;
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+List<Matriculas> matriculas  = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+curso.getCodigocur()+"' ");
+        for (Iterator<Matriculas> it = matriculas.iterator(); it.hasNext();) {
+            Matriculas matriculas1 = it.next();
+            String q = "Select  CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4) ) from notas "
+                    + " where matricula = '" + matriculas1.getCodigomat() + "' "
+                    + " and "+notas.get(0).getNota()+" < "+matriculas1.getCurso().getAprobacion()+""
+                    + "     ";
+            System.out.println(""+q);
+            List nativo = adm.queryNativo(q);
+               for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                   Vector dos = (Vector) itna.next();
+                        if (((BigDecimal) dos.get(0)).doubleValue() >= matriculas1.getCurso().getAprobacion()) {
+                            //not.setEstadoMateria("APROBADO");
+                        } else {//REPROBO UNA MATERIA
+                               Estudiantes est = matriculas1.getEstudiante();
+                               est.setPerdio(true);
+                               adm.actualizar(est);
+                            //not.setEstadoMateria("REPROBADO");
+                            //estadoEstudiante = false;
+                        }
+               }
+
+                     
+
+        }
+        
+   
 
     }
 }

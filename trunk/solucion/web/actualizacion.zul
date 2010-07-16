@@ -1,3 +1,4 @@
+
 <window     width="650px" border="normal">
     <zscript>
         <![CDATA[
@@ -45,6 +46,14 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
     }
 
 
+    void perdidos(){
+        pendientes nso = new pendientes();
+        nso.buscarPerdidos(curs.selectedItem.value);
+        busqueda(curs.selectedItem.value);
+
+    }
+
+
   Boolean verificar(String accion){
         return permiso.verificarPermiso("Accesos",accion);
 
@@ -78,11 +87,13 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
 
                                 </listitem>
                             </listbox>
+                            
                         </vbox>
                     </bandpopup>
                 </bandbox>
 
                 <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
+                <button label="Calcular Perdidos"  onClick="perdidos()" />
             </hbox>
         </vbox>
 
@@ -103,8 +114,7 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
             <column  label="Cod"/>
             <column  label="Estudiantes"/>
             <column  label="Identificacion"/>
-            <column  label="Dirección"/>
-            <column  label="Teléfono"/>
+            <column  label="Estado"/>
         </columns>
         <rows id="filas" use="bean.pendientes">
         </rows>
