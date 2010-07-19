@@ -28,7 +28,7 @@ public class pendientes extends Rows {
     public void addRow(Cursos p) {
 
         Administrador adm = new Administrador();
-        List accesosList = adm.query("Select o.estudiante from Matriculas as o where o.curso.codigocur = '" + p.getCodigocur() + "' order by o.estudiante.apellido ");
+        List accesosList = adm.query("Select o from Matriculas as o where o.curso.codigocur = '" + p.getCodigocur() + "' order by o.estudiante.apellido ");
 
 
         Checkbox label = null;
@@ -38,20 +38,20 @@ public class pendientes extends Rows {
         Row row = new Row();
 
         for (Iterator itna = accesosList.iterator(); itna.hasNext();) {
-            Estudiantes vec = (Estudiantes) itna.next();
+            Matriculas vec = (Matriculas) itna.next();
             row = new Row();
 
             label3 = new Label();
-            label3.setValue("" + vec.getCodigoest());
+            label3.setValue("" + vec.getCodigomat());
             label3.setParent(row);
 
             label3 = new Label();
-            label3.setValue("" + vec.getApellido() + " " + vec.getNombre());
+            label3.setValue("" + vec.getEstudiante().getApellido() + " " + vec.getEstudiante().getNombre());
             label3.setParent(row);
 
             label = new Checkbox();
             try {
-                label.setChecked(vec.getPendientes());
+                label.setChecked(vec.getEstudiante().getPendientes());
             } catch (Exception e) {
                 label.setChecked(false);
             }
@@ -63,7 +63,9 @@ public class pendientes extends Rows {
     public void addRow2(Cursos p) {
 
         Administrador adm = new Administrador();
-        List accesosList = adm.query("Select o.estudiante from Matriculas as o where o.curso.codigocur = '" + p.getCodigocur() + "' order by o.estudiante.apellido ");
+        List accesosList = adm.query("Select o from Matriculas as o "
+                + "where o.curso.codigocur = '" + p.getCodigocur() + "' "
+                + "order by o.estudiante.apellido ");
         Textbox cedulaText = null;
         Radiogroup grupo = null;
         Radio radioPerdio = null;
@@ -73,15 +75,15 @@ public class pendientes extends Rows {
         getChildren().clear();
         Row row = new Row();
         for (Iterator itna = accesosList.iterator(); itna.hasNext();) {
-            Estudiantes vec = (Estudiantes) itna.next();
+            Matriculas vec = (Matriculas) itna.next();
             row = new Row();
 
             label3 = new Label();
-            label3.setValue("" + vec.getCodigoest());
+            label3.setValue("" + vec.getCodigomat());
             label3.setParent(row);
 
             label3 = new Label();
-            label3.setValue("" + vec.getApellido() + " " + vec.getNombre());
+            label3.setValue("" + vec.getEstudiante().getApellido() + " " + vec.getEstudiante().getNombre());
             label3.setParent(row);
 
             cedulaText = new Textbox();
@@ -89,14 +91,12 @@ public class pendientes extends Rows {
             cedulaText.setCols(15);
             try {
 
-                cedulaText.setValue(vec.getCedula());
+                cedulaText.setValue(vec.getEstudiante().getCedula());
             } catch (Exception e) {
                 cedulaText.setValue("");
             }
-            cedulaText.setParent(row);
-
+             cedulaText.setParent(row);
              grupo = new Radiogroup();
-
              radioPerdio = new Radio("Perdio");
              radioPerdio.setChecked(vec.getPerdio());
              radioPerdio.setParent(grupo);
@@ -124,13 +124,14 @@ public class pendientes extends Rows {
         for (int i = 0; i < col.size(); i++) {
             try {
                 Row object = (Row) col.get(i);
-                Estudiantes nota = new Estudiantes();
+                Matriculas nota = new Matriculas();
                 List labels = object.getChildren();
                 String valorCodigo = ((Label) labels.get(0)).getValue();
 
-                nota = (Estudiantes) adm.buscarClave(new Integer(valorCodigo), Estudiantes.class);
-                nota.setPendientes(((Checkbox) labels.get(2)).isChecked());
-                adm.actualizar(nota);
+                nota = (Matriculas) adm.buscarClave(new Integer(valorCodigo), Matriculas.class);
+                Estudiantes est = nota.getEstudiante();
+                est.setPendientes(((Checkbox) labels.get(2)).isChecked());
+                adm.actualizar(est);
                 nota = null;
 
             } catch (Exception ex) {
@@ -144,19 +145,31 @@ public class pendientes extends Rows {
 
     @SuppressWarnings("static-access")
     public String guardar2(List col) {
-
         Administrador adm = new Administrador();
         for (int i = 0; i < col.size(); i++) {
             try {
                 Row object = (Row) col.get(i);
-                Estudiantes nota = new Estudiantes();
+                Matriculas nota = new Matriculas();
                 List labels = object.getChildren();
                 String valorCodigo = ((Label) labels.get(0)).getValue();
+                nota = (Matriculas) adm.buscarClave(new Integer(valorCodigo), Matriculas.class);
+                Estudiantes est = nota.getEstudiante();
+                est.setCedula(((Textbox) labels.get(2)).getValue());
+                adm.actualizar(est);
+                
+                Radio ra = ((Radiogroup) labels.get(3)).getSelectedItem();
+                if(ra !=null){
+                if(ra.getLabel().toUpperCase().contains("PERDIO")){
+                    nota.setPerdio(true);
+                    nota.setSuspenso(false);
+                }else{
+                    nota.setSuspenso(true);
+                    nota.setPerdio(false);
+                 }
+                    adm.actualizar(nota);
 
-                nota = (Estudiantes) adm.buscarClave(new Integer(valorCodigo), Estudiantes.class);
-                nota.setCedula(((Textbox) labels.get(2)).getValue());
-                adm.actualizar(nota);
-                nota = null;
+                    nota = null;
+                }
 
             } catch (Exception ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
@@ -195,9 +208,8 @@ List<Matriculas> matriculas  = adm.query("Select o from Matriculas as o where o.
                         if (((BigDecimal) dos.get(0)).doubleValue() >= matriculas1.getCurso().getAprobacion()) {
                             //not.setEstadoMateria("APROBADO");
                         } else {//REPROBO UNA MATERIA
-                               Estudiantes est = matriculas1.getEstudiante();
-                               est.setPerdio(true);
-                               adm.actualizar(est);
+                               matriculas1.setPerdio(true);
+                               adm.actualizar(matriculas1);
                             //not.setEstadoMateria("REPROBADO");
                             //estadoEstudiante = false;
                         }
