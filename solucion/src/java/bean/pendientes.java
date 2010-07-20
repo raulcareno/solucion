@@ -67,9 +67,9 @@ public class pendientes extends Rows {
                 + "where o.curso.codigocur = '" + p.getCodigocur() + "' "
                 + "order by o.estudiante.apellido ");
         Textbox cedulaText = null;
-        Radiogroup grupo = null;
-        Radio radioPerdio = null;
-        Radio radioSuspenso = null;
+
+        Checkbox radioPerdio = null;
+        Checkbox radioSuspenso = null;
 //        radio.setParent(grupo);
         Label label3 = null;
         getChildren().clear();
@@ -95,18 +95,15 @@ public class pendientes extends Rows {
             } catch (Exception e) {
                 cedulaText.setValue("");
             }
-             cedulaText.setParent(row);
-             grupo = new Radiogroup();
-             radioPerdio = new Radio("Perdio");
-             radioPerdio.setChecked(vec.getPerdio());
-             radioPerdio.setParent(grupo);
-             
-             radioSuspenso = new Radio("Suspenso");
-             radioSuspenso.setChecked(vec.getSuspenso());
-             radioSuspenso.setParent(grupo);
+            cedulaText.setParent(row);
 
+            radioPerdio = new Checkbox("Perdio");
+            radioPerdio.setChecked(vec.getPerdio());
+            radioPerdio.setParent(row);
 
-             grupo.setParent(row);
+            radioSuspenso = new Checkbox("Suspenso");
+            radioSuspenso.setChecked(vec.getSuspenso());
+            radioSuspenso.setParent(row);
 
             row.setParent(this);
 
@@ -156,20 +153,13 @@ public class pendientes extends Rows {
                 Estudiantes est = nota.getEstudiante();
                 est.setCedula(((Textbox) labels.get(2)).getValue());
                 adm.actualizar(est);
-                
-                Radio ra = ((Radiogroup) labels.get(3)).getSelectedItem();
-                if(ra !=null){
-                if(ra.getLabel().toUpperCase().contains("PERDIO")){
-                    nota.setPerdio(true);
-                    nota.setSuspenso(false);
-                }else{
-                    nota.setSuspenso(true);
-                    nota.setPerdio(false);
-                 }
-                    adm.actualizar(nota);
 
-                    nota = null;
-                }
+                nota.setPerdio(((Checkbox) labels.get(3)).isChecked());
+                nota.setSuspenso(((Checkbox) labels.get(4)).isChecked());
+                adm.actualizar(nota);
+
+                nota = null;
+
 
             } catch (Exception ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
@@ -180,10 +170,9 @@ public class pendientes extends Rows {
 
     }
 
-
-    public void buscarPerdidos(Cursos curso){
-Administrador adm = new Administrador();
-List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+    public void buscarPerdidos(Cursos curso) {
+        Administrador adm = new Administrador();
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + curso.getPeriodo().getCodigoper() + "'  "
                 + "and o.sistema.promediofinal = 'PF' ");
         try {
@@ -194,32 +183,34 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
         } catch (InterruptedException ex) {
             Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
         }
-List<Matriculas> matriculas  = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+curso.getCodigocur()+"' ");
+        List<Matriculas> matriculas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '" + curso.getCodigocur() + "' ");
         for (Iterator<Matriculas> it = matriculas.iterator(); it.hasNext();) {
             Matriculas matriculas1 = it.next();
             String q = "Select  CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4) ) from notas "
-                    + " where matricula = '" + matriculas1.getCodigomat() + "' "
-                    + " and "+notas.get(0).getNota()+" < "+matriculas1.getCurso().getAprobacion()+""
+                    + " where matricula = '" + matriculas1.getCodigomat() + "' and seimprime = true and promedia = true and disciplina = false "
+                    + " and " + notas.get(0).getNota() + " < " + matriculas1.getCurso().getAprobacion() + ""
                     + "     ";
-            System.out.println(""+q);
+            System.out.println("" + q);
             List nativo = adm.queryNativo(q);
-               for (Iterator itna = nativo.iterator(); itna.hasNext();) {
-                   Vector dos = (Vector) itna.next();
-                        if (((BigDecimal) dos.get(0)).doubleValue() >= matriculas1.getCurso().getAprobacion()) {
-                            //not.setEstadoMateria("APROBADO");
-                        } else {//REPROBO UNA MATERIA
-                               matriculas1.setPerdio(true);
-                               adm.actualizar(matriculas1);
-                            //not.setEstadoMateria("REPROBADO");
-                            //estadoEstudiante = false;
-                        }
-               }
+            for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                Vector dos = (Vector) itna.next();
+                if (((BigDecimal) dos.get(0)).doubleValue() >= matriculas1.getCurso().getAprobacion()) {
+                    //not.setEstadoMateria("APROBADO");
+                    matriculas1.setPerdio(false);
+                    adm.actualizar(matriculas1);
+                } else {//REPROBO UNA MATERIA
+                    matriculas1.setPerdio(true);
+                    adm.actualizar(matriculas1);
+                    //not.setEstadoMateria("REPROBADO");
+                    //estadoEstudiante = false;
+                }
+            }
 
-                     
+
 
         }
-        
-   
+
+
 
     }
 }
