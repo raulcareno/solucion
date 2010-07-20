@@ -1891,21 +1891,41 @@ public class notas extends Rows {
     }
 
     public void generarNumeros(String tipo) {
-         Administrador adm = new Administrador();
-         Session ses = Sessions.getCurrent();
-         Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        if (tipo.contains("all")) {
             List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
-                + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false and o.matricula.suspenso = false "
-                + "and  o.matricula.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' "
-                + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
-               int i=1;
-               for (Notasacta acta : matriculas) {
-                        acta.setNumeroacta(i);
-                        i++;
-                        adm.actualizar(acta);
-               }
-        
+                    + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false and o.matricula.suspenso = false "
+                    + "and  o.matricula.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                    + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
+            int i = 1;
+            for (Notasacta acta : matriculas) {
+                acta.setNumeroacta(i);
+                i++;
+                adm.actualizar(acta);
+            }
+        } else {
+            List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
+                    + "where o.matricula.curso.secuencia = 6 and o.matricula.suspenso = true "
+                    + "and  o.matricula.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                    + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
+            List numeroFinal = adm.query("Select max(o.numeroacta) from Notasacta as o "
+                    + "where o.matricula.suspenso = false  "
+                    + "and  o.matricula.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+            Integer ultimo = (Integer) numeroFinal.get(0);
+            int i = ultimo + 1;
+            for (Notasacta acta : matriculas) {
+                acta.setNumeroacta(i);
+                i++;
+                adm.actualizar(acta);
+            }
+
+        }
+
+
     }
+
     public JRDataSource actaGrado(Cursos curso, String tipo) {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
@@ -1966,9 +1986,12 @@ public class notas extends Rows {
 
         ArrayList lisNotasC = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
-
+        String complemento ="";
+        if(!curso.getCodigocur().equals(-2)){
+             complemento = "o.curso.codigocur = '" + curso.getCodigocur() + "' and ";
+        }
         matriculas = adm.query("Select o from Matriculas as o "
-                + "where o.curso.codigocur = '" + curso.getCodigocur() + "' and o.perdio = false and o.suspenso = false "
+                + "where "+complemento+" o.perdio = false and o.suspenso = false and o.curso.secuencia = '6' "
                 + " order by o.estudiante.apellido,  o.estudiante.nombre  ");
 
         for (Matriculas matriculas1 : matriculas) {
@@ -1976,10 +1999,9 @@ public class notas extends Rows {
             String q = "Select matriculas.codigomat,numeroacta, " + query + "   from matriculas "
                     + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest  "
                     + "left join notasacta on matriculas.codigomat = notasacta.matricula "
-                    + "where matriculas.curso = '" + curso.getCodigocur() + "'  "
-                    + "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' "
+                    + "where  matriculas.codigomat = '" + matriculas1.getCodigomat() + "' "
                     + "order by estudiantes.apellido ";
-            System.out.println("NOTAS GENERALES" + q);
+//            System.out.println("NOTAS GENERALES" + q);
             List nativo = adm.queryNativo(q);
 //            Nota nota = new Nota();
             String s = "#,#00.000";
@@ -2016,7 +2038,7 @@ public class notas extends Rows {
                         coll.setMatriculas(matriculas1);
 
                         coll.setMateria(ac.getNombre());
-                        coll.setNoActa(noActa+"");
+                        coll.setNoActa(noActa + "");
 
 
                         coll.setCabecera1(cabecera1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()));
@@ -2046,22 +2068,23 @@ public class notas extends Rows {
                         lisNotasC.add(coll);
 
                         ksis++;
-                    }else if (j == 0) {
+                    } else if (j == 0) {
                         matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
-                    }else if (j == 1) {
+                    } else if (j == 1) {
                         try {
-                               noActa = ((Integer) dos);
-                        }catch(Exception e){
-                            try {
-                                Messagebox.show("No ha GENERADO LOS NÚMEROS DE ACTAS EN: Grados > Calculo de Promedios > ACTAS DE GRADO \n NO SE MOSTRARA LAS ACTAS DE GRADO", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                                return null;
-                            } catch (InterruptedException ex) {
-                                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                            noActa = ((Integer) dos);
+                        } catch (Exception e) {
+                            noActa = 0;
+//                            try {
+//                                Messagebox.show("No ha GENERADO LOS NÚMEROS DE ACTAS EN: Grados > Calculo de Promedios > ACTAS DE GRADO \n NO SE MOSTRARA LAS ACTAS DE GRADO", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+//                                return null;
+//                            } catch (InterruptedException ex) {
+//                                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
                         }
-                        
+
                     }
-                    
+
                 }
                 //row.setParent(this);
             }
@@ -2166,7 +2189,7 @@ public class notas extends Rows {
 
     }
 
-       public ArrayList actaGradoTodos(Cursos curso) {
+    public ArrayList actaGradoTodos(Cursos curso) {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -2181,21 +2204,22 @@ public class notas extends Rows {
         NumerosaLetras num = new NumerosaLetras();
         List<Actagrado> notas = adm.query("Select o from Actagrado as o "
                 + " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and  o.imprimecuadro = true order by o.codigo ");
-        List<Materiasgrado> cabeMateGrado= adm.query("Select o from Materiasgrado as o "
-                    + "where o.curso.periodo.codigoper = '"+curso.getPeriodo().getCodigoper()+"' "
-                    + "and o.curso.codigocur = '"+curso.getCodigocur()+"'");
+        List<Materiasgrado> cabeMateGrado = adm.query("Select o from Materiasgrado as o "
+                + "where o.curso.periodo.codigoper = '" + curso.getPeriodo().getCodigoper() + "' "
+                + "and o.curso.codigocur = '" + curso.getCodigocur() + "'");
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
- 
 
-        String query5 = "";String query = "";
+
+        String query5 = "";
+        String query = "";
         String query2 = "";
 //        notas.get(0).getSistema().getOrden()
         String numeroDecimales = "3";
 //        for (Actagrado notass : notas) {
 //            query += notass.getColumna() + ",";
 //        }
-        for(Materiasgrado notass : cabeMateGrado) {
+        for (Materiasgrado notass : cabeMateGrado) {
             query5 += notass.getColumna() + ",";
         }
         //round(avg(nota1),3),
@@ -2210,7 +2234,7 @@ public class notas extends Rows {
         List<Matriculas> matriculas = new ArrayList();
 
         matriculas = adm.query("Select o from Matriculas as o "
-                + "where o.estado in ('Matriculado','Recibir Pase') and  o.curso.secuencia = 6 and o.curso.periodo.codigoper = '"+curso.getPeriodo().getCodigoper()+"' order by o.estudiante.apellido,o.estudiante.nombre");
+                + "where o.estado in ('Matriculado','Recibir Pase') and  o.curso.secuencia = 6 and o.curso.periodo.codigoper = '" + curso.getPeriodo().getCodigoper() + "' order by o.estudiante.apellido,o.estudiante.nombre");
         parametros.put("n1", "OCTAVO");
         parametros.put("n2", "NOVENO");
         parametros.put("n3", "DECIMO");
@@ -2221,21 +2245,21 @@ public class notas extends Rows {
         for (Matriculas matriculas1 : matriculas) {
             //Matriculas matriculas1 = itm.next();
             List primeroQuinto = adm.query("Select o from Notasrecord as o "
-                    + "where o.estudiante.codigoest = '"+matriculas1.getEstudiante().getCodigoest()+"' ");
+                    + "where o.estudiante.codigoest = '" + matriculas1.getEstudiante().getCodigoest() + "' ");
             NotaActaGeneral acta = new NotaActaGeneral();
             acta.setMatricula(matriculas1);
-            if(primeroQuinto.size()>0){
-                
+            if (primeroQuinto.size() > 0) {
+
                 Notasrecord encontrados = (Notasrecord) primeroQuinto.get(0);
                 acta.setN1(encontrados.getPrimero());
                 acta.setN2(encontrados.getSegundo());
                 acta.setN3(encontrados.getTercero());
                 acta.setN4(encontrados.getCuarto());
                 acta.setN5(encontrados.getQuinto());
-                Double sumaPromedio = (encontrados.getPrimero()+encontrados.getSegundo()+encontrados.getTercero()+encontrados.getCuarto()+encontrados.getQuinto())/5;
+                Double sumaPromedio = (encontrados.getPrimero() + encontrados.getSegundo() + encontrados.getTercero() + encontrados.getCuarto() + encontrados.getQuinto()) / 5;
                 acta.setN6(sumaPromedio);
                 acta.setN7(encontrados.getSexto());
-            }else{
+            } else {
                 acta.setN1(0.0);
                 acta.setN2(0.0);
                 acta.setN3(0d);
@@ -2244,120 +2268,132 @@ public class notas extends Rows {
                 acta.setN6(0d);
                 acta.setN7(0d);
             }
-          String q = "SELECT "+query5+" FROM  Notasgrado  WHERE matricula = "+matriculas1.getCodigomat()+"";
+            String q = "SELECT " + query5 + " FROM  Notasgrado  WHERE matricula = " + matriculas1.getCodigomat() + "";
 //            System.out.println("MATERIAGRADO NOTAS: "+q);
-          List nativo = adm.queryNativo(q);
+            List nativo = adm.queryNativo(q);
             for (Iterator it = nativo.iterator(); it.hasNext();) {
-                Vector object = (Vector)it.next();
-                if(cabeMateGrado.size()>=1){
+                Vector object = (Vector) it.next();
+                if (cabeMateGrado.size() >= 1) {
                     parametros.put("n8", cabeMateGrado.get(0).getAbreviatura());
                     acta.setN8((Double) object.get(0));
                 }
-                if(cabeMateGrado.size()>=2){
-                     parametros.put("n9",cabeMateGrado.get(1).getAbreviatura());
+                if (cabeMateGrado.size() >= 2) {
+                    parametros.put("n9", cabeMateGrado.get(1).getAbreviatura());
                     acta.setN9((Double) object.get(1));
                 }
-                if(cabeMateGrado.size()>=3){
-                    parametros.put("n10",cabeMateGrado.get(2).getAbreviatura());
+                if (cabeMateGrado.size() >= 3) {
+                    parametros.put("n10", cabeMateGrado.get(2).getAbreviatura());
                     acta.setN10((Double) object.get(2));
                 }
-                    
-                if(cabeMateGrado.size()>=4){
-                    parametros.put("n11",cabeMateGrado.get(3).getAbreviatura());
+
+                if (cabeMateGrado.size() >= 4) {
+                    parametros.put("n11", cabeMateGrado.get(3).getAbreviatura());
                     acta.setN11((Double) object.get(3));
                 }
-                if(cabeMateGrado.size()>=5){
+                if (cabeMateGrado.size() >= 5) {
                     parametros.put("n12", cabeMateGrado.get(4).getAbreviatura());
                     acta.setN12((Double) object.get(4));
 
                 }
-                if(cabeMateGrado.size()>=6){
+                if (cabeMateGrado.size() >= 6) {
                     parametros.put("n13", cabeMateGrado.get(5).getAbreviatura());
                     acta.setN13((Double) object.get(5));
 
                 }
-               
-                
+
+
             }
-            nativo = adm.queryNativo("Select "+query2+" from notasacta where matricula = '"+matriculas1.getCodigomat()+"' ");
+            nativo = adm.queryNativo("Select " + query2 + " from notasacta where matricula = '" + matriculas1.getCodigomat() + "' ");
             for (Iterator it = nativo.iterator(); it.hasNext();) {
-                 Vector object = (Vector)it.next();
-                    if(cabeMateGrado.size()>= 5){
-                        if(notas.size()>=1){
-                            parametros.put("n13", notas.get(0).getAbreviatura());
-                            acta.setN13(((BigDecimal) object.get(0)).doubleValue());
-                            if(notas.size()==1)
-                                acta.setEquivalencia(""+equivalencia2(redondear(((BigDecimal)object.get(0)).doubleValue(),0), equivalencias));
-                        }
-                        if(notas.size()>=2){
-                            parametros.put("n14", notas.get(1).getAbreviatura());
-                            acta.setN14(((BigDecimal) object.get(1)).doubleValue());
-                            if(notas.size()==2)
-                                acta.setEquivalencia(""+equivalencia2(redondear(((BigDecimal)object.get(1)).doubleValue(),0), equivalencias));
-                        }
-                        if(notas.size()>=3){
-                            parametros.put("n15", notas.get(2).getAbreviatura());
-                            acta.setN15(((BigDecimal) object.get(2)).doubleValue());
-                            if(notas.size()==3)
-                                acta.setEquivalencia(""+equivalencia2(redondear(((BigDecimal)object.get(2)).doubleValue(),0), equivalencias));
-                        }
-                        if(notas.size()>=4){
-                            parametros.put("n16", notas.get(3).getAbreviatura());
-                            acta.setN16(((BigDecimal) object.get(3)).doubleValue());
-                            if(notas.size()==4)
-                                acta.setEquivalencia(""+equivalencia2(redondear(((BigDecimal)object.get(3)).doubleValue(),0), equivalencias));
-                        }
-                        if(notas.size()>=5){
-                            parametros.put("n17", notas.get(4).getAbreviatura());
-                            acta.setN17(((BigDecimal) object.get(4)).doubleValue());
-                            if(notas.size()==5)
-                                acta.setEquivalencia(""+equivalencia2(redondear(((BigDecimal)object.get(4)).doubleValue(),0), equivalencias));
-                        }
-                        if(notas.size()>=6){
-                            parametros.put("n18", notas.get(5).getAbreviatura());
-                            acta.setN18(((BigDecimal) object.get(5)).doubleValue());
-                            if(notas.size()==6)
-                                acta.setEquivalencia(""+equivalencia2(redondear(((BigDecimal)object.get(5)).doubleValue(),0), equivalencias));
-                        }
-                        
-                    }else if(cabeMateGrado.size()>=6){
-                         if(notas.size()>=1){
-                            parametros.put("n14", notas.get(0).getAbreviatura());
-                            acta.setN14(((BigDecimal) object.get(0)).doubleValue());
-                             if(notas.get(0).getEsfinal())
-                                acta.setEquivalencia(""+equivalencia2(redondear(((BigDecimal)object.get(0)).doubleValue(),0), equivalencias));
-                        }
-                        if(notas.size()>=2){
-                            parametros.put("n15", notas.get(1).getAbreviatura());
-                            acta.setN15(((BigDecimal) object.get(1)).doubleValue());
-                             if(notas.get(1).getEsfinal())
-                                acta.setEquivalencia(""+equivalencia2(redondear(((BigDecimal)object.get(1)).doubleValue(),0), equivalencias));
-                        }
-                        if(notas.size()>=3){
-                            parametros.put("n16", notas.get(2).getAbreviatura());
-                            acta.setN16(((BigDecimal) object.get(2)).doubleValue());
-                             if(notas.get(2).getEsfinal())
-                                acta.setEquivalencia(""+equivalencia2(redondear(((BigDecimal)object.get(2)).doubleValue(),0), equivalencias));
-                        }
-                        if(notas.size()>=4){
-                            parametros.put("n17", notas.get(3).getAbreviatura());
-                            acta.setN17(((BigDecimal) object.get(3)).doubleValue());
-                             if(notas.get(3).getEsfinal())
-                                acta.setEquivalencia(""+equivalencia2(redondear(((BigDecimal)object.get(3)).doubleValue(),0), equivalencias));
-                        }
-                        if(notas.size()>=5){
-                            parametros.put("n18", notas.get(4).getAbreviatura());
-                            acta.setN18(((BigDecimal) object.get(4)).doubleValue());
-                               if(notas.get(4).getEsfinal())
-                                acta.setEquivalencia(""+equivalencia2(redondear(((BigDecimal)object.get(4)).doubleValue(),0), equivalencias));
-                        }
-                         if(notas.size()>=6){
-                            parametros.put("n19", notas.get(5).getAbreviatura());
-                            acta.setN18(((BigDecimal) object.get(5)).doubleValue());
-                               if(notas.get(5).getEsfinal())
-                                acta.setEquivalencia(""+equivalencia2(redondear(((BigDecimal)object.get(5)).doubleValue(),0), equivalencias));
+                Vector object = (Vector) it.next();
+                if (cabeMateGrado.size() >= 5) {
+                    if (notas.size() >= 1) {
+                        parametros.put("n13", notas.get(0).getAbreviatura());
+                        acta.setN13(((BigDecimal) object.get(0)).doubleValue());
+                        if (notas.size() == 1) {
+                            acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(0)).doubleValue(), 0), equivalencias));
                         }
                     }
+                    if (notas.size() >= 2) {
+                        parametros.put("n14", notas.get(1).getAbreviatura());
+                        acta.setN14(((BigDecimal) object.get(1)).doubleValue());
+                        if (notas.size() == 2) {
+                            acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(1)).doubleValue(), 0), equivalencias));
+                        }
+                    }
+                    if (notas.size() >= 3) {
+                        parametros.put("n15", notas.get(2).getAbreviatura());
+                        acta.setN15(((BigDecimal) object.get(2)).doubleValue());
+                        if (notas.size() == 3) {
+                            acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                        }
+                    }
+                    if (notas.size() >= 4) {
+                        parametros.put("n16", notas.get(3).getAbreviatura());
+                        acta.setN16(((BigDecimal) object.get(3)).doubleValue());
+                        if (notas.size() == 4) {
+                            acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(3)).doubleValue(), 0), equivalencias));
+                        }
+                    }
+                    if (notas.size() >= 5) {
+                        parametros.put("n17", notas.get(4).getAbreviatura());
+                        acta.setN17(((BigDecimal) object.get(4)).doubleValue());
+                        if (notas.size() == 5) {
+                            acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(4)).doubleValue(), 0), equivalencias));
+                        }
+                    }
+                    if (notas.size() >= 6) {
+                        parametros.put("n18", notas.get(5).getAbreviatura());
+                        acta.setN18(((BigDecimal) object.get(5)).doubleValue());
+                        if (notas.size() == 6) {
+                            acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(5)).doubleValue(), 0), equivalencias));
+                        }
+                    }
+
+                } else if (cabeMateGrado.size() >= 6) {
+                    if (notas.size() >= 1) {
+                        parametros.put("n14", notas.get(0).getAbreviatura());
+                        acta.setN14(((BigDecimal) object.get(0)).doubleValue());
+                        if (notas.get(0).getEsfinal()) {
+                            acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(0)).doubleValue(), 0), equivalencias));
+                        }
+                    }
+                    if (notas.size() >= 2) {
+                        parametros.put("n15", notas.get(1).getAbreviatura());
+                        acta.setN15(((BigDecimal) object.get(1)).doubleValue());
+                        if (notas.get(1).getEsfinal()) {
+                            acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(1)).doubleValue(), 0), equivalencias));
+                        }
+                    }
+                    if (notas.size() >= 3) {
+                        parametros.put("n16", notas.get(2).getAbreviatura());
+                        acta.setN16(((BigDecimal) object.get(2)).doubleValue());
+                        if (notas.get(2).getEsfinal()) {
+                            acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                        }
+                    }
+                    if (notas.size() >= 4) {
+                        parametros.put("n17", notas.get(3).getAbreviatura());
+                        acta.setN17(((BigDecimal) object.get(3)).doubleValue());
+                        if (notas.get(3).getEsfinal()) {
+                            acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(3)).doubleValue(), 0), equivalencias));
+                        }
+                    }
+                    if (notas.size() >= 5) {
+                        parametros.put("n18", notas.get(4).getAbreviatura());
+                        acta.setN18(((BigDecimal) object.get(4)).doubleValue());
+                        if (notas.get(4).getEsfinal()) {
+                            acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(4)).doubleValue(), 0), equivalencias));
+                        }
+                    }
+                    if (notas.size() >= 6) {
+                        parametros.put("n19", notas.get(5).getAbreviatura());
+                        acta.setN18(((BigDecimal) object.get(5)).doubleValue());
+                        if (notas.get(5).getEsfinal()) {
+                            acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(5)).doubleValue(), 0), equivalencias));
+                        }
+                    }
+                }
             }
 //
 //            String q = "Select matriculas.codigomat, " + query + "  from matriculas "
@@ -2382,7 +2418,6 @@ public class notas extends Rows {
         return otro;
 
     }
-
 
     public String regresaTexto(String variable, List<Textos> textos) {
         for (Iterator<Textos> it = textos.iterator(); it.hasNext();) {
