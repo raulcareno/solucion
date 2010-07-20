@@ -1890,6 +1890,22 @@ public class notas extends Rows {
         return fecha.getDate() + " de " + mes + " del " + (fecha.getYear() + 1900);
     }
 
+    public void generarNumeros(String tipo) {
+         Administrador adm = new Administrador();
+         Session ses = Sessions.getCurrent();
+         Periodo periodo = (Periodo) ses.getAttribute("periodo");
+            List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
+                + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false and o.matricula.suspenso = false "
+                + "and  o.matricula.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' "
+                + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
+               int i=1;
+               for (Notasacta acta : matriculas) {
+                        acta.setNumeroacta(i);
+                        i++;
+                        adm.actualizar(acta);
+               }
+        
+    }
     public JRDataSource actaGrado(Cursos curso, String tipo) {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
@@ -1951,11 +1967,13 @@ public class notas extends Rows {
         ArrayList lisNotasC = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
 
-        matriculas = adm.query("Select o from Matriculas as o where  o.estado in ('Matriculado','Recibir Pase') and   o.curso.codigocur = '" + curso.getCodigocur() + "'");
+        matriculas = adm.query("Select o from Matriculas as o "
+                + "where o.curso.codigocur = '" + curso.getCodigocur() + "' and o.perdio = false and o.suspenso = false "
+                + " order by o.estudiante.apellido,  o.estudiante.nombre  ");
 
         for (Matriculas matriculas1 : matriculas) {
             //Matriculas matriculas1 = itm.next();
-            String q = "Select matriculas.codigomat, " + query + "  from matriculas "
+            String q = "Select matriculas.codigomat,numeroacta, " + query + "   from matriculas "
                     + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest  "
                     + "left join notasacta on matriculas.codigomat = notasacta.matricula "
                     + "where matriculas.curso = '" + curso.getCodigocur() + "'  "
@@ -1969,6 +1987,7 @@ public class notas extends Rows {
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                 Vector vec = (Vector) itna.next();
                 Matriculas matriculaNo = null;
+                Integer noActa = null;
                 Boolean cuantitativa = false;
                 int ksis = 0;
                 for (int j = 0; j < vec.size(); j++) {
@@ -1983,7 +2002,7 @@ public class notas extends Rows {
                         dos = new Double(0.0);
 //                        System.out.println(""+e);
                     }
-                    if (j >= 1) {
+                    if (j >= 2) {
                         val = (Double) dos;
                         String s1 = decimalFormat.format(val);
                         coll.setNota(s1);
@@ -1997,7 +2016,7 @@ public class notas extends Rows {
                         coll.setMatriculas(matriculas1);
 
                         coll.setMateria(ac.getNombre());
-
+                        coll.setNoActa(noActa+"");
 
 
                         coll.setCabecera1(cabecera1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()));
@@ -2027,9 +2046,22 @@ public class notas extends Rows {
                         lisNotasC.add(coll);
 
                         ksis++;
-                    } else {
+                    }else if (j == 0) {
                         matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
+                    }else if (j == 1) {
+                        try {
+                               noActa = ((Integer) dos);
+                        }catch(Exception e){
+                            try {
+                                Messagebox.show("No ha GENERADO LOS NÚMEROS DE ACTAS EN: Grados > Calculo de Promedios > ACTAS DE GRADO \n NO SE MOSTRARA LAS ACTAS DE GRADO", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                return null;
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        
                     }
+                    
                 }
                 //row.setParent(this);
             }

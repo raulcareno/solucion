@@ -16,6 +16,7 @@ private String cabecera1;
 private String cabecera2;
 private String pie1;
 private String pie2;
+private String noActa;
 private Matriculas matriculas;
 
     public String getEstudiante() {
@@ -249,6 +250,14 @@ private String nom1,nom2,nom3,nom4,nom5,nom6,nom7,nom8;
 
     public void setNom8(String nom8) {
         this.nom8 = nom8;
+    }
+
+    public String getNoActa() {
+        return noActa;
+    }
+
+    public void setNoActa(String noActa) {
+        this.noActa = noActa;
     }
 
 

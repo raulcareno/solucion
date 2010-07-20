@@ -1,5 +1,5 @@
 
-<window     width="650px" border="normal">
+<window     width="780px" border="normal">
     <zscript>
         <![CDATA[
 
@@ -114,7 +114,8 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
             <column  label="Cod"/>
             <column  label="Estudiantes"/>
             <column  label="Identificacion"/>
-            <column  label="Estado"/>
+            <column label="Estado"/>
+            <column label=" "/>
         </columns>
         <rows id="filas" use="bean.pendientes">
         </rows>

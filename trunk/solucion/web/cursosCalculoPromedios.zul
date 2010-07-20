@@ -1,6 +1,5 @@
 <?page id="main-page"?>
-<window  
-    title="Cursos " width="100%" id="cursosdeGrado">
+<zk>
     <zscript>
         <![CDATA[
 import bean.Procesos;
@@ -38,80 +37,123 @@ void recalculo(){
     nso.calcularDisciplina(((Cursos)curs.selectedItem.value));
 
 }
+void generar(String tipo){
+    notas nso = new notas();
+    nso.generarNumeros(tipo);
+
+}
 ]]>
     </zscript>
-    <grid>
-        <rows>
-            <row spans="2">
+    <portallayout >
+        <portalchildren style="padding: 5px" width="50%">
 
-                <separator/>
+            <panel title="RECORD ACADEMICO"    style="margin-bottom:10px" framable="true" >
+                <panelchildren>
 
-            </row>
-            <row spans="2">
+                    <grid>
+                        <rows>
+                            <row style="background:transparent"  spans="2">
 
                 Nos permite hacer el Recalculo del Promedio final para el Record Académico
 
-            </row>
-            <row>
-                <span style="float:right"> Curso(*):</span>
-                <span>
-                    <listbox mold="select" id="cursosList"  width="420px" >
-                        <listitem>
-                            <listcell label="Seleccione un Curso" />
-                        </listitem>
-                        <listitem forEach="${cursos}" value="${each}">
-                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-                        </listitem>
-                    </listbox>
-                    <button label="Aprovechamiento"   image="/images/run.gif" onClick="aprovechamiento();"/>
-                    <button label="Disciplina"   image="/images/run.gif" onClick="disciplina()"/>
-                </span>
-            </row>
-            <row spans="2">
+                            </row>
+                            <row style="background:transparent" >
+                                <span style="float:right"> Curso(*):</span>
+                                <span>
+                                    <listbox mold="select" id="cursosList"  width="420px" >
+                                        <listitem>
+                                            <listcell label="Seleccione un Curso" />
+                                        </listitem>
+                                        <listitem forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                        </listitem>
+                                    </listbox>
+                                    <button label="Aprovechamiento"   image="/images/run.gif" onClick="aprovechamiento();"/>
+                                    <button label="Disciplina"   image="/images/run.gif" onClick="disciplina()"/>
+                                </span>
+                            </row>
+                        </rows>
+                    </grid>
 
-                <separator/>
 
-            </row>
-            <row spans="2">
+                </panelchildren>
 
-                <separator/>
+            </panel>
+            <panel framable="true" style="margin-bottom:10px"  title="RECALCULO DE DISCIPLINA">
+                <panelchildren>
+                    <grid>
+                        <rows>
+                            <row  style="background:transparent" spans="2">
 
-            </row>
-            <row spans="2">
+                                <span style="color:blue"> Recalculo de notas de disciplina, en caso de usar modo de caliciación diferente a ingreso de notas de disciplina manualmente
+                                </span>
+                            </row>
+                            <row style="background:transparent" >
 
-                <separator/>
-
-            </row>
-            <row spans="2">
-
-                Recalculo de notas de disciplina, en caso de usar modo de caliciación diferente a ingreso de notas de disciplina manualmente
-
-            </row>
-            <row>
-
-                <span style="float:right"> Curso(*):</span>
-                <span>
-                    <bandbox  width="400px" readonly="true"  id="bd1">
-                        <bandpopup>
-                            <vbox>
-                                <listbox id="curs" width="420px"
+                                <span style="float:right"> Curso(*):</span>
+                                <span>
+                                    <bandbox  width="400px" readonly="true"  id="bd1">
+                                        <bandpopup>
+                                            <vbox>
+                                                <listbox id="curs" width="420px"
                                          onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
 
-                                    <listitem forEach="${cursos}" value="${each}">
-                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                                    <listitem forEach="${cursos}" value="${each}">
+                                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
-                                    </listitem>
-                                </listbox>
-                            </vbox>
-                        </bandpopup>
-                    </bandbox>
+                                                    </listitem>
+                                                </listbox>
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
 
-                    <button label="Recalcular Disciplina"   onClick="recalculo();"/>
-                </span>
-            </row>
-        </rows>
-    </grid>
+                                    <button label="Recalcular Disciplina"   onClick="recalculo();"/>
+                                </span>
+                            </row>
+        
+                        </rows>
+                    </grid>
+                </panelchildren>
+
+            </panel>
+        </portalchildren>
+        <portalchildren style="padding: 5px"  width="50%">
+            <panel  framable="true" style="margin-bottom:10px" title="RECALCULO DE ACTAS DE GRADO">
+                <panelchildren>
+                    <grid>
+                        <rows>
+           
+                            <row style="background:transparent"  spans="2">
+                                Generar Actas de Grado, únicamente a los que no están perdidos de año o suspensos
+                                (Se recomienda primero que actualice los datos en Matriculas > Actualizar)
+                            </row>
+
+                            <row style="background:transparent"  spans="2">
+                                <button label="Generar Números de Actas"      onClick='generar("all")' />
+                            </row>
+                        </rows>
+                    </grid>
+                </panelchildren>
+
+            </panel>
+
+            <panel framable="true" style="margin-bottom:10px"  title="ACTAS DE SUSPENSO">
+                <panelchildren>
+                    <grid>
+                        <rows>
+                            <row style="background:transparent"  spans="2">
+                                Generar Actas de Grado Suspensos
+                            </row>
+                            <row  style="background:transparent" spans="2">
+                                <button label="Generar Números de Actas"   onClick='generar("sus")' />
+                            </row>
+                        </rows>
+                    </grid>
+                </panelchildren>
+            </panel>
 
 
-</window>
+        </portalchildren>
+    </portallayout>
+</zk>
 
