@@ -59,6 +59,26 @@ public class ReporteNotasDataSource implements JRDataSource{
         }else if ("nota".equals(fieldName)) {
 
             try {
+                if(nodo.getNota().toString().contains(".0")){
+                    String vale = nodo.getNota().toString();
+                    if(!vale.contains(".01") && !vale.contains(".02") && !vale.contains(".03") && !vale.contains(".04") &&
+                            !vale.contains(".06") && !vale.contains(".07") && !vale.contains(".08") && !vale.contains(".05") &&
+                            !vale.contains(".09") ){
+                        nodo.setNota(nodo.getNota().toString().replace(".0",""));
+                    }
+                }
+              String vale = nodo.getNota().toString();
+              if(vale.contains("0") || vale.contains("1") || vale.contains("2") || vale.contains("3") || vale.contains("4") || vale.contains("5") ||
+                      vale.contains("6") || vale.contains("7") || vale.contains("8") || vale.contains("9") ){
+                   String codigo = vale;
+                      while(codigo.length()<2){
+                            codigo = "0"+codigo;
+                        }
+                    nodo.setNota(codigo);
+              }
+
+              
+
             valor = nodo.getNota();
 //                System.out.println("NOTA: "+valor);
             } catch (Exception e) {
@@ -94,11 +114,19 @@ public class ReporteNotasDataSource implements JRDataSource{
         }
         else if ("observacion".equals(fieldName)) {
             try{
-                valor = (nodo.getMatricula().getEstado().equals("Retirado")?"Retirado:"+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 10):"");
+                if(nodo.getMatricula().getEstado().equals("Retirado")){
+                    valor = ("Retirado: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 10))+" "+nodo.getMatricula().getObservacion();
+                }else if(nodo.getMatricula().getEstado().equals("Emitir Pase")){
+                    valor = "Pase Emitido: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 10)+" "+nodo.getMatricula().getObservacion();
+                }else if(nodo.getMatricula().getEstado().equals("Recibir Pase")){
+                    valor = "Pase Recibido: "+nodo.getMatricula().getFechamat().toLocaleString().substring(0, 10)+" "+nodo.getMatricula().getObservacion();
+                }else{
+                    valor="";
+                }
             }catch(Exception e){
                valor = (nodo.getMatricula().getEstado().equals("Retirado")?"Retirado":"");
             }
-
+ 
         }
        else if ("sello".equals(fieldName)) {
 
@@ -114,7 +142,7 @@ public class ReporteNotasDataSource implements JRDataSource{
                 System.out.println("Error en foto:"+ex);
             }
         }
-        else if ("listaNotas".equals(fieldName)){
+                     else if ("listaNotas".equals(fieldName)){
             valor = new JRBeanCollectionDataSource(nodo.getNotas());
         }
 } catch (Exception e) {
