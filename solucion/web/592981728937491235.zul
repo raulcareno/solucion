@@ -49,6 +49,11 @@ void notasd(){
             parametros.put("direccionRep",""+estudent.getDireccionr());
             parametros.put("telefonoRep",""+estudent.getTelefonor());
             parametros.put("emailRep",""+estudent.getMailr());
+            parametros.put("fecha",estudent.getFechamatricula());
+            parametros.put("hermano",estudent.getHermano());
+            parametros.put("hermanos",""+estudent.getCursohermano());
+            parametros.put("discapacidad",estudent.getDiscapacidad());
+            parametros.put("tipodiscapacidad",""+estudent.getTdiscapacidad());
                 report.setParameters(parametros);
                 report.setDatasource(null);
                 report.setType("html");
