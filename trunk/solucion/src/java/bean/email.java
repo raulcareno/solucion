@@ -55,7 +55,7 @@ public class email {
                     + "<hr>"
                     + "</html> ";
             Boolean estado = EnviarAutenticacion.RecuperarClave(emp.getEmail().trim(), mensaje,
-                    "RECUPERACION DE CLAVE " + emp.getApellidos() + " " + emp.getNombres(), periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto());
+                    "RECUPERACION DE CLAVE " + emp.getApellidos() + " " + emp.getNombres(), periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto(),periodo.getInstitucion().getAutorizacion(),periodo.getInstitucion().getStar());
             if (estado) {
                 return "[OK] " + emp.getEmail();
             } else {
@@ -104,7 +104,7 @@ public class email {
                     + "<hr>"
                     + "</html> ";
             Boolean estado = EnviarAutenticacion.RecuperarClave(matriculaNo.getEstudiante().getMail().trim(), mensaje,
-                    "RECUPERACION DE CLAVE " + matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre(), periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto());
+                    "RECUPERACION DE CLAVE " + matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre(), periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto(),periodo.getInstitucion().getAutorizacion(),periodo.getInstitucion().getStar());
             if (estado) {
                 return "[OK] " + matriculaNo.getEstudiante().getMail();
             } else {
@@ -153,7 +153,7 @@ public class email {
                     + "<hr>"
                     + "</html> ";
             Boolean estado = EnviarAutenticacion.RecuperarClave(matriculaNo.getEstudiante().getRepresentante().getEmail(), mensaje,
-                    "RECUPERACION DE CLAVE " + matriculaNo.getEstudiante().getRepresentante().getApellidos() + " " + matriculaNo.getEstudiante().getRepresentante().getNombres(), periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto());
+                    "RECUPERACION DE CLAVE " + matriculaNo.getEstudiante().getRepresentante().getApellidos() + " " + matriculaNo.getEstudiante().getRepresentante().getNombres(), periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto(),periodo.getInstitucion().getAutorizacion(),periodo.getInstitucion().getStar());
             if (estado) {
                 return "[OK] " + matriculaNo.getEstudiante().getRepresentante().getEmail();
             } else {
@@ -220,7 +220,7 @@ public class email {
                 i++;
             }
             if (matriculados2.size() > 0) {
-                EnviarAutenticacion.EnviarCorreo(matriculados2, mensaje, tema, periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto(), empleado.getEmail());
+                EnviarAutenticacion.EnviarCorreo(matriculados2, mensaje, tema, periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto(), empleado.getEmail(),periodo.getInstitucion().getAutorizacion(),periodo.getInstitucion().getStar());
             }
         } catch (Exception e) {
             System.out.println("" + e);
@@ -262,7 +262,7 @@ public class email {
                     + "si no funcionará por favor copie y pegue la dirección"
                     + " en su navegador preferido. </html>";
             if (matriculados2.size() > 0) {
-                EnviarAutenticacion.EnviarCorreo(matriculados2, mensaj, periodo.getInstitucion().getNombre() + " - INSCRIPCION", periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto(), "jcinform@gmail.com");
+                EnviarAutenticacion.EnviarCorreo(matriculados2, mensaj, periodo.getInstitucion().getNombre() + " - INSCRIPCION", periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto(), "jcinform@gmail.com",periodo.getInstitucion().getAutorizacion(),periodo.getInstitucion().getStar());
             }
         } catch (Exception e) {
             System.out.println("" + e);
@@ -314,7 +314,7 @@ public class email {
 
 class EnviarAutenticacion {
 
-    public static Boolean RecuperarClave(String email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto) {
+    public static Boolean RecuperarClave(String email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto,Boolean autorizacion, Boolean star) {
 //        String host ="smtp.gmail.com";//Suponiendo que el servidor SMTPsea la propia máquina
         //String from ="setecompu.ec@gmail.com";
         String from = emailInstitucion;
@@ -322,8 +322,8 @@ class EnviarAutenticacion {
         Properties prop = new Properties();
         prop.put("mail.host", host.trim());
         prop.setProperty("mail.smtp.port", puerto.trim());
-        prop.setProperty("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.auth", "true");
+        prop.setProperty("mail.smtp.starttls.enable", ""+star);
+        prop.put("mail.smtp.auth", ""+autorizacion);
         try {
             SMTPAutenticacion auth = new SMTPAutenticacion(emailInstitucion, clave);
             Session session = Session.getInstance(prop, auth);
@@ -342,7 +342,7 @@ class EnviarAutenticacion {
 
     }
 
-    public static void EnviarCorreo(ArrayList email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto, String respuestaA) {
+    public static void EnviarCorreo(ArrayList email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto, String respuestaA,Boolean autorizacion, Boolean star) {
 //        String host ="smtp.gmail.com";//Suponiendo que el servidor SMTPsea la propia máquina
         //String from ="setecompu.ec@gmail.com";
         String from = emailInstitucion;
@@ -350,8 +350,8 @@ class EnviarAutenticacion {
         Properties prop = new Properties();
         prop.put("mail.host", host.trim());
         prop.setProperty("mail.smtp.port", puerto.trim());
-        prop.setProperty("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.auth", "true");
+        prop.setProperty("mail.smtp.starttls.enable", ""+star);
+        prop.put("mail.smtp.auth", ""+autorizacion);
         try {
             SMTPAutenticacion auth = new SMTPAutenticacion(emailInstitucion, clave);
             Session session = Session.getInstance(prop, auth);
@@ -385,7 +385,7 @@ class EnviarAutenticacion {
                 int i = 0;
                 emailsA[i] = new InternetAddress(respuestaA + "");
                 msg.setReplyTo(emailsA);
-                //msg.setSender(new InternetAddress(respuestaA));
+                msg.setSender(new InternetAddress(respuestaA));
                 msg.setFrom(new InternetAddress("" + respuestaA));
             } else {
                 msg.setFrom(new InternetAddress("" + emailInstitucion));
