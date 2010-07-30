@@ -85,7 +85,28 @@ void cargarVacio(){
        <a:bind value="inobjeto.clavemail"/>
        <textbox  type="password" id="clave" onChange="update();"/>
     </row>
-    
+         <row>
+        <span  style="float:right"> Requ.Auten.(*):</span>
+       <span><a:bind checked="inobjeto.autorizacion"/>
+       <checkbox  id="autorizacion" onChange="update();"/>
+       StartTLS(*):
+       <a:bind   checked="inobjeto.star"/>
+       <checkbox  id="star" onChange="update();"/>
+
+
+       </span>
+    </row>
+     <row>
+       <span style="float:right">SMTP: </span>
+       <a:bind value="inobjeto.smtp"/>
+       <textbox  id="smtp" onChange="update();" />
+    </row>
+       <row>
+        <span style="float:right">Puerto: </span>
+       <a:bind value="inobjeto.puerto"/>
+       <textbox  id="puerto" onChange="update();" width="30px"/>
+
+    </row>
   <row>
       <button label="Subir Imagen" id="ima">
 		<attribute name="onClick">{
