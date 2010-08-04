@@ -2045,8 +2045,8 @@ public class notas extends Rows {
                         coll.setCabecera1(cabecera1.replace("[fecha]", convertir(new Date()) + ""));
                         coll.setCabecera2(cabecera2.replace("[fecha]", convertir(new Date()) + ""));
                         coll.setCabecera2(cabecera2.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()));
-                        coll.setPie1(pi1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()));
-                        coll.setPie2(pi2.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()));
+                        coll.setPie1(pi1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa()));
+                        coll.setPie2(pi2.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa()));
                         coll.setCar1(car1);
                         coll.setCar2(car2);
                         coll.setCar3(car3);

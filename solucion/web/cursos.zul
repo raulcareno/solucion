@@ -37,6 +37,7 @@ void llenar(Cursos empa){
     cedulaiden.value = empa.getCedulaiden();
     tutor.value = empa.getTutor();
     cedulatut.value = empa.getCedulatut();
+    acta.value = empa.getActa();
 
 if(empa.getParalelo()!=null){
           for (int i = 0; i <= paralelosL.getItems().size(); i++) {
@@ -70,20 +71,19 @@ void estado(Boolean estado,Boolean modificar){
         if(modificar){
             empa = (Cursos)datos.selectedItem.value;
         }else{empa.setCodigocur(0);}
-
-    nombres.readonly = estado;
-    secuencia.readonly = estado;
-    aprobacion.readonly = estado;
-    minima.readonly = estado;
-    desde.disabled = estado;
-    hasta.disabled = estado;
-    tutor.readonly = estado;
-    cedulatut.readonly = estado;
-    inspector.readonly = estado;
-    cedulaiden.readonly= estado;
-    paralelosL.disabled= estado;
-
-    especialidadesL.disabled= estado;
+        nombres.readonly = estado;
+        secuencia.readonly = estado;
+        aprobacion.readonly = estado;
+        minima.readonly = estado;
+        desde.disabled = estado;
+        hasta.disabled = estado;
+        tutor.readonly = estado;
+        acta.readonly = estado;
+        cedulatut.readonly = estado;
+        inspector.readonly = estado;
+        cedulaiden.readonly= estado;
+        paralelosL.disabled= estado;
+        especialidadesL.disabled= estado;
 
 }
 
@@ -108,8 +108,8 @@ void estado(Boolean estado,Boolean modificar){
 
         empa.setEspecialidad(especialidadesL.selectedItem.value);
         empa.setParalelo(paralelosL.selectedItem.value);
+        empa.setActa(acta.value);
  
-
         empa.setInicial(desde.value);
         empa.setFinali(hasta.value);
         empa.setPeriodo(per);
@@ -298,6 +298,13 @@ void cargarPar(Global g){
                         <textbox id="tutor" maxlength="100" cols="35"  readonly="true"  />
       CI:
                         <textbox id="cedulatut" maxlength="13" cols="13" readonly="true"  />
+                    </span>
+                </row>
+                <row>
+                    <span style="float:right"> Titulo:</span>
+                    <span>
+                        <textbox id="acta" maxlength="200" cols="40"  readonly="true"  />
+
                     </span>
                 </row>
 
