@@ -1893,35 +1893,57 @@ public class notas extends Rows {
     public void generarNumeros(String tipo) {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
-        Periodo periodo = (Periodo) ses.getAttribute("periodo");
-        if (tipo.contains("all")) {
-            List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
-                    + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false and o.matricula.suspenso = false "
-                    + "and  o.matricula.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' "
-                    + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
-            int i = 1;
-            for (Notasacta acta : matriculas) {
-                acta.setNumeroacta(i);
-                i++;
-                adm.actualizar(acta);
+//        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List<Global> especial = adm.query("Select o from Global as o where o.grupo = 'ESP' ");
+        for (Iterator<Global> it = especial.iterator(); it.hasNext();) {
+            Global especialidad = it.next();
+            List<Cursos> curs = adm.query("Select o from Cursos as o where o.secuencia  = 6  and o.especialidad.codigo = '" + especialidad.getCodigo() + "'");
+            String codigosCursos = "0";
+            for (Iterator<Cursos> itCursos = curs.iterator(); itCursos.hasNext();) {
+                Cursos cursos = itCursos.next();
+                codigosCursos += cursos.getCodigocur() + ",";
             }
-        } else {
-            List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
-                    + "where o.matricula.curso.secuencia = 6 and o.matricula.suspenso = true "
-                    + "and  o.matricula.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' "
-                    + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
-            List numeroFinal = adm.query("Select max(o.numeroacta) from Notasacta as o "
-                    + "where o.matricula.suspenso = false  "
-                    + "and  o.matricula.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-            Integer ultimo = (Integer) numeroFinal.get(0);
-            int i = ultimo + 1;
-            for (Notasacta acta : matriculas) {
-                acta.setNumeroacta(i);
-                i++;
-                adm.actualizar(acta);
+            if(codigosCursos.length()>1)
+                codigosCursos = codigosCursos.substring(0, codigosCursos.length() - 1);
+            if (tipo.contains("all")) {
+                List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
+                        + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false and o.matricula.suspenso = false "
+                        + "and  o.matricula.curso.codigocur  in (" + codigosCursos + ") "
+                        + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
+                int i = 1;
+                for (Notasacta acta : matriculas) {
+                    acta.setNumeroacta(i);
+                    i++;
+                    adm.actualizar(acta);
+                }
+            } else {
+                List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
+                        + "where o.matricula.curso.secuencia = 6 and o.matricula.suspenso = true "
+                        + "and  o.matricula.curso.codigocur  in (" + codigosCursos + ")  "
+                        + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
+                if(matriculas.size()>0){
+
+                List numeroFinal = adm.query("Select max(o.numeroacta) from Notasacta as o "
+                        + "where o.matricula.suspenso = false  "
+                        + "and  o.matricula.curso.codigocur  in (" + codigosCursos + ")  ");
+                    Integer ultimo = (Integer) numeroFinal.get(0);
+                    int i = ultimo + 1;
+                    for (Notasacta acta : matriculas) {
+                        acta.setNumeroacta(i);
+                        i++;
+                        adm.actualizar(acta);
+                    }
+
+                }
+
             }
 
+
         }
+
+
+
+
 
 
     }
@@ -1986,12 +2008,12 @@ public class notas extends Rows {
 
         ArrayList lisNotasC = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
-        String complemento ="";
-        if(!curso.getCodigocur().equals(-2)){
-             complemento = "o.curso.codigocur = '" + curso.getCodigocur() + "' and ";
+        String complemento = "";
+        if (!curso.getCodigocur().equals(-2)) {
+            complemento = "o.curso.codigocur = '" + curso.getCodigocur() + "' and ";
         }
         matriculas = adm.query("Select o from Matriculas as o "
-                + "where "+complemento+" o.perdio = false and o.suspenso = false and o.curso.secuencia = '6' "
+                + "where " + complemento + " o.perdio = false and o.suspenso = false and o.curso.secuencia = '6' "
                 + " order by o.estudiante.apellido,  o.estudiante.nombre  ");
 
         for (Matriculas matriculas1 : matriculas) {
