@@ -155,7 +155,8 @@ void llenar(Estudiantes estudent){
     apellidos.value = estudent.getApellido();
     direccion.value = estudent.getDireccion();
     telefono.value = estudent.getTelefono();
-    genero.value = estudent.getGenero();
+    masculino.selected  = (estudent.getGenero().equals("Masculino")?true:false);
+    femenino.selected  = (estudent.getGenero().equals("Femenino")?true:false);
     nacido.value = estudent.getFechanacimiento();
     mail.value = estudent.getMail();
     usuario.value = estudent.getUsuario();
@@ -824,10 +825,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 </span>
                             </row>
                             <row>
-                                <span style="float:right"> Codigo :</span>
+                                <span style="float:right"> Identificación:</span>
                                 <span>
-                                    <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
-                                                                        Identificación:
+                                    <intbox  maxlength="14" cols="5"  visible="false" disabled="true"  readonly="true" id="codigo"  />
+                                                                         
                                     <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
                                 </span>
                             </row>
@@ -866,26 +867,33 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             </row>
                             <row>
                                 <span style="float:right"> Género (*):</span>
-                                <combobox id="genero" readonly="true">
+                                  <span>
+                    <radiogroup Id="genero" >
+                        <radio id="masculino"  label="Masculino"/>
+                        <radio id = "femenino"  selected="true" label="Femenino"/>
+                    </radiogroup>
+                    <span> Fecha Nacimiento:</span>
+                                <datebox id="nacido"  readonly="true"  />
+                                </span>
+                                <!--combobox id="genero" readonly="true">
                                     <comboitem value="Masculino" label="Masculino"/>
                                     <comboitem value="Femenino" label="Femenino"/>
-                                </combobox>
+                                </combobox-->
                             </row>
                             <row>
-                                <span style="float:right"> Fecha Nacimiento:</span>
-                                <datebox id="nacido"  readonly="true"  />
+                                
                             </row>
                             <row>
                                 <span style="float:right"> Usuario:</span>
                                 <span>
                                     <textbox id="usuario" maxlength="30" cols="12" readonly="true"  />
-
+                                   <span> Clave:</span>
+                                <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
                                     <button label="Generar" onClick="generarClave(true);"/>
                                 </span>
                             </row>
                             <row>
-                                <span style="float:right"> Clave:</span>
-                                <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
+                                
                             </row>
 
                         </rows>
@@ -948,7 +956,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
    
                 <grid width="100%" height="220">
                     <rows>
-                        <row>
+                        <row visible="false">
                             <span style="float:right"> Codigo:</span>
                             <span>
                                 <intbox maxlength="14" cols="5"    disabled="true"    readonly="true" id="codigomat"  />
@@ -1002,15 +1010,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <textbox id="institucion" readonly="true"  maxlength="30" cols="20"/>
                             </span>
                         </row>
+                         
                         <row>
-                            <span style="float:right"> Repite el Año(*):</span>
-                            <span>
-                                <checkbox id="repite" disabled="true"/>
-                            </span>
-                                 
-                        </row>
-                        <row>
-                            <span style="float:right"> Transporte:</span>
+                            <span style="float:right"> Toma Transporte:</span>
                             <span>
                                 <checkbox id="transporte" disabled="true"/>
                                 <textbox id="nobus" maxlength="100" cols="40" readonly="true"  />
@@ -1021,9 +1023,59 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             <span style="float:right"> Nuevo Est.</span>
                             <span>
                                 <checkbox id="nuevo" disabled="true" />
+                                No. de Hermanos
+                                <intbox id="hermanos" readonly="true" />
+                                Repite el Año: <checkbox id="repite" disabled="true"/>
                             </span>
                         </row>
-                               
+
+                        <row>
+
+                            <span style="float:right">Lugar que Ocupa</span>
+                            <span>
+                               <spinner value="1" cols="2" id="lugar"  constraint="no negative,no zero,min 0 max 20" />
+                               Con quién vive:
+                                <textbox id="vivecon" readonly="true" />
+                            </span>
+                        </row>
+                        <row>
+
+                            <span style="float:right">Ingresos:</span>
+                            <span>
+                               Padre:
+                                <textbox id="ingpadre" cols="10" readonly="true" />
+                                Madre:
+                                <textbox id="ingmadre" cols="10"  readonly="true" />
+                                Otros:
+                                <textbox id="ingotros" cols="10"  readonly="true" />
+                            </span>
+                        </row>
+                            <row>
+                            <span style="float:right">Tipo de Vivienda:</span>
+                            <span>
+                                <radiogroup Id="casa" >
+                                    <radio selected="true" label="Propia"/>
+                                    <radio label="Arrendada"/>
+                                    <radio label="Prestada"/>
+                                    <radio label="Anticresis"/>
+                                    <radio label="Prestamo"/>
+                                    <radio label="Departamento"/>
+                                    <radio label="Otros"/>
+                                </radiogroup>
+                            </span>
+                            </row>
+                             <row>
+                            <span style="float:right">Servicios:</span>
+                            <span>
+                              
+                                    <checkbox id="luz" label="Luz Electrica"/>
+                                    <checkbox id="agua"  label="Agua"/>
+                                    <checkbox id="sshh"  label="SS.HH."/>
+                                    <checkbox id="pozo"  label="Pozo Séptico"/>
+                                    <checkbox id="telefonob"  label="Teléfono"/>
+                                    <checkbox id="internet"  label="Internet"/>
+                             </span>
+                            </row>
                     </rows>
                 </grid>
             </panelchildren>
@@ -1064,11 +1116,17 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         </row>
                         <row>
                             <span style="float:right"> Dirección:</span>
+                            <span>
                             <textbox id="direccionpa" maxlength="100" cols="40"  readonly="true"    />
+                            <button label="Copiar del Estudiante" onClick="direccionpa.value = direccion.value" />
+                            </span>
                         </row>
                         <row>
                             <span style="float:right"> Teléfono:</span>
+                            <span>
                             <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
+                            <button label="Copiar del Estudiante" onClick="telefonopa.value = telefono.value" />
+                            </span>
                         </row>
                         <row>
                             <span style="float:right"> Email:</span>
@@ -1131,12 +1189,18 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         <row>
 
                             <span style="float:right"> Dirección:</span>
+                            <span>
                             <textbox id="direccionma" maxlength="100" cols="40"  readonly="true"    />
+                            <button label="Copiar del Estudiante" onClick="direccionma.value = direccion.value" />
+                            </span>
                         </row>
                         <row>
 
                             <span style="float:right"> Teléfono:</span>
+                            <span>
                             <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
+                            <button label="Copiar del Estudiante" onClick="telefonoma.value = telefono.value" />
+                            </span>
                         </row>
                         <row>
 
@@ -1157,7 +1221,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <grid>
                     <rows>
                         <row>
-                            <span style="color:blue" >Representante</span>
+                            <span style="float:right;color:blue" >Copiar del </span>
                             <span>
                                 <button id="padrecr" label="Padre" disabled="true" onClick="copiarpr();"/>
                                 <button id="madrecr" label="Madre" disabled="true"  onClick="copiarmr();"/>
