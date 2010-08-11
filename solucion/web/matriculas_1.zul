@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <window id="principales" >
+    <window  position="center"  width="700px" mode="overlapped" id="principales" >
         <zscript>
             <![CDATA[
   import jcinform.persistencia.Global;
@@ -899,10 +899,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             </toolbar>
         </panel>
 
-        <panel title="FOTO" visible="false"  id="dfoto"  style="margin-bottom:10px" framable="true" >
+        <panel title="FOTO" visible="false"  id="dfoto"   width="100%" style="margin-bottom:10px" framable="true" >
             <panelchildren>
 
-                <grid>
+                <grid  width="99%">
                     <rows>
                         <row>
                             <span  style="border:1px">
@@ -942,7 +942,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         </panel>
 
         
-        <panel title="DATOS DE MATRICULA" id="dmatricula"  visible="false"   style="margin-bottom:10px" framable="true" >
+        <panel title="DATOS DE MATRICULA"  height="100%"  id="dmatricula"  visible="false"   style="margin-bottom:10px" framable="true" >
             <panelchildren>
 
    
