@@ -9,6 +9,8 @@ import jcinform.persistencia.Inscripciones;
 import jcinform.procesos.Administrador;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Radio;
+import org.zkoss.zul.Radiogroup;
 
 
 //import org.zkoss.util.media.Media;
@@ -27,7 +29,15 @@ public class borrar {
 //p.set
        public static void main(String[] args) {
            String a = "ms";
-           
+            Radiogroup ras = null;
+            Radio ra = new Radio(a);
+             ra.setSelected(true);
+
+             ras.getSelectedItem().getLabel();
+
+             
+            //ra.setSelectedItem(null)
+
            StringBuffer st = new StringBuffer();
                 st.append("m");
                 st.append("s");
