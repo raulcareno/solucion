@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style>
+.estil{
+	height:100%;
+    background-image: url(./images/fondo.jpg);
+    background-repeat: repeat-y;
+    background-repeat: repeat-x;
+
+
+}
+    </style>
+
+    <div  class="estil" >
+        <window mode="overlapped" id="win2" title="SERVICIOS...! "  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal" width="650px">
+            <zscript>
+
+            <![CDATA[
+            import jcinform.persistencia.Global;
+            import bean.EventDAO;
+            import java.util.ArrayList;
+            import jcinform.persistencia.*;
+            import bean.Permisos;
+            import jcinform.procesos.Administrador;
+            import javax.faces.context.FacesContext;
+            import bean.email;
+            Administrador adm = new Administrador();
+Session a = Sessions.getCurrent();
+        a.removeAttribute("userEstudiante");
+        a.removeAttribute("periodo");
+        
+    void verPantall(){
+                    List estudiantes =adm.query("Select o from Estudiantes as o where o.codigo = '"+usuario.value+"'");
+
+                    if(estudiantes.size()>0){
+                        rperiodo.visible=true;
+                        Session ses = Sessions.getCurrent();
+                        ses.setAttribute("userEstudiante",estudiantes.get(0));
+                        // Executions.sendRedirect("matriculas_1.zul");
+
+                List equivaEncontrados = adm.query("Select o from Periodo as o where o.web = true ");
+                
+                if(equivaEncontrados.size()<= 0)
+                        Executions.sendRedirect("592981728937491234.zul");
+                 periodo = new Listbox();
+                            mensaje.visible=false;
+                            mensaje3.visible=true;
+                            codigo.visible=false;
+                                int a=0;
+                                      for(Iterator it =periodo.getItems().iterator(); it.hasNext();) {
+                                            periodo.getItems().remove(a);
+                                        }
+                                       for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                                              Periodo acceIt = (Periodo) it.next();
+                                              Listitem li = new Listitem();
+                                              li.setValue(acceIt);
+                                              li.appendChild(new Listcell("["+acceIt.getInstitucion().getTipo()+"] "+ acceIt.getDescripcion()+" "+ acceIt.getInstitucion() + " "+ "["+acceIt.getSeccion()+"]" ));
+                                              periodo.appendChild(li);
+                                              System.out.println(""+acceIt.getInstitucion().getTipo()+" "+acceIt.getInstitucion());
+                                     }
+                    }else{
+                        Messagebox.show("Código Incorrecto...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        usuario.focus();
+                    }
+
+
+  }
+  ingresar(){
+                Session ses = Sessions.getCurrent();
+                ses.setAttribute("periodo",periodo.selectedItem.value);
+                Executions.sendRedirect("matriculas_1.zul");
+  }
+
+
+
+
+    void ver(){
+        String tipo = pantallaRec.selectedItem.value+"";
+            if(tipo.equals("e")){
+                 usuarioR.visible = true;
+                cedulaR.visible = false;
+
+            }else{
+                usuarioR.visible = false;
+                cedulaR.visible = true;
+
+
+            }
+
+
+        }
+
+
+                ]]>
+
+            </zscript>
+            <grid id="login" style="background:transparent;border:0px">
+                <rows>
+
+                    <row id="mensaje" spans="2" style="background:transparent;border:0px">
+                        <span style="float:right;color: blue">Ingrese su código personal
+                    anteponiendo las dos primeras inciales de su apellido:
+                            <separator bar="true"/>
+                    Por ejemplo: si Usted es:
+                            <span style="color:red">PEREZ CARRIÓN JUAN MANUEL</span>  y
+                    su CÓDIGO es el
+                            <span style="color:red"> 999 </span>, entonces deberá digitar
+                            <span style="color:red"> PE999 </span>
+                        </span>
+                    </row>
+                    <row id="codigo">
+                        <span style="float:right">CÓDIGO:(*):</span>
+                        <span>
+                        <textbox onOK="ingresarModulo.focus()" id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
+                        <button label="Ingresar" id="ingresarModulo"  image="/images/ingreso.gif"  onClick="usuario.getValue(); verPantall();"/>
+                        </span>
+                    </row>
+                     <row id="mensaje3" visible="false" spans="2" style="background:transparent;border:0px">
+                         <span>
+                            <span style="color: blue">SELECCIONE EL PERIODO EN EL CUAL VA A SER MATRICULADO SU HIJO(A)
+                       </span>
+                       <span style="color: red">Recuerde hacerlo correctamente, caso contrario cierre y vuelva a ingresar nuevamente
+                       </span>
+                       </span>
+                    </row>
+                    <row  style="background:transparent;border:0px" id="rperiodo" visible="false" spans="2">
+                        <listbox onSelect="ingresar()" style="font-size:11px"   width="100%"  id="periodo" >
+                            <listitem forEach="${perfiles}" value="${each}">
+                                <listcell  label="[ ${each.institucion.tipo} ]${each.descripcion} ${each.institucion}"  />
+                            </listitem>
+                        </listbox>
+
+
+                    </row>
+                    <row spans="2"  style="background:transparent;border:0px">
+                        <separator />
+                    </row>
+                </rows>
+            </grid>
+
+ 
+            <grid>
+                <rows>
+                    <row  style="background:white;border:0px" align="center" spans="2">
+                        <span>
+                            <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)5103 843 - 080 16 22 11 "/>
+                            <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
+                        </span>
+                    </row>
+
+                </rows>
+
+
+            </grid>
+
+
+
+        </window>
+    </div>
+</zk>
