@@ -37,20 +37,24 @@ import org.zkoss.zul.Listbox;
     static Representante representante0 = new Representante();
     static Matriculas matricula = new Matriculas();
  Session ses = Sessions.getCurrent();
+ 
  Periodo periodo = (Periodo) ses.getAttribute("periodo");
+ if(periodo == null){
+        Executions.sendRedirect("verificarCodigo.zul");
+ }
  Permisos permiso = new Permisos();
-    List cursos = adm.query("Select o from Cursos as o "
-    + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"'  ");
-
+ 
+    List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+ periodo.getCodigoper() +"'  ");
+ 
     Object media = null;
-
+   
 
         //FUNCIONES
         void cargarFoto(byte[] imageData){
-          foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+          //foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
         }
         void cargarVacio(){
-          foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+          //foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
         }
        Integer nuevaMatricula() {
        Administrador adm = new Administrador();
@@ -149,6 +153,7 @@ import org.zkoss.zul.Listbox;
     }
 
 void llenar(Estudiantes estudent){
+
     codigo.value = estudent.getCodigoest();
     cedula.value = estudent.getCedula();
     nombres.value = estudent.getNombre();
@@ -161,7 +166,7 @@ void llenar(Estudiantes estudent){
     mail.value = estudent.getMail();
     usuario.value = estudent.getUsuario();
     nobus.value = estudent.getNobus();
-
+ 
 
     clave.value = permiso.decriptar(estudent.getClave());
           if(estudent.getEstado()!=null){
@@ -177,7 +182,7 @@ void llenar(Estudiantes estudent){
 
 
 
-
+System.out.println("representatne"+estudent.getRepresentante());
         if(estudent.getRepresentante()==null){
             Representante re = new Representante(0);
             re.setTipoidentificacion("C");
@@ -282,13 +287,13 @@ void llenarRepresentante(Representante repren){
     telefonore.value = repren.getTelefono();
     emailre.value = repren.getEmail();
 
-     Listitem item = new Listitem();
-     String tip = repren.getTipoidentificacion();
-     item.setValue(tip);
-     item.appendChild(new Listcell( (tip.equals("C")?"CEDULA":"RUC") +""));
-     tipofac.appendChild(item);
-     tipofac.setSelectedItem(item);
-     llenarConsumidor();
+     //Listitem item = new Listitem();
+     //String tip = repren.getTipoidentificacion();
+     //item.setValue(tip);
+     //item.appendChild(new Listcell( (tip.equals("C")?"CEDULA":"RUC") +""));
+     //tipofac.appendChild(item);
+     //tipofac.setSelectedItem(item);
+     //llenarConsumidor();
      cedulafac.value = repren.getIdentificacionfactura();
      nombresfac.value = repren.getNombrefactura();
      telefonofac.value = repren.getTelfactura();
@@ -402,19 +407,17 @@ void estado(Boolean estado,Boolean modificar){
 
 
 }
-
+ 
 
  void guardar(){
  try{
-             if(nombres.value=="" || apellidos.value =="" || direccion.value=="" || nacido.value=="" ){
-                    Messagebox.show("Ingrese los datos del estudiante que están con (*)...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-                    return;
-            }
-            if(nombresre.value=="" || apellidosre.value =="" || direccionre.value=="" ){
-                    Messagebox.show("Ingrese los datos del representante que estan con (*)...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-                    return;
-            }
+ if(validarRepresentante()== false)
+ {
+        return;
+ }
 
+
+  
         representante0.setCodigorep(codigore.value);
         representante0.setIdentificacionrepre(cedulare.value);
         representante0.setNombres(nombresre.value);
@@ -423,7 +426,7 @@ void estado(Boolean estado,Boolean modificar){
         representante0.setTelefono(telefonore.value);
         representante0.setEmail(emailre.value);
 
-        representante0.setTipoidentificacion(tipofac.selectedItem.value);
+      //  representante0.setTipoidentificacion(tipofac.selectedItem.value);
         representante0.setIdentificacionfactura(cedulafac.value);
         representante0.setNombrefactura(nombresfac.value);
         representante0.setDirfactura(direccionfac.value);
@@ -461,7 +464,7 @@ void estado(Boolean estado,Boolean modificar){
             repreNuevo = true;
          }
 
-
+  
  //GUARDO EL ESTUDIANTE
         estudent.setRepresentante(representante0);
         estudent.setCodigoest(codigo.value);
@@ -472,15 +475,29 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setTelefono(telefono.value);
         estudent.setMail(mail.value);
         estudent.setFechanacimiento(nacido.value);
-        estudent.setEstado(estadoe.checked);
-        estudent.setAdventista(adventista.checked);
+        estudent.setEstado(true);
+        estudent.setAdventista(false);
         estudent.setTransporte(transporte.checked);
         estudent.setNobus(nobus.value);
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
-        estudent.setGenero(genero.selectedItem.value);
+        estudent.setGenero((masculino.selected == true?"Masculino":"Femenino"));
         estudent.setPendientes(false);
+        estudent.setVivecon(vivecon.value);
+        estudent.setHermanos(hermanos.value);
+        estudent.setLugar(lugar.value);
+        estudent.setIngpadre(new Double(ingpadre.value));
+        estudent.setIngmadre(new Double(ingmadre.value));
+        estudent.setIngotros(new Double(ingotros.value));
+        estudent.setCasa(casa.getSelectedItem().getLabel());
 
+        estudent.setAgua(agua.checked);
+        estudent.setLuz(luz.checked);
+        estudent.setSshh(sshh.checked);
+        estudent.setPozo(pozo.checked);
+        estudent.setTelefonob(telefonob.checked);
+        estudent.setInternet(internet.checked);
+  
         if((!estudent.getCodigoest().equals(0))){
              adm.actualizar(estudent);
              try{
@@ -495,22 +512,21 @@ void estado(Boolean estado,Boolean modificar){
             estuNuevo = true;
          }
 
-
 //GUARDAR MATRICULA
         matricula.setCodigomat(codigomat.value);
         matricula.setEstudiante(estudent);
-        matricula.setObservacion(observacion.value);
-        matricula.setFechamat(fechamatricula.value);
+        matricula.setObservacion("Matricula por Internet "+ new Date());
+        matricula.setFechamat(new Date());
         matricula.setCurso(curso.selectedItem.value);
         matricula.setNumero(numero.value);
-        matricula.setEstado(accion.value);
+        matricula.setEstado("Matriculado");
         matricula.setNuevo(nuevo.checked);
         matricula.setRepite(repite.checked);
         matricula.setInstitucion(institucion.value);
 
         try{
-            matricula.setBeca((beca.value).doubleValue());
-            matricula.setOtros((otros.value).doubleValue());
+            matricula.setBeca(0.0);
+            matricula.setOtros(0.0);
         }catch(Exception ea){}
 
          if(matricula.getEstado().equals("Inscrito")){
@@ -594,21 +610,7 @@ ParametrosGlobales para = new ParametrosGlobales();
         return permiso.verificarPermiso("Matricular",accion);
 
     }
- void nuevo(){
-    if(verificar("Agregar")){
-       try{
-        guardar.disabled=false;
-        llenar(new Estudiantes(0));
-        estado(false,false);
-        llenarConsumidor();
-        }catch(Exception e){
-        alert(""+e);
-        }
-
-    }else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-    }
-}
+ 
  void move(){
         llenar((Estudiantes)datos.selectedItem.value);
         modificar.disabled = false;
@@ -644,25 +646,14 @@ void eliminar(){
     }
 }
 void buscarEstudiante(String valor){
+ 
 
-int ini = valor.indexOf("[");
-int fin = valor.indexOf("]");
-valor = valor.substring(ini+1, fin);
-            List empleados = adm.query("Select o from Estudiantes as o where o.codigoest = '"+valor+"' ");
-            if(empleados.size()>0){
-                for(Iterator it = empleados.iterator(); it.hasNext();) {
-                      Estudiantes object = (Estudiantes)it.next();
-                      estudent = object;
-                 }
-            llenar(estudent);
-            modificar.disabled=false;
-            acta.disabled = false;
-           certificado.disabled = false;
-           certificado2.disabled = false;
-           claveprint.disabled = false;
-            }else{
-                estudent = new Estudiantes(0);
-            }
+
+            
+            
+            
+           
+
 
     }
 void buscarRepresentante(String valor){
@@ -684,11 +675,7 @@ valor = valor.substring(ini+1, fin);
             }
 
     }
-    void limpiarRepresentante(){
-            Representante object = new Representante();
-            object.setTipoidentificacion("C");
-            llenarRepresentante(object);
-    }
+ 
   void verificarCedula(String valor){
       if(valor.length()>9){
             List empleados = adm.query("Select o from Estudiantes as o where o.cedula = '"+valor+"' ");
@@ -806,56 +793,88 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         }
 
 
+validarEstudiante(){
+    if(nombres.value == "" || apellidos.value == "" || direccion.value == "" || usuario.value == "" || clave.value == ""){
+        Messagebox.show("Registre todos los campos del ESTUDIANTE que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        destudiante.visible = true;
+        dmatricula.visible = false;
+    }
+}
 
+validarMatricula(){
+        try{
+        Cursos cur = curso.selectedItem.value;
+        }catch(Exception a){
+           Messagebox.show("Registre todos los campos de la MATRICULA que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           dmatricula.visible = true;
+           dpadre.visible = false;
+           return;
+        }
+    if(vivecon.value == ""){
+        Messagebox.show("Registre todos los campos de la MATRICULA que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        dmatricula.visible = true;
+        dpadre.visible = false;
+    }
+}
+
+boolean validarRepresentante(){
+
+
+    if(nombresre.value == ""||  apellidosre.value == "" ||  direccionre.value == "" || telefonore.value == "" || emailre.value == "" || parentesco.value == "" || usuarior.value == "" || claver.value == ""){
+        Messagebox.show("Registre todos los campos del REPRESENTANTE que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return false;
+    }
+    return true;
+}
   ]]>
         </zscript>
       
        
-        <panel title="DATOS DEL ESTUDIANTE" id="destudiante"   style="margin-bottom:10px" framable="true" >
+        <panel title="DATOS DEL ESTUDIANTE (Paso 1 de 5)" id="destudiante"   style="margin-bottom:10px" framable="true" >
             <panelchildren>
                 <div id="viewer" style="overflow:auto;">
                     <grid width="99%">
                         <rows>
 
-                            <row>
-                                <span style="float:right"> Busqueda:</span>
-                                <span>
-                                    <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
-                                                                        _Ingrese un apellido para buscar
-                                </span>
-                            </row>
+                          <row spans="2">
+                              <span style="color:red">
+                                  Todos los campos con  <span style="color:blue"> asterisco (*)</span> son obligatorios
+                              </span>
+
+                          </row>
                             <row>
                                 <span style="float:right"> Identificación:</span>
                                 <span>
-                                    <intbox  maxlength="14" cols="5"  visible="false" disabled="true"  readonly="true" id="codigo"  />
+                                    <intbox  maxlength="14" cols="5"  visible="false"    id="codigo"  />
                                                                          
-                                    <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
+                                    <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)"  id="cedula"  />
+                                    (no obligatorio)
                                 </span>
                             </row>
                             <row>
                             </row>
                             <row>
-                                <span style="float:right"> Nombres(*):</span>
-                                <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
+                                <span style="float:right"> Nombres<span style="color:blue;weight:bold"> (*)</span>:</span>
+                                <textbox id="nombres"  maxlength="60" cols="40"    />
                             </row>
 
                             <row>
 
-                                <span style="float:right"> Apellidos(*):</span>
-                                <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40" readonly="true"  />
+                                <span style="float:right"> Apellidos<span style="color:blue"> (*)</span>:</span>
+                                <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40"   />
                             </row>
                             <row>
 
-                                <span style="float:right"> Dirección(*):</span>
-                                <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
+                                <span style="float:right"> Dirección<span style="color:blue"> (*)</span>:</span>
+                                <textbox id="direccion" maxlength="100" cols="40"      />
                             </row>
 
                             <row>
                                 <span style="float:right"> Email:</span>
                                 <span>
-                                    <textbox id="mail" maxlength="100" cols="30"  readonly="true"    />
+                                    <textbox id="mail" maxlength="100" cols="30"      />
                                                                         Teléfono:
-                                    <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
+                                    <textbox id="telefono" maxlength="50" cols="13"    />
                                 </span>
                             </row>
 
@@ -866,16 +885,16 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                             </row>
                             <row>
-                                <span style="float:right"> Género (*):</span>
-                                  <span>
-                    <radiogroup Id="genero" >
-                        <radio id="masculino"  label="Masculino"/>
-                        <radio id = "femenino"  selected="true" label="Femenino"/>
-                    </radiogroup>
-                    <span> Fecha Nacimiento:</span>
-                                <datebox id="nacido"  readonly="true"  />
+                                <span style="float:right"> Género<span style="color:blue"> (*)</span>:</span>
+                                <span>
+                                    <radiogroup Id="genero" >
+                                        <radio id="masculino"  label="Masculino"/>
+                                        <radio id = "femenino"  selected="true" label="Femenino"/>
+                                    </radiogroup>
+                                    <span> Fecha Nacimiento <span style="color:blue"> (*)</span>:</span>
+                                    <datebox id="nacido"    />
                                 </span>
-                                <!--combobox id="genero" readonly="true">
+                                <!--combobox id="genero" >
                                     <comboitem value="Masculino" label="Masculino"/>
                                     <comboitem value="Femenino" label="Femenino"/>
                                 </combobox-->
@@ -884,16 +903,17 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 
                             </row>
                             <row>
-                                <span style="float:right"> Usuario:</span>
+                                <span style="float:right"> Usuario <span style="color:blue"> (*)</span>:</span>
                                 <span>
-                                    <textbox id="usuario" maxlength="30" cols="12" readonly="true"  />
-                                   <span> Clave:</span>
-                                <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
+                                    <textbox id="usuario" maxlength="30" cols="12"   />
+                                    <span> Clave <span style="color:blue"> (*)</span>:</span>
+                                    <textbox id="clave"   maxlength="30" cols="15"   />
                                     <button label="Generar" onClick="generarClave(true);"/>
+                                    
                                 </span>
                             </row>
-                            <row>
-                                
+                            <row spans="2">
+                                <span style="color:blue"> * Guarde el USUARIO y CONSTRASEÑA en un lugar seguro, recuerde que esto le servirá para ingresar a consultar sus notas desde internet y otros servicios *</span>
                             </row>
 
                         </rows>
@@ -903,7 +923,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
             </panelchildren>
             <toolbar  sclass="vista" align="end">
-                <toolbarbutton image="/images/sig.png" onClick='destudiante.visible = false;dmatricula.visible= true' />
+                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
+                <toolbarbutton image="/images/sig.png" onClick='destudiante.visible = false; dmatricula.visible= true;validarEstudiante();' />
             </toolbar>
         </panel>
 
@@ -914,7 +935,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     <rows>
                         <row>
                             <span  style="border:1px">
-                                <button id="subirb" disabled="true" label="Subir Imagen">
+                                <button id="subirb"  label="Subir Imagen">
                                     <attribute name="onClick">{
                                                                             Object media = Fileupload.get();
 
@@ -945,12 +966,13 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 </grid>
             </panelchildren>
             <toolbar   sclass="vista" align="end">
+                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
                 <toolbarbutton image="/images/sig.png" onClick='destudiantes.visible = false' />
             </toolbar>
         </panel>
 
         
-        <panel title="DATOS DE MATRICULA"  height="100%"  id="dmatricula"  visible="false"   style="margin-bottom:10px" framable="true" >
+        <panel title="DATOS DE MATRICULA (Paso 2 de 5)"  height="100%"  id="dmatricula"  visible="false"   style="margin-bottom:10px" framable="true" >
             <panelchildren>
 
    
@@ -959,26 +981,26 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         <row visible="false">
                             <span style="float:right"> Codigo:</span>
                             <span>
-                                <intbox maxlength="14" cols="5"    disabled="true"    readonly="true" id="codigomat"  />
+                                <intbox maxlength="14" cols="5"         id="codigomat"  />
                                                                     No.Mat.(*):
                                 <intbox maxlength="10"   cols="5"  id="numero"  />
                                                                     No.Folio (*):
-                                <intbox maxlength="10" readonly="true" cols="5"  id="folio"  />
+                                <intbox maxlength="10"  cols="5"  id="folio"  />
                             </span>
 
                                 
                         </row>
                         <row>
-                            <span style="float:right"> Curso(*):</span>
+                            <span style="float:right"> Curso/Grado<span style="color:blue"> (*)</span>:</span>
 
-                                                                <!--listbox mold="select" disabled="true" id="curso" width="320px">
+                                                                <!--listbox mold="select"  id="curso" width="320px">
                                                                     <listitem selected="true" forEach="${cursos}" value="${each}">
                                                                         <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
                                                                     </listitem>
                                                                 </listbox-->
-
-                            <bandbox  width="320px" readonly="true"  id="bd1">
+<span>
+                            <bandbox  width="320px"   id="bd1">
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="curso" width="460px"
@@ -990,9 +1012,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                     </vbox>
                                 </bandpopup>
                             </bandbox>
+Seleccione para continuar
 
-
-                                
+      </span>
                         </row>
 <!--
     accion.value =""Matriculado
@@ -1004,38 +1026,39 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
     observacion.vlaue = new Date() + internet
 -->
                         <row>
-                            <span style="float:right"> Instituto Ant.(*):</span>
+                            <span style="float:right"> Instituto Ant.:</span>
                             <span>
 
-                                <textbox id="institucion" readonly="true"  maxlength="30" cols="20"/>
+                                <textbox id="institucion"   maxlength="30" cols="20"/>
                             </span>
                         </row>
                          
                         <row>
                             <span style="float:right"> Toma Transporte:</span>
                             <span>
-                                <checkbox id="transporte" disabled="true"/>
-                                <textbox id="nobus" maxlength="100" cols="40" readonly="true"  />
+                                <checkbox id="transporte" />
+                                <textbox id="nobus" maxlength="100" cols="40"   />
                             </span>
                         </row>
                         <row>
                                      
                             <span style="float:right"> Nuevo Est.</span>
                             <span>
-                                <checkbox id="nuevo" disabled="true" />
+                                <checkbox id="nuevo"  />
                                 No. de Hermanos
-                                <intbox id="hermanos" readonly="true" />
-                                Repite el Año: <checkbox id="repite" disabled="true"/>
+                                <intbox id="hermanos"  />
+                                Repite el Año:
+                                <checkbox id="repite" />
                             </span>
                         </row>
 
                         <row>
 
-                            <span style="float:right">Lugar que Ocupa</span>
+                            <span style="float:right">Lugar Ocupa <span style="color:blue"> (*)</span>:</span>
                             <span>
-                               <spinner value="1" cols="2" id="lugar"  constraint="no negative,no zero,min 0 max 20" />
-                               Con quién vive:
-                                <textbox id="vivecon" readonly="true" />
+                                <spinner value="1" cols="2" id="lugar"  constraint="no negative,no zero,min 0 max 20" />
+                               Con quién vive <span style="color:blue"> (*)</span>:
+                                <textbox id="vivecon"  />
                             </span>
                         </row>
                         <row>
@@ -1043,15 +1066,15 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             <span style="float:right">Ingresos:</span>
                             <span>
                                Padre:
-                                <textbox id="ingpadre" cols="10" readonly="true" />
+                                <intbox id="ingpadre" cols="10"  />
                                 Madre:
-                                <textbox id="ingmadre" cols="10"  readonly="true" />
+                                <intbox id="ingmadre" cols="10"   />
                                 Otros:
-                                <textbox id="ingotros" cols="10"  readonly="true" />
+                                <intbox id="ingotros" cols="10"   />
                             </span>
                         </row>
-                            <row>
-                            <span style="float:right">Tipo de Vivienda:</span>
+                        <row>
+                            <span style="float:right">Tipo Vivienda <span style="color:blue"> (*)</span>:</span>
                             <span>
                                 <radiogroup Id="casa" >
                                     <radio selected="true" label="Propia"/>
@@ -1063,28 +1086,29 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                     <radio label="Otros"/>
                                 </radiogroup>
                             </span>
-                            </row>
-                             <row>
-                            <span style="float:right">Servicios:</span>
+                        </row>
+                        <row>
+                            <span style="float:right">Servicios <span style="color:blue"> (*)</span>:</span>
                             <span>
                               
-                                    <checkbox id="luz" label="Luz Electrica"/>
-                                    <checkbox id="agua"  label="Agua"/>
-                                    <checkbox id="sshh"  label="SS.HH."/>
-                                    <checkbox id="pozo"  label="Pozo Séptico"/>
-                                    <checkbox id="telefonob"  label="Teléfono"/>
-                                    <checkbox id="internet"  label="Internet"/>
-                             </span>
-                            </row>
+                                <checkbox id="luz" label="Luz Electrica"/>
+                                <checkbox id="agua"  label="Agua"/>
+                                <checkbox id="sshh"  label="SS.HH."/>
+                                <checkbox id="pozo"  label="Pozo Séptico"/>
+                                <checkbox id="telefonob"  label="Teléfono"/>
+                                <checkbox id="internet"  label="Internet"/>
+                            </span>
+                        </row>
                     </rows>
                 </grid>
             </panelchildren>
             <toolbar  sclass="vista" align="end">
+                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
                 <toolbarbutton image="/images/ant.png" onClick='destudiante.visible = true; dmatricula.visible = false' />
-                <toolbarbutton image="/images/sig.png" onClick='dmatricula.visible = false; dpadre.visible = true;' />
+                <toolbarbutton image="/images/sig.png" onClick='dmatricula.visible = false; dpadre.visible = true; validarMatricula()' />
             </toolbar>
         </panel>
-        <panel title="DATOS DEL PADRE" id="dpadre"   visible="false"   style="margin-bottom:10px" framable="true" >
+        <panel title="DATOS DEL PADRE (Paso 3 de 5)" id="dpadre"   visible="false"   style="margin-bottom:10px" framable="true" >
             <panelchildren>
 
 
@@ -1093,44 +1117,44 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                         <row>
                             <span style="float:right"> Identificación:</span>
-                            <textbox maxlength="10" cols="13"  readonly="true" id="cedulapa"  />
+                            <textbox maxlength="10" cols="13"   id="cedulapa"  />
                         </row>
                         <row>
                             <span style="float:right"> Nombres:</span>
                             <span>
-                                <textbox id="nombrespa"  maxlength="60" cols="40" readonly="true"   />
+                                <textbox id="nombrespa"  maxlength="60" cols="40"    />
                                 <intbox maxlength="14" cols="5"  readonly = "true"   visible="false"  id="codigore"  />
                             </span>
                         </row>
                         <row>
                             <span style="float:right"> Apellidos:</span>
-                            <textbox id="apellidospa"  maxlength="60" cols="40" readonly="true"  />
+                            <textbox id="apellidospa"  maxlength="60" cols="40"   />
                         </row>
                         <row>
                             <span style="float:right"> Ocupación:</span>
-                            <textbox id="ocupacionpa" maxlength="100" cols="40"  readonly="true"    />
+                            <textbox id="ocupacionpa" maxlength="100" cols="40"      />
                         </row>
                         <row>
                             <span style="float:right"> Profesión:</span>
-                            <textbox id="profesionpa" maxlength="100" cols="40"  readonly="true"    />
+                            <textbox id="profesionpa" maxlength="100" cols="40"      />
                         </row>
                         <row>
                             <span style="float:right"> Dirección:</span>
                             <span>
-                            <textbox id="direccionpa" maxlength="100" cols="40"  readonly="true"    />
-                            <button label="Copiar del Estudiante" onClick="direccionpa.value = direccion.value" />
+                                <textbox id="direccionpa" maxlength="100" cols="40"      />
+                                <button label="Copiar del Estudiante" onClick="direccionpa.value = direccion.value" />
                             </span>
                         </row>
                         <row>
                             <span style="float:right"> Teléfono:</span>
                             <span>
-                            <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
-                            <button label="Copiar del Estudiante" onClick="telefonopa.value = telefono.value" />
+                                <textbox id="telefonopa" maxlength="100" cols="13"    />
+                                <button label="Copiar del Estudiante" onClick="telefonopa.value = telefono.value" />
                             </span>
                         </row>
                         <row>
                             <span style="float:right"> Email:</span>
-                            <textbox id="emailpa" maxlength="100" cols="40"  readonly="true"    />
+                            <textbox id="emailpa" maxlength="100" cols="40"      />
                         </row>
                     </rows>
                 </grid>
@@ -1138,12 +1162,13 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
             </panelchildren>
             <toolbar  sclass="vista" align="end">
+                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
                 <toolbarbutton image="/images/ant.png" onClick='dmatricula.visible = true; dpadre.visible = false' />
                 <toolbarbutton image="/images/sig.png" onClick='dpadre.visible = false;dmadre.visible = true' />
             </toolbar>
         </panel>
 
-        <panel title="DATOS DE LA MADRE" id="dmadre" visible="false"   style="margin-bottom:10px" framable="true" >
+        <panel title="DATOS DE LA MADRE (Paso 4 de 5)" id="dmadre" visible="false"   style="margin-bottom:10px" framable="true" >
             <panelchildren>
 
 
@@ -1153,7 +1178,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         <row>
 
                             <span style="float:right"> Identificación:</span>
-                            <textbox maxlength="10" cols="13"  readonly="true" id="cedulama"  />
+                            <textbox maxlength="10" cols="13"   id="cedulama"  />
                         </row>
 
                         <row>
@@ -1161,7 +1186,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
 
                             <span style="float:right"> Nombres:</span>
-                            <textbox id="nombresma"  maxlength="60" cols="40" readonly="true"   />
+                            <textbox id="nombresma"  maxlength="60" cols="40"    />
                         </row>
 
                         <row>
@@ -1169,7 +1194,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
 
                             <span style="float:right"> Apellidos:</span>
-                            <textbox id="apellidosma"  maxlength="60" cols="40" readonly="true"  />
+                            <textbox id="apellidosma"  maxlength="60" cols="40"   />
                         </row>
 
                         <row>
@@ -1177,115 +1202,116 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
 
                             <span style="float:right"> Ocupación:</span>
-                            <textbox id="ocupacionma" maxlength="100" cols="40"  readonly="true"    />
+                            <textbox id="ocupacionma" maxlength="100" cols="40"      />
                         </row>
                         <row>
 
 
                             <span style="float:right"> Profesión:</span>
-                            <textbox id="profesionma" maxlength="100" cols="40"  readonly="true"    />
+                            <textbox id="profesionma" maxlength="100" cols="40"      />
 
                         </row>
                         <row>
 
                             <span style="float:right"> Dirección:</span>
                             <span>
-                            <textbox id="direccionma" maxlength="100" cols="40"  readonly="true"    />
-                            <button label="Copiar del Estudiante" onClick="direccionma.value = direccion.value" />
+                                <textbox id="direccionma" maxlength="100" cols="40"      />
+                                <button label="Copiar del Estudiante" onClick="direccionma.value = direccion.value" />
                             </span>
                         </row>
                         <row>
 
                             <span style="float:right"> Teléfono:</span>
                             <span>
-                            <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
-                            <button label="Copiar del Estudiante" onClick="telefonoma.value = telefono.value" />
+                                <textbox id="telefonoma" maxlength="50" cols="13"    />
+                                <button label="Copiar del Estudiante" onClick="telefonoma.value = telefono.value" />
                             </span>
                         </row>
                         <row>
 
                             <span style="float:right"> Email:</span>
-                            <textbox id="emailma" maxlength="100" cols="40"  readonly="true"    />
+                            <textbox id="emailma" maxlength="100" cols="40"      />
                         </row>
 
                     </rows>
                 </grid>
             </panelchildren>
             <toolbar  sclass="vista" align="end">
+                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
                 <toolbarbutton image="/images/ant.png" onClick='dpadre.visible = true; dmadre.visible = false' />
                 <toolbarbutton image="/images/sig.png" onClick='dmadre.visible = false; drepresentante.visible = true' />
             </toolbar>
         </panel>
-        <panel title="DATOS DEL REPRESENTANTE" id="drepresentante"  visible="false"   style="margin-bottom:10px" framable="true" >
+        <panel title="DATOS DEL REPRESENTANTE  (Paso 5 de 5)" id="drepresentante"  visible="false"   style="margin-bottom:10px" framable="true" >
             <panelchildren>
                 <grid>
                     <rows>
                         <row>
                             <span style="float:right;color:blue" >Copiar del </span>
                             <span>
-                                <button id="padrecr" label="Padre" disabled="true" onClick="copiarpr();"/>
-                                <button id="madrecr" label="Madre" disabled="true"  onClick="copiarmr();"/>
-                                <button id="limpiar" label="Nuevo"  disabled="true"  onClick="limpiarRepresentante();"/>
+                                <button id="padrecr" label="Padre"  onClick="copiarpr();"/>
+                                <button id="madrecr" label="Madre"   onClick="copiarmr();"/>
+                                <button id="limpiar" label="Nuevo"    onClick="limpiarRepresentante();"/>
                             </span>
                         </row>
+                               
                         <row>
-                            <span style="float:right"> Busqueda(*):</span>
-
-                            <combobox id="combo2" onSelect="buscarRepresentante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoCompleteRepre"/>
-                        </row>
-                                
-                        <row>
-                            <span style="float:right"> Identif.(*):</span>
-                            <textbox maxlength="13" cols="10"   readonly="true" id="cedulare"  />
+                            <span style="float:right"> Identif.:</span>
+                            <textbox maxlength="13" cols="10"    id="cedulare"  />
                         </row>
                         <row>
-                            <span style="float:right"> Nombres(*):</span>
-                            <textbox id="nombresre"  maxlength="60" cols="40" readonly="true"   />
+                            <span style="float:right"> Nombres <span style="color:blue"> (*)</span>:</span>
+                            <textbox id="nombresre"  maxlength="60" cols="40"    />
                         </row>
                         <row>
-                            <span style="float:right"> Apellidos(*):</span>
-                            <textbox id="apellidosre"  maxlength="60" cols="40" readonly="true"  />
+                            <span style="float:right"> Apellidos <span style="color:blue"> (*)</span>:</span>
+                            <textbox id="apellidosre"  maxlength="60" cols="40"   />
                         </row>
 
                         <row>
-                            <span style="float:right"> Dirección(*):</span>
-                            <textbox id="direccionre" maxlength="100" cols="40"  readonly="true"    />
+                            <span style="float:right"> Dirección <span style="color:blue"> (*)</span>:</span>
+                            <textbox id="direccionre" maxlength="100" cols="40"      />
 
                         </row>
 
                         <row>
-                            <span style="float:right"> Teléfono:</span>
-                            <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
+                            <span style="float:right"> Teléfono <span style="color:blue"> (*)</span>:</span>
+                            <textbox id="telefonore" maxlength="100" cols="13"    />
                         </row>
 
                         <row>
-                            <span style="float:right"> Email:</span>
-                            <textbox id="emailre" maxlength="100" cols="40"  readonly="true"    />
+                            <span style="float:right"> Email <span style="color:blue"> (*)</span>:</span>
+                            <textbox id="emailre" maxlength="100" cols="40"      />
                         </row>
 
                         <row>
-                            <span  style="float:right">Parentesco</span>
+                            <span  style="float:right">Parentesco <span style="color:blue"> (*)</span>:</span>
                             <span>
-                                <textbox id="parentesco" maxlength="100" cols="40"  readonly="true"    />
+                                <textbox id="parentesco" maxlength="100" cols="40"      />
                             </span>
                         </row>
                         <row>
 
-                            <span style="float:right"> Usuario:</span>
+                            <span style="float:right"> Usuario <span style="color:blue"> (*)</span>:</span>
                             <span >
-                                <textbox id="usuarior"   maxlength="30" cols="15" readonly="true"  />
-                                    Clave:
-                                <textbox id="claver"   maxlength="30" cols="15" readonly="true"  />
+                                <textbox id="usuarior"   maxlength="30" cols="15"   />
+                                    Clave <span style="color:blue"> (*)</span>:
+                                <textbox id="claver"   maxlength="30" cols="15"   />
                                 <button label="Generar" onClick="generarClaveRep(true);"/>
+                                 <span style="color:blue"> (Guarde esta información en un lugar seguro)</span>
                             </span>
 
                         </row>
+                        <row spans="2">
+                                <span style="color:blue"> * Guarde el USUARIO y CONSTRASEÑA en un lugar seguro, recuerde que esto le servirá para ingresar a consultar sus notas desde internet y otros servicios *</span>
+                            </row>
                     </rows>
                 </grid>
             </panelchildren>
             <toolbar   sclass="vista" align="end">
+                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
                 <toolbarbutton image="/images/ant.png" onClick='dmadre.visible = true; drepresentante.visible = false' />
-                <toolbarbutton image="/images/guardar.gif" onClick='guardar();' />
+                <toolbarbutton image="/images/guardarimprimir.png" onClick='guardar();' />
             </toolbar>
         </panel>
 
@@ -1298,15 +1324,15 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         <row>
                             <span style="color:blue" >Facturar a </span>
                             <span>
-                                <button id="padrec" label="Padre"  disabled="true" onClick="copiarp();"/>
-                                <button id="madrec" label="Madre"  disabled="true"  onClick="copiarm();"/>
-                                <button id="representantec" label="Representante" disabled="true"  onClick="copiarr();"/>
+                                <button id="padrec" label="Padre"   onClick="copiarp();"/>
+                                <button id="madrec" label="Madre"    onClick="copiarm();"/>
+                                <button id="representantec" label="Representante"   onClick="copiarr();"/>
                             </span>
  
                         </row>
                         <row>
                             <span style="float:right"> Tipo:</span>
-                            <listbox mold="select" onSelect="llenarConsumidor();" disabled="true" id="tipofac" width="150px">
+                            <listbox mold="select" onSelect="llenarConsumidor();"  id="tipofac" width="150px">
                                 <listitem label="CEDULA" value="C">
                                 </listitem>
                                 <listitem label="RUC" value="R">
@@ -1320,14 +1346,14 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                         <row>
                             <span style="float:right"> Identificación:</span>
-                            <textbox maxlength="13" cols="13"  readonly="true" id="cedulafac"  />
+                            <textbox maxlength="13" cols="13"   id="cedulafac"  />
 
 
                         </row>
 
                         <row>
                             <span style="float:right"> Nombre Factura:</span>
-                            <textbox id="nombresfac"  maxlength="100" cols="40" readonly="true"   />
+                            <textbox id="nombresfac"  maxlength="100" cols="40"    />
 
 
 
@@ -1335,19 +1361,20 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                         <row>
                             <span style="float:right"> Dirección:</span>
-                            <textbox id="direccionfac" maxlength="100" cols="40"  readonly="true"    />
+                            <textbox id="direccionfac" maxlength="100" cols="40"      />
 
 
                         </row>
                         <row>
                             <span style="float:right"> Teléfono:</span>
-                            <textbox id="telefonofac" maxlength="30" cols="13"  readonly="true"  />
+                            <textbox id="telefonofac" maxlength="30" cols="13"    />
                         </row>
                                                            
                     </rows>
                 </grid>
             </panelchildren>
             <toolbar  sclass="vista" align="end">
+                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
                 <toolbarbutton image="/images/sig.png" onClick='dfactura.visible = false' />
             </toolbar>
         </panel>
@@ -1369,13 +1396,17 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             <hbox>
             
                 <button visible="false"  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                <button visible="false"   image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true" onClick="modificar()"/>
-                <button  visible="false"  image="/images/imprimir.gif" id="acta"  label="Acta" disabled="true"  onClick='showReport("AM")'/>
-                <button  visible="false"  image="/images/imprimir.gif" id="certificado"  label="Certificado" disabled="true"  onClick='showReport("CM")' />
-                <button  visible="false"  image="/images/imprimir.gif" id="claveprint"  label="Clave" disabled="true"  onClick='showReport("CL")' />
-                <button visible="false"   image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                <button visible="false"   image="/images/editar.gif" id="modificar"  label="Modificar"  onClick="modificar()"/>
+                <button  visible="false"  image="/images/imprimir.gif" id="acta"  label="Acta"   onClick='showReport("AM")'/>
+                <button  visible="false"  image="/images/imprimir.gif" id="certificado"  label="Certificado"   onClick='showReport("CM")' />
+                <button  visible="false"  image="/images/imprimir.gif" id="claveprint"  label="Clave"   onClick='showReport("CL")' />
+                <button visible="false"   image="/images/eliminar.gif" id="eliminar"  label="Eliminar"   onClick="eliminar();"/>
             </hbox>
         </vbox>
+        <zscript>
+            
+            llenar(ses.getAttribute("userEstudiante"));
+        </zscript>
     </window>
 
 
