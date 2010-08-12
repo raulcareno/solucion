@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
+    <style>
+.estil{
+	height:100%;
+    background-image: url(./images/fondo.jpg);
+    background-repeat: repeat-y;
+    background-repeat: repeat-x;
+
+
+}
+    </style>
+
+    <div  class="estil" >
     <window  position="center"  width="700px" mode="overlapped" id="principales" >
         <zscript>
             <![CDATA[
@@ -464,7 +476,7 @@ void estado(Boolean estado,Boolean modificar){
             repreNuevo = true;
          }
 
-  
+ 
  //GUARDO EL ESTUDIANTE
         estudent.setRepresentante(representante0);
         estudent.setCodigoest(codigo.value);
@@ -484,12 +496,19 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setGenero((masculino.selected == true?"Masculino":"Femenino"));
         estudent.setPendientes(false);
         estudent.setVivecon(vivecon.value);
+
         estudent.setHermanos(hermanos.value);
+        
         estudent.setLugar(lugar.value);
+        
         estudent.setIngpadre(new Double(ingpadre.value));
+        
         estudent.setIngmadre(new Double(ingmadre.value));
+        
         estudent.setIngotros(new Double(ingotros.value));
+        
         estudent.setCasa(casa.getSelectedItem().getLabel());
+      
 
         estudent.setAgua(agua.checked);
         estudent.setLuz(luz.checked);
@@ -500,12 +519,7 @@ void estado(Boolean estado,Boolean modificar){
   
         if((!estudent.getCodigoest().equals(0))){
              adm.actualizar(estudent);
-             try{
-                List children = datos.selectedItem.children;
-                  ((Listcell)children.get(0)).label = cedula.value;
-                  ((Listcell)children.get(1)).label = apellidos.value + " " + nombres.value;
-                  ((Listcell)children.get(2)).label = direccion.value;
-                  }catch(Exception e){}
+   
          }else{
             estudent.setCodigoest(adm.getNuevaClave("Estudiantes","codigoest"));
             adm.guardar(estudent);
@@ -533,9 +547,9 @@ void estado(Boolean estado,Boolean modificar){
             matricula.setNumero(0);
          }
 
-            org.zkoss.image.Image nueva = foto0.getContent();
+           // org.zkoss.image.Image nueva = foto0.getContent();
 
-            matricula.setFoto(nueva.getByteData());
+           // matricula.setFoto(nueva.getByteData());
             matricula.setFolio(folio.value);
 
 
@@ -568,7 +582,7 @@ void estado(Boolean estado,Boolean modificar){
              codigomat.value = matri;
          }
 
-
+alert("paso matricula");
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         guardar.disabled=true;
         agregar.disabled=false;
@@ -577,31 +591,17 @@ void estado(Boolean estado,Boolean modificar){
         acta.disabled = false;
         certificado.disabled = false;
         certificado2.disabled = false;
-        claveprint.disabled = false;
-        //llenar(new Estudiantes(0));
+        claveprint.disabled = false;   
             combo.value="";
             permiso.auditar("Matriculas","Guardar",""+matricula.getCodigomat()+" "+matricula.getEstudiante().getApellido());
         //aqui trabajo la parte de pensiones
 
-//******************************** PARA CONTABLE ****************************************************************
-
-List parametros =  adm.query("Select o from ParametrosGlobales as o where o.variable = 'TRABAJARUBROS' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
-ParametrosGlobales para = new ParametrosGlobales();
-        if(parametros.size()>0){
-            para = parametros.get(0);
-        }else{
-            para.setBvalor(false);
-        }
-        if(para.getBvalor()){
-
-          matriculasBean mati = new matriculasBean();
-          mati.generar(repreNuevo,estuNuevo,matricula,periodo);
-         }
-//*****************************************************************************
-
+ 
         }catch(Exception e){
-                alert("Error:"+e); System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
+                alert("Error:"+e);
+                System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
                 System.out.println(""+e.getStackTrace()); System.out.println(""+e.getCause());
+                System.out.println(""+e);
         }
 
     }
@@ -1066,11 +1066,11 @@ Seleccione para continuar
                             <span style="float:right">Ingresos:</span>
                             <span>
                                Padre:
-                                <intbox id="ingpadre" cols="10"  />
+                                <intbox id="ingpadre" value="0" cols="10"  />
                                 Madre:
-                                <intbox id="ingmadre" cols="10"   />
+                                <intbox id="ingmadre" cols="10"  value="0" />
                                 Otros:
-                                <intbox id="ingotros" cols="10"   />
+                                <intbox id="ingotros" cols="10" value="0"  />
                             </span>
                         </row>
                         <row>
@@ -1142,14 +1142,14 @@ Seleccione para continuar
                             <span style="float:right"> Dirección:</span>
                             <span>
                                 <textbox id="direccionpa" maxlength="100" cols="40"      />
-                                <button label="Copiar del Estudiante" onClick="direccionpa.value = direccion.value" />
+                                <button  image="/images/anadir2.png"  label="Traer de Estudiante" onClick="direccionpa.value = direccion.value" />
                             </span>
                         </row>
                         <row>
                             <span style="float:right"> Teléfono:</span>
                             <span>
                                 <textbox id="telefonopa" maxlength="100" cols="13"    />
-                                <button label="Copiar del Estudiante" onClick="telefonopa.value = telefono.value" />
+                                <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="telefonopa.value = telefono.value" />
                             </span>
                         </row>
                         <row>
@@ -1216,7 +1216,7 @@ Seleccione para continuar
                             <span style="float:right"> Dirección:</span>
                             <span>
                                 <textbox id="direccionma" maxlength="100" cols="40"      />
-                                <button label="Copiar del Estudiante" onClick="direccionma.value = direccion.value" />
+                                <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="direccionma.value = direccion.value" />
                             </span>
                         </row>
                         <row>
@@ -1224,7 +1224,7 @@ Seleccione para continuar
                             <span style="float:right"> Teléfono:</span>
                             <span>
                                 <textbox id="telefonoma" maxlength="50" cols="13"    />
-                                <button label="Copiar del Estudiante" onClick="telefonoma.value = telefono.value" />
+                                <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="telefonoma.value = telefono.value" />
                             </span>
                         </row>
                         <row>
@@ -1249,9 +1249,9 @@ Seleccione para continuar
                         <row>
                             <span style="float:right;color:blue" >Copiar del </span>
                             <span>
-                                <button id="padrecr" label="Padre"  onClick="copiarpr();"/>
-                                <button id="madrecr" label="Madre"   onClick="copiarmr();"/>
-                                <button id="limpiar" label="Nuevo"    onClick="limpiarRepresentante();"/>
+                                <button id="padrecr" image="/images/padre.png" label="Padre"  onClick="copiarpr();"/>
+                                <button id="madrecr" image="/images/madre.png" label="Madre"   onClick="copiarmr();"/>
+                   
                             </span>
                         </row>
                                
@@ -1298,7 +1298,7 @@ Seleccione para continuar
                                     Clave <span style="color:blue"> (*)</span>:
                                 <textbox id="claver"   maxlength="30" cols="15"   />
                                 <button label="Generar" onClick="generarClaveRep(true);"/>
-                                 <span style="color:blue"> (Guarde esta información en un lugar seguro)</span>
+                       
                             </span>
 
                         </row>
@@ -1409,5 +1409,5 @@ Seleccione para continuar
         </zscript>
     </window>
 
-
+</div>
 </zk>
