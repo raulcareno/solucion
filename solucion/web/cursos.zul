@@ -308,8 +308,8 @@ void cargarPar(Global g){
                     </span>
                 </row>
 
-                <row visible="false">
-                    <span style="float:right"> Pase de Notas:</span>
+                <row visible="true">
+                    <span style="float:right"> Habilitado para Matriculas:</span>
                     <span>Desde:
                         <datebox disabled="true" format="dd/MMM/yyyy" id="desde"/> Hasta:
                         <datebox  disabled="true"  format="dd/MMM/yyyy"  id="hasta"/>
