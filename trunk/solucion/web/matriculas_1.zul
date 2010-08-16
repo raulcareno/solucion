@@ -615,8 +615,8 @@ void estado(Boolean estado,Boolean modificar){
 
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         btnguardar.disabled=true;
-            ses.setAttribute("userEstudiante",estudent);
-            showReport("AM",""+codigomat.value);
+        ses.setAttribute("userEstudiante",estudent);
+        showReport("AM",""+codigomat.value);
        }catch(Exception e){
                 alert("Error:"+e);
                 System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
