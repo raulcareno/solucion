@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns:h="http://www.w3.org/1999/xhtml"
+ xmlns="http://www.zkoss.org/2005/zul">
+
+<window id="impresion" onCreate="notasd()" height="100%" border="normal">
+ <jasperreport visible="true" id="report"  height="90%"  />
+       <button id="bimprimir"  visible="false" label="CLICK AQUI SI NO  LOGRO VISUALIZAR EL COMPROBANTE DE MATRICULA" onClick="pdf()" />
+    
+ <zscript><![CDATA[
+
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+//PARA REPORTES
+String codigo = "";
+pdf(){
+        Executions.sendRedirect("/592981728937491235M.zul?AASL2KSO348934934="+ codigo +"&TP=html");
+        
+}
+
+public JRDataSource certificados(Matriculas matricula,String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        String query = "SELECT mat FROM Matriculas AS mat " +
+                "WHERE  mat.estado like '%Matriculado%' " +
+                "and mat.codigomat = '" + matricula.getCodigomat() + "' ";
+        List hoy = adm.query(query);
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            Matriculas elem = (Matriculas) it.next();
+            detalle.add(elem);
+        }
+        JRDataSource ds = null;
+
+
+         return  ds = new ReporteActaDataSource(detalle);
+
+
+}
+void notasd(){
+            Session s = Sessions.getCurrent();
+            Administrador adm = new Administrador();
+            Periodo periodo = (Periodo) s.getAttribute("periodo");
+            Integer valor =  new Integer(Executions.getCurrent().getParameter("AASL2KSO348934934"));
+            codigo = valor+"";
+            String tipo =  Executions.getCurrent().getParameter("TP");
+            Institucion insts = periodo.getInstitucion();
+
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            parametros.put("secretaria", insts.getSecretaria());
+            parametros.put("rectora", insts.getRector());
+            JRDataSource datasource = null;
+                    datasource = certificados(new Matriculas(valor),"AM");
+                    parametros.put("titulo", "Comprobante de Matricula");
+                    report.setSrc("WEB-INF/reportes/actaMatricula2.jasper");
+
+
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType(tipo);
+ bimprimir.visible=true;
+             if(tipo.contains("html")){
+                    bimprimir.visible = false;
+                    report.setHeight("100%");
+             }
+
+
+            }
+
+ 
+
+]]>
+</zscript>
+          
+</window>
+
+</zk>

@@ -34,6 +34,11 @@ Session a = Sessions.getCurrent();
                     List estudiantes =adm.query("Select o from Estudiantes as o where o.codigo = '"+usuario.value+"'");
 
                     if(estudiantes.size()>0){
+
+                            if(((Estudiantes)estudiantes.get(0)).getPendientes()){
+                                Messagebox.show("Proceso bloqueado por la Administración, acerquese a las oficinas para solucionar los procesos pendientes que tiene con la Institución..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                return;
+                            }
                         rperiodo.visible=true;
                         Session ses = Sessions.getCurrent();
                         ses.setAttribute("userEstudiante",estudiantes.get(0));

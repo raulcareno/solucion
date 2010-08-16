@@ -178,9 +178,18 @@ void llenar(Estudiantes estudent){
     mail.value = estudent.getMail();
     usuario.value = estudent.getUsuario();
     nobus.value = estudent.getNobus();
- 
-
+    lugarnacimiento.value = estudent.getLugarnacimiento();
+    nacionalidad.value = estudent.getNacionalidad();
+    discapacidad.checked = estudent.getDiscapacidad();
+    tipodiscapacidad.value = estudent.getTipodiscapacidad();
+    hermanos.value = estudent.getHermanos();
     clave.value = permiso.decriptar(estudent.getClave());
+    vivecon.value = estudent.getVivecon();
+    ingpadre.value = estudent.getIngpadre().intValue();
+    ingmadre.value = estudent.getIngmadre().intValue();
+    ingotros.value = estudent.getIngotros().intValue();
+    
+    lugar.value = estudent.getLugar();
           if(estudent.getEstado()!=null){
                 estadoe.checked= estudent.getEstado();
             }
@@ -422,12 +431,15 @@ void estado(Boolean estado,Boolean modificar){
  
 
  void guardar(){
+ 
  try{
  if(validarRepresentante()== false)
  {
+        btnguardar.disabled=false;
         return;
  }
-
+        Messagebox.show("Recuerde que toda la información será verificada y validada en secretaria...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+        btnguardar.disabled=true;
 
   
         representante0.setCodigorep(codigore.value);
@@ -496,20 +508,16 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setGenero((masculino.selected == true?"Masculino":"Femenino"));
         estudent.setPendientes(false);
         estudent.setVivecon(vivecon.value);
-
         estudent.setHermanos(hermanos.value);
-        
         estudent.setLugar(lugar.value);
-        
+        estudent.setLugarnacimiento(lugarnacimiento.value);
+        estudent.setNacionalidad(nacionalidad.value);
+        estudent.setDiscapacidad(discapacidad.checked);
+        estudent.setTipodiscapacidad(tipodiscapacidad.value);
         estudent.setIngpadre(new Double(ingpadre.value));
-        
         estudent.setIngmadre(new Double(ingmadre.value));
-        
         estudent.setIngotros(new Double(ingotros.value));
-        
         estudent.setCasa(casa.getSelectedItem().getLabel());
-      
-
         estudent.setAgua(agua.checked);
         estudent.setLuz(luz.checked);
         estudent.setSshh(sshh.checked);
@@ -582,22 +590,10 @@ void estado(Boolean estado,Boolean modificar){
              codigomat.value = matri;
          }
 
-alert("paso matricula");
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-        guardar.disabled=true;
-        agregar.disabled=false;
-        estado(true,false);
-        //representante0.setTipoidentificacion("CF");
-        acta.disabled = false;
-        certificado.disabled = false;
-        certificado2.disabled = false;
-        claveprint.disabled = false;   
-            combo.value="";
-            permiso.auditar("Matriculas","Guardar",""+matricula.getCodigomat()+" "+matricula.getEstudiante().getApellido());
-        //aqui trabajo la parte de pensiones
-
- 
-        }catch(Exception e){
+        btnguardar.disabled=true;
+        showReport("AM");
+       }catch(Exception e){
                 alert("Error:"+e);
                 System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
                 System.out.println(""+e.getStackTrace()); System.out.println(""+e.getCause());
@@ -757,8 +753,11 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
 }
         void showReport(String tipo) {
+             
+            Executions.sendRedirect("/592981728937491235M.zul?AASL2KSO348934934="+codigo.value+"&TP=pdf");
             //Preparing parameters
-
+            
+             
             Institucion insts = periodo.getInstitucion();
 
             Map parametros = new HashMap();
@@ -769,32 +768,22 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             parametros.put("secretaria", insts.getSecretaria());
             parametros.put("rectora", insts.getRector());
             JRDataSource datasource = null;
-            if(tipo.equals("CM")){
+
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
-                    report.setSrc("WEB-INF/reportes/certificadoMatricula.jasper");
-                    parametros.put("titulo", "Certificado de Matricula");
-            } else if(tipo.equals("AM")){
-                    datasource = certificados(new Matriculas(codigomat.value),tipo);
-                    parametros.put("titulo", "Acta de Matricula");
+                    parametros.put("titulo", "Comprobante de Matricula");
                     report.setSrc("WEB-INF/reportes/actaMatricula.jasper");
-
-            } else if(tipo.equals("CL")){
-                    datasource = certificados(new Matriculas(codigomat.value),tipo);
-                    parametros.put("titulo", "Acta de Matricula");
-                    report.setSrc("WEB-INF/reportes/clavePersonal.jasper");
-
-            }
+ 
             if(!tipo.equals("-1")){
                 report.setParameters(parametros);
                 report.setDatasource(datasource);
-                report.setType("pdf");
-                 reportes.setSelected(true);
+                report.setType("html");
+                 
             }
         }
 
 
 validarEstudiante(){
-    if(nombres.value == "" || apellidos.value == "" || direccion.value == "" || usuario.value == "" || clave.value == ""){
+    if(lugarnacimiento.value == "" || nacionalidad.value  == "" || nombres.value == "" || apellidos.value == "" || direccion.value == "" || usuario.value == "" || clave.value == ""){
         Messagebox.show("Registre todos los campos del ESTUDIANTE que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         destudiante.visible = true;
         dmatricula.visible = false;
@@ -810,7 +799,7 @@ validarMatricula(){
            dpadre.visible = false;
            return;
         }
-    if(vivecon.value == ""){
+    if(vivecon.value == "" || hermanos.value == null ){
         Messagebox.show("Registre todos los campos de la MATRICULA que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         dmatricula.visible = true;
         dpadre.visible = false;
@@ -883,6 +872,27 @@ boolean validarRepresentante(){
 
 
 
+                            </row>
+                            <row>
+                                <span>Lugar de Nacimiento<span style="color:blue;weight:bold"> (*)</span>:</span>
+                                <span>
+                                    <textbox id="lugarnacimiento"  />
+                                    Nacionalidad<span style="color:blue;weight:bold"> (*)</span>:
+                                    <textbox id="nacionalidad"  />
+                                </span>
+                            </row>
+                            <row>
+
+                                <span style="float:right;font-size:11px">
+                                    <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
+                                </span>
+                                <span>
+
+                                    <checkbox id="discapacidad" label="SI" onCheck="tipodiscapacidad.readonly = self.checked? false: true" />
+                                     <label style="font-size:11px"  value="Describa su Discapacidad" id="t160"/>
+                                     <textbox    id="tipodiscapacidad" maxlength="100" cols="30" rows="1"  readonly="true"  />
+
+                                </span>
                             </row>
                             <row>
                                 <span style="float:right"> Género<span style="color:blue"> (*)</span>:</span>
@@ -1045,7 +1055,7 @@ Seleccione para continuar
                             <span style="float:right"> Nuevo Est.</span>
                             <span>
                                 <checkbox id="nuevo"  />
-                                No. de Hermanos
+                                No. de Hermanos <span style="color:blue;weight:bold"> (*)</span>:
                                 <intbox id="hermanos"  />
                                 Repite el Año:
                                 <checkbox id="repite" />
@@ -1311,7 +1321,7 @@ Seleccione para continuar
             <toolbar   sclass="vista" align="end">
                 <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
                 <toolbarbutton image="/images/ant.png" onClick='dmadre.visible = true; drepresentante.visible = false' />
-                <toolbarbutton image="/images/guardarimprimir.png" onClick='guardar();' />
+                <toolbarbutton id="btnguardar" image="/images/guardarimprimir.png" onClick='guardar();' />
             </toolbar>
         </panel>
 
