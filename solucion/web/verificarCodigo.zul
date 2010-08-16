@@ -39,6 +39,11 @@ Session a = Sessions.getCurrent();
                                 Messagebox.show("Proceso bloqueado por la Administración, acerquese a las oficinas para solucionar los procesos pendientes que tiene con la Institución..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                                 return;
                             }
+                            if(((Estudiantes)estudiantes.get(0)).getMatriculado()){
+                                Messagebox.show("Usted ya se ha encuentra MATRICULADO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                
+                                return;
+                            }
                         rperiodo.visible=true;
                         Session ses = Sessions.getCurrent();
                         ses.setAttribute("userEstudiante",estudiantes.get(0));

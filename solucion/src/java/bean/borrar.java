@@ -4,6 +4,7 @@
  */
 package bean;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import jcinform.persistencia.Inscripciones;
 import jcinform.procesos.Administrador;
@@ -28,6 +29,9 @@ public class borrar {
 //Progressmeter p;
 //p.set
        public static void main(String[] args) {
+ArrayList ar = new ArrayList();
+
+          
            String a = "ms";
             Radiogroup ras = null;
             Radio ra = new Radio(a);

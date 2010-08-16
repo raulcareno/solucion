@@ -7,14 +7,12 @@
     background-image: url(./images/fondo.jpg);
     background-repeat: repeat-y;
     background-repeat: repeat-x;
-
-
 }
     </style>
 
     <div  class="estil" >
-    <window  position="center"  width="700px" mode="overlapped" id="principales" >
-        <zscript>
+        <window  position="center"  width="700px" mode="overlapped" id="principales" >
+            <zscript>
             <![CDATA[
   import jcinform.persistencia.Global;
   import bean.EventDAO;
@@ -48,15 +46,19 @@ import org.zkoss.zul.Listbox;
     static Estudiantes estudent = new Estudiantes();
     static Representante representante0 = new Representante();
     static Matriculas matricula = new Matriculas();
- Session ses = Sessions.getCurrent();
+     Session ses = Sessions.getCurrent();
  
- Periodo periodo = (Periodo) ses.getAttribute("periodo");
- if(periodo == null){
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    if(periodo == null){
         Executions.sendRedirect("verificarCodigo.zul");
- }
+    }
  Permisos permiso = new Permisos();
+
+ java.util.Date fecha = new java.util.Date();
+ String fechaString = (fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+(fecha.getDate());
+
  
-    List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+ periodo.getCodigoper() +"'  ");
+ 
  
     Object media = null;
    
@@ -166,6 +168,27 @@ import org.zkoss.zul.Listbox;
 
 void llenar(Estudiantes estudent){
 
+    List cursos = adm.queryNativo("Select o.* from Cursos as o where  '"+fechaString+"' between o.inicial and o.finali and o.periodo = '"+ periodo.getCodigoper() +"' ",Cursos.class);
+         if(cursos.size()<=0){
+                Executions.sendRedirect("592981728937491234M.zul");
+                return;
+        }
+ 
+        Cursos se = new Cursos(-1);
+        Global g = new Global(); g.setDescripcion("");
+        se.setParalelo(g);
+        se.setEspecialidad(g);
+        se.setDescripcion("[SELECCIONE UN CURSO PARA CONTINUAR]");
+        cursos.add(0,se);
+            for (Iterator it = cursos.iterator(); it.hasNext();) {
+                      Cursos estudent = (Cursos) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent+""));
+                        curso.appendChild(item);
+             }
+
+    codigoclave.value = estudent.getCodigo();
     codigo.value = estudent.getCodigoest();
     cedula.value = estudent.getCedula();
     nombres.value = estudent.getNombre();
@@ -203,7 +226,7 @@ void llenar(Estudiantes estudent){
 
 
 
-System.out.println("representatne"+estudent.getRepresentante());
+ 
         if(estudent.getRepresentante()==null){
             Representante re = new Representante(0);
             re.setTipoidentificacion("C");
@@ -241,16 +264,14 @@ void llenarMatricula(Matriculas matri){
          }catch(Exception e){}
          observacion.value = matri.getObservacion();
             if(matri.getCurso() != null){
-                      for (int i = 0; i <= curso.getItems().size(); i++) {
-                                    Cursos tr0 = ((Cursos)((Listitem)curso.getItems().get(i)).getValue());
-                                    int primero = tr0.getCodigocur();
-                                    int segundo = matri.getCurso().getCodigocur();
-                                    if(primero == segundo){
-                                        curso.setSelectedItem((Listitem)curso.getItems().get(i));
-                                        bd1.value = matri.getCurso().getDescripcion()+" "+ matri.getCurso().getEspecialidad()+" "+ matri.getCurso().getParalelo();
-                                        break;
-                                    }
-                           }
+            int tam = curso.getItems().size();
+                    if( tam <= 0 ){
+                        System.out.println("hola bola");
+                        Executions.sendRedirect("/592981728937491234M.zul");
+                        return;
+                         
+                     }
+             
 
 
             }
@@ -524,6 +545,8 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setPozo(pozo.checked);
         estudent.setTelefonob(telefonob.checked);
         estudent.setInternet(internet.checked);
+        estudent.setCodigo(codigoclave.value);
+        estudent.setMatriculado(true);
   
         if((!estudent.getCodigoest().equals(0))){
              adm.actualizar(estudent);
@@ -537,7 +560,7 @@ void estado(Boolean estado,Boolean modificar){
 //GUARDAR MATRICULA
         matricula.setCodigomat(codigomat.value);
         matricula.setEstudiante(estudent);
-        matricula.setObservacion("Matricula por Internet "+ new Date());
+        matricula.setObservacion("Matricula por Internet "+ new Date().toLocaleString());
         matricula.setFechamat(new Date());
         matricula.setCurso(curso.selectedItem.value);
         matricula.setNumero(numero.value);
@@ -592,7 +615,8 @@ void estado(Boolean estado,Boolean modificar){
 
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         btnguardar.disabled=true;
-        showReport("AM");
+            ses.setAttribute("userEstudiante",estudent);
+            showReport("AM",""+codigomat.value);
        }catch(Exception e){
                 alert("Error:"+e);
                 System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
@@ -642,15 +666,7 @@ void eliminar(){
     }
 }
 void buscarEstudiante(String valor){
- 
-
-
-            
-            
-            
-           
-
-
+  
     }
 void buscarRepresentante(String valor){
 
@@ -752,9 +768,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         return ds;
 
 }
-        void showReport(String tipo) {
+        void showReport(String tipo,String cod) {
              
-            Executions.sendRedirect("/592981728937491235M.zul?AASL2KSO348934934="+codigo.value+"&TP=pdf");
+            Executions.sendRedirect("/592981728937491235M.zul?AASL2KSO348934934="+cod+"&TP=pdf");
             //Preparing parameters
             
              
@@ -792,9 +808,16 @@ validarEstudiante(){
 
 validarMatricula(){
         try{
-        Cursos cur = curso.selectedItem.value;
+               Cursos cur = curso.selectedItem.value;
+               if(cur.getCodigocur().equals(-1)){
+                    Messagebox.show("SELECCIONE el curso de la MATRICULA que está con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    dmatricula.visible = true;
+                    dpadre.visible = false;
+                    return;
+               }
         }catch(Exception a){
-           Messagebox.show("Registre todos los campos de la MATRICULA que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            System.out.println(a);
+           Messagebox.show("Registre o Seleccione todos los campos de la MATRICULA que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
            dmatricula.visible = true;
            dpadre.visible = false;
            return;
@@ -816,137 +839,156 @@ boolean validarRepresentante(){
     return true;
 }
   ]]>
-        </zscript>
+            </zscript>
       
        
-        <panel title="DATOS DEL ESTUDIANTE (Paso 1 de 5)" id="destudiante"   style="margin-bottom:10px" framable="true" >
-            <panelchildren>
-                <div id="viewer" style="overflow:auto;">
-                    <grid width="99%">
-                        <rows>
+            <panel title="DATOS DEL ESTUDIANTE (Paso 1 de 5)" id="destudiante"   style="margin-bottom:10px" framable="true" >
+                <panelchildren>
+                    <div id="viewer" style="overflow:auto;">
+                        <grid width="99%">
+                            <rows>
 
-                          <row spans="2">
-                              <span style="color:red">
-                                  Todos los campos con  <span style="color:blue"> asterisco (*)</span> son obligatorios
-                              </span>
+                                <row spans="2">
+                                    <span style="color:red">
+                                  Todos los campos con
+                                        <span style="color:blue"> asterisco (*)</span> son obligatorios
+                                    </span>
 
-                          </row>
-                            <row>
-                                <span style="float:right"> Identificación:</span>
-                                <span>
-                                    <intbox  maxlength="14" cols="5"  visible="false"    id="codigo"  />
+                                </row>
+                                <row>
+                                    <span style="float:right"> Identificación:</span>
+                                    <span>
+                                        <intbox   cols="5"  visible="false"    id="codigo"  />
+                                        <textbox visible="false"    id="codigoclave"  />
                                                                          
-                                    <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)"  id="cedula"  />
+                                        <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)"  id="cedula"  />
                                     (no obligatorio)
-                                </span>
-                            </row>
-                            <row>
-                            </row>
-                            <row>
-                                <span style="float:right"> Nombres<span style="color:blue;weight:bold"> (*)</span>:</span>
-                                <textbox id="nombres"  maxlength="60" cols="40"    />
-                            </row>
+                                    </span>
+                                </row>
+                                <row>
+                                </row>
+                                <row>
+                                    <span style="float:right"> Nombres
+                                        <span style="color:blue;weight:bold"> (*)</span>:
+                                    </span>
+                                    <textbox id="nombres"  maxlength="60" cols="40"    />
+                                </row>
 
-                            <row>
+                                <row>
 
-                                <span style="float:right"> Apellidos<span style="color:blue"> (*)</span>:</span>
-                                <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40"   />
-                            </row>
-                            <row>
+                                    <span style="float:right"> Apellidos
+                                        <span style="color:blue"> (*)</span>:
+                                    </span>
+                                    <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40"   />
+                                </row>
+                                <row>
 
-                                <span style="float:right"> Dirección<span style="color:blue"> (*)</span>:</span>
-                                <textbox id="direccion" maxlength="100" cols="40"      />
-                            </row>
+                                    <span style="float:right"> Dirección
+                                        <span style="color:blue"> (*)</span>:
+                                    </span>
+                                    <textbox id="direccion" maxlength="100" cols="40"      />
+                                </row>
 
-                            <row>
-                                <span style="float:right"> Email:</span>
-                                <span>
-                                    <textbox id="mail" maxlength="100" cols="30"      />
+                                <row>
+                                    <span style="float:right"> Email:</span>
+                                    <span>
+                                        <textbox id="mail" maxlength="100" cols="30"      />
                                                                         Teléfono:
-                                    <textbox id="telefono" maxlength="50" cols="13"    />
-                                </span>
-                            </row>
+                                        <textbox id="telefono" maxlength="50" cols="13"    />
+                                    </span>
+                                </row>
 
-                            <row>
-
-
+                                <row>
 
 
-                            </row>
-                            <row>
-                                <span>Lugar de Nacimiento<span style="color:blue;weight:bold"> (*)</span>:</span>
-                                <span>
-                                    <textbox id="lugarnacimiento"  />
-                                    Nacionalidad<span style="color:blue;weight:bold"> (*)</span>:
-                                    <textbox id="nacionalidad"  />
-                                </span>
-                            </row>
-                            <row>
 
-                                <span style="float:right;font-size:11px">
-                                    <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
-                                </span>
-                                <span>
 
-                                    <checkbox id="discapacidad" label="SI" onCheck="tipodiscapacidad.readonly = self.checked? false: true" />
-                                     <label style="font-size:11px"  value="Describa su Discapacidad" id="t160"/>
-                                     <textbox    id="tipodiscapacidad" maxlength="100" cols="30" rows="1"  readonly="true"  />
+                                </row>
+                                <row>
+                                    <span>Lugar de Nacimiento
+                                        <span style="color:blue;weight:bold"> (*)</span>:
+                                    </span>
+                                    <span>
+                                        <textbox id="lugarnacimiento"  />
+                                    Nacionalidad
+                                        <span style="color:blue;weight:bold"> (*)</span>:
+                                        <textbox id="nacionalidad"  />
+                                    </span>
+                                </row>
+                                <row>
 
-                                </span>
-                            </row>
-                            <row>
-                                <span style="float:right"> Género<span style="color:blue"> (*)</span>:</span>
-                                <span>
-                                    <radiogroup Id="genero" >
-                                        <radio id="masculino"  label="Masculino"/>
-                                        <radio id = "femenino"  selected="true" label="Femenino"/>
-                                    </radiogroup>
-                                    <span> Fecha Nacimiento <span style="color:blue"> (*)</span>:</span>
-                                    <datebox id="nacido"    />
-                                </span>
+                                    <span style="float:right;font-size:11px">
+                                        <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
+                                    </span>
+                                    <span>
+
+                                        <checkbox id="discapacidad" label="SI" onCheck="tipodiscapacidad.readonly = self.checked? false: true" />
+                                        <label style="font-size:11px"  value="Describa su Discapacidad" id="t160"/>
+                                        <textbox    id="tipodiscapacidad" maxlength="100" cols="30" rows="1"  readonly="true"  />
+
+                                    </span>
+                                </row>
+                                <row>
+                                    <span style="float:right"> Género
+                                        <span style="color:blue"> (*)</span>:
+                                    </span>
+                                    <span>
+                                        <radiogroup Id="genero" >
+                                            <radio id="masculino"  label="Masculino"/>
+                                            <radio id = "femenino"  selected="true" label="Femenino"/>
+                                        </radiogroup>
+                                        <span> Fecha Nacimiento
+                                            <span style="color:blue"> (*)</span>:
+                                        </span>
+                                        <datebox id="nacido"    />
+                                    </span>
                                 <!--combobox id="genero" >
                                     <comboitem value="Masculino" label="Masculino"/>
                                     <comboitem value="Femenino" label="Femenino"/>
                                 </combobox-->
-                            </row>
-                            <row>
+                                </row>
+                                <row>
                                 
-                            </row>
-                            <row>
-                                <span style="float:right"> Usuario <span style="color:blue"> (*)</span>:</span>
-                                <span>
-                                    <textbox id="usuario" maxlength="30" cols="12"   />
-                                    <span> Clave <span style="color:blue"> (*)</span>:</span>
-                                    <textbox id="clave"   maxlength="30" cols="15"   />
-                                    <button label="Generar" onClick="generarClave(true);"/>
+                                </row>
+                                <row>
+                                    <span style="float:right"> Usuario
+                                        <span style="color:blue"> (*)</span>:
+                                    </span>
+                                    <span>
+                                        <textbox id="usuario" maxlength="30" cols="12"   />
+                                        <span> Clave
+                                            <span style="color:blue"> (*)</span>:
+                                        </span>
+                                        <textbox id="clave"   maxlength="30" cols="15"   />
+                                        <button label="Generar" onClick="generarClave(true);"/>
                                     
-                                </span>
-                            </row>
-                            <row spans="2">
-                                <span style="color:blue"> * Guarde el USUARIO y CONSTRASEÑA en un lugar seguro, recuerde que esto le servirá para ingresar a consultar sus notas desde internet y otros servicios *</span>
-                            </row>
+                                    </span>
+                                </row>
+                                <row spans="2">
+                                    <span style="color:blue"> * Guarde el USUARIO y CONSTRASEÑA en un lugar seguro, recuerde que esto le servirá para ingresar a consultar sus notas desde internet y otros servicios *</span>
+                                </row>
 
-                        </rows>
-                    </grid>
-                </div>
+                            </rows>
+                        </grid>
+                    </div>
 
 
-            </panelchildren>
-            <toolbar  sclass="vista" align="end">
-                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
-                <toolbarbutton image="/images/sig.png" onClick='destudiante.visible = false; dmatricula.visible= true;validarEstudiante();' />
-            </toolbar>
-        </panel>
+                </panelchildren>
+                <toolbar  sclass="vista" align="end">
+                    <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
+                    <toolbarbutton image="/images/sig.png" onClick='destudiante.visible = false; dmatricula.visible= true;validarEstudiante();' />
+                </toolbar>
+            </panel>
 
-        <panel title="FOTO" visible="false"  id="dfoto"   width="100%" style="margin-bottom:10px" framable="true" >
-            <panelchildren>
+            <panel title="FOTO" visible="false"  id="dfoto"   width="100%" style="margin-bottom:10px" framable="true" >
+                <panelchildren>
 
-                <grid  width="99%">
-                    <rows>
-                        <row>
-                            <span  style="border:1px">
-                                <button id="subirb"  label="Subir Imagen">
-                                    <attribute name="onClick">{
+                    <grid  width="99%">
+                        <rows>
+                            <row>
+                                <span  style="border:1px">
+                                    <button id="subirb"  label="Subir Imagen">
+                                        <attribute name="onClick">{
                                                                             Object media = Fileupload.get();
 
                                                                             if (media instanceof org.zkoss.image.Image) {
@@ -956,76 +998,66 @@ boolean validarRepresentante(){
                                                                             Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
                                                                             media = null;
                                                                             }
-                                    </attribute>
-                                </button>
+                                        </attribute>
+                                    </button>
 
-                            </span>
-                        </row>
-                        <row>
-                            <span style="border:1px">
+                                </span>
+                            </row>
+                            <row>
+                                <span style="border:1px">
 
-                                <image border="1" height="125px" id="foto0"/>
+                                    <image border="1" height="125px" id="foto0"/>
 
 
-                                <vbox width="50px" height="125px" style="border:1px" id="miimagen"/>
-                            </span>
+                                    <vbox width="50px" height="125px" style="border:1px" id="miimagen"/>
+                                </span>
 
-                        </row>
+                            </row>
                                 
-                    </rows>
-                </grid>
-            </panelchildren>
-            <toolbar   sclass="vista" align="end">
-                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
-                <toolbarbutton image="/images/sig.png" onClick='destudiantes.visible = false' />
-            </toolbar>
-        </panel>
+                        </rows>
+                    </grid>
+                </panelchildren>
+                <toolbar   sclass="vista" align="end">
+                    <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
+                    <toolbarbutton image="/images/sig.png" onClick='destudiantes.visible = false' />
+                </toolbar>
+            </panel>
 
         
-        <panel title="DATOS DE MATRICULA (Paso 2 de 5)"  height="100%"  id="dmatricula"  visible="false"   style="margin-bottom:10px" framable="true" >
-            <panelchildren>
+            <panel title="DATOS DE MATRICULA (Paso 2 de 5)"  height="100%"  id="dmatricula"  visible="false"   style="margin-bottom:10px" framable="true" >
+                <panelchildren>
 
    
-                <grid width="100%" height="220">
-                    <rows>
-                        <row visible="false">
-                            <span style="float:right"> Codigo:</span>
-                            <span>
-                                <intbox maxlength="14" cols="5"         id="codigomat"  />
+                    <grid width="100%" height="220">
+                        <rows>
+                            <row visible="false">
+                                <span style="float:right"> Codigo:</span>
+                                <span>
+                                    <intbox maxlength="14" cols="5"         id="codigomat"  />
                                                                     No.Mat.(*):
-                                <intbox maxlength="10"   cols="5"  id="numero"  />
+                                    <intbox maxlength="10"   cols="5"  id="numero"  />
                                                                     No.Folio (*):
-                                <intbox maxlength="10"  cols="5"  id="folio"  />
-                            </span>
+                                    <intbox maxlength="10"  cols="5"  id="folio"  />
+                                </span>
 
                                 
-                        </row>
-                        <row>
-                            <span style="float:right"> Curso/Grado<span style="color:blue"> (*)</span>:</span>
+                            </row>
+                            <row>
+                                <span style="float:right"> Curso/Grado
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
 
-                                                                <!--listbox mold="select"  id="curso" width="320px">
-                                                                    <listitem selected="true" forEach="${cursos}" value="${each}">
-                                                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                <span>
 
-                                                                    </listitem>
-                                                                </listbox-->
-<span>
-                            <bandbox  width="320px"   id="bd1">
-                                <bandpopup>
-                                    <vbox>
-                                        <listbox id="curso" width="460px"
-                                                                                     onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
-                                            <listitem selected="true" forEach="${cursos}" value="${each}">
-                                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-                                            </listitem>
-                                        </listbox>
-                                    </vbox>
-                                </bandpopup>
-                            </bandbox>
-Seleccione para continuar
+                                    <listbox id="curso" width="460px" mold="select" >
+                                        <listitem selected="true" forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                        </listitem>
+                                    </listbox>
+ 
 
-      </span>
-                        </row>
+                                </span>
+                            </row>
 <!--
     accion.value =""Matriculado
     fechamatricula.value = new Date();
@@ -1035,389 +1067,414 @@ Seleccione para continuar
     adventista = false;
     observacion.vlaue = new Date() + internet
 -->
-                        <row>
-                            <span style="float:right"> Instituto Ant.:</span>
-                            <span>
+                            <row>
+                                <span style="float:right"> Instituto Ant.:</span>
+                                <span>
 
-                                <textbox id="institucion"   maxlength="30" cols="20"/>
-                            </span>
-                        </row>
+                                    <textbox id="institucion"   maxlength="30" cols="20"/>
+                                </span>
+                            </row>
                          
-                        <row>
-                            <span style="float:right"> Toma Transporte:</span>
-                            <span>
-                                <checkbox id="transporte" />
-                                <textbox id="nobus" maxlength="100" cols="40"   />
-                            </span>
-                        </row>
-                        <row>
+                            <row>
+                                <span style="float:right"> Toma Transporte:</span>
+                                <span>
+                                    <checkbox id="transporte" />
+                                    <textbox id="nobus" maxlength="100" cols="40"   />
+                                </span>
+                            </row>
+                            <row>
                                      
-                            <span style="float:right"> Nuevo Est.</span>
-                            <span>
-                                <checkbox id="nuevo"  />
-                                No. de Hermanos <span style="color:blue;weight:bold"> (*)</span>:
-                                <intbox id="hermanos"  />
+                                <span style="float:right"> Nuevo Est.</span>
+                                <span>
+                                    <checkbox id="nuevo"  />
+                                No. de Hermanos
+                                    <span style="color:blue;weight:bold"> (*)</span>:
+                                    <intbox id="hermanos"  />
                                 Repite el Año:
-                                <checkbox id="repite" />
-                            </span>
-                        </row>
+                                    <checkbox id="repite" />
+                                </span>
+                            </row>
 
-                        <row>
+                            <row>
 
-                            <span style="float:right">Lugar Ocupa <span style="color:blue"> (*)</span>:</span>
-                            <span>
-                                <spinner value="1" cols="2" id="lugar"  constraint="no negative,no zero,min 0 max 20" />
-                               Con quién vive <span style="color:blue"> (*)</span>:
-                                <textbox id="vivecon"  />
-                            </span>
-                        </row>
-                        <row>
+                                <span style="float:right">Lugar Ocupa
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <span>
+                                    <spinner value="1" cols="2" id="lugar"  constraint="no negative,no zero,min 0 max 20" />
+                               Con quién vive
+                                    <span style="color:blue"> (*)</span>:
+                                    <textbox id="vivecon"  />
+                                </span>
+                            </row>
+                            <row>
 
-                            <span style="float:right">Ingresos:</span>
-                            <span>
+                                <span style="float:right">Ingresos:</span>
+                                <span>
                                Padre:
-                                <intbox id="ingpadre" value="0" cols="10"  />
+                                    <intbox id="ingpadre" value="0" cols="10"  />
                                 Madre:
-                                <intbox id="ingmadre" cols="10"  value="0" />
+                                    <intbox id="ingmadre" cols="10"  value="0" />
                                 Otros:
-                                <intbox id="ingotros" cols="10" value="0"  />
-                            </span>
-                        </row>
-                        <row>
-                            <span style="float:right">Tipo Vivienda <span style="color:blue"> (*)</span>:</span>
-                            <span>
-                                <radiogroup Id="casa" >
-                                    <radio selected="true" label="Propia"/>
-                                    <radio label="Arrendada"/>
-                                    <radio label="Prestada"/>
-                                    <radio label="Anticresis"/>
-                                    <radio label="Prestamo"/>
-                                    <radio label="Departamento"/>
-                                    <radio label="Otros"/>
-                                </radiogroup>
-                            </span>
-                        </row>
-                        <row>
-                            <span style="float:right">Servicios <span style="color:blue"> (*)</span>:</span>
-                            <span>
+                                    <intbox id="ingotros" cols="10" value="0"  />
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right">Tipo Vivienda
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <span>
+                                    <radiogroup Id="casa" >
+                                        <radio selected="true" label="Propia"/>
+                                        <radio label="Arrendada"/>
+                                        <radio label="Prestada"/>
+                                        <radio label="Anticresis"/>
+                                        <radio label="Prestamo"/>
+                                        <radio label="Departamento"/>
+                                        <radio label="Otros"/>
+                                    </radiogroup>
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right">Servicios
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <span>
                               
-                                <checkbox id="luz" label="Luz Electrica"/>
-                                <checkbox id="agua"  label="Agua"/>
-                                <checkbox id="sshh"  label="SS.HH."/>
-                                <checkbox id="pozo"  label="Pozo Séptico"/>
-                                <checkbox id="telefonob"  label="Teléfono"/>
-                                <checkbox id="internet"  label="Internet"/>
-                            </span>
-                        </row>
-                    </rows>
-                </grid>
-            </panelchildren>
-            <toolbar  sclass="vista" align="end">
-                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
-                <toolbarbutton image="/images/ant.png" onClick='destudiante.visible = true; dmatricula.visible = false' />
-                <toolbarbutton image="/images/sig.png" onClick='dmatricula.visible = false; dpadre.visible = true; validarMatricula()' />
-            </toolbar>
-        </panel>
-        <panel title="DATOS DEL PADRE (Paso 3 de 5)" id="dpadre"   visible="false"   style="margin-bottom:10px" framable="true" >
-            <panelchildren>
+                                    <checkbox id="luz" label="Luz Electrica"/>
+                                    <checkbox id="agua"  label="Agua"/>
+                                    <checkbox id="sshh"  label="SS.HH."/>
+                                    <checkbox id="pozo"  label="Pozo Séptico"/>
+                                    <checkbox id="telefonob"  label="Teléfono"/>
+                                    <checkbox id="internet"  label="Internet"/>
+                                </span>
+                            </row>
+                        </rows>
+                    </grid>
+                </panelchildren>
+                <toolbar  sclass="vista" align="end">
+                    <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
+                    <toolbarbutton image="/images/ant.png" onClick='destudiante.visible = true; dmatricula.visible = false' />
+                    <toolbarbutton image="/images/sig.png" onClick='dmatricula.visible = false; dpadre.visible = true; validarMatricula()' />
+                </toolbar>
+            </panel>
+            <panel title="DATOS DEL PADRE (Paso 3 de 5)" id="dpadre"   visible="false"   style="margin-bottom:10px" framable="true" >
+                <panelchildren>
 
 
-                <grid>
-                    <rows>
+                    <grid>
+                        <rows>
 
-                        <row>
-                            <span style="float:right"> Identificación:</span>
-                            <textbox maxlength="10" cols="13"   id="cedulapa"  />
-                        </row>
-                        <row>
-                            <span style="float:right"> Nombres:</span>
-                            <span>
-                                <textbox id="nombrespa"  maxlength="60" cols="40"    />
-                                <intbox maxlength="14" cols="5"  readonly = "true"   visible="false"  id="codigore"  />
-                            </span>
-                        </row>
-                        <row>
-                            <span style="float:right"> Apellidos:</span>
-                            <textbox id="apellidospa"  maxlength="60" cols="40"   />
-                        </row>
-                        <row>
-                            <span style="float:right"> Ocupación:</span>
-                            <textbox id="ocupacionpa" maxlength="100" cols="40"      />
-                        </row>
-                        <row>
-                            <span style="float:right"> Profesión:</span>
-                            <textbox id="profesionpa" maxlength="100" cols="40"      />
-                        </row>
-                        <row>
-                            <span style="float:right"> Dirección:</span>
-                            <span>
-                                <textbox id="direccionpa" maxlength="100" cols="40"      />
-                                <button  image="/images/anadir2.png"  label="Traer de Estudiante" onClick="direccionpa.value = direccion.value" />
-                            </span>
-                        </row>
-                        <row>
-                            <span style="float:right"> Teléfono:</span>
-                            <span>
-                                <textbox id="telefonopa" maxlength="100" cols="13"    />
-                                <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="telefonopa.value = telefono.value" />
-                            </span>
-                        </row>
-                        <row>
-                            <span style="float:right"> Email:</span>
-                            <textbox id="emailpa" maxlength="100" cols="40"      />
-                        </row>
-                    </rows>
-                </grid>
-
-
-            </panelchildren>
-            <toolbar  sclass="vista" align="end">
-                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
-                <toolbarbutton image="/images/ant.png" onClick='dmatricula.visible = true; dpadre.visible = false' />
-                <toolbarbutton image="/images/sig.png" onClick='dpadre.visible = false;dmadre.visible = true' />
-            </toolbar>
-        </panel>
-
-        <panel title="DATOS DE LA MADRE (Paso 4 de 5)" id="dmadre" visible="false"   style="margin-bottom:10px" framable="true" >
-            <panelchildren>
+                            <row>
+                                <span style="float:right"> Identificación:</span>
+                                <textbox maxlength="10" cols="13"   id="cedulapa"  />
+                            </row>
+                            <row>
+                                <span style="float:right"> Nombres:</span>
+                                <span>
+                                    <textbox id="nombrespa"  maxlength="60" cols="40"    />
+                                    <intbox maxlength="14" cols="5"  readonly = "true"   visible="false"  id="codigore"  />
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right"> Apellidos:</span>
+                                <textbox id="apellidospa"  maxlength="60" cols="40"   />
+                            </row>
+                            <row>
+                                <span style="float:right"> Ocupación:</span>
+                                <textbox id="ocupacionpa" maxlength="100" cols="40"      />
+                            </row>
+                            <row>
+                                <span style="float:right"> Profesión:</span>
+                                <textbox id="profesionpa" maxlength="100" cols="40"      />
+                            </row>
+                            <row>
+                                <span style="float:right"> Dirección:</span>
+                                <span>
+                                    <textbox id="direccionpa" maxlength="100" cols="40"      />
+                                    <button  image="/images/anadir2.png"  label="Traer de Estudiante" onClick="direccionpa.value = direccion.value" />
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right"> Teléfono:</span>
+                                <span>
+                                    <textbox id="telefonopa" maxlength="100" cols="13"    />
+                                    <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="telefonopa.value = telefono.value" />
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right"> Email:</span>
+                                <textbox id="emailpa" maxlength="100" cols="40"      />
+                            </row>
+                        </rows>
+                    </grid>
 
 
-                <grid>
-                    <rows>
+                </panelchildren>
+                <toolbar  sclass="vista" align="end">
+                    <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
+                    <toolbarbutton image="/images/ant.png" onClick='dmatricula.visible = true; dpadre.visible = false' />
+                    <toolbarbutton image="/images/sig.png" onClick='dpadre.visible = false;dmadre.visible = true' />
+                </toolbar>
+            </panel>
 
-                        <row>
-
-                            <span style="float:right"> Identificación:</span>
-                            <textbox maxlength="10" cols="13"   id="cedulama"  />
-                        </row>
-
-                        <row>
+            <panel title="DATOS DE LA MADRE (Paso 4 de 5)" id="dmadre" visible="false"   style="margin-bottom:10px" framable="true" >
+                <panelchildren>
 
 
+                    <grid>
+                        <rows>
 
-                            <span style="float:right"> Nombres:</span>
-                            <textbox id="nombresma"  maxlength="60" cols="40"    />
-                        </row>
+                            <row>
 
-                        <row>
+                                <span style="float:right"> Identificación:</span>
+                                <textbox maxlength="10" cols="13"   id="cedulama"  />
+                            </row>
+
+                            <row>
 
 
 
-                            <span style="float:right"> Apellidos:</span>
-                            <textbox id="apellidosma"  maxlength="60" cols="40"   />
-                        </row>
+                                <span style="float:right"> Nombres:</span>
+                                <textbox id="nombresma"  maxlength="60" cols="40"    />
+                            </row>
 
-                        <row>
-
-
-
-                            <span style="float:right"> Ocupación:</span>
-                            <textbox id="ocupacionma" maxlength="100" cols="40"      />
-                        </row>
-                        <row>
+                            <row>
 
 
-                            <span style="float:right"> Profesión:</span>
-                            <textbox id="profesionma" maxlength="100" cols="40"      />
 
-                        </row>
-                        <row>
+                                <span style="float:right"> Apellidos:</span>
+                                <textbox id="apellidosma"  maxlength="60" cols="40"   />
+                            </row>
 
-                            <span style="float:right"> Dirección:</span>
-                            <span>
-                                <textbox id="direccionma" maxlength="100" cols="40"      />
-                                <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="direccionma.value = direccion.value" />
-                            </span>
-                        </row>
-                        <row>
+                            <row>
 
-                            <span style="float:right"> Teléfono:</span>
-                            <span>
-                                <textbox id="telefonoma" maxlength="50" cols="13"    />
-                                <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="telefonoma.value = telefono.value" />
-                            </span>
-                        </row>
-                        <row>
 
-                            <span style="float:right"> Email:</span>
-                            <textbox id="emailma" maxlength="100" cols="40"      />
-                        </row>
 
-                    </rows>
-                </grid>
-            </panelchildren>
-            <toolbar  sclass="vista" align="end">
-                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
-                <toolbarbutton image="/images/ant.png" onClick='dpadre.visible = true; dmadre.visible = false' />
-                <toolbarbutton image="/images/sig.png" onClick='dmadre.visible = false; drepresentante.visible = true' />
-            </toolbar>
-        </panel>
-        <panel title="DATOS DEL REPRESENTANTE  (Paso 5 de 5)" id="drepresentante"  visible="false"   style="margin-bottom:10px" framable="true" >
-            <panelchildren>
-                <grid>
-                    <rows>
-                        <row>
-                            <span style="float:right;color:blue" >Copiar del </span>
-                            <span>
-                                <button id="padrecr" image="/images/padre.png" label="Padre"  onClick="copiarpr();"/>
-                                <button id="madrecr" image="/images/madre.png" label="Madre"   onClick="copiarmr();"/>
+                                <span style="float:right"> Ocupación:</span>
+                                <textbox id="ocupacionma" maxlength="100" cols="40"      />
+                            </row>
+                            <row>
+
+
+                                <span style="float:right"> Profesión:</span>
+                                <textbox id="profesionma" maxlength="100" cols="40"      />
+
+                            </row>
+                            <row>
+
+                                <span style="float:right"> Dirección:</span>
+                                <span>
+                                    <textbox id="direccionma" maxlength="100" cols="40"      />
+                                    <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="direccionma.value = direccion.value" />
+                                </span>
+                            </row>
+                            <row>
+
+                                <span style="float:right"> Teléfono:</span>
+                                <span>
+                                    <textbox id="telefonoma" maxlength="50" cols="13"    />
+                                    <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="telefonoma.value = telefono.value" />
+                                </span>
+                            </row>
+                            <row>
+
+                                <span style="float:right"> Email:</span>
+                                <textbox id="emailma" maxlength="100" cols="40"      />
+                            </row>
+
+                        </rows>
+                    </grid>
+                </panelchildren>
+                <toolbar  sclass="vista" align="end">
+                    <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
+                    <toolbarbutton image="/images/ant.png" onClick='dpadre.visible = true; dmadre.visible = false' />
+                    <toolbarbutton image="/images/sig.png" onClick='dmadre.visible = false; drepresentante.visible = true' />
+                </toolbar>
+            </panel>
+            <panel title="DATOS DEL REPRESENTANTE  (Paso 5 de 5)" id="drepresentante"  visible="false"   style="margin-bottom:10px" framable="true" >
+                <panelchildren>
+                    <grid>
+                        <rows>
+                            <row>
+                                <span style="float:right;color:blue" >Copiar del </span>
+                                <span>
+                                    <button id="padrecr" image="/images/padre.png" label="Padre"  onClick="copiarpr();"/>
+                                    <button id="madrecr" image="/images/madre.png" label="Madre"   onClick="copiarmr();"/>
                    
-                            </span>
-                        </row>
+                                </span>
+                            </row>
                                
-                        <row>
-                            <span style="float:right"> Identif.:</span>
-                            <textbox maxlength="13" cols="10"    id="cedulare"  />
-                        </row>
-                        <row>
-                            <span style="float:right"> Nombres <span style="color:blue"> (*)</span>:</span>
-                            <textbox id="nombresre"  maxlength="60" cols="40"    />
-                        </row>
-                        <row>
-                            <span style="float:right"> Apellidos <span style="color:blue"> (*)</span>:</span>
-                            <textbox id="apellidosre"  maxlength="60" cols="40"   />
-                        </row>
+                            <row>
+                                <span style="float:right"> Identif.:</span>
+                                <textbox maxlength="13" cols="10"    id="cedulare"  />
+                            </row>
+                            <row>
+                                <span style="float:right"> Nombres
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <textbox id="nombresre"  maxlength="60" cols="40"    />
+                            </row>
+                            <row>
+                                <span style="float:right"> Apellidos
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <textbox id="apellidosre"  maxlength="60" cols="40"   />
+                            </row>
 
-                        <row>
-                            <span style="float:right"> Dirección <span style="color:blue"> (*)</span>:</span>
-                            <textbox id="direccionre" maxlength="100" cols="40"      />
+                            <row>
+                                <span style="float:right"> Dirección
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <textbox id="direccionre" maxlength="100" cols="40"      />
 
-                        </row>
+                            </row>
 
-                        <row>
-                            <span style="float:right"> Teléfono <span style="color:blue"> (*)</span>:</span>
-                            <textbox id="telefonore" maxlength="100" cols="13"    />
-                        </row>
+                            <row>
+                                <span style="float:right"> Teléfono
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <textbox id="telefonore" maxlength="100" cols="13"    />
+                            </row>
 
-                        <row>
-                            <span style="float:right"> Email <span style="color:blue"> (*)</span>:</span>
-                            <textbox id="emailre" maxlength="100" cols="40"      />
-                        </row>
+                            <row>
+                                <span style="float:right"> Email
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <textbox id="emailre" maxlength="100" cols="40"      />
+                            </row>
 
-                        <row>
-                            <span  style="float:right">Parentesco <span style="color:blue"> (*)</span>:</span>
-                            <span>
-                                <textbox id="parentesco" maxlength="100" cols="40"      />
-                            </span>
-                        </row>
-                        <row>
+                            <row>
+                                <span  style="float:right">Parentesco
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <span>
+                                    <textbox id="parentesco" maxlength="100" cols="40"      />
+                                </span>
+                            </row>
+                            <row>
 
-                            <span style="float:right"> Usuario <span style="color:blue"> (*)</span>:</span>
-                            <span >
-                                <textbox id="usuarior"   maxlength="30" cols="15"   />
-                                    Clave <span style="color:blue"> (*)</span>:
-                                <textbox id="claver"   maxlength="30" cols="15"   />
-                                <button label="Generar" onClick="generarClaveRep(true);"/>
+                                <span style="float:right"> Usuario
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <span >
+                                    <textbox id="usuarior"   maxlength="30" cols="15"   />
+                                    Clave
+                                    <span style="color:blue"> (*)</span>:
+                                    <textbox id="claver"   maxlength="30" cols="15"   />
+                                    <button label="Generar" onClick="generarClaveRep(true);"/>
                        
-                            </span>
+                                </span>
 
-                        </row>
-                        <row spans="2">
+                            </row>
+                            <row spans="2">
                                 <span style="color:blue"> * Guarde el USUARIO y CONSTRASEÑA en un lugar seguro, recuerde que esto le servirá para ingresar a consultar sus notas desde internet y otros servicios *</span>
                             </row>
-                    </rows>
-                </grid>
-            </panelchildren>
-            <toolbar   sclass="vista" align="end">
-                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
-                <toolbarbutton image="/images/ant.png" onClick='dmadre.visible = true; drepresentante.visible = false' />
-                <toolbarbutton id="btnguardar" image="/images/guardarimprimir.png" onClick='guardar();' />
-            </toolbar>
-        </panel>
+                        </rows>
+                    </grid>
+                </panelchildren>
+                <toolbar   sclass="vista" align="end">
+                    <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
+                    <toolbarbutton image="/images/ant.png" onClick='dmadre.visible = true; drepresentante.visible = false' />
+                    <toolbarbutton id="btnguardar" image="/images/guardarimprimir.png" onClick='guardar();' />
+                </toolbar>
+            </panel>
 
                
-        <panel title="DATOS DE FACTURA" id="dfactura"  visible="false"   style="margin-bottom:10px" framable="true" >
-            <panelchildren>
+            <panel title="DATOS DE FACTURA" id="dfactura"  visible="false"   style="margin-bottom:10px" framable="true" >
+                <panelchildren>
 
-                <grid>
-                    <rows>
-                        <row>
-                            <span style="color:blue" >Facturar a </span>
-                            <span>
-                                <button id="padrec" label="Padre"   onClick="copiarp();"/>
-                                <button id="madrec" label="Madre"    onClick="copiarm();"/>
-                                <button id="representantec" label="Representante"   onClick="copiarr();"/>
-                            </span>
+                    <grid>
+                        <rows>
+                            <row>
+                                <span style="color:blue" >Facturar a </span>
+                                <span>
+                                    <button id="padrec" label="Padre"   onClick="copiarp();"/>
+                                    <button id="madrec" label="Madre"    onClick="copiarm();"/>
+                                    <button id="representantec" label="Representante"   onClick="copiarr();"/>
+                                </span>
  
-                        </row>
-                        <row>
-                            <span style="float:right"> Tipo:</span>
-                            <listbox mold="select" onSelect="llenarConsumidor();"  id="tipofac" width="150px">
-                                <listitem label="CEDULA" value="C">
-                                </listitem>
-                                <listitem label="RUC" value="R">
-                                </listitem>
-                                <listitem label="PASAPORTE" value="P">
-                                </listitem>
-                            </listbox>
+                            </row>
+                            <row>
+                                <span style="float:right"> Tipo:</span>
+                                <listbox mold="select" onSelect="llenarConsumidor();"  id="tipofac" width="150px">
+                                    <listitem label="CEDULA" value="C">
+                                    </listitem>
+                                    <listitem label="RUC" value="R">
+                                    </listitem>
+                                    <listitem label="PASAPORTE" value="P">
+                                    </listitem>
+                                </listbox>
 
 
-                        </row>
+                            </row>
 
-                        <row>
-                            <span style="float:right"> Identificación:</span>
-                            <textbox maxlength="13" cols="13"   id="cedulafac"  />
-
-
-                        </row>
-
-                        <row>
-                            <span style="float:right"> Nombre Factura:</span>
-                            <textbox id="nombresfac"  maxlength="100" cols="40"    />
+                            <row>
+                                <span style="float:right"> Identificación:</span>
+                                <textbox maxlength="13" cols="13"   id="cedulafac"  />
 
 
+                            </row>
 
-                        </row>
-
-                        <row>
-                            <span style="float:right"> Dirección:</span>
-                            <textbox id="direccionfac" maxlength="100" cols="40"      />
+                            <row>
+                                <span style="float:right"> Nombre Factura:</span>
+                                <textbox id="nombresfac"  maxlength="100" cols="40"    />
 
 
-                        </row>
-                        <row>
-                            <span style="float:right"> Teléfono:</span>
-                            <textbox id="telefonofac" maxlength="30" cols="13"    />
-                        </row>
+
+                            </row>
+
+                            <row>
+                                <span style="float:right"> Dirección:</span>
+                                <textbox id="direccionfac" maxlength="100" cols="40"      />
+
+
+                            </row>
+                            <row>
+                                <span style="float:right"> Teléfono:</span>
+                                <textbox id="telefonofac" maxlength="30" cols="13"    />
+                            </row>
                                                            
-                    </rows>
-                </grid>
-            </panelchildren>
-            <toolbar  sclass="vista" align="end">
-                <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
-                <toolbarbutton image="/images/sig.png" onClick='dfactura.visible = false' />
-            </toolbar>
-        </panel>
+                        </rows>
+                    </grid>
+                </panelchildren>
+                <toolbar  sclass="vista" align="end">
+                    <toolbarbutton image="/images/salir.png" onClick='Executions.sendRedirect("verificarCodigo.zul")' />
+                    <toolbarbutton image="/images/sig.png" onClick='dfactura.visible = false' />
+                </toolbar>
+            </panel>
 
      
 
 
 
 
-        <panel id="impresora" visible = "false" height="370px" style="margin-bottom:10px"
+            <panel id="impresora" visible = "false" height="370px" style="margin-bottom:10px"
                            title="Reporte" border="normal">
-            <panelchildren>
-                <jasperreport id="report" />
-            </panelchildren>
-        </panel>
+                <panelchildren>
+                    <jasperreport id="report" />
+                </panelchildren>
+            </panel>
 
              
-        <vbox>
-            <hbox>
+            <vbox>
+                <hbox>
             
-                <button visible="false"  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                <button visible="false"   image="/images/editar.gif" id="modificar"  label="Modificar"  onClick="modificar()"/>
-                <button  visible="false"  image="/images/imprimir.gif" id="acta"  label="Acta"   onClick='showReport("AM")'/>
-                <button  visible="false"  image="/images/imprimir.gif" id="certificado"  label="Certificado"   onClick='showReport("CM")' />
-                <button  visible="false"  image="/images/imprimir.gif" id="claveprint"  label="Clave"   onClick='showReport("CL")' />
-                <button visible="false"   image="/images/eliminar.gif" id="eliminar"  label="Eliminar"   onClick="eliminar();"/>
-            </hbox>
-        </vbox>
-        <zscript>
-            
+                    <button visible="false"  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button visible="false"   image="/images/editar.gif" id="modificar"  label="Modificar"  onClick="modificar()"/>
+                    <button  visible="false"  image="/images/imprimir.gif" id="acta"  label="Acta"   onClick='showReport("AM")'/>
+                    <button  visible="false"  image="/images/imprimir.gif" id="certificado"  label="Certificado"   onClick='showReport("CM")' />
+                    <button  visible="false"  image="/images/imprimir.gif" id="claveprint"  label="Clave"   onClick='showReport("CL")' />
+                    <button visible="false"   image="/images/eliminar.gif" id="eliminar"  label="Eliminar"   onClick="eliminar();"/>
+                </hbox>
+            </vbox>
+            <zscript>
+            <![CDATA[
+      
             llenar(ses.getAttribute("userEstudiante"));
-        </zscript>
-    </window>
+            ]]>
+            </zscript>
+        </window>
 
-</div>
+    </div>
 </zk>
