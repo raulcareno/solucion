@@ -76,6 +76,7 @@ Session a = Sessions.getCurrent();
 
 
   }
+
   ingresar(){
                 Session ses = Sessions.getCurrent();
                 ses.setAttribute("periodo",periodo.selectedItem.value);
@@ -101,6 +102,22 @@ Session a = Sessions.getCurrent();
 
         }
 
+    void reImprimir(){
+
+         List estudiantes =adm.query("Select o from Matriculas as o " +
+            "where o.estudiante.codigo = '"+usuario.value+"' order by o.fechamat DESC ");
+            if(estudiantes.size()>0){
+                    Executions.sendRedirect("/592981728937491235M.zul?AASL2KSO348934934="+estudiantes.get(0).getCodigomat()+"&TP=pdf");
+            }else{
+                    Messagebox.show("Código Incorrecto o aún no se ha Matriculado...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+
+            }
+
+
+
+  }
+
+
 
                 ]]>
 
@@ -122,10 +139,14 @@ Session a = Sessions.getCurrent();
                     <row id="codigo">
                         <span style="float:right">CÓDIGO:(*):</span>
                         <span>
-                        <textbox onOK="ingresarModulo.focus()" id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
+                        <textbox onOK="ingresarModulo.focus()" id="usuario" constraint="no empty:Codigo es requerido" maxlength="20" cols="15"  />
                         <button label="Ingresar" id="ingresarModulo"  image="/images/ingreso.gif"  onClick="usuario.getValue(); verPantall();"/>
+                        <button label="Re-Imprimir Documento de Matricula" id="reimprimir"  image="/images/imprimir.gif"  onClick="usuario.getValue(); reImprimir();"/>
                         </span>
                     </row>
+
+                        
+
                      <row id="mensaje3" visible="false" spans="2" style="background:transparent;border:0px">
                          <span>
                             <span style="color: blue">SELECCIONE EL PERIODO EN EL CUAL VA A SER MATRICULADO SU HIJO(A)
