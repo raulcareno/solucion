@@ -1024,7 +1024,7 @@ boolean validarRepresentante(){
             </panel>
 
         
-            <panel title="DATOS DE MATRICULA (Paso 2 de 5)"  height="100%"  id="dmatricula"  visible="false"   style="margin-bottom:10px" framable="true" >
+            <panel title="DATOS DE MATRICULA (Paso 2 de 5)"  height="400px"  id="dmatricula"  visible="false"   style="margin-bottom:10px" framable="true" >
                 <panelchildren>
 
    
@@ -1158,7 +1158,7 @@ boolean validarRepresentante(){
                     <toolbarbutton image="/images/sig.png" onClick='dmatricula.visible = false; dpadre.visible = true; validarMatricula()' />
                 </toolbar>
             </panel>
-            <panel title="DATOS DEL PADRE (Paso 3 de 5)" id="dpadre"   visible="false"   style="margin-bottom:10px" framable="true" >
+            <panel title="DATOS DEL PADRE (Paso 3 de 5)" id="dpadre"   visible="false"    height="400px"  style="margin-bottom:10px" framable="true" >
                 <panelchildren>
 
 
@@ -1218,7 +1218,7 @@ boolean validarRepresentante(){
                 </toolbar>
             </panel>
 
-            <panel title="DATOS DE LA MADRE (Paso 4 de 5)" id="dmadre" visible="false"   style="margin-bottom:10px" framable="true" >
+            <panel title="DATOS DE LA MADRE (Paso 4 de 5)" id="dmadre" visible="false"  height="400px"    style="margin-bottom:10px" framable="true" >
                 <panelchildren>
 
 
@@ -1292,7 +1292,7 @@ boolean validarRepresentante(){
                     <toolbarbutton image="/images/sig.png" onClick='dmadre.visible = false; drepresentante.visible = true' />
                 </toolbar>
             </panel>
-            <panel title="DATOS DEL REPRESENTANTE  (Paso 5 de 5)" id="drepresentante"  visible="false"   style="margin-bottom:10px" framable="true" >
+            <panel title="DATOS DEL REPRESENTANTE  (Paso 5 de 5)" id="drepresentante"    height="400px"  visible="false"   style="margin-bottom:10px" framable="true" >
                 <panelchildren>
                     <grid>
                         <rows>
