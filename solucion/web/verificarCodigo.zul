@@ -166,6 +166,9 @@ Session a = Sessions.getCurrent();
                     </row>
                     <row spans="2"  style="background:transparent;border:0px">
                         <separator />
+                    </row >
+                    <row spans="2" align="center" style="background:red;border:0px">
+                        <label style="color:white;font-size:17px;align:center" value ="ANTES DE GUARDAR VERIFICAR QUE TODA SU INFORMACIÓN ESTE CORRECTA" />
                     </row>
                 </rows>
             </grid>

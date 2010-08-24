@@ -160,10 +160,46 @@ void llenar(Estudiantes estudent){
     mail.value = estudent.getMail();
     usuario.value = estudent.getUsuario();
     nobus.value = estudent.getNobus();
+            lugarnacimiento.value = estudent.getLugarnacimiento();
+            nacionalidad.value = estudent.getNacionalidad();
+            hermanos.value = estudent.getHermanos();
+            lugar.value = estudent.getLugar();
+            vivecon.value   = estudent.getVivecon();
+            try{
+                    ingpadre.value = estudent.getIngpadre().intValue();
+                    ingmadre.value = estudent.getIngmadre().intValue();
+                    ingotros.value = estudent.getIngotros().intValue();
+            }catch(Exception cero){
+                    ingpadre.value = 0;
+                    ingmadre.value = 0;
+                    ingotros.value = 0;
+
+            }
+            
 
 
-    clave.value = permiso.decriptar(estudent.getClave());
-          if(estudent.getEstado()!=null){
+            if(estudent.getLuz()!=null){
+                luz.checked = estudent.getLuz();
+            }
+            if(estudent.getAgua()!=null){
+                agua.checked = estudent.getAgua();
+            }
+            if(estudent.getSshh()!=null){
+                sshh.checked = estudent.getSshh();
+            }
+            if(estudent.getPozo()!=null){
+                pozo.checked = estudent.getPozo();
+            }
+            if(estudent.getTelefonob()!=null){
+                telefonob.checked = estudent.getTelefonob();
+            }
+            if(estudent.getInternet()!=null){
+                internet.checked = estudent.getInternet();
+            }
+            if(estudent.getMatriculado()!=null){
+                matriculado.checked = estudent.getMatriculado();
+            }
+             if(estudent.getEstado()!=null){
                 estadoe.checked= estudent.getEstado();
             }
             if(estudent.getAdventista()!=null){
@@ -173,8 +209,19 @@ void llenar(Estudiantes estudent){
             if(estudent.getTransporte()!=null){
                 transporte.checked = estudent.getTransporte();
             }
+              if(estudent.getPendientes()!=null){
+                pendientes.checked = estudent.getPendientes();
+            }
+            String tCasa = estudent.getCasa();
+               codigoclave.value = estudent.getCodigo();
+                  llenarCasa(tCasa);
+           //casa.setSelectedItem(r);
+          
+          
 
 
+    clave.value = permiso.decriptar(estudent.getClave());
+           
 
 
         if(estudent.getRepresentante()==null){
@@ -194,6 +241,25 @@ List matricula = adm.query("Select o from Matriculas as o where o.estudiante.cod
         numero.value = 0;
         //Messagebox.show("No se encuentra Inscrito ni Matriculado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
     }
+}
+
+void llenarCasa(String tCasa){
+    List l = casa.getChildren();
+    Boolean estado = false;
+            for (Iterator it = l.iterator(); it.hasNext();) {
+               Radio object = (Radio)it.next();
+               if(object.getLabel().equals(tCasa)){
+                   object.setSelected(true);
+                   estado = true;
+                   break;
+               }  
+
+           }
+           if(estado == false){
+                Radio object = (Radio)l.get(0);
+                   object.setSelected(true);
+           }
+
 }
 void llenarMatricula(Matriculas matri){
          codigomat.value =matri.getCodigomat();
@@ -284,7 +350,11 @@ void llenarRepresentante(Representante repren){
      Listitem item = new Listitem();
      String tip = repren.getTipoidentificacion();
      item.setValue(tip);
+     try{
      item.appendChild(new Listcell( (tip.equals("C")?"CEDULA":"RUC") +""));
+     }catch(Exception e){
+            item.appendChild(new Listcell("CEDULA"));
+     }
      tipofac.appendChild(item);
      tipofac.setSelectedItem(item);
      llenarConsumidor();
@@ -292,7 +362,6 @@ void llenarRepresentante(Representante repren){
      nombresfac.value = repren.getNombrefactura();
      telefonofac.value = repren.getTelfactura();
      direccionfac.value = repren.getDirfactura();
-
 
 
 
@@ -305,7 +374,6 @@ void llenarRepresentante(Representante repren){
     parentesco.value = repren.getParentesco();
     ocupacionpa.value = repren.getOcupacionpadre();
     profesionpa.value = repren.getProfesionpadre();
-
     cedulama.value = repren.getIdentificacionmadre();
     nombresma.value = repren.getNommadre();
     apellidosma.value = repren.getApemadre();
@@ -314,7 +382,6 @@ void llenarRepresentante(Representante repren){
     emailma.value = repren.getMailmadre();
     ocupacionma.value = repren.getOcupacionmadre();
     profesionma.value = repren.getProfesionmadre();
-
     usuarior.value = repren.getUsuario();
     claver.value = permiso.decriptar(repren.getClave());
 
@@ -478,7 +545,29 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
         estudent.setGenero(genero.selectedItem.value);
-        estudent.setPendientes(false);
+        estudent.setPendientes(pendientes.checked);
+
+        estudent.setVivecon(vivecon.value);
+        estudent.setHermanos(hermanos.value);
+        estudent.setLugar(lugar.value);
+        estudent.setLugarnacimiento(lugarnacimiento.value);
+        estudent.setNacionalidad(nacionalidad.value);
+        estudent.setDiscapacidad(discapacidad.checked);
+        estudent.setTipodiscapacidad(tipodiscapacidad.value);
+        estudent.setIngpadre(new Double(ingpadre.value));
+        estudent.setIngmadre(new Double(ingmadre.value));
+        estudent.setIngotros(new Double(ingotros.value));
+        estudent.setCasa(casa.getSelectedItem().getLabel());
+        estudent.setAgua(agua.checked);
+        estudent.setLuz(luz.checked);
+        estudent.setSshh(sshh.checked);
+        estudent.setPozo(pozo.checked);
+        estudent.setTelefonob(telefonob.checked);
+        estudent.setInternet(internet.checked);
+        estudent.setCodigo(codigoclave.value);
+        estudent.setMatriculado(matriculado.checked);
+            
+
 
         if((!estudent.getCodigoest().equals(0))){
              adm.actualizar(estudent);
@@ -550,7 +639,7 @@ void estado(Boolean estado,Boolean modificar){
              adm.guardar(matricula);
              codigomat.value = matri;
          }
-
+//TERMINA AREA DE MATRICULA
 
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         guardar.disabled=true;
@@ -629,12 +718,16 @@ void modificar(){
 void eliminar(){
   if(verificar("Eliminar")){
         try{
-             estudent = (Estudiantes)datos.selectedItem.value;
-             adm.eliminarObjeto(Estudiantes.class, estudent.getCodigoest());
-            datos.removeItemAt(datos.getSelectedIndex());
-            llenar(new Estudiantes(0));
-            combo.value="";
-                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+             adm.eliminarObjeto(Matriculas.class, new Integer(codigomat.value));
+             llenarMatricula(new Matriculas(0));
+             codigomat.value = 0;
+             //CAMBIO DE ESTADO AL ESTUDIANTE
+             Estudiantes est = adm.buscarClave(codigo.value,Estudiantes.class);
+             est.setMatriculado(false);
+             adm.actualizar(est);
+             llenar(est);
+             
+                Messagebox.show("Matrícula Eliminada con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         }catch(Exception e){
             Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         }
@@ -812,6 +905,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             <tabs>
                 <tab id="registro" label="Datos del Estudiante" />
                 <tab id="representante" label="Datos del Representante" />
+                <tab id="socio" label="Datos SocioEconómicos" />
 
                 <tab id="busqueda" label="Busquedas" />
                 <tab id="reportes" label="Impresión" />
@@ -844,6 +938,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                         <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
                                                                         Identificación:
                                                                         <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
+                                                                        
                                                                     </span>
                                                                 </row>
                                                                 <row>
@@ -869,7 +964,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                                                                 <row>
                                                                     <span style="float:right"> Email:</span>
-                                                                    <span><textbox id="mail" maxlength="100" cols="30"  readonly="true"    />
+                                                                    <span>
+                                                                        <textbox id="mail" maxlength="100" cols="30"  readonly="true"    />
                                                                         Teléfono:
                                                                         <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
                                                                     </span>
@@ -979,10 +1075,11 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                         <comboitem value="Inscrito" label="Inscrito"/>
                                                                         <comboitem value="Retirado" label="Retirado"/>
                                                                         <comboitem value="Emitir Pase" label="Emitir Pase"/>
-                                                                            <comboitem value="Recibir Pase" label="Recibir Pase"/>
+                                                                        <comboitem value="Recibir Pase" label="Recibir Pase"/>
                                                                         <comboitem value="Anulado" label="Anulado"/>
                                                                     </combobox>
-                                                                    Inst. Anterior: <textbox id="institucion" readonly="true"  maxlength="30" cols="20"/>
+                                                                    Inst. Anterior:
+                                                                    <textbox id="institucion" readonly="true"  maxlength="30" cols="20"/>
                                                                 </span>
                                                                 <span style="float:right"> Usuario:</span>
                                                                 <span>
@@ -1019,14 +1116,18 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     <decimalbox id="otros" format="###.##"   maxlength="5" cols="10" readonly="true"  /> USD
                                                                 </span>
                                                                 <span style="float:right"> Interno:</span>
-                                                                <span><checkbox id="adventista" disabled="true" /> Nuevo:
-                                                                <checkbox id="nuevo" disabled="true" /></span>
+                                                                <span>
+                                                                    <checkbox id="adventista" disabled="true" /> Nuevo:
+                                                                    <checkbox id="nuevo" disabled="true" />
+                                                                </span>
                                                             </row>
                                                             <row>
                                                                 <span style="float:right"> Observación:</span>
                                                                 <textbox rows="2" id="observacion"  readonly="true"  />
 
                                                             </row>
+
+                                                        
                                                         </rows>
                                                     </grid>
                                                 </south>
@@ -1221,6 +1322,117 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 </tabpanel>
 
                 <tabpanel>
+                    <panel id="panelSocio" framable="true" width="100%" height="100%" border="normal" >
+                        <panelchildren>
+                            <grid>
+                                <rows>
+                                          <row>
+                                        <span  style="float:right">
+                                                 YA SE MATRICULÓ:
+                                        </span>
+                                        <span>
+                                        <checkbox id="matriculado"/>
+                                        CODIGO DE MATRICULACIÓN:
+                                        <textbox id="codigoclave"  />
+                                        BLOQUEADO
+                                        <checkbox id="pendientes"/>
+                                        </span>
+                                    </row>
+                                    <row>
+                                        <span style="float:right">Lugar de Nacimiento (*)
+                                        </span>
+                                        <span>
+                                            <textbox id="lugarnacimiento"  />
+                                    Nacionalidad
+                                            <span style="color:blue;weight:bold"> (*)</span>:
+                                            <textbox id="nacionalidad"  />
+                                        </span>
+                                    </row>
+                                    <row>
+                                        <span style="float:right">No. de Hermanos(*) </span>
+                                        <intbox id="hermanos"  />
+                                                           
+                                    </row>
+                                    <row>
+                                        <span style="float:right">Lugar Ocupa  (*) :
+                                        </span>
+                                        <span>
+                                            <spinner value="1" cols="2" id="lugar"  constraint="no negative,no zero,min 0 max 20" />
+                                                           Con quién vive (*):
+                                            <textbox id="vivecon"  />
+                                        </span>
+                                    </row>
+                                    <row>
+
+ 
+
+
+
+                                        <span style="float:right">Ingresos:</span>
+                                        <span>
+                                                           Padre:
+                                            <intbox id="ingpadre" cols="10"  />
+                                                            Madre:
+                                            <intbox id="ingmadre" cols="10"   />
+                                                            Otros:
+                                            <intbox id="ingotros" cols="10"   />
+                                        </span>
+                                    </row>
+                                    <row>
+                                        <span style="float:right">Tipo Vivienda
+                                            <span style="color:blue"> (*)</span>:
+                                        </span>
+                                        <span>
+                                            <radiogroup Id="casa" >
+                                                <radio selected="true" label="Propia"/>
+                                                <radio label="Arrendada"/>
+                                                <radio label="Prestada"/>
+                                                <radio label="Anticresis"/>
+                                                <radio label="Prestamo"/>
+                                                <radio label="Departamento"/>
+                                                <radio label="Otros"/>
+                                            </radiogroup>
+                                        </span>
+                                    </row>
+                                    <row>
+                                        <span style="float:right">Servicios
+                                            <span style="color:blue"> (*)</span>:
+                                        </span>
+                                        <span>
+
+                                            <checkbox id="luz" label="Luz Electrica"/>
+                                            <checkbox id="agua"  label="Agua"/>
+                                            <checkbox id="sshh"  label="SS.HH."/>
+                                            <checkbox id="pozo"  label="Pozo Séptico"/>
+                                            <checkbox id="telefonob"  label="Teléfono"/>
+                                            <checkbox id="internet"  label="Internet"/>
+                                        </span>
+
+                                    </row>
+                              
+                                       <row>
+
+                                    <span style="float:right;font-size:11px">
+                                        <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
+                                    </span>
+                                    <span>
+
+                                        <checkbox id="discapacidad" label="SI" onCheck="tipodiscapacidad.readonly = self.checked? false: true" />
+                                        <label style="font-size:11px"  value="Describa su Discapacidad" id="t160"/>
+                                        <textbox    id="tipodiscapacidad" maxlength="100" cols="30" rows="1"  readonly="true"  />
+
+                                    </span>
+                                </row>
+                                </rows>
+
+                            </grid>
+
+                        </panelchildren>
+                    </panel>
+
+                </tabpanel>
+
+                <tabpanel>
 
                     <panel height="370px" style="margin-bottom:10px"
                            title="Búsquedas" border="normal">
@@ -1273,7 +1485,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <button  image="/images/imprimir.gif" id="acta"  label="Acta" disabled="true"  onClick='showReport("AM")'/>
                 <button  image="/images/imprimir.gif" id="certificado"  label="Certificado" disabled="true"  onClick='showReport("CM")' />
                 <button  image="/images/imprimir.gif" id="claveprint"  label="Clave" disabled="true"  onClick='showReport("CL")' />
-                <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar(Matricula)" disabled="true"  onClick="eliminar();"/>
             </hbox>
         </vbox>
     </window>
