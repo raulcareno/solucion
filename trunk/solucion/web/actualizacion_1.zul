@@ -67,8 +67,8 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
         <caption label="Bloquear estudiantes para el consultar notas" />
         <vbox>
             <hbox>
-                 <textbox id="texto" />
-                <button  id="btnbuscar" label="Buscar" onClick="busqueda()" />
+                 <textbox id="texto" constraint="no empty: Ingrese un Apellido antes de buscar" />
+                <button  id="btnbuscar" label="Buscar" onClick="texto.getValue(); busqueda();" />
                 <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
 
             </hbox>
@@ -90,9 +90,7 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
         <columns>
             <column  label="Cod"/>
             <column  label="Estudiantes"/>
-            <column  label="Identificacion"/>
-            <column label="Estado"/>
-            <column label=" "/>
+            <column  label="Bloquear"/>
         </columns>
         <rows id="filas" use="bean.pendientes_1">
         </rows>

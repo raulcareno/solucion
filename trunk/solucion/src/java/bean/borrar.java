@@ -5,6 +5,8 @@
 package bean;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import jcinform.persistencia.Inscripciones;
 import jcinform.procesos.Administrador;
@@ -34,9 +36,18 @@ ArrayList ar = new ArrayList();
           
            String a = "ms";
             Radiogroup ras = null;
+            List l = ras.getChildren();
+            for (Iterator it = l.iterator(); it.hasNext();) {
+               Radio object = (Radio)it.next();
+               if(object.getLabel().equals(object)){
+                   object.setSelected(true);
+                   break;
+               }
+
+           }
             Radio ra = new Radio(a);
              ra.setSelected(true);
-
+ras.setSelectedItem(ra);
              ras.getSelectedItem().getLabel();
 
              
