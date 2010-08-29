@@ -16,7 +16,7 @@ Session a = Sessions.getCurrent();
      }
      
  void salir(){
-        Executions.sendRedirect("login.zul");
+        Executions.sendRedirect("loginEstudiantes.zul");
         Session a = Sessions.getCurrent();
         a.removeAttribute("userEstudiante");
         //a.invalidate();

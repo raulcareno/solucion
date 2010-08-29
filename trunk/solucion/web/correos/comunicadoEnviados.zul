@@ -17,9 +17,7 @@
     Permisos permiso = new Permisos();
     Estudiantes estudiante = ses.getAttribute("userEstudiante");
 
-
-     List allEvents = adm.query("Select o from Correos as o where o.remitente = '"+estudiante.getCodigoest()+"' " +
-        "and  o.tiporemitente = 'E' and o.eliminado = false and o.archivado = false ");
+ 
 public void buscar(){
      List allEvents = adm.query("Select o from Correos as o where o.remitente = '"+estudiante.getCodigoest()+"' " +
         "and  o.tiporemitente = 'E' and o.eliminado = false and o.archivado = false order by o.fecha ");
@@ -141,7 +139,7 @@ public void buscar(){
                     <row>
                         <span style="float:right"> Texto:</span>
 
-                        <textbox rows="12" width="420px" id="contenido"  maxlength="100" cols="50" readonly="true"   />
+                        <fckeditor   customConfigurationsPath="/myconfig.js"   toolbarSet="Ninguno"   id="contenido" />
                     </row>
 
                 </rows>

@@ -35,13 +35,14 @@ public void guardar(){
     correo.setArchivado(false);
     correo.setEliminado(false);
     correo.setFecha(new Date());
-    correo.setTiporemitente("X");
+    correo.setTiporemitente("R");
     correo.setLeido(false);
 
             int a=0;
             for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
                     Listitem li  = (Listitem)it.next();
                     Empleados empe = (Empleados)li.getValue();
+                    correo.setTipodestinatario("P");
                         correo.setDestinatario(empe.getCodigoemp());
                         correo.setDestinatarion(empe.getApellidos()+" "+ empe.getNombres());
                         adm.guardar(correo);
@@ -129,58 +130,56 @@ Messagebox.show("Mensaje enviado con Éxito...!", "Administrador Educativo", Mes
             Media media0 = Fileupload.get();
 
 
-        if (media0 instanceof AMedia) {
-                AMedia media = (AMedia) media0;
-               
-                //String tipo = "."+media.getFormat();
-                String nombre= media0.getName();
-                try{
-                    data = media.getByteData();
-                    
-                }catch(Exception e){
-                    try{
-                    data = media.getStringData().getBytes();
-                    }catch(Exception ax){
+                        if (media0 instanceof AMedia) {
+                                AMedia media = (AMedia) media0;
 
-                             Messagebox.show("No puede adjuntar este tipo de archivos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                             return;
-                    }
-                    
+                                //String tipo = "."+media.getFormat();
+                                String nombre= media0.getName();
+                                try{
+                                    data = media.getByteData();
 
-                }
-                nombrearchivo.value = media0.getName();
-             //   FileOutputStream out = new FileOutputStream("c:\\"+nombre);
-               // out.write(data);
-                //out.flush();
-                //out.close();
-}
+                                }catch(Exception e){
+                                    try{
+                                    data = media.getStringData().getBytes();
+                                    }catch(Exception ax){
+
+                                             Messagebox.show("No puede adjuntar este tipo de archivos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                             return;
+                                    }
+
+
+                                }
+                                nombrearchivo.value = media0.getName();
+                             //   FileOutputStream out = new FileOutputStream("c:\\"+nombre);
+                               // out.write(data);
+                                //out.flush();
+                                //out.close();
+                }else{
+                                   data =  media0.getByteData();
+                                   nombrearchivo.value = media0.getName();
+                   }
+
+
+
 		}
 
 
                                 </attribute>
                             </button>
+                               <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"   onClick="guardar();"/>
                         </span>
                     </row>
                     <row>
                         <span style="float:right;align:top"> Mensaje</span>
         
-                        <textbox rows="10"  width="420px" id="contenido"  maxlength="100" cols="50"  />
+                        <fckeditor   customConfigurationsPath="/myconfig.js"   toolbarSet="Simple"   id="contenido" />
                     </row>
 
     
  
                 </rows>
             </grid>
-            <vbox>
-                <vbox>
-                    <hbox>
-                        <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"   onClick="guardar();"/>
-    
-                    </hbox>
-                </vbox>
-
-            </vbox>
-
+            
       
   <zscript>
         public void cargando(){

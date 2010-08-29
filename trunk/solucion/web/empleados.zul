@@ -5,7 +5,7 @@
 <?script type="text/javascript" src="/js/jquery.maskedinput.js"?>
 <?script type="text/javascript" src="/js/jquery.min.js"?>
 <?script type="text/javascript" src="/js/masks.js"?>
-    <window    title="Registro de Empleados/Profesores ...::..."  border="normal" >
+    <window    >
        <!--attribute name="onCreate">
             String command = "applyPhoneMask('"+telefono.getUuid()+"');";
             Clients.evalJavaScript(command);
@@ -49,6 +49,7 @@ void llenar(Empleados empa){
     clave.value = permiso.decriptar(empa.getClave());
     ingreso.value = empa.getFechaingreso();
     servicio.value = empa.getServicio();
+    titulo.value = empa.getTitulo();
 
        if(empa.getFoto() != null){
                     cargarFoto(empa.getFoto());
@@ -104,6 +105,7 @@ void estado(Boolean estado,Boolean modificar){
     servicio.readonly = estado;
     ingreso.disabled= estado;
     docente.disabled = estado;
+    titulo.readonly = estado;
 
 }
 
@@ -133,6 +135,8 @@ void estado(Boolean estado,Boolean modificar){
         empa.setAdventista(adventista.checked);
         empa.setDocente(docente.checked);
         empa.setServicio(servicio.value);
+        empa.setTitulo(titulo.value);
+
 
 
             org.zkoss.image.Image nueva = foto0.getContent();
@@ -356,6 +360,15 @@ empa.setPerfil(g);
                                 <datebox id="ingreso"  disabled="true"  />
                                 <span style="float:right"> Años de Servicio:</span>
                                 <intbox id="servicio" cols="5" readonly="true"  />
+
+                            </row>
+
+                             <row>
+                                <span> Título Profesional:
+                                </span>
+                                <span>
+                                     <textbox id="titulo" cols="50"  maxlength="200" readonly="true"  />
+                                </span>
 
                             </row>
 

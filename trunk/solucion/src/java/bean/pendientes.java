@@ -74,6 +74,9 @@ public class pendientes extends Rows {
         Label label3 = null;
         getChildren().clear();
         Row row = new Row();
+        try {
+
+
         for (Iterator itna = accesosList.iterator(); itna.hasNext();) {
             Matriculas vec = (Matriculas) itna.next();
             row = new Row();
@@ -108,7 +111,9 @@ public class pendientes extends Rows {
             row.setParent(this);
 
         }
-
+            } catch (Exception e) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, e);
+        }
 
 
 
