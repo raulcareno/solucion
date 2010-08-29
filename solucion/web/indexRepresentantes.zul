@@ -16,13 +16,15 @@ Session a = Sessions.getCurrent();
      }
      
  void salir(){
-        Executions.sendRedirect("login.zul");
+        Executions.sendRedirect("loginEstudiantes.zul");
         Session a = Sessions.getCurrent();
         a.removeAttribute("userRepresentante");
         //a.invalidate();
  }
 
  void ingresar(String valor){
+     if(emp.getEstado() == null)
+         emp.setEstado(true);
  
      if(emp.getEstado()){
             Messagebox.show("Proceso bloqueado por la administración, acerquese a las oficinas..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -103,8 +105,8 @@ Session a = Sessions.getCurrent();
         </div>
     </west>
     <center flex="true">
-
-        <include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/>
+ 
+        <include style="padding:3px;  " width="99%" id="xcontents" src="${requestScope.contentSrc}"/>
 
 
     </center>

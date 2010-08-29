@@ -515,7 +515,8 @@ void estado(Boolean estado,Boolean modificar){
         representante0.setOcupacionmadre(ocupacionma.value);
         representante0.setUsuario(usuarior.value);
         representante0.setClave(permiso.encriptar(claver.value));
-
+        representante0.setEstado(pendientes.checked);
+ 
          Boolean repreNuevo = false;
          Boolean estuNuevo = false;
 
@@ -538,7 +539,7 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setTelefono(telefono.value);
         estudent.setMail(mail.value);
         estudent.setFechanacimiento(nacido.value);
-        estudent.setEstado(estadoe.checked);
+        estudent.setEstado(true);
         estudent.setAdventista(adventista.checked);
         estudent.setTransporte(transporte.checked);
         estudent.setNobus(nobus.value);
@@ -1104,8 +1105,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     <checkbox id="transporte" disabled="true"/>
                                                                     <textbox id="nobus" maxlength="100" cols="40" readonly="true"  />
                                                                 </span>
-                                                                <span style="float:right"> Activo:</span>
-                                                                <checkbox id="estadoe" disabled="true"  />
+                                                                <checkbox visible="false" id="estadoe" disabled="true"  />
                                                             </row>
                                                             <row>
                                                                 <span style="float:right"> %Beca:</span>

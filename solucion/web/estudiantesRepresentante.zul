@@ -32,7 +32,7 @@ import org.zkoss.zul.Listbox;
 
 
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
+    List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = -10");
     static Estudiantes estudent = new Estudiantes();
     static Representante representante0 = new Representante();
     static Matriculas matricula = new Matriculas();
@@ -116,11 +116,10 @@ try{
   ]]>
         </zscript>
         <separator></separator>
-        <span style="font-weigth:bold">HAGA UN CLICK PARA VER INFORMACIÓN</span>
         <grid style="margin-left:25px;background-color:transparent; border:0px" width="700px">
             <rows>
                 <row style="background-color:transparent; border:0px">
-                    <panel height="200px" width="350px"   framable="true" title="Estudiantes">
+                    <panel height="200px" width="350px"   framable="true" title="1ro. Estudiantes(Haga click en un Nivel)">
                         <panelchildren>
 
                             <listbox mold="paging"  rows="8"  onSelect="move();" id="datos">
@@ -134,7 +133,7 @@ try{
 
                         </panelchildren>
                     </panel>
-                    <panel   height="200px" width="300px" framable="true" title="Niveles" >
+                    <panel   height="200px" width="300px" framable="true" title="2do. Niveles(Haga click en un Nivel)" >
                         <panelchildren>
 
                             <listbox mold="paging"  rows="8" onSelect="buscar2(((Matriculas)self.selectedItem.value));" id="datos2" >

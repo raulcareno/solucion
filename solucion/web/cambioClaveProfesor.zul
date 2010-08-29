@@ -2,7 +2,7 @@
 
 <zk  xmlns="http://www.zkoss.org/2005/zul">
     <window onCreate="cargar()">
-<zscript>
+        <zscript>
 import jcinform.persistencia.*;
 import bean.Permisos;
 import jcinform.procesos.Administrador;
@@ -21,51 +21,77 @@ Administrador adm = new Administrador();
         apellidos.value  = emp.getNombres();
         direccion.value  = emp.getDireccion();
         email.value  = emp.getEmail();
+        servicio.value = emp.getServicio();
+        telefono.value = emp.getTelefono1();
+        movil.value = emp.getTelefono2();
+        titulo.value = emp.getTitulo();
  
  }
 void guardar(){
-    Session a = Sessions.getCurrent();
-    Empleados emp = a.getAttribute("user");
-  Permisos permiso = new Permisos();
-  
-        emp.setUsuario(usuario.value);
-        emp.setClave(permiso.encriptar(clave.value));
-        emp.setDireccion(direccion.value);
-        emp.setEmail(email.value);
+          Session a = Sessions.getCurrent();
+          Empleados emp = a.getAttribute("user");
+          Permisos permiso = new Permisos();
+         emp.setUsuario(usuario.value);
+         emp.setClave(permiso.encriptar(clave.value));
+         emp.setDireccion(direccion.value);
+         emp.setEmail(email.value);
+         emp.setTelefono1(telefono.value);
+         emp.setTelefono2(movil.value);
+         emp.setServicio(servicio.value);
+         emp.setTitulo(titulo.value);
          adm.actualizar(emp);
-Messagebox.show("Datos Actualizados con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            Messagebox.show("Datos Actualizados con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            a.setAttribute("user",emp);
  }
 
-</zscript>
+        </zscript>
  
-<grid width="50%" >
-    <rows>
-        <row spans="2">
+        <grid width="50%" >
+            <rows>
+                <row spans="2">
             Cambio de Clave Profesor
-        </row>
-        <row>
+                </row>
+                <row>
             Usuario:
-            <textbox id="usuario" maxlength="20" cols="15"  />
+                    <textbox id="usuario" maxlength="20" cols="15"  />
 
-        </row>
-         <row>
+                </row>
+                <row>
             Clave:
-            <textbox id="clave" maxlength="20" cols="15"  />
-        </row>
+                    <textbox id="clave" maxlength="20" cols="15"  />
+                </row>
     
-        <row>
+                <row>
             Dirección:
-            <textbox id="direccion" maxlength="200" cols="40"  />
+                    <textbox id="direccion" maxlength="200" cols="40"  />
 
-        </row>
-        <row>
+                </row>
+                <row>
             Email:
-            <textbox id="email" maxlength="200" cols="40"  />
+                    <textbox id="email" maxlength="200" cols="40"  />
 
-        </row>
+                </row>
+                <row>
+                    <span style="float:right"> Años de Servicio:</span>
+                    <intbox id="servicio" cols="5" />
 
-    </rows>
-</grid>
- <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
-</window>
+                </row>
+                <row>
+                    <span style="float:right"> Teléfono:</span>
+                    <textbox id="telefono" maxlength="30" cols="13"  />
+                </row>
+                <row>
+                    <span style="float:right"> Móvil:</span>
+                    <textbox id="movil" maxlength="30" cols="13"  />
+                </row>
+                    <row>
+                      <span style="float:right"> Título Profesional:</span>
+                      <textbox id="titulo" cols="50"  maxlength="200"    />
+
+                    </row>
+
+            </rows>
+        </grid>
+        <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+    </window>
 </zk>

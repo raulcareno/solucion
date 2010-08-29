@@ -44,7 +44,7 @@ public void guardar(){
     correo.setArchivado(false);
     correo.setEliminado(false);
     correo.setFecha(new Date());
-    
+     correo.setTiporemitente("P");
     correo.setLeido(false);
 
 
@@ -54,12 +54,12 @@ public void guardar(){
                         for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
                                 Listitem li  = (Listitem)it.next();
                                 Estudiantes empe = (Estudiantes)li.getValue();
-                                    correo.setTiporemitente("P");
+                                    correo.setTipodestinatario("E");
                                     correo.setDestinatario(empe.getCodigoest());
                                     correo.setDestinatarion(empe.getApellido()+" "+ empe.getNombre());
                                     adm.guardar(correo);
 
-                                    correo.setTiporemitente("X");
+                                    correo.setTipodestinatario("R");
                                     correo.setDestinatario(empe.getRepresentante().getCodigorep());
                                     correo.setDestinatarion(empe.getRepresentante().getApellidos()+" "+ empe.getRepresentante().getNombres()+" -EST-  "+ empe.getNombre());
                                     adm.guardar(correo);
@@ -74,7 +74,7 @@ public void guardar(){
                         for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
                                 Listitem li  = (Listitem)it.next();
                                 Empleados empe = (Empleados)li.getValue();
-                                    correo.setTiporemitente("D");
+                                    correo.setTipodestinatario("P");
                                     correo.setDestinatario(empe.getCodigoemp());
                                     correo.setDestinatarion(empe.getApellidos()+" "+ empe.getNombres());
                                     adm.guardar(correo);
@@ -274,53 +274,45 @@ List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where
                             <attribute name="onClick">{
 
             Media media0 = Fileupload.get();
-        if (media0 instanceof AMedia) {
-                AMedia media = (AMedia) media0;
-               //String tipo = "."+media.getFormat();
-                String nombre= media0.getName();
-                try{
-                    data = media.getByteData();
-                    
-                }catch(Exception e){
-                System.out.println(""+e);
-                    try{
-                            data = media.getStringData().getBytes();
-                    }catch(Exception ax){
-                            System.out.println(""+ax);
-                             Messagebox.show("No puede adjuntar este tipo de archivos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                             return;
-                    }
-                    
+                    if (media0 instanceof AMedia) {
+                            AMedia media = (AMedia) media0;
+                           //String tipo = "."+media.getFormat();
+                            String nombre= media0.getName();
+                            try{
+                                data = media.getByteData();
 
-                }
-                nombrearchivo.value = media0.getName();
+                            }catch(Exception e){
+                            System.out.println(""+e);
+                                try{
+                                        data = media.getStringData().getBytes();
+                                }catch(Exception ax){
+                                        System.out.println(""+ax);
+                                         Messagebox.show("No puede adjuntar este tipo de archivos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                         return;
+                                }
 
-}
+
+                            }
+                            nombrearchivo.value = media0.getName();
+
+                    }else{
+                                   data =  media0.getByteData();
+                                   nombrearchivo.value = media0.getName();
+                   }
 
 		}
 
 
                             </attribute>
                         </button>
-                        Permitidos: Word, Excel,Texto
-                    </span>
+                         <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"   onClick="guardar();"/>
+                   </span>
                 </row>
                 <row>
                     <span style="float:right;align:top"> Mensaje</span>
         
-                    <textbox rows="5" width="420px" id="contenido"  maxlength="100" cols="50"  />
+                    <fckeditor   customConfigurationsPath="/myconfig.js"   toolbarSet="Simple"   id="contenido" />
                 </row>
-<row>
-    <span></span>
-      <vbox>
-            <vbox>
-                <hbox>
-                    <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"   onClick="guardar();"/>
-                </hbox>
-            </vbox>
-
-        </vbox>
-</row>
     
  
             </rows>

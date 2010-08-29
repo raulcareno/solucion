@@ -16,14 +16,13 @@
   String archivo = null;
     Permisos permiso = new Permisos();
     Representante estudiante = ses.getAttribute("userRepresentante");
-    List allEvents = adm.query("Select o from Correos as o where o.destinatario = '"+estudiante.getCodigorep()+"' " +
-        "and  o.tiporemitente = 'X' and o.eliminado = false and o.archivado = false ");
+ 
          adm.ejecutaSqlNativo("DELETE FROM correos WHERE eliminado = TRUE  AND DATEDIFF(NOW(),fecha) > 3");
 
 
 public void buscar(){
      List allEvents = adm.query("Select o from Correos as o where o.destinatario = '"+estudiante.getCodigorep()+"' " +
-        "and  o.tiporemitente = 'X' and o.eliminado = false and o.archivado = false order by o.fecha ");
+        "and  o.tipodestinatario = 'R' and o.eliminado = false and o.archivado = false order by o.fecha ");
         datos2 = new Listbox();
         int a=0;
             for (Iterator it = datos2.getItems().iterator(); it.hasNext();) {
@@ -229,7 +228,7 @@ public void buscar(){
                     <row>
                         <span style="float:right"> Texto:</span>
 
-                        <textbox rows="12" width="420px" id="contenido"  maxlength="100" cols="50" readonly="true"   />
+                        <fckeditor   customConfigurationsPath="/myconfig.js"   toolbarSet="Ninguno"   id="contenido" />
                     </row>
 
                 </rows>
