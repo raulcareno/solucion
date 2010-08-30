@@ -308,8 +308,8 @@ List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where
                          <button image="/images/guardar.gif" id="guardar123" label="Enviar Correo"   onClick="guardar();"/>
                    </span>
                 </row>
-                <row>
-                    <span style="float:right;align:top"> Mensaje</span>
+                <row spans="2">
+
         
                     <fckeditor   customConfigurationsPath="/myconfig.js"   toolbarSet="Simple"   id="contenido" />
                 </row>

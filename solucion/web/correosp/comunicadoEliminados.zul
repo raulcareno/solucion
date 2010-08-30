@@ -133,8 +133,8 @@ public void buscar(){
                         <span style="float:right"> Asunto:</span>
                         <label id="titulo"  />
                     </row>
-                    <row>
-                        <span style="float:right"> Texto:</span>
+                    <row spans="2">
+
 
                         <fckeditor   customConfigurationsPath="/myconfig.js"   toolbarSet="Ninguno"   id="contenido" />
                     </row>
