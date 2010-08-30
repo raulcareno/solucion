@@ -185,8 +185,8 @@ try{
                     </listbox>
 
                 </hbox>
-                <panel visible ="false" id="panel" framable="true" width="590px" height="270px"
-	style="position:absolute; top:5%; left:5%"
+ <panel visible ="false" id="panel" framable="true" width="600px" height="330px"
+	style="position:absolute; top:3%; left:3%"
 	 >
         <panelchildren>
 <toolbar  align="end">
@@ -251,11 +251,12 @@ try{
                         </span>  
                         
                     </row>
-                    <row>
-                        <span style="float:right"> Texto:</span>
-                    <fckeditor   customConfigurationsPath="/myconfig.js"   toolbarSet="Ninguno"   id="contenido" />
+                    <row spans="2">
+                        
+                    <fckeditor   customConfigurationsPath="/myconfig.js"   toolbarSet="Basic"   id="contenido" />
                         
                     </row>
+                  
 
                 </rows>
             </grid>
