@@ -42,10 +42,10 @@
 	<field name="sello" class="java.io.InputStream"/>
 	<field name="sistema" class="java.lang.String"/>
 	<field name="tipo" class="java.lang.String"/>
-	<field name="nota" class="java.lang.Double"/>
+	<field name="nota" class="java.lang.Object"/>
 	<field name="sello_1" class="java.io.InputStream"/>
 	<field name="contador" class="java.lang.Integer"/>
-	<variable name="SUM_nota_1" class="java.lang.Double" calculation="Sum">
+	<variable name="SUM_nota_1" class="java.lang.Object" calculation="Sum">
 		<variableExpression><![CDATA[$F{nota}]]></variableExpression>
 	</variable>
 	<background>
@@ -645,14 +645,6 @@
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#FFFFFF"/>
 							</box>
-							<staticText>
-								<reportElement x="0" y="0" width="172" height="16" forecolor="#080606"/>
-								<box rightPadding="2"/>
-								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="9" isBold="true"/>
-								</textElement>
-								<text><![CDATA[Promedio:]]></text>
-							</staticText>
 						</cellContents>
 					</crosstabTotalRowHeader>
 				</rowGroup>
@@ -747,7 +739,7 @@
 						</cellContents>
 					</crosstabTotalColumnHeader>
 				</columnGroup>
-				<measure name="notaMeasure" class="java.lang.Double" calculation="Average">
+				<measure name="notaMeasure" class="java.lang.Object" calculation="Average">
 					<measureExpression><![CDATA[$F{nota}]]></measureExpression>
 				</measure>
 				<crosstabCell width="20" height="12">
@@ -759,16 +751,16 @@
 							<bottomPen lineColor="#0B0707"/>
 							<rightPen lineColor="#0B0707"/>
 						</box>
-						<textField pattern="###0">
+						<textField pattern="">
 							<reportElement style="Crosstab Data Text" x="0" y="0" width="20" height="12" forecolor="#080606"/>
 							<textElement>
 								<font size="8"/>
 							</textElement>
-							<textFieldExpression class="java.lang.Double"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[$V{notaMeasure}+""]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="20" height="16" rowTotalGroup="contador">
+				<crosstabCell width="20" height="0" rowTotalGroup="contador">
 					<cellContents backcolor="#FEFEFE" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#0B0707"/>
@@ -777,13 +769,6 @@
 							<bottomPen lineColor="#0B0707"/>
 							<rightPen lineColor="#0B0707"/>
 						</box>
-						<textField pattern="###0.00">
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="20" height="16" forecolor="#080606"/>
-							<textElement>
-								<font size="8"/>
-							</textElement>
-							<textFieldExpression class="java.lang.Double"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
-						</textField>
 					</cellContents>
 				</crosstabCell>
 				<crosstabCell width="0" height="12" columnTotalGroup="tipo">
@@ -793,7 +778,7 @@
 						</box>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="0" height="16" rowTotalGroup="contador" columnTotalGroup="tipo">
+				<crosstabCell width="0" height="0" rowTotalGroup="contador" columnTotalGroup="tipo">
 					<cellContents backcolor="#005FB3" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -807,7 +792,7 @@
 						</box>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="0" height="16" rowTotalGroup="contador" columnTotalGroup="sistema">
+				<crosstabCell width="0" height="0" rowTotalGroup="contador" columnTotalGroup="sistema">
 					<cellContents backcolor="#005FB3" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#FFFFFF"/>
