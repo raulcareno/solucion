@@ -78,9 +78,21 @@ public class ReporteNotasDataSource implements JRDataSource{
               }
 
               
+            valor = nodo.getNota().toString();
+            if(nodo.getNota().toString().equals("00"))
+                valor = "";
+//            if(valor.equals(""))
+//                valor = "0";
+//            System.out.println("NOTA: "+valor);
+//            if(nodo.getNota().toString().matches("[0-9]"))
+//                    System.out.println("**-CONTIENE NUMEROS");
+//            if(nodo.getNota().toString().matches("[A-Z]"))
+//                System.out.println("CONTIENE LETRAS**");
 
-            valor = nodo.getNota();
+            //valor = new Double(nodo.getNota().toString());
+            
 //                System.out.println("NOTA: "+valor);
+
             } catch (Exception e) {
 //                System.out.println("fieldcargar: "+e);
             }

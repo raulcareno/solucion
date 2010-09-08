@@ -46,7 +46,7 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
 
 
   Boolean verificar(String accion){
-        return permiso.verificarPermiso("Accesos",accion);
+        return permiso.verificarPermiso("Pendientes",accion);
 
     }
 
