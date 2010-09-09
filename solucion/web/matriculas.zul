@@ -921,8 +921,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                         <panelchildren>
                                             <borderlayout>
                                                 <center flex="true">
-                                                    <div id="viewer" style="overflow:auto;">
-                                                        <grid width="99%">
+
+                                                        <grid width="99%"  height="100%">
                                                             <rows>
 
                                                                 <row>
@@ -982,7 +982,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                                                             </rows>
                                                         </grid>
-                                                    </div>
+
                                                 </center>
                                                 <east splittable="true" size="20%"  flex="true">
                                                     <grid>
@@ -1194,7 +1194,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             </row>
                             <row>
                                 <span style="float:right"> Dirección(*):</span>
-                                <textbox id="direccionre" maxlength="100" cols="40"  readonly="true"    />
+                                <span><textbox id="direccionre" maxlength="100" cols="40"  readonly="true"    />
+                                
+                                </span>
                                 <span style="float:right"> Profesión:</span>
                                 <textbox id="profesionpa" maxlength="100" cols="40"  readonly="true"    />
                             </row>
@@ -1202,7 +1204,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <span style="float:right"> Teléfono:</span>
                                 <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
                                 <span style="float:right"> Dirección:</span>
+                                <span>
                                 <textbox id="direccionpa" maxlength="100" cols="40"  readonly="true"    />
+                                        <button label="..." onClick="direccionpa.value = direccion.value" />
+                                </span>
 
 
                             </row>
@@ -1210,7 +1215,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <span style="float:right"> Email:</span>
                                 <textbox id="emailre" maxlength="100" cols="40"  readonly="true"    />
                                 <span style="float:right"> Teléfono:</span>
+                                <span>
                                 <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
+                                <button label="..." onClick="telefonopa.value = telefono.value" />
+                                </span>
 
 
                             </row>
@@ -1299,13 +1307,18 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <span></span>
                                 <span></span>
                                 <span style="float:right"> Dirección:</span>
-                                <textbox id="direccionma" maxlength="100" cols="40"  readonly="true"    />
+                                <span><textbox id="direccionma" maxlength="100" cols="40"  readonly="true"    />
+                                        <button label="..." onClick="direccionma.value = direccion.value" />
+                                </span>
                             </row>
                             <row>
                                 <span></span>
                                 <span></span>
                                 <span style="float:right"> Teléfono:</span>
+                                <span>
                                 <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
+                                <button label="..."  onClick="telefonoma.value = telefono.value" />
+                                </span>
                             </row>
                             <row>
                                 <span></span>
