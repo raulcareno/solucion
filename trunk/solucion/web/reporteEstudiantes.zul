@@ -590,8 +590,8 @@ mates.disabled = true;
             LCART.visible = per.verificarPermisoReporte("LCART", "Ingresar");
             LCLA.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
             LCLA2.visible = per.verificarPermisoReporte("LCLA2", "Ingresar");
-            LCLA3.visible = per.verificarPermisoReporte("LCLA3", "Ingresar");
-            LCLA4.visible = per.verificarPermisoReporte("LCLA4", "Ingresar");
+            LCLA3.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
+            LCLA4.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
             LCOR.visible = per.verificarPermisoReporte("LCOR", "Ingresar");
 
             LREP.visible = per.verificarPermisoReporte("LREP", "Ingresar");

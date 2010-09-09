@@ -30,7 +30,7 @@ int k=0;
  for (Iterator it = trimestres.iterator(); it.hasNext();) {
               Trimestres trime = (Trimestres) it.next();
               List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
-              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"'  and o.esdisciplina = true  order by o.orden");
               int orden = 0;
               int codigo=0;
 
