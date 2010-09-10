@@ -390,15 +390,19 @@ void modificar(){
 }
 void eliminar(){
   if(verificar("Eliminar")){
-        try{
-             adm.eliminarObjeto(Notanotas.class, new Integer(codi.value));
-             adm.eliminarObjeto(Sistemacalificacion.class, codigo.value);
-                permiso.auditar("Aportes","Eliminar",""+nombre.value);
-             llenarArbol();
-            mostrarTodos();
-             Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-        }catch(Exception e){
-            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+  int val = Messagebox.show("¿Seguro de eliminar, puede causar la pérdida de notas, si ya tiene registrado?", "Seguridad",  Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+  if(val == 16){
+
+                    try{
+                         adm.eliminarObjeto(Notanotas.class, new Integer(codi.value));
+                         adm.eliminarObjeto(Sistemacalificacion.class, codigo.value);
+                            permiso.auditar("Aportes","Eliminar",""+nombre.value);
+                         llenarArbol();
+                        mostrarTodos();
+                         Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    }catch(Exception e){
+                        Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    }
         }
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);

@@ -10,6 +10,7 @@ import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Representante;
 import jcinform.procesos.Administrador;
+import org.zkoss.zhtml.Messagebox;
 
 /**
  *
@@ -20,7 +21,9 @@ public class generaClaves {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args){
+        
+//        int val = Messagebox.show("¿Seguro de eliminar, puede causar la pérdida de notas, si ya tiene registrado?", "Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
         // TODO code application logic here
         String tipo = "REP";
         Administrador adm = new Administrador();
