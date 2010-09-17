@@ -371,21 +371,13 @@ cerrar.setVisible(true);
         }
 
 void campos(String valor){
-curs.setSelectedIndex(0);
-mates.disabled = true;
-        if(valor.equals("CM") || valor.equals("AM")){
-            curs.disabled = false;
-            
-            titulo.value = "Listado de Estudiantes";
-        } else if(valor.equals("INS") || valor.equals("MAT") || valor.equals("RET") ){
+    curs.setSelectedIndex(0);
+    mates.disabled = true;
+    curs.disabled = false;
+        if(valor.equals("INS") || valor.equals("MAT") || valor.equals("RET") || valor.equals("LMAT2") ){
             curs.disabled = true;
             mates.disabled = true;
             titulo.value = "Listado de Estudiantes";
-        }else if(valor.equals("LMAT") || valor.equals("LCLA") || valor.equals("LCLA2") || valor.equals("LCOR") || valor.equals("LREP") || valor.equals("LCAR")){
-            curs.disabled = false;
-            mates.disabled = true;
-            titulo.value = "Listado de Estudiantes";
-
         }
         if(valor.equals("CM") ||  valor.equals("CM2") )
             titulo.value = "Certificado de Matricula";
@@ -398,7 +390,7 @@ mates.disabled = true;
         if(valor.equals("RET"))
             titulo.value = "Listado de Retirados";
         if(valor.equals("LMAT") || valor.equals("LMAT2"))
-            titulo.value = "Listado de Matriculados";
+            titulo.value = "Listado de Matriculados por Curso";
         if(valor.equals("LCAR"))
             titulo.value = "Carné Estudiantil";
         if(valor.equals("LCLA"))
