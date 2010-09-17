@@ -799,7 +799,7 @@ boolean validarRepresentante(){
                                         <intbox   cols="5"  visible="false"    id="codigo"  />
                                         <textbox visible="false"    id="codigoclave"  />
                                                                          
-                                        <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)"  id="cedula"  />
+                                        <textbox maxlength="20" cols="13" onChange="verificarCedula(self.value)"  id="cedula"  />
                                     (no obligatorio)
                                     </span>
                                 </row>
