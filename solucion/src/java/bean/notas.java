@@ -934,7 +934,7 @@ public class notas extends Rows {
          List total = adm.query("Select o.curso, count(o) from Matriculas as o"
                  + " where o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' "
                  + "group by o.curso  order by o.curso.secuencia, o.curso.paralelo.descripcion ");
-          for (Iterator it = total.iterator(); it.hasNext();) {
+          for(Iterator it = total.iterator(); it.hasNext();) {
               Object object[] = (Object[]) it.next();
                 Nota n = new Nota();
               Cursos cu = (Cursos) object[0];
