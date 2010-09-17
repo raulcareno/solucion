@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="principales" >
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.util.logging.Level;
+  import java.util.logging.Logger;
+import java.util.Vector;
+import bean.matriculasBean;
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.notas;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+
+    Administrador adm = new Administrador();
+    static Estudiantes estudent = new Estudiantes();
+    static Representante representante0 = new Representante();
+    static Matriculas matricula = new Matriculas();
+ Session ses = Sessions.getCurrent();
+ Periodo periodo = (Periodo) ses.getAttribute("periodo");
+ Permisos permiso = new Permisos();
+    List cursos = adm.query("Select o from Cursos as o "
+    + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"' order by o.secuencia ");
+Cursos sel = new Cursos(-1);
+sel.setDescripcion("[SELECCIONE UN CURSO]");
+cursos.add(0,sel);
+    Object media = null;
+
+public void guardar(){
+        if(hasta.selectedItem.value == -1 || desde.selectedItem.value == -1){
+            alert("Seleccione el Origen y Destino");
+            return;
+        }
+        Set  selec =  datos.getSelectedItems();
+        for (Iterator it = selec.iterator(); it.hasNext();) {
+                        Listitem object = (Listitem)it.next();
+                             List children = object.children;
+                              Matriculas cor =   object.getValue();
+                              cor.setCurso(hasta.selectedItem.value);
+                              adm.actualizar(cor);
+        }
+        buscar(desde.selectedItem.value);
+        buscar2(hasta.selectedItem.value);
+
+            permiso.auditar("Asignar Cursos","Guardar","D: "+desde.selectedItem.value+" H: "+hasta.selectedItem.value);
+}
+
+public void guardar2(){
+        if(hasta.selectedItem.value == -1 || desde.selectedItem.value == -1){
+            alert("Seleccione el Origen y Destino"); return;
+        }
+
+        Set  selec =  datos2.getSelectedItems();
+        for (Iterator it = selec.iterator(); it.hasNext();) {
+                        Listitem object = (Listitem)it.next();
+                             List children = object.children;
+                              Matriculas cor = object.getValue();
+                              cor.setCurso(desde.selectedItem.value);
+                              adm.actualizar(cor);
+        }
+        buscar(desde.selectedItem.value);
+        buscar2(hasta.selectedItem.value);
+permiso.auditar("Asignar Cursos","Guardar","D: "+hasta.selectedItem.value+" H: "+desde.selectedItem.value);
+
+}
+
+void buscar(Cursos cur){
+  List empleadosEncontrados = adm.query("Select o from Matriculas as o " +
+        " where o.curso.codigocur  = '"+cur.getCodigocur()+"' order by o.estudiante.apellido");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Matriculas acceIt = (Matriculas) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getEstudiante().getApellido()+" "+acceIt.getEstudiante().getNombre()));
+                      datos.appendChild(li);
+             }
+
+    }
+
+      void buscar2(Cursos cur){
+  List empleadosEncontrados = adm.query("Select o from Matriculas as o " +
+        " where o.curso.codigocur  = '"+cur.getCodigocur()+"' order by o.estudiante.apellido");
+        datos2 = new Listbox();
+        int a=0;
+            for (Iterator it = datos2.getItems().iterator(); it.hasNext();) {
+                    datos2.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Matriculas acceIt = (Matriculas) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getEstudiante().getApellido()+" "+acceIt.getEstudiante().getNombre()));
+                      datos2.appendChild(li);
+             }
+
+    }
+
+
+  
+
+
+
+  ]]>
+        </zscript>
+     
+
+        <grid>
+            <rows>
+                <row>
+                    <span> DESDE:
+                        <listbox mold="select" id="desde" width="460px" onSelect="buscar(self.selectedItem.value);">
+                            <listitem  forEach="${cursos}" value="${each}">
+                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                            </listitem>
+                        </listbox>
+                    </span>
+                    <span>
+                            HASTA:
+                        <listbox mold="select" id="hasta" width="460px" onSelect="buscar2(self.selectedItem.value);">
+                            <listitem  forEach="${cursos}" value="${each}" >
+                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                            </listitem>
+                        </listbox>
+                    </span>
+                </row>
+                <row>
+                    <listbox  id="datos" multiple="true" checkmark="true" rows="60"  mold="paging" height="350px"  width="100%">
+                        <listhead>
+                            <listheader label="Seleccion de Todos"  sort="auto"/>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.apellido} ${each.nombre}" />
+                        </listitem>
+                    </listbox>
+                    <listbox  id="datos2" multiple="true" checkmark="true"  rows="60" mold="paging" height="350px"  width="100%">
+                        <listhead>
+                            <listheader label="Seleccion de Todos"  sort="auto"/>
+
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+
+                            <listcell label="${each.apellido} ${each.nombre}" />
+
+                        </listitem>
+                    </listbox>
+                </row>
+                <row>
+                    <span style="float:right">
+                        <button image="/images/anadir.png" id="guardar" label="Añadir al Curso"  disabled="false"  onClick="guardar();"/>
+                    </span>
+                    <button image="/images/quitar.png" id="guardar2" label="Quitar del Curso"  disabled="false"  onClick="guardar2();"/>
+                </row>
+            </rows>
+        </grid>
+           
+     
+    </window>
+
+
+</zk>
