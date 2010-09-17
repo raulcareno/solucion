@@ -925,6 +925,32 @@ public class notas extends Rows {
 
 
     }
+
+      public JRDataSource conteoMatriculas() {
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+         List<Nota> lisNotas = new ArrayList();
+         List total = adm.query("Select o.curso, count(o) from Matriculas as o"
+                 + " where o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' "
+                 + "group by o.curso  order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+          for (Iterator it = total.iterator(); it.hasNext();) {
+              Object object[] = (Object[]) it.next();
+                Nota n = new Nota();
+              Cursos cu = (Cursos) object[0];
+              Long a = (Long) object[1];
+              n.setCurso(cu);
+              n.setNota(a);
+                lisNotas.add(n);
+          }
+                
+
+        ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotas);
+        return ds;
+
+
+    }
+
     //Promedio por curso
 
     public JRDataSource mejoresporcurso(Sistemacalificacion sistema) {
