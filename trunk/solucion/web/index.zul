@@ -214,7 +214,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                     <toolbarbutton  image="/images/exit.gif" style="background:transparent;color:white;font-weight:bold;font-size:9px;font-family: Arial, Helvetica, sans-serif"  label=" [Cerrar Sesión]" onClick="salir()"/>
                                     <separator orient="vertical" /> |
                                     <separator orient="vertical" />
-                                    <toolbarbutton style="background:transparent;font-size:9px;color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" image="/images/candado.gif" label="Cambiar Clave" onClick='ingresar("/cambioClaveProfesor.zul")'/>
+                                    <toolbarbutton style="background:transparent;font-size:9px;color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" image="/images/candado.gif" label="Cambiar Clave" onClick='cambioC("/cambioClaveProfesor.zul")'/>
 
                                     <separator orient="vertical" /> |
                                     <separator orient="vertical" />
