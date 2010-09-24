@@ -29,7 +29,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
             }
             void ingresar(Listitem item ){
             try{
-                        
+                       
                         if(buscar("c" + (String)item.getId())){
                                    Tab newtb= new Tab(""+item.label);
                                     newtb.setSelected(true);
@@ -237,7 +237,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
             <div>
                 <panel width="100%" height="100%"  border="normal"  collapsible="true" >
                     <panelchildren style="padding:0px;" >
-                        <tabbox id="tb" width="100%" height="460px" mold="accordion-lite">
+                        <tabbox onSelect="a1.clearSelection(); a2.clearSelection(); a3.clearSelection(); a4.clearSelection(); a5.clearSelection();"  id="tb" width="100%" height="460px" mold="accordion-lite">
                             <tabs>
                                 <tab image="/images/matricular.gif" label="Matriculación" />
                                 <tab  image="/images/barra.png" label="Notas" />
@@ -246,8 +246,8 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                 <tab image="/images/varios.gif"  label="Varios" />
                             </tabs>
                             <tabpanels>
-                                <tabpanel height="220px">
-                                    <listbox onSelect ="ingresar(self.selectedItem)" >
+                                <tabpanel  height="220px">
+                                    <listbox id="a1" onSelect ="ingresar(self.selectedItem)" >
                                         <listitem  id="Cursos" label="Cursos" image="/images/cursos.png" value="/cursos.zul"/><listitem/>
                                         <listitem id="Matricular" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" /><listitem/>
                                         <listitem id="Matricular2" label="Asignar Cursos" image="/images/asignar.png"  value="/asignarmatriculas.zul" /><listitem/>
@@ -258,7 +258,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                 </tabpanel>
                                 <tabpanel height="220px"><!--NOTAS-->
 
-                                    <listbox onSelect ="ingresar(self.selectedItem)"  >
+                                    <listbox id="a2"  onSelect ="ingresar(self.selectedItem)"  >
                                         <listitem id="Trimestres" label="Trim.Bim.Quim." image="/images/textos.png" value="/trimestres.zul" /><listitem/>
                                         <listitem id="Aportes" image="/images/llave.gif"  label="Aportes" value="/aportes.zul"/><listitem/>
                                         <listitem id="Distributivo" label="Distributivo"  image="/images/distributivo.png" value="/distributivo.zul" /><listitem/>
@@ -271,7 +271,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                     </listbox>
                                 </tabpanel>
                                 <tabpanel height="220px"><!--ADMINISTRACION-->
-                                    <listbox onSelect ="ingresar(self.selectedItem)"  >
+                                    <listbox id="a3"  onSelect ="ingresar(self.selectedItem)"  >
                                                  
                                         <listitem id="Accesos" image="/images/key.png" label="Accesos" value="/accesos.zul"/><listitem/>
                                         <listitem id="Auditoria" image="/images/auditoria.gif" label="Auditoria" value="/auditoria.zul"/><listitem/>
@@ -286,7 +286,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                     </listbox>
                                 </tabpanel>
                                 <tabpanel height="220px"><!--GRADOS-->
-                                    <listbox onSelect ="ingresar(self.selectedItem)"  >
+                                    <listbox id="a4"  onSelect ="ingresar(self.selectedItem)"  >
                                         <listitem id="Notas_Primero_Quinto" image="/images/llave.gif"  label="Record Academico" value="/notasRecord.zul"/><listitem/>
                                         <listitem id="Materias_de_Grado"   image="/images/distributivo.png" label="Materias de Grado" value="/materiasdeGrado.zul"/><listitem/>
                                         <listitem id="Notas_de_Grado"  image="/images/notas.png"  label="Notas de Grado" value="/cursosIngresonotasGrado.zul"/><listitem/>
@@ -296,7 +296,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                     </listbox>
                                 </tabpanel>
                                 <tabpanel height="220px"><!--VARIOS-->
-                                    <listbox onSelect ="ingresar(self.selectedItem)"  >
+                                    <listbox id="a5"  onSelect ="ingresar(self.selectedItem)"  >
                                         <listitem  id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correoInterno.zul"/><listitem/>
                                         <listitem  id="Correo_Interno" image="/images/bandeja2.png"   label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/><listitem/>
                                         <listitem id="Respaldos" image="/images/base.gif"   label="Respaldos" value="/respaldos.zul"/><listitem/>
