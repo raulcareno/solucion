@@ -41,7 +41,7 @@ public class generaClaves {
             }
         } else if (tipo.contains("EST")) {
             try {
-                List<Estudiantes> emp = adm.query("Select o from Estudiantes as o where  o.usuario is null ");
+                List<Estudiantes> emp = adm.query("Select o from Estudiantes as o where  o.usuario is null  or o.usuario = ''  ");
 
 
                 String user = "";
@@ -83,7 +83,7 @@ public class generaClaves {
             }
         } else if (tipo.contains("REP")) {
             try {
-                List<Representante> emp = adm.query("Select o from Representante as o where  o.usuario is null ");
+                List<Representante> emp = adm.query("Select o from Representante as o where  o.usuario is null or o.usuario = '' ");
 
 
                 String user = "";
