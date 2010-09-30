@@ -932,7 +932,8 @@ public class notas extends Rows {
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
          List<Nota> lisNotas = new ArrayList();
          List total = adm.query("Select o.curso, count(o) from Matriculas as o"
-                 + " where o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' "
+                 + " where o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' and  "
+                 + " o.estado in ('Matriculado','Recibir Pase') "
                  + "group by o.curso  order by o.curso.secuencia, o.curso.paralelo.descripcion ");
           for(Iterator it = total.iterator(); it.hasNext();) {
               Object object[] = (Object[]) it.next();
