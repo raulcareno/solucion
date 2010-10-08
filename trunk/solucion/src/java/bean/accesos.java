@@ -20,12 +20,23 @@ public class accesos extends Rows {
        
     }
 
-    public void addRow(Global p) {
+    public void addRow(Global p,String tipo) {
 
+         String complemento = "";
+        if (!tipo.equals("TODOS")) {
+            complemento = " AND grupo = '"+tipo+"'";
+        }
+        String complemento2 = "";
+        if (!tipo.equals("TODOS")) {
+            complemento2 = " and o.grupo = '"+tipo+"'";
+        }
         Administrador adm = new Administrador();
-        List accesosList = adm.queryNativo("SELECT * FROM accesos WHERE perfil =  '" + p.getCodigo() + "'  "
-                + " UNION SELECT * FROM accesos WHERE (perfil IS NULL  OR perfil = 0)AND modulo NOT IN "
-                + " (SELECT modulo FROM accesos WHERE perfil =  '" + p.getCodigo() + "'  ) ", Accesos.class);
+        String query = "SELECT * FROM accesos WHERE perfil =  '" + p.getCodigo() + "' "+ complemento +"  "
+                + " UNION SELECT * FROM accesos WHERE (perfil IS NULL  OR perfil = 0) "+ complemento +"  "
+                + "AND modulo NOT IN "
+                + " (SELECT modulo FROM accesos WHERE perfil =  '" + p.getCodigo() + "'  )";
+//        System.out.println(""+query);
+        List accesosList = adm.queryNativo(query, Accesos.class);
         for (Iterator it = accesosList.iterator(); it.hasNext();) {
             Accesos object = (Accesos) it.next();
             if (object.getPerfil() == null) {
@@ -35,7 +46,7 @@ public class accesos extends Rows {
         if (accesosList.size() > 0) {
         } else {
 
-            accesosList = adm.query("Select o from Accesos as o where o.perfil is null ");
+            accesosList = adm.query("Select o from Accesos as o where o.perfil is null "+complemento2+" ");
             for (Iterator it = accesosList.iterator(); it.hasNext();) {
                 Accesos object = (Accesos) it.next();
                 object.setCodigoacc(null);
@@ -77,6 +88,7 @@ public class accesos extends Rows {
 
             label3 = new Label();
             label3.setValue("" + vec.getGrupo());
+            label3.setStyle("width:10px");
             label3.setParent(row);
 
             row.setParent(this);
