@@ -75,6 +75,10 @@ public class accesos extends Rows {
             label.setChecked(vec.getEliminar());
             label.setParent(row);
 
+            label3 = new Label();
+            label3.setValue("" + vec.getGrupo());
+            label3.setParent(row);
+
             row.setParent(this);
 
         }
@@ -106,6 +110,7 @@ public class accesos extends Rows {
                 nota.setGuardar(((Checkbox) labels.get(3)).isChecked());
                 nota.setActualizar(((Checkbox) labels.get(4)).isChecked());
                 nota.setEliminar(((Checkbox) labels.get(5)).isChecked());
+                nota.setGrupo(((Label) labels.get(6)).getValue());
 //                System.out.println(nota.getModulo()+"---"+nota.getCodigoacc());
                 if (nota.getCodigoacc() != null ) {
                     nota.setPerfil(g);
