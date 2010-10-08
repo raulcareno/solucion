@@ -31,7 +31,8 @@ int w = 0;
         if(resultado.equals("ok")){
             permiso.auditar("Accesos","Guardar",""+perfilesCombo.selectedItem.value);
             Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-             filas.addRow((Global)perfilesCombo.selectedItem.value);
+             //filas.addRow((Global)perfilesCombo.selectedItem.value);
+             filas.addRow((Global)perfilesCombo.selectedItem.value,grupo.selectedItem.value);
          }else{
             Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          }
@@ -49,9 +50,10 @@ int w = 0;
     }
    
 
-    void busqueda(Global p){
+  
+    void busqueda(Global p,String gru){
 
-                filas.addRow(p);
+                filas.addRow(p,gru);
 
     }
 
@@ -64,11 +66,26 @@ int w = 0;
 
   <hbox>  Perfiles: <label style="color:blue" id="per" value="" />
  
-		<listbox width="250px" id="perfilesCombo"  mold="select" onSelect="busqueda(self.selectedItem.value);">
+		<listbox width="250px" id="perfilesCombo"  mold="select" >
 
 			<listitem forEach="${perfiles}" value="${each}"  label="${each.descripcion}" >
             </listitem>
 		</listbox>
+        Grupos:
+
+                <listbox width="250px" id="grupo"  onSelect="busqueda(perfilesCombo.selectedItem.value,self.selectedItem.value);"  mold="select">
+                    <listitem selected="true" label="TODOS" value="TODOS"/>
+                    <listitem label="MATRICULAS" value="MATRICULAS"/>
+                    <listitem label="NOTAS" value="NOTAS"/>
+                    <listitem label="ADMINISTRACION" value="ADMINISTRACION"/>
+                    <listitem label="GRADOS" value="GRADOS"/>
+                    <listitem label="VARIOS" value="VARIOS"/>
+
+
+                    <listitem label="REPORTES" value="REPORTES" />
+                </listbox>
+
+                <button image="/images/auditoria.gif" label="Buscar"  onClick="busqueda(perfilesCombo.selectedItem.value,grupo.selectedItem.value);"/>
 
         <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
 </hbox>
@@ -92,6 +109,7 @@ int w = 0;
                         <column  width="55px" label="Agregar"/>
                         <column width="55px" label="Modificar"/>
                         <column  width="55px" label="Eliminar"/>
+                        <column  width="55px" label="Módulo"/>
                     </columns>
                     <rows id="filas" use="bean.accesos">
                     </rows>
