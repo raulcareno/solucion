@@ -94,6 +94,10 @@ public class ReporteActaDataSource implements JRDataSource{
             valor = nodo.getObservacion();
         }else if ("fechaNacimiento".equals(fieldName)) {
             valor = nodo.getEstudiante().getFechanacimiento();
+        }else if ("lugarNacimiento".equals(fieldName)) {
+            valor = nodo.getEstudiante().getLugarnacimiento();
+        }else if ("lugfecha".equals(fieldName)) {
+            valor = (nodo.getEstudiante().getLugarnacimiento()== null?"Quito":nodo.getEstudiante().getLugarnacimiento())+", "+nodo.getEstudiante().getFechanacimiento().toLocaleString().substring(0,10);
         }else if ("telefonoPa".equals(fieldName)) {
             valor = nodo.getEstudiante().getRepresentante().getTelpadre();
         }else if ("telefonoMa".equals(fieldName)) {
