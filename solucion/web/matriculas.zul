@@ -780,6 +780,7 @@ valor = valor.substring(ini+1, fin);
     }
     void limpiarRepresentante(){
             Representante object = new Representante();
+            object.setCodigorep(0);
             object.setTipoidentificacion("C");
             llenarRepresentante(object);
     }
