@@ -136,7 +136,7 @@ void doAdd(Cursos curso, MateriaProfesor materia){
 
         void showReport(String tipo) {
             //Preparing parameters
-            reportes.setSelected(true);
+            reportes.visible = true;
 
             Institucion insts = periodo.getInstitucion();
 
@@ -193,104 +193,110 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
 ]]>
     </zscript>
-    <tabbox width="100%">
-        <tabs>
-            <tab id="notasingreso" label="Notas" />
-            <tab id="reportes" label="Impresión" />
-        </tabs>
-        <tabpanels>
-            <tabpanel>
+    <panel  id="notasingreso" >
+        <panelchildren>
 
-
-
-                <grid>
-                    <rows>
-                        <row>
-                            <span style="float:right"> Curso(*):</span>
-                            <bandbox  width="400px" readonly="true"  id="bd1">
-                                <bandpopup>
-                                    <vbox>
-                                        <listbox id="curs" width="420px"
+            <grid>
+                <rows>
+                    <row>
+                        <span style="float:right"> Curso(*):</span>
+                        <bandbox  width="200px" readonly="true"  id="bd1">
+                            <bandpopup>
+                                <vbox>
+                                    <listbox id="curs" width="420px"
                                                  onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
 
-                                            <listitem forEach="${cursos}" value="${each}">
-                                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                        <listitem forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                                        </listitem>
+                                    </listbox>
+                                </vbox>
+                            </bandpopup>
+                        </bandbox>
+                        <span style="float:right"> Materias(*):</span>
+                        <span>
+                            <bandbox  width="200px" readonly="true"  id="bd2">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="mates" width="420px"
+                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
+
+                                            <listitem forEach="${materias}" value="${each}">
+                                                <listcell label="${each.descripcion}" />
 
                                             </listitem>
                                         </listbox>
                                     </vbox>
                                 </bandpopup>
                             </bandbox>
-                        </row>
-                        <row>
-                            <span style="float:right"> Materias(*):</span>
-                            <span>
-                                <bandbox  width="400px" readonly="true"  id="bd2">
-                                    <bandpopup>
-                                        <vbox>
-                                            <listbox id="mates" width="420px"
-                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
 
-                                                <listitem forEach="${materias}" value="${each}">
-                                                    <listcell label="${each.descripcion}" />
-
-                                                </listitem>
-                                            </listbox>
-                                        </vbox>
-                                    </bandpopup>
-                                </bandbox>
-
-                                <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
-
-                            </span>
-                        </row>
-                    </rows>
-                </grid>
-                <grid  height="380px" id="datos" >
-
-                    <auxhead >
-                        <auxheader colspan="2">
-                            <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
-                        </auxheader>
-                        <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
-                    </auxhead>
-                    <columns>
-                        <column width="10px"   label ="Mat."/>
-                        <column width="300px" label ="Estudiante"/>
-                        <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
-                    </columns>
-                    <rows id="filas" use="bean.notas">
-                    </rows>
-                </grid>
-                <button label="Guardar"   id="guardar2" image="/images/guardar.gif" onClick="guardar();"/>
-            </tabpanel>
-            <tabpanel>
-                <grid width="75%">
-                    <rows>
-                        <row  spans="3">
-                            <span style="color:red;font-size:14px;">
-                                Nota: imprima una vez que haya guardado las notas, sino estas no se reflejarán en el reporte
-                            </span>
-                        </row>
-                        <row>
-                            <span style="float:right"> Aporte que desea imprimir: </span>
-
-                            <listbox id="sistemasCombo" width="300px"  mold="select" >
-                                <listitem selected="true"  forEach="${sistemas}" value="${each}">
-                                    <listcell label="${each.trimestre} - ${each.nombre}" />
-                                </listitem>
-                            </listbox>
+                            <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
                             <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
-                        </row>
 
-                    </rows>
-                </grid>
+                        </span>
+                    </row>
+
+                </rows>
+            </grid>
+            <grid   id="datos" >
+
+                <auxhead >
+                    <auxheader colspan="2">
+                        <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
+                    </auxheader>
+                    <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
+                </auxhead>
+                <columns>
+                    <column width="10px"   label ="Mat."/>
+                    <column width="300px" label ="Estudiante"/>
+                    <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+                </columns>
+                <rows id="filas" use="bean.notas">
+                </rows>
+            </grid>
+            <span>
+                <button label="Guardar"   id="guardar2" image="/images/guardar.gif" onClick="guardar();"/>
+                <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+            </span>
+            
+        </panelchildren>
+    </panel>
+
+    <panel id="reportes" width="98%" height="98%" framable="true" style="position:absolute; top:1%;left:1%" visible = "false" >
+
+      
+
+        <panelchildren>
+            <toolbar  align="end">
+                <toolbarbutton style="align:right" label="CERRAR"  image ="/images/eliminar.gif" onClick='reportes.setVisible(false)' />
+            </toolbar>
+            <grid width="75%">
+                <rows>
+                    <row  spans="3">
+                        <span style="color:red;font-size:14px;">
+                                Nota: imprima una vez que haya guardado las notas, sino estas no se reflejarán en el reporte
+                        </span>
+                    </row>
+                    <row>
+                        <span style="float:right"> Aporte que desea imprimir: </span>
+
+                        <listbox id="sistemasCombo" width="300px"  mold="select" >
+                            <listitem selected="true"  forEach="${sistemas}" value="${each}">
+                                <listcell label="${each.trimestre} - ${each.nombre}" />
+                            </listitem>
+                        </listbox>
+                        <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                    </row>
+
+                </rows>
+            </grid>
 
 
-                <jasperreport id="report" />
-            </tabpanel>
-        </tabpanels>
-    </tabbox>
+            <jasperreport id="report" />
+
+        </panelchildren>
+    </panel>
     <!--button label="Recalcular"   onClick="recalculo();"/-->
 
 </window>
