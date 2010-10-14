@@ -8,6 +8,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
+ 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +23,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
@@ -44,7 +46,24 @@ public class notas extends Rows {
 //ArrayList listad = new ArrayList();
 
     private Double notaDisciplina = 0.0;
-
+ String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
+            String prom1 = "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16, Double va17){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;        if(va17 >0) cont++;  if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16+va17)/cont;     }"
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;         if(cont==0) cont = 1;           return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16)/cont;     } "
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;      if(cont==0) cont = 1;      return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15)/cont;     }"
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14){          int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;      if(cont==0) cont = 1;      return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14)/cont;     } "
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;            if(cont==0) cont = 1;       return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13)/cont;     } "
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;     if(cont==0) cont = 1;      return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12)/cont;     } "
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;          if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;      if(cont==0) cont = 1;       return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11)/cont;    } "
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10){         int cont = 0;          if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;          if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10)/cont;     } "
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;          if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;    if(cont==0) cont = 1;        return (va1+va2+va3+va4+va5+va6+va7+va8+va9)/cont;     } "
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(cont==0) cont = 1;            return (va1+va2+va3+va4+va5+va6+va7+va8)/cont;     } "
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(cont==0) cont = 1;            return (va1+va2+va3+va4+va5+va6+va7)/cont;    } "
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;      if(cont==0) cont = 1;       return (va1+va2+va3+va4+va5+va6)/cont;     }"
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;       if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5)/cont;     } "
+                    + "  Double promedio (Double va1, Double va2, Double va3, Double va4){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;    if(va4 >0) cont++;      if(cont==0) cont = 1;      return (va1+va2+va3+va4)/cont;     }  "
+                    + "  Double promedio (Double va1, Double va2, Double va3){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;      if(cont==0) cont = 1;      return (va1+va2+va3)/cont;     } "
+                    + "  Double promedio (Double va1, Double va2){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;       if(cont==0) cont = 1;         return (va1+va2)/cont; } "
+                    + "  Double promedio (Double va1){         int cont = 0;         if(va1 >0) cont++;       if(cont==0) cont = 1;       return (va1)/cont; } ";
     public notas() {
 //         Grid g;
 //         Label l;
@@ -55,21 +74,12 @@ public class notas extends Rows {
     public Boolean verificar(String formula, List<Notanotas> notas) {
 
         formula = formula.replace("()", "");
-        String redon = "public Double redondear(Double numero, int decimales) {"
-                + ""
-                + "try{"
-                + "               "
-                + " java.math.BigDecimal d = new java.math.BigDecimal(numero);"
-                + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);"
-                + "        return d.doubleValue();"
-                + "        }catch(Exception e){"
-                + "            return 0.0;"
-                + "        }"
-                + "     }";
+
 
         Interpreter inter = new Interpreter();
         try {
             inter.eval(redon);
+            inter.eval(prom1);
             for (Iterator<Notanotas> it = notas.iterator(); it.hasNext();) {
                 Notanotas notanotas = it.next();
                 inter.eval("" + notanotas.getNota() + "=1;");
@@ -105,7 +115,7 @@ public class notas extends Rows {
         tamanio = sistemas.size();
         //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
         getChildren().clear();
-        Decimalbox label = null;
+        Decimalbox notaTexto = null;
         Label label3 = null;
 
         String q = "Select distinct matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre,'[',matriculas.estado,']'), " + query + "  from matriculas "
@@ -137,7 +147,8 @@ public class notas extends Rows {
             String color = "black";
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
-                label = new Decimalbox();
+                notaTexto = new Decimalbox();
+                notaTexto.setTabindex(j);
                 label3 = new Label();
 //                 label.setAttribute("onBlur", "alert(this)");
                 try {
@@ -150,9 +161,9 @@ public class notas extends Rows {
                 if (j >= 2) {
                     Double valor = (Double) dos;
                     if (valor.equals(0.0)) {
-                        label.setValue(new BigDecimal(0));
+                        notaTexto.setValue(new BigDecimal(0));
                     } else {
-                        label.setValue(new BigDecimal(redondear((Double) dos, 2)));
+                        notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
                     }
 
                 } else {
@@ -195,12 +206,27 @@ public class notas extends Rows {
                             finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
 
                         }
+                        final double limite = ((Sistemacalificacion) sistemas.get(dat)).getNotalimite();
+                        notaTexto.addEventListener("onBlur", new EventListener() {
+                            public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
+                                //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
+                                Double valor = ((Decimalbox)event.getTarget()).getValue().doubleValue();
+                                if(valor > limite ) {
+                                    ((Decimalbox)event.getTarget()).setValue(new BigDecimal(0));
+                                    ((Decimalbox)event.getTarget()).setFocus(true);
+                                    Messagebox.show("ERROR 0001: Nota MAYOR a ["+ limite +"] \n Fuera del rango establecido", "ERROR DE VALIDACION",  Messagebox.OK, Messagebox.ERROR);
+
+                                }
+
+
+                             }
+                        });
                         if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
-                            label.setDisabled(false);
-                            label.setStyle(Shabilitado);
+                            notaTexto.setDisabled(false);
+                            notaTexto.setStyle(Shabilitado);
                         } else {
-                            label.setDisabled(true);
-                            label.setStyle(Sdeshabilitado);
+                            notaTexto.setDisabled(true);
+                            notaTexto.setStyle(Sdeshabilitado);
 
                         }
                         try {
@@ -212,21 +238,21 @@ public class notas extends Rows {
                             }
 //                            System.out.println("FECHA INICIAL: "+fecha);
                             if (fecha.getDate() == 0) {
-                                label.setDisabled(true);
-                                label.setStyle(Sdeshabilitado);
+                                notaTexto.setDisabled(true);
+                                notaTexto.setStyle(Sdeshabilitado);
                             }
                         } catch (Exception z) {
-                            label.setDisabled(true);
-                            label.setStyle(Sdeshabilitado);
+                            notaTexto.setDisabled(true);
+                            notaTexto.setStyle(Sdeshabilitado);
                         }
 
                     } else {
-                        label.setDisabled(true);
-                        label.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+                        notaTexto.setDisabled(true);
+                        notaTexto.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
 
                     }
 
-                    row.appendChild(label);
+                    row.appendChild(notaTexto);
 
                 }
 
@@ -274,10 +300,10 @@ public class notas extends Rows {
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         try {
-            String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
             System.out.println("INICIO EN: " + new Date());
             Interpreter inter = new Interpreter();
             inter.eval(redon);
+            inter.eval(prom1);
             Administrador adm = new Administrador();
             List<Notanotas> notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
             List<Sistemacalificacion> sisFormulas = adm.query("Select o from Sistemacalificacion as o "
@@ -356,7 +382,6 @@ public class notas extends Rows {
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
 
-        String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper =  '" + periodo.getCodigoper() + "'  ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
@@ -399,6 +424,7 @@ public class notas extends Rows {
                 }
                 Interpreter inter = new Interpreter();
                 inter.eval(redon);
+                inter.eval(prom1);
                 try {
                     for (Iterator<Global> it = Nmaterias.iterator(); it.hasNext();) {
                         Global global = it.next();
