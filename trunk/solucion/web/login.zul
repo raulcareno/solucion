@@ -19,7 +19,7 @@
     <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
-        <window onLoad="usuario.focus();"  onCreate="usuario.focus();"   id="winLogin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" width="460px" sizable="true">
+        <window onLoad="usuario.focus();"  onCreate="usuario.focus();cargar()"   id="winLogin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" width="460px" sizable="true">
             <zscript>
   import jcinform.persistencia.Global;
   import bean.EventDAO;
@@ -42,9 +42,9 @@
 
 
  Administrador adm = new Administrador();
-
-
-
+cargar(){
+derechos.value = "Todos los derechos reservados a JCINFORM, derecho de copia @2009-"+ ((new Date()).getYear()+1900) +", web: ";
+}
  List perfiles = adm.query("Select o from Periodo as o where o.estado = true");
   Periodo per = new Periodo(-1);
   per.setDescripcion("[Seleccione]");
@@ -172,7 +172,7 @@ void verificarSistema(){
                     </row>
                     <row style="background:transparent;border:0px"  id="claves" >
                         <span style="float:right">Contraseña:(*):</span>
-                        <textbox  onOK="verificar.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
+                        <textbox  onOK="verificar()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
                     </row>
                     <row visible="false" id="seleccione"  align="center" spans="2" style="background:transparent;border:0px">
                         <label style="float:center;font-size:16px;color:red" value="SELECCIONE UN PERIODO:"></label>
@@ -223,8 +223,9 @@ void verificarSistema(){
                 <rows>
                     <row  style="background:white;border:0px" align="center" spans="2">
                         <span>
-                            <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)5103 843 - 080 16 22 11 "/>
+                            <label id="derechos" style="font-size:10px"  />
                             <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
+                            <toolbarbutton src="http://www.jcinform.com"  label="http://www.jcinform.com" />
                         </span>
                     </row>
 
