@@ -80,7 +80,7 @@ if(resultado.equals("ok")){
         permiso.auditar("Notas","Guardar",""+((Cursos)curs.selectedItem.value)+" "+((MateriaProfesor)mates.selectedItem.value).getMateria());
         
  }else{
-    Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    Messagebox.show(resultado, "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
  }
 
 }
