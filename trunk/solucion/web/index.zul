@@ -277,6 +277,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                         <listitem id="Auditoria" image="/images/auditoria.gif" label="Auditoria" value="/auditoria.zul"/><listitem/>
                                         <listitem id="Empleados" image="/images/pensum.png" label="Empleados" value="/empleados.zul" /><listitem/>
                                         <listitem id="EmpleadosPeriodos" image="/images/eperiodo.png" label="Asignar Periodos" value="/empleadoPeriodo.zul" /><listitem/>
+                                        <listitem id="EmpleadosCursos" image="/images/eperiodo.png" label="Asignar Cursos" value="/cursosEmpleados.zul" /><listitem/>
                                         <listitem id="Equivalencias" image="/images/equivalencias.png"  label="Equivalencias" value="/equivalencias.zul" /><listitem/>
                                         <listitem id="Globales" label="Globales" image="/images/run.gif"  value="/globales.zul" /><listitem/>
                                         <listitem id="Institucion" label="Institución" image="/images/institucion.png"  value="/institucion.zul" /><listitem/>

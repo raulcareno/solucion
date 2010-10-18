@@ -214,7 +214,7 @@ public class notas extends Rows {
                                 if(valor > limite ) {
                                     ((Decimalbox)event.getTarget()).setValue(new BigDecimal(0));
                                     ((Decimalbox)event.getTarget()).setFocus(true);
-                                    Messagebox.show("ERROR 0001: Nota MAYOR a ["+ limite +"] \n Fuera del rango establecido", "ERROR DE VALIDACION",  Messagebox.OK, Messagebox.ERROR);
+                                    Messagebox.show("ERROR 0001: Nota MAYOR a ["+ limite +"] \n Fuera del rango establecido", "ERROR DE VALIDACION",  Messagebox.CANCEL, Messagebox.ERROR);
 
                                 }
 
@@ -1129,7 +1129,7 @@ public class notas extends Rows {
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true");
         if (notaFinal.size() <= 0) {
             try {
-                Messagebox.show("No ha parametrizado el Promedio Final en Aportes...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                Messagebox.show("No ha parametrizado el Promedio Final en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
                 return null;
             } catch (InterruptedException ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
@@ -1138,7 +1138,7 @@ public class notas extends Rows {
         Notanotas nfinal = notaFinal.get(0);
         if (notas.size() <= 0) {
             try {
-                Messagebox.show("No han nada que imprimir Aportes en 0 ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                Messagebox.show("No han nada que imprimir Aportes en 0 ...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
                 return null;
             } catch (InterruptedException ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
@@ -1274,7 +1274,7 @@ public class notas extends Rows {
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'    and o.sistema.espromedio = true");
         if (notaFinal.size() <= 0) {
             try {
-                Messagebox.show("No ha parametrizado el Promedio Final en Aportes...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                Messagebox.show("No ha parametrizado el Promedio Final en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
                 return null;
             } catch (InterruptedException ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
@@ -1283,7 +1283,7 @@ public class notas extends Rows {
         Notanotas nfinal = notaFinal.get(0);
         if (notas.size() <= 0) {
             try {
-                Messagebox.show("No han nada que imprimir Aportes en 0 ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                Messagebox.show("No han nada que imprimir Aportes en 0 ...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
                 return null;
             } catch (InterruptedException ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
@@ -1439,7 +1439,7 @@ public class notas extends Rows {
                 + " and o.sistema.seimprime = true  order by o.sistema.orden ");
         if (notas.size() <= 0) {
             try {
-                Messagebox.show("No hay nada que imprimir...! \n Revise en la pantalla Aportes si existen notas a imprimir", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                Messagebox.show("No hay nada que imprimir...! \n Revise en la pantalla Aportes si existen notas a imprimir", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
                 return null;
             } catch (InterruptedException ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
@@ -2186,7 +2186,7 @@ public class notas extends Rows {
                 + " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.esfinal = true  order by o.codigo ");
         if (notas.size() <= 0) {
             try {
-                Messagebox.show("No se ha parametrizado el PROMEDIO en el Acta de Grado \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                Messagebox.show("No se ha parametrizado el PROMEDIO en el Acta de Grado \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
                 return null;
             } catch (InterruptedException ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
@@ -2521,7 +2521,7 @@ public class notas extends Rows {
                 + "and o.sistema.promediofinal = 'PF' ");
         try {
             if (notas.size() <= 0) {
-                Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
                 return null;
             }
         } catch (InterruptedException ex) {

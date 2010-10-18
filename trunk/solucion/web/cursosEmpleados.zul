@@ -1,0 +1,221 @@
+
+<window  id="distributivWindow"  >
+    <zscript><![CDATA[
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+
+    Administrador adm = new Administrador();
+    Session ses = Sessions.getCurrent();
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    Permisos permiso = new Permisos();
+
+ List allEvents = adm.query("Select o from Empleados as o  where o.codigoemp in (Select m.empleado.codigoemp from Empleadoperiodo  as m where m.periodo.codigoper = '"+ periodo.getCodigoper() +"'   )  order by o.apellidos ");
+Empleados empSelec = new Empleados();
+empSelec.setCodigoemp(-2);
+empSelec.setApellidos("[Seleccione]");
+empSelec.setNombres("");
+
+allEvents.add(0,empSelec);
+
+public void buscarCursos(){
+       
+      List empleadosEncontrados = adm.query("Select o.curso from EmpleadoCurso as o " +
+      " where o.profesor.codigoemp = '"+ ((Empleados)datos.selectedItem.value).getCodigoemp() +"' " +
+      " and o.curso.periodo.codigoper = '"+ periodo.getCodigoper() +"' ");
+
+        cursos = new Listbox();
+        int a=0;
+            for (Iterator it = cursos.getItems().iterator(); it.hasNext();) {
+                    cursos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Cursos acceIt = (Cursos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                       li.appendChild(new Listcell(acceIt+""));
+                      cursos.appendChild(li);
+             }
+ 
+   empleadosEncontrados = adm.queryNativo(" Select m.* from Cursos as m " +
+           " where m.codigocur not in (Select o.curso from Empleado_Curso as o " +
+           " where o.profesor = '"+ ((Empleados)datos.selectedItem.value).getCodigoemp() +"') and m.periodo = '"+ periodo.getCodigoper()+"' " +
+           "    order by m.secuencia  ",Cursos.class);
+
+        cursos2 = new Listbox();
+        //System.out.println (""+empleadosEncontrados);
+        int a=0;
+            for (Iterator it = cursos2.getItems().iterator(); it.hasNext();) {
+                    cursos2.getItems().remove(a);
+                }
+
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Cursos acceIt = (Cursos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                       li.appendChild(new Listcell(acceIt+""));
+                      cursos2.appendChild(li);
+             }
+
+
+
+}
+
+
+            public void guardar(){
+                String sqls = "Delete from EmpleadoCurso where profesor.codigoemp = '"+ ((Empleados)datos.selectedItem.value).getCodigoemp() +"' and curso.periodo.codigoper = '"+  periodo.getCodigoper() +"'  ";
+                System.out.println(sqls);
+                    adm.ejecutaSql(sqls);
+
+                    for (int i = 0; i <= cursos.getItems().size()-1; i++) {
+                        Cursos tr0 = ((Cursos)((Listitem)cursos.getItems().get(i)).getValue());
+                        EmpleadoCurso nuevo = new EmpleadoCurso();
+                        nuevo.setCodigo(adm.getNuevaClave("EmpleadoCurso","codigo"));
+                        nuevo.setCurso(tr0);
+                        nuevo.setProfesor(((Empleados)datos.selectedItem.value));
+                        adm.guardar(nuevo);
+                    }
+          }
+
+    Boolean verificar(String accion){
+        return permiso.verificarPermiso("Aportes",accion);
+
+    }
+
+
+
+
+
+
+]]>
+    </zscript>
+    <grid width="98%">
+        <rows>
+            <row spans="2">
+                <span>
+                    <label style="color:red" value="SELECCIONE UN PROFESOR"/>
+                    <listbox  mold="select"  onSelect="buscarCursos()" id="datos" width="320px">
+                        <listhead>
+                            <listheader label="Nombres"/>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.apellidos} ${each.nombres} " />
+                        </listitem>
+                    </listbox>
+                </span>
+            </row>
+            <row>
+                <label style="color:blue"  value="CURSOS EN LOS QUE DICTA CLASES"/>
+                <label style="color:green"  value="CURSOS"/>
+            </row>
+            <row>
+
+
+
+                <listbox  checkmark="true" multiple="true" rows="10"   id="cursos" width="98%">
+                    <listhead>
+                        <listheader label="Nombres"/>
+                    </listhead>
+                </listbox>
+
+                <listbox  checkmark="true" multiple="true" rows="10"  id="cursos2" width="98%">
+                    <listhead>
+                        <listheader label="Nombres"/>
+                    </listhead>
+                </listbox>
+
+
+            </row>
+            <row>
+                <span style="float:right">
+                    <label value=""/>
+
+                    <button label="QUITAR SELECCIONADOS" image="/images/anadir.png" dir="reverse" tooltiptext="Quitar Profesores">
+                        <attribute name="onClick">
+						Set items = cursos.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("Seleccion un Profesor para Quitar!");
+						} else {
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+								li.setSelected(false);
+								cursos2.appendChild(li);
+							}
+                            guardar();
+						}
+                        </attribute>
+                    </button>
+
+                </span>
+                <button label="AÑADIR SELECCIONADOS" image="/images/quitar.png" tooltiptext="Añadir Cursos">
+                    <attribute name="onClick">
+						Set items = cursos2.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("Seleccion un Curso para añadir!");
+						} else {
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+								li.setSelected(false);
+								cursos.appendChild(li);
+							}
+                            guardar();
+						}
+                        panel.visible=false;
+                    </attribute>
+                </button>
+
+            </row>
+
+
+        </rows>
+    </grid>
+
+
+
+    <vbox>
+        <hbox>
+                 
+        </hbox>
+    </vbox>
+
+
+    <panel visible ="false" id="panel" title="SELECCION DE CURSOS" framable="true" width="400px" height="300px"
+	style="position:absolute; top:7%; left:5%" >
+        <panelchildren>
+            <grid>
+                <rows>
+                    <row>
+
+
+                    </row>
+                    <row>
+                        <span>
+                            <button label="CERRAR" onClick="panel.visible=false"/>
+
+                        </span>
+
+
+
+                    </row>
+                </rows>
+
+
+            </grid>
+
+        </panelchildren>
+    </panel>
+
+
+
+</window>
+
+

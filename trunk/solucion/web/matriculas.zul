@@ -39,9 +39,18 @@ import org.zkoss.zul.Listbox;
  Session ses = Sessions.getCurrent();
  Periodo periodo = (Periodo) ses.getAttribute("periodo");
  Permisos permiso = new Permisos();
-    List cursos = adm.query("Select o from Cursos as o "
-    + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"'  ");
+Empleados user =  (Empleados)ses.getAttribute("user");
 
+
+List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
+      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+
+
+   if(cursos.size()<=0){
+             cursos = adm.query("Select o from Cursos as o "
+            + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"'  ");
+            System.out.println("ENTRO VACIO");
+   }
     Object media = null;
 
 
@@ -1042,20 +1051,13 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     <comboitem value="Femenino" label="Femenino"/>
                                                                 </combobox>
                                                             </row>
-                                                            <row>
-                                                                <span style="float:right"> Curso(*):</span>
+                                                            <row spans="4">
+                                                                <span>Curso(*):
 
-                                                                <!--listbox mold="select" disabled="true" id="curso" width="320px">
-                                                                    <listitem selected="true" forEach="${cursos}" value="${each}">
-                                                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-
-                                                                    </listitem>
-                                                                </listbox-->
-
-                                                                <bandbox  width="320px" readonly="true"  id="bd1">
+                                                                <bandbox  width="660px" readonly="true"  id="bd1">
                                                                     <bandpopup>
                                                                         <vbox>
-                                                                            <listbox id="curso" width="460px"
+                                                                            <listbox id="curso" width="660px"
                                                                                      onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
                                                                                 <listitem selected="true" forEach="${cursos}" value="${each}">
                                                                                     <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
@@ -1064,10 +1066,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                         </vbox>
                                                                     </bandpopup>
                                                                 </bandbox>
+</span>
 
-
-                                                                <span style="float:right"> Fecha Nacimiento:</span>
-                                                                <datebox id="nacido"  readonly="true"  />
+                                                                
                                                             </row>
 
                                                             <row>
@@ -1084,12 +1085,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     Inst. Anterior:
                                                                     <textbox id="institucion" readonly="true"  maxlength="30" cols="20"/>
                                                                 </span>
-                                                                <span style="float:right"> Usuario:</span>
-                                                                <span>
-                                                                    <textbox id="usuario" maxlength="30" cols="12" readonly="true"  />
-
-                                                                    <button label="Generar" onClick="generarClave(true);"/>
-                                                                </span>
+                                                                <span style="float:right"> Fecha Nacimiento:</span>
+                                                                <datebox id="nacido"  readonly="true"  />
+                                                                
                                                             </row>
                                                             <row>
                                                                 <span style="float:right"> Fec.Matricula(*):</span>
@@ -1098,15 +1096,25 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     Repite:
                                                                     <checkbox id="repite" disabled="true"/>
                                                                 </span>
-                                                                <span style="float:right"> Clave:</span>
-                                                                <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
+                                                                <span style="float:right"> Usuario:</span>
+                                                                <span>
+                                                                    <textbox id="usuario" maxlength="30" cols="12" readonly="true"  />
+
+                                                                    <button label="Generar" onClick="generarClave(true);"/>
+                                                                </span>
+
                                                             </row>
                                                             <row>
                                                                 <span style="float:right"> Transporte:</span>
+
                                                                 <span>
                                                                     <checkbox id="transporte" disabled="true"/>
                                                                     <textbox id="nobus" maxlength="100" cols="40" readonly="true"  />
                                                                 </span>
+
+                                                                <span style="float:right"> Clave:</span>
+                                                                <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
+
                                                                 <checkbox visible="false" id="estadoe" disabled="true"  />
                                                             </row>
                                                             <row>
@@ -1122,10 +1130,13 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     <checkbox id="adventista" disabled="true" /> Nuevo:
                                                                     <checkbox id="nuevo" disabled="true" />
                                                                 </span>
+                                                                
+                                                                
                                                             </row>
                                                             <row>
                                                                 <span style="float:right"> Observación:</span>
                                                                 <textbox rows="2" id="observacion"  readonly="true"  />
+                                                                
 
                                                             </row>
 
