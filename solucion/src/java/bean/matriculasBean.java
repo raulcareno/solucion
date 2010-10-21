@@ -39,7 +39,7 @@ public class matriculasBean {
         FileWriter fichero = null;
         PrintWriter pw = null;
         try {
-            fichero = new FileWriter("F:/prueba.txt");
+            fichero = new FileWriter("/home/usuario/base/datos.txt");
             pw = new PrintWriter(fichero);
                 adm.queryNativo("SELECT est.*,mat.codigomat,cur.descripcion "
                         + "FROM estudiantes est, matriculas mat, cursos cur "
