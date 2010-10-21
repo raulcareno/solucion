@@ -323,11 +323,14 @@ public JRDataSource profesores(){
                     parametros = (HashMap) arreglo.get(1);
                     report.setSrc("WEB-INF/reportes/actaslistado.jasper");
             }else if(tipo.equals("LIB")){
+                   //alert(Executions.getCurrent().getDesktop().getWebApp().getRealPath("/libreta_sub.jasper"));
 
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc("WEB-INF/reportes/libreta.jasper");
-                    parametros.put("pathSubRel", "reportes/libreta_sub.jasper");
-                    parametros.put("pathSubRel2", "reportes/libreta_subFaltas.jasper");
+                    String pat = report.getSrc().replace("libreta.jasper","");
+                    System.out.println("EL PATH: "+pat);
+                    parametros.put("pathSubRel","reportes/" );//libreta_sub.jasper
+                    parametros.put("pathSubRel2", "reportes/");//libreta_subFaltas.jasper
                    
             }else if(tipo.equals("MEJE")){
                     datasource = noti.reporteMejor(curs.getSelectedItem().getValue());
@@ -336,14 +339,14 @@ public JRDataSource profesores(){
 
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc("WEB-INF/reportes/libreta2.jasper");
-                    parametros.put("pathSubRel", "reportes/libreta_subPequeno.jasper");
-                    parametros.put("pathSubRel2", "reportes/libreta_subFaltas.jasper");
+                    parametros.put("pathSubRel", "reportes/");//libreta_subPequeno.jasper
+                    parametros.put("pathSubRel2", "reportes/");//libreta_subFaltas.jasper
 
             }else if(tipo.equals("LIB3")){
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc("WEB-INF/reportes/libreta3.jasper");
-                    parametros.put("pathSubRel", "reportes/libreta_sub.jasper");
-                    parametros.put("pathSubRel2", "reportes/libreta_sub.jasper");
+                    parametros.put("pathSubRel", "reportes/");//libreta_sub.jasper
+                    parametros.put("pathSubRel2", "reportes/");//libreta_sub.jasper
 
             }else if(tipo.equals("-1")){
                    alert("No ha seleccionado ningún reporte...!");

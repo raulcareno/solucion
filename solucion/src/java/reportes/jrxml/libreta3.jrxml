@@ -47,7 +47,7 @@
 						<subreportParameterExpression><![CDATA[$F{listaNotas}]]></subreportParameterExpression>
 					</subreportParameter>
 					<dataSourceExpression><![CDATA[$F{listaNotas}]]></dataSourceExpression>
-					<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel}]]></subreportExpression>
+					<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel}+"libreta_sub.jasper"]]></subreportExpression>
 				</subreport>
 				<line>
 					<reportElement key="line-2" x="-11" y="-35" width="551" height="1"/>

@@ -47,7 +47,7 @@
 						<subreportParameterExpression><![CDATA[$F{listaNotas}]]></subreportParameterExpression>
 					</subreportParameter>
 					<dataSourceExpression><![CDATA[$F{listaNotas}]]></dataSourceExpression>
-					<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel}]]></subreportExpression>
+					<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel}+"libreta_subPequeno.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
 		</groupHeader>
@@ -125,7 +125,7 @@
 						<subreportParameterExpression><![CDATA[$F{listaFaltas}]]></subreportParameterExpression>
 					</subreportParameter>
 					<dataSourceExpression><![CDATA[$F{listaFaltas}]]></dataSourceExpression>
-					<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel2}]]></subreportExpression>
+					<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel2}+"libreta_subFaltas.jasper"]]></subreportExpression>
 				</subreport>
 				<staticText>
 					<reportElement key="staticText-5" x="-10" y="5" width="212" height="12"/>
