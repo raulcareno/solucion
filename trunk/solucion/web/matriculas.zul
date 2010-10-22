@@ -271,9 +271,13 @@ void llenarCasa(String tCasa){
 
 }
 void llenarMatricula(Matriculas matri){
+         
          codigomat.value =matri.getCodigomat();
          accion.value = matri.getEstado();
          fechamatricula.value =matri.getFechamat();
+
+         fecharetiro.value = matri.getFecharet();
+         
          numero.value = matri.getNumero();
          folio.value = matri.getFolio();
          institucion.value = matri.getInstitucion();
@@ -283,12 +287,15 @@ void llenarMatricula(Matriculas matri){
             if(matri.getRepite()!=null){
                 repite.checked = matri.getRepite();
             }
+
          try{
             beca.value = new BigDecimal(matri.getBeca());
             otros.value = new BigDecimal(matri.getOtros());
          }catch(Exception e){}
          observacion.value = matri.getObservacion();
+         
             if(matri.getCurso() != null){
+             try{
                       for (int i = 0; i <= curso.getItems().size(); i++) {
                                     Cursos tr0 = ((Cursos)((Listitem)curso.getItems().get(i)).getValue());
                                     int primero = tr0.getCodigocur();
@@ -299,6 +306,7 @@ void llenarMatricula(Matriculas matri){
                                         break;
                                     }
                            }
+                 }catch(Exception err){System.out.println("ERROR no tiene cursos asignados COMBO CURSOS: "+err);}
 
 
             }
@@ -434,6 +442,7 @@ void estado(Boolean estado,Boolean modificar){
     curso.disabled = estado;
     accion.readonly = estado;
     fechamatricula.readonly = estado;
+    fecharetiro.readonly = estado;
     observacion.readonly= estado;
     adventista.disabled= estado;
     nuevo.disabled = estado;
@@ -599,6 +608,7 @@ void estado(Boolean estado,Boolean modificar){
         matricula.setEstudiante(estudent);
         matricula.setObservacion(observacion.value);
         matricula.setFechamat(fechamatricula.value);
+        matricula.setFecharet(fecharetiro.value);
         matricula.setCurso(curso.selectedItem.value);
         matricula.setNumero(numero.value);
         matricula.setEstado(accion.value);
@@ -1093,6 +1103,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 <span style="float:right"> Fec.Matricula(*):</span>
                                                                 <span>
                                                                     <datebox id="fechamatricula"  readonly="true"  />
+                                                                    <datebox id="fecharetiro"  readonly="true"  />
                                                                     Repite:
                                                                     <checkbox id="repite" disabled="true"/>
                                                                 </span>
