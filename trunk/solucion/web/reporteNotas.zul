@@ -215,6 +215,8 @@ public JRDataSource profesores(){
             parametros.put("denominacion", insts.getDenominacion());
             parametros.put("nombre", insts.getNombre());
             parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("direccion", insts.getDireccion());
+            parametros.put("telefono",insts.getTelefono());
             parametros.put("titulo", titulo.value);
             parametros.put("slogan", insts.getSlogan());
             parametros.put("secretaria", insts.getSecretaria());
