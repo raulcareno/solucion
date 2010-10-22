@@ -1,22 +1,10 @@
 package bean;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Periodo;
 import jcinform.procesos.Administrador;
-import org.xBaseJ.DBF;
-import org.xBaseJ.fields.CharField;
-import org.xBaseJ.fields.DateField;
-import org.xBaseJ.fields.Field;
-import org.xBaseJ.fields.NumField;
-import org.xBaseJ.xBaseJException;
 
 public class matriculasBean {
 
