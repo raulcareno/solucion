@@ -229,7 +229,7 @@ public class Permisos {
 
             audi.setCodigo(adm.getNuevaClave("Auditoria", "codigo"));
             audi.setFecha(new Date());
-            audi.setIp(a.getLocalAddr());
+            audi.setIp(a.getRemoteAddr());
             //.getClientAddr()
             audi.setPc(campo);
             audi.setUsuario(emp);
