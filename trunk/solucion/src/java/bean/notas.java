@@ -2551,6 +2551,7 @@ public class notas extends Rows {
                     + "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' "
                     + "and notas.seimprime = true "
                     + "and notas.promedia = true "
+                    + "and notas.cuantitativa = true "
                     + "and notas.disciplina = false   and notas.materia != 0  "
                     + "group by notas.matricula  ";
             System.out.println("" + q);
