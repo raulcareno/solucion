@@ -634,11 +634,23 @@ if(formula1.equals("")){
 </row>
 <row><span style="float:right"> Form. Aprov.:</span>
 <span><textbox id="formula" rows="2" cols="30" />
-<button id="verificar"  image="/images/ok.gif"   onClick="verificar2();"/> </span>
+<button id="verificar"  image="/images/ok.gif"   onClick="verificar2();"/>
+<image src="/images/information.png" height="22px" width="22px" tooltip="mailt" popup="mailt" style="cursor: pointer" />
+ <popup id="mailt" width="300px">
+  <html>
+    &lt;p&gt; Suma dos notas y divide para dos Ejem.: (nota1()+nota2())/2  &lt;/p&gt;
+    &lt;p&gt; Suma dos notas y divide para el # de notas ingresadas Ejm.: promedio(nota1(),nota2()) &lt;/p&gt;
+   &lt;p&gt;  Redondea el valor de una nota a cero decimales Ejm.: redondear(nota1(),0) &lt;/p&gt;
+
+   </html>
+ </popup>
+</span>
 </row>
 <row><span style="float:right"> Form. Disc.:</span>
 <span><textbox id="formuladisciplina" rows="2" cols="30" />
-<button id="verificar3"  image="/images/ok.gif"  onClick="verificar3();"/> </span>
+<button id="verificar3"  image="/images/ok.gif"  onClick="verificar3();"/>
+<image src="/images/information.png" height="22px" width="22px" tooltip="mailt" popup="mailt" style="cursor: pointer" />
+</span>
 </row>
  
 <row><span style="float:right"> Codigo:</span>
