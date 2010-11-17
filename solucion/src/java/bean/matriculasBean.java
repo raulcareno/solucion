@@ -33,7 +33,7 @@ public class matriculasBean {
                         + "FROM estudiantes est, matriculas mat, cursos cur "
                         + "WHERE mat.estudiante = est.codigoest  "
                         + "and mat.curso = cur.codigocur "
-                    + "    INTO OUTFILE 'f:/gente.txt' "
+                    + "    INTO OUTFILE '/home/usuario/base/gente.txt' "
                     + "    FIELDS TERMINATED BY ';' "
                     + "    OPTIONALLY ENCLOSED BY '\"' "
                     + "    LINES TERMINATED BY '\\n\\r'; ");
