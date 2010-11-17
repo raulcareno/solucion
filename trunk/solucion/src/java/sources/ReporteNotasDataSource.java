@@ -154,6 +154,21 @@ public class ReporteNotasDataSource implements JRDataSource{
                valor = (nodo.getMatricula().getEstado().equals("Retirado")?"Retirado":"");
             }
  
+        }else if ("observacion1".equals(fieldName)) {
+            try{
+                if(nodo.getMatricula().getEstado().equals("Retirado")){
+                    valor = ("RETIRADO: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 10))+" "+nodo.getMatricula().getObservacion();
+                }else if(nodo.getMatricula().getEstado().equals("Emitir Pase")){
+                    valor = "PASE EMITIDO: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 10)+" "+nodo.getMatricula().getObservacion();
+                }else if(nodo.getMatricula().getEstado().equals("Recibir Pase")){
+                    valor = "PASE RECIBIDO: "+nodo.getMatricula().getFechamat().toLocaleString().substring(0, 10)+" "+nodo.getMatricula().getObservacion();
+                }else{
+                    valor="";
+                }
+            }catch(Exception e){
+               valor = (nodo.getMatricula().getEstado().equals("Retirado")?"Retirado":"");
+            }
+
         }
        else if ("sello".equals(fieldName)) {
 

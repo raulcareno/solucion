@@ -1399,7 +1399,18 @@ public class notas extends Rows {
                         nota.setMprofesor(mprofesor1);
 
                     }
-                    nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
+                    /*
+                    if(mprofesor.getCuantitativa()){
+                            nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
+                    }else{
+                          Sistemacalificacion sis2 = (Sistemacalificacion) sistemas.get(ksis);
+                          Sistemacalificacion sistemaN = new Sistemacalificacion();
+                          sistemaN.setAbreviatura("PROMEDIO");
+                          sistemaN.setTrimestre(sis2.getTrimestre());
+                          nota.setSistema(sistemaN);
+
+                    }*/
+                      nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     nota.setAprovechamiento(aprovecha);
                     nota.setContador(cont);
                     nota.setDisciplina(disciplina);
