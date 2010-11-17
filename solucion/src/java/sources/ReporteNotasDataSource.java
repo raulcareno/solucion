@@ -142,11 +142,11 @@ public class ReporteNotasDataSource implements JRDataSource{
         else if ("observacion".equals(fieldName)) {
             try{
                 if(nodo.getMatricula().getEstado().equals("Retirado")){
-                    valor = ("Retirado: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 10))+" "+nodo.getMatricula().getObservacion();
+                    valor = ("RETIRADO "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11))+" "+nodo.getMatricula().getObservacion();
                 }else if(nodo.getMatricula().getEstado().equals("Emitir Pase")){
-                    valor = "Pase Emitido: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 10)+" "+nodo.getMatricula().getObservacion();
+                    valor = "PASE EMITIDO: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11)+" "+nodo.getMatricula().getObservacion();
                 }else if(nodo.getMatricula().getEstado().equals("Recibir Pase")){
-                    valor = "Pase Recibido: "+nodo.getMatricula().getFechamat().toLocaleString().substring(0, 10)+" "+nodo.getMatricula().getObservacion();
+                    valor = "PASE RECIBIDO: "+nodo.getMatricula().getFechamat().toLocaleString().substring(0, 11)+" "+nodo.getMatricula().getObservacion();
                 }else{
                     valor="";
                 }
@@ -157,11 +157,11 @@ public class ReporteNotasDataSource implements JRDataSource{
         }else if ("observacion1".equals(fieldName)) {
             try{
                 if(nodo.getMatricula().getEstado().equals("Retirado")){
-                    valor = ("RETIRADO: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 10))+" "+nodo.getMatricula().getObservacion();
+                    valor = ("RETIRADO: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11))+" "+nodo.getMatricula().getObservacion();
                 }else if(nodo.getMatricula().getEstado().equals("Emitir Pase")){
-                    valor = "PASE EMITIDO: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 10)+" "+nodo.getMatricula().getObservacion();
+                    valor = "PASE EMITIDO: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11)+" "+nodo.getMatricula().getObservacion();
                 }else if(nodo.getMatricula().getEstado().equals("Recibir Pase")){
-                    valor = "PASE RECIBIDO: "+nodo.getMatricula().getFechamat().toLocaleString().substring(0, 10)+" "+nodo.getMatricula().getObservacion();
+                    valor = "PASE RECIBIDO: "+nodo.getMatricula().getFechamat().toLocaleString().substring(0, 11)+" "+nodo.getMatricula().getObservacion();
                 }else{
                     valor="";
                 }
