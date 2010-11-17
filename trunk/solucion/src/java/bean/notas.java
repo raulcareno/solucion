@@ -1375,6 +1375,12 @@ public class notas extends Rows {
                     //nota.setNota(val);
 
                     if (mprofesor.getCuantitativa() == false) {
+//                        if(val < 14){
+//                            nota.setNota("REPROBADO");
+//                        }else{
+//                            nota.setNota("APROBADO");
+//
+//                        }
                         nota.setNota(equivalencia(dos, equivalencias));
                     } else {
                         nota.setNota(val.toString());
@@ -1399,17 +1405,17 @@ public class notas extends Rows {
                         nota.setMprofesor(mprofesor1);
 
                     }
-                    /*
-                    if(mprofesor.getCuantitativa()){
-                            nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
-                    }else{
-                          Sistemacalificacion sis2 = (Sistemacalificacion) sistemas.get(ksis);
-                          Sistemacalificacion sistemaN = new Sistemacalificacion();
-                          sistemaN.setAbreviatura("PROMEDIO");
-                          sistemaN.setTrimestre(sis2.getTrimestre());
-                          nota.setSistema(sistemaN);
-
-                    }*/
+                   
+//                    if(mprofesor.getCuantitativa()){
+//                            nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
+//                    }else{
+//                          Sistemacalificacion sis2 = (Sistemacalificacion) sistemas.get(ksis);
+//                          Sistemacalificacion sistemaN = new Sistemacalificacion();
+//                          sistemaN.setAbreviatura("PROMEDIO");
+//                          sistemaN.setTrimestre(sis2.getTrimestre());
+//                          nota.setSistema(sistemaN);
+//
+//                    }
                       nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     nota.setAprovechamiento(aprovecha);
                     nota.setContador(cont);
