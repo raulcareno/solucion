@@ -1175,12 +1175,15 @@ public class notas extends Rows {
         System.out.println("cuadro final: " + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
+        int cont=0;
+        String matricula ="";
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             //row = new Row();
             Matriculas matriculaNo = null;
             Global materiaNo = null;
             MateriaProfesor mprofesor = null;
+             MateriaProfesor mprofesor1 = null;
             Double aprovecha = 0.0;
             Double disciplina = 0.0;
             int ksis = 0;
@@ -1199,6 +1202,8 @@ public class notas extends Rows {
                     val = redondear((Double) dos, 2);
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
+                    nota.setContador(cont);
+                    matricula = matriculaNo.toString();
                     //nota.setNota(val);
 
                     if (mprofesor.getCuantitativa() == false) {
@@ -1215,8 +1220,17 @@ public class notas extends Rows {
                     } else {
                         nota.setNota("");
                     }
+                    int tamaSistema = sistemas.size()-1;
+                    if(ksis == tamaSistema){
+                        nota.setMprofesor(mprofesor);
+                    }else{
+                        mprofesor1.getEmpleado().setApellidos("");
+                        mprofesor1.getEmpleado().setNombres("");
+                        nota.setMprofesor(mprofesor1);
+                        
+                    }
 
-                    nota.setMprofesor(mprofesor);
+                    
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     nota.setAprovechamiento(aprovecha);
                     nota.setDisciplina(disciplina);
@@ -1225,6 +1239,7 @@ public class notas extends Rows {
                 } else if (j == 1) {
 
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
+                    
                     List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE ");
                     if (valor.size() > 0) {
                         aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
@@ -1241,7 +1256,15 @@ public class notas extends Rows {
                     materiaNo = (Global) adm.buscarClave((Integer) dos, Global.class);
                 } else if (j == 0) {
                     mprofesor = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
+                    mprofesor1 = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
                 }
+                if (matriculaNo != null && j > 1) {
+                    if (!matriculaNo.toString().equals(matricula)) {
+                        cont++;
+                    }
+                }
+
+
             }
         }
         nativo = null;
@@ -1320,12 +1343,15 @@ public class notas extends Rows {
         System.out.println("cuadro final: " + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
+        int cont=0;
+        String matricula ="";
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             //row = new Row();
             Matriculas matriculaNo = null;
             Global materiaNo = null;
             MateriaProfesor mprofesor = null;
+            MateriaProfesor mprofesor1 = null;
             Double aprovecha = 0.0;
             Double disciplina = 0.0;
             int ksis = 0;
@@ -1344,6 +1370,8 @@ public class notas extends Rows {
                     val = redondear((Double) dos, 2);
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
+
+                    
                     //nota.setNota(val);
 
                     if (mprofesor.getCuantitativa() == false) {
@@ -1361,10 +1389,21 @@ public class notas extends Rows {
                         nota.setNota("");
                     }
 
-                    nota.setMprofesor(mprofesor);
+
+                    int tamaSistema = sistemas.size()-1;
+                    if(ksis == tamaSistema){
+                        nota.setMprofesor(mprofesor);
+                    }else{
+                        mprofesor1.getEmpleado().setApellidos("");
+                        mprofesor1.getEmpleado().setNombres("");
+                        nota.setMprofesor(mprofesor1);
+
+                    }
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     nota.setAprovechamiento(aprovecha);
+                    nota.setContador(cont);
                     nota.setDisciplina(disciplina);
+                         matricula = matriculaNo.toString();
                     lisNotas.add(nota);
                     ksis++;
                 } else if (j == 1) {
@@ -1393,7 +1432,16 @@ public class notas extends Rows {
                     materiaNo = (Global) adm.buscarClave((Integer) dos, Global.class);
                 } else if (j == 0) {
                     mprofesor = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
+                    mprofesor1 = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
                 }
+                if (matriculaNo != null && j > 1) {
+                    if (!matriculaNo.toString().equals(matricula)) {
+                        cont++;
+                    }
+                }
+
+
+
             }
         }
         nativo = null;
