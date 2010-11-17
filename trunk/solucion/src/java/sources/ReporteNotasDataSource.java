@@ -129,6 +129,9 @@ public class ReporteNotasDataSource implements JRDataSource{
      
         }else if ("profesor".equals(fieldName)) {
            valor = nodo.getMprofesor().getEmpleado().getApellidos() +" "+nodo.getMprofesor().getEmpleado().getNombres()+" ";
+           if(valor.equals("")){
+           valor = null;
+           }
         }else if ("optativa".equals(fieldName)) {
            valor = nodo.getMprofesor().getEmpleado().getApellidos() +" "+nodo.getMprofesor().getEmpleado().getNombres()+" ";
         }else if ("aprovechamiento".equals(fieldName)) {

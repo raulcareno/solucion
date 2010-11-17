@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="1056"/>
+	<property name="ireport.x" value="28"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -33,6 +33,7 @@
 	<field name="optativa" class="java.lang.String"/>
 	<field name="aprovechamiento" class="java.lang.Double"/>
 	<field name="disciplina" class="java.lang.Double"/>
+	<field name="contador" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -199,7 +200,7 @@
 		<band splitType="Stretch"/>
 	</lastPageFooter>
 	<summary>
-		<band height="150" splitType="Stretch">
+		<band height="135" splitType="Stretch">
 			<crosstab>
 				<reportElement key="crosstab-1" x="0" y="7" width="1804" height="47"/>
 				<crosstabDataset isDataPreSorted="true"/>
@@ -213,6 +214,33 @@
 						</box>
 					</cellContents>
 				</crosstabHeaderCell>
+				<rowGroup name="numero" width="16" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{contador}+""]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField>
+								<reportElement x="0" y="0" width="16" height="12"/>
+								<box>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="7"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{numero}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents>
+							<box>
+								<rightPen lineWidth="0.5"/>
+							</box>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
 				<rowGroup name="estudiante" width="207" totalPosition="End">
 					<bucket>
 						<bucketExpression class="java.lang.String"><![CDATA[$F{estudiante}]]></bucketExpression>
@@ -241,7 +269,11 @@
 						</cellContents>
 					</crosstabRowHeader>
 					<crosstabTotalRowHeader>
-						<cellContents/>
+						<cellContents>
+							<box>
+								<rightPen lineWidth="0.5"/>
+							</box>
+						</cellContents>
 					</crosstabTotalRowHeader>
 				</rowGroup>
 				<columnGroup name="materia" height="21" totalPosition="End" headerPosition="Stretch">
@@ -267,7 +299,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 									<font size="8" isBold="true"/>
 								</textElement>
-								<textFieldExpression class="java.lang.String"><![CDATA[$V{materia}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{materia}.replace("(N)","").replace("(1)","").replace("(2)","")]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabColumnHeader>
@@ -406,6 +438,9 @@
 				<measure name="disciplina" class="java.lang.Object" calculation="Average">
 					<measureExpression><![CDATA[$F{disciplina}]]></measureExpression>
 				</measure>
+				<measure name="profesor" class="java.lang.String" calculation="Count">
+					<measureExpression><![CDATA[$F{profesor}]]></measureExpression>
+				</measure>
 				<crosstabCell width="24" height="12">
 					<cellContents mode="Transparent">
 						<box>
@@ -423,7 +458,7 @@
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="8"/>
+								<font size="9"/>
 							</textElement>
 							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Average}).equals("0")?"":$V{nota_Average})+""]]></textFieldExpression>
 						</textField>
@@ -474,7 +509,7 @@
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="24" height="17" rowTotalGroup="estudiante">
+				<crosstabCell width="24" height="0" rowTotalGroup="estudiante">
 					<cellContents mode="Transparent">
 						<box>
 							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -484,7 +519,7 @@
 						</box>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="263" height="17" rowTotalGroup="estudiante" columnTotalGroup="materia">
+				<crosstabCell width="263" height="0" rowTotalGroup="estudiante" columnTotalGroup="materia">
 					<cellContents mode="Transparent">
 						<box>
 							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -504,7 +539,7 @@
 						</box>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="0" height="17" rowTotalGroup="estudiante" columnTotalGroup="sistema">
+				<crosstabCell width="0" height="0" rowTotalGroup="estudiante" columnTotalGroup="sistema">
 					<cellContents mode="Transparent">
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -513,6 +548,37 @@
 							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="128" rowTotalGroup="numero">
+					<cellContents>
+						<line>
+							<reportElement x="0" y="127" width="24" height="1"/>
+							<graphicElement>
+								<pen lineWidth="0.5"/>
+							</graphicElement>
+						</line>
+						<textField>
+							<reportElement x="0" y="0" width="24" height="128" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+							<box>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+								<font size="7"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[$V{profesor}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="128" rowTotalGroup="numero" columnTotalGroup="materia">
+					<cellContents>
+						<box>
+							<bottomPen lineWidth="0.5"/>
+							<rightPen lineWidth="0.5"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="128" rowTotalGroup="numero" columnTotalGroup="sistema">
+					<cellContents/>
 				</crosstabCell>
 				<whenNoDataCell>
 					<cellContents mode="Transparent">
@@ -526,7 +592,7 @@
 				</whenNoDataCell>
 			</crosstab>
 			<textField>
-				<reportElement positionType="Float" x="106" y="119" width="220" height="16"/>
+				<reportElement positionType="Float" x="106" y="106" width="220" height="16"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 				</box>
@@ -534,7 +600,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{rectora}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="590" y="117" width="209" height="16"/>
+				<reportElement positionType="Float" x="590" y="104" width="209" height="16"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 				</box>
@@ -542,12 +608,12 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{secretaria}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="158" y="135" width="100" height="15"/>
+				<reportElement positionType="Float" x="164" y="119" width="100" height="15"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[RECTORA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="655" y="133" width="100" height="16"/>
+				<reportElement positionType="Float" x="651" y="119" width="100" height="16"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[SECRETARIA]]></text>
 			</staticText>
