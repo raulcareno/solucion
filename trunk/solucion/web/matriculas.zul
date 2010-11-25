@@ -900,6 +900,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
                     report.setSrc("WEB-INF/reportes/certificadoMatricula.jasper");
                     parametros.put("titulo", "Certificado de Matricula");
+            }else if(tipo.equals("CM2")){
+                    datasource = certificados(new Matriculas(codigomat.value),tipo);
+                    report.setSrc("WEB-INF/reportes/certificadoMatricula2.jasper");
+                    parametros.put("titulo", "Certificado de Matricula");
             } else if(tipo.equals("AM")){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
                     parametros.put("titulo", "Acta de Matricula");
@@ -1521,6 +1525,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true" onClick="modificar()"/>
                 <button  image="/images/imprimir.gif" id="acta"  label="Acta" disabled="true"  onClick='showReport("AM")'/>
                 <button  image="/images/imprimir.gif" id="certificado"  label="Certificado" disabled="true"  onClick='showReport("CM")' />
+                <button  image="/images/imprimir.gif" id="certificado2"  label="Certificado2" disabled="true"  onClick='showReport("CM2")'/>
                 <button  image="/images/imprimir.gif" id="claveprint"  label="Clave" disabled="true"  onClick='showReport("CL")' />
                 <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar(Matricula)" disabled="true"  onClick="eliminar();"/>
             </hbox>

@@ -21,7 +21,12 @@
 void llenar(Global equi2){
    equi = equi2;
     nombre.value = equi.getDescripcion();
-    String p = "Especialidad";
+    String p = "";
+    try{
+        p = ""+buscarText.getSelectedItem().getLabel();
+    }catch(Exception a){
+        p = "Materias";
+    }
     try{
         if(equi.getGrupo().equals("ESP")){
             p = "Especialidad";
