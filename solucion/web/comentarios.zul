@@ -1,0 +1,200 @@
+
+<window     width="650px" border="normal">
+    <zscript>
+        <![CDATA[
+
+  import bean.EventDAO;
+  import java.util.ArrayList;
+    import jcinform.persistencia.*;
+  import java.util.Iterator;
+  import java.util.UUID;
+  import jcinform.procesos.Administrador;
+    import bean.Permisos;
+    import bean.pendientes;
+
+//globales
+Global global = new Global();
+EventDAO evtdao = new EventDAO();
+List perfiles = evtdao.perfiles();
+Permisos permiso = new Permisos();
+Administrador adm = new Administrador();
+
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+List accesos = new ArrayList();
+int w = 0;
+ ListModel model = new SimpleListModel(accesos.toArray());
+//globales
+List cursos = null;
+
+    Empleados user = (Empleados)ses.getAttribute("user");
+    if(user.getTipo().equals("Interna")){
+            cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+    }else{
+            cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"'  " +
+            " and o.codigocur in (Select a.curso.codigocur from MateriaProfesor as a where a.empleado.codigoemp = '"+user.getCodigoemp()+"') ");
+    }
+
+Cursos selecCurso = new Cursos(-1);
+selecCurso.setDescripcion("[S E L E C C I O N E]");
+cursos.add(0,selecCurso);
+
+    void guardar(){
+        if(verificar("Agregar")){
+        pendientes nso = new pendientes();
+        pendientes r = (pendientes) datos.getRows();
+        String resultado = nso.guardar(r.getChildren());
+        if(resultado.equals("ok")){
+           permiso.auditar("Pendientes","Guardar",""+curs.selectedItem.value);
+            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+         }else{
+            Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         }
+
+        }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+    }
+
+
+  Boolean verificar(String accion){
+        return permiso.verificarPermiso("Pendientes",accion);
+
+    }
+ void buscar2(Cursos cur){
+     List empleadosEncontrados = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+cur.codigocur+"' order by o.estudiante.apellido");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+                Matriculas selecMatricula = new Matriculas(-1);
+                Estudiantes est = new Estudiantes(-1);
+                est.setApellido("[S E L E C C I O N E]"); est.setNombre("");
+                selecMatricula.setEstudiante(est);
+                empleadosEncontrados.add(0,selecMatricula);
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Matriculas acceIt = (Matriculas) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt+""));
+                      datos.appendChild(li);
+             }
+
+    }
+   void buscarMaterias(Cursos cur){
+        List empleadosEncontrados = null;
+
+           if(user.getTipo().equals("Interna")){
+                    empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' order by o.orden");
+            }else{
+                    empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' and o.empleado.codigoemp = '"+user.getCodigoemp()+"' order by o.orden");
+            }
+
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = materias.getItems().iterator(); it.hasNext();) {
+                    materias.getItems().remove(a);
+                }
+                MateriaProfesor selecMate = new MateriaProfesor();
+                Empleados emp = new Empleados(-1);
+                emp.setApellidos("");
+                emp.setNombres("");
+                selecMate.setEmpleado(emp);
+                Global glo = new Global(-2);
+                glo.setDescripcion("[S E L E C C I O N E]");
+                selecMate.setMateria(glo);
+                empleadosEncontrados.add(0,selecMate);
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor acceIt = (MateriaProfesor) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getMateria()+"["+acceIt.getEmpleado().getApellidos()+" "+acceIt.getEmpleado().getNombres()+"]"));
+                      materias.appendChild(li);
+             }
+
+    }
+
+        ]]>
+    </zscript>
+
+    <groupbox mold="3d" >
+        <caption label="Comentar estudiantes" />
+        <vbox>
+
+            <hbox>
+                <grid>
+                    <rows>
+                        <row>
+
+
+                            <span style="float:right"> Cursos(1):</span>
+
+                            <listbox   mold="select"  id="curs" width="420px"
+                                     onSelect="buscarMaterias(((Cursos)curs.selectedItem.value));datos.selectedIndex = 0;">
+
+                                <listitem forEach="${cursos}" value="${each}">
+                                    <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                                </listitem>
+                            </listbox>
+                        </row>
+                        <row>
+
+                            <span style="float:right">Materia(2):</span>
+                            <listbox id="materias"  mold="select" onSelect="buscar2(((Cursos)curs.selectedItem.value));" width="420px" >
+                                <listitem value="-1" label="[S E L E C C I O N E]"></listitem>
+                                
+                            </listbox>
+
+                        </row>
+                      <row>
+
+                            <span style="float:right">Estudiantes(3):</span>
+                            <listbox id="datos"  mold="select" width="420px" >
+                                <listitem value="-1" label="[S E L E C C I O N E]"></listitem>
+                                
+                            </listbox>
+
+                        </row>
+                     
+                        <row>
+                            <span style="float:right">Fecha:</span>
+                                    <datebox id="fecha"   onCreate="self.value = new Date()"/>
+                        </row>
+                        <row spans="2">
+                            <span >D  E  S  C  R  I  P  C  I  O  N:</span>
+                        </row>
+                      
+                        <row spans="2">
+                            <textbox id="comentario" rows="3" cols="85"/>
+
+                        </row>     <row style="background-color:yellow" spans="2">
+
+
+                                    <radiogroup Id="tipo">
+                                            <radio  selected="true" value="LE" label="LEVE"/>
+                                            <radio   value="GR" label="GRAVE"/>
+                                            <radio value="MG" label="MUY GRAVE"/>
+                                            <radio value="LA" label="LLAMADA DE ATENCIÓN"/>
+                                            <radio value="PR" label="PREVENTIVA"/>
+                                   </radiogroup>
+                        </row>
+                        <row>
+                            <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
+
+                        </row>
+                    </rows>
+                </grid>
+            </hbox>
+        </vbox>
+
+
+    </groupbox>
+
+ 
+
+      
+  
+</window>

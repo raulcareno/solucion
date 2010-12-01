@@ -204,6 +204,7 @@
                                         <treeitem id="Registrar" image="/images/chat.png"   label="Chat" value="/chat/chat.zul"/>
                                         <treeitem id="Reportes Estudiantes" label="Rep.Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
                                         <treeitem id="Reportes Notas" label="Rep.Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
+                                        <treeitem id="Dobe" label="Comentarios"  image="/images/resultados.png" value="/comentarios.zul" />
 
                                     </treechildren>
                                 </treeitem>
