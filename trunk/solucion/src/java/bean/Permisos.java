@@ -10,13 +10,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 
-import java.util.Random;
 import java.util.Vector;
 import javax.faces.context.FacesContext;
 import jcinform.persistencia.*;
@@ -233,6 +230,31 @@ public class Permisos {
             //.getClientAddr()
             audi.setPc(campo);
             audi.setUsuario(emp);
+            audi.setTabla(tabla);
+            audi.setTipo(tipo);
+            adm.guardar(audi);
+        } catch (Exception e) {
+            System.out.println("ERROR EN AUDITAR" + e);
+        }
+    }
+public void auditarRepre(String tabla, String tipo, String campo) {
+        try {
+            Session a = Sessions.getCurrent();
+            Administrador adm = new Administrador();
+            Estudiantes emp = (Estudiantes) a.getAttribute("userEstudiante");
+
+            Representante repre =  (Representante) a.getAttribute("userRepresentante");
+
+            Auditoria audi = new Auditoria();
+            if(repre != null){
+                 audi.setRepresentante(repre);
+            }else{
+                audi.setEstudiante(emp);
+            }
+            audi.setCodigo(adm.getNuevaClave("Auditoria", "codigo"));
+            audi.setFecha(new Date());
+            audi.setIp(a.getRemoteAddr());
+            audi.setPc(campo);
             audi.setTabla(tabla);
             audi.setTipo(tipo);
             adm.guardar(audi);

@@ -224,8 +224,11 @@ void verificarSistema(){
                     <row  style="background:white;border:0px" align="center" spans="2">
                         <span>
                             <label id="derechos" style="font-size:10px"  />
+                            <html>
+                                &lt;a href=&quot;http://www.jcinform.com&quot; target=&quot;_blank&quot;&gt;http://www.jcinform.com&lt;/a&gt;
+                            </html>
                             <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
-                            <toolbarbutton src="http://www.jcinform.com"  label="http://www.jcinform.com" />
+                             
                         </span>
                     </row>
 

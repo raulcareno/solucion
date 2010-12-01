@@ -1,6 +1,6 @@
 
 <?page id="main-page"?>
-<window   title="Cursos del Estudiante" border="normal" width="100%" id="cursosForma">
+<window mode="overlapped"    title="SELECCIONE UN CURSO O GRADO"  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal" width="500px" id="cursosForma">
     <zscript>
 <![CDATA[
 import bean.notas;
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
- 
+import bean.Permisos;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
@@ -16,7 +16,7 @@ import org.zkoss.zul.Listbox;
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Estudiantes user =  (Estudiantes)ses.getAttribute("userEstudiante");
-
+Permisos permiso = new Permisos();
 List cursos = adm.query("SELECT distinct o FROM Matriculas as o WHERE o.estudiante.codigoest = '"+user.getCodigoest()+"'");
  
 void buscar2(Matriculas mat){
@@ -29,25 +29,26 @@ try{
                 win34.setTitle("NOTAS DE: "+mat.getCurso());
                 win34.setAttribute("matricula", mat);
                 //win.doModal();
+                permiso.auditarRepre("-", ""+mat.getCurso(), "Revisó Notas");
                 }
            }catch(Exception e){
                  
            }
+           cursosList.clearSelection();
 }
 ]]>
     </zscript>
     <grid>
         <rows>
             <row>
-                <listbox id="cursos" width="420px"
-                    onSelect="buscar2(((Matriculas)self.selectedItem.value));">
-                    <listitem >
-                        <listcell label="Seleccione un Curso" />
-
-                    </listitem>
+                <listbox id="cursosList" width="99%" onSelect="buscar2(((Matriculas)self.selectedItem.value)); ">
+                    <listhead sizable="true">
+                        <listheader label="Curso/Nivel" sort="auto" />
+                        <listheader label="Periodo" sort="auto" />
+                    </listhead>
                     <listitem forEach="${cursos}" value="${each}">
-
                         <listcell label="${each.curso.descripcion} ${each.curso.especialidad}  ${each.curso.paralelo}" />
+                        <listcell label="${each.curso.periodo}" />
 
                     </listitem>
                 </listbox>
