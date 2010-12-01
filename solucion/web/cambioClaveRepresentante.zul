@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <zk  xmlns="http://www.zkoss.org/2005/zul">
-    <window  mode="overlapped" width="350px"  border="normal"  onCreate="cargar()">
+    <window  mode="overlapped" width="350px"  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal"  onCreate="cargar()">
         <zscript>
 import jcinform.persistencia.*;
 import bean.Permisos;
@@ -34,6 +34,7 @@ void guardar(){
         adm.actualizar(emp);
 Messagebox.show("Datos Actualizados con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
          a.setAttribute("userRepresentante",emp);
+         permiso.auditarRepre("-", "-", "Actualizó Clave");
  }
 
         </zscript>

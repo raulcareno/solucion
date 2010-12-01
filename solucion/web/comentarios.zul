@@ -40,22 +40,24 @@ selecCurso.setDescripcion("[S E L E C C I O N E]");
 cursos.add(0,selecCurso);
 
     void guardar(){
-        if(verificar("Agregar")){
-        pendientes nso = new pendientes();
-        pendientes r = (pendientes) datos.getRows();
-        String resultado = nso.guardar(r.getChildren());
-        if(resultado.equals("ok")){
-           permiso.auditar("Pendientes","Guardar",""+curs.selectedItem.value);
+
+         Comentarios come = new Comentarios();
+         come.setMateria(((MateriaProfesor)materias.selectedItem.value).getMateria());
+         come.setEmpleado(user);
+         come.setCurso(curs.selectedItem.value);
+         come.setMatricula(datos.selectedItem.value);
+         come.setFecha(fecha.value);
+         come.setComentario(comentario.value);
+         come.setTipo(tipo.selectedItem.value);
+         adm.guardar(come);
+
             Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-         }else{
-            Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-         }
+datos.selectedIndex = 0;
+ materias.selectedIndex= 0;
+ curs.selectedIndex = 0;
+ comentario.value = "";
 
-        }else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-    }
-
-    }
+  }
 
 
   Boolean verificar(String accion){
@@ -181,7 +183,7 @@ cursos.add(0,selecCurso);
                                             <radio value="PR" label="PREVENTIVA"/>
                                    </radiogroup>
                         </row>
-                        <row>
+                        <row spans="2">
                             <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
 
                         </row>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="principales" onCreate="buscar()" style="position:absolute; top:24%; left:32%;"
+    mode="overlapped" title="Seleccione un Estudiante"   border="normal" width="590px" >
+        <zscript>
+            <![CDATA[
+
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.util.logging.Level;
+  import java.util.logging.Logger;
+import java.util.Vector;
+import bean.matriculasBean;
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.notas;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
+    static Estudiantes estudent = new Estudiantes();
+    static Representante representante0 = new Representante();
+    static Matriculas matricula = new Matriculas();
+ Session ses = Sessions.getCurrent();
+ Representante repses =  (Representante) ses.getAttribute("userRepresentante");
+Permisos permiso = new Permisos();
+  void buscar(){
+        List empleadosEncontrados = adm.query("Select o from Matriculas as o " +
+        " where o.estudiante.representante.codigorep = "+repses.getCodigorep()+" order by o.estudiante.apellido, o.estudiante.nombre, o.curso.secuencia ");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Matriculas acceIt = (Matriculas) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getEstudiante().getNombre()+" "+acceIt.getEstudiante().getApellido()));
+                      li.appendChild(new Listcell(acceIt.getCurso()+""));
+                      datos.appendChild(li);
+             }
+
+    }
+    void move(){
+                Matriculas estu = (Matriculas)datos.selectedItem.value;
+                ses.setAttribute("userEstudiante",estu.getEstudiante());
+                ses.setAttribute("periodo",estu.getCurso().getPeriodo());
+                Boolean actualizo= false;
+               permiso.auditarRepre("-", "-", "Ingreso Sistema");
+                 Executions.sendRedirect("indexRepresentantes.zul");
+                    
+                   
+    }
+  
+
+
+
+
+  ]]>
+        </zscript>
+
+
+                            <listbox mold="paging"  rows="8"  onSelect="move();" id="datos">
+                               <listhead sizable="true">
+
+                                <listheader label="Estudiante" sort="auto" />
+                                <listheader label="Curso/Nivel" sort="auto" />
+                            </listhead>
+                                <listitem   height="28px"   forEach="${allEvents}" value="${each}">
+                                    <listcell label="${each.cedula}" />
+                                    <listcell label="${each.apellido} ${each.nombre}" />
+                                    <listcell label="${each.direccion}" />
+                                </listitem>
+                            </listbox>
+ 
+
+
+    </window>
+
+
+</zk>

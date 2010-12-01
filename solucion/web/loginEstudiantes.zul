@@ -13,7 +13,7 @@
 </style>
 
     <div  class="estil" >
-    <window mode="overlapped" id="win2" title="SERVICIOS...! "  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal" width="350px">
+    <window mode="overlapped" id="win2" title="SERVICIOS...! "  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal" width="390px">
         <zscript>
 
             <![CDATA[
@@ -42,16 +42,17 @@
             }
             }else{//PANTALLA DEL REPRESENTANTE
                 Representante user =adm.ingresoSistemaR(usuario.value, clave.value);
-                if(user != null){
-                Session ses = Sessions.getCurrent();
-                ses.setAttribute("userRepresentante",user);
-                //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
-                Executions.sendRedirect("indexRepresentantes.zul");
+                     if(user != null){
+                        Session ses = Sessions.getCurrent();
+                        ses.setAttribute("userRepresentante",user);
+                        //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
+                        //Executions.sendRedirect("indexRepresentantes.zul");
+                        Executions.sendRedirect("estudiantesRepresentante_1.zul");
 
-            }else{
-                Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                usuario.focus();
-            }
+                    }else{
+                        Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        usuario.focus();
+                    }
 
 
             }
@@ -133,22 +134,22 @@
                 <row spans="2">
                     <separator   />
                 </row>
-                <row  style="background:transparent;border:0px" >
-                    <span style="color:blue;float:right">¿Usted es? :</span>
-                    <radiogroup orient="vertical" Id="pantalla" >
-                        <radio  value="e" selected="true" id="e" label="Estudiante"/>
-                        <radio value="r" label="Representante"  id="r" />
-                    </radiogroup>
+                <row  align="center" spans="2" style="background:transparent;border:0px" >
+
+                      <radiogroup orient="horizontal" Id="pantalla" >
+                            <radio image="/images/estulogo.png" value="e" selected="true" id="e" label="ESTUDIANTE"/>
+                            <radio image="/images/reprelogo.png"  value="r" label="REPRESENTANTE"  id="r" />
+                        </radiogroup>
 
                 </row>
 
                 <row spans="2"  align="center" style="background:transparent;border:0px">
-                    <span><button label="Ingresar" id="ingresarModulo"  image="/images/ingreso.gif"  onClick="usuario.getValue(); clave.getValue(); verPantall();"/>
+                    <span><button label="INGRESAR" id="ingresarModulo"  height="30px" width="170px" image="/images/ingreso.gif"  onClick="usuario.getValue(); clave.getValue(); verPantall();"/>
                     <!--button label="Cancelar"  image="/images/eliminar.gif"   onClick="win2.detach()"/--></span>
                 </row>
                 <row id="olvidado" align="center" spans="2"  style="background:transparent;border:0px">
 
-                    <toolbarbutton label="¿Perdiste tu contraseña haz click AQUI?" onClick='alert("Network")'>
+                    <toolbarbutton label="¿PERDISTE TU CONTRASEÑA HAZ CLIC AQUI?" onClick='alert("Network")'>
                         <attribute name="onClick">{
                             recuperarGrid.visible= true;
                             login.visible = false;
@@ -168,26 +169,26 @@
                 <row style="background:transparent;border:0px"  spans="2">
                     <separator bar="true"   />
                 </row>
-                <row style="background:transparent;border:0px">
-                    <span style="float:right"><label id="usuarioR" value="Usuario:(*):" style="color:red" />
-                    <label visible="false" id="cedulaR" value="Cédula:(*):" style="color:blue" /></span>
-                    <textbox   id="usuarioRec" constraint="no empty: Usuario/Cedula  necesaria para recuperar" maxlength="20" cols="15"  />
+                
+                <row spans="2" style="background:transparent;border:0px">
+                    <radiogroup orient="horizontal" onCheck="ver()" Id="pantallaRec" >
+                            <radio  style="color:red" image="/images/estulogo.png" value="e" selected="true" id="eRec" label="ESTUDIANTE"/>
+                            <radio style="color:blue"    image="/images/reprelogo.png"  value="r" label="REPRESENTANTE"  id="rRec" />
+                        </radiogroup>
+
                 </row>
                 <row style="background:transparent;border:0px">
-                    <span style="float:right">¿Usted es? :</span>
-                    <radiogroup orient="vertical" onCheck="ver()" Id="pantallaRec" >
-                        <radio style="color:red"  value="e" selected="true" id="eRec" label="Estudiante"/>
-                        <radio style="color:blue"    value="r" label="Representante"  id="rRec" />
-                    </radiogroup>
-
+                    <span style="float:right"><label id="usuarioR" value="U S U A R I O:(*):" style="color:red" />
+                    <label visible="false" id="cedulaR" value="C E D U L A :(*):" style="color:blue" /></span>
+                    <textbox   id="usuarioRec" constraint="no empty: Usuario/Cedula  necesaria para recuperar" maxlength="20" cols="15"  />
                 </row>
                 <row style="background:transparent;border:0px"  spans="2">
                     <separator bar="true"   />
                 </row>
                 <row spans="2"  style="background:transparent;border:0px" align="center">
                     <span>
-                    <button label="Recuperar Clave" id="ingresarModulo2" onClick="usuarioRec.getValue(); recuperarClaves();"/>
-                    <button label="Cancelar"   image="/images/eliminar.gif" >
+                    <button label="Recuperar Clave" height="30px" width="160px"  image="/images/recuperar.png" id="ingresarModulo2" onClick="usuarioRec.getValue(); recuperarClaves();"/>
+                    <button label="Cancelar"  height="30px"  width="160px"   image="/images/eliminar.gif" >
                           <attribute name="onClick">{
                             recuperarGrid.visible= false;
                             login.visible = true;
@@ -202,8 +203,13 @@
     <rows>
            <row  style="background:white;border:0px" align="center" spans="2">
                  <span>
-                <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009,Telf.(593)5103 843 - 080 16 22 11 "/>
-                <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
+                <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009-2010"/>
+                
+                <html>
+                     &lt;a href=&quot;http://www.jcinform.com&quot; target=&quot;_blank&quot;&gt;http://www.jcinform.com&lt;/a&gt;
+
+					</html>
+                    <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
                 </span>
              </row>
               

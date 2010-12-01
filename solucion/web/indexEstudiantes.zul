@@ -43,73 +43,45 @@ Session a = Sessions.getCurrent();
         }
 
     </zscript>
-    <north style="background-image: url(./images/cabefondo.png)"  size="10%" >
+    <north style="background-image: url(./images/cabefondo1.png)"  size="15%" >
          
-            <tablelayout width="800px" columns="2">
-                <tablechildren>
-                    <panel   border="normal" collapsible="true">
-                        <panelchildren  style="background-color:transparent;border:0px;">
-                            <vbox>
-                                  <image height="60px" id="foto0" />
-                            </vbox>
-                        </panelchildren>
-                    </panel>
-
-                </tablechildren>
-
-                <tablechildren>
-                    <panel   border="normal" collapsible="true">
-                        <panelchildren style="background-color:transparent;border:0px">
-                            <vbox>
-                                <hbox>
-                                    
-                                    <label style="font-weight:bold;font-size:17px;color:white;" value="${sessionScope.userEstudiante.apellido} ${sessionScope.userEstudiante.nombre}" />
-                                </hbox>
-                                <vbox>
-                                    <toolbarbutton   image="/images/exit.gif" style="font-weight:bold;color:white"  label="[Cerrar Sesión]" onClick="salir()"/>
-                                </vbox>
+    <div>
+            <hbox    spacing="0">
+                   
  
-                                
-                            </vbox>
 
-                        </panelchildren>
-                    </panel>
-                </tablechildren>
-            </tablelayout>
-
-
-
-    </north>
-
-    <west  size="11%" flex="true" splittable="true" collapsible="true">
-        <div>
-            <panel width="100%" border="normal"  title="Servicios" height="470px" collapsible="true" >
-                <panelchildren style="padding:0px;" >
-
+  <image  border="15px"  style="padding:0 10px; margin:5px; padding:0" height="75px" id="foto0" />
+                <toolbar  style="background:transparent;border:0px"  id="tb" sclass="vista" height="20px" >
                     <vbox>
-                        <fisheyebar orient="vertical" id="fsb"  style="position:absolute;margin:25px 25px;"
-			attachEdge="top" itemWidth="90" itemHeight="90" itemMaxHeight="160" itemMaxWidth="160">
+                    <label style="font-size:15px;color:white;font-weight:bold;" value="${sessionScope.userEstudiante.nombre} " />
+                    <label style="font-size:15px;color:white;font-weight:bold;" value="  ${sessionScope.userEstudiante.apellido} " />
+
+                    <label style="font-size:12px;color:white;font-weight:bold;"
+					value="Dir.: ${sessionScope.userEstudiante.direccion}" />
+                    <label style="  font-size:12px;color:white;font-weight:bold;"
+					value="Email: ${sessionScope.userEstudiante.mail}" />
+                    </vbox>
+                </toolbar>
+                    
+                        <fisheyebar orient="horizontal" id="fsb"   
+			attachEdge="top" itemWidth="90" itemHeight="90" itemMaxHeight="98" itemMaxWidth="118">
                             <fisheye image="/images/miscursos.png" onClick='ingresar("/cursosEstudiantes.zul")' />
                             <fisheye image="/images/calendarioacademico.png"  onClick='ingresar("/calendar_1.zul")' />
                             <fisheye image="/images/cambioclave.png" onClick='ingresar("/cambioClaveEstudiante.zul")' />
                             <fisheye image="/images/correo.png" onClick='ingresar("/correos/comunicadoEstudianteIndex.zul")' />
+                            <fisheye image="/images/comentario1.png" onClick='ingresar("/correos/comunicadoEstudianteIndex.zul")' />
+                            <fisheye image="/images/mistareas.png" onClick='ingresar("/correos/comunicadoEstudianteIndex.zul")' />
+                            <fisheye image="/images/salida.png" onClick="salir()" />
+
                         </fisheyebar>
-                    </vbox>
-                </panelchildren>
-
-            </panel>
-            <panel width="100%" border="normal"   collapsible="true"   title="Acerca de..">
-                <panelchildren>
-                    <label style="font-weight:bold" value="--------- JCINFORM ---------- "/>
-                    <label value=" Soluciones Informáticas          "/>
-                    <label value="Telfs.5103-843 / 080-162-211 "/>
-                    <label id="propiedad" value=" "/>
 
 
-                </panelchildren>
-            </panel>
-        </div>
-    </west>
+</hbox></div>
+
+
+    </north>
+
+
     <center flex="true">
 
         <include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/>
