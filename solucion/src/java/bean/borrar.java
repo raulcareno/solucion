@@ -12,9 +12,9 @@ import jcinform.persistencia.Inscripciones;
 import jcinform.procesos.Administrador;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Panel;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
-import org.zkoss.zul.Tab;
 
 
 //import org.zkoss.util.media.Media;
@@ -35,8 +35,7 @@ public class borrar {
 ArrayList ar = new ArrayList();
 
           
-          
-
+   
            String a = "ms";
             Radiogroup ras = null;
             List l = ras.getChildren();

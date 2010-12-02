@@ -1,0 +1,180 @@
+
+<window    width="70%" >
+
+    <groupbox mold="3d"  >
+        <caption label="NOVEDADES DE SU HIJO" />
+        <vbox width="100%">
+            <hbox>
+                <grid width="100%" >
+                    <rows>
+                       
+
+                        <row spans="2">
+                            <listbox id="busquedaList" onSelect="vio(self.selectedItem.value);" >
+                                <listhead sizable="true">
+                                    <listheader width="100px" label="TIPO" sort="auto" />
+                                    <listheader width="250px" label="PROFESOR" sort="auto" />
+                                    <listheader width="250px"  label="MATERIA" sort="auto" />
+                                    
+                                    <listheader width="150px"  label="FECHA" sort="auto" />
+                                    <listheader  label="OPCION" sort="auto" />
+                                    
+                                </listhead>
+                            </listbox>
+                        </row>
+                    </rows>
+                </grid>
+            </hbox>
+
+        </vbox>
+    </groupbox>
+    <panel style="position:absolute; top:5%; left:5%" id="panel" visible="false" framable="true"
+    width="700px"  height="300px"
+	  border="normal" >
+        
+        <panelchildren>
+            <grid width="100%">
+                <rows>
+                    <row>
+                        <span style="float:right">FECHA:</span>
+                        <textbox style="border:0px;background:transparent" cols="80" readonly="true" id="fecha" value=""/>
+                    </row>
+                    <row>
+                        <span style="float:right">PROFESOR:</span>
+                        <textbox style="border:0px;background:transparent" cols="80" readonly="true"  id="profesor" value=""/>
+                    </row>
+                    <row>
+                        <span style="float:right">MATERIA:</span>
+                        <textbox style="border:0px;background:transparent" cols="80" readonly="true"  id="materia" value=""/>
+                    </row>
+                    <row>
+                        <span style="float:right">TIPO:</span>
+                        <textbox style="border:0px;background:transparent" cols="80" readonly="true"  id="tipo" value=""/>
+                    </row>
+                    <row align="center" spans="2">C O M E N T A R I O :  </row>
+                    <row spans="2">
+                        <textbox cols="100" rows="8" id="comentario" value=""/>
+                    </row>
+                    <row align="center" spans="2">
+                        <button  label="CERRAR" image ="/images/eliminar.gif" onClick='panel.setVisible(false)'  />
+                    </row>
+                </rows>
+            </grid>
+        </panelchildren>
+    </panel>
+ 
+
+    <zscript>
+        <![CDATA[
+
+  import bean.EventDAO;
+  import java.util.ArrayList;
+    import jcinform.persistencia.*;
+  import java.util.Iterator;
+  import java.util.UUID;
+  import jcinform.procesos.Administrador;
+    import bean.Permisos;
+    import bean.pendientes;
+import java.text.SimpleDateFormat;
+
+//globales
+Global global = new Global();
+EventDAO evtdao = new EventDAO();
+List perfiles = evtdao.perfiles();
+Permisos permiso = new Permisos();
+Administrador adm = new Administrador();
+
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+        Estudiantes user = ses.getAttribute("userEstudiante");
+        Permisos permiso = new Permisos();
+    List empleadosEncontrados = adm.query("Select o from Comentarios as o where o.matricula.estudiante.codigoest ='"+user.getCodigoest()+"' order by o.fecha desc");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = busquedaList.getItems().iterator(); it.hasNext();) {
+                    busquedaList.getItems().remove(a);
+                }
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Comentarios acceIt = (Comentarios) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+
+                      String tip = acceIt.getTipo();
+                      if(tip.equals("LE")){
+                        tip = "LEVE";
+                      }else if(tip.equals("GR")){
+                        tip = "GRAVE";
+                      }else if(tip.equals("MG")){
+                        tip = "MUY GRAVE";
+                      }else if(tip.equals("LA")){
+                        tip = "LLAMADA DE ATENCIÓN";
+                      }else if(tip.equals("PR")){
+                        tip = "PREVENTIVA";
+                      }else {
+                        tip = "OTRA";
+                      }
+
+
+                      li.appendChild(new Listcell(tip+""));
+                      li.appendChild(new Listcell(acceIt.getEmpleado()+""));
+                      li.appendChild(new Listcell(acceIt.getMateria()+""));
+                      SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
+                      Date d = acceIt.getFecha();
+                       li.appendChild(new Listcell(" "+d1.format(d)));
+                      //li.appendChild(new Listcell(acceIt.getComentario()+""));
+                      Listcell c = new Listcell("DETALLES");
+                      c.setImage("/images/auditoria.gif");
+                      li.appendChild(c);
+                      busquedaList.appendChild(li);
+             }
+
+
+
+vio(Comentarios com){
+
+    Representante emp = ses.getAttribute("userRepresentante");
+     if(emp!=null){
+            com.setVistopadre(true);
+     }else{
+                com.setVistohijo(true);
+     }
+
+    adm.actualizar(com);
+       SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
+       Date d = com.getFecha();
+  
+
+    fecha.value = d1.format(d)+"";
+    profesor.value = com.getEmpleado()+"";
+    materia.value = com.getMateria()+"";
+    comentario.value = com.getComentario();
+         String tip = com.getTipo();
+                      if(tip.equals("LE")){
+                        tip = "LEVE";
+                      }else if(tip.equals("GR")){
+                        tip = "GRAVE";
+                      }else if(tip.equals("MG")){
+                        tip = "MUY GRAVE";
+                      }else if(tip.equals("LA")){
+                        tip = "LLAMADA DE ATENCIÓN";
+                      }else if(tip.equals("PR")){
+                        tip = "PREVENTIVA";
+                      }else {
+                        tip = "OTRA";
+                      }
+           tipo.value =""+tip;
+
+
+
+    panel.visible = true;
+    busquedaList.clearSelection();
+}
+
+
+        ]]>
+    </zscript>
+ 
+  
+</window>

@@ -54,9 +54,9 @@ Session a = Sessions.getCurrent();
                 <toolbar  style="background:transparent;border:0px"  id="tb" sclass="vista" height="20px" >
                     <vbox>
                             <label style="font-size:14px;color:white;font-weight:bold;" value="${sessionScope.userEstudiante.nombre}  ${sessionScope.userEstudiante.apellido} " />
-                            <label style="font-size:12px;color:white;font-weight:bold;" value="Dir.: ${sessionScope.userEstudiante.direccion}" />
-                            <label style="  font-size:12px;color:white;font-weight:bold;"  value="Email: ${sessionScope.userEstudiante.mail}" />
-                            <label style="font-weight:bold;font-size:12px;color:white;" value="Usuario: ${sessionScope.userRepresentante.nombres} ${sessionScope.userRepresentante.apellidos} " />
+                            <label style="font-size:12px;color:white;font-weight:bold;" value="${sessionScope.userEstudiante.direccion}" />
+                            <label style="  font-size:12px;color:white;font-weight:bold;"  value="${sessionScope.userEstudiante.mail}" />
+                            <label style="font-weight:bold;font-size:12px;color:white;" value="USUARIO: ${sessionScope.userRepresentante.nombres} ${sessionScope.userRepresentante.apellidos} " />
                     </vbox>
                 </toolbar>
 
@@ -69,8 +69,9 @@ Session a = Sessions.getCurrent();
                     <fisheye image="/images/calendarioacademico.png"  onClick='ingresar("/calendar_1.zul")' />
                     <fisheye image="/images/cambioclave.png" onClick='ingresar("/cambioClaveRepresentante.zul")' />
                     <fisheye image="/images/correo.png" onClick='ingresar("/correosr/comunicadoEstudianteIndex.zul")' />
-                    <fisheye image="/images/comentario1.png" onClick='ingresar("/correosr/comentarios.zul")' />
-                    <fisheye image="/images/mistareas.png" onClick='ingresar("/correos/comunicadoEstudianteIndex.zul")' />
+                    <fisheye image="/images/comentario1.png"  onClick='ingresar("/comentariosEstudiantes.zul")'  />
+                    <fisheye image="/images/mistareas.png" onClick='ingresar("/enconstruccion.zul")' />
+                    <fisheye image="/images/ayuda2.png" onClick='ingresar("/ayudafuera.zul")' />
                     <fisheye image="/images/salida.png" onClick="salir()" />
                 </fisheyebar>
             </hbox>
@@ -86,7 +87,11 @@ Session a = Sessions.getCurrent();
 
 
     </center>
+<zscript>
+     //   Include inc = (Include) xcontents;
+     //   inc.setSrc("/ayudafuera.zul");
 
+</zscript>
 
 </borderlayout>
  
