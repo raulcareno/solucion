@@ -1,5 +1,5 @@
 
-<window     width="650px" border="normal">
+<window     width="650px" >
     <zscript>
         <![CDATA[
 
@@ -11,6 +11,7 @@
   import jcinform.procesos.Administrador;
     import bean.Permisos;
     import bean.pendientes;
+import java.text.SimpleDateFormat;
 
 //globales
 Global global = new Global();
@@ -64,6 +65,29 @@ datos.selectedIndex = 0;
         return permiso.verificarPermiso("Pendientes",accion);
 
     }
+    void buscar(String texto){
+    List empleadosEncontrados = adm.query("Select o from Comentarios as o where o.matricula.estudiante.apellido like  '%"+texto+"%' order by o.fecha desc, o.matricula.estudiante.apellido");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = busquedaList.getItems().iterator(); it.hasNext();) {
+                    busquedaList.getItems().remove(a);
+                }
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Comentarios acceIt = (Comentarios) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getEmpleado()+""));
+                      li.appendChild(new Listcell(acceIt.getMateria()+""));
+                      SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
+                      Date d = acceIt.getFecha();
+                       li.appendChild(new Listcell(" "+d1.format(d)));
+                      li.appendChild(new Listcell(acceIt.getComentario()+""));
+                      busquedaList.appendChild(li);
+             }
+
+    }
+
  void buscar2(Cursos cur){
      List empleadosEncontrados = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+cur.codigocur+"' order by o.estudiante.apellido");
         datos = new Listbox();
@@ -123,10 +147,10 @@ datos.selectedIndex = 0;
 
     <groupbox mold="3d" >
         <caption label="Comentar estudiantes" />
-        <vbox>
+        <vbox width="100%">
 
             <hbox>
-                <grid>
+                <grid width="100%" >
                     <rows>
                         <row>
 
@@ -166,11 +190,11 @@ datos.selectedIndex = 0;
                                     <datebox id="fecha"   onCreate="self.value = new Date()"/>
                         </row>
                         <row spans="2">
-                            <span >D  E  S  C  R  I  P  C  I  O  N:</span>
+                            <span >D  E  S  C  R  I  P  C  I  Ó  N:</span>
                         </row>
                       
                         <row spans="2">
-                            <textbox id="comentario" rows="3" cols="85"/>
+                            <textbox id="comentario" rows="3" cols="95"/>
 
                         </row>     <row style="background-color:yellow" spans="2">
 
@@ -190,9 +214,36 @@ datos.selectedIndex = 0;
                     </rows>
                 </grid>
             </hbox>
+                
         </vbox>
+    </groupbox>
+    <groupbox mold="3d"  >
+        <caption label="Búsquedas" />
+        <vbox width="100%">
+            <hbox>
+                <grid width="100%" >
+                    <rows>
+                        <row>
+                            <span style="float:right"> Ingrese Apellidos:</span>
+                            <span><textbox  id="textoBuscar"  />
+                            <button image="/images/auditoria.gif" id="buscando" label="Buscar" onClick="buscar(textoBuscar.value);" /></span>
+                        </row>
+                        <row spans="2">
+                            <listbox id="busquedaList" >
+                                <listhead sizable="true">
+                                    <listheader label="Empleado" sort="auto" />
+                                    <listheader label="Materia" sort="auto" />
+                                    
+                                    <listheader label="Fecha" sort="auto" />
+                                    <listheader label="Comentario" sort="auto" />
+                                </listhead>
+                            </listbox>
+                        </row>
+                    </rows>
+                </grid>
+            </hbox>
 
-
+        </vbox>
     </groupbox>
 
  
