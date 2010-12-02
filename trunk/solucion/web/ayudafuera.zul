@@ -1,0 +1,45 @@
+
+<window      border="normal">
+    
+    <separator/>
+    <grid align="center">
+        <rows>
+            <row  style="background:transparent" spans="4">
+               <span><image height="60px"   width="60px" src="/images/ayuda.png"/> <label style="font-size:17px;color:blue;font-weight:bold;" value="INFORMACIÓN ACERCA DE EL MENÚ DE OPCIONES" /></span>
+            </row>
+            <row style="background:transparent">
+                <image height="60px"   width="60px" src="/images/miscursos.png"/>
+                <label style="font-size:12px;color:black;font-weight:bold;" value=" Ver los avances académicos en calificación de Aprovechamiento." />
+                <image height="60px"   width="60px" src="/images/calendarioacademico.png"  />
+                <label style="font-size:12px;color:black;font-weight:bold;" value=" Todas las Actividadesde nuestra institución." />
+
+            </row>
+            <row style="background:transparent">
+                <image height="60px"   width="60px" src="/images/cambioclave.png" />
+                <label style="font-size:12px;color:black;font-weight:bold;" value=" Para Modificar mi clave y correo electrónico para una mayor seguridad." />
+                <image height="60px"   width="60px" src="/images/correo.png" />
+                <label style="font-size:12px;color:black;font-weight:bold;" value=" Enviar y recibir correo de o para mis profesores." />
+            </row>
+            <row style="background:transparent">
+                <image height="60px"   width="60px" src="/images/comentario1.png"  />
+                <label style="font-size:12px;color:black;font-weight:bold;" value=" Ver las faltas disciplinarias. " />
+                <image height="60px"   width="60px" src="/images/mistareas.png"/>
+                <label style="font-size:12px;color:black;font-weight:bold;" value=" Todos mis trabajos o tareas." />
+            </row>
+               <row style="background:transparent">
+                <image height="60px"   width="60px" src="/images/estudiantes.png"  />
+                <label style="font-size:12px;color:black;font-weight:bold;" value=" Cambiar para ver las notas de otro hijo (OPCIÓN ÚNICAMENTE PARA REPRESENTANTES)" />
+                <image height="60px"   width="60px" src="/images/salida.png"/>
+                <label style="font-size:12px;color:black;font-weight:bold;" value=" Salir de forma segura del sistema." />
+            </row>
+
+
+
+        </rows>
+    </grid>
+        
+        
+        
+        <!--image src="/images/salida.png"/><label style="font-size:12px;color:black;font-weight:bold;" value=" Salir de mi sistema." /-->
+ 
+</window>

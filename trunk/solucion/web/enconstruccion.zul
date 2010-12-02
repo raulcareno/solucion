@@ -1,0 +1,7 @@
+
+<window     width="780px" border="normal">
+    
+<hbox><image src="/images/enconstruccion.png" />
+    <label style="font-size:20px;color:blue;font-weight:bold;" value=" En construcción, pronto estaremos brindado este servicio, Gracias. " />
+     </hbox>
+</window>
