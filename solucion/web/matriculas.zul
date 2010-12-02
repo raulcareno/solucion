@@ -950,8 +950,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                         <grid width="99%"  height="100%">
                                                             <rows>
 
-                                                                <row>
-                                                                    <span style="float:right"> Busqueda:</span>
+                                                                <row style="background:yellow">
+                                                                    <span style="float:right"> BÚSQUEDA: </span>
                                                                     <span>
                                                                         <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
                                                                         _Ingrese un apellido para buscar
@@ -1521,7 +1521,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         <vbox>
             <hbox>
                 <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick='combo.value="";nuevo();'  />
                 <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true" onClick="modificar()"/>
                 <button  image="/images/imprimir.gif" id="acta"  label="Acta" disabled="true"  onClick='showReport("AM")'/>
                 <button  image="/images/imprimir.gif" id="certificado"  label="Certificado" disabled="true"  onClick='showReport("CM")' />
