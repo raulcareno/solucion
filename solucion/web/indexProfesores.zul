@@ -250,7 +250,7 @@
                                         <listitem id="Registrar" image="/images/chat.png"   label="Chat" value="/chat/chat.zul"/>
                                         <listitem id="Reportes Estudiantes" label="Rep.Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
                                         <listitem id="Reportes Notas" label="Rep.Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
-                                        <listitem id="Dobe" label="Comentarios"  image="/images/comentarios.png" value="/comentarios.zul" />
+                                        <listitem id="Comentarios" label="Comentarios"  image="/images/comentarios.png" value="/comentarios.zul" />
                                     </listbox>
 
 

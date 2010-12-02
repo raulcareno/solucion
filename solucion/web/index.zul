@@ -268,7 +268,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                         <listitem id="Reportes_Notas" label="Reportes Notas"  image="/images/resultados.png" value="/reporteNotas.zul" /><listitem/>
                                         <listitem id="Parametros_Autoevaluacion" image="/images/textos.png"  label="Parametros Rendimiento" value="/perfil.zul" /><listitem/>
                                         <listitem id="Registrar_Autoevaluacion" image="/images/notas.png"  label="Rendimiento" value="/registrarPerfil.zul" /><listitem/>
-                                        <listitem id="Comentarios" image="/images/notas.png"  label="Comentarios" value="/comentarios.zul" /><listitem/>
+                                        <listitem id="Comentarios" image="/images/comentarios.png"  label="Comentarios" value="/comentarios.zul" /><listitem/>
                                     </listbox>
                                 </tabpanel>
                                 <tabpanel height="220px"><!--ADMINISTRACION-->

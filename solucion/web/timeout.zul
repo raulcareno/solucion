@@ -25,7 +25,8 @@ border="normal">
 		</attribute>
     </html>
     <separator orient="vertical" width="180px"/>
-    <button target="_top" label="INGRESAR"  image="/images/ingreso.gif"  style="font-size:20px;color:#346B93;font-weight:bold;"   href="./login.zul"></button>
+    <button target="_top" label="PROFESORES"  image="/images/profe.png"  style="font-size:15px;color:#346B93;font-weight:bold;"   href="./login.zul"></button>
+    <button target="_top" label="ESTUDIANTES"  image="/images/estudiante.png"  style="font-size:15px;color:#346B93;font-weight:bold;"   href="./loginEstudiantes.zul"></button>
  
           
 </window>
