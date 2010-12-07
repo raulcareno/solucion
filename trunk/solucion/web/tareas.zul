@@ -12,7 +12,9 @@
     import bean.Permisos;
     import bean.pendientes;
 import java.text.SimpleDateFormat;
-
+  import org.zkoss.util.media.Media;
+  import org.zkoss.util.media.AMedia;
+  import java.io.FileOutputStream;
 //globales
 Global global = new Global();
 EventDAO evtdao = new EventDAO();
@@ -27,6 +29,7 @@ int w = 0;
  ListModel model = new SimpleListModel(accesos.toArray());
 //globales
 List cursos = null;
+byte[] data = null;
 
     Empleados user = (Empleados)ses.getAttribute("user");
     if(user.getTipo().equals("Interna")){
@@ -126,20 +129,16 @@ datos.selectedIndex = 0;
      List empleadosEncontrados = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+cur.codigocur+"' order by o.estudiante.apellido");
         datos = new Listbox();
         int a=0;
-            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
-                    datos.getItems().remove(a);
+            for (Iterator it = estudiantesTodos.getItems().iterator(); it.hasNext();) {
+                    estudiantesTodos.getItems().remove(a);
                 }
-                Matriculas selecMatricula = new Matriculas(-1);
-                Estudiantes est = new Estudiantes(-1);
-                est.setApellido("[S E L E C C I O N E]"); est.setNombre("");
-                selecMatricula.setEstudiante(est);
-                empleadosEncontrados.add(0,selecMatricula);
+                 
                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
                       Matriculas acceIt = (Matriculas) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt+""));
-                      datos.appendChild(li);
+                      estudiantesTodos.appendChild(li);
              }
 
     }
@@ -216,19 +215,20 @@ datos.selectedIndex = 0;
         ]]>
     </zscript>
 
-    <panel  id="registrar"  framable="true" title="Comentar Estudiantes" 	 border="normal"	collapsible="true"  >
+    <panel  id="registrar"  framable="true" title="Enviar Tareas a Estudiantes" 	 border="normal"	collapsible="true"  >
         <panelchildren>
 
                 
             <grid width="100%" >
                 <rows>
+                     
                     <row>
 
 
                         <span style="float:right"> Cursos(1):</span>
 
                         <listbox   mold="select"  id="curs" width="420px"
-                                     onSelect="buscarMaterias(((Cursos)curs.selectedItem.value));datos.selectedIndex = 0;">
+                                     onSelect="buscarMaterias(((Cursos)curs.selectedItem.value));">
 
                             <listitem forEach="${cursos}" value="${each}">
                                 <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
@@ -236,50 +236,147 @@ datos.selectedIndex = 0;
                             </listitem>
                         </listbox>
                     </row>
+                    <row></row>
                     <row>
 
                         <span style="float:right">Materia(2):</span>
-                        <listbox id="materias"  mold="select" onSelect="buscar2(((Cursos)curs.selectedItem.value));" width="420px" >
+                        <listbox id="materias"  mold="select" onSelect="buscar2(((Cursos)curs.selectedItem.value)); estudiantesListado.visible=true;" width="420px" >
                             <listitem value="-1" label="[S E L E C C I O N E]"></listitem>
                                 
                         </listbox>
 
                     </row>
-                    <row>
-
-                        <span style="float:right">Estudiantes(3):</span>
+                    <!--row>
+                       <span style="float:right">Estudiantes(3):</span>
                         <listbox id="datos"  mold="select" width="420px" >
                             <listitem value="-1" label="[S E L E C C I O N E]"></listitem>
-                                
-                        </listbox>
+                       </listbox>
 
-                    </row>
-                     
+                    </row-->
+                    <row></row>
+                    <row >
+                       <span style="float:right">Estudiantes:</span>
+                            <span>
+                                <textbox id="datosTodos" readonly="true" cols="65" />
+                                 <button  image="/images/expa.png"  id="expa1"  onClick="datos.visible= true;expa1.visible = false;contra1.visible = true;" />
+                                 <button visible="false" image="/images/contra.png" id="contra1"  onClick="datos.visible= false; contra1.visible = false; expa1.visible = true" />
+                                <listbox id="datos" visible="false"  style="font:10px" height="300px" width="100%"  mold="paging" rows="3" pageSize="100"  multiple="true" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                                    <listhead>
+                                        <listheader label="Estudiantes"  sort="auto">
+                                            <button image="/images/borrar.gif" label=" Borrar">
+                                                <attribute name="onClick">
+                                            Set items = datos.getSelectedItems();
+                                            if (items.isEmpty()) {
+                                                alert("Seleccion un Item para Quitar!");
+                                            } else {
+                                                List al = new ArrayList(items);
+                                                for (Iterator it = al.iterator(); it.hasNext();) {
+                                                    Listitem li = (Listitem)it.next();
+                                                    li.setSelected(false);
+                                                    datos.removeItemAt(li.getIndex());
+                                                }
+                                                List al = datos.getItems();
+                                                 datosTodos.value  = "";
+                                                for (Iterator it = al.iterator(); it.hasNext();) {
+                                                    Listitem li = (Listitem)it.next();
+                                                     datosTodos.value  = datosTodos.value+"; "+li.getValue();
+
+                                                }
+                                            }
+
+                                                </attribute>
+                                            </button>
+                                            <button label="CERRAR" image="/images/eliminar.gif" onClick="datos.visible= false;contra1.visible = false; expa1.visible = true" />
+                                        </listheader>
+
+                                    </listhead>
+
+                                </listbox>
+
+
+                            </span>
+                        </row>
                     <row>
-                        <span style="float:right">Fecha:</span>
-                        <datebox id="fecha"   onCreate="self.value = new Date()"/>
+
+                        <span style="float:right">Presentación:</span>
+                        <span>
+                            Inicio:
+                            <datebox id="desde"   onCreate="self.value = new Date()"/>
+                        Fin:
+                            <datebox id="hasta"   onCreate="self.value = new Date()"/>
+                        </span>
                     </row>
-                    <row spans="2">
-                        <span >D  E  S  C  R  I  P  C  I  Ó  N:</span>
-                    </row>
-                      
-                    <row spans="2">
-                        <textbox id="comentario" rows="3" cols="95"/>
+                    <row></row>
+                    <row  >
+                        <span style="float:right">Tema:</span>
+                        <textbox id="tarea"  cols="70"/>
 
                     </row>
-                    <row style="background-color:yellow" spans="2">
-
-
+                    <row></row>
+                     <row >
+                        <span style="float:right">La_Tarea_es:</span>
                         <radiogroup Id="tipo">
-                            <radio  selected="true" value="LE" label="LEVE"/>
-                            <radio   value="GR" label="GRAVE"/>
-                            <radio value="MG" label="MUY GRAVE"/>
-                            <radio value="LA" label="LLAMADA DE ATENCIÓN"/>
-                            <radio value="PR" label="PREVENTIVA"/>
+                            <radio  selected="true" value="IN" label="INDIVIDUAL"/>
+                            <radio value="GR" label="GRUPAL"/>
+                            <radio  value="RE" label="DE RECUPERACIÓN"/>
+                             
                         </radiogroup>
                     </row>
+                    <row></row>
                     <row spans="2">
-                        <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
+                        <span >D  E  S  C  R  I  P  C  I  Ó  N
+                            <separator orient="vertical"/>  D E
+                            <separator orient="vertical"/>  L A
+                            <separator orient="vertical"/> T A R E A:
+                        </span>
+                    </row>
+                      <row></row>
+                    <row spans="2">
+                        <textbox id="comentario" rows="3" cols="95"/>
+                    </row>
+                    <row></row>
+                   
+                    <row spans="2">
+                        <span>
+                            <textbox value="" cols="30" readonly="true" id="nombrearchivo" />
+                                    <button label="Adjuntar Archivo" image="/images/adjunto.gif"  id="ima">
+                                        <attribute name="onClick">{
+ Fileupload f = new Fileupload();
+            Media media0 = f.get();
+        if (media0 instanceof AMedia) {
+                AMedia media = (AMedia) media0;
+               //String tipo = "."+media.getFormat();
+                String nombre= media0.getName();
+                try{
+                    data = media.getByteData();
+
+                }catch(Exception e){
+                System.out.println(""+e);
+                    try{
+                            data = media.getStringData().getBytes();
+                    }catch(Exception ax){
+                            System.out.println(""+ax);
+                             Messagebox.show("No puede adjuntar este tipo de archivos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                             return;
+                    }
+
+
+                }
+                nombrearchivo.value = media0.getName();
+
+}else{
+               data =  media0.getByteData();
+               nombrearchivo.value = media0.getName();
+}
+
+		}
+
+
+                                        </attribute>
+                                    </button>
+                                    <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
+                        </span>
+                        
 
                     </row>
                 </rows>
@@ -287,34 +384,34 @@ datos.selectedIndex = 0;
 
         </panelchildren>
     </panel>
- <panel   framable="true" title="BUSQUEDAS"  	 border="normal"	collapsible="true"  >
+    <panel  visible="false"  framable="true" title="BUSQUEDAS"  	 border="normal"	collapsible="true"  >
         <panelchildren>
 
-                <grid width="100%" >
-                    <rows>
-                        <row>
-                            <span>Ingrese Apellidos:
-                                <textbox  id="textoBuscar"  />
-                                <button image="/images/auditoria.gif" id="buscando" label="Buscar" onClick="buscar(textoBuscar.value);  registrar.setOpen(false);" />
-                                <image src="/images/ok.gif"/> VISTO
-                                <image src="/images/ok2.gif"/> NO VISTO
-                            </span>
-                        </row>
-                        <row spans="2">
-                            <listbox id="busquedaList"  onSelect="vio(self.selectedItem.value);"  >
-                                <listhead sizable="true">
-                                    <listheader label="Estudiante" sort="auto" />
-                                    <listheader label="Materia" sort="auto" />
+            <grid width="100%" >
+                <rows>
+                    <row>
+                        <span>Ingrese Apellidos:
+                            <textbox  id="textoBuscar"  />
+                            <button image="/images/auditoria.gif" id="buscando" label="Buscar" onClick="buscar(textoBuscar.value);  registrar.setOpen(false);" />
+                            <image src="/images/ok.gif"/> VISTO
+                            <image src="/images/ok2.gif"/> NO VISTO
+                        </span>
+                    </row>
+                    <row spans="2">
+                        <listbox id="busquedaList"  onSelect="vio(self.selectedItem.value);"  >
+                            <listhead sizable="true">
+                                <listheader label="Estudiante" sort="auto" />
+                                <listheader label="Materia" sort="auto" />
                                     
-                                    <listheader label="Fecha" sort="auto" />
-                                    <listheader label="HIJO" />
-                                    <listheader label="PADRE" />
-                                    <listheader label="OPCION" sort="auto" />
-                                </listhead>
-                            </listbox>
-                        </row>
-                    </rows>
-                </grid>
+                                <listheader label="Fecha" sort="auto" />
+                                <listheader label="HIJO" />
+                                <listheader label="PADRE" />
+                                <listheader label="OPCION" sort="auto" />
+                            </listhead>
+                        </listbox>
+                    </row>
+                </rows>
+            </grid>
 
         </panelchildren>
     </panel>
@@ -352,7 +449,37 @@ datos.selectedIndex = 0;
             </grid>
         </panelchildren>
     </panel>
+   <panel id="estudiantesListado" visible="false" movable="true" title="SELECCIONE LOS ESTUDIANTES"  framable="true" width="500px" height="330px" style="position:absolute; top:13%; left:10%">
+                                    <panelchildren>
+                                         <listbox  id="estudiantesTodos" style="font:10px" width="100%" rows="10000" height="290px" mold="paging"   pageSize="100"  multiple="true" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                                    <listhead>
+                                        <listheader label="TODOS"  >
+                                            <button image="/images/add.png"  label="AÑADIR SELECCIONADOS">
+                                                <attribute name="onClick">
+                                            Set items = estudiantesTodos.getSelectedItems();
+                                            if (items.isEmpty()) {
+                                                alert("Seleccion un Item para Quitar!");
+                                            } else {
+                                                List al = new ArrayList(items);
+                                                for (Iterator it = al.iterator(); it.hasNext();) {
+                                                    Listitem li = (Listitem)it.next();
+                                                    li.setSelected(false);
+                                                    datos.appendChild(li);
+                                                    datosTodos.value  = datosTodos.value+"; "+li.getValue();
+                                                }
+                                            }
 
+                                                </attribute>
+                                            </button>
+                                            <button image="/images/eliminar.gif" onClick="estudiantesListado.visible = false;" label="CERRAR" />
+                                        </listheader>
+
+                                    </listhead>
+
+                                </listbox>
+
+                                        </panelchildren>
+                                    </panel>
 
  
 
