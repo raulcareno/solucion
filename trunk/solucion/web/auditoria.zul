@@ -1,5 +1,4 @@
-<window   title="Control de Auditora"  border="normal"
-          >
+<window     border="normal" >
 
     <zscript>
         <![CDATA[
@@ -10,6 +9,7 @@
         import bean.Permisos;
         import java.math.BigDecimal;
         import java.util.Date;
+        import bean.exportarExcel;
 
         Session ses = Sessions.getCurrent();
         Administrador adm = new Administrador();
@@ -17,7 +17,7 @@
         static ParametrosGlobales equi = new ParametrosGlobales();
         Permisos permiso = new Permisos();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-
+exportarExcel exp = new exportarExcel();
         List empleadosEncontrados = adm.query("Select o from Empleados as o order by o.apellidos");
         Empleados es = new Empleados(-2);
         es.setApellidos("[TODOS LOS EMPLEADOS]");
@@ -61,6 +61,8 @@
 
 
         public static void export_to_csv(Listbox listbox) {
+        //exp.exportar(listbox);
+        //return;
         String s = ";\t";
         StringBuffer sb = new StringBuffer();
         for (Object head : listbox.getHeads()) {
@@ -77,7 +79,7 @@
                 }
                 sb.append(i + "\n");
             }
-        Filedownload.save(sb.toString().getBytes(), "text/plain", "auditoria.csv");
+        Filedownload.save(sb.toString().getBytes(), "application/vnd.ms-excel", "auditoria.csv");
         }
 
 
@@ -86,7 +88,7 @@
 
 ]]>
     </zscript>
-
+ 
     <groupbox width="100%" mold="3d" >
 
         <caption label="Seleccione las fechas en las cuales desea ver los movimientos" />
@@ -95,13 +97,14 @@
                 <datebox id="desde" format="yyyy-MM-dd"  width="100px" />
                 Hasta:
                 <datebox id="hasta" format="yyyy-MM-dd" width="100px" />
-                <button id="buscar"  label="Buscar" onClick="buscar();"/>
+                
                 <listbox id="empleadosl" width="300px"  mold="select" >
                     <listitem  selected="true"  forEach="${empleadosEncontrados}" value="${each}" label="${each.apellidos} ${each.nombres}" />
 
                 </listbox>
-                <button label="IMPRIMIR" onClick="Clients.print()"/>
-    <button label="Exportar CVS,xls" onClick="export_to_csv(datos)"/>
+                <button id="buscar" image="/images/auditoria.gif"  label="Buscar" onClick="buscar();"/>
+                <button label="IMPRIMIR"   image="/images/auditoria.gif"    onClick="Clients.print()"/>
+    <button label="Exportar CVS,xls"  image="/images/excel.gif"   onClick="export_to_csv(datos)"/>
             </hbox>
             <hbox width="100%">
                 <listbox  mold="paging"  pageSize="25"  id="datos" width="100%">
