@@ -182,7 +182,43 @@ public class ReporteActaDataSource implements JRDataSource{
             valor = nodo.getCurso().getPeriodo().getInstitucion().getRuc();
         }else if ("codigo".equals(fieldName)) {
             valor = nodo.getCurso().getPeriodo().getInstitucion().getCodigo();
-        }else if ("nombreministro".equals(fieldName)) {
+        }else if ("discapacidad".equals(fieldName)) {
+            valor = nodo.getEstudiante().getDiscapacidad();
+        }else if ("nacionalidad".equals(fieldName)) {
+            valor = nodo.getEstudiante().getNacionalidad();
+        }else if ("tipodiscapacidad".equals(fieldName)) {
+            valor = nodo.getEstudiante().getTipodiscapacidad();
+        }else if ("lugar".equals(fieldName)) {
+            valor = nodo.getEstudiante().getLugar();
+        }else if ("hermanos".equals(fieldName)) {
+            valor = nodo.getEstudiante().getHermanos();
+        }else if ("vivecon".equals(fieldName)) {
+            valor = nodo.getEstudiante().getVivecon();
+        }else if ("tipofamilia".equals(fieldName)) {
+            valor = nodo.getEstudiante().getTipofamilia();
+        }else if ("ingpadre".equals(fieldName)) {
+            valor = nodo.getEstudiante().getIngpadre();
+        }else if ("ingmadre".equals(fieldName)) {
+            valor = nodo.getEstudiante().getIngmadre();
+        }else if ("ingotros".equals(fieldName)) {
+            valor = nodo.getEstudiante().getIngotros();
+        }else if ("casa".equals(fieldName)) {
+            valor = nodo.getEstudiante().getCasa();
+        }else if ("luz".equals(fieldName)) {
+            valor = nodo.getEstudiante().getLuz();
+        }else if ("agua".equals(fieldName)) {
+            valor = nodo.getEstudiante().getAgua();
+        }else if ("sshh".equals(fieldName)) {
+            valor = nodo.getEstudiante().getSshh();
+        }else if ("pozo".equals(fieldName)) {
+            valor = nodo.getEstudiante().getPozo();
+        }else if ("economia".equals(fieldName)) {
+            valor = nodo.getEstudiante().getEconomia();
+        }else if ("telefonob".equals(fieldName)) {
+            valor = nodo.getEstudiante().getTelefonob();
+        }else if ("internet".equals(fieldName)) {
+            valor = nodo.getEstudiante().getInternet();
+        } else if ("nombreministro".equals(fieldName)) {
             valor = nodo.getCurso().getPeriodo().getInstitucion().getMinistronombre();
         }else if ("firmaministro".equals(fieldName)) {
             try{
