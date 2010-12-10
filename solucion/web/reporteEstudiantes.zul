@@ -91,7 +91,7 @@ public JRDataSource certificados(Cursos curso,String tipo){
                      notas noti = new notas();
                      ds = noti.conteoMatriculas();
 
-                }else if(tipo.equals("CM2") || tipo.equals("LTRAN") || tipo.equals("LINT")  || tipo.equals("LNUEV") || tipo.equals("LMIN")  || tipo.equals("LCED")  || tipo.equals("LFEC")  || tipo.equals("LGENT")  || tipo.equals("LGEN")  || tipo.equals("LASI")  || tipo.equals("LCA")  || tipo.equals("LCAS")  || tipo.equals("AM")  || tipo.equals("LMAT")  || tipo.equals("LCLA")   || tipo.equals("LCLA2") || tipo.equals("LCLA3") || tipo.equals("LCLA4") ||tipo.equals("LCOR")  || tipo.equals("LREP2") || tipo.equals("LREP")  || tipo.equals("LCAR1") || tipo.equals("LCAR")){
+                }else{
                       ds = new ReporteActaDataSource(detalle);
                 }
 
@@ -274,6 +274,10 @@ cerrar.setVisible(true);
                     datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP2");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/libromatriculas.jasper");
+            }else if(tipo.equals("LINT2")){
+                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LINT2");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/fechadiscapacidad.jasper");
             }else if(tipo.equals("LPAS")){
                     datasource = pases((Cursos)curs.getSelectedItem().getValue(),"LPAS");
                     parametros.put("titulo", titulo.getValue());
@@ -425,6 +429,8 @@ void campos(String valor){
             titulo.value = "NOMINA DE ESTUDIANTES CON PASES DE OTROS COLEGIOS";
       if(valor.equals("LINT"))
             titulo.value = "Listado de Estudiantes";
+      if(valor.equals("LINT2"))
+            titulo.value = "Listado de Estudiantes";
 
 
 
@@ -465,7 +471,7 @@ void campos(String valor){
                                 <listitem  id="LCAS" label="Lista de Estudiantes con Casilleros vacios" value="LCAS"/>
                                 <listitem  id="LCA" label="Lista de Estudiantes 1 Casillero" value="LCA"/>
                                 <listitem  id="LASI" label="Listado para Asistencia" value="LASI"/>
-                                <listitem  id="LGEN" label="Listadopor Genero" value="LGEN"/>
+                                <listitem  id="LGEN" label="Listado por Genero" value="LGEN"/>
                                 <listitem  id="LFEC" label="Listado con Años Cumplidos" value="LFEC"/>
                                 <listitem  id="LMIN" label="Listado con Folio y No. Matricula" value="LMIN"/>
                                 <listitem  id="LCED" label="Listado con Cédula de Identidad" value="LCED"/>
@@ -473,6 +479,7 @@ void campos(String valor){
                                 <listitem  id="LNUEV" label="Listado de Estudiantes Nuevos" value="LNUEV"/>
                                 <listitem  id="LTRAN" label="Listado de Estudiantes que Toman transporte" value="LTRAN"/>
                                 <listitem  id="LINT" label="Listado de Estudiantes Internos" value="LINT"/>
+                                <listitem  id="LINT2" label="Listado de Estudiantes Fecha y Discapacidad" value="LINT2"/>
                             </listbox>
                         </row>
 
@@ -614,6 +621,7 @@ void campos(String valor){
             LNUEV.visible = per.verificarPermisoReporte("LNUEV", "Ingresar");
             LTRAN.visible = per.verificarPermisoReporte("LTRAN", "Ingresar");
             LINT.visible = per.verificarPermisoReporte("LINT", "Ingresar");
+            LINT2.visible = per.verificarPermisoReporte("LINT", "Ingresar");
 
             }
         </zscript>
