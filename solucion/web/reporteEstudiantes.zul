@@ -34,27 +34,32 @@ Empleados user = (Empleados)ses.getAttribute("user");
     }
 
 Cursos selec = new Cursos(-1);
-selec.setDescripcion("[Seleccione]");
-cursos.add(0,selec);
-
-Cursos todos = new Cursos(-2);
-todos.setDescripcion("[TODOS]");
-
-if(user.getTipo().equals("Interna"))
-    cursos.add(todos);
+ 
+//if(user.getTipo().equals("Interna"))
+    //cursos.add(todos);
 
 
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 void buscar2(Cursos cur){
 
     }
- public JRDataSource inscritos(String tipo){
+ public JRDataSource inscritos(ArrayList listadodeCursos, String tipo){
+  String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+
+
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
       ArrayList detalle = new ArrayList();
         String query = "SELECT mat FROM Matriculas AS mat " +
                 "WHERE  mat.estado =  '"+tipo+"' " +
-                "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and mat.curso.codigocur in ("+curso+") " +
                 " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
       List hoy = adm.query(query);
       for(Iterator it = hoy.iterator(); it.hasNext();) {
@@ -64,21 +69,23 @@ void buscar2(Cursos cur){
       ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
       return ds;
 }
-public JRDataSource certificados(Cursos curso,String tipo){
+public JRDataSource certificados(ArrayList listadodeCursos,String tipo){
+    String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
-                    String query = "SELECT mat FROM Matriculas AS mat " +
-                            "WHERE  mat.estado in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
-                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido,mat.estudiante.nombre";
-                    if (!curso.getCodigocur().equals(-2)) {
-                        query = "Select o from Matriculas as o " +
+                    String query =   "Select o from Matriculas as o " +
                                 "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                                "and o.curso.codigocur = '" + curso.getCodigocur() + "' " +
-                                " and o.estado in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') order by o.curso.secuencia,o.estudiante.apellido,o.estudiante.nombre";
-                    }
-
+                                "and o.curso.codigocur in (" + curso + ") " +
+                                " and o.estado in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') order by o.curso.secuencia, o.curso.descripcion, o.curso.paralelo.descripcion , o.estudiante.apellido,o.estudiante.nombre";
                     List hoy = adm.query(query);
                     for (Iterator it = hoy.iterator(); it.hasNext();) {
                         Matriculas elem = (Matriculas) it.next();
@@ -99,20 +106,28 @@ public JRDataSource certificados(Cursos curso,String tipo){
 
 }
 
-public JRDataSource pases(Cursos curso,String tipo){
+public JRDataSource pases(ArrayList listadodeCursos,String tipo){
+
+  String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+            //detalle.add(elem);
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+      
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
-                    String query = "SELECT mat FROM Matriculas AS mat " +
-                            "WHERE  mat.estado in ('Recibir Pase') " +
-                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
-                    if (!curso.getCodigocur().equals(-2)) {
+                    String query = "";
+                
                         query = "Select o from Matriculas as o " +
                                 "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                                "and o.curso.codigocur = '" + curso.getCodigocur() + "' " +
-                                " and o.estado in ('Recibir Pase') order by o.curso.secuencia,o.estudiante.apellido,o.estudiante.nombre";
-                    }
+                                "and o.curso.codigocur in (" + curso + ") " +
+                                " and o.estado in ('Recibir Pase') order by o.curso.secuencia, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre";
+
 
                     List hoy = adm.query(query);
                     for (Iterator it = hoy.iterator(); it.hasNext();) {
@@ -126,20 +141,26 @@ public JRDataSource pases(Cursos curso,String tipo){
 
 }
 
-public JRDataSource transporte(Cursos curso,String tipo){
+public JRDataSource transporte(ArrayList listadodeCursos,String tipo){
+        String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
                     if(tipo.equals("LTRAN")){
-                        String query = "SELECT mat FROM Matriculas AS mat " +
-                                "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
-                                "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.estudiante.transporte = true  " +
-                                " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
-                        if (!curso.getCodigocur().equals(-2)) {
-                            query = "Select o from Matriculas as o " +
+                        String query =   "Select o from Matriculas as o " +
                                     "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                                    "and o.curso.codigocur = '" + curso.getCodigocur() + "' and o.estudiante.transporte = true  order by o.curso.secuencia, o.curso.codigocur, o.estudiante.apellido,o.estudiante.nombre";
-                        }
+                                    "and o.curso.codigocur in (" + curso + ") and  " +
+                                    "o.estudiante.transporte = true  " +
+                                    "order by o.curso.secuencia, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre";
+                    
 
                         List hoy = adm.query(query);
                         for (Iterator it = hoy.iterator(); it.hasNext();) {
@@ -147,15 +168,11 @@ public JRDataSource transporte(Cursos curso,String tipo){
                             detalle.add(elem);
                         }
                     }else if(tipo.equals("LCART")){
-                        String query = "SELECT mat FROM Matriculas AS mat " +
-                                    "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
-                                    "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                                    " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
-                            if (!curso.getCodigocur().equals(-2)) {
-                                query = "Select o from Matriculas as o " +
+                        String   query = "Select o from Matriculas as o " +
                                         "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                                        "and o.curso.codigocur = '" + curso.getCodigocur() + "'  order by o.curso.secuencia, o.curso.codigocur, o.estudiante.apellido,o.estudiante.nombre ";
-                            }
+                                        "and o.curso.codigocur in (" + curso + ")  " +
+                                        " order by o.curso.secuencia, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre ";
+                         
 
                             List hoy = adm.query(query);
                             for (Iterator it = hoy.iterator(); it.hasNext();) {
@@ -170,20 +187,25 @@ public JRDataSource transporte(Cursos curso,String tipo){
             return ds;
 
 }
-public JRDataSource nuevos(Cursos curso,String tipo){
-      Administrador adm = new Administrador();
+public JRDataSource nuevos(ArrayList listadodeCursos, String tipo){
+       String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+
+
+     Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
                     String query = "SELECT mat FROM Matriculas AS mat " +
                             "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
-                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.nuevo = true  " +
+                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                            " and mat.curso.codigocur in ("+curso+") and  mat.nuevo = true  " +
                             " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
-                    if (!curso.getCodigocur().equals(-2)) {
-                        query = "Select o from Matriculas as o " +
-                                "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                                "and o.curso.codigocur = '" + curso.getCodigocur() + "' and o.nuevo = true ";
-                    }
-
                     List hoy = adm.query(query);
                     for (Iterator it = hoy.iterator(); it.hasNext();) {
                         Matriculas elem = (Matriculas) it.next();
@@ -196,20 +218,24 @@ public JRDataSource nuevos(Cursos curso,String tipo){
 
 }
 
-public JRDataSource internos(Cursos curso,String tipo){
+public JRDataSource internos(ArrayList listadodeCursos,String tipo){
+       String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
                     ArrayList detalle = new ArrayList();
                     String query = "SELECT mat FROM Matriculas AS mat " +
                             "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
-                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  mat.estudiante.adventista = true  " +
+                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and mat.curso.codigocur in ("+ curso +") and  mat.estudiante.adventista = true  " +
                             " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
-                    if (!curso.getCodigocur().equals(-2)) {
-                        query = "Select o from Matriculas as o " +
-                                "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                                "and o.curso.codigocur = '" + curso.getCodigocur() + "' and o.estudiante.adventista = true ";
-                    }
-
+                  
                     List hoy = adm.query(query);
                     for (Iterator it = hoy.iterator(); it.hasNext();) {
                         Matriculas elem = (Matriculas) it.next();
@@ -224,14 +250,28 @@ public JRDataSource internos(Cursos curso,String tipo){
 
 
  void showReport() {
+
+     ArrayList listadoCursos = new ArrayList();
+                	Set items = curs.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("SELECCIONE POR LO MENOS UN CURSO...!");
+                            return;
+						} else {
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+								Cursos curso = li.value;
+                                listadoCursos.add(curso);
+							}
+						}
         //Preparing parameters
-        ver.visible = false;
-        reportese.visible = true;
-        //LCAS,LCA,LASI.LGEN,LGENT,LFEC,LMIN
+             ver.visible = false;
+            reportese.visible = true;
+             //LCAS,LCA,LASI.LGEN,LGENT,LFEC,LMIN
             //conanioscumplidos
             String tipo = reporte.getSelectedItem().getValue();
-cerrar.setVisible(true);
-//rep.setOpen(true);parametros.setOpen(false);
+            cerrar.setVisible(true);
+            //rep.setOpen(true);parametros.setOpen(false);
             Institucion insts = periodo.getInstitucion();
             Map parametros = new HashMap();
             parametros.put("denominacion", insts.getDenominacion());
@@ -246,126 +286,131 @@ cerrar.setVisible(true);
             parametros.put("telefono",insts.getTelefono());
 
             JRDataSource datasource = null;
+            
             if(tipo.equals("CM")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"CM");
+                    datasource = certificados(listadoCursos,"CM");
                     report.setSrc("WEB-INF/reportes/certificadoMatricula.jasper");
                     parametros.put("titulo", "Certificado de Matricula");
             }else if(tipo.equals("CM2")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/certificadoMatricula2.jasper");
             }else if(tipo.equals("LFEC")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/conanioscumplidos.jasper");
             }else if(tipo.equals("LCAS")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/concasilleros.jasper");
             }else if(tipo.equals("LMIN")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/conmatricula.jasper");
             }else if(tipo.equals("LCED")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/concedula.jasper");
             }else if(tipo.equals("LREP2")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP2");
+                    datasource = certificados(listadoCursos,"LREP2");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/libromatriculas.jasper");
             }else if(tipo.equals("LINT2")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LINT2");
+                    datasource = certificados(listadoCursos,"LINT2");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/fechadiscapacidad.jasper");
+            }else if(tipo.equals("LREL")){
+                    datasource = certificados(listadoCursos,"LREL");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc("WEB-INF/reportes/conreligion.jasper");
             }else if(tipo.equals("LPAS")){
-                    datasource = pases((Cursos)curs.getSelectedItem().getValue(),"LPAS");
+                    datasource = pases(listadoCursos,"LPAS");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/conpase.jasper");
             }else if(tipo.equals("LTRAN")){
-                    datasource = transporte((Cursos)curs.getSelectedItem().getValue(),"LTRAN");
+                    datasource = transporte(listadoCursos,"LTRAN");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/transporte.jasper");
             }else if(tipo.equals("LCART")){
-                    datasource = transporte((Cursos)curs.getSelectedItem().getValue(),"LCART");
+                    datasource = transporte(listadoCursos,"LCART");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/paracarnet.jasper");
             }
             else if(tipo.equals("LNUEV")){
-                    datasource = nuevos((Cursos)curs.getSelectedItem().getValue(),"LNUEV");
+                    datasource = nuevos(listadoCursos,"LNUEV");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/nuevos.jasper");
             }else if(tipo.equals("LINT")){
-                    datasource = internos((Cursos)curs.getSelectedItem().getValue(),"LINT");
+                    datasource = internos(listadoCursos,"LINT");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/internos.jasper");
             }else if(tipo.equals("LCA")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc("WEB-INF/reportes/con1casilleros.jasper");
             }else if(tipo.equals("LASI")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc("WEB-INF/reportes/conasistencia.jasper");
             }else if(tipo.equals("LGEN")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/congenero.jasper");
             }else if(tipo.equals("AM")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"AM");
+                    datasource = certificados(listadoCursos,"AM");
                     parametros.put("titulo", "Acta de Matricula");
                     report.setSrc("WEB-INF/reportes/actaMatricula.jasper");
 
             }else if(tipo.equals("INS")){
-                    datasource = inscritos("Inscrito");
+                    datasource = inscritos(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/estudiantes.jasper");
             }else if(tipo.equals("MAT")){
-                    datasource = inscritos("Matriculado");
+                    datasource = inscritos(listadoCursos,"Matriculado");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/estudiantes.jasper");
             }else if(tipo.equals("RET")){
-                    datasource = inscritos("Retirado");
+                    datasource = inscritos(listadoCursos,"Retirado");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/estudiantes.jasper");
             }else if(tipo.equals("LMAT")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LMAT");
+                    datasource = certificados(listadoCursos,"LMAT");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/estudiantes.jasper");
             }else if(tipo.equals("LMAT2")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LMAT2");
+                    datasource = certificados(listadoCursos,"LMAT2");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc("WEB-INF/reportes/totalizados.jasper");
             }else if(tipo.equals("LCLA")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCLA");
+                    datasource = certificados(listadoCursos,"LCLA");
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc("WEB-INF/reportes/claves.jasper");
             }else if(tipo.equals("LCLA2")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCLA2");
+                    datasource = certificados(listadoCursos,"LCLA2");
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc("WEB-INF/reportes/clavePersonalCompleto.jasper");
             }else if(tipo.equals("LCLA3")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCLA2");
+                    datasource = certificados(listadoCursos,"LCLA2");
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc("WEB-INF/reportes/clavesRepre.jasper");
             }else if(tipo.equals("LCLA4")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCLA2");
+                    datasource = certificados(listadoCursos,"LCLA2");
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc("WEB-INF/reportes/clavePersonalCompletoRepre.jasper");
             }else if(tipo.equals("LCOR")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCOR");
+                    datasource = certificados(listadoCursos,"LCOR");
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc("WEB-INF/reportes/concorreos.jasper");
             }else if(tipo.equals("LREP")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LREP");
+                    datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc("WEB-INF/reportes/representantes.jasper");
             }else if(tipo.equals("LCAR")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCAR");
+                    datasource = certificados(listadoCursos,"LCAR");
                     parametros.put("titulo", "Carné Estudiantil");
                     report.setSrc("WEB-INF/reportes/carnet.jasper");
             }else if(tipo.equals("LCAR1")){
-                    datasource = certificados((Cursos)curs.getSelectedItem().getValue(),"LCAR");
+                    datasource = certificados(listadoCursos,"LCAR");
                     parametros.put("titulo", "Carné Estudiantil");
                     report.setSrc("WEB-INF/reportes/carnetMinisterio.jasper");
             }else if(tipo.equals("-1")){
@@ -380,13 +425,16 @@ cerrar.setVisible(true);
         }
 
 void campos(String valor){
-    curs.setSelectedIndex(0);
+    //curs.setSelectedIndex(0);
     mates.disabled = true;
     curs.disabled = false;
+     filacurso.visible=true;
+     filatitulo.visible=true;
         if(valor.equals("INS") || valor.equals("MAT") || valor.equals("RET") || valor.equals("LMAT2") ){
             curs.disabled = true;
             mates.disabled = true;
             titulo.value = "Listado de Estudiantes";
+         // filacurso.visible = false;
         }
         if(valor.equals("CM") ||  valor.equals("CM2") )
             titulo.value = "Certificado de Matricula";
@@ -400,6 +448,8 @@ void campos(String valor){
             titulo.value = "Listado de Retirados";
         if(valor.equals("LMAT") || valor.equals("LMAT2"))
             titulo.value = "Listado de Matriculados por Curso";
+    
+
         if(valor.equals("LCAR"))
             titulo.value = "Carné Estudiantil";
         if(valor.equals("LCLA"))
@@ -434,7 +484,7 @@ void campos(String valor){
 
 
 
-
+        
 
 
 }
@@ -448,50 +498,60 @@ void campos(String valor){
                     <rows>
                         <row  style="background:transparent;border:0px" >
                             <span style="float:right"> Reporte:</span>
-                            <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="300px"  mold="select" >
+                            <listbox id="reporte" onSelect="campos(self.selectedItem.value)"  width="400px"  mold="select" >
                                 <listitem  label="[Seleccione]" value="-1" selected="true" />
+                                <listitem  id="AM" label="Actas de Matricula" value="AM" />
                                 <listitem id="CM"  label="Certificado de Matricula" value="CM" />
                                 <listitem  id="CM2" label="Certificado de Matricula(2)" value="CM2" />
-                                <listitem  id="AM" label="Actas de Matricula" value="AM" />
-                                <listitem  id="INS" label="Estudiantes Inscritos" value="INS" />
-                                <listitem  id="MAT" label="Estudiantes Matriculados" value="MAT" />
-                                <listitem id="RET"  label="Estudiantes Retirados" value="RET" />
-                                <listitem  id="LMAT" label="Lista de Matriculados" value="LMAT" />
-                                <listitem  id="LMAT2" label="Totalizado de Matriculados" value="LMAT2" />
-                                <listitem  id="LCAR" label="Lista de Carné "  value="LCAR"/>
-                                <listitem  id="LCAR1" label="Lista de Carné Estudiantil"  value="LCAR1"/>
-                                <listitem  id="LCART" label="Listado para Carnets" value="LCART" />
-                                <listitem  id="LCLA" label="Lista de Claves (Todos)" value="LCLA"/>
-                                <listitem  id="LCLA2" label="Listado de Claves con Matricula(Individual)" value="LCLA2"/>
-                                <listitem  id="LCLA3" label="Lista de Claves de Representante(Todos)" value="LCLA3"/>
-                                <listitem  id="LCLA4" label="Listado de Claves de Representante Curso(Individual)" value="LCLA4"/>
-                                <listitem  id="LCOR" label="Listado de Correos electronicos" value="LCOR"/>
-                                <listitem  id="LREP" label="Lista de Representantes" value="LREP"/>
+                                <listitem  id="LMIN" label="Folio y No. Matricula" value="LMIN"/>
+                                <listitem  id="INS" label="Inscritos" value="INS" />
+                                <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
+                                <listitem  id="LMAT" label="Matriculados" value="LMAT" />
+                                <listitem id="RET"  label="Retirados" value="RET" />
                                 <listitem  id="LREP2" label="Libro de Matriculas" value="LREP2"/>
-                                <listitem  id="LCAS" label="Lista de Estudiantes con Casilleros vacios" value="LCAS"/>
-                                <listitem  id="LCA" label="Lista de Estudiantes 1 Casillero" value="LCA"/>
+                                <listitem  id="LPAS" label="Pases Recibidos" value="LPAS"/>
+                                <listitem  id="LMAT2" label="Totalizado de Matriculados" value="LMAT2" />
+                                
+                             
+                                <listitem disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
+                                <listitem  id="LCAR" label="Carné del Estudiante(1) "  value="LCAR"/>
+                                <listitem  id="LCAR1" label="Carné Estudiantil Ministerio(2)"  value="LCAR1"/>
+                                <listitem  id="LCART" label="Estudiante para Carnét (No.Mat-Fecha-Curso)" value="LCART" />
+                                <listitem  id="LCLA" label="Estudiantes con Claves (Todos)" value="LCLA"/>
+                                <listitem  id="LCLA2" label="Estudiantes con Claves (Individual-Recortar)" value="LCLA2"/>
+                                <listitem  id="LCLA3" label="Representantes con Claves (Todos)" value="LCLA3"/>
+                                <listitem  id="LCLA4" label="Representante con Claves (Individual-Recortar)" value="LCLA4"/>
+                                <listitem  id="LCOR" label="Estudiantes con Correos electrónicos" value="LCOR"/>
+                                <listitem  id="LREP" label="Estudiantes con Representantes" value="LREP"/>
+                                <listitem  id="LCAS" label="Estudiantes con Casilleros vacios" value="LCAS"/>
+                                <listitem  id="LCA" label="Estudiantes 1 Casillero" value="LCA"/>
                                 <listitem  id="LASI" label="Listado para Asistencia" value="LASI"/>
-                                <listitem  id="LGEN" label="Listado por Genero" value="LGEN"/>
-                                <listitem  id="LFEC" label="Listado con Años Cumplidos" value="LFEC"/>
-                                <listitem  id="LMIN" label="Listado con Folio y No. Matricula" value="LMIN"/>
-                                <listitem  id="LCED" label="Listado con Cédula de Identidad" value="LCED"/>
-                                <listitem  id="LPAS" label="Listado de Pases Recibidos" value="LPAS"/>
-                                <listitem  id="LNUEV" label="Listado de Estudiantes Nuevos" value="LNUEV"/>
-                                <listitem  id="LTRAN" label="Listado de Estudiantes que Toman transporte" value="LTRAN"/>
-                                <listitem  id="LINT" label="Listado de Estudiantes Internos" value="LINT"/>
-                                <listitem  id="LINT2" label="Listado de Estudiantes Fecha y Discapacidad" value="LINT2"/>
+                                
+                                <listitem  id="LGEN" label="Estudiantes por Genero (Masculino:Femenino)" value="LGEN"/>
+                                <listitem  id="LFEC" label="Estudiantes por Fecha y Edad (Años Cumplidos)" value="LFEC"/>
+                                <listitem  id="LCED" label="Estudiantes con Cédula de Identidad" value="LCED"/>
+                                
+                                <listitem  disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
+                                <listitem  id="LNUEV" label="Estudiantes Nuevos" value="LNUEV"/>
+                                <listitem  id="LTRAN" label="Estudiantes que Toman transporte" value="LTRAN"/>
+                                <listitem  id="LINT"  label="Estudiantes Internos" value="LINT"/>
+                                <listitem  id="LREL"  label="Estudiantes por Religión" value="LREL"/>
+                                <listitem  id="LINT2" label="Estudiantes con Fecha y Discapacidad(SI:NO)" value="LINT2"/>
+                                <listitem  disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                             </listbox>
                         </row>
 
-                        <row style="background:transparent;border:0px" >
+                        <row  id="filacurso" visible="false" style="background:transparent;border:0px" >
                             <span style="float:right"> Curso:</span>
-                            <listbox id="curs" width="400px"  mold="select"
-                                     onSelect="buscar2(((Cursos)self.selectedItem.value));">
-
+                            <!-- onSelect="buscar2(((Cursos)self.selectedItem.value));" -->
+                            <listbox id="curs" width="400px" height="200px"  multiple="true" checkmark="true"
+                                     >
+                                <listhead>
+                                    <listheader label="Seleccionar Todos"/> </listhead>
                                 <listitem forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
                             </listbox>
                         </row>
-                        <row  style="background:transparent;border:0px" visible="false">
+                        <row   visible="false" style="background:transparent;border:0px" >
                             <span style="float:right"> Estudiantes: </span>
 
                             <listbox id="mates" width="300px"  mold="select" >
@@ -502,13 +562,14 @@ void campos(String valor){
 
 
                         </row>
-                        <row style="background:transparent;border:0px" >
+                        <row  id="filatitulo" style="background:transparent;border:0px" >
                             <span style="float:right"> Titulo: </span>
-                            <div><textbox id="titulo" width="280px" />
-                            <span>
-                                      <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
+                            <div>
+                                <textbox id="titulo" width="280px" />
+                                <span>
+                                    <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
                                         <bandpopup>
-                                           <vbox>
+                                            <vbox>
                                                 <listbox width="90px" id="format"  onSelect="bd.value=self.selectedItem.label; bd.close();showReport();">
                                                     <listitem  value="pdf" selected="true">
                                                         <listcell  image="/images/pdf.png" label="PDF" />
@@ -538,8 +599,8 @@ void campos(String valor){
                                             </vbox>
                                         </bandpopup>
                                     </bandbox>
-                                <button label="Ejecutar...!"  image="/images/run.gif"  onClick='showReport();'/>
-                            </span>
+                                    <button label="Ejecutar...!"  image="/images/run.gif"  onClick='showReport();'/>
+                                </span>
                             </div>
                         </row>
                        
@@ -558,20 +619,20 @@ void campos(String valor){
                     }
 
                 </zscript>
-                 <grid id="reportese" visible="false" width="100%" height="100%">
-                     <rows>
-                         <row   spans="2">
-                             <span>
-                             <button  image="/images/eliminar.gif" id="cerrar" label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
+                <grid id="reportese" visible="false" width="100%" height="100%">
+                    <rows>
+                        <row   spans="2">
+                            <span>
+                                <button  image="/images/eliminar.gif" id="cerrar" label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
 
-                            <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
-                             <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
-                             </span>
-                         </row>
+                                <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
+                                <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
+                            </span>
+                        </row>
 
                         <row   spans="2">
                             
-                                <jasperreport width="100%" height="500px" id="report" />
+                            <jasperreport width="100%" height="500px" id="report" />
                             
 
                         </row>
@@ -622,6 +683,7 @@ void campos(String valor){
             LTRAN.visible = per.verificarPermisoReporte("LTRAN", "Ingresar");
             LINT.visible = per.verificarPermisoReporte("LINT", "Ingresar");
             LINT2.visible = per.verificarPermisoReporte("LINT", "Ingresar");
+            LREL.visible = per.verificarPermisoReporte("LINT", "Ingresar");
 
             }
         </zscript>

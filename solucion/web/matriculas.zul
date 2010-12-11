@@ -43,8 +43,8 @@ Empleados user =  (Empleados)ses.getAttribute("user");
 
 
 List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
-      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
-
+      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"' and o.curso.periodo.codigoper = '"+ periodo.getCodigoper() +"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+System.out.println("NUMERO DE CURSOS: "+cursos);
 
    if(cursos.size()<=0){
              cursos = adm.query("Select o from Cursos as o "
@@ -165,6 +165,7 @@ void llenar(Estudiantes estudent){
     direccion.value = estudent.getDireccion();
     telefono.value = estudent.getTelefono();
     genero.value = estudent.getGenero();
+    religion.value = estudent.getReligion();
     nacido.value = estudent.getFechanacimiento();
     mail.value = estudent.getMail();
     usuario.value = estudent.getUsuario();
@@ -422,6 +423,7 @@ void estado(Boolean estado,Boolean modificar){
     direccion.readonly = estado;
     telefono.readonly = estado;
     genero.readonly = estado;
+    religion.readonly = estado;
     mail.readonly = estado;
     nacido.readonly = estado;
     tratamiento.readonly = estado;
@@ -564,6 +566,7 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
         estudent.setGenero(genero.selectedItem.value);
+        estudent.setReligion(religion.selectedItem.value);
         estudent.setPendientes(pendientes.checked);
 
         estudent.setVivecon(vivecon.value);
@@ -1151,7 +1154,17 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                             <row>
                                                                 <span style="float:right"> Observación:</span>
                                                                 <textbox rows="2" id="observacion"  readonly="true"  />
-                                                                
+                                                                <span style="float:right"> Religión:</span>
+                                                                <combobox id="religion" readonly="true">
+                                                                    <comboitem value="Ninguno" label="Ninguno"/>
+                                                                    <comboitem value="Adventista" label="Adventista"/>
+                                                                    <comboitem value="Cristiano" label="Cristiano"/>
+                                                                    <comboitem value="Evangélico" label="Evangélico"/>
+                                                                    <comboitem value="Católico" label="Catolico"/>
+                                                                    <comboitem value="Otra" label="Otra"/>
+                                                                  
+                                                                    
+                                                                </combobox>
 
                                                             </row>
 
