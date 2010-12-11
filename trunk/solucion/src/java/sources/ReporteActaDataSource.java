@@ -218,6 +218,8 @@ public class ReporteActaDataSource implements JRDataSource{
             valor = nodo.getEstudiante().getTelefonob();
         }else if ("internet".equals(fieldName)) {
             valor = nodo.getEstudiante().getInternet();
+        }else if ("religion".equals(fieldName)) {
+            valor = nodo.getEstudiante().getReligion();
         } else if ("nombreministro".equals(fieldName)) {
             valor = nodo.getCurso().getPeriodo().getInstitucion().getMinistronombre();
         }else if ("firmaministro".equals(fieldName)) {
@@ -292,7 +294,6 @@ public class ReporteActaDataSource implements JRDataSource{
         Date d = new Date();
 
 
-
         SimpleDateFormat sdfDia = new SimpleDateFormat("dd");
         SimpleDateFormat sdfMes = new SimpleDateFormat("MM");
         SimpleDateFormat sdfAño = new SimpleDateFormat("yyyy");
@@ -334,6 +335,7 @@ public class ReporteActaDataSource implements JRDataSource{
                     break;
             }
         }
+        
 
         this.day = c;
         this.month = (b < 0?0:b);
