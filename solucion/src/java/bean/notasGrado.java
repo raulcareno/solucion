@@ -90,7 +90,7 @@ public class notasGrado extends Rows {
                     //label3.setReadonly(true);
                     row.appendChild(label3);
                 }else if(j==(vec.size()-1)){
-                    label.setDisabled(true);
+//                    label.setDisabled(true);
                     row.appendChild(label);
                 }else{
 
