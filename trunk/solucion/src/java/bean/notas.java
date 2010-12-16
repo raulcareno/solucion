@@ -1239,11 +1239,17 @@ public class notas extends Rows {
                 } else if (j == 1) {
 
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
-                    
-                    List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE ");
+
+                      List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
                     if (valor.size() > 0) {
                         aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
                     }
+//                    String querAprov = "SELECT (" + nfinal.getNota() + ")  FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE ";
+//                    List valor = adm.queryNativo(querAprov);
+//                    System.out.println("APROVECHAMIENTO: "+querAprov);
+//                    if (valor.size() > 0) {
+//                        aprovecha = (Double) ((((Vector) valor.get(0)).get(0)));
+//                    }
                     //System.out.println("SELECT CAST(("+nfinal.getNota()+")as decimal (9,0)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND materia = 0 ");
                     valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
                     System.out.println("" + valor);
