@@ -307,12 +307,14 @@ public JRDataSource profesores(){
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc("WEB-INF/reportes/cuadrofinal.jasper");
             }else if(tipo.equals("CNF2")){
-
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
-                    report.setSrc("WEB-INF/reportes/cuadrofinal2.jasper");
+                    report.setSrc("WEB-INF/reportes/cuadrofinal1.jasper");
             }else if(tipo.equals("CNF3")){
                     datasource = noti.cuadrofinal3(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc("WEB-INF/reportes/cuadrofinal2.jasper");
+            }else if(tipo.equals("CNF4")){
+                 //   datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                 //   report.setSrc("WEB-INF/reportes/cuadrofinal1.jasper");
             }else if(tipo.equals("AG")){
                     datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"original");
                     report.setSrc("WEB-INF/reportes/actaGrado.jasper");
