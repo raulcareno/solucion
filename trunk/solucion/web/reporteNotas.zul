@@ -388,7 +388,7 @@ void campos(String valor){
         }else if(valor.equals("MEJE")){
              titulo.value= "Mejores Estudiantes";
              curs.disabled = false;
-        }else if(valor.equals("NMAT") || valor.equals("NMATD") ){
+        }else if(valor.equals("NMAT") || valor.equals("NMATD") || valor.equals("CCAL5") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
             materiasCombo.disabled = false;

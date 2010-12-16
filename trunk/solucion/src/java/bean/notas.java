@@ -1059,7 +1059,7 @@ public class notas extends Rows {
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         String q = "SELECT CONCAT(est.apellido,' ',est.nombre), " + query + "   FROM notasgrado notas,matriculas mat,estudiantes est "
-                + "WHERE notas.matricula = mat.codigomat AND mat.estudiante = est.codigoest AND mat.curso = '" + curso.getCodigocur() + "'";
+                + "WHERE notas.matricula = mat.codigomat AND mat.estudiante = est.codigoest AND mat.curso = '" + curso.getCodigocur() + "' order by 1";
         System.out.println("" + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
