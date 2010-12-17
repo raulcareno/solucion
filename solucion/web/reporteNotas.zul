@@ -315,6 +315,9 @@ public JRDataSource profesores(){
             }else if(tipo.equals("CNF4")){
                  //   datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                  //   report.setSrc("WEB-INF/reportes/cuadrofinal1.jasper");
+            }else if(tipo.equals("EST")){
+                    datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    report.setSrc("WEB-INF/reportes/estadistico.jasper");
             }else if(tipo.equals("AG")){
                     datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"original");
                     report.setSrc("WEB-INF/reportes/actaGrado.jasper");
@@ -435,7 +438,12 @@ void campos(String valor){
         }else if(valor.equals("CNF") || valor.equals("CNF2") || valor.equals("CNF3") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
-            titulo.value= "Cuadro de Final de Calificaciones";
+            titulo.value= "Cuadro de Calificaciones";
+            fila.visible = true;
+        }else if(valor.equals("EST")){
+            curs.disabled = false;
+            sistemasCombo.disabled = false;
+            titulo.value= "Cuadro de Estadístico";
             fila.visible = true;
         }else{
             titulo.value= " ";
@@ -464,10 +472,12 @@ void campos(String valor){
                                     <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
                                     <listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
                                     <listitem  id="CNF2" label="Cuadro Juntas o Final (2)" value="CNF2" />
+                                    
                                     <listitem  id="CNF3" label="Cuadro Final" value="CNF3" />
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
                                     <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
                                     <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
+                                    <listitem  id="EST" label="Estadístico por Curso" value="EST" />
                                     <listitem  id="AG" label="Acta de Grado" value="AG"/>
                                     <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
                                     <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
@@ -633,6 +643,7 @@ void cargando(){
 		CNF.visible = per.verificarPermisoReporte("CNF", "Ingresar");
         CNF2.visible = per.verificarPermisoReporte("CNF", "Ingresar");
         CNF3.visible = per.verificarPermisoReporte("CNF", "Ingresar");
+        
 		CDIS.visible = per.verificarPermisoReporte("CDIS", "Ingresar");
         AG.visible = per.verificarPermisoReporte("AG", "Ingresar");
         CAG.visible = per.verificarPermisoReporte("CAG", "Ingresar");
