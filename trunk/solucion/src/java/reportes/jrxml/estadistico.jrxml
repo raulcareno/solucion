@@ -40,8 +40,8 @@
 		<groupFooter>
 			<band height="430">
 				<lineChart>
-					<chart isShowLegend="true" theme="default">
-						<reportElement x="0" y="0" width="784" height="424"/>
+					<chart isShowLegend="true">
+						<reportElement x="0" y="0" width="784" height="430"/>
 						<chartTitle>
 							<titleExpression><![CDATA[$F{estudiante}]]></titleExpression>
 						</chartTitle>
