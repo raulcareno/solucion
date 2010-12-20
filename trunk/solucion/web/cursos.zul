@@ -27,6 +27,7 @@ Session ses = Sessions.getCurrent();
 
 //FUNCIONES
 void llenar(Cursos empa){
+    codigocurso.value = empa.getCodigocur();
     nombres.value = empa.getDescripcion();
     secuencia.value = empa.getSecuencia();
     aprobacion.value = new BigDecimal(empa.getAprobacion());
@@ -95,6 +96,7 @@ void estado(Boolean estado,Boolean modificar){
     return;
  }
         Periodo per = (Periodo) ses.getAttribute("periodo");
+        empa.setCodigocur(codigocurso.value);
         empa.setDescripcion(nombres.value);
         empa.setSecuencia(secuencia.value);
 
@@ -239,7 +241,11 @@ void cargarPar(Global g){
 
                 <row>
                     <span style="float:right"> Nombres(*):</span>
+                    
+                    <span> 
                     <textbox id="nombres"  maxlength="100" cols="40" readonly="true"   />
+                    <intbox id="codigocurso" readonly="true" cols="2" />
+                    </span>
                 </row>
                 <row>
                     <span style="float:right"> Especialidad:</span>
@@ -319,9 +325,9 @@ void cargarPar(Global g){
                 <row spans="2">
                     <span>
                         <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();modificar.disabled=true; eliminar.disabled=true" />
+                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar();modificar.disabled=true"/>
+                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();modificar.disabled=true;eliminar.disabled=true"/>
                     </span>
                 </row>
             </rows>
