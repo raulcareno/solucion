@@ -44,26 +44,41 @@ selecCurso.setDescripcion("[S E L E C C I O N E]");
 cursos.add(0,selecCurso);
 
     void guardar(){
-
-         Comentarios come = new Comentarios();
+bean.secuencial sec = new bean.secuencial();
+         Tareas come = new Tareas();
          come.setMateria(((MateriaProfesor)materias.selectedItem.value).getMateria());
          come.setEmpleado(user);
+         come.setCodigo(adm.getNuevaClave("Tareas","codigo"));
          come.setCurso(curs.selectedItem.value);
-         come.setMatricula(datos.selectedItem.value);
-         come.setFecha(fecha.value);
-         come.setComentario(comentario.value);
+         come.setFechadesde(desde.value);
+         come.setFechahasta(hasta.value);
+         come.setNombre(tarea.value);
+         come.setDescripcion(comentario.value);
          come.setTipo(tipo.selectedItem.value);
-         come.setVistopadre(false);
-         come.setVistohijo(false);
-         come.setVistootro(false);
-         adm.guardar(come);
-
+        come.setAdjunto(data);
+        come.setArchivo(nombrearchivo.value);
+          
+        
+         
+          adm.guardar(come);
+         for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                                Listitem li  = (Listitem)it.next();
+                                Matriculas empe = (Matriculas)li.getValue();
+                                TareaEstudiante tarea = new TareaEstudiante();
+                                tarea.setCodigo(sec.generarClave());
+                                tarea.setMatricula(empe);
+                                tarea.setEstado("");
+                                tarea.setTarea(come);
+                                tarea.setVistopadre(false);
+                                tarea.setVistohijo(false);
+                                tarea.setVistootro(false); 
+                                tarea.setEntregada(false);
+                                adm.guardar(tarea);   
+                         
+         }
+        
             Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-datos.selectedIndex = 0;
- materias.selectedIndex= 0;
- curs.selectedIndex = 0;
- comentario.value = "";
-
+  
   }
 
 
@@ -72,7 +87,7 @@ datos.selectedIndex = 0;
 
     }
   void buscar(String texto){
-    List empleadosEncontrados = adm.query("Select o from Comentarios as o where o.matricula.estudiante.apellido like  '%"+texto+"%' order by o.fecha desc, o.matricula.estudiante.apellido");
+    List empleadosEncontrados = adm.query("Select o from TareaEstudiante as o where o.matricula.estudiante.apellido like  '%"+texto+"%' order by o.tarea.fechadesde desc, o.matricula.estudiante.apellido");
         datos = new Listbox();
         int a=0;
             for (Iterator it = busquedaList.getItems().iterator(); it.hasNext();) {
@@ -80,13 +95,65 @@ datos.selectedIndex = 0;
                 }
 
                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
-                      Comentarios acceIt = (Comentarios) it.next();
+                      TareaEstudiante acceIt = (TareaEstudiante) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getMatricula()+""));
+                      li.appendChild(new Listcell(acceIt.getTarea().getMateria()+""));
+                      SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
+                      Date d = acceIt.getTarea().getFechadesde();
+                       li.appendChild(new Listcell(" "+d1.format(d)));
+                       //GUARDAR CON FALSE VISTOS O PONER FALSE EN LA CLASE CONTROLADORA
+                      if(acceIt.getVistopadre()){
+                          Listcell c = new Listcell("");
+                          c.setImage("/images/ok.gif");
+                          li.appendChild(c);
+                      }else{
+                          Listcell c = new Listcell("");
+                          c.setImage("/images/ok2.gif");
+                          li.appendChild(c);
+                      }
+                       if(acceIt.getVistohijo()){
+                          Listcell c = new Listcell("");
+                          c.setImage("/images/ok.gif");
+                          li.appendChild(c);
+                      }else{
+                          Listcell c = new Listcell("");
+                          c.setImage("/images/ok2.gif");
+                          li.appendChild(c);
+                      }
+
+                       
+                      
+                      
+                      
+                       Listcell c = new Listcell("Ver");
+                      c.setImage("/images/auditoria.gif");
+                      li.appendChild(c);
+                   //   li.appendChild(new Listcell(acceIt.getComentario()+""));
+
+
+
+
+                      busquedaList.appendChild(li);
+             }
+
+    }
+  void buscarTodos(String texto){
+    List empleadosEncontrados = adm.query("Select o from Tareas as o  order by o.fechadesde desc ");
+        datos = new Listbox();
+        int a=0;
+                for (Iterator it = busquedaList.getItems().iterator(); it.hasNext();) {
+                    busquedaList.getItems().remove(a);
+                }
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Tareas acceIt = (Tareas) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getMateria()+""));
                       SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
-                      Date d = acceIt.getFecha();
+                      Date d = acceIt.getFechadesde();
                        li.appendChild(new Listcell(" "+d1.format(d)));
                        //GUARDAR CON FALSE VISTOS O PONER FALSE EN LA CLASE CONTROLADORA
                       if(acceIt.getVistopadre()){
@@ -255,16 +322,16 @@ datos.selectedIndex = 0;
                     </row-->
                     <row></row>
                     <row >
-                       <span style="float:right">Estudiantes:</span>
-                            <span>
-                                <textbox id="datosTodos" readonly="true" cols="65" />
-                                 <button  image="/images/expa.png"  id="expa1"  onClick="datos.visible= true;expa1.visible = false;contra1.visible = true;" />
-                                 <button visible="false" image="/images/contra.png" id="contra1"  onClick="datos.visible= false; contra1.visible = false; expa1.visible = true" />
-                                <listbox id="datos" visible="false"  style="font:10px" height="300px" width="100%"  mold="paging" rows="3" pageSize="100"  multiple="true" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
-                                    <listhead>
-                                        <listheader label="Estudiantes"  sort="auto">
-                                            <button image="/images/borrar.gif" label=" Borrar">
-                                                <attribute name="onClick">
+                        <span style="float:right">Estudiantes:</span>
+                        <span>
+                            <textbox id="datosTodos" readonly="true" cols="65" />
+                            <button  image="/images/expa.png"  id="expa1"  onClick="datos.visible= true;expa1.visible = false;contra1.visible = true;" />
+                            <button visible="false" image="/images/contra.png" id="contra1"  onClick="datos.visible= false; contra1.visible = false; expa1.visible = true" />
+                            <listbox id="datos" visible="false"  style="font:10px" height="300px" width="100%"  mold="paging" rows="3" pageSize="100"  multiple="true" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                                <listhead>
+                                    <listheader label="Estudiantes"  sort="auto">
+                                        <button image="/images/borrar.gif" label=" Borrar">
+                                            <attribute name="onClick">
                                             Set items = datos.getSelectedItems();
                                             if (items.isEmpty()) {
                                                 alert("Seleccion un Item para Quitar!");
@@ -284,18 +351,18 @@ datos.selectedIndex = 0;
                                                 }
                                             }
 
-                                                </attribute>
-                                            </button>
-                                            <button label="CERRAR" image="/images/eliminar.gif" onClick="datos.visible= false;contra1.visible = false; expa1.visible = true" />
-                                        </listheader>
+                                            </attribute>
+                                        </button>
+                                        <button label="CERRAR" image="/images/eliminar.gif" onClick="datos.visible= false;contra1.visible = false; expa1.visible = true" />
+                                    </listheader>
 
-                                    </listhead>
+                                </listhead>
 
-                                </listbox>
+                            </listbox>
 
 
-                            </span>
-                        </row>
+                        </span>
+                    </row>
                     <row>
 
                         <span style="float:right">Presentación:</span>
@@ -313,7 +380,7 @@ datos.selectedIndex = 0;
 
                     </row>
                     <row></row>
-                     <row >
+                    <row >
                         <span style="float:right">La_Tarea_es:</span>
                         <radiogroup Id="tipo">
                             <radio  selected="true" value="IN" label="INDIVIDUAL"/>
@@ -323,6 +390,49 @@ datos.selectedIndex = 0;
                         </radiogroup>
                     </row>
                     <row></row>
+                       <row spans="2">
+                        <span>
+                            <textbox value="" cols="30" readonly="true" id="nombrearchivo" />
+                            <button label="Adjuntar Archivo" image="/images/adjunto.gif"  id="ima">
+                                <attribute name="onClick">{
+                                     Fileupload f = new Fileupload();
+                                                Media media0 = f.get();
+                                            if (media0 instanceof AMedia) {
+                                                    AMedia media = (AMedia) media0;
+                                                   //String tipo = "."+media.getFormat();
+                                                    String nombre= media0.getName();
+                                                    try{
+                                                        data = media.getByteData();
+
+                                                    }catch(Exception e){
+                                                    System.out.println(""+e);
+                                                        try{
+                                                                data = media.getStringData().getBytes();
+                                                        }catch(Exception ax){
+                                                                System.out.println(""+ax);
+                                                                 Messagebox.show("No puede adjuntar este tipo de archivos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                                 return;
+                                                        }
+
+
+                                                    }
+                                                    nombrearchivo.value = media0.getName();
+
+                                    }else{
+                                                   data =  media0.getByteData();
+                                                   nombrearchivo.value = media0.getName();
+                                    }
+
+                                            }
+
+
+                                </attribute>
+                            </button>
+                          
+                        </span>
+                        
+
+                    </row>
                     <row spans="2">
                         <span >D  E  S  C  R  I  P  C  I  Ó  N
                             <separator orient="vertical"/>  D E
@@ -330,61 +440,23 @@ datos.selectedIndex = 0;
                             <separator orient="vertical"/> T A R E A:
                         </span>
                     </row>
-                      <row></row>
+                    <row></row>
                     <row spans="2">
                         <textbox id="comentario" rows="3" cols="95"/>
                     </row>
                     <row></row>
-                   
                     <row spans="2">
-                        <span>
-                            <textbox value="" cols="30" readonly="true" id="nombrearchivo" />
-                                    <button label="Adjuntar Archivo" image="/images/adjunto.gif"  id="ima">
-                                        <attribute name="onClick">{
- Fileupload f = new Fileupload();
-            Media media0 = f.get();
-        if (media0 instanceof AMedia) {
-                AMedia media = (AMedia) media0;
-               //String tipo = "."+media.getFormat();
-                String nombre= media0.getName();
-                try{
-                    data = media.getByteData();
-
-                }catch(Exception e){
-                System.out.println(""+e);
-                    try{
-                            data = media.getStringData().getBytes();
-                    }catch(Exception ax){
-                            System.out.println(""+ax);
-                             Messagebox.show("No puede adjuntar este tipo de archivos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                             return;
-                    }
-
-
-                }
-                nombrearchivo.value = media0.getName();
-
-}else{
-               data =  media0.getByteData();
-               nombrearchivo.value = media0.getName();
-}
-
-		}
-
-
-                                        </attribute>
-                                    </button>
-                                    <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
-                        </span>
                         
-
-                    </row>
+                      <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
+                      </row>
+                   
+                 
                 </rows>
             </grid>
 
         </panelchildren>
     </panel>
-    <panel  visible="false"  framable="true" title="BUSQUEDAS"  	 border="normal"	collapsible="true"  >
+    <panel  visible="true"  framable="true" title="BUSQUEDAS"  	 border="normal"	collapsible="true"  >
         <panelchildren>
 
             <grid width="100%" >
@@ -449,13 +521,13 @@ datos.selectedIndex = 0;
             </grid>
         </panelchildren>
     </panel>
-   <panel id="estudiantesListado" visible="false" movable="true" title="SELECCIONE LOS ESTUDIANTES"  framable="true" width="500px" height="330px" style="position:absolute; top:13%; left:10%">
-                                    <panelchildren>
-                                         <listbox  id="estudiantesTodos" style="font:10px" width="100%" rows="10000" height="290px" mold="paging"   pageSize="100"  multiple="true" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
-                                    <listhead>
-                                        <listheader label="TODOS"  >
-                                            <button image="/images/add.png"  label="AÑADIR SELECCIONADOS">
-                                                <attribute name="onClick">
+    <panel id="estudiantesListado" visible="false" movable="true" title="SELECCIONE LOS ESTUDIANTES"  framable="true" width="500px" height="330px" style="position:absolute; top:13%; left:10%">
+        <panelchildren>
+            <listbox  id="estudiantesTodos" style="font:10px" width="100%" rows="10000" height="290px" mold="paging"   pageSize="100"  multiple="true" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                <listhead>
+                    <listheader label="TODOS"  >
+                        <button image="/images/add.png"  label="AÑADIR SELECCIONADOS">
+                            <attribute name="onClick">
                                             Set items = estudiantesTodos.getSelectedItems();
                                             if (items.isEmpty()) {
                                                 alert("Seleccion un Item para Quitar!");
@@ -469,17 +541,17 @@ datos.selectedIndex = 0;
                                                 }
                                             }
 
-                                                </attribute>
-                                            </button>
-                                            <button image="/images/eliminar.gif" onClick="estudiantesListado.visible = false;" label="CERRAR" />
-                                        </listheader>
+                            </attribute>
+                        </button>
+                        <button image="/images/eliminar.gif" onClick="estudiantesListado.visible = false;" label="CERRAR" />
+                    </listheader>
 
-                                    </listhead>
+                </listhead>
 
-                                </listbox>
+            </listbox>
 
-                                        </panelchildren>
-                                    </panel>
+        </panelchildren>
+    </panel>
 
  
 
