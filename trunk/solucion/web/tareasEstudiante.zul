@@ -1,0 +1,249 @@
+  
+<borderlayout>
+    <west title="AYUDA" size="17%" flex="true" maxsize="250" splittable="true" collapsible="true">
+        <div >
+            <grid>
+                <rows>
+                    <row>
+                        <span style="color:red">MATERIA: 
+                            <span style="color:black"> Materia en la cual tiene tarea a su hijo </span>
+                        </span>
+                    </row>   
+                    <row>
+                        <span style="color:red">TEMA:
+                            <span style="color:black">  Le ayuda a diferenciar mejor la tarea enviada. </span>
+                        </span>
+                    </row>
+                    <row>
+                        <span style="color:red">DESDE: 
+                            <span style="color:black"> Fecha desde la cual se ha enviado la tarea. </span>
+                        </span>
+                    </row>
+                    <row>
+                        <span style="color:red">  HASTA:
+                            <span style="color:black">  Fecha límite para presentar la tarea. </span>
+                        </span>
+                    </row>
+                    <row>
+                        <span style="color:red">ENTREGADA:
+                            <span style="color:black"> 
+                                <image src="/images/ok.gif" /> YA PRESENTADA
+                                <image  src="/images/bloquear.gif" /> NO PRESENTADA
+                            </span>
+                        </span>
+                    
+                    </row>
+                    <row>
+                        <span style="color:red">OPCION:
+                            <span style="color:black">  Para visualizar todos los detalles de la tarea. </span>
+                        </span>
+                    </row>
+                </rows>    
+            </grid>
+              
+        </div>
+    </west>
+             
+    <center border="none" flex="true">
+        <div>
+            <groupbox mold="3d"  >
+                <caption label="* TAREAS DE SU HIJO" />
+                <vbox width="100%">
+                    <hbox>
+                        <grid width="100%" >
+                            <rows>
+                       
+
+                                <row spans="2">
+                                    <listbox id="busquedaList" onSelect="vio(self.selectedItem.value);" >
+                                        <listhead sizable="true">
+                                            <listheader width="250px"  label="MATERIA" sort="auto" />
+                                            <listheader width="150px"  label="TEMA" sort="auto" />
+                                            <listheader width="150px"  label="DESDE" sort="auto" />
+                                            <listheader width="150px"  label="HASTA" sort="auto" />
+                                            <listheader width="65px"  label="ENTREGO" sort="auto" />
+                                            <listheader  label="OPCION" sort="auto" />
+                                    
+                                        </listhead>
+                                    </listbox>
+                                </row>
+                            </rows>
+                        </grid>
+                    </hbox>
+
+                </vbox>
+            </groupbox>
+            <panel style="position:absolute; top:5%; left:5%" id="panel" visible="false" framable="true"
+    width="700px"  height="385px"
+	  border="normal" >
+        
+                <panelchildren>
+                    <grid width="100%">
+                        <rows>
+                            <row>
+                                <span style="float:right">DESDE:</span>
+                                <span>
+                                    <textbox style="border:0px;background:transparent" cols="40" readonly="true" id="fecha" value=""/>
+                        HASTA: 
+                                    <textbox style="border:0px;background:transparent" cols="40" readonly="true" id="hasta" value=""/>
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right">PROFESOR:</span>
+                                <textbox style="border:0px;background:transparent" cols="80" readonly="true"  id="profesor" value=""/>
+                            </row>
+                            <row>
+                                <span style="float:right">MATERIA:</span>
+                                <textbox style="border:0px;background:transparent" cols="80" readonly="true"  id="materia" value=""/>
+                            </row>
+                            <row>
+                                <span style="float:right">TIPO:</span>
+                                <textbox style="border:0px;background:transparent" cols="80" readonly="true"  id="tipo" value=""/>
+                            </row>
+                            <row>
+                                <span style="float:right">TEMA:</span>
+                                <textbox style="border:0px;background:transparent" cols="80" readonly="true"  id="tarea" value=""/>
+                            </row>
+                            <row>
+                                <span style="float:right">ADJUNTO:</span>
+                                <button image="/images/adjunto.gif" id="descargarb" label="Descargar">
+                                    <attribute name="onClick">
+                            Filedownload.save(data, "file", archivo);
+                                    </attribute>
+                                </button>
+                          
+                            </row>
+                            <row align="center" spans="2">D E T A L L E S :  </row>
+                            <row spans="2">
+                                <textbox cols="100" rows="8" id="comentario" value=""/>
+                            </row>
+                            <row align="center" spans="2">
+                                <button  label="CERRAR" image ="/images/eliminar.gif" onClick='panel.setVisible(false)'  />
+                            </row>
+                        </rows>
+                    </grid>
+                </panelchildren>
+            </panel>
+ 
+
+            <zscript>
+        <![CDATA[
+
+  import bean.EventDAO;
+  import java.util.ArrayList;
+    import jcinform.persistencia.*;
+  import java.util.Iterator;
+  import java.util.UUID;
+  import jcinform.procesos.Administrador;
+    import bean.Permisos;
+    import bean.pendientes;
+import java.text.SimpleDateFormat;
+
+//globales
+Global global = new Global();
+EventDAO evtdao = new EventDAO();
+List perfiles = evtdao.perfiles();
+Permisos permiso = new Permisos();
+Administrador adm = new Administrador();
+  String archivo = null;
+  byte[] data = null;
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+        Estudiantes user = ses.getAttribute("userEstudiante");
+        Permisos permiso = new Permisos();
+    List empleadosEncontrados = adm.query("Select o from TareaEstudiante as o where o.matricula.estudiante.codigoest ='"+user.getCodigoest()+"' order by o.tarea.fechadesde desc");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = busquedaList.getItems().iterator(); it.hasNext();) {
+                    busquedaList.getItems().remove(a);
+                }
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      TareaEstudiante acceIt = (TareaEstudiante) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                  
+                   
+                      li.appendChild(new Listcell(acceIt.getTarea().getMateria()+""));
+                      li.appendChild(new Listcell(acceIt.getTarea().getNombre()+""));
+                      
+                      SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
+                      Date d = acceIt.getTarea().getFechadesde();
+                      li.appendChild(new Listcell(" "+d1.format(d)));
+                      Date h = acceIt.getTarea().getFechahasta();
+                      li.appendChild(new Listcell(" "+d1.format(h)));
+                      
+                      Listcell c = new Listcell("SI");
+                      if(acceIt.getEntregada()){
+                      
+                        c.setImage("/images/ok.gif");
+                      }else {
+                       c = new Listcell("NO");
+                        c.setImage("/images/bloquear.gif");
+                      }
+                      
+                      li.appendChild(c);
+                       
+                       c = new Listcell("DETALLES");
+                      c.setImage("/images/auditoria.gif");
+                      li.appendChild(c);
+                      busquedaList.appendChild(li);
+             }
+
+
+
+vio(TareaEstudiante com){
+
+    Representante emp = ses.getAttribute("userRepresentante");
+     if(emp!=null){
+            com.setVistopadre(true);
+     }else{
+            com.setVistohijo(true);
+     }
+
+    adm.actualizar(com);
+       SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
+       Date d = com.getTarea().getFechadesde();
+       Date h = com.getTarea().getFechahasta();
+  
+
+    fecha.value = d1.format(d)+"";
+    hasta.value = d1.format(h)+"";
+    profesor.value = com.getTarea().getEmpleado()+"";
+    materia.value = com.getTarea().getMateria()+"";
+    comentario.value = com.getTarea().getDescripcion();
+    tarea.value = com.getTarea().getNombre();
+         String tip = com.getTarea().getTipo();
+   
+                      if(tip.equals("IN")){
+                        tip = "INDIVIDUAL";
+                      }else if(tip.equals("GR")){
+                        tip = "GRUPAL";
+                      }else if(tip.equals("RE")){
+                        tip = "RECUPERACION";
+                      } 
+           tipo.value =""+tip;
+
+
+   data = com.getTarea().getAdjunto();
+   archivo = com.getTarea().getArchivo();
+   if(com.getTarea().getAdjunto() == null){
+   
+        descargarb.visible = false;
+        
+    }else{
+        descargarb.visible = true;
+        descargarb.label = ""+archivo;
+    }
+    panel.visible = true;
+    panel.title = ""+com.getTarea().getMateria();
+    busquedaList.clearSelection();
+}
+
+
+        ]]>
+            </zscript>
+        </div>
+    </center>
+</borderlayout>
