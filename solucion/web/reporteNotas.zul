@@ -223,6 +223,21 @@ public JRDataSource profesores(){
             parametros.put("rectora", insts.getRector());
             parametros.put("jornada", periodo.getSeccion().getDescripcion() );
             parametros.put("regimen", periodo.getRegimen());
+            parametros.put("minima",(peligro.value).doubleValue());
+                 
+ List equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+                int m = 1;
+        for (Iterator it = equivalencias.iterator(); it.hasNext();) {
+            Equivalencias equivalencias1 = (Equivalencias)it.next();
+            parametros.put("eq"+m,""+equivalencias1.getNombre()+"("+equivalencias1.getValorminimo()+"-"+equivalencias1.getValormaximo()+")");
+            parametros.put("ran"+m,equivalencias1.getValorminimo());
+            parametros.put("ranf"+m,equivalencias1.getValormaximo());
+            
+            m++;
+        }
+                    
+                     
 
             if(sistemasCombo.disabled == false)
                 parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
@@ -291,6 +306,7 @@ public JRDataSource profesores(){
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc("WEB-INF/reportes/cuadrocalificaciones2.jasper");
+                           
             }else if(tipo.equals("CCAL3")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
@@ -506,6 +522,8 @@ void campos(String valor){
                             <span style="color:blue"> Desde:
                                 <decimalbox id="desde" value="0" cols="5" /> Hasta:
                                 <decimalbox id="hasta" value="20" cols="5"/>
+                                Nota de Peligro:
+                                <decimalbox id="peligro" value="13.33" cols="5"/>
                             </span>
                         </row>
 
@@ -555,7 +573,7 @@ void campos(String valor){
                                 <span>
                                     <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
                                         <bandpopup>
-                                           <vbox>
+                                            <vbox>
                                                 <listbox width="90px" id="format"  onSelect="bd.value=self.selectedItem.label; bd.close();showReport();">
                                                     <listitem  value="pdf" selected="true">
                                                         <listcell  image="/images/pdf.png" label="PDF" />
@@ -594,7 +612,7 @@ void campos(String valor){
                       
                     </rows>
                 </grid>
-<zscript>
+                <zscript>
                     public void aumentar(){
                     String tamanio = report.height.replace("px","").replace("%","");
                        Integer t = new Integer(tamanio);
@@ -611,15 +629,15 @@ void campos(String valor){
                     <rows>
                         <row   spans="2">
                             <span>
-                                    <button  image="/images/eliminar.gif" id="cerrar"   label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
-                                    <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
-                                     <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
-                             </span>
+                                <button  image="/images/eliminar.gif" id="cerrar"   label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
+                                <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
+                                <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
+                            </span>
 
-                       </row>
+                        </row>
 
                         <row   spans="2">
-                                <jasperreport width="100%" height="500px" id="report" />
+                            <jasperreport width="100%" height="500px" id="report" />
                         </row>
 
                     </rows>

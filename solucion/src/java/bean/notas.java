@@ -794,7 +794,7 @@ public class notas extends Rows {
                 + "order by o.sistema.orden ");
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-
+        
         String query = "";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
@@ -811,7 +811,7 @@ public class notas extends Rows {
         "where matricula in (select codigomat from matriculas where  curso  =  '"+curso.getCodigocur()+"' ) " +
         " ";*/
         //and matriculas.estado in ('Matriculado','Recibir Pase','Retirado')
-        String q = "Select codigomap, matricula,notas.materia, " + query + "  "
+        String q = "Select codigomap, mat.codigomat,notas.materia, " + query + "  "
                 + "from notas, materia_profesor, matriculas mat, estudiantes est "
                 + "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "' "
                 + " AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
