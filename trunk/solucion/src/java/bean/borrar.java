@@ -4,6 +4,7 @@
  */
 package bean;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,65 +33,13 @@ public class borrar {
 //Progressmeter p;
 //p.set
        public static void main(String[] args) {
-ArrayList ar = new ArrayList();
-
-          
-   
-           String a = "ms";
-            Radiogroup ras = null;
-            List l = ras.getChildren();
-            for (Iterator it = l.iterator(); it.hasNext();) {
-               Radio object = (Radio)it.next();
-               if(object.getLabel().equals(object)){
-                   object.setSelected(true);
-                   break;
-               }
-
-           }
-            Radio ra = new Radio(a);
-             ra.setSelected(true);
-ras.setSelectedItem(ra);
-             ras.getSelectedItem().getLabel();
-
-             
-            //ra.setSelectedItem(null)
-
-           StringBuffer st = new StringBuffer();
-                st.append("m");
-                st.append("s");
-Administrador adm = new Administrador();
-Inscripciones inscrp = (Inscripciones) adm.buscarClave(adm, null);
-           if(a.contains(st))
-               System.out.println("ENTRO");
-           else
-               System.out.println("NO ");
-Session ses = Sessions.getCurrent();
-                    ses.setAttribute("userEstudiante","");
-                    ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
-//           matriculasBean matricula = new matriculasBean();
-//           Administrador adm = new Administrador();
-//
-//           //Matriculas matri = (Matriculas) adm.buscarClave(1, Matriculas.class);
-//           //matricula.actualizar(matri);
-//            List<Matriculas> estu = adm.query("Select o from Matriculas as o where o.curso.periodo.codigoper = 1 ");
-//            for (Iterator<Matriculas> it = estu.iterator(); it.hasNext();) {
-//               Matriculas matriculas = it.next();
-//                matricula.actualizar(matriculas);
-//           }
-           //matricula.agregar(matri);
-
-//        try {
-//
-
-//            List<Matriculas> estu = adm.query("Select o from Matriculas as o where o.codigomat < 10  ");
-//            crearDBF(estu);
-//            Object[] ab = leerPdf(ubicacion2, new Double(5));
-//            System.out.println("" + ab[0] + " " + ab[3]);
-//        } catch (DBFException ex) {
-//            Logger.getLogger(borrar.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(borrar.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+//DecimalFormat formateador = new DecimalFormat("####.00#");
+////DecimalFormat f = new DecimalFormat().applyPattern("####.00#");
+//// Esto sale en pantalla con cuatro decimales, es decir, 3,4324
+//DecimalFormat f = new DecimalFormat("");
+//           System.out.println(""+
+//           new java.text.DecimalFormat("####.00").format(3.40));
+ 
     }
 
 
