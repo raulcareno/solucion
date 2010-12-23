@@ -12,6 +12,9 @@
   import bean.Permisos;
   import java.io.FileNotFoundException;
   import java.io.FileOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+    import java.io.InputStream;
   import java.io.IOException;
   import java.util.logging.Level;
   import java.util.logging.Logger;
@@ -59,7 +62,7 @@ System.out.println("NUMERO DE CURSOS: "+cursos);
           foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
         }
         void cargarVacio(){
-          foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+          foto0.setContent(new org.zkoss.image.AImage("vacio", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
         }
        Integer nuevaMatricula() {
        Administrador adm = new Administrador();
@@ -311,11 +314,24 @@ void llenarMatricula(Matriculas matri){
 
 
             }
-            if(matri.getFoto() != null){
-                    cargarFoto(matri.getFoto());
-            }else{
-                    cargarVacio();
+        FileInputStream fin = null;
+        if(matri.getExtension()!= null){
+            try {
+
+                java.io.File f = new java.io.File(periodo.getInstitucion().getFotos()+matri.getCodigomat()+"."+matri.getExtension());
+                fin = new FileInputStream(f);
+                byte[] buffer = new byte[(int) f.length()];
+                fin.read(buffer);
+                fin.close();
+                foto0.setContent(new org.zkoss.image.AImage("fotito", buffer));
+
+            } catch (FileNotFoundException ex) {
+            cargarVacio();
+                Logger.getLogger("ERROR EN MATRICULAS: ").log(Level.SEVERE, null, ex);
             }
+   }else{
+        cargarVacio();
+   }
 }
 
 void copiarpr(){
@@ -628,18 +644,28 @@ void estado(Boolean estado,Boolean modificar){
             matricula.setNumero(0);
          }
 
-            org.zkoss.image.Image nueva = foto0.getContent();
+           
 
-            matricula.setFoto(nueva.getByteData());
+            //matricula.setFoto(nueva.getByteData());
             matricula.setFolio(folio.value);
 
-
-
+            org.zkoss.image.Image nueva = foto0.getContent();
+ 
         if((!matricula.getCodigomat().equals(0)) ){
 
                 if(matricula.getNumero().equals(0)){
                     matricula.setNumero(nuevaMatricula());
                 }
+            if(!nueva.getName().equals("vacio")){
+                InputStream objin=nueva.getStreamData();
+            String  name =  periodo.getInstitucion().getFotos()+matricula.getCodigomat()+"."+nueva.getFormat();
+            FileOutputStream out=new FileOutputStream(name);
+            DataOutputStream objout=new DataOutputStream(out);
+            org.zkoss.io.Files.copy(objout,objin);
+            matricula.setExtension(nueva.getFormat());
+        }else{
+            matricula.setExtension(null);
+        }
                 adm.actualizar(matricula);
 
          }else{
@@ -659,9 +685,21 @@ void estado(Boolean estado,Boolean modificar){
                 }
                  Integer matri = adm.getNuevaClave("Matriculas","codigomat");
              matricula.setCodigomat(matri);
+             if(!nueva.getName().equals("vacio")){
+            String  name =  periodo.getInstitucion().getFotos()+matricula.getCodigomat()+"."+nueva.getFormat();
+                InputStream objin=nueva.getStreamData();
+             FileOutputStream out=new FileOutputStream(name);
+            DataOutputStream objout=new DataOutputStream(out);
+                org.zkoss.io.Files.copy(objout,objin);
+                matricula.setExtension(nueva.getFormat());
+             }else{
+                matricula.setExtension(null);
+             }
              adm.guardar(matricula);
              codigomat.value = matri;
          }
+
+
 //TERMINA AREA DE MATRICULA
 
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -950,66 +988,66 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                             <borderlayout>
                                                 <center flex="true">
 
-                                                        <grid width="99%"  height="100%">
-                                                            <rows>
+                                                    <grid width="99%"  height="100%">
+                                                        <rows>
 
-                                                                <row style="background:yellow">
-                                                                    <span style="float:right"> BÚSQUEDA: </span>
-                                                                    <span>
-                                                                        <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
+                                                            <row style="background:yellow">
+                                                                <span style="float:right"> BÚSQUEDA: </span>
+                                                                <span>
+                                                                    <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
                                                                         _Ingrese un apellido para buscar
-                                                                    </span>
-                                                                </row>
-                                                                <row>
+                                                                </span>
+                                                            </row>
+                                                            <row>
 
-                                                                    <span style="float:right"> Codigo :</span>
-                                                                    <span>
-                                                                        <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
+                                                                <span style="float:right"> Codigo :</span>
+                                                                <span>
+                                                                    <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
                                                                         Identificación:
-                                                                        <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
+                                                                    <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
                                                                         
-                                                                    </span>
-                                                                </row>
-                                                                <row>
+                                                                </span>
+                                                            </row>
+                                                            <row>
 
 
-                                                                </row>
-                                                                <row>
+                                                            </row>
+                                                            <row>
 
-                                                                    <span style="float:right"> Nombres(*):</span>
-                                                                    <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
-                                                                </row>
+                                                                <span style="float:right"> Nombres(*):</span>
+                                                                <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
+                                                            </row>
 
-                                                                <row>
+                                                            <row>
 
-                                                                    <span style="float:right"> Apellidos(*):</span>
-                                                                    <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40" readonly="true"  />
-                                                                </row>
-                                                                <row>
+                                                                <span style="float:right"> Apellidos(*):</span>
+                                                                <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40" readonly="true"  />
+                                                            </row>
+                                                            <row>
 
-                                                                    <span style="float:right"> Dirección(*):</span>
-                                                                    <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
-                                                                </row>
+                                                                <span style="float:right"> Dirección(*):</span>
+                                                                <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
+                                                            </row>
 
-                                                                <row>
-                                                                    <span style="float:right"> Email:</span>
-                                                                    <span>
-                                                                        <textbox id="mail" maxlength="100" cols="30"  readonly="true"    />
+                                                            <row>
+                                                                <span style="float:right"> Email:</span>
+                                                                <span>
+                                                                    <textbox id="mail" maxlength="100" cols="30"  readonly="true"    />
                                                                         Teléfono:
-                                                                        <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
-                                                                    </span>
-                                                                </row>
+                                                                    <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
+                                                                </span>
+                                                            </row>
 
-                                                                <row>
-
-
+                                                            <row>
 
 
-                                                                </row>
 
 
-                                                            </rows>
-                                                        </grid>
+                                                            </row>
+
+
+                                                        </rows>
+                                                    </grid>
 
                                                 </center>
                                                 <east splittable="true" size="20%"  flex="true">
@@ -1023,6 +1061,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                                                                             if (media instanceof org.zkoss.image.Image) {
                                                                             foto0.setContent(media);
+                                                                            
 
                                                                             } else if (media != null)
                                                                             Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
@@ -1035,10 +1074,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                             </row>
                                                             <row>
                                                                 <span style="border:1px">
-
                                                                     <image border="1" height="125px" id="foto0"/>
-
-
                                                                     <vbox width="50px" height="125px" style="border:1px" id="miimagen"/>
                                                                 </span>
 
@@ -1071,19 +1107,19 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                             <row spans="4">
                                                                 <span>Curso(*):
 
-                                                                <bandbox  width="660px" readonly="true"  id="bd1">
-                                                                    <bandpopup>
-                                                                        <vbox>
-                                                                            <listbox id="curso" width="660px"
+                                                                    <bandbox  width="660px" readonly="true"  id="bd1">
+                                                                        <bandpopup>
+                                                                            <vbox>
+                                                                                <listbox id="curso" width="660px"
                                                                                      onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
-                                                                                <listitem selected="true" forEach="${cursos}" value="${each}">
-                                                                                    <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-                                                                                </listitem>
-                                                                            </listbox>
-                                                                        </vbox>
-                                                                    </bandpopup>
-                                                                </bandbox>
-</span>
+                                                                                    <listitem selected="true" forEach="${cursos}" value="${each}">
+                                                                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                                                                    </listitem>
+                                                                                </listbox>
+                                                                            </vbox>
+                                                                        </bandpopup>
+                                                                    </bandbox>
+                                                                </span>
 
                                                                 
                                                             </row>
@@ -1235,7 +1271,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             </row>
                             <row>
                                 <span style="float:right"> Dirección(*):</span>
-                                <span><textbox id="direccionre" maxlength="100" cols="40"  readonly="true"    />
+                                <span>
+                                    <textbox id="direccionre" maxlength="100" cols="40"  readonly="true"    />
                                 
                                 </span>
                                 <span style="float:right"> Profesión:</span>
@@ -1246,8 +1283,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
                                 <span style="float:right"> Dirección:</span>
                                 <span>
-                                <textbox id="direccionpa" maxlength="100" cols="40"  readonly="true"    />
-                                        <button label="..." onClick="direccionpa.value = direccion.value" />
+                                    <textbox id="direccionpa" maxlength="100" cols="40"  readonly="true"    />
+                                    <button label="..." onClick="direccionpa.value = direccion.value" />
                                 </span>
 
 
@@ -1257,8 +1294,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <textbox id="emailre" maxlength="100" cols="40"  readonly="true"    />
                                 <span style="float:right"> Teléfono:</span>
                                 <span>
-                                <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
-                                <button label="..." onClick="telefonopa.value = telefono.value" />
+                                    <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
+                                    <button label="..." onClick="telefonopa.value = telefono.value" />
                                 </span>
 
 
@@ -1348,8 +1385,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <span></span>
                                 <span></span>
                                 <span style="float:right"> Dirección:</span>
-                                <span><textbox id="direccionma" maxlength="100" cols="40"  readonly="true"    />
-                                        <button label="..." onClick="direccionma.value = direccion.value" />
+                                <span>
+                                    <textbox id="direccionma" maxlength="100" cols="40"  readonly="true"    />
+                                    <button label="..." onClick="direccionma.value = direccion.value" />
                                 </span>
                             </row>
                             <row>
@@ -1357,8 +1395,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <span></span>
                                 <span style="float:right"> Teléfono:</span>
                                 <span>
-                                <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
-                                <button label="..."  onClick="telefonoma.value = telefono.value" />
+                                    <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
+                                    <button label="..."  onClick="telefonoma.value = telefono.value" />
                                 </span>
                             </row>
                             <row>
@@ -1380,16 +1418,16 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         <panelchildren>
                             <grid>
                                 <rows>
-                                          <row>
+                                    <row>
                                         <span  style="float:right">
                                                  YA SE MATRICULÓ:
                                         </span>
                                         <span>
-                                        <checkbox id="matriculado"/>
+                                            <checkbox id="matriculado"/>
                                         CODIGO DE MATRICULACIÓN:
-                                        <textbox id="codigoclave"  />
+                                            <textbox id="codigoclave"  />
                                         BLOQUEADO
-                                        <checkbox id="pendientes"/>
+                                            <checkbox id="pendientes"/>
                                         </span>
                                     </row>
                                     <row>
@@ -1464,19 +1502,19 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                                     </row>
                               
-                                       <row>
+                                    <row>
 
-                                    <span style="float:right;font-size:11px">
-                                        <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
-                                    </span>
-                                    <span>
+                                        <span style="float:right;font-size:11px">
+                                            <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
+                                        </span>
+                                        <span>
 
-                                        <checkbox id="discapacidad" label="SI" onCheck="tipodiscapacidad.readonly = self.checked? false: true" />
-                                        <label style="font-size:11px"  value="Describa su Discapacidad" id="t160"/>
-                                        <textbox    id="tipodiscapacidad" maxlength="100" cols="30" rows="1"  readonly="true"  />
+                                            <checkbox id="discapacidad" label="SI" onCheck="tipodiscapacidad.readonly = self.checked? false: true" />
+                                            <label style="font-size:11px"  value="Describa su Discapacidad" id="t160"/>
+                                            <textbox    id="tipodiscapacidad" maxlength="100" cols="30" rows="1"  readonly="true"  />
 
-                                    </span>
-                                </row>
+                                        </span>
+                                    </row>
                                 </rows>
 
                             </grid>

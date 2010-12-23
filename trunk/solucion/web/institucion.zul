@@ -107,6 +107,12 @@ void cargarVacio(){
        <textbox  id="puerto" onChange="update();" width="30px"/>
 
     </row>
+      <row>
+        <span style="float:right">Ubicación Fotos: </span>
+       <a:bind value="inobjeto.fotos"/>
+       <textbox  id="fotos" onChange="update();" width="50px"/>
+
+    </row>
   <row>
       <button label="Subir Imagen" id="ima">
 		<attribute name="onClick">{
