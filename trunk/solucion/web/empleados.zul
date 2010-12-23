@@ -37,6 +37,7 @@ void cargarVacio(){
 
 //FUNCIONES
 void llenar(Empleados empa){
+    codigoemp.value = empa.getCodigoemp();
     identificacion.value = empa.getIdentificacion();
     nombres.value = empa.getNombres();
     apellidos.value = empa.getApellidos();
@@ -117,7 +118,7 @@ void estado(Boolean estado,Boolean modificar){
     Messagebox.show("Registre los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
     return;
  }
-
+        empa.setCodigoemp(codigoemp.value);
         empa.setIdentificacion(""+identificacion.value);
         empa.setNombres(nombres.value);
         empa.setTratamiento(tratamiento.value);
@@ -272,7 +273,7 @@ empa.setPerfil(g);
                             <row>
                                 <span style="float:right"> Identificación(*):</span>
                                 <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="identificacion"  />
-                                <span></span>
+                                <span><intbox id="codigoemp" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" /></span>
                                 <span></span>
                             </row>
                             <row>
