@@ -110,7 +110,7 @@ void cargarVacio(){
       <row>
         <span style="float:right">Ubicación Fotos: </span>
        <a:bind value="inobjeto.fotos"/>
-       <textbox  id="fotos" onChange="update();" width="50px"/>
+       <textbox  id="fotos" onChange="update();"  />
 
     </row>
   <row>
