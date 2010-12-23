@@ -129,6 +129,13 @@ public class ReporteActaDataSource implements JRDataSource{
             }catch(Exception ex){
                 System.out.println("Error en foto:"+ex);
             }
+        }else if ("extension".equals(fieldName)) {
+            if(nodo.getExtension()!=null){
+                valor = nodo.getCurso().getPeriodo().getInstitucion().getFotos()+nodo.getCodigomat()+"."+nodo.getExtension();
+            }else{
+                valor = null;
+            }
+
         }else if ("usuario".equals(fieldName)) {
             valor = nodo.getEstudiante().getUsuario();
         }else if ("clave".equals(fieldName)) {

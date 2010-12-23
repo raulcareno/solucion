@@ -6,7 +6,12 @@
 import jcinform.persistencia.*;
   import jcinform.procesos.Administrador;
   import bean.Permisos;
-
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+    import java.io.InputStream;
+  import java.io.IOException;
 
 
 Session a = Sessions.getCurrent();
@@ -41,9 +46,28 @@ Session a = Sessions.getCurrent();
            try{
            List matricula = adm.query("Select o from Matriculas as o " +
            " where o.estudiante.codigoest =  '"+periEst.getCodigoest()+"' order by o.fechamat desc");
-            byte[] imageData =    ((Matriculas)matricula.get(0)).getFoto();
-            foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+            
+            if(((Matriculas)matricula.get(0)).getExtension()!= null){
+            try {
+
+                java.io.File f = new java.io.File(((Matriculas)matricula.get(0)).getCurso().getPeriodo().getInstitucion().getFotos()+((Matriculas)matricula.get(0)).getCodigomat()+"."+((Matriculas)matricula.get(0)).getExtension());
+                fin = new FileInputStream(f);
+                byte[] buffer = new byte[(int) f.length()];
+                fin.read(buffer);
+                fin.close();
+                foto0.setContent(new org.zkoss.image.AImage("fotito", buffer));
+
+            } catch (FileNotFoundException ex) {
+                foto0.setContent(new org.zkoss.image.AImage("vacio", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+                Logger.getLogger("ERROR EN MATRICULAS: ").log(Level.SEVERE, null, ex);
+            }
+           }else{
+                foto0.setContent(new org.zkoss.image.AImage("vacio", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+           }
+
             }catch(Exception e){}
+
+
         }
 
     </zscript>
