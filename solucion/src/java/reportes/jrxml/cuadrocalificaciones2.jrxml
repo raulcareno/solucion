@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="642"/>
+	<property name="ireport.x" value="558"/>
 	<property name="ireport.y" value="122"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -605,7 +605,7 @@
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font size="7"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Average}+"").equals("")?$V{nota_Average}+"":(new Double($V{nota_Average}+"") > new Double($V{minima}+"")? ($V{nota_Average}+""):$V{nota_Average}+" *" ))]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Average}+"").equals("")?$V{nota_Average}+"":(new Double($V{nota_Average}+"") > new Double($V{minima}+"")? (new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+""):new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+" *" ))]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
@@ -734,7 +734,7 @@
 							<textElement textAlignment="Right" verticalAlignment="Middle">
 								<font size="9"/>
 							</textElement>
-							<textFieldExpression class="java.lang.Double"><![CDATA[new Double( ( new Double($V{sobresalientes}) * 100 ) / new Double($V{riesgos}) ) ]]></textFieldExpression>
+							<textFieldExpression class="java.lang.Double"><![CDATA[new Double( ( new Double($V{sobresalientes}) * 100 ) / new Double($V{riesgos}) )]]></textFieldExpression>
 						</textField>
 						<textField pattern="##0.00">
 							<reportElement x="0" y="49" width="26" height="12">
