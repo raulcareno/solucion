@@ -43,6 +43,29 @@ Cursos selecCurso = new Cursos(-1);
 selecCurso.setDescripcion("[S E L E C C I O N E]");
 cursos.add(0,selecCurso);
 
+void guardarc(){
+
+            Set items = busquedaListaEstudiantes.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("Seleccion un al menos un estudiantes...!");
+                            return;
+						} else {
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+                                    TareaEstudiante tareaestudiante = li.getValue();
+                                        if(tareaestudiante.getEntregada()){
+                                            tareaestudiante.setEntregada(false);    
+                                        }else{
+                                            tareaestudiante.setEntregada(true);    
+                                        }
+                                    
+                                    adm.actualizar(tareaestudiante);
+							}
+						}
+                        buscar(busquedaList.selectedItem.value);
+}
+
     void guardar(){
 bean.secuencial sec = new bean.secuencial();
          Tareas come = new Tareas();
@@ -86,12 +109,15 @@ bean.secuencial sec = new bean.secuencial();
         return permiso.verificarPermiso("Pendientes",accion);
 
     }
-  void buscar(String texto){
-    List empleadosEncontrados = adm.query("Select o from TareaEstudiante as o where o.matricula.estudiante.apellido like  '%"+texto+"%' order by o.tarea.fechadesde desc, o.matricula.estudiante.apellido");
+  void buscar(Tareas tarea){
+  
+  panel.title = ""+tarea.getMateria();
+    List empleadosEncontrados = adm.query("Select o from TareaEstudiante as o " + 
+    " where o.tarea.codigo = '"+tarea.getCodigo()+"' order by o.tarea.fechadesde desc, o.matricula.estudiante.apellido");
         datos = new Listbox();
         int a=0;
-            for (Iterator it = busquedaList.getItems().iterator(); it.hasNext();) {
-                    busquedaList.getItems().remove(a);
+            for (Iterator it = busquedaListaEstudiantes.getItems().iterator(); it.hasNext();) {
+                    busquedaListaEstudiantes.getItems().remove(a);
                 }
 
                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
@@ -99,10 +125,8 @@ bean.secuencial sec = new bean.secuencial();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getMatricula()+""));
-                      li.appendChild(new Listcell(acceIt.getTarea().getMateria()+""));
-                      SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
-                      Date d = acceIt.getTarea().getFechadesde();
-                       li.appendChild(new Listcell(" "+d1.format(d)));
+                       SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy HH:mm:s");
+                   
                        //GUARDAR CON FALSE VISTOS O PONER FALSE EN LA CLASE CONTROLADORA
                       if(acceIt.getVistopadre()){
                           Listcell c = new Listcell("");
@@ -122,20 +146,22 @@ bean.secuencial sec = new bean.secuencial();
                           c.setImage("/images/ok2.gif");
                           li.appendChild(c);
                       }
-
-                       
                       
-                      
-                      
-                       Listcell c = new Listcell("Ver");
-                      c.setImage("/images/auditoria.gif");
-                      li.appendChild(c);
-                   //   li.appendChild(new Listcell(acceIt.getComentario()+""));
+                       if(acceIt.getEntregada()){
+                          Listcell c = new Listcell("");
+                          c.setImage("/images/ok.gif");
+                          li.appendChild(c);
+                      }else{
+                          Listcell c = new Listcell("");
+                          c.setImage("/images/bloquear.gif");
+                          li.appendChild(c);
+                      }
+             
 
 
 
 
-                      busquedaList.appendChild(li);
+                      busquedaListaEstudiantes.appendChild(li);
              }
 
     }
@@ -152,32 +178,12 @@ bean.secuencial sec = new bean.secuencial();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getMateria()+""));
-                      SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
+                      SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy HH:mm:s");
                       Date d = acceIt.getFechadesde();
+                      Date h = acceIt.getFechahasta();
                        li.appendChild(new Listcell(" "+d1.format(d)));
-                       //GUARDAR CON FALSE VISTOS O PONER FALSE EN LA CLASE CONTROLADORA
-                      if(acceIt.getVistopadre()){
-                          Listcell c = new Listcell("");
-                          c.setImage("/images/ok.gif");
-                          li.appendChild(c);
-                      }else{
-                          Listcell c = new Listcell("");
-                          c.setImage("/images/ok2.gif");
-                          li.appendChild(c);
-                      }
-                       if(acceIt.getVistohijo()){
-                          Listcell c = new Listcell("");
-                          c.setImage("/images/ok.gif");
-                          li.appendChild(c);
-                      }else{
-                          Listcell c = new Listcell("");
-                          c.setImage("/images/ok2.gif");
-                          li.appendChild(c);
-                      }
+                       li.appendChild(new Listcell(" "+d1.format(h)));
 
-                       
-                      
-                      
                       
                        Listcell c = new Listcell("Ver");
                       c.setImage("/images/auditoria.gif");
@@ -249,7 +255,7 @@ bean.secuencial sec = new bean.secuencial();
                       com.setVistootro (true);
 
             adm.actualizar(com);
-               SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
+               SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy HH:mm:s");
                Date d = com.getFecha();
 
 
@@ -281,38 +287,45 @@ bean.secuencial sec = new bean.secuencial();
 
         ]]>
     </zscript>
-
-    <panel  id="registrar"  framable="true" title="Enviar Tareas a Estudiantes" 	 border="normal"	collapsible="true"  >
-        <panelchildren>
+    <tabbox width="100%">
+        <tabs>
+            <tab id="registro" label="Registro" />
+            <tab id="busqueda" label="Busquedas" />
+        </tabs>
+        <tabpanels>
+            <tabpanel>
+                    
+                <panel  id="registrar"  framable="true" title="Enviar Tareas a Estudiantes" 	 border="normal"	  >
+                    <panelchildren>
 
                 
-            <grid width="100%" >
-                <rows>
+                        <grid width="100%" >
+                            <rows>
                      
-                    <row>
+                                <row>
 
 
-                        <span style="float:right"> Cursos(1):</span>
+                                    <span style="float:right"> Cursos(1):</span>
 
-                        <listbox   mold="select"  id="curs" width="420px"
+                                    <listbox   mold="select"  id="curs" width="420px"
                                      onSelect="buscarMaterias(((Cursos)curs.selectedItem.value));">
 
-                            <listitem forEach="${cursos}" value="${each}">
-                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                        <listitem forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
-                            </listitem>
-                        </listbox>
-                    </row>
-                    <row></row>
-                    <row>
+                                        </listitem>
+                                    </listbox>
+                                </row>
+                                <row></row>
+                                <row>
 
-                        <span style="float:right">Materia(2):</span>
-                        <listbox id="materias"  mold="select" onSelect="buscar2(((Cursos)curs.selectedItem.value)); estudiantesListado.visible=true;" width="420px" >
-                            <listitem value="-1" label="[S E L E C C I O N E]"></listitem>
+                                    <span style="float:right">Materia(2):</span>
+                                    <listbox id="materias"  mold="select" onSelect="buscar2(((Cursos)curs.selectedItem.value)); estudiantesListado.visible=true;" width="420px" >
+                                        <listitem value="-1" label="[S E L E C C I O N E]"></listitem>
                                 
-                        </listbox>
+                                    </listbox>
 
-                    </row>
+                                </row>
                     <!--row>
                        <span style="float:right">Estudiantes(3):</span>
                         <listbox id="datos"  mold="select" width="420px" >
@@ -320,18 +333,18 @@ bean.secuencial sec = new bean.secuencial();
                        </listbox>
 
                     </row-->
-                    <row></row>
-                    <row >
-                        <span style="float:right">Estudiantes:</span>
-                        <span>
-                            <textbox id="datosTodos" readonly="true" cols="65" />
-                            <button  image="/images/expa.png"  id="expa1"  onClick="datos.visible= true;expa1.visible = false;contra1.visible = true;" />
-                            <button visible="false" image="/images/contra.png" id="contra1"  onClick="datos.visible= false; contra1.visible = false; expa1.visible = true" />
-                            <listbox id="datos" visible="false"  style="font:10px" height="300px" width="100%"  mold="paging" rows="3" pageSize="100"  multiple="true" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
-                                <listhead>
-                                    <listheader label="Estudiantes"  sort="auto">
-                                        <button image="/images/borrar.gif" label=" Borrar">
-                                            <attribute name="onClick">
+                                <row></row>
+                                <row >
+                                    <span style="float:right">Estudiantes:</span>
+                                    <span>
+                                        <textbox id="datosTodos" readonly="true" cols="65" />
+                                        <button  image="/images/expa.png"  id="expa1"  onClick="datos.visible= true;expa1.visible = false;contra1.visible = true;" />
+                                        <button visible="false" image="/images/contra.png" id="contra1"  onClick="datos.visible= false; contra1.visible = false; expa1.visible = true" />
+                                        <listbox id="datos" visible="false"  style="font:10px" height="300px" width="100%"  mold="paging" rows="3" pageSize="100"  multiple="true" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                                            <listhead>
+                                                <listheader label="Estudiantes"  sort="auto">
+                                                    <button image="/images/borrar.gif" label=" Borrar">
+                                                        <attribute name="onClick">
                                             Set items = datos.getSelectedItems();
                                             if (items.isEmpty()) {
                                                 alert("Seleccion un Item para Quitar!");
@@ -351,50 +364,50 @@ bean.secuencial sec = new bean.secuencial();
                                                 }
                                             }
 
-                                            </attribute>
-                                        </button>
-                                        <button label="CERRAR" image="/images/eliminar.gif" onClick="datos.visible= false;contra1.visible = false; expa1.visible = true" />
-                                    </listheader>
+                                                        </attribute>
+                                                    </button>
+                                                    <button label="CERRAR" image="/images/eliminar.gif" onClick="datos.visible= false;contra1.visible = false; expa1.visible = true" />
+                                                </listheader>
 
-                                </listhead>
+                                            </listhead>
 
-                            </listbox>
+                                        </listbox>
 
 
-                        </span>
-                    </row>
-                    <row>
+                                    </span>
+                                </row>
+                                <row>
 
-                        <span style="float:right">Presentación:</span>
-                        <span>
+                                    <span style="float:right">Presentación:</span>
+                                    <span>
                             Inicio:
-                            <datebox id="desde"   onCreate="self.value = new Date()"/>
+                                        <datebox id="desde"   onCreate="self.value = new Date()"/>
                         Fin:
-                            <datebox id="hasta"   onCreate="self.value = new Date()"/>
-                        </span>
-                    </row>
-                    <row></row>
-                    <row  >
-                        <span style="float:right">Tema:</span>
-                        <textbox id="tarea"  cols="70"/>
+                                        <datebox id="hasta"   onCreate="self.value = new Date()"/>
+                                    </span>
+                                </row>
+                                <row></row>
+                                <row  >
+                                    <span style="float:right">Tema:</span>
+                                    <textbox id="tarea"  cols="70"/>
 
-                    </row>
-                    <row></row>
-                    <row >
-                        <span style="float:right">La_Tarea_es:</span>
-                        <radiogroup Id="tipo">
-                            <radio  selected="true" value="IN" label="INDIVIDUAL"/>
-                            <radio value="GR" label="GRUPAL"/>
-                            <radio  value="RE" label="DE RECUPERACIÓN"/>
+                                </row>
+                                <row></row>
+                                <row >
+                                    <span style="float:right">La_Tarea_es:</span>
+                                    <radiogroup Id="tipo">
+                                        <radio  selected="true" value="IN" label="INDIVIDUAL"/>
+                                        <radio value="GR" label="GRUPAL"/>
+                                        <radio  value="RE" label="DE RECUPERACIÓN"/>
                              
-                        </radiogroup>
-                    </row>
-                    <row></row>
-                       <row spans="2">
-                        <span>
-                            <textbox value="" cols="30" readonly="true" id="nombrearchivo" />
-                            <button label="Adjuntar Archivo" image="/images/adjunto.gif"  id="ima">
-                                <attribute name="onClick">{
+                                    </radiogroup>
+                                </row>
+                                <row></row>
+                                <row spans="2">
+                                    <span>
+                                        <textbox value="" cols="30" readonly="true" id="nombrearchivo" />
+                                        <button label="Adjuntar Archivo" image="/images/adjunto.gif"  id="ima">
+                                            <attribute name="onClick">{
                                      Fileupload f = new Fileupload();
                                                 Media media0 = f.get();
                                             if (media0 instanceof AMedia) {
@@ -426,101 +439,103 @@ bean.secuencial sec = new bean.secuencial();
                                             }
 
 
-                                </attribute>
-                            </button>
+                                            </attribute>
+                                        </button>
                           
-                        </span>
+                                    </span>
                         
 
-                    </row>
-                    <row spans="2">
-                        <span >D  E  S  C  R  I  P  C  I  Ó  N
-                            <separator orient="vertical"/>  D E
-                            <separator orient="vertical"/>  L A
-                            <separator orient="vertical"/> T A R E A:
-                        </span>
-                    </row>
-                    <row></row>
-                    <row spans="2">
-                        <textbox id="comentario" rows="3" cols="95"/>
-                    </row>
-                    <row></row>
-                    <row spans="2">
+                                </row>
+                                <row spans="2">
+                                    <span >D  E  S  C  R  I  P  C  I  Ó  N
+                                        <separator orient="vertical"/>  D E
+                                        <separator orient="vertical"/>  L A
+                                        <separator orient="vertical"/> T A R E A:
+                                    </span>
+                                </row>
+                                <row></row>
+                                <row spans="2">
+                                    <textbox id="comentario" rows="3" cols="95"/>
+                                </row>
+                                <row></row>
+                                <row spans="2">
                         
-                      <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
-                      </row>
+                                    <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
+                                </row>
                    
                  
-                </rows>
-            </grid>
+                            </rows>
+                        </grid>
 
-        </panelchildren>
-    </panel>
-    <panel  visible="true"  framable="true" title="BUSQUEDAS"  	 border="normal"	collapsible="true"  >
-        <panelchildren>
+                    </panelchildren>
+                </panel>
+    
+            </tabpanel>
+            <tabpanel>
+                    
+                    
+                <panel  visible="true"  framable="true" title="BUSQUEDAS"  	 border="normal"	 >
+                    <panelchildren>
 
-            <grid width="100%" >
-                <rows>
-                    <row>
-                        <span>Ingrese Apellidos:
-                            <textbox  id="textoBuscar"  />
-                            <button image="/images/auditoria.gif" id="buscando" label="Buscar" onClick="buscar(textoBuscar.value);  registrar.setOpen(false);" />
-                            <image src="/images/ok.gif"/> VISTO
-                            <image src="/images/ok2.gif"/> NO VISTO
-                        </span>
-                    </row>
-                    <row spans="2">
-                        <listbox id="busquedaList"  onSelect="vio(self.selectedItem.value);"  >
-                            <listhead sizable="true">
-                                <listheader label="Estudiante" sort="auto" />
-                                <listheader label="Materia" sort="auto" />
-                                    
-                                <listheader label="Fecha" sort="auto" />
-                                <listheader label="HIJO" />
-                                <listheader label="PADRE" />
-                                <listheader label="OPCION" sort="auto" />
-                            </listhead>
-                        </listbox>
-                    </row>
-                </rows>
-            </grid>
+                        <grid width="100%" >
+                            <rows>
+                                <row>
+                                    <span>Ingrese Apellidos:
+                                        <textbox  id="textoBuscar"  />
+                                        <button image="/images/auditoria.gif" id="buscando" label="Buscar" onClick="buscarTodos(textoBuscar.value); " />
+                                    </span>
+                                </row>
+                                <row spans="2">
+                                    <listbox id="busquedaList"  onSelect="buscar(self.selectedItem.value);"  >
+                                        <listhead sizable="true">
+                                            <listheader label="Estudiante" sort="auto" />
+                                            <listheader label="Fecha" sort="auto" />
+                                            <listheader label="Limite Entrega" sort="auto" />
+                                            <listheader label="Estudiantes" sort="auto" />
+                                        </listhead>
+                                    </listbox>
+                                </row>
+                            </rows>
+                        </grid>
 
-        </panelchildren>
-    </panel>
-    <panel style="position:absolute; top:5%; left:5%"  id="panel" visible="false" framable="true"
-    width="700px"  height="300px"
-	  border="normal" >
+                    </panelchildren>
+                </panel>
+                <panel id="panel" visible="true"  framable="true" title="BUSQUEDAS"  	 border="normal"	 >
+                    <panelchildren>
 
-        <panelchildren>
-            <grid width="100%">
-                <rows>
-                    <row>
-                        <span style="float:right">FECHA:</span>
-                        <textbox style="border:0px;background:transparent" cols="80" readonly="true" id="fechav" value=""/>
-                    </row>
-                    <row>
-                        <span style="float:right">PROFESOR:</span>
-                        <textbox style="border:0px;background:transparent" cols="80" readonly="true"  id="profesorv" value=""/>
-                    </row>
-                    <row>
-                        <span style="float:right">MATERIA:</span>
-                        <textbox style="border:0px;background:transparent" cols="80" readonly="true"  id="materiav" value=""/>
-                    </row>
-                    <row>
-                        <span style="float:right">TIPO:</span>
-                        <textbox style="border:0px;background:transparent" cols="80" readonly="true"  id="tipov" value=""/>
-                    </row>
-                    <row align="center" spans="2">C O M E N T A R I O :  </row>
-                    <row spans="2">
-                        <textbox cols="100" rows="8" id="comentariov" value=""/>
-                    </row>
-                    <row align="center" spans="2">
-                        <button  label="CERRAR" image ="/images/eliminar.gif" onClick='panel.setVisible(false)'  />
-                    </row>
-                </rows>
-            </grid>
-        </panelchildren>
-    </panel>
+                        <grid width="100%" >
+                            <rows>
+                                <row>
+                                    <span>                            
+                                        <button image="/images/guardar.gif" id="guardarc" label="Guardar Cambios" onClick="guardarc();" />
+                            El estudiante o El padre ha 
+                                        <image src="/images/ok.gif"/> VISTO o
+                                        <image src="/images/ok2.gif"/> NO VISTO
+                            
+                                    </span>
+                                </row>
+                                <row spans="2">
+                                    <listbox  fixedLayout="true" multiple="true" checkmark="true"  id="busquedaListaEstudiantes"    >
+                                        <listhead sizable="true">
+                                            <listheader width="350px" label="ENTREGO TAREA(Seleccionar Todos)" sort="auto" />
+                                            <listheader label="PADRE" />
+                                            <listheader  label="HIJO" />
+                                            <listheader label="[*ENTREGO*]" />
+                              
+                                        </listhead>
+                                    </listbox>
+                                </row>
+                            </rows>
+                        </grid>
+
+                    </panelchildren>
+                </panel>
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
+ 
+
+   
     <panel id="estudiantesListado" visible="false" movable="true" title="SELECCIONE LOS ESTUDIANTES"  framable="true" width="500px" height="330px" style="position:absolute; top:13%; left:10%">
         <panelchildren>
             <listbox  id="estudiantesTodos" style="font:10px" width="100%" rows="10000" height="290px" mold="paging"   pageSize="100"  multiple="true" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">

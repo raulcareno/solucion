@@ -33,8 +33,23 @@ Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.O
 
 
 void recalculo(){
+
     notas nso = new notas();
-    nso.calcularDisciplina(((Cursos)curs.selectedItem.value));
+     Set items = curs.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("Seleccion un al menos un Curso...!");
+                            return;
+						}else{
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+                                    Cursos curses = li.getValue();
+                                 
+                                        nso.calcularDisciplina(curses);
+                                    
+							}
+						}
+    
 
 }
 void generar(String tipo){
@@ -92,22 +107,20 @@ void generar(String tipo){
 
                                 <span style="float:right"> Curso(*):</span>
                                 <span>
-                                    <bandbox  width="400px" readonly="true"  id="bd1">
-                                        <bandpopup>
-                                            <vbox>
-                                                <listbox id="curs" width="420px"
-                                         onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
+                                  
+                                                <listbox fixedLayout="true" multiple="true" checkmark="true" id="curs" width="420px">
+                                                <listhead>
+                                                <listheader label="Seleccionar Todos"/>    
+                                                </listhead>
 
                                                     <listitem forEach="${cursos}" value="${each}">
                                                         <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
                                                     </listitem>
                                                 </listbox>
-                                            </vbox>
-                                        </bandpopup>
-                                    </bandbox>
+                                           
 
-                                    <button label="Recalcular Disciplina"   onClick="recalculo();"/>
+                                    <button label="Recalcular Disciplina"    image="/images/run.gif"  onClick="recalculo();"/>
                                 </span>
                             </row>
         

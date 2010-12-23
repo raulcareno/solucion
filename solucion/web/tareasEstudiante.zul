@@ -168,7 +168,7 @@ Periodo periodo = (Periodo) ses.getAttribute("periodo");
                       li.appendChild(new Listcell(acceIt.getTarea().getMateria()+""));
                       li.appendChild(new Listcell(acceIt.getTarea().getNombre()+""));
                       
-                      SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
+                      SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy HH:mm:s");
                       Date d = acceIt.getTarea().getFechadesde();
                       li.appendChild(new Listcell(" "+d1.format(d)));
                       Date h = acceIt.getTarea().getFechahasta();
@@ -203,7 +203,7 @@ vio(TareaEstudiante com){
      }
 
     adm.actualizar(com);
-       SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
+       SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy HH:mm:s");
        Date d = com.getTarea().getFechadesde();
        Date h = com.getTarea().getFechahasta();
   
