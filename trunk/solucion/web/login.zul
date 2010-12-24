@@ -8,10 +8,10 @@
     <style>
 .estil{
 	height:100%;
-    background-image: url(./images/fondo.jpg) ;
-    background-color:#003366;
-    background-repeat: repeat-y;
-    background-repeat: repeat-x;
+    background-image: url(./images/fondo.jpg)   ;
+    background-color:#004669;
+    background-repeat:   repeat-y;
+    background-repeat:  repeat-x;
     
     
 }
@@ -20,7 +20,7 @@
     <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
-        <window onLoad="usuario.focus();"  onCreate="usuario.focus();cargar()"   id="winLogin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" width="460px" sizable="true">
+        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="winLogin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" title="JCINFORM" width="460px" sizable="true">
             <zscript>
   import jcinform.persistencia.Global;
   import bean.EventDAO;
