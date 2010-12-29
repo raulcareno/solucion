@@ -28,8 +28,10 @@ Copyright (C) 2006 Potix Corporation. All Rights Reserved.
 	<session-config>
 		<!-- Turn on the following if you want a different timeout
 			Note: The unit is seconds (while that of web.xml is minute)-->
-		<session-timeout>9600</session-timeout>
-		
+		<session-timeout>600</session-timeout>
+        <timer-keep-alive>true</timer-keep-alive>
+        <!--max-desktops-per-session>2</max-desktops-per-session-->
+		<!-- <timer-keep-alive>t</timer-keep-alive>  -->
 		<!-- Turn OFF the following if you want to use the default:
 			onTimer, like any other request, resets the session-timeout counter
 		-->
