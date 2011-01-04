@@ -56,7 +56,7 @@ void verificar(){
   Empleados user =adm.ingresoSistema(usuario.value, clave.value);
   
   if(user != null){
-              
+              servicionestudiantes.visible = true;
                 // cargo los periodos que tienen
  List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'");
              if(user.getCodigoemp().equals(-1)){
@@ -104,7 +104,7 @@ void verificar(){
                                      olvidado.visible =false;
 
             }else{
-                Messagebox.show("Usuario Correcto no tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                Messagebox.show("Usuario Correcto NO tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                 usuario.focus();
             }
 
@@ -203,7 +203,7 @@ void verificarSistema(){
                             <button label="Verificar"  height="30px" width="150px"  image="/images/key.png"  id="verificar" onClick="usuario.getValue(); clave.getValue(); verificar()"/>
                             <button label="Ingresar Sistema" height="30px" width="150px"   visible="false" image="/images/ingreso.gif" id="btnIngresar" onClick="usuario.getValue(); clave.getValue(); ingresoSistemas();"/>
 
-                            <button target="_top" height="30px" width="150px"  label="Servicios Estudiantes"  image="/images/usr.png"  href="./loginEstudiantes.zul"></button>
+                            <button target="_top" height="30px" width="150px" visible="false"  label="Servicios Estudiantes" id="servicionestudiantes" image="/images/usr.png"  href="./loginEstudiantes.zul"></button>
                             <button target="_top" height="30px" width="150px"  label="Cancelar" id="cancelar"  visible="false"  image="/images/exit.gif"  href="./login.zul"></button>
                 <!--button label="Olvidó su clave" image="/images/notas.png">
                         <attribute name="onClick">{

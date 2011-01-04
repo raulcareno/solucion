@@ -136,6 +136,7 @@ void estado(Boolean estado,Boolean modificar){
                     Cursos cur = new Cursos(0);
                     cur.setSecuencia(1);
                     llenar(cur);
+                    buscar("");
             
 
     }
@@ -162,6 +163,11 @@ void estado(Boolean estado,Boolean modificar){
   }
 void modificar(){
   if(verificar("Modificar")){
+  Integer cod = codigocurso.value;
+  if(cod.equals(0)){
+            Messagebox.show("Seleccione un curso para MODIFICAR...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return;
+  }
        guardar.disabled=false; estado(false,true);
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
