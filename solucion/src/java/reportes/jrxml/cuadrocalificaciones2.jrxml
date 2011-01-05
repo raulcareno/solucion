@@ -605,7 +605,7 @@
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font size="7"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Average}+"").equals("")?$V{nota_Average}+"":(new Double($V{nota_Average}+"") > new Double($V{minima}+"")? (new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+""):new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+" *" ))]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Average}+"").equals("") ||($V{nota_Average}+"").contains("S") ||($V{nota_Average}+"").contains("B")||($V{nota_Average}+"").contains("M")||($V{nota_Average}+"").contains("E") ||($V{nota_Average}+"").contains("P")||($V{nota_Average}+"").contains("n")    ?$V{nota_Average}+"":(new Double($V{nota_Average}+"") > new Double($V{minima}+"")? (new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+""):new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+" *" ))]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>

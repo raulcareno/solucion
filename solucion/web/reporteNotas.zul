@@ -198,7 +198,18 @@ public JRDataSource profesores(){
       return ds;
 }
  
-
+void recalcular(){
+   List hoy = adm.query("SELECT o FROM MateriaProfesor AS  o " +
+                " where o.curso.codigocur = '"+(curs.selectedItem.value).getCodigocur()+"'  order by o.orden ");
+                        System.out.println("FIREC:"+new Date());
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            MateriaProfesor materia = (MateriaProfesor) it.next();
+            noti.recalculoNotas(materia, curs.selectedItem.value);
+        }
+                System.out.println("FFREC:"+new Date());
+ 
+ 
+}
  void showReport() {
     
  String tipo = reporte.getSelectedItem().getValue();
@@ -224,7 +235,7 @@ public JRDataSource profesores(){
             parametros.put("jornada", periodo.getSeccion().getDescripcion() );
             parametros.put("regimen", periodo.getRegimen());
             parametros.put("minima",(peligro.value).doubleValue());
-                 
+                           
  List equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
                 int m = 1;
@@ -469,7 +480,7 @@ void campos(String valor){
         </zscript>
         <panel width="100%" id="parametros"  height="100%" border="normal">
             <panelchildren>
-                <grid  id="ver" style="background:transparent;border:1px" width="550px">
+                <grid  id="ver" style="background:transparent;border:1px" width="600px">
                     <rows>
                         <row  style="background:transparent;border:0px">
      
@@ -530,9 +541,12 @@ void campos(String valor){
 
                         <row  style="background:transparent;border:0px">
                             <span style="float:right"> Curso:</span>
+                            <span>
                             <listbox id="curs" width="300px"  mold="select" onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
                                 <listitem   forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
                             </listbox>
+                                <button label="RECALCULAR(30s.)"  onClick="recalcular()"/>
+                            </span>
                         </row>
                         <row  style="background:transparent;border:0px">
                             <span style="float:right"> Estudiantes: </span>
@@ -604,6 +618,7 @@ void campos(String valor){
                                         </bandpopup>
                                     </bandbox>
                                     <button label="Ejecutar...!" image="/images/run.gif" onClick='showReport();'/>
+                                
                                 </span>
 
                             </span>

@@ -99,7 +99,7 @@ public class email {
                     + "<p>"
                     + "<p>."
                     + "<hr>."
-                    + "Desarrollado por JCINFORM fono: 080162 211 "
+                    + "Desarrollado por <a href='www.jcinform.com'>JCINFORM</a> fono: 080162 211 "
                     + "<p>"
                     + "<hr>"
                     + "</html> ";
@@ -385,8 +385,8 @@ class EnviarAutenticacion {
                 int i = 0;
                 emailsA[i] = new InternetAddress(respuestaA + "");
                 msg.setReplyTo(emailsA);
-                msg.setSender(new InternetAddress(respuestaA));
-                msg.setFrom(new InternetAddress("" + respuestaA));
+                msg.setSender(new InternetAddress(emailInstitucion));
+                msg.setFrom(new InternetAddress("" + emailInstitucion));
             } else {
                 msg.setFrom(new InternetAddress("" + emailInstitucion));
             }

@@ -380,7 +380,7 @@ public class notas extends Rows {
     }
 
     public void recalculoNotas(MateriaProfesor materia, Cursos curso) {
-        Session ses = Sessions.getCurrent();
+             Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
 
@@ -439,14 +439,14 @@ public class notas extends Rows {
                                 + "order by estudiantes.apellido";
 //
                         List nativo = adm.queryNativo(q);
-                        System.out.println("recalculo 1: " + q);
-                        System.out.println("recalculo 2: " + nativo.size());
+//                        System.out.println("recalculo 1: " + q);
+//                        System.out.println("recalculo 2: " + nativo.size());
                         inter.set("VEC" + global.getCodigo(), nativo);
                     }
                     String vector1 = (String) vectors.get(0);
                     inter.eval("int tamanio1 =  " + vector1 + ".size(); " + "int tamanio2 = ((Vector)" + vector1 + ".get(0)).size(); " + "Vector calculado = new Vector(); ");
-                    inter.eval("System.out.println(tamanio1);");
-                    inter.eval("System.out.println(tamanio2);");
+//                    inter.eval("System.out.println(tamanio1);");
+//                    inter.eval("System.out.println(tamanio2);");
                     inter.eval("for (int k = 0; k < tamanio1; k++) {" + "                Vector resultado = new Vector();" + "                Vector object = (Vector) " + vector1 + ".get(k);" + "                for (int i = 0; i < tamanio2; i++) {" + "                    if (i == 0) {" + "                        Integer cod = (object.get(i) != null ? ((Integer) object.get(i)) : 0);" + "                        resultado.add(cod);" + "                    } else {" + "                        resultado.add(0.0);" + "                    }" + "                }" + "                calculado.add(resultado);" + "            }");
                     String asumar = "";
                     String aconvertir = "";
@@ -930,6 +930,7 @@ public class notas extends Rows {
             String q = "Select round(avg (" + query + "),2)  from notas, materia_profesor, matriculas mat, estudiantes est "
                     + "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "'  "
                     + "AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
+                    + "and notas.promedia = true  "
                     + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  )"
                     + "and notas.disciplina = false  "
                     + "order by est.apellido, materia_profesor.orden";
