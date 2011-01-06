@@ -3050,6 +3050,9 @@ public class notas extends Rows {
         List<ParametrosGlobales> para = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.variable = 'TIPODISCIPLINA' "
                 + "and o.periodo.codigoper = '" + curso0.getPeriodo().getCodigoper() + "'");
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        Double decimales = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
         if (para.size() > 0) {
             ParametrosGlobales param = para.get(0);
             tipo = param.getCvalor();
@@ -3233,7 +3236,7 @@ public class notas extends Rows {
                                 String toda = notas.get(j - 1).getNota() + "";
                                 String uno = toda.substring(0, 1).toUpperCase();
                                 toda = toda.substring(1, toda.length());
-                                inter.eval("nota.set" + (uno + toda) + "(" + redondear(new Double(object1), 0) + ");");
+                                inter.eval("nota.set" + (uno + toda) + "(" + redondear(new Double(object1), decimales.intValue()) + ");");
                             }
                             nota = (Notas) inter.get("nota");
                             nota.setCuantitativa(true);

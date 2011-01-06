@@ -16,8 +16,10 @@ public class pruebas {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Double d = new Double("00");
-        System.out.println(""+d);
+//        Double d = new Double("00");
+//        System.out.println(""+d);
+        matriculasBean b = new matriculasBean();
+        b.generar();
     }
 
 }

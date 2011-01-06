@@ -22,7 +22,7 @@ Session ses = Sessions.getCurrent();
     List perfiles = adm.query("Select o from Global as o where o.grupo = 'PER'");
     List especialidades = adm.query("Select o from Global as o where o.grupo = 'ESP'");
     List paralelos = adm.query("Select o from Global as o where o.grupo = 'PAR'");
-    
+    List empleados = adm.query("Select o from Empleados as o order by o.apellidos, o.nombres ");
     Object media = null;
 
 //FUNCIONES
