@@ -237,7 +237,7 @@ void recalcular(){
             parametros.put("minima",(peligro.value).doubleValue());
                            
  List equivalencias = adm.query("Select o from Equivalencias as o "
-                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.valorminimo desc ");
                 int m = 1;
         for (Iterator it = equivalencias.iterator(); it.hasNext();) {
             Equivalencias equivalencias1 = (Equivalencias)it.next();

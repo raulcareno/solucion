@@ -728,7 +728,7 @@ ParametrosGlobales para = new ParametrosGlobales();
         if(para.getBvalor()){
 
           matriculasBean mati = new matriculasBean();
-          mati.generar();
+          mati.generar(periodo);
           //mati.generar(repreNuevo,estuNuevo,matricula,periodo);
          }
 //*****************************************************************************

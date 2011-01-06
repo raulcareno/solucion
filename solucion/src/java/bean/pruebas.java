@@ -5,6 +5,9 @@
 
 package bean;
 
+import jcinform.persistencia.Institucion;
+import jcinform.persistencia.Periodo;
+
 /**
  *
  * @author Ismael Jadan
@@ -19,7 +22,13 @@ public class pruebas {
 //        Double d = new Double("00");
 //        System.out.println(""+d);
         matriculasBean b = new matriculasBean();
-        b.generar();
+        Periodo per = new Periodo();
+        Institucion ins = new Institucion();
+        ins.setFotos("F:\\");
+        per.setInstitucion(ins);
+        per.setDescripcion("2010-2011");
+        
+        b.generar(per);
     }
 
 }
