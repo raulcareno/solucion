@@ -299,7 +299,19 @@ void cargarPar(Global g){
                 <row>
                     <span style="float:right"> Inspector:</span>
                     <span>
-                        <textbox id="inspector" maxlength="100" cols="35"  readonly="true"  />
+                        <!--textbox id="inspector" maxlength="100" cols="35"  readonly="true"  /-->
+                         <bandbox  width="220px" readonly="true"  id="inspector">
+                            <bandpopup>
+                                <vbox>
+                                    <listbox id="curs" width="420px"
+                                                 onSelect="inspector.value=self.selectedItem.label;inspector.closeDropdown();">
+                                        <listitem forEach="${empleados}" value="${each}">
+                                            <listcell label="${each.tratamiento} ${each.nombres} ${each.apellidos}" />
+                                        </listitem>
+                                    </listbox>
+                                </vbox>
+                            </bandpopup>
+                        </bandbox>
       CI: 
                         <textbox id="cedulaiden" maxlength="13" cols="13" readonly="true"  />
                     </span>
@@ -307,7 +319,19 @@ void cargarPar(Global g){
                 <row>
                     <span style="float:right"> Tutor:</span>
                     <span>
-                        <textbox id="tutor" maxlength="100" cols="35"  readonly="true"  />
+                        <!--textbox id="tutor" maxlength="100" cols="35"  readonly="true"  /-->
+                          <bandbox  width="220px" readonly="true"  id="tutor">
+                            <bandpopup>
+                                <vbox>
+                                    <listbox id="curs2" width="420px"
+                                                 onSelect="tutor.value=self.selectedItem.label;tutor.closeDropdown();">
+                                        <listitem forEach="${empleados}" value="${each}">
+                                            <listcell label="${each.tratamiento} ${each.nombres} ${each.apellidos}" />
+                                        </listitem>
+                                    </listbox>
+                                </vbox>
+                            </bandpopup>
+                        </bandbox>
       CI:
                         <textbox id="cedulatut" maxlength="13" cols="13" readonly="true"  />
                     </span>
