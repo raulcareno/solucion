@@ -46,7 +46,7 @@ Session a = Sessions.getCurrent();
             if(((Matriculas)matricula.get(0)).getExtension()!= null){
             try {
 
-                java.io.File f = new java.io.File(((Matriculas)matricula.get(0)).getCurso().getPeriodo().getInstitucion().getFotos()+((Matriculas)matricula.get(0)).getCodigomat()+"."+((Matriculas)matricula.get(0)).getExtension());
+                java.io.File f = new java.io.File(((Matriculas)matricula.get(0)).getCurso().getPeriodo().getInstitucion().getFotos()+"/"+((Matriculas)matricula.get(0)).getCodigomat()+"."+((Matriculas)matricula.get(0)).getExtension());
                 fin = new FileInputStream(f);
                 byte[] buffer = new byte[(int) f.length()];
                 fin.read(buffer);
