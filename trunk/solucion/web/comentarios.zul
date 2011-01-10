@@ -69,7 +69,17 @@ datos.selectedIndex = 0;
 
     }
   void buscar(String texto){
-    List empleadosEncontrados = adm.query("Select o from Comentarios as o where o.matricula.estudiante.apellido like  '%"+texto+"%' order by o.fecha desc, o.matricula.estudiante.apellido");
+    List empleadosEncontrados = null;
+    
+    if(user.getTipo().equals("Externa")){
+           empleadosEncontrados = adm.query("Select o from Comentarios as o where o.matricula.estudiante.apellido like  '%"+texto+"%' and o.curso.codigocur in (Select a.curso.codigocur from MateriaProfesor as a where a.empleado.codigoemp = '"+user.getCodigoemp()+"') " + 
+           " order by o.fecha desc, o.matricula.estudiante.apellido");
+           
+    }else{
+              empleadosEncontrados = adm.query("Select o from Comentarios as o where o.matricula.estudiante.apellido like  '%"+texto+"%'  " + 
+           " order by o.fecha desc, o.matricula.estudiante.apellido");
+    }
+    
         datos = new Listbox();
         int a=0;
             for (Iterator it = busquedaList.getItems().iterator(); it.hasNext();) {
