@@ -32,7 +32,7 @@ Session a = Sessions.getCurrent();
      if(emp.getPendientes()){
             Messagebox.show("Proceso bloqueado por la administración, acerquese a las oficinas..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         return;
-     }else if(emp.getAplico()){
+     }else if(!emp.getAplico()){
         Messagebox.show("Su REPRESENTANTE debe Aplicar la Encuesta y luego podrá revisar sus servicios..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         return;
      }
