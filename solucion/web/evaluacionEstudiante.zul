@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+    <window  onCreate="cargar()"  border="normal" >
+        <zscript>
+<![CDATA[
+
+  import bean.EventDAO;
+  import java.util.ArrayList;
+ import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+  Administrador adm = new Administrador();
+
+  Session a = Sessions.getCurrent();
+            Representante peri =  (Representante) a.getAttribute("userRepresentante");
+            Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
+           
+
+
+cargar(){
+       Encuesta enc = adm.buscarClave(new Integer(1), Encuesta.class);
+       List preguntas = adm.query("Select o from Pregunta as o where o.encuesta.codigo = '"+enc.getCodigo()+"' order by o.orden " );
+       justificacion1.value = enc.getJustificacion();
+       objetivo1.value = enc.getObjetivo();
+            for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      Pregunta pregunta = (Pregunta) it.next();
+                      System.out.println(""+pregunta.getTipopregunta());
+                        List detalles = adm.query("Select o from Detallepregunta as o where o.pregunta.codigo = '"+pregunta.getCodigo()+"' order by o.secuencia ");
+                        Row rw = new Row();
+                        Label lab= new Label(pregunta.getOrden()+".-"+pregunta.getPregunta());
+                        lab.setStyle("color:blue;font-size;13px;font-weight:bold");
+                        rw.setSpans("2");
+                        rw.setId(pregunta.getCodigo()+""+pregunta.getTipopregunta());
+                        rw.appendChild(lab);
+                        filaEncuesta.appendChild(rw);
+                        if(pregunta.getTipopregunta().equals("ou")){ //ouopcion unica, (opcionmultiple), om, vf
+                            Radiogroup radio= new Radiogroup();
+                            radio.setOrient("vertical");
+                             rw = new Row();
+                            for (Iterator itp = detalles.iterator(); itp.hasNext();) {
+                                Detallepregunta dpregunta = (Detallepregunta) itp.next();
+                                Radio r = new Radio(""+dpregunta.getOpcion());
+                                r.setValue(""+dpregunta.getValor());
+                                r.setId(""+dpregunta.getCodigo());
+                                radio.appendChild(r);
+                            }
+                            //rw.appendChild(new Image("/images/espacio.png"));
+                            rw.appendChild(radio);
+                            filaEncuesta.appendChild(rw);
+
+                         }else  if(pregunta.getTipopregunta().equals("vf")){//ou, om, vf
+                            Radiogroup radio= new Radiogroup();
+                             rw = new Row();
+                            for (Iterator itp = detalles.iterator(); itp.hasNext();) {
+                                Detallepregunta dpregunta = (Detallepregunta) itp.next();
+
+                                Radio r = new Radio(""+dpregunta.getOpcion());
+                                r.setId(""+dpregunta.getCodigo());
+                                r.setValue(""+dpregunta.getValor());
+                                radio.appendChild(r);
+                            }
+                            rw.appendChild(radio);
+                            filaEncuesta.appendChild(rw);
+
+                         }else  if(pregunta.getTipopregunta().equals("om")){//ou, om, vf
+
+                             rw = new Row();
+                            for (Iterator itp = detalles.iterator(); itp.hasNext();) {
+                                Detallepregunta dpregunta = (Detallepregunta) itp.next();
+                                System.out.println(""+dpregunta.getOpcion());
+                                Checkbox r = new Checkbox(""+dpregunta.getOpcion());
+                                r.setId(""+dpregunta.getCodigo());
+                                r.setLabel(""+dpregunta.getValor());
+                                rw.appendChild(r);
+                            }
+                            filaEncuesta.appendChild(rw);
+                         }
+
+              }
+
+}
+
+Boolean validar(){
+String mensaje ="ERROR: No ha completado todas la preguntas, revise nuevamente y vuelva a intentarlo...!";
+error2.value = mensaje;
+error2.visible = false;
+error2i.visible = false;
+
+      List col =  lista.getRows().getChildren();
+      String tipoDato = "";
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    if(object.getId().contains("ou") || object.getId().contains("om") || object.getId().contains("vf")){
+                        tipoDato = object.getId();
+ 
+                    }else{
+                        if(tipoDato.contains("ou") || tipoDato.contains("vf")){
+                            List labels = object.getChildren();
+                            if(((Radiogroup) labels.get(0)).getSelectedItem() != null){
+                                String valor = ((Radiogroup) labels.get(0)).getSelectedItem().getValue();
+                             }else{
+                                //Messagebox.show("SELECCIONE UNA RESPUESTA EN TODAS LA PREGUNTAS...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                error2.visible = true;
+                                error2i.visible = true;
+                                return false;
+                                break;
+                            
+                                }
+                        }else if(tipoDato.equals("om")){
+                            List labels = object.getChildren();
+                        }
+                    }
+             }
+             return true;
+
+}
+ 
+  void guardar(){
+      if(!validar()){
+            guardar.disabled  = false;
+            return;
+       }
+           guardar.disabled  = true;
+           guardar.visible = false;
+
+           List matricula = adm.query("Select o from Matriculas as o " +
+           " where o.estudiante.codigoest =  '"+periEst.getCodigoest()+"' order by o.fechamat desc");
+
+      Matriculas matri = ((Matriculas)matricula.get(0)) ;
+      //adm.ejecutaSql("Delete from Respuestasencuesta where detallepregunta.pregunta.pregunta.encuesta =  ");
+      List col =  lista.getRows().getChildren();
+      String tipoDato = "";
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    if(object.getId().contains("ou") || object.getId().contains("om") || object.getId().contains("vf")){
+                        tipoDato = object.getId();
+
+                    }else{
+                        if(tipoDato.contains("ou") || tipoDato.contains("vf")){
+                            List labels = object.getChildren();
+                            if(((Radiogroup) labels.get(0)).getSelectedItem() != null){
+                                Radio rad = ((Radiogroup) labels.get(0)).getSelectedItem();
+                                Respuestasencuesta respuestap = new Respuestasencuesta();
+                                Detallepregunta det = new Detallepregunta(new Integer(rad.getId()));
+                                respuestap.setDetallepregunta(det);
+                                respuestap.setRespuesta1(rad.getValue());
+                                respuestap.setMatricula(matri);
+                                try{
+                                adm.guardar(respuestap);
+                                }catch(Exception repe){
+                                    System.out.println(repe);
+                                }
+                             }else{//Messagebox.show("SELECCIONE UNA RESPUESTA EN TODAS LA PREGUNTAS...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                error2.visible = true;
+                                error2i.visible = true;
+                                break;
+                             }
+                        }else if(tipoDato.equals("om")){
+                            List labels = object.getChildren();
+                        }
+                    }
+             }
+              periEst.setAplico(true);
+              adm.actualizar(periEst);
+              a.setAttribute("userEstudiante",periEst);
+
+             Executions.sendRedirect("indexRepresentantes.zul");
+
+}
+
+  ]]>
+        </zscript>
+
+ 
+        <panel id="listadoPreguntas" framable="true" width="100%" height="100%"
+	 border="normal">
+            <panelchildren>
+                <vbox>
+                    <label style="font-size:13px; font-weight:bold" id="justificacion1" />
+                </vbox>
+                <label visible="false" id="objetivo1" />
+
+                <grid    id="lista">
+                    <rows id="filaEncuesta">
+                    </rows>
+                </grid>
+            </panelchildren>
+            <toolbar>
+                <button image="/images/guardar.gif" id="guardar" height="40px" width="240px" label="GUARDAR Y CONTINUAR"    onClick="guardar.disabled = true; guardar();"/>
+                <image src="/images/bloquear.gif" id="error2i" visible="false"/>
+                
+                <label id="error2" visible ="false" style="color:black;font-size:16px;background:#FFFFBB;border-color:blue" />
+                    
+
+                
+            </toolbar>
+        </panel>
+
+    </window>
+</zk>
