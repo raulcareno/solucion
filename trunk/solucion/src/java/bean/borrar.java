@@ -39,6 +39,11 @@ public class borrar {
 //DecimalFormat f = new DecimalFormat("");
 //           System.out.println(""+
 //           new java.text.DecimalFormat("####.00").format(3.40));
+
+            Radiogroup radio= new Radiogroup();
+            Radio r = new Radio("Apple");
+            radio.appendChild(r);
+
  
     }
 

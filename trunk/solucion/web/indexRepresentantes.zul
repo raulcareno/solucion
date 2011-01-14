@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
 <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
-<borderlayout height="100%" onCreate="cargando();" >
+<borderlayout id="todo" height="250%" onCreate="cargando();" >
     <zscript>
 import jcinform.persistencia.*;
   import jcinform.procesos.Administrador;
@@ -71,7 +71,7 @@ Session a = Sessions.getCurrent();
         }
 
     </zscript>
-    <north style="background-image: url(./images/cabefondo1.png)"  size="15%" >
+    <north style="background-image: url(./images/cabefondo1.png)"  size="85px" >
         <div>
             <hbox>
                 <image  border="15px"  style="padding:0 10px; margin:5px; padding:0" height="75px" id="foto0" />
@@ -112,9 +112,22 @@ Session a = Sessions.getCurrent();
 
     </center>
 <zscript>
-     //   Include inc = (Include) xcontents;
-     //   inc.setSrc("/ayudafuera.zul");
 
+       
+        Session a = Sessions.getCurrent();
+        Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
+      if(!periEst.getAplico()){
+                Window win34 = (Window) Executions.createComponents("/evaluacionEstudiante.zul", null, null);
+                win34.setVisible(true);
+                win34.setStyle("position:absolute; top:1%; left:0%");
+               
+               //win34.setMode("overlapped");
+               todo.visible = false;
+
+       }
+       Include inc = (Include) xcontents;
+       inc.setSrc("/blanco_1.zul");
+      
 </zscript>
 
 </borderlayout>

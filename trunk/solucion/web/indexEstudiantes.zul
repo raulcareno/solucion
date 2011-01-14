@@ -32,6 +32,9 @@ Session a = Sessions.getCurrent();
      if(emp.getPendientes()){
             Messagebox.show("Proceso bloqueado por la administración, acerquese a las oficinas..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         return;
+     }else if(emp.getAplico()){
+        Messagebox.show("Su REPRESENTANTE debe Aplicar la Encuesta y luego podrá revisar sus servicios..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return;
      }
         Include inc = (Include) xcontents;
         inc.setSrc(valor);
@@ -112,8 +115,8 @@ Session a = Sessions.getCurrent();
 
     </center>
 <zscript>
-      //  Include inc = (Include) xcontents;
-       // inc.setSrc("/ayudafuera.zul");
+          Include inc = (Include) xcontents;
+         inc.setSrc("/blanco_1.zul");
 
 </zscript>
 

@@ -2,9 +2,8 @@
 <?page title="Administrador Educativo"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
-    <window  title="ENCUESTAS"  border="normal" >
-
-        <zscript>
+    <window  title="ENCUESTAS" onCreate="cargar()"  border="normal" >
+<zscript>
 <![CDATA[
    
   import bean.EventDAO;
@@ -14,9 +13,69 @@
   import bean.Permisos;
   import java.math.BigDecimal;
   Administrador adm = new Administrador();
-            llenarGrid(int numero,String tipo){
-                filas.getChildren().clear();
-                noopciones.disabled = false;
+
+cargar(){
+       Encuesta enc = adm.buscarClave(new Integer(1), Encuesta.class);
+       List preguntas = adm.query("Select o from Pregunta as o where o.encuesta.codigo = '"+enc.getCodigo()+"' order by o.orden " );
+       justificacion1.value = enc.getJustificacion();
+       objetivo1.value = enc.getObjetivo();
+            for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      Pregunta pregunta = (Pregunta) it.next();
+                      System.out.println(""+pregunta.getTipopregunta());
+                        List detalles = adm.query("Select o from Detallepregunta as o where o.pregunta.codigo = '"+pregunta.getCodigo()+"' order by o.secuencia ");
+                        Row rw = new Row();
+                        Label lab= new Label(pregunta.getOrden()+".-"+pregunta.getPregunta());
+                        lab.setStyle("color:blue;font-size;13px;font-weight:bold");
+                        rw.setSpans("2");
+                        rw.appendChild(lab);
+                        filaEncuesta.appendChild(rw);
+                        if(pregunta.getTipopregunta().equals("ou")){ //ouopcion unica, (opcionmultiple), om, vf
+                            Radiogroup radio= new Radiogroup();
+                            radio.setOrient("vertical");
+                             rw = new Row();
+                            for (Iterator itp = detalles.iterator(); itp.hasNext();) {
+                                Detallepregunta dpregunta = (Detallepregunta) itp.next();
+                                Radio r = new Radio(""+dpregunta.getOpcion());
+                                r.setId(""+dpregunta.getCodigo());
+                                radio.appendChild(r);
+                            }
+                            //rw.appendChild(new Image("/images/espacio.png"));
+                            rw.appendChild(radio);
+                            filaEncuesta.appendChild(rw);
+                            
+                         }else  if(pregunta.getTipopregunta().equals("vf")){//ou, om, vf
+                            Radiogroup radio= new Radiogroup();
+                             rw = new Row();
+                            for (Iterator itp = detalles.iterator(); itp.hasNext();) {
+                                Detallepregunta dpregunta = (Detallepregunta) itp.next();
+
+                                Radio r = new Radio(""+dpregunta.getOpcion());
+                                r.setId(""+dpregunta.getCodigo());
+                                radio.appendChild(r);
+                            }
+                            rw.appendChild(radio);
+                            filaEncuesta.appendChild(rw);
+
+                         }else  if(pregunta.getTipopregunta().equals("om")){//ou, om, vf
+                             
+                             rw = new Row();
+                            for (Iterator itp = detalles.iterator(); itp.hasNext();) {
+                                Detallepregunta dpregunta = (Detallepregunta) itp.next();
+                                System.out.println(""+dpregunta.getOpcion());
+                                Checkbox r = new Checkbox(""+dpregunta.getOpcion());
+                                r.setId(""+dpregunta.getCodigo());
+                                rw.appendChild(r);
+                            }
+                            filaEncuesta.appendChild(rw);
+                         }
+
+              }
+
+}
+
+llenarGrid(int numero,String tipo){
+    filas.getChildren().clear();
+    noopciones.disabled = false;
             for(int i = 0; i< numero; i++){
                     Row row = new Row();
                         if(tipo.equals("vf") && i == 0 ){
@@ -220,6 +279,10 @@ void guardar(){
                     <rows id="filas">
                     </rows>
                 </grid>
+
+
+                                       
+                  
                 <vbox>
                     <hbox>
                         <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
@@ -233,12 +296,10 @@ void guardar(){
         <panel id="listadoPreguntas" framable="true" width="100%" height="100%"
 	title="LISTA DE PREGUNTAS DE LA ENCUESTA" border="normal">
             <panelchildren>
-                <grid height="150px" id="lista">
-                    <columns sizable="true">
-                        <column label="Preguntas" />
-                        <column label="Opción" width="150px"/>
-                    </columns>
-                    <rows id="filasList">
+ <vbox><label style="font-size:13px; font-weight:bold" id="justificacion1" /></vbox>
+ <label visible="false" id="objetivo1" />
+                <grid   id="lista">
+                    <rows id="filaEncuesta">
                     </rows>
                 </grid>
             </panelchildren>
