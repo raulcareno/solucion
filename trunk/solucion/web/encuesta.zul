@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+    <window  title="ENCUESTAS"  border="normal" >
+
+        <zscript>
+<![CDATA[
+   
+  import bean.EventDAO;
+  import java.util.ArrayList;
+    import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+  Administrador adm = new Administrador();
+            llenarGrid(int numero,String tipo){
+                filas.getChildren().clear();
+                noopciones.disabled = false;
+            for(int i = 0; i< numero; i++){
+                    Row row = new Row();
+                        if(tipo.equals("vf") && i == 0 ){
+                            Textbox t = new Textbox("SI");
+                            t.setCols(80);
+                            row.appendChild(t);
+                            row.appendChild(new Doublebox(1));
+                            noopciones.disabled = true;
+                        }else if(tipo.equals("vf") && i == 1 ){
+                            Textbox t = new Textbox("NO");
+                            t.setCols(80);
+                            row.appendChild(t);
+                            row.appendChild(new Doublebox(0));
+                            noopciones.disabled = true;
+                        }else{
+                            Textbox t = new Textbox(""+(i+1)+".- ");
+                            t.setCols(80);
+                            row.appendChild(t);
+                            row.appendChild(new Doublebox(1));
+                        }
+                        
+                    
+                    filas.appendChild(row);
+            }
+}
+            void cargarGrid(String tipo){
+                noopciones.visible = false;
+                int  numero = noopciones.value;
+                if(tipo.equals("vf")){
+                        llenarGrid(2,tipo);
+                }else if(tipo.equals("ou")){
+                        noopciones.visible = true;
+                        llenarGrid(numero,tipo);
+                }else if(tipo.equals("om")){
+                        noopciones.visible = true;
+                        llenarGrid(numero,tipo);
+                }
+            }
+ void estado(Boolean estado){
+
+    nombreencuesta.readonly = estado;
+    justificacion.readonly = estado;
+    objetivo.readonly = estado;
+    desde.disabled = estado;
+    hasta.disabled = estado;
+    pregunta.readonly = estado;
+    orden.disabled = estado;
+    tipopregunta.disabled = estado;
+    noopciones.disabled = estado;
+
+}
+
+void llenar(Encuesta enc){
+
+    nombreencuesta.value="";
+    justificacion.value="";
+    objetivo.value="";
+    desde.value = new Date();
+    hasta.value = new Date();
+    pregunta.value="";
+    orden.value = 1;
+    noopciones.value = 1;
+
+ }
+
+ Boolean verificar(String accion){
+        //return bean.Permisos.verificarPermiso("Globales",accion);
+        return true;
+ }
+ 
+ void nuevo(){
+    if(verificar("Agregar")){
+        guardar.disabled=false;
+        llenar(new Encuesta(0));
+        estado(false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+
+void guardar(){
+    if(nombreencuesta.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+    Encuesta enc = new Encuesta();
+    enc.setNombreencuesta(nombreencuesta.value);
+    enc.setJustificacion(justificacion.value);
+    enc.setObjetivo(objetivo.value);
+    enc.setInicio(desde.value);
+    enc.setFin(hasta.value);
+    enc.setCodigo(codigo.value);
+    if(!codigo.value.equals(0)){
+        adm.actualizar(enc);
+    }else{
+        enc.setCodigo(adm.getNuevaClave("Encuesta","codigo"));
+        adm.guardar(enc);
+    }
+    codigo.value = enc.getCodigo();
+            Pregunta pre = new Pregunta();
+            pre.setPregunta(pregunta.value);
+            pre.setEncuesta(enc);
+            pre.setOrden(orden.value);
+            pre.setNoopciones(noopciones.value);
+            pre.setTipopregunta(tipopregunta.selectedItem.value);
+            pre.setCodigo(adm.getNuevaClave("Pregunta","codigo"));
+            adm.guardar(pre);
+
+             
+             List col = opciones.getRows().getChildren();
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    Detallepregunta det = new Detallepregunta();
+                     det.setCodigo(adm.getNuevaClave("Detallepregunta","codigo"));
+                     det.setPregunta(pre);
+                     det.setSecuencia((i+1));
+                     List labels = object.getChildren();
+                     det.setOpcion(((Textbox) labels.get(0)).getValue());
+                     det.setValor(((Doublebox) labels.get(1)).getValue());
+                     adm.guardar(det);
+             }
+
+    llenarGrid(noopciones.value,tipopregunta.selectedItem.value);
+    pregunta.value="";
+    orden.value = orden.value + 1;
+    noopciones.value = 1;
+
+                    
+
+
+ }
+
+  ]]>
+        </zscript>
+    
+	
+        <grid width="100%">
+            <rows>
+                <row>
+                    <span style="float:right"> Nombre Encuesta(*):
+                        <intbox id="codigo" readonly="true" value="0" />
+                    </span>
+                    <textbox id="nombreencuesta"   cols="100" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Justifiación(*):</span>
+                    <textbox id="justificacion"   cols="100" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Objetivo(*):</span>
+                    <textbox id="objetivo"   cols="100" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Habilitada Desde(*):</span>
+                    <span>
+                        <datebox id="desde"   readonly="true"   />
+                  Hasta(*):
+                        <datebox id="hasta"   readonly="true"   />
+                    </span>
+                </row>
+            </rows>
+        </grid>
+        <panel id="panel" framable="true" width="100%" height="100%"
+	title="PREGUNTAS" border="normal">
+            <panelchildren>
+
+                <grid>
+                    <rows>
+                        <row>
+                             
+                            <span  style="float:right"> Pregunta No.(*):
+                                <spinner  disabled="true"  value="1" constraint="no negative,no zero" cols="1" id="orden"/>
+                            </span>
+                            <textbox id="pregunta" cols="100"   readonly="true"   />
+                        </row>
+                        <row>
+                            <span style="float:right"> Tipo Pregunta(*):</span>
+                            <span>
+                                <listbox disabled="true" mold="select" onSelect='if(self.selectedItem.value.equals("vf")) llenarGrid(2,"vf"); else llenarGrid(0,"");'  id="tipopregunta"  >
+                                    <listitem value="vacio" selected="true" label="SELECCIONE" />
+                                    <listitem value="vf" label="Verdadero o Falso" />
+                                    <listitem value="ou" label="Opción Única" />
+                                    <listitem value="om" label="Opción Múltiple" />
+                                </listbox>
+
+                            . No.Opciones(*):
+                                <spinner value="1"  disabled="true"  constraint="no negative,no zero" id="noopciones"
+							onChanging="if (event.value.length() > 0 &amp;&amp; Integer.parseInt(event.value) > 0) llenarGrid(Integer.parseInt(event.value),tipopregunta.selectedItem.value);" />
+                            </span>
+                        </row>
+                    </rows>
+
+                </grid>
+
+                <grid height="150px" id="opciones">
+                    <columns sizable="true">
+                        <column label="Opcion" />
+                        <column label="Valor por Opción" width="150px"/>
+
+                    </columns>
+                    <rows id="filas">
+                    </rows>
+                </grid>
+                <vbox>
+                    <hbox>
+                        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                        <!--button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/-->
+                    </hbox>
+                </vbox>
+            </panelchildren>
+        </panel>
+        <panel id="listadoPreguntas" framable="true" width="100%" height="100%"
+	title="LISTA DE PREGUNTAS DE LA ENCUESTA" border="normal">
+            <panelchildren>
+                <grid height="150px" id="lista">
+                    <columns sizable="true">
+                        <column label="Preguntas" />
+                        <column label="Opción" width="150px"/>
+                    </columns>
+                    <rows id="filasList">
+                    </rows>
+                </grid>
+            </panelchildren>
+        </panel>
+
+    </window>
+</zk>
