@@ -179,7 +179,7 @@ error2i.visible = false;
 	 border="normal">
             <panelchildren>
                 <vbox>
-                    <label style="font-size:13px; font-weight:bold" id="justificacion1" />
+                    <textbox rows="4" style="font-size:13px; font-weight:bold;background:white;" readonly="true" width="800px" id="justificacion1" />
                 </vbox>
                 <label visible="false" id="objetivo1" />
 
