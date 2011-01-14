@@ -1531,7 +1531,7 @@ public class notas extends Rows {
             query2 += "round(cast(avg(" + notass.getNota() + ") as decimal(9,4))," + numeroDecimales.intValue() + "),";
         }
         for (Notanotas notass : notas) {
-            queryDisciplina += "cast(round(cast(avg(" + notass.getNota() + ") as decimal)," + numeroDecimalesDisc.intValue() + ") as decimal),";
+            queryDisciplina += "cast(round(cast(avg(" + notass.getNota() + ") as decimal(9,4))," + numeroDecimalesDisc.intValue() + ") as decimal(9,4)),";
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         query2 = query2.substring(0, query2.length() - 1).replace("'", "");
