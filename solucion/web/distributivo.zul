@@ -201,6 +201,17 @@ void eliminar(){
             permiso.auditar("Distributivo","Eliminar",""+estudent.getCurso()+" "+estudent.getMateria());
             llenar(new MateriaProfesor(0));
             combo.value="";
+              try{
+                 String quera = "update notas set orden = 1000, seimprime = false,  " +
+                      " promedia = false, cuantitativa = false  "+
+                      " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + estudent.getCurso().getCodigocur() +" ) " +
+                      " and materia = "+estudent.getMateria().getCodigo()+" ";
+                  adm.ejecutaSqlNativo(quera);
+                  System.out.println("ACTUALIZANDO DISTRIBUTIVO NOTAS "+quera);
+              }catch(Exception ae){
+                     System.out.println("ERROR EN ACTUALIZAR NOTAS "+ae);
+              }
+            
                 Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         }catch(Exception e){
             Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
