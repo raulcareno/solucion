@@ -8,7 +8,7 @@ div.listbox-head th{font-size: 18px}
 div.head-cell-inner{font-size: 18px}
 div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; position: relative; }
 </style> 
-    <borderlayout onCreate="verificar();cargando();cargando2();"  width="100%" style="float:center"  height="100%">
+    <borderlayout onCreate="verificar();cargando();cargando2();"  width="100%" style="float:center"  height="150%">
         <zscript>
             import jcinform.persistencia.*;
             import jcinform.procesos.Administrador;
@@ -254,7 +254,9 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                         <listitem id="Actualizacion" label="Actualizar" image="/images/actualizar.png"  value="/actualizacion.zul" /><listitem/>
                                         <listitem id="Pendientes" label="Pendientes" image="/images/dinero.gif"   value="/pendientes.zul" /><listitem/>
                                         <listitem id="Bloquear" label="Bloquear" image="/images/bloquear.gif"   value="/actualizacion_1.zul" /><listitem/>
-                                        <listitem id="Reportes_Estudiantes" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" /></listbox>
+                                        <listitem id="Reportes_Estudiantes" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" /><listitem/>
+                                        <listitem id="Encuesta" label="Encuesta" image="/images/bloquear.gif"   value="/encuesta.zul" /><listitem/>
+                                        </listbox>
                                 </tabpanel>
                                 <tabpanel height="220px"><!--NOTAS-->
 
