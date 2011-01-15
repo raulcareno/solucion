@@ -29,7 +29,7 @@ Session a = Sessions.getCurrent();
 
  void ingresar(String valor){
      if(emp.getEstado() == null)
-         emp.setEstado(true);
+         emp.setEstado(false);
  
      if(emp.getEstado()){
             Messagebox.show("Proceso bloqueado por la administración, acerquese a las oficinas..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
