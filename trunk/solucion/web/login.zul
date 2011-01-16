@@ -15,6 +15,9 @@
     
     
 }
+.estilo2{
+    background-image: url(./images/mensajes.gif)   ;
+}
     </style>
  
     <div  class="estil" >
@@ -53,6 +56,7 @@ derechos.value = "Todos los derechos reservados a JCINFORM, derecho de copia @20
  Permisos permisos = new Permisos();
 
 void verificar(){
+error.visible = false;
   Empleados user =adm.ingresoSistema(usuario.value, clave.value);
   
   if(user != null){
@@ -110,7 +114,8 @@ void verificar(){
 
                 
             }else{
-                Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                //Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                error.visible = true;
                 usuario.focus();
              }
   
@@ -166,6 +171,9 @@ void verificarSistema(){
                         <span style="float:center">
                             <image src="/images/about.jpg" style="aling:center"/>
                         </span>
+                    </row>
+                    <row align="center" visible="false" id="error" spans="2">
+                        <image  src="/images/error.gif"  />
                     </row>
                     <row style="background:transparent;border:0px"  id="usuarios" >
                         <span style="float:right;font-weight:bold">Usuario:(*):</span>

@@ -38,6 +38,17 @@ Copyright (C) 2006 Potix Corporation. All Rights Reserved.
 		<timer-as-inactive>true</timer-as-inactive>
 	</session-config>
 
+
+     <library-property>
+		<name>org.zkoss.zul.progressbox.position</name>
+		<value>center,top</value>
+	</library-property>
+
+         
+        <client-config>
+         <processing-prompt-delay>1</processing-prompt-delay>
+        </client-config>
+
 	<!-- Turn on if you prefer to use the native (Servlet) thread
 	to process the events, instead of forking the event processing thread
 	<system-config>
