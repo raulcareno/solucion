@@ -24,7 +24,7 @@ Session ses = Sessions.getCurrent();
     List paralelos = adm.query("Select o from Global as o where o.grupo = 'PAR'");
     List empleados = adm.query("Select o from Empleados as o order by o.apellidos, o.nombres ");
     Object media = null;
-
+Boolean guardando = false;
 //FUNCIONES
 void llenar(Cursos empa){
     codigocurso.value = empa.getCodigocur();
@@ -90,6 +90,10 @@ void estado(Boolean estado,Boolean modificar){
 
 
  void guardar(){
+ if(guardando)
+    return;
+
+guardando = true;
 
  if(nombres.value=="" || secuencia.value ==""){
     Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -137,7 +141,7 @@ void estado(Boolean estado,Boolean modificar){
                     cur.setSecuencia(1);
                     llenar(cur);
                     buscar("");
-            
+            guardando = false;
 
     }
 

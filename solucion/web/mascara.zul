@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+	<?script type="text/javascript" src="js/jquery.maskedinput-1.2.2"?>
+    <?script type="text/javascript" src="js/jquery-1.4.4.min.js"?>
+        <?script type="text/javascript" src="js/masks.js"?>
+    <!--?script type="text/javascript" src="/js/masks.js"?-->
+	<!--
+		For masks, use the following special characters:
+			a - Represents an alpha character (A-Z,a-z)
+			9 - Represents a numeric character (0-9)
+			* - Represents an alphanumeric character (A-Z,a-z,0-9)
+
+		You can also specify a placeholder.  I have it set to an underscore but you could also change it to space, etc.
+	-->
+ 
+	<window width="100%" title="Input Mask Example" border="normal">
+		<attribute name="onCreate">
+			<!-- Here we call the functions to apply the input masks to the fields -->
+			String maskCommand = "applyPhoneMask('" + zipCodtrtfe.getUuid() + "');";
+			System.out.println(maskCommand);
+             Clients.evalJavaScript(maskCommand);
+		</attribute>
+			 
+				<label value="ZIP Code:  " />
+				<textbox id="zipCode" />
+ 
+	</window>
+</zk>

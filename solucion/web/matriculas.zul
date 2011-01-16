@@ -33,7 +33,7 @@ import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
 
-
+Boolean guardando = false;
     Administrador adm = new Administrador();
     List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
     static Estudiantes estudent = new Estudiantes();
@@ -507,8 +507,11 @@ void estado(Boolean estado,Boolean modificar){
 
 
  void guardar(){
+ if(guardando)
+        return;
+ guardando = true;
  try{
-             if(nombres.value=="" || apellidos.value =="" || direccion.value=="" || nacido.value=="" ){
+            if(nombres.value=="" || apellidos.value =="" || direccion.value=="" || nacido.value=="" ){
                     Messagebox.show("Ingrese los datos del estudiante que están con (*)...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                     return;
             }
@@ -582,7 +585,13 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
         estudent.setGenero(genero.selectedItem.value);
-        estudent.setReligion(religion.selectedItem.value);
+        try{
+
+            estudent.setReligion(religion.selectedItem.value);
+        }catch(Exception error){
+            estudent.setReligion("Ninguno");
+        }
+
         estudent.setPendientes(pendientes.checked);
 
         estudent.setVivecon(vivecon.value);
@@ -737,8 +746,8 @@ ParametrosGlobales para = new ParametrosGlobales();
                 alert("Error:"+e); System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
                 System.out.println(""+e.getStackTrace()); System.out.println(""+e.getCause());
         }
-
-    }
+    guardando = false;
+}
 
    Boolean verificar(String accion){
         return permiso.verificarPermiso("Matricular",accion);
@@ -1192,7 +1201,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                 <textbox rows="2" id="observacion"  readonly="true"  />
                                                                 <span style="float:right"> Religión:</span>
                                                                 <combobox id="religion" readonly="true">
-                                                                    <comboitem value="Ninguno" label="Ninguno"/>
+                                                                    <comboitem  value="Ninguno" label="Ninguno"/>
                                                                     <comboitem value="Adventista" label="Adventista"/>
                                                                     <comboitem value="Cristiano" label="Cristiano"/>
                                                                     <comboitem value="Evangélico" label="Evangélico"/>
@@ -1246,7 +1255,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             </row>
 
                             <row>
-                                <span style="float:right"> Identif.(*):</span>
+                                <span style="float:right"> Identificación:</span>
                                 <textbox maxlength="13" cols="10"   readonly="true" id="cedulare"  />
 
                                 <span style="float:right"> Nombres:</span>

@@ -13,7 +13,7 @@
   import bean.Permisos;
   import java.math.BigDecimal;
   Administrador adm = new Administrador();
-
+ Boolean guardando = true;
   Session a = Sessions.getCurrent();
             Representante peri =  (Representante) a.getAttribute("userRepresentante");
             Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
@@ -119,8 +119,15 @@ error2i.visible = false;
 }
  
   void guardar(){
+
+   if(guardando)
+    return;
+
+    guardando = true;
+
       if(!validar()){
             guardar.disabled  = false;
+            guardando = false;
             return;
        }
            guardar.disabled  = true;
@@ -168,6 +175,7 @@ error2i.visible = false;
               a.setAttribute("userEstudiante",periEst);
 
              Executions.sendRedirect("indexRepresentantes.zul");
+            guardando = false;
 
 }
 
