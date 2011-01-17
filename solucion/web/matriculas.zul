@@ -1020,127 +1020,127 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                             <borderlayout>
                                                 <center flex="true">
 
-                                                                <hbox>
-                                                    <grid sclass="MyGridRowHeight" width="100%"  height="100%">
-                                                        <rows>
+                                                    <hbox>
+                                                        <grid sclass="MyGridRowHeight" width="100%"  height="100%">
+                                                            <rows>
 
-                                                            <row style="background:yellow">
-                                                                <span style="float:right"> BÚSQUEDA: </span>
-                                                                <span>
-                                                                    <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
+                                                                <row style="background:yellow">
+                                                                    <span style="float:right"> BÚSQUEDA: </span>
+                                                                    <span>
+                                                                        <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
                                                                         _INGRESE UN APELLIDO
-                                                                </span>
-                                                            </row>
-                                                            <row>
+                                                                    </span>
+                                                                </row>
+                                                                <row>
 
-                                                                <span style="float:right"> Codigo :</span>
-                                                                <span>
-                                                                    <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
+                                                                    <span style="float:right"> Codigo :</span>
+                                                                    <span>
+                                                                        <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
                                                                         Identificación:
-                                                                    <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
+                                                                        <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
                                                                         
-                                                                </span>
-                                                            </row>
-                                                            <row>
+                                                                    </span>
+                                                                </row>
+                                                                <row>
 
-                                                                <span style="float:right;">
-                                                                    <label value="Nombres(*)" style="font-weight: bold;"/>
-                                                                </span>
-                                                                <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
-                                                            </row>
+                                                                    <span style="float:right;">
+                                                                        <label value="Nombres(*)" style="font-weight: bold;"/>
+                                                                    </span>
+                                                                    <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
+                                                                </row>
 
-                                                            <row>
+                                                                <row>
 
-                                                                <span style="float:right;">
-                                                                    <label value="Apellidos(*)" style="font-weight: bold;"/>
-                                                                </span>
-                                                                <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40" readonly="true"  />
-                                                            </row>
-                                                            <row>
+                                                                    <span style="float:right;">
+                                                                        <label value="Apellidos(*)" style="font-weight: bold;"/>
+                                                                    </span>
+                                                                    <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40" readonly="true"  />
+                                                                </row>
+                                                                <row>
 
-                                                                <span style="float:right;">
-                                                                    <label value="Dirección(*)" style="font-weight: bold;"/>
-                                                                </span>
-                                                                <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
-                                                            </row>
+                                                                    <span style="float:right;">
+                                                                        <label value="Dirección(*)" style="font-weight: bold;"/>
+                                                                    </span>
+                                                                    <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
+                                                                </row>
 
-                                                            <row>
-                                                                <span style="float:right"> Email:</span>
-                                                                <span>
-                                                                    <textbox id="mail" maxlength="100" cols="30"  readonly="true"    />
+                                                                <row>
+                                                                    <span style="float:right"> Email:</span>
+                                                                    <span>
+                                                                        <textbox id="mail" maxlength="100" cols="30"  readonly="true"    />
                                                                         Teléfono:
-                                                                    <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
-                                                                </span>
-                                                            </row>
+                                                                        <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
+                                                                    </span>
+                                                                </row>
 
-                                                            <row>
-
-
+                                                                <row>
 
 
-                                                            </row>
 
 
-                                                        </rows>
-                                                    </grid>
-
-                                                    <grid  sclass="MyGridRowHeight" width="120%" height="220">
-                                                        <rows>
-                                                            <row>
-                                                                <span style="float:right;">
-                                                                    <label value="Género(*)" style="font-weight: bold;"/>
-                                                                </span>
-                                                                <combobox id="genero" readonly="true">
-                                                                    <comboitem value="Masculino" label="Masculino"/>
-                                                                    <comboitem value="Femenino" label="Femenino"/>
-                                                                </combobox>
-                                                            </row>
-                                                            <row>
-                                                                <span style="float:right"> Fecha Nacimiento:</span>
-                                                                <datebox id="nacido"  readonly="true"  />
-
-                                                            </row>
-                                                            <row>
-                                                                <span style="float:right"> Usuario:</span>
-                                                                <span>
-                                                                    <textbox id="usuario" maxlength="30" cols="12" readonly="true"  />
-
-                                                                    <button label="Generar" onClick="generarClave(true);"/>
-                                                                </span>
+                                                                </row>
 
 
-                                                            </row>
-                                                            <row>
-                                                                <span style="float:right"> Clave:</span>
-                                                                <span>
-                                                                    <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
-                                                                    <checkbox visible="false" id="estadoe" disabled="true"  />
-                                                                </span>
-                                                            </row>
-                                                            <row>
+                                                            </rows>
+                                                        </grid>
 
-                                                                <span style="float:right"> Interno:</span>
-                                                                <span>
-                                                                    <checkbox id="adventista" disabled="true" /> Nuevo:
-                                                                    <checkbox id="nuevo" disabled="true" />
-                                                                </span>
+                                                        <grid  sclass="MyGridRowHeight" width="120%" height="220">
+                                                            <rows>
+                                                                <row>
+                                                                    <span style="float:right;">
+                                                                        <label value="Género(*)" style="font-weight: bold;"/>
+                                                                    </span>
+                                                                    <combobox id="genero" readonly="true">
+                                                                        <comboitem value="Masculino" label="Masculino"/>
+                                                                        <comboitem value="Femenino" label="Femenino"/>
+                                                                    </combobox>
+                                                                </row>
+                                                                <row>
+                                                                    <span style="float:right"> Fecha Nacimiento:</span>
+                                                                    <datebox id="nacido"  readonly="true"  />
 
-                                                            </row>
-                                                            <row>
-                                                                <span style="float:right"> Religión:</span>
-                                                                <combobox id="religion" readonly="true">
-                                                                    <comboitem  value="Ninguno" label="Ninguno"/>
-                                                                    <comboitem value="Adventista" label="Adventista"/>
-                                                                    <comboitem value="Cristiano" label="Cristiano"/>
-                                                                    <comboitem value="Evangélico" label="Evangélico"/>
-                                                                    <comboitem value="Católico" label="Catolico"/>
-                                                                    <comboitem value="Otra" label="Otra"/>
+                                                                </row>
+                                                                <row>
+                                                                    <span style="float:right"> Usuario:</span>
+                                                                    <span>
+                                                                        <textbox id="usuario" maxlength="30" cols="12" readonly="true"  />
+
+                                                                        <button label="Generar" onClick="generarClave(true);"/>
+                                                                    </span>
 
 
-                                                                </combobox>
-                                                            </row>
-                                                        </rows>
-                                                    </grid>
+                                                                </row>
+                                                                <row>
+                                                                    <span style="float:right"> Clave:</span>
+                                                                    <span>
+                                                                        <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
+                                                                        <checkbox visible="false" id="estadoe" disabled="true"  />
+                                                                    </span>
+                                                                </row>
+                                                                <row>
+
+                                                                    <span style="float:right"> Interno:</span>
+                                                                    <span>
+                                                                        <checkbox id="adventista" disabled="true" /> Nuevo:
+                                                                        <checkbox id="nuevo" disabled="true" />
+                                                                    </span>
+
+                                                                </row>
+                                                                <row>
+                                                                    <span style="float:right"> Religión:</span>
+                                                                    <combobox id="religion" readonly="true">
+                                                                        <comboitem  value="Ninguno" label="Ninguno"/>
+                                                                        <comboitem value="Adventista" label="Adventista"/>
+                                                                        <comboitem value="Cristiano" label="Cristiano"/>
+                                                                        <comboitem value="Evangélico" label="Evangélico"/>
+                                                                        <comboitem value="Católico" label="Catolico"/>
+                                                                        <comboitem value="Otra" label="Otra"/>
+
+
+                                                                    </combobox>
+                                                                </row>
+                                                            </rows>
+                                                        </grid>
                                                     </hbox>
                                                  
                                                 </center>
@@ -1158,9 +1158,13 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                             <span style="float:right"> Codigo:</span>
                                                                             <span>
                                                                                 <intbox maxlength="14" cols="5"    disabled="true"    readonly="true" id="codigomat"  />
-                                                                    No.Mat.(*):
+                                                                    <span style="float:right;">
+                                                                        <label value="No.Matri.(*)" style="font-weight: bold;"/>
+                                                                    </span>
                                                                                 <intbox maxlength="10"   cols="5"  id="numero"  />
-                                                                    No.Folio (*):
+                                                                    <span style="float:right;">
+                                                                        <label value="No.Folio(*)" style="font-weight: bold;"/>
+                                                                    </span>
                                                                                 <intbox maxlength="10" readonly="true" cols="5"  id="folio"  />
                                                                             </span>
                                                                         </row>
@@ -1304,7 +1308,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                             </row>
                             <row>
-                                <span style="float:right"> Busqueda(*):</span>
+                                <span style="float:right"> Busqueda:</span>
 
                                 <combobox id="combo2" onSelect="buscarRepresentante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoCompleteRepre"/>
                                 <span style="float:right"> Identificación:</span>
@@ -1322,7 +1326,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             </row>
 
                             <row>
-                                <span style="float:right"> Nombres(*):</span>
+                                <span style="float:right;">
+                                      <label value="Nombres(*)" style="font-weight: bold;"/>
+                                 </span>
                                 <textbox id="nombresre"  maxlength="60" cols="40" readonly="true"   />
                                 <span style="float:right"> Apellidos:</span>
                                 <textbox id="apellidospa"  maxlength="60" cols="40" readonly="true"  />
@@ -1330,13 +1336,17 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                             </row>
                             <row>
-                                <span style="float:right"> Apellidos(*):</span>
+                                <span style="float:right;">
+                             <label value="Apellidos(*)" style="font-weight: bold;"/>
+                            </span>
                                 <textbox id="apellidosre"  maxlength="60" cols="40" readonly="true"  />
                                 <span style="float:right"> Ocupación:</span>
                                 <textbox id="ocupacionpa" maxlength="100" cols="40"  readonly="true"    />
                             </row>
                             <row>
-                                <span style="float:right"> Dirección(*):</span>
+                            <span style="float:right;">
+                               <label value="Dirección(*)" style="font-weight: bold;"/>
+                          </span>
                                 <span>
                                     <textbox id="direccionre" maxlength="100" cols="40"  readonly="true"    />
                                 
