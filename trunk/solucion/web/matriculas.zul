@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
+    <style>
+.MyGridRowHeight tr.z-row td.z-row-inner  
+{
+      background: white;
+      border-top: none;
+      border-left: 1px solid white;
+      border-right: 1px solid #CCC;
+      border-bottom: 1px solid #DDD;
+ 
+}
+/*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+  background: #F8F8F8;
+} */
+.MyGridRowHeight td.z-row-inner
+{
+    padding: 0px;
+    //overflow: hidden;
+}
+    </style>
     <window id="principales" >
         <zscript>
             <![CDATA[
@@ -224,6 +243,9 @@ void llenar(Estudiantes estudent){
             }
               if(estudent.getPendientes()!=null){
                 pendientes.checked = estudent.getPendientes();
+            }
+            if(estudent.getAplico()!=null){
+                aplico.checked = estudent.getAplico();
             }
             String tCasa = estudent.getCasa();
                codigoclave.value = estudent.getCodigo();
@@ -613,6 +635,7 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setInternet(internet.checked);
         estudent.setCodigo(codigoclave.value);
         estudent.setMatriculado(matriculado.checked);
+        estudent.setAplico(aplico.checked);
             
 
 
@@ -997,14 +1020,15 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                             <borderlayout>
                                                 <center flex="true">
 
-                                                    <grid width="99%"  height="100%">
+                                                                <hbox>
+                                                    <grid sclass="MyGridRowHeight" width="100%"  height="100%">
                                                         <rows>
 
                                                             <row style="background:yellow">
                                                                 <span style="float:right"> BÚSQUEDA: </span>
                                                                 <span>
                                                                     <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
-                                                                        _Ingrese un apellido para buscar
+                                                                        _INGRESE UN APELLIDO
                                                                 </span>
                                                             </row>
                                                             <row>
@@ -1019,22 +1043,24 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                             </row>
                                                             <row>
 
-
-                                                            </row>
-                                                            <row>
-
-                                                                <span style="float:right"> Nombres(*):</span>
+                                                                <span style="float:right;">
+                                                                    <label value="Nombres(*)" style="font-weight: bold;"/>
+                                                                </span>
                                                                 <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
                                                             </row>
 
                                                             <row>
 
-                                                                <span style="float:right"> Apellidos(*):</span>
+                                                                <span style="float:right;">
+                                                                    <label value="Apellidos(*)" style="font-weight: bold;"/>
+                                                                </span>
                                                                 <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40" readonly="true"  />
                                                             </row>
                                                             <row>
 
-                                                                <span style="float:right"> Dirección(*):</span>
+                                                                <span style="float:right;">
+                                                                    <label value="Dirección(*)" style="font-weight: bold;"/>
+                                                                </span>
                                                                 <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
                                                             </row>
 
@@ -1058,107 +1084,23 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                         </rows>
                                                     </grid>
 
-                                                </center>
-                                                <east splittable="true" size="20%"  flex="true">
-                                                    <grid>
+                                                    <grid  sclass="MyGridRowHeight" width="120%" height="220">
                                                         <rows>
                                                             <row>
-                                                                <span  style="border:1px">
-                                                                    <button id="subirb" disabled="true" label="Subir Imagen">
-                                                                        <attribute name="onClick">{
-                                                                            Object media = Fileupload.get();
-
-                                                                            if (media instanceof org.zkoss.image.Image) {
-                                                                            foto0.setContent(media);
-                                                                            
-
-                                                                            } else if (media != null)
-                                                                            Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
-                                                                            media = null;
-                                                                            }
-                                                                        </attribute>
-                                                                    </button>
-
+                                                                <span style="float:right;">
+                                                                    <label value="Género(*)" style="font-weight: bold;"/>
                                                                 </span>
-                                                            </row>
-                                                            <row>
-                                                                <span style="border:1px">
-                                                                    <image border="1" height="125px" id="foto0"/>
-                                                                    <vbox width="50px" height="125px" style="border:1px" id="miimagen"/>
-                                                                </span>
-
-
-
-                                                            </row>
-                                                        </rows>
-                                                    </grid>
-
-                                                </east>
-                                                <south splittable="true" size="59%"  flex="true">
-                                                    <grid width="100%" height="220">
-                                                        <rows>
-                                                            <row>
-                                                                <span style="float:right"> Codigo:</span>
-                                                                <span>
-                                                                    <intbox maxlength="14" cols="5"    disabled="true"    readonly="true" id="codigomat"  />
-                                                                    No.Mat.(*):
-                                                                    <intbox maxlength="10"   cols="5"  id="numero"  />
-                                                                    No.Folio (*):
-                                                                    <intbox maxlength="10" readonly="true" cols="5"  id="folio"  />
-                                                                </span>
-
-                                                                <span style="float:right"> Género (*):</span>
                                                                 <combobox id="genero" readonly="true">
                                                                     <comboitem value="Masculino" label="Masculino"/>
                                                                     <comboitem value="Femenino" label="Femenino"/>
                                                                 </combobox>
                                                             </row>
-                                                            <row spans="4">
-                                                                <span>Curso(*):
-
-                                                                    <bandbox  width="660px" readonly="true"  id="bd1">
-                                                                        <bandpopup>
-                                                                            <vbox>
-                                                                                <listbox id="curso" width="660px"
-                                                                                     onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
-                                                                                    <listitem selected="true" forEach="${cursos}" value="${each}">
-                                                                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-                                                                                    </listitem>
-                                                                                </listbox>
-                                                                            </vbox>
-                                                                        </bandpopup>
-                                                                    </bandbox>
-                                                                </span>
-
-                                                                
-                                                            </row>
-
                                                             <row>
-                                                                <span style="float:right"> Estado (*):</span>
-                                                                <span>
-                                                                    <combobox readonly="true"   id="accion"  >
-                                                                        <comboitem  value="Matriculado" label="Matriculado"/>
-                                                                        <comboitem value="Inscrito" label="Inscrito"/>
-                                                                        <comboitem value="Retirado" label="Retirado"/>
-                                                                        <comboitem value="Emitir Pase" label="Emitir Pase"/>
-                                                                        <comboitem value="Recibir Pase" label="Recibir Pase"/>
-                                                                        <comboitem value="Anulado" label="Anulado"/>
-                                                                    </combobox>
-                                                                    Inst. Anterior:
-                                                                    <textbox id="institucion" readonly="true"  maxlength="30" cols="20"/>
-                                                                </span>
                                                                 <span style="float:right"> Fecha Nacimiento:</span>
                                                                 <datebox id="nacido"  readonly="true"  />
-                                                                
+
                                                             </row>
                                                             <row>
-                                                                <span style="float:right"> Fec.Matricula(*):</span>
-                                                                <span>
-                                                                    <datebox id="fechamatricula"  readonly="true"  />
-                                                                    <datebox id="fecharetiro"  readonly="true"  />
-                                                                    Repite:
-                                                                    <checkbox id="repite" disabled="true"/>
-                                                                </span>
                                                                 <span style="float:right"> Usuario:</span>
                                                                 <span>
                                                                     <textbox id="usuario" maxlength="30" cols="12" readonly="true"  />
@@ -1166,39 +1108,25 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     <button label="Generar" onClick="generarClave(true);"/>
                                                                 </span>
 
+
                                                             </row>
                                                             <row>
-                                                                <span style="float:right"> Transporte:</span>
-
-                                                                <span>
-                                                                    <checkbox id="transporte" disabled="true"/>
-                                                                    <textbox id="nobus" maxlength="100" cols="40" readonly="true"  />
-                                                                </span>
-
                                                                 <span style="float:right"> Clave:</span>
-                                                                <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
-
-                                                                <checkbox visible="false" id="estadoe" disabled="true"  />
+                                                                <span>
+                                                                    <textbox id="clave"   maxlength="30" cols="15" readonly="true"  />
+                                                                    <checkbox visible="false" id="estadoe" disabled="true"  />
+                                                                </span>
                                                             </row>
                                                             <row>
-                                                                <span style="float:right"> %Beca:</span>
-                                                                <span>
-                                                                    <decimalbox id="beca" format="###.##"   maxlength="5" cols="10" readonly="true"  />
 
-                                                                    Otros Dsctos:
-                                                                    <decimalbox id="otros" format="###.##"   maxlength="5" cols="10" readonly="true"  /> USD
-                                                                </span>
                                                                 <span style="float:right"> Interno:</span>
                                                                 <span>
                                                                     <checkbox id="adventista" disabled="true" /> Nuevo:
                                                                     <checkbox id="nuevo" disabled="true" />
                                                                 </span>
-                                                                
-                                                                
+
                                                             </row>
                                                             <row>
-                                                                <span style="float:right"> Observación:</span>
-                                                                <textbox rows="2" id="observacion"  readonly="true"  />
                                                                 <span style="float:right"> Religión:</span>
                                                                 <combobox id="religion" readonly="true">
                                                                     <comboitem  value="Ninguno" label="Ninguno"/>
@@ -1207,15 +1135,144 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     <comboitem value="Evangélico" label="Evangélico"/>
                                                                     <comboitem value="Católico" label="Catolico"/>
                                                                     <comboitem value="Otra" label="Otra"/>
-                                                                  
-                                                                    
+
+
                                                                 </combobox>
-
                                                             </row>
-
-                                                        
                                                         </rows>
                                                     </grid>
+                                                    </hbox>
+                                                 
+                                                </center>
+
+                                                  
+                                                 
+                                                <south splittable="true" size="59%"  flex="true">
+                                                    <hbox>
+                                                        <panel   framable="true"  title="DATOS DE MATRICULACIÓN"
+                                                         border="normal" >
+                                                            <panelchildren>
+                                                                <grid sclass="MyGridRowHeight" width="100%"  height="100%">
+                                                                    <rows>
+                                                                        <row>
+                                                                            <span style="float:right"> Codigo:</span>
+                                                                            <span>
+                                                                                <intbox maxlength="14" cols="5"    disabled="true"    readonly="true" id="codigomat"  />
+                                                                    No.Mat.(*):
+                                                                                <intbox maxlength="10"   cols="5"  id="numero"  />
+                                                                    No.Folio (*):
+                                                                                <intbox maxlength="10" readonly="true" cols="5"  id="folio"  />
+                                                                            </span>
+                                                                        </row>
+                                                                        <row>
+                                                                            <span style="float:right;">
+                                                                                <label value="Curso(*)" style="font-weight: bold;"/>
+                                                                            </span>
+                                                                            <bandbox  width="400px" readonly="true"  id="bd1">
+                                                                                <bandpopup>
+                                                                                    <vbox>
+                                                                                        <listbox id="curso" width="660px"
+                                                                                     onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
+                                                                                            <listitem selected="true" forEach="${cursos}" value="${each}">
+                                                                                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                                                                            </listitem>
+                                                                                        </listbox>
+                                                                                    </vbox>
+                                                                                </bandpopup>
+                                                                            </bandbox>
+                                                                        </row>
+                                                                        <row>
+                                                                            <span style="float:right;">
+                                                                                <label value="Estado(*)" style="font-weight: bold;"/>
+                                                                            </span>
+                                                                            <span>
+                                                                                <combobox readonly="true"   id="accion"  >
+                                                                                    <comboitem  value="Matriculado" label="Matriculado"/>
+                                                                                    <comboitem value="Inscrito" label="Inscrito"/>
+                                                                                    <comboitem value="Retirado" label="Retirado"/>
+                                                                                    <comboitem value="Emitir Pase" label="Emitir Pase"/>
+                                                                                    <comboitem value="Recibir Pase" label="Recibir Pase"/>
+                                                                                    <comboitem value="Anulado" label="Anulado"/>
+                                                                                </combobox>
+                                                                    Inst. Anterior:
+                                                                                <textbox id="institucion" readonly="true"  maxlength="30" cols="20"/>
+                                                                            </span>
+
+                                                                        </row>
+                                                                        <row>
+                                                                            <span style="float:right;">
+                                                                                <label value="Fecha Matricula(*)" style="font-weight: bold;"/>
+                                                                            </span>
+                                                                            <span>
+                                                                                <datebox id="fechamatricula"  readonly="true"  />
+                                                                                <datebox id="fecharetiro"  readonly="true"  />
+                                                                    Repite:
+                                                                                <checkbox id="repite" disabled="true"/>
+                                                                            </span>
+                                                                
+                                                                        </row>
+                                                                        <row>
+                                                                            <span style="float:right"> Transporte:</span>
+
+                                                                            <span>
+                                                                                <checkbox id="transporte" disabled="true"/>
+                                                                                <textbox id="nobus" maxlength="100" cols="40" readonly="true"  />
+                                                                            </span>
+                                                                        </row>
+                                                                        <row>
+                                                                            <span style="float:right"> %Beca:</span>
+                                                                            <span>
+                                                                                <decimalbox id="beca" format="###.##"   maxlength="5" cols="10" readonly="true"  />
+
+                                                                    Otros Dsctos:
+                                                                                <decimalbox id="otros" format="###.##"   maxlength="5" cols="10" readonly="true"  /> USD
+                                                                            </span>
+                                                                        </row>
+                                                                        <row>
+                                                                            <span style="float:right"> Observación:</span>
+                                                                            <textbox rows="2" id="observacion"  readonly="true"  />
+                                                                        </row>
+                                                                    </rows>
+                                                                </grid>
+
+                                                            </panelchildren>
+                                                        </panel>
+                                                        <panel   framable="true"  title="FOTO"
+                                                         border="normal"  >
+                                                            <panelchildren>
+                                                                <grid  sclass="MyGridRowHeight" width="135%"  height="130%">
+                                                                    <rows>
+                                                                        <row>
+                                                                            <span  style="border:1px">
+                                                                                <button id="subirb" disabled="true" image="/images/subir.png" label="Subir Imagen">
+                                                                                    <attribute name="onClick">{
+                                                                            Object media = Fileupload.get();
+
+                                                                            if (media instanceof org.zkoss.image.Image) {
+                                                                            foto0.setContent(media);
+
+
+                                                                            } else if (media != null)
+                                                                            Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+                                                                            media = null;
+                                                                            }
+                                                                                    </attribute>
+                                                                                </button>
+
+                                                                            </span>
+                                                                        </row>
+                                                                        <row>
+                                                                            <span style="border:1px">
+                                                                                <image border="1" height="165px" id="foto0"/>
+                                                                    <!--vbox width="50px" height="125px" style="border:1px" id="miimagen"/-->
+                                                                            </span>
+                                                                        </row>
+                                                                    </rows>
+                                                                </grid>
+                                                            </panelchildren>
+                                                        </panel>
+                                                    </hbox>
+
                                                 </south>
 
                                             </borderlayout>
@@ -1230,7 +1287,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 </tabpanel>
 
                 <tabpanel>
-                    <grid>
+                    <grid sclass="MyGridRowHeight">
                         <rows>
                             <row>
                                 <span style="color:blue" >Representante</span>
@@ -1425,7 +1482,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <tabpanel>
                     <panel id="panelSocio" framable="true" width="100%" height="100%" border="normal" >
                         <panelchildren>
-                            <grid>
+                            <grid sclass="MyGridRowHeight">
                                 <rows>
                                     <row>
                                         <span  style="float:right">
@@ -1437,6 +1494,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                             <textbox id="codigoclave"  />
                                         BLOQUEADO
                                             <checkbox id="pendientes"/>
+                                            <checkbox visible = "false"  id="aplico"/>
                                         </span>
                                     </row>
                                     <row>
@@ -1569,6 +1627,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     <panel height="370px" style="margin-bottom:10px"
                            title="Reporte" border="normal">
                         <panelchildren>
+                             
+
                             <jasperreport id="report" />
                         </panelchildren>
                     </panel>
@@ -1591,6 +1651,5 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             </hbox>
         </vbox>
     </window>
-
-
+     
 </zk>
