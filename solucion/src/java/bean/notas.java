@@ -3091,7 +3091,7 @@ public class notas extends Rows {
 
             List<MateriaProfesor> maprofes = adm.query("Select o from MateriaProfesor as o "
                     + "where o.curso.codigocur = '" + ActualCurso.getCodigocur() + "' "
-                    + "and o.materia.codigo > 1 and o.opcional = true ");
+                    + "and o.materia.codigo > 1 and o.ministerio = true and o.opcional = true ");
             if (maprofes.size() > 0) {
 
                 String formu = "";
@@ -3113,7 +3113,7 @@ public class notas extends Rows {
                 }
                 List<Global> materias = adm.query("Select o from Global as o "
                         + "where o.codigo in (Select t.materia.codigo from MateriaProfesor as t"
-                        + " where t.curso.codigocur = '" + ActualCurso.getCodigocur() + "' and t.opcional = true ) "
+                        + " where t.curso.codigocur = '" + ActualCurso.getCodigocur() + "' and t.opcional = true  ) "
                         + " ");
                 String formula = formu;
 
@@ -3148,7 +3148,7 @@ public class notas extends Rows {
                                 + "left join  estudiantes  on matriculas.estudiante = estudiantes.codigoest "
                                 + "left join notas on matriculas.codigomat = notas.matricula "
                                 + "and notas.materia = '" + global.getCodigo() + "' "
-                                + "and notas.disciplina = true "
+                                + "and notas.disciplina = true and notas.promedia = true "
                                 + "where matriculas.curso = '" + ActualCurso.getCodigocur() + "' "
                                 + "and matriculas.estado in ('Matriculado','Recibir Pase','Retirado') "
                                 + "order by estudiantes.apellido";
