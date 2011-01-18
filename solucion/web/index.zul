@@ -255,7 +255,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                         <listitem id="Pendientes" label="Pendientes" image="/images/dinero.gif"   value="/pendientes.zul" /><listitem/>
                                         <listitem id="Bloquear" label="Bloquear" image="/images/bloquear.gif"   value="/actualizacion_1.zul" /><listitem/>
                                         <listitem id="Reportes_Estudiantes" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" /><listitem/>
-                                        <listitem id="Encuesta" label="Encuesta" image="/images/bloquear.gif"   value="/encuesta.zul" /><listitem/>
+                                        <listitem id="Encuesta" label="Encuesta" image="/images/encuesta.png"   value="/encuesta.zul" /><listitem/>
                                         </listbox>
                                 </tabpanel>
                                 <tabpanel height="220px"><!--NOTAS-->
