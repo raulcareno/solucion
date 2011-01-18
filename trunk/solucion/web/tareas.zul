@@ -165,8 +165,8 @@ bean.secuencial sec = new bean.secuencial();
              }
 
     }
-  void buscarTodos(String texto){
-    List empleadosEncontrados = adm.query("Select o from Tareas as o  order by o.fechadesde desc ");
+  void buscarTodos(Cursos curso){
+    List empleadosEncontrados = adm.query("Select o from Tareas as o  where o.curso.codigocur = '"+curso.getCodigocur()+"' order by o.fechadesde desc ");
         datos = new Listbox();
         int a=0;
                 for (Iterator it = busquedaList.getItems().iterator(); it.hasNext();) {
@@ -289,8 +289,8 @@ bean.secuencial sec = new bean.secuencial();
     </zscript>
     <tabbox width="100%">
         <tabs>
-            <tab id="registro" label="Registro" />
-            <tab id="busqueda" label="Busquedas" />
+            <tab id="registro" label="CREAR UNA NUEVA TAREA" />
+            <tab id="busqueda" label="BÚSQUEDA Y ESTÁDO DE TAREAS" />
         </tabs>
         <tabpanels>
             <tabpanel>
@@ -480,9 +480,17 @@ bean.secuencial sec = new bean.secuencial();
                         <grid width="100%" >
                             <rows>
                                 <row>
-                                    <span>Ingrese Apellidos:
-                                        <textbox  id="textoBuscar"  />
-                                        <button image="/images/auditoria.gif" id="buscando" label="Buscar" onClick="buscarTodos(textoBuscar.value); " />
+                                  
+                                       <span style="float:right"> Cursos(1):
+
+                                    <listbox   mold="select"  id="cursosBusqueda" width="420px" onSelect="buscarTodos(self.selectedItem.value); "  >
+
+                                        <listitem forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                                        </listitem>
+                                    </listbox>
+                                    <button image="/images/auditoria.gif" id="buscando" label="Buscar" onClick="buscarTodos(cursosBusqueda.selectedItem.value); " />
                                     </span>
                                 </row>
                                 <row spans="2">
