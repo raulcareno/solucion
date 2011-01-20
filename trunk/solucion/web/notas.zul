@@ -112,7 +112,12 @@ guardando = true;
   guardar2.disabled=false;
     notas nso = new notas();
     notas r = (notas) datos.getRows();
-        String resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+        String resultado = "";
+        if(((MateriaProfesor)mates.selectedItem.value).getCuantitativa()){
+            resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+            }else{
+                resultado = nso.guardarCualitativas(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+            }
         if(resultado.equals("ok")){
             doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
             Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -127,7 +132,8 @@ guardando = true;
 }
 
 void buscar2(Cursos cur){
-        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.materia.descripcion");
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+        " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
         //bd2.getItems().clear();
 mates.getChildren().clear();
 datos.getRows().getChildren().clear();
@@ -139,7 +145,6 @@ bd2.value = "";
                         item.appendChild(new Listcell(estudent.getMateria()+" ("+estudent.getEmpleado()+")"));
                         mates.appendChild(item);
              }
-
     }
 
 void doAdd(Cursos curso, MateriaProfesor materia){
