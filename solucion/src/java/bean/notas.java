@@ -26,6 +26,8 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
@@ -135,7 +137,16 @@ public class notas extends Rows {
                     + "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase' or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' )"
                     + "order by estudiantes.apellido";
         }
+
+        List<Equivalencias> equ = null;
 //        System.out.println("" + q);
+        if (materia.getCuantitativa() == false) {
+
+            equ = adm.query("Select o from Equivalencias as o"
+                    + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
+                    + "and o.grupo = 'AP' ");
+        }
+
         List nativo = adm.queryNativo(q);
         Row row = new Row();
         String Shabilitado = "color:black;font-weight:bold;width:30px;font:arial;font-size:12px;text-align:right;";
@@ -146,127 +157,275 @@ public class notas extends Rows {
             row = new Row();
             Boolean deshabilitado = false;
             String color = "black";
-            for (int j = 0; j < vec.size(); j++) {
-                Object dos = vec.get(j);
-                notaTexto = new Decimalbox();
-                notaTexto.setTabindex(j);
-                label3 = new Label();
+
+            if (materia.getCuantitativa()) {
+                for (int j = 0; j < vec.size(); j++) {
+                    Object dos = vec.get(j);
+                    notaTexto = new Decimalbox();
+                    notaTexto.setTabindex(j);
+                    label3 = new Label();
 //                 label.setAttribute("onBlur", "alert(this)");
-                try {
-                    if (dos.equals(null)) {
+                    try {
+                        if (dos.equals(null)) {
+                            dos = new Double(0.0);
+                        }
+                    } catch (Exception e) {
                         dos = new Double(0.0);
                     }
-                } catch (Exception e) {
-                    dos = new Double(0.0);
-                }
-                if (j >= 2) {
-                    Double valor = (Double) dos;
-                    if (valor.equals(0.0)) {
-                        notaTexto.setValue(new BigDecimal(0));
-                    } else {
-                        notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
-                    }
+                    if (j >= 2) {
+                        Double valor = (Double) dos;
+                        if (valor.equals(0.0)) {
+                            notaTexto.setValue(new BigDecimal(0));
+                        } else {
+                            notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
+                        }
 
-                } else {
-                    String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
-                    valor = valor.replace("[Emitir Pase]", "(PE)");
-                    valor = valor.replace("[Retirado]", "(R)");
-                    valor = valor.replace("[Recibir Pase]", "(PR)");
-                    valor = valor.replace("[Matriculado]", "");
-                    label3.setValue("" + valor);
-                }
+                    } else {
+                        String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
+                        valor = valor.replace("[Emitir Pase]", "(PE)");
+                        valor = valor.replace("[Retirado]", "(R)");
+                        valor = valor.replace("[Recibir Pase]", "(PR)");
+                        valor = valor.replace("[Matriculado]", "");
+                        label3.setValue("" + valor);
+                    }
 //                                 label.setAttribute(q, dos);
 
-                if (j == 0) {
-                    label3.setStyle(" ");
+                    if (j == 0) {
+                        label3.setStyle(" ");
 //                    label3.setReadonly(true);
-                    row.appendChild(label3);
-                } else if (j == 1) {
-                    label3.setStyle("width:300px;font-size:11px;font:arial; ");
+                        row.appendChild(label3);
+                    } else if (j == 1) {
+                        label3.setStyle("width:300px;font-size:11px;font:arial; ");
 //                    label3.setReadonly(true);
-                    if (label3.getValue().contains("(PE)")) {
-                        label3.setStyle("color:red;width:300px;font-size:11px;font:arial; ");
-                        color = "red";
-                        deshabilitado = true;
-                    } else if (label3.getValue().contains("(R)")) {
-                        label3.setStyle("color:blue;width:300px;font-size:11px;font:arial; ");
-                        color = "blue";
-                        deshabilitado = true;
-                    }
-
-                    row.appendChild(label3);
-                } else {
-                    if (!deshabilitado) {
-                        Date fechaActual = new Date();
-                        DateMidnight actual = new DateMidnight(fechaActual);
-                        int dat = j - 2;
-                        DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
-                        DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
-                        if (empleado.getTipo().equals("Interna")) {
-                            inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
-                            finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
-
+                        if (label3.getValue().contains("(PE)")) {
+                            label3.setStyle("color:red;width:300px;font-size:11px;font:arial; ");
+                            color = "red";
+                            deshabilitado = true;
+                        } else if (label3.getValue().contains("(R)")) {
+                            label3.setStyle("color:blue;width:300px;font-size:11px;font:arial; ");
+                            color = "blue";
+                            deshabilitado = true;
                         }
-                        final double limite = ((Sistemacalificacion) sistemas.get(dat)).getNotalimite();
-                        notaTexto.addEventListener("onBlur", new EventListener() {
 
-                            public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
-                                //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
-                                Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
-                                if (valor > limite) {
-                                    ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
-                                    ((Decimalbox) event.getTarget()).setFocus(true);
-                                    Messagebox.show("ERROR 0001: Nota MAYOR a [" + limite + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
+                        row.appendChild(label3);
+                    } else {
+                        if (!deshabilitado) {
+                            Date fechaActual = new Date();
+                            DateMidnight actual = new DateMidnight(fechaActual);
+                            int dat = j - 2;
+                            DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
+                            DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
+                            if (empleado.getTipo().equals("Interna")) {
+                                inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
+                                finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
+
+                            }
+                            final double limite = ((Sistemacalificacion) sistemas.get(dat)).getNotalimite();
+                            notaTexto.addEventListener("onBlur", new EventListener()    {
+
+                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
+                                    //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
+                                    Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
+                                    if (valor > limite) {
+                                        ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
+                                        ((Decimalbox) event.getTarget()).setFocus(true);
+                                        Messagebox.show("ERROR 0001: Nota MAYOR a [" + limite + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
+
+                                    }
+
 
                                 }
-
-
-                            }
-                        });
-                        if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
-                            notaTexto.setDisabled(false);
-                            notaTexto.setStyle(Shabilitado);
-                        } else {
-                            notaTexto.setDisabled(true);
-                            notaTexto.setStyle(Sdeshabilitado);
-
-                        }
-                        try {
-                            Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
-                            if (empleado.getTipo().equals("Interna")) {
-                                fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainti();
-
+                            });
+                            if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
+                                notaTexto.setDisabled(false);
+                                notaTexto.setStyle(Shabilitado);
+                            } else {
+                                notaTexto.setDisabled(true);
+                                notaTexto.setStyle(Sdeshabilitado);
 
                             }
+
+                            try {
+                                Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
+                                if (empleado.getTipo().equals("Interna")) {
+                                    fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainti();
+
+
+                                }
 //                            System.out.println("FECHA INICIAL: "+fecha);
-                            if (fecha.getDate() == 0) {
+                                if (fecha.getDate() == 0) {
+                                    notaTexto.setDisabled(true);
+                                    notaTexto.setStyle(Sdeshabilitado);
+                                }
+                            } catch (Exception z) {
                                 notaTexto.setDisabled(true);
                                 notaTexto.setStyle(Sdeshabilitado);
                             }
-                        } catch (Exception z) {
+
+                        } else {
                             notaTexto.setDisabled(true);
-                            notaTexto.setStyle(Sdeshabilitado);
+                            notaTexto.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+
                         }
 
-                    } else {
-                        notaTexto.setDisabled(true);
-                        notaTexto.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+                        row.appendChild(notaTexto);
 
                     }
 
-                    row.appendChild(notaTexto);
+                    //row.appendChild(label);
+//                                 System.out.print(","+dos);
+                }
+            } else { // SI LA MATERIA ES CUALITATIVA APLICO UN COMBOBOX
+          Shabilitado = "color:black;font-weight:bold;width:45px;font:arial;font-size:12px;";
+          Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:45px;font:arial;font-size:11px;background:transparent;font-weigth:bold";
+                Listbox combo = new Listbox();
+                Listitem item = new Listitem("");
 
+                for (int j = 0; j < vec.size(); j++) {
+                    Object dos = vec.get(j);
+                    notaTexto = new Decimalbox();
+                    combo.setTabindex(j);
+                    label3 = new Label();
+//                 label.setAttribute("onBlur", "alert(this)");
+                    try {
+                        if (dos.equals(null)) {
+                            dos = new Double(0.0);
+                        }
+                    } catch (Exception e) {
+                        dos = new Double(0.0);
+                    }
+                    if (j >= 2) {
+
+                        if (dos == null) {
+                            dos = equ.get(0);
+                        }
+                        combo = new Listbox();
+                        combo.setMold("select");
+                        combo.setWidth("50px");
+                        combo.setRows(1);
+                        combo.setStyle("font-size:9px;width:30px");
+                        for (Iterator<Equivalencias> it2 = equ.iterator(); it2.hasNext();) {
+                            Equivalencias equivalencias = it2.next();
+                            item = new Listitem("" + equivalencias.getAbreviatura());
+                            item.setValue(equivalencias);
+                            combo.appendChild(item);
+
+                        }
+                        if (dos instanceof Double) {
+                            dos = devolverNombre(equ, (((Double) dos).intValue()));
+                        }
+                        item = new Listitem(((Equivalencias) dos).getAbreviatura() + "");
+                        item.setValue(dos);
+                        combo.appendChild(item);
+                        combo.setSelectedItem(item);
+//                        Double valor = (Double) dos;
+//                        if (valor.equals(0.0)) {
+//                            notaTexto.setValue(new BigDecimal(0));
+//                        } else {
+//                            notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
+//                        }
+
+                    } else {
+                        String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
+                        valor = valor.replace("[Emitir Pase]", "(PE)");
+                        valor = valor.replace("[Retirado]", "(R)");
+                        valor = valor.replace("[Recibir Pase]", "(PR)");
+                        valor = valor.replace("[Matriculado]", "");
+                        label3.setValue("" + valor);
+                    }
+//                                 label.setAttribute(q, dos);
+
+                    if (j == 0) {
+                        label3.setStyle(" ");
+//                    label3.setReadonly(true);
+                        row.appendChild(label3);
+                    } else if (j == 1) {
+                        label3.setStyle("width:300px;font-size:11px;font:arial; ");
+//                    label3.setReadonly(true);
+                        if (label3.getValue().contains("(PE)")) {
+                            label3.setStyle("color:red;width:300px;font-size:11px;font:arial; ");
+                            color = "red";
+                            deshabilitado = true;
+                        } else if (label3.getValue().contains("(R)")) {
+                            label3.setStyle("color:blue;width:300px;font-size:11px;font:arial; ");
+                            color = "blue";
+                            deshabilitado = true;
+                        }
+
+                        row.appendChild(label3);
+                    } else {
+                        if (!deshabilitado) {
+                            Date fechaActual = new Date();
+                            DateMidnight actual = new DateMidnight(fechaActual);
+                            int dat = j - 2;
+                            DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
+                            DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
+                            if (empleado.getTipo().equals("Interna")) {
+                                inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
+                                finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
+
+                            }
+                            final double limite = ((Sistemacalificacion) sistemas.get(dat)).getNotalimite();
+
+                            if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
+                                combo.setDisabled(false);
+                                combo.setStyle(Shabilitado);
+                            } else {
+                                combo.setDisabled(true);
+                                combo.setStyle(Sdeshabilitado);
+
+                            }
+
+                            try {
+                                Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
+                                if (empleado.getTipo().equals("Interna")) {
+                                    fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainti();
+
+
+                                }
+//                            System.out.println("FECHA INICIAL: "+fecha);
+                                if (fecha.getDate() == 0) {
+                                    combo.setDisabled(true);
+                                    combo.setStyle(Sdeshabilitado);
+                                }
+                            } catch (Exception z) {
+                                combo.setDisabled(true);
+                                combo.setStyle(Sdeshabilitado);
+                            }
+
+                        } else {
+                            combo.setDisabled(true);
+                            combo.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+
+                        }
+
+                        row.appendChild(combo);
+
+                    }
+
+                    //row.appendChild(label);
+//                                 System.out.print(","+dos);
                 }
 
-                //row.appendChild(label);
-//                                 System.out.print(","+dos);
+
             }
 
             row.setParent(this);
         }
         nativo = null;
     }
+    public Equivalencias devolverNombre(List<Equivalencias> equiva, Integer codigo) {
 
+        for (Iterator<Equivalencias> it = equiva.iterator(); it.hasNext();) {
+            Equivalencias equivalencias = it.next();
+            if (equivalencias.getValorminimo() <= codigo && codigo <= equivalencias.getValormaximo()) {
+                return equivalencias;
+            }
+        }
+        return equiva.get(0);
+
+
+    }
     public String validar(List col, List<Notanotas> notas) {
         Administrador adm = new Administrador();
         for (int i = 0; i < col.size(); i++) {
@@ -379,8 +538,89 @@ public class notas extends Rows {
 
     }
 
+        public String guardarCualitativas(List col, Cursos curso, MateriaProfesor materia) {
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        try {
+            System.out.println("INICIO EN: " + new Date());
+            Interpreter inter = new Interpreter();
+            inter.eval(redon);
+            inter.eval(prom1);
+            Administrador adm = new Administrador();
+            List<Notanotas> notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
+            List<Sistemacalificacion> sisFormulas = adm.query("Select o from Sistemacalificacion as o "
+                    + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.formula <> '' "
+                    + "  order by o.orden ");
+            for (Iterator<Sistemacalificacion> it = sisFormulas.iterator(); it.hasNext();) {
+                Sistemacalificacion siCal = it.next();
+                if (verificar(siCal.getFormula(), notas)) {
+                    return "Revise la formula de ['" + siCal.getNombre() + "'] del Sistema de Calificacion ";
+                }
+            }
+//            String valida = validar(col, notas);
+//            if (!valida.isEmpty()) {
+//                return valida;
+//            }
+
+
+            secuencial sec = new secuencial();
+
+            String del = "Delete from Notas where matricula.curso.codigocur = '" + curso.getCodigocur() + "' " + "and materia.codigo = '" + materia.getMateria().getCodigo() + "'  and notas.disciplina = false ";
+            adm.ejecutaSql(del);
+            for (int i = 0; i < col.size(); i++) {
+                try {
+                    Row object = (Row) col.get(i);
+                    Notas nota = new Notas();
+                    nota.setCodigonot(sec.generarClave());
+                    List labels = object.getChildren();
+                    nota.setMatricula(new Matriculas(new Integer(((Label) labels.get(0)).getValue())));
+                    nota.setMateria(materia.getMateria());
+                    nota.setFecha(new Date());
+                    nota.setOrden(materia.getOrden());
+                    nota.setCuantitativa(materia.getCuantitativa());
+                    nota.setPromedia(materia.getMinisterio());
+                    nota.setSeimprime(materia.getSeimprime());
+                    nota.setDisciplina(false);
+                    inter.set("nota", nota);
+                    for (int j = 2; j < labels.size(); j++) {
+                        Listbox object1 = (Listbox) labels.get(j);
+                        String formula = notas.get(j - 2).getSistema().getFormula(); // EN CASO DE FORMULA
+                        formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
+                        String toda = notas.get(j - 2).getNota() + "";
+                        String uno = toda.substring(0, 1).toUpperCase();
+                        toda = toda.substring(1, toda.length());
+                        String vaNota = ((Equivalencias)object1.getSelectedItem().getValue()).getValormaximo().toString();
+                        Double aCargar = 0.0;
+                        if (vaNota.equals("")) {
+                            aCargar = 0.0;
+                        } else {
+                            aCargar = new Double(vaNota);
+                        }
+                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(aCargar, 2) + ");");
+                        if (!formula.isEmpty()) {
+                            inter.eval("nota.set" + (uno + toda) + "(" + formula + ");");
+                        }
+                    }
+                    nota = (Notas) inter.get("nota");
+                    adm.guardar(nota);
+
+                } catch (EvalError ex) {
+                    Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            recalculoNotas(materia, curso);
+            System.out.println("FINALIZO EN: " + new Date());
+            return "ok";
+        } catch (EvalError ex) {
+            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            return "Error en:  " + ex;
+        }
+
+
+    }
+
     public void recalculoNotas(MateriaProfesor materia, Cursos curso) {
-             Session ses = Sessions.getCurrent();
+        Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
 
@@ -794,7 +1034,7 @@ public class notas extends Rows {
                 + "order by o.sistema.orden ");
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        
+
         String query = "";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
@@ -1176,15 +1416,15 @@ public class notas extends Rows {
         System.out.println("cuadro final: " + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
-        int cont=0;
-        String matricula ="";
+        int cont = 0;
+        String matricula = "";
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             //row = new Row();
             Matriculas matriculaNo = null;
             Global materiaNo = null;
             MateriaProfesor mprofesor = null;
-             MateriaProfesor mprofesor1 = null;
+            MateriaProfesor mprofesor1 = null;
             Double aprovecha = 0.0;
             Double disciplina = 0.0;
             int ksis = 0;
@@ -1221,17 +1461,17 @@ public class notas extends Rows {
                     } else {
                         nota.setNota("");
                     }
-                    int tamaSistema = sistemas.size()-1;
-                    if(ksis == tamaSistema){
+                    int tamaSistema = sistemas.size() - 1;
+                    if (ksis == tamaSistema) {
                         nota.setMprofesor(mprofesor);
-                    }else{
+                    } else {
                         mprofesor1.getEmpleado().setApellidos("");
                         mprofesor1.getEmpleado().setNombres("");
                         nota.setMprofesor(mprofesor1);
-                        
+
                     }
 
-                    
+
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     nota.setAprovechamiento(aprovecha);
                     nota.setDisciplina(disciplina);
@@ -1241,7 +1481,7 @@ public class notas extends Rows {
 
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
 
-                      List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
+                    List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
                     if (valor.size() > 0) {
                         aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
                     }
@@ -1350,8 +1590,8 @@ public class notas extends Rows {
         System.out.println("cuadro final: " + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
-        int cont=0;
-        String matricula ="";
+        int cont = 0;
+        String matricula = "";
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             //row = new Row();
@@ -1378,7 +1618,7 @@ public class notas extends Rows {
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
 
-                    
+
                     //nota.setNota(val);
 
                     if (mprofesor.getCuantitativa() == false) {
@@ -1403,16 +1643,16 @@ public class notas extends Rows {
                     }
 
 
-                    int tamaSistema = sistemas.size()-1;
-                    if(ksis == tamaSistema){
+                    int tamaSistema = sistemas.size() - 1;
+                    if (ksis == tamaSistema) {
                         nota.setMprofesor(mprofesor);
-                    }else{
+                    } else {
                         mprofesor1.getEmpleado().setApellidos("");
                         mprofesor1.getEmpleado().setNombres("");
                         nota.setMprofesor(mprofesor1);
 
                     }
-                   
+
 //                    if(mprofesor.getCuantitativa()){
 //                            nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
 //                    }else{
@@ -1423,11 +1663,11 @@ public class notas extends Rows {
 //                          nota.setSistema(sistemaN);
 //
 //                    }
-                      nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
+                    nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     nota.setAprovechamiento(aprovecha);
                     nota.setContador(cont);
                     nota.setDisciplina(disciplina);
-                         matricula = matriculaNo.toString();
+                    matricula = matriculaNo.toString();
                     lisNotas.add(nota);
                     ksis++;
                 } else if (j == 1) {
