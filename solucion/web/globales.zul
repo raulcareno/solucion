@@ -32,6 +32,8 @@ void llenar(Global equi2){
             p = "Especialidad";
         }else if(equi.getGrupo().equals("MAT")){
             p = "Materias";
+        }else if(equi.getGrupo().equals("GRU")){
+            p = "Grupo de Materias";
         }else if(equi.getGrupo().equals("SEC")){
             p = "Secciones";
         }else if(equi.getGrupo().equals("PAR")){
@@ -126,6 +128,8 @@ void eliminar(){
             p = "ESP";
         }else if(p.equals("Materias")){
             p = "MAT";
+        }else if(p.equals("Grupo de Materias")){
+            p = "GRU";
         }else if(p.equals("Secciones")){
             p = "SEC";
         }else if(p.equals("Paralelos")){
@@ -160,11 +164,12 @@ equi.setPerfil(g);
 <grid width="100%">
 <rows> 
 <row><span style="float:right"> Nombre(*):</span>
-        <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />   </row>
+        <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />   </row>
 <row> <span style="float:right"> Grupo(*):</span>
      <combobox   readonly="true"  disabled="true"  id="grupo"  width="120px">
             <comboitem  value="ESP" label="Especialidad"/>
             <comboitem  value="MAT" label="Materias"/>
+            <comboitem  value="GRU" label="Grupo de Materias"/>
             <comboitem  value="SEC" label="Secciones"/>
             <comboitem  value="PAR" label="Paralelos"/>
     </combobox>
@@ -193,6 +198,7 @@ equi.setPerfil(g);
 <combobox     id="buscarText"  width="60px">
               <comboitem  value="ESP" label="Especialidad"/>
             <comboitem  value="MAT" label="Materias"/>
+            <comboitem  value="GRU" label="Grupo de Materias"/>
             <comboitem  value="SEC" label="Secciones"/>
             <comboitem  value="PAR" label="Paralelos"/>
     </combobox>
