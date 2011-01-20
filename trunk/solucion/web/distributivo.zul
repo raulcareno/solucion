@@ -114,10 +114,10 @@ void estado(Boolean estado,Boolean modificar){
     promediada.disabled = estado;
     opcional.disabled = estado;
     cuantitativa.disabled = estado;
-    orden.disabled = estado;
+    orden.readonly = estado;
     mates.disabled = estado;
     profes.disabled = estado;
-    formula.disabled = estado;
+    formula.readonly = estado;
 
 }
 
@@ -151,7 +151,7 @@ void estado(Boolean estado,Boolean modificar){
                       " and materia = "+matricula.getMateria().getCodigo()+" ";
                      adm.ejecutaSqlNativo(quera);
                   }else{
-                  alert("0");
+            
                     String quera = "update notas set materia = '"+ matricula.getMateria().getCodigo() +"', orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
                           " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
                           " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + matricula.getCurso().getCodigocur() +" ) " +
@@ -412,7 +412,7 @@ void vaciarList(){
                         <listcell label="${each.descripcion}" />
                     </listitem>
                 </listbox>
-                <listbox id="matesAnterior"  disabled="true" mold="select" width="320px" >
+                <listbox visible ="false" id="matesAnterior"  disabled="true" mold="select" width="320px" >
                     <listitem selected="true" forEach="${materias}" value="${each}">
                         <listcell label="${each.descripcion}" />
                     </listitem>
@@ -443,23 +443,20 @@ void vaciarList(){
                 </span>
             </row>
                 
-            <row>
-                <span style="float:right"> Orden(*):
-                </span>
-                <intbox id="orden"  disabled="true"  />
-            </row>
-            <row>
-                <span style="float:right"> Fórmula:
-                </span>
-                <span>
-                    <textbox id="formula" cols="50"  disabled="true"  />
-                    <button label="Ver" onClick=" materias123(); "/>
+     
+            <row> <span style="float:right"> Orden(*):
+                </span><span>
+                <intbox id="orden" cols="2"  readonly="true"  />
+                    FÓRMULA:               
+                    <textbox id="formula" cols="63"  readonly="true"  />
+                    <button label="Ver" image="/images/expa.png" onClick=" cerrar.visible = true; ver.visible = false;  materias123(); " id="ver"/>
+                    <button  label="Cerrar" visible="false"  image="/images/contra.png"  id="cerrar" onClick="materiaslista.visible = false; cerrar.visible=false; verificar.visible = false; ver.visible = true;"/>
                     <listbox onSelect="anadir(self.selectedItem.value)" visible="false" id="materiaslista" width="45%">
                         <listhead>
                             <listheader label="Materia"  sort="auto"/>
                         </listhead>
                     </listbox>
-                    <button  label="Cerrar" visible="false" id="cerrar" onClick="materiaslista.visible = false; cerrar.visible=false; verificar.visible = false;"/>
+                    
                         <!--button  label="Verificar" visible="false" id="verificar"/-->
                 </span>
             </row>
@@ -471,7 +468,7 @@ void vaciarList(){
         <vbox width="100%">
             <hbox>  </hbox>
             <hbox width="100%">
-                <listbox  mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                <listbox  mold="paging" rows="13" pageSize="13"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                     <listhead>
                         <listheader label="Orden"   sort="auto"/>
                         <listheader label="Empleado"  sort="auto"/>
