@@ -76,6 +76,16 @@ void llenar(MateriaProfesor estudent){
                                 break;
                             }
                    }
+                   
+                    for (int i = 0; i <= matesAnterior.getItems().size(); i++) {
+                            Global tr0 = ((Global)((Listitem)matesAnterior.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigo();
+                            int segundo = estudent.getMateria().getCodigo();
+                            if(primero == segundo){
+                                matesAnterior.setSelectedItem((Listitem)matesAnterior.getItems().get(i));
+                                break;
+                            }
+                   }
 
         }
         if(estudent.getEmpleado() != null){
@@ -134,12 +144,22 @@ void estado(Boolean estado,Boolean modificar){
                 adm.actualizar(matricula);
  
                   try{
+                  if((mates.selectedItem.value).getCodigo().equals((matesAnterior.selectedItem.value).getCodigo())){
                       String quera = "update notas set orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
                       " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
                       " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + matricula.getCurso().getCodigocur() +" ) " +
                       " and materia = "+matricula.getMateria().getCodigo()+" ";
-                  adm.ejecutaSqlNativo(quera);
-                  System.out.println("ACTUALIZANDO DISTRIBUTIVO NOTAS "+quera);
+                     adm.ejecutaSqlNativo(quera);
+                  }else{
+                  alert("0");
+                    String quera = "update notas set materia = '"+ matricula.getMateria().getCodigo() +"', orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
+                          " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
+                          " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + matricula.getCurso().getCodigocur() +" ) " +
+                          " and materia = "+(matesAnterior.selectedItem.value).getCodigo()+" ";
+                        adm.ejecutaSqlNativo(quera);
+                  
+                  }
+                        //System.out.println("ACTUALIZANDO DISTRIBUTIVO NOTAS "+quera);
                   }catch(Exception ae){
                          System.out.println("ERROR EN ACTUALIZAR NOTAS "+ae);
                   }
@@ -386,12 +406,18 @@ void vaciarList(){
             <row>
                 <span style="float:right"> Materias(*):
                 </span>
-                    
+                    <span>
                 <listbox id="mates"  disabled="true" mold="select" width="320px" >
                     <listitem selected="true" forEach="${materias}" value="${each}">
                         <listcell label="${each.descripcion}" />
                     </listitem>
                 </listbox>
+                <listbox id="matesAnterior"  disabled="true" mold="select" width="320px" >
+                    <listitem selected="true" forEach="${materias}" value="${each}">
+                        <listcell label="${each.descripcion}" />
+                    </listitem>
+                </listbox>
+                </span>
                     
 
             </row>
