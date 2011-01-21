@@ -466,9 +466,13 @@ void vaciarList(){
     <groupbox  width="100%"  mold="3d" >
       
         <vbox width="100%">
-            <hbox>  </hbox>
+            <hbox> <!--button label="Change Paging Mold">
+		<attribute name="onClick">
+		datos.pagingChild.mold = "os".equals(datos.pagingChild.mold) ? "default" : "os";
+		</attribute>
+	</button--> </hbox>
             <hbox width="100%">
-                <listbox  mold="paging" rows="13" pageSize="13"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                <listbox mold="paging" rows="13" pageSize="13"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                     <listhead>
                         <listheader label="Orden"   sort="auto"/>
                         <listheader label="Empleado"  sort="auto"/>
