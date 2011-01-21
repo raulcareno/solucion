@@ -25,7 +25,7 @@ public class CrearMiniaturas {
         // TODO code application logic here
         ProcesadorImagenes p = new ProcesadorImagenes();
         File f = new File(ubicacion + nombre + "." + formato);
-        BufferedImage bf = p.escalarATamanyo(f, 600, 400, formato);
+        BufferedImage bf = p.escalarATamanyo(f, 230, 170, formato);
         try {
             ImageIO.write(bf, formato, new File(ubicacion + nombre + "_t." + formato));
         } catch (IOException e) {
