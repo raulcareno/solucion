@@ -5,6 +5,13 @@
 <separator bar="true"/-->
 
 <zk>
+     <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+  <script type="text/javascript" src="/js/jquery.watermarkinput.js"/>
+  <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+  <script type="text/javascript" src="/js/jquery.login.js"/>
+  <script type="text/javascript" src="/js/masks.js"/>
+  <!--script type="text/javascript" src="/widgets/effects/login_effect/jquery-ui-1.8.6.custom.min.js" /-->
+  <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
     <style>
 .estil{
 	height:100%;
@@ -23,7 +30,7 @@
     <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
-        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="winLogin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" title="JCINFORM" width="460px" sizable="true">
+        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" title="JCINFORM" width="460px" sizable="true">
             <zscript>
   import jcinform.persistencia.Global;
   import bean.EventDAO;
@@ -115,6 +122,8 @@ error.visible = false;
                 
             }else{
                 //Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+             String command2 = "animar('"+loginWin.getUuid()+"')";
+             Clients.evalJavaScript(command2);
                 error.visible = true;
                 usuario.focus();
              }
@@ -172,7 +181,7 @@ void verificarSistema(){
                             <image src="/images/about.jpg" style="aling:center"/>
                         </span>
                     </row>
-                    <row align="center" visible="false" id="error" spans="2">
+                    <row style="background:transparent;border:0px"  align="center" visible="false" id="error" spans="2">
                         <image  src="/images/error.gif"  />
                     </row>
                     <row style="background:transparent;border:0px"  id="usuarios" >

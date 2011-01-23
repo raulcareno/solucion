@@ -2,14 +2,13 @@
 
 
 <zk  xmlns="http://www.zkoss.org/2005/zul">
-<?script type="text/javascript" src="/js/jquery.maskedinput.js"?>
-<?script type="text/javascript" src="/js/jquery.min.js"?>
-<?script type="text/javascript" src="/js/masks.js"?>
-    <window    >
-       <!--attribute name="onCreate">
-            String command = "applyPhoneMask('"+telefono.getUuid()+"');";
-            Clients.evalJavaScript(command);
-      </attribute-->
+      <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+    <script type="text/javascript" src="/js/masks.js"/>
+  <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+ 
+    <window>
+
         <zscript>
             <![CDATA[
   import jcinform.persistencia.Global;
@@ -178,7 +177,10 @@ void estado(Boolean estado,Boolean modificar){
     }
  void nuevo(){
     if(verificar("Agregar")){
-       guardar.disabled=false; llenar(new Empleados(0));estado(false,false);
+          
+          guardar.disabled=false; llenar(new Empleados(0));estado(false,false);
+          String command = "applyTelefono('"+telefono.getUuid()+"');applyCelular('"+movil.getUuid()+"');";
+          Clients.evalJavaScript(command);
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
@@ -319,9 +321,11 @@ empa.setPerfil(g);
                             </row>
                             <row>
                                 <span style="float:right"> Teléfono:</span>
-                                <textbox id="telefono" maxlength="30" cols="13"  readonly="true"  />
+                                <textbox id="telefono"   readonly="true"   >
+                                       
+                                </textbox>
                                 <span style="float:right"> Móvil:</span>
-                                <textbox id="movil" maxlength="30" cols="13"  readonly="true"  />
+                                <textbox id="movil" maxlength="30" cols="13"    />
                             </row>
                             <row>
                                 <span style="float:right"> e-mail:</span>
