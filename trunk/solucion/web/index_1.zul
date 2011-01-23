@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <zk>
+  <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+  <script type="text/javascript" src="/js/jquery.watermarkinput.js"/>
+  <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+  <script type="text/javascript" src="/js/jquery.login.js"/>
+  <script type="text/javascript" src="masks.js"/>
+  <!--script type="text/javascript" src="/widgets/effects/login_effect/jquery-ui-1.8.6.custom.min.js" /-->
+  <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+  <!--script type="text/javascript" src="/widgets/effects/login_effect/customized_effect.js" /-->
+  <!--script type="text/javascript" src="efectos.js" /-->
+      <!--script type="text/javascript" src="my.js"/-->
+        <button id="initBtn" label="Login">
+        <attribute name="onClick"><![CDATA[
+            if (!loginWin.isVisible())
+                loginWin.setVisible(true);
+            loginWin.doHighlighted();
+        ]]></attribute>
+    </button>
+  <window id="loginWin" mode="highlighted" width="450px" height="400px" style="background-color:transparent"  title="Input Mask Example" border="normal">
+
+       <!-- Here we call the functions to apply the input masks to the fields -->
+       <attribute name="onCreate">
+            try{
+            String command = "applyPhoneMask('"+phoneNumber.getUuid()+"');applyZipCodeMask('"+zipCode.getUuid()+"')";
+            String command2 = "animar('"+loginWin.getUuid()+"')";
+            Clients.evalJavaScript(command2);
+            Clients.evalJavaScript(command);
+            
+}catch(error){alert(error);}
+       </attribute>
+
+    <vbox>
+             <hbox>Phone Numer: <textbox id="phoneNumber" /></hbox>
+             <hbox>ZIP Code: <textbox id="zipCode" /></hbox>
+             <button label="verificar"   action=" onclick: chequear();" />
+        </vbox>
+        <zscript>
+            chequear(){
+                 alert("error");
+            }
+        </zscript>
+     <button id="initBtn" label="Login">
+        <attribute name="onClick">
+            try{
+            String command2 = "animar('"+loginWin.getUuid()+"')";
+            //Clients.evalJavaScript("loginFaild()");
+            Clients.evalJavaScript(command2);
+            }catch(error){alert(error);}
+       </attribute>
+    </button>
+  </window>
+</zk>
