@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
+    <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+  <script type="text/javascript" src="/js/jquery.watermarkinput.js"/>
+  <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+  <script type="text/javascript" src="/js/jquery.login.js"/>
+  <script type="text/javascript" src="/js/masks.js"/>
+  <!--script type="text/javascript" src="/widgets/effects/login_effect/jquery-ui-1.8.6.custom.min.js" /-->
+  <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
     <style>
 .estil{
 	height:100%;
@@ -29,6 +36,7 @@
             Administrador adm = new Administrador();
 
     void verPantall(){
+    error.visible = false;
             String tipo = pantalla.selectedItem.value+"";
             if(tipo.equals("e")){
                     Estudiantes user =adm.ingresoSistemaE(usuario.value, clave.value);
@@ -38,7 +46,10 @@
                     //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
                     Executions.sendRedirect("indexEstudiantes.zul");
             }else{
-                Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+               // Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                   String command2 = "animar('"+win2.getUuid()+"')";
+             Clients.evalJavaScript(command2);
+                error.visible = true;
                 usuario.focus();
             }
             }else{//PANTALLA DEL REPRESENTANTE
@@ -51,7 +62,10 @@
                         Executions.sendRedirect("estudiantesRepresentante_1.zul");
 
                     }else{
-                        Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                 //       Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            String command2 = "animar('"+win2.getUuid()+"')";
+                            Clients.evalJavaScript(command2);
+                            error.visible = true;
                         usuario.focus();
                     }
 
@@ -122,7 +136,9 @@
         </zscript>
         <grid id="login" style="background:transparent;border:0px">
             <rows>
-
+                <row style="background:transparent;border:0px"  align="center" visible="false" id="error" spans="2">
+                        <image  src="/images/error.gif"  />
+                    </row>
 
                 <row style="background:transparent;border:0px">
                     <span style="float:right">Usuario:(*):</span>
