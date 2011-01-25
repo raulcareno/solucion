@@ -1084,7 +1084,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                             </rows>
                                                         </grid>
 
-                                                        <grid  sclass="MyGridRowHeight" width="120%" height="220">
+                                                        <grid  sclass="MyGridRowHeight" width="300px" height="220">
                                                             <rows>
                                                                 <row>
                                                                     <span style="float:right;">
@@ -1158,11 +1158,11 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                             <span style="float:right"> Codigo:</span>
                                                                             <span>
                                                                                 <intbox maxlength="14" cols="5"    disabled="true"    readonly="true" id="codigomat"  />
-                                                                    <span style="float:right;">
+                                                                    <span  >
                                                                         <label value="No.Matri.(*)" style="font-weight: bold;"/>
                                                                     </span>
                                                                                 <intbox maxlength="10"   cols="5"  id="numero"  />
-                                                                    <span style="float:right;">
+                                                                    <span >
                                                                         <label value="No.Folio(*)" style="font-weight: bold;"/>
                                                                     </span>
                                                                                 <intbox maxlength="10" readonly="true" cols="5"  id="folio"  />
