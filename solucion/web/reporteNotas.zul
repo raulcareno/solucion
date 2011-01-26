@@ -241,13 +241,20 @@ void recalcular(){
                 int m = 1;
         for (Iterator it = equivalencias.iterator(); it.hasNext();) {
             Equivalencias equivalencias1 = (Equivalencias)it.next();
-            parametros.put("eq"+m,""+equivalencias1.getNombre()+"("+equivalencias1.getValorminimo()+"-"+equivalencias1.getValormaximo()+")");
+            parametros.put("eq"+m,""+equivalencias1.getNombre()+"");
             parametros.put("ran"+m,equivalencias1.getValorminimo());
             parametros.put("ranf"+m,equivalencias1.getValormaximo());
             
             m++;
         }
-                    
+               
+        List parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.variable = 'DISCIPLINAIMPR' ");
+                if(parametrosGlobales.size()>0){
+                    parametros.put("faltas",((parametrosGlobales).get(0)).getBvalor());
+                }else{
+                    parametros.put("faltas",false);
+                }
                      
 
             if(sistemasCombo.disabled == false)
