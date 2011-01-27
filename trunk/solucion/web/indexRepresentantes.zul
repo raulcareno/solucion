@@ -77,10 +77,10 @@ Session a = Sessions.getCurrent();
                 <image  border="15px"  style="padding:0 10px; margin:5px; padding:0" height="75px" id="foto0" />
                 <toolbar  style="background:transparent;border:0px"  id="tb" sclass="vista" height="20px" >
                     <vbox>
-                            <label style="font-size:14px;color:white;font-weight:bold;" value="${sessionScope.userEstudiante.nombre}  ${sessionScope.userEstudiante.apellido} " />
-                            <label style="font-size:12px;color:white;font-weight:bold;" value="${sessionScope.userEstudiante.direccion}" />
-                            <label style="  font-size:12px;color:white;font-weight:bold;"  value="${sessionScope.userEstudiante.mail}" />
-                            <label style="font-weight:bold;font-size:12px;color:white;" value="USUARIO: ${sessionScope.userRepresentante.nombres} ${sessionScope.userRepresentante.apellidos} " />
+                        <label style="font-size:14px;color:white;font-weight:bold;" value="${sessionScope.userEstudiante.nombre}  ${sessionScope.userEstudiante.apellido} " />
+                        <label style="font-size:12px;color:white;font-weight:bold;" value="${sessionScope.userEstudiante.direccion}" />
+                        <label style="  font-size:12px;color:white;font-weight:bold;"  value="${sessionScope.userEstudiante.mail}" />
+                        <label style="font-weight:bold;font-size:12px;color:white;" value="USUARIO: ${sessionScope.userRepresentante.nombres} ${sessionScope.userRepresentante.apellidos} " />
                     </vbox>
                 </toolbar>
 
@@ -111,11 +111,12 @@ Session a = Sessions.getCurrent();
 
 
     </center>
-<zscript>
+    <zscript>
 
        
         Session a = Sessions.getCurrent();
         Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
+        /*
       if(!periEst.getAplico()){
                 Window win34 = (Window) Executions.createComponents("/evaluacionEstudiante.zul", null, null);
                 win34.setVisible(true);
@@ -124,11 +125,11 @@ Session a = Sessions.getCurrent();
                //win34.setMode("overlapped");
                todo.visible = false;
 
-       }
+       }*/
        Include inc = (Include) xcontents;
        inc.setSrc("/blanco_1.zul");
       
-</zscript>
+    </zscript>
 
 </borderlayout>
  
