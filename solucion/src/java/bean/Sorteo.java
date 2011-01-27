@@ -198,7 +198,7 @@ adm.guardar(n);
         m.setNumero(i);
         m.setObservacion("");
         m.setOtros(0.0);
-        m.setRepite(false);
+        m.setRepite(0);
         adm.guardar(m);
  i++;
         }
