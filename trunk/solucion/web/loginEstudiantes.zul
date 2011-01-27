@@ -21,7 +21,7 @@
 </style>
 
     <div  class="estil" >
-    <window mode="overlapped" id="win2" title="SERVICIOS...! "  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal" width="390px">
+    <window onLoad="usuario.focus();" onCreate="usuario.focus();" mode="overlapped" id="win2" title="SERVICIOS...! "  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal" width="390px">
         <zscript>
 
             <![CDATA[
@@ -35,10 +35,10 @@
   import bean.email;
             Administrador adm = new Administrador();
 
-    void verPantall(){
+    void verPantall(Boolean esEstudiante){
     error.visible = false;
-            String tipo = pantalla.selectedItem.value+"";
-            if(tipo.equals("e")){
+             
+            if(esEstudiante){
                     Estudiantes user =adm.ingresoSistemaE(usuario.value, clave.value);
                     if(user != null){
                     Session ses = Sessions.getCurrent();
@@ -151,19 +151,26 @@
                 <row spans="2">
                     <separator   />
                 </row>
+                <row align="center" spans="2">
+                    <label style="font-weight:bold;size:13px" value="¿SELECCIONE SI USTED ES?" />
+                </row>
                 <row  align="center" spans="2" style="background:transparent;border:0px" >
-
-                      <radiogroup orient="horizontal" Id="pantalla" >
-                            <radio image="/images/estulogo.png" value="e" selected="true" id="e" label="ESTUDIANTE"/>
+                  <span>
+                    <button label="ESTUDIANTE" id="ingresarModulo0"  height="30px" width="170px" image="/images/estulogo.png"   onClick="usuario.getValue(); clave.getValue(); verPantall(true);"/>
+                        <label style="font-weight:bold;size:15px;float:center" value="ó" />
+                    <button label="REPRESENTANTE" id="ingresarModulo"  height="30px" width="170px" image="/images/reprelogo.png"  onClick="usuario.getValue(); clave.getValue(); verPantall(false);"/>
+                  </span>
+                      <!--radiogroup width="70px" onCheck='usuario.getValue(); clave.getValue(); verPantall();' height="70px"  orient="horizontal" Id="pantalla" >
+                            <radio width="70px" height="70px" style="height:80px" image="/images/estulogo.png" value="e"   id="e" label="ESTUDIANTE"/>
                             <radio image="/images/reprelogo.png"  value="r" label="REPRESENTANTE"  id="r" />
-                        </radiogroup>
+                        </radiogroup-->
 
                 </row>
 
-                <row spans="2"  align="center" style="background:transparent;border:0px">
-                    <span><button label="INGRESAR" id="ingresarModulo"  height="30px" width="170px" image="/images/ingreso.gif"  onClick="usuario.getValue(); clave.getValue(); verPantall();"/>
-                    <!--button label="Cancelar"  image="/images/eliminar.gif"   onClick="win2.detach()"/--></span>
-                </row>
+                <!--row spans="2"  align="center" style="background:transparent;border:0px">
+                    <span><button label="INGRESAR ESTUDIANTES" id="ingresarModulo"  height="30px" width="170px" image="/images/ingreso.gif"  onClick="usuario.getValue(); clave.getValue(); verPantall();"/>
+                   </span>
+                </row-->
                 <row id="olvidado" align="center" spans="2"  style="background:transparent;border:0px">
 
                     <toolbarbutton label="¿PERDISTE TU CONTRASEÑA HAZ CLIC AQUI?" onClick='alert("Network")'>

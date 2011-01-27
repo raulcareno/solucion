@@ -29,6 +29,8 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Radio;
+import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import sources.ActaGeneralDataSource;
@@ -68,7 +70,7 @@ public class notas extends Rows {
             + "  Double promedio (Double va1){         int cont = 0;         if(va1 >0) cont++;       if(cont==0) cont = 1;       return (va1)/cont; } ";
 
     public notas() {
-//         Grid g;
+      //         Grid g;
 //         Label l;
 //         Row row;
 //         row.getZIndex()
