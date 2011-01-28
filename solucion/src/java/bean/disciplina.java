@@ -930,7 +930,7 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                             + " and notas.disciplina = true and notas.promedia = true  "
                             + " ";
                     List nativo2 = adm.queryNativo(q);
-                    System.out.println("query: " + q);
+//                    System.out.println("query: " + q);
                     if (nativo2.size() > 0) {
 
                         Vector vec = (Vector) nativo2.get(0);
@@ -975,13 +975,14 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                 } else {
                     coll.setInspector(notaBase);
                 }
+                Double notaInspector = coll.getInspector();
 
                 if (tipo.contains("MITAD")) {//SUMA ENTRE PROMEDIOS DIVIDIDO PARA 2
-                    coll.setFinali((promProfesor / lista.size() + coll.getInspector()) / 2);
+                    coll.setFinali((promProfesor / lista.size() + notaInspector) / 2);
                 } else if (tipo.contains("PROMEDIO")) {//
-                    coll.setFinali(promProfesor + coll.getInspector() / (lista.size()) + 1);
+                     coll.setFinali((promProfesor + notaInspector) / (lista.size() + 1));
                 } else if (tipo.contains("SUMATORIA")) {//PROMEDIO DE PROFESORES + PROMEDIO DE INSPECCION
-                    coll.setFinali(promProfesor / lista.size() + coll.getInspector());
+                    coll.setFinali(promProfesor / lista.size() + notaInspector);
                 } else if (tipo.contains("INGRESADA")) {
                     q = "Select " + query + "  from Notas notas "
                             + "where notas.matricula = '" + matriculas1.getCodigomat() + "' "

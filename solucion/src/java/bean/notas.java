@@ -3347,7 +3347,7 @@ public class notas extends Rows {
                 if (tipo.contains("MITAD")) {
                     formu = "(((" + formu + ")/" + maprofes.size() + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/2";
                 } else if (tipo.contains("PROMEDIO")) {//
-                    formu = "(((" + formu + ")" + ")/(" + maprofes.size() + "))";
+                    formu = "(((" + formu + ") + (N1==null || N1==0 ?" + notaDisciplina + ":N1)" + ")/(" + (maprofes.size() + 1) +"))";
                     //formu = "(((" + formu + ")/" + maprofes.size() + ") +" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/2";
                     //formu = "(((" + formu + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/(" + maprofes.size() + "))";
                 } else if (tipo.contains("SUMATORIA")) {//PROMEDIO DE PROFESORES + PROMEDIO DE INSPECCION
@@ -3491,7 +3491,7 @@ public class notas extends Rows {
                             }
                             String del = "Delete from Notas where  materia.codigo = '0' "
                                     + " and  matricula.codigomat = '" + nota.getMatricula().getCodigomat() + "'";
-                            System.out.println("" + del);
+//                            System.out.println("" + del);
                             adm.ejecutaSql(del);
 
                             adm.guardar(nota);
