@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="hibernate.Auditoria" table="auditoria">
+    <id column="auditoria" name="auditoria" type="java.lang.Integer">
+      <generator class="increment"/>
+      <!--generator class="assigned"/-->
+    </id>
+    <property column="tabla" name="tabla" type="java.lang.String"/>
+    <property column="maquina" name="maquina" type="java.lang.String"/>
+    <property column="accion" name="accion" type="java.lang.String"/>
+    <property column="campo" name="campo" type="java.lang.String"/>
+    <many-to-one column="usuario" name="usuario"/>
+  </class>
+</hibernate-mapping>

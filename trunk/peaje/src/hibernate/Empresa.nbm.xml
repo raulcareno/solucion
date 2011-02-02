@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="hibernate.Empresa" table="empresa">
+    <id column="ruc" name="ruc" type="java.lang.String">
+      <!--generator class="increment"/-->
+      <generator class="assigned"/>
+    </id>
+    <property column="nombre" name="nombre" type="java.lang.String"/>
+    <property column="razon" name="razon" type="java.lang.String"/>
+    <property column="direccion" name="direccion" type="java.lang.String"/>
+    <property column="telefonos" name="telefonos" type="java.lang.String"/>
+    <property column="documentofac" name="documentofac" type="java.lang.String"/>
+    <property column="documentonota" name="documentonota" type="java.lang.String"/>
+    <property column="documentoticket" name="documentoticket" type="java.lang.String"/>
+    <property column="parqueaderos" name="parqueaderos" type="java.lang.Integer"/>
+    <property column="impticket" name="impticket" type="java.lang.String"/>
+    <property column="impfactura" name="impfactura" type="java.lang.String"/>
+    <property column="puerto1" name="puerto1" type="java.lang.String"/>
+    <property column="puerto2" name="puerto2" type="java.lang.String"/>
+    <property column="puerto3" name="puerto3" type="java.lang.String"/>
+    <property column="puerto4" name="puerto4" type="java.lang.String"/>
+    <property column="puerto5" name="puerto5" type="java.lang.String"/>
+    <property column="puerto6" name="puerto6" type="java.lang.String"/>
+    <property column="puerto7" name="puerto7" type="java.lang.String"/>
+  </class>
+</hibernate-mapping>

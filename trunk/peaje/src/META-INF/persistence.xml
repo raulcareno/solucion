@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="peajePU" transaction-type="RESOURCE_LOCAL">
+    <provider>oracle.toplink.essentials.PersistenceProvider</provider>
+    <class>persisten.Detalle</class>
+    <class>persisten.Registro</class>
+    <class>persisten.Accesos</class>
+    <class>persisten.Empresa</class>
+    <class>persisten.Productos</class>
+    <class>persisten.Global</class>
+    <class>persisten.Clientes</class>
+    <class>persisten.Auditoria</class>
+    <class>persisten.Tarjetas</class>
+    <class>persisten.Tarifas</class>
+    <class>persisten.Usuarios</class>
+    <class>persisten.Factura</class>
+    <properties>
+      <property name="toplink.cache.type.default" value="NONE"/>
+      <property name="toplink.jdbc.user" value="root"/>
+      <property name="toplink.jdbc.password" value="jcinform@2020"/>
+      <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/peaje"/>
+      <property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+    </properties>
+  </persistence-unit>
+</persistence>

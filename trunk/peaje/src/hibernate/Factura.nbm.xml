@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="hibernate.Factura" table="factura">
+    <id column="codigo" name="codigo" type="java.lang.Integer">
+      <generator class="increment"/>
+      <!--generator class="assigned"/-->
+    </id>
+    <property column="numero" name="numero" type="java.lang.String"/>
+    <property column="ticket" name="ticket" type="java.lang.String"/>
+    <property column="placa" name="placa" type="java.lang.String"/>
+    <property column="fecha" name="fecha" type="java.util.Date"/>
+    <property column="subtotal" name="subtotal" type="java.math.BigDecimal"/>
+    <property column="descuento" name="descuento" type="java.math.BigDecimal"/>
+    <property column="total" name="total" type="java.math.BigDecimal"/>
+    <property column="fechaini" name="fechaini" type="java.util.Date"/>
+    <property column="fechafin" name="fechafin" type="java.util.Date"/>
+    <property column="tiempo" name="tiempo" type="java.util.Date"/>
+    <many-to-one column="tarjeta" name="tarjeta"/>
+    <many-to-one column="cliente" name="cliente"/>
+  </class>
+</hibernate-mapping>
