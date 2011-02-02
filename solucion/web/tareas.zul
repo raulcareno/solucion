@@ -320,12 +320,20 @@ bean.secuencial sec = new bean.secuencial();
                                 <row>
 
                                     <span style="float:right">Materia(2):</span>
-                                    <listbox id="materias"  mold="select" onSelect="buscar2(((Cursos)curs.selectedItem.value)); estudiantesListado.visible=true;" width="420px" >
-                                        <listitem value="-1" label="[S E L E C C I O N E]"></listitem>
-                                
-                                    </listbox>
+                                    <span>
+                                        <listbox id="materias"  mold="select" onSelect="buscar2(((Cursos)curs.selectedItem.value)); estudiantesListado.visible=true; contra01.visible = true; expa01.visible = false;" width="420px" >
+                                            <listitem value="-1" label="[S E L E C C I O N E]"></listitem>
+
+                                        </listbox>
+                                        <button  image="/images/expa.png"  id="expa01"  onClick="estudiantesListado.visible=true;expa01.visible = false;contra01.visible = true;" />
+                                        <button visible="false" image="/images/contra.png" id="contra01"  onClick="estudiantesListado.visible=false;contra01.visible = false; expa01.visible = true" />
+                                    </span>
+                                    
 
                                 </row>
+                                
+
+
                     <!--row>
                        <span style="float:right">Estudiantes(3):</span>
                         <listbox id="datos"  mold="select" width="420px" >
@@ -354,6 +362,7 @@ bean.secuencial sec = new bean.secuencial();
                                                     Listitem li = (Listitem)it.next();
                                                     li.setSelected(false);
                                                     datos.removeItemAt(li.getIndex());
+                                                    estudiantesTodos.appendChild(li);
                                                 }
                                                 List al = datos.getItems();
                                                  datosTodos.value  = "";
@@ -363,7 +372,6 @@ bean.secuencial sec = new bean.secuencial();
 
                                                 }
                                             }
-
                                                         </attribute>
                                                     </button>
                                                     <button label="CERRAR" image="/images/eliminar.gif" onClick="datos.visible= false;contra1.visible = false; expa1.visible = true" />
@@ -481,16 +489,16 @@ bean.secuencial sec = new bean.secuencial();
                             <rows>
                                 <row>
                                   
-                                       <span style="float:right"> Cursos(1):
+                                    <span style="float:right"> Cursos(1):
 
-                                    <listbox   mold="select"  id="cursosBusqueda" width="420px" onSelect="buscarTodos(self.selectedItem.value); "  >
+                                        <listbox   mold="select"  id="cursosBusqueda" width="420px" onSelect="buscarTodos(self.selectedItem.value); "  >
 
-                                        <listitem forEach="${cursos}" value="${each}">
-                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                            <listitem forEach="${cursos}" value="${each}">
+                                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
-                                        </listitem>
-                                    </listbox>
-                                    <button image="/images/auditoria.gif" id="buscando" label="Buscar" onClick="buscarTodos(cursosBusqueda.selectedItem.value); " />
+                                            </listitem>
+                                        </listbox>
+                                        <button image="/images/auditoria.gif" id="buscando" label="Buscar" onClick="buscarTodos(cursosBusqueda.selectedItem.value); " />
                                     </span>
                                 </row>
                                 <row spans="2">
@@ -514,7 +522,7 @@ bean.secuencial sec = new bean.secuencial();
                         <grid width="100%" >
                             <rows>
                                 <row>
-                                    <span>                            
+                                    <span>
                                         <button image="/images/guardar.gif" id="guardarc" label="Guardar Cambios" onClick="guardarc();" />
                             El estudiante o El padre ha 
                                         <image src="/images/ok.gif"/> VISTO o
@@ -566,7 +574,7 @@ bean.secuencial sec = new bean.secuencial();
 
                             </attribute>
                         </button>
-                        <button image="/images/eliminar.gif" onClick="estudiantesListado.visible = false;" label="CERRAR" />
+                        <button image="/images/eliminar.gif" onClick="estudiantesListado.visible = false;  contra01.visible = false; expa01.visible = true;" label="CERRAR" />
                     </listheader>
 
                 </listhead>
