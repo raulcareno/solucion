@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="hibernate.Tarjetas" table="tarjetas">
+    <id column="tarjeta" name="tarjeta" type="java.lang.String">
+      <!--generator class="increment"/-->
+      <generator class="assigned"/>
+    </id>
+    
+    <property column="Lunes" name="lunes" type="java.lang.Boolean"/>
+    <property column="Martes" name="martes" type="java.lang.Boolean"/>
+    <property column="Miercoles" name="miercoles" type="java.lang.Boolean"/>
+    <property column="Jueves" name="jueves" type="java.lang.Boolean"/>
+    <property column="Viernes" name="viernes" type="java.lang.Boolean"/>
+    <property column="Sabado" name="sabado" type="java.lang.Boolean"/>
+    <property column="Domingo" name="domingo" type="java.lang.Boolean"/>
+    <property column="horainicio" name="horainicio" type="java.util.Date"/>
+    <property column="horafin" name="horafin" type="java.util.Date"/>
+    <property column="desde" name="desde" type="java.util.Date"/>
+    <property column="hasta" name="hasta" type="java.util.Date"/>
+    <property column="dias" name="dias" type="java.lang.Integer"/>
+    <property column="habilitada" name="habilitada" type="java.lang.Boolean"/>
+    <property column="ingresos" name="ingresos" type="java.lang.Integer"/>
+    <property column="placa" name="placa" type="java.lang.String"/>
+    <property column="descripcion" name="descripcion" type="java.lang.String"/>
+    <many-to-one column="cliente" name="cliente"/>
+  </class>
+</hibernate-mapping>
+  

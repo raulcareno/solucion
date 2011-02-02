@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="hibernate.Detalle" table="detalle">
+    <id column="codigo" name="codigo" type="java.lang.Integer">
+      <generator class="increment"/>
+      <!--generator class="assigned"/-->
+    </id>
+    <property column="detalle" name="detalle" type="java.lang.String"/>
+    <property column="cantidad" name="cantidad" type="java.lang.Integer"/>
+    <property column="subtotal" name="subtotal" type="java.lang.Long"/>
+    <property column="iva" name="iva" type="java.lang.Long"/>
+    <property column="total" name="total" type="java.lang.Long"/>
+    <many-to-one column="producto" name="producto"/>
+    <many-to-one column="factura" name="factura"/>
+  </class>
+</hibernate-mapping>

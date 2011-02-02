@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="hiber.Comunicaciones" table="comunicaciones">
+    <id column="numero" name="numero" type="java.lang.Integer">
+      <generator class="increment"/>
+      <!--generator class="assigned"/-->
+    </id>
+    <property column="dependencia" name="dependencia" type="java.lang.String"/>
+    <property column="departamento" name="departamento" type="java.lang.String"/>
+    <property column="descripcion" name="descripcion" type="java.lang.String"/>
+    <property column="estado" name="estado" type="java.lang.String"/>
+    <property column="fechac" name="fechac" type="java.util.Date"/>
+    <property column="fechai" name="fechai" type="java.util.Date"/>
+    <property column="responsable" name="responsable" type="java.lang.String"/>
+  </class>
+</hibernate-mapping>
