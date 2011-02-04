@@ -70,7 +70,7 @@ public class notas extends Rows {
             + "  Double promedio (Double va1){         int cont = 0;         if(va1 >0) cont++;       if(cont==0) cont = 1;       return (va1)/cont; } ";
 
     public notas() {
-      //         Grid g;
+        //         Grid g;
 //         Label l;
 //         Row row;
 //         row.getZIndex()
@@ -164,6 +164,7 @@ public class notas extends Rows {
                 for (int j = 0; j < vec.size(); j++) {
                     Object dos = vec.get(j);
                     notaTexto = new Decimalbox();
+                    notaTexto.setConstraint("no negative: No se permiten datos en NEGATIVO");
                     notaTexto.setTabindex(j);
                     label3 = new Label();
 //                 label.setAttribute("onBlur", "alert(this)");
@@ -223,17 +224,26 @@ public class notas extends Rows {
 
                             }
                             final double limite = ((Sistemacalificacion) sistemas.get(dat)).getNotalimite();
-                            notaTexto.addEventListener("onBlur", new EventListener()    {
+                            notaTexto.addEventListener("onBlur", new EventListener() {
 
                                 public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
                                     //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
-                                    Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
-                                    if (valor > limite) {
+                                    try {
+                                        Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
+                                        if (valor > limite) {
+                                            
+                                            ((Decimalbox) event.getTarget()).setFocus(true);
+                                            ((Decimalbox) event.getTarget()).focus();
+                                            ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
+                                            Messagebox.show("ERROR 0001: Nota MAYOR a [" + limite + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
+                                        }
+                                    } catch (Exception e) {
                                         ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
-                                        ((Decimalbox) event.getTarget()).setFocus(true);
-                                        Messagebox.show("ERROR 0001: Nota MAYOR a [" + limite + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
-
                                     }
+
+
+
+
 
 
                                 }
@@ -278,8 +288,8 @@ public class notas extends Rows {
 //                                 System.out.print(","+dos);
                 }
             } else { // SI LA MATERIA ES CUALITATIVA APLICO UN COMBOBOX
-          Shabilitado = "color:black;font-weight:bold;width:45px;font:arial;font-size:12px;";
-          Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:45px;font:arial;font-size:11px;background:transparent;font-weigth:bold";
+                Shabilitado = "color:black;font-weight:bold;width:45px;font:arial;font-size:12px;";
+                Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:45px;font:arial;font-size:11px;background:transparent;font-weigth:bold";
                 Listbox combo = new Listbox();
                 Listitem item = new Listitem("");
 
@@ -416,6 +426,7 @@ public class notas extends Rows {
         }
         nativo = null;
     }
+
     public Equivalencias devolverNombre(List<Equivalencias> equiva, Integer codigo) {
 
         for (Iterator<Equivalencias> it = equiva.iterator(); it.hasNext();) {
@@ -428,6 +439,7 @@ public class notas extends Rows {
 
 
     }
+
     public String validar(List col, List<Notanotas> notas) {
         Administrador adm = new Administrador();
         for (int i = 0; i < col.size(); i++) {
@@ -540,7 +552,7 @@ public class notas extends Rows {
 
     }
 
-        public String guardarCualitativas(List col, Cursos curso, MateriaProfesor materia) {
+    public String guardarCualitativas(List col, Cursos curso, MateriaProfesor materia) {
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         try {
@@ -591,7 +603,7 @@ public class notas extends Rows {
                         String toda = notas.get(j - 2).getNota() + "";
                         String uno = toda.substring(0, 1).toUpperCase();
                         toda = toda.substring(1, toda.length());
-                        String vaNota = ((Equivalencias)object1.getSelectedItem().getValue()).getValormaximo().toString();
+                        String vaNota = ((Equivalencias) object1.getSelectedItem().getValue()).getValormaximo().toString();
                         Double aCargar = 0.0;
                         if (vaNota.equals("")) {
                             aCargar = 0.0;
@@ -3347,7 +3359,7 @@ public class notas extends Rows {
                 if (tipo.contains("MITAD")) {
                     formu = "(((" + formu + ")/" + maprofes.size() + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/2";
                 } else if (tipo.contains("PROMEDIO")) {//
-                    formu = "(((" + formu + ") + (N1==null || N1==0 ?" + notaDisciplina + ":N1)" + ")/(" + (maprofes.size() + 1) +"))";
+                    formu = "(((" + formu + ") + (N1==null || N1==0 ?" + notaDisciplina + ":N1)" + ")/(" + (maprofes.size() + 1) + "))";
                     //formu = "(((" + formu + ")/" + maprofes.size() + ") +" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/2";
                     //formu = "(((" + formu + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/(" + maprofes.size() + "))";
                 } else if (tipo.contains("SUMATORIA")) {//PROMEDIO DE PROFESORES + PROMEDIO DE INSPECCION
