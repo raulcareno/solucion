@@ -138,19 +138,20 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             parametros.put("periodo", periodo.getDescripcion());
             parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
+           String directorioReportes = insts.getReportes();
             if(tipo.equals("CM")){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
-                    report.setSrc("WEB-INF/reportes/certificadoMatricula.jasper");
+                    report.setSrc(directorioReportes+"certificadoMatricula.jasper");
                     parametros.put("titulo", "Certificado de Matricula");
             } else if(tipo.equals("AM")){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
                     parametros.put("titulo", "Acta de Matricula");
-                    report.setSrc("WEB-INF/reportes/actaMatricula.jasper");
+                    report.setSrc(directorioReportes+"actaMatricula.jasper");
 
             } else if(tipo.equals("CL")){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
                     parametros.put("titulo", "Acta de Matricula");
-                    report.setSrc("WEB-INF/reportes/clavePersonal.jasper");
+                    report.setSrc(directorioReportes+"clavePersonal.jasper");
 
             }
             if(!tipo.equals("-1")){

@@ -581,9 +581,9 @@ public JRDataSource certificados(){
             parametros.put("periodo", insts.getDireccion());
             parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
-
+  String directorioReportes = insts.getReportes();
                     datasource = certificados();
-                    report.setSrc("WEB-INF/reportes/ficha.jasper");
+                    report.setSrc(directorioReportes+"ficha.jasper");
                     parametros.put("titulo", "Ficha de Estudiantes");
           
            

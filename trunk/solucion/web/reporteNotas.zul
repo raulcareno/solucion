@@ -370,8 +370,8 @@ void recalcular(){
                     report.setSrc(directorioReportes+"libreta.jasper");
                     String pat = report.getSrc().replace("libreta.jasper","");
                     System.out.println("EL PATH: "+pat);
-                    parametros.put("pathSubRel","reportes/" );//libreta_sub.jasper
-                    parametros.put("pathSubRel2", "reportes/");//libreta_subFaltas.jasper
+                    parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
+                    parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
                    
             }else if(tipo.equals("MEJE")){
                     datasource = noti.reporteMejor(curs.getSelectedItem().getValue());
@@ -380,14 +380,14 @@ void recalcular(){
 
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"libreta2.jasper");
-                    parametros.put("pathSubRel", "reportes/");//libreta_subPequeno.jasper
-                    parametros.put("pathSubRel2", "reportes/");//libreta_subFaltas.jasper
+                    parametros.put("pathSubRel", directorioReportes);//libreta_subPequeno.jasper
+                    parametros.put("pathSubRel2", directorioReportes);//libreta_subFaltas.jasper
 
             }else if(tipo.equals("LIB3")){
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"libreta3.jasper");
-                    parametros.put("pathSubRel", "reportes/");//libreta_sub.jasper
-                    parametros.put("pathSubRel2", "reportes/");//libreta_sub.jasper
+                    parametros.put("pathSubRel", directorioReportes);//libreta_sub.jasper
+                    parametros.put("pathSubRel2", directorioReportes);//libreta_sub.jasper
 
             }else if(tipo.equals("-1")){
                    alert("No ha seleccionado ningún reporte...!");

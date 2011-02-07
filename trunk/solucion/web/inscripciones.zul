@@ -564,8 +564,8 @@ Periodo periodo = periodosListado.selectedItem.value;
             parametros.put("periodo", periodo.getDescripcion());
             parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
-            
-                   report.setSrc("WEB-INF/reportes/inscripcion.jasper");
+               String directorioReportes = insts.getReportes();
+                   report.setSrc(directorioReportes + "inscripcion.jasper");
                      
             parametros.put("cedula",""+cedula.value);
             parametros.put("codigo",""+codigo.value);
