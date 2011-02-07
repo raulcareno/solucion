@@ -1,8 +1,8 @@
  
-<window  id="ventana"  title="Control de Institucion" border="normal"  xmlns:a="http://www.zkoss.org/2005/zk/annotation">
+<window  id="ventana"  border="normal"  onCreate='buscar("");' xmlns:a="http://www.zkoss.org/2005/zk/annotation">
 
- <zscript>
-
+    <zscript>
+  import java.io.File;
   import jcinform.persistencia.Global;
   import bean.EventDAO; 
   import java.util.ArrayList; 
@@ -29,144 +29,174 @@ void cargarVacio(){
   foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
 }
 
-  </zscript>
-  <hbox>
-<groupbox mold="3d" >
-       <caption label="Agregar" />
-<grid width="100%">
-<rows> 
-    <row>
-        <span style="float:right"> Denominación(*):</span>
-       <a:bind value="inobjeto.denominacion"/>
-       <textbox id="denominacion" onChange="update();" width="200px" />
-    </row>
-    <row>
-        <span style="float:right"> Nombre(*):</span>
-       <a:bind value="inobjeto.nombre"/>
-       <textbox id="nombre" onChange="update();"  width="200px"  />
-    </row>
-    <row>
-        <span style="float:right"> Tipo(*):</span>
-       <span><a:bind value="inobjeto.tipo"/><textbox id="tipo" onChange="update();"  width="95px"  />
-       Escuela,Colegio... </span>
-    </row>
-    <row>
-        <span style="float:right"> Slogan:</span>
-       <a:bind value="inobjeto.slogan"/>
-       <textbox id="slogan" onChange="update();" width="200px" />
-    </row>
-    <row>
-        <span style="float:right"> Teléfono(*):</span>
-       <a:bind value="inobjeto.telefono"/>
-       <textbox id="telefono" onChange="update();"/>
-    </row>
-    <row>
-        <span style="float:right"> Dirección(*):</span>
-       <a:bind value="inobjeto.direccion"/>
-       <textbox id="direccion" onChange="update();"  width="200px" />
-    </row>
-    <row>
-        <span style="float:right"> Secretaria(*):</span>
-       <a:bind value="inobjeto.secretaria"/>
-       <textbox id="secretaria" onChange="update();"/>
-    </row>
-    <row>
-        <span style="float:right"> Rector(*):</span>
-       <a:bind value="inobjeto.rector"/>
-       <textbox id="rector" onChange="update();"/>
-    </row>
-    <row>
-        <span style="float:right"> Email(*):</span>
-       <a:bind value="inobjeto.usuariomail"/>
-       <textbox id="email" onChange="update();"/>
-    </row>
-    <row>
-        <span style="float:right"> Clave(*):</span>
-       <a:bind value="inobjeto.clavemail"/>
-       <textbox  type="password" id="clave" onChange="update();"/>
-    </row>
-         <row>
-        <span  style="float:right"> Requ.Auten.(*):</span>
-       <span><a:bind checked="inobjeto.autorizacion"/>
-       <checkbox  id="autorizacion" onChange="update();"/>
+    </zscript>
+    <hbox>
+        <groupbox mold="3d" >
+            <caption label="Agregar" />
+            <grid width="100%">
+                <rows>
+                    <row>
+                        <span style="float:right"> Denominación(*):</span>
+                        <a:bind value="inobjeto.denominacion"/>
+                        <textbox id="denominacion" onChange="update();" width="200px" />
+                    </row>
+                    <row>
+                        <span style="float:right"> Nombre(*):</span>
+                        <a:bind value="inobjeto.nombre"/>
+                        <textbox id="nombre" onChange="update();"  width="200px"  />
+                    </row>
+                    <row>
+                        <span style="float:right"> Tipo(*):</span>
+                        <span>
+                            <a:bind value="inobjeto.tipo"/>
+                            <textbox id="tipo" onChange="update();"  width="95px"  />
+       Escuela,Colegio...
+                        </span>
+                    </row>
+                    <row>
+                        <span style="float:right"> Slogan:</span>
+                        <a:bind value="inobjeto.slogan"/>
+                        <textbox id="slogan" onChange="update();" width="200px" />
+                    </row>
+                    <row>
+                        <span style="float:right"> Teléfono(*):</span>
+                        <a:bind value="inobjeto.telefono"/>
+                        <textbox id="telefono" onChange="update();"/>
+                    </row>
+                    <row>
+                        <span style="float:right"> Dirección(*):</span>
+                        <a:bind value="inobjeto.direccion"/>
+                        <textbox id="direccion" onChange="update();"  width="200px" />
+                    </row>
+                    <row>
+                        <span style="float:right"> Secretaria(*):</span>
+                        <a:bind value="inobjeto.secretaria"/>
+                        <textbox id="secretaria" onChange="update();"/>
+                    </row>
+                    <row>
+                        <span style="float:right"> Rector(*):</span>
+                        <a:bind value="inobjeto.rector"/>
+                        <textbox id="rector" onChange="update();"/>
+                    </row>
+                    <row>
+                        <span style="float:right"> Email(*):</span>
+                        <a:bind value="inobjeto.usuariomail"/>
+                        <textbox id="email" onChange="update();"/>
+                    </row>
+                    <row>
+                        <span style="float:right"> Clave(*):</span>
+                        <a:bind value="inobjeto.clavemail"/>
+                        <textbox  type="password" id="clave" onChange="update();"/>
+                    </row>
+                    <row>
+                        <span  style="float:right"> Requ.Auten.(*):</span>
+                        <span>
+                            <a:bind checked="inobjeto.autorizacion"/>
+                            <checkbox  id="autorizacion" onChange="update();"/>
        StartTLS(*):
-       <a:bind   checked="inobjeto.star"/>
-       <checkbox  id="star" onChange="update();"/>
+                            <a:bind   checked="inobjeto.star"/>
+                            <checkbox  id="star" onChange="update();"/>
 
 
-       </span>
-    </row>
-     <row>
-       <span style="float:right">SMTP: </span>
-       <a:bind value="inobjeto.smtp"/>
-       <textbox  id="smtp" onChange="update();" />
-    </row>
-       <row>
-        <span style="float:right">Puerto: </span>
-       <a:bind value="inobjeto.puerto"/>
-       <textbox  id="puerto" onChange="update();" width="30px"/>
+                        </span>
+                    </row>
+                    <row>
+                        <span style="float:right">SMTP: </span>
+                        <a:bind value="inobjeto.smtp"/>
+                        <textbox  id="smtp" onChange="update();" />
+                    </row>
+                    <row>
+                        <span style="float:right">Puerto: </span>
+                        <a:bind value="inobjeto.puerto"/>
+                        <textbox  id="puerto" onChange="update();" width="30px"/>
 
-    </row>
-      <row>
-        <span style="float:right">Ubicación Fotos: </span>
-       <a:bind value="inobjeto.fotos"/>
-       <textbox  id="fotos" onChange="update();"  />
+                    </row>
+                    <row>
+                        <span style="float:right">Ubicación Fotos: </span>
+                        
+                        <span>
+                            <a:bind value="inobjeto.fotos"/>
+                            <textbox  id="fotos" onChange="update();"  />
+                        <button   label="Crear" >
+                            <attribute name="onClick">
+                                 File duir = new File(fotos.value);
+                                duir.mkdir();
+                            </attribute>
+                        </button>
+                        </span>
 
-    </row>
-  <row>
-      <button label="Subir Imagen" id="ima">
-		<attribute name="onClick">{
+                    </row>
+                    <row>
+                        <span style="float:right">Ubicación Reportes: </span>
+                        <span>
+                            <a:bind value="inobjeto.reportes"/>
+                        <textbox  id="reportes" onChange="update();"  />
+                        <button   label="Crear" >
+                            <attribute name="onClick">
+                                 File duir = new File(reportes.value);
+                                duir.mkdir();
+                            </attribute>
+                        </button>
+</span>
+                    </row>
+                    <row>
+                        <button label="Subir Imagen" id="ima">
+                            <attribute name="onClick">{
 			Object media = Fileupload.get();
 			if (media instanceof org.zkoss.image.Image) {
 				foto0.setContent(media);
 			} else if (media != null){
 				Messagebox.show("Seleccione un Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
             }
-		}</attribute>
-	</button>
-  <image border="1" height="115px" id="foto0"/>
-  </row>
-</rows>
-</grid>
-<vbox>
-<vbox>
-<hbox>
-    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-</hbox>
-</vbox>
+		}
+                            </attribute>
+                        </button>
+                        <image border="1" height="115px" id="foto0"/>
+                    </row>
+                </rows>
+            </grid>
+            <vbox>
+                <vbox>
+                    <hbox>
+                        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    </hbox>
+                </vbox>
 
-			</vbox>
+            </vbox>
 
- </groupbox>
-<groupbox width="100%" mold="3d" >
+        </groupbox>
+        <groupbox width="100%" mold="3d" >
 
-       <caption label="Busquedas" />
-<vbox>
-    <hbox>  Perfiles:  <textbox id="buscarText"  maxlength="60" cols="40" />  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
-    <hbox width="100%">
-         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-			<listhead>
-                                <listheader label="Cod."/>
-                                <listheader label="Nombres"/>
+            <caption label="Busquedas" />
+            <vbox>
+                <hbox>  Perfiles:
+                    <textbox id="buscarText"  maxlength="60" cols="40" />
+                    <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                </hbox>
+                <hbox width="100%">
+                    <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                        <listhead>
+                            <listheader label="Cod."/>
+                            <listheader label="Nombres"/>
 
-			</listhead>
-			<listitem forEach="${allEvents}" value="${each}">
-                           <listcell label="${each.codigoinst}" />
-                           <listcell label="${each.denominacion}" />
-            </listitem>
-		</listbox>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.codigoinst}" />
+                            <listcell label="${each.denominacion}" />
+                        </listitem>
+                    </listbox>
 
 
+                </hbox>
+            </vbox>
+
+
+        </groupbox>
     </hbox>
-</vbox>
-
-
-</groupbox>
-</hbox>
-<zscript>
+    <zscript>
     AnnotateDataBinder binder = new AnnotateDataBinder(ventana);
     binder.bindBean("inobjeto", inobjeto);
     binder.loadAll();
@@ -210,7 +240,7 @@ void estado(Boolean estado,Boolean modificar){
              adm.actualizar(inobjeto);
                 List children = datos.selectedItem.children;
                   ((Listcell)children.get(0)).label = inobjeto.codigoinst+"";
-                  ((Listcell)children.get(1)).label = inobjeto.denominacion+ " " + inobjeto.nombre;
+                  ((Listcell)children.get(1)).label = inobjeto.denominacion+ " " + inobjeto.nombre +" " +inobjeto.getTipo() ;
          }else{
             inobjeto.setCodigoinst(adm.getNuevaClave("Institucion","codigoinst"));
              adm.guardar(inobjeto);
@@ -298,5 +328,5 @@ void cargar(Global g){
 inobjeto.setPerfil(g);
 }
 
-</zscript>
+    </zscript>
 </window>

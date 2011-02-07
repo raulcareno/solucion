@@ -286,133 +286,134 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
             parametros.put("telefono",insts.getTelefono());
 
             JRDataSource datasource = null;
-            
+            String directorioReportes = insts.getReportes();
+            //report.setSrc("web-inf/reportes/"certificadoMatricula.jasper");
             if(tipo.equals("CM")){
                     datasource = certificados(listadoCursos,"CM");
-                    report.setSrc("WEB-INF/reportes/certificadoMatricula.jasper");
+                    report.setSrc(directorioReportes+"certificadoMatricula.jasper");
                     parametros.put("titulo", "Certificado de Matricula");
             }else if(tipo.equals("CM2")){
                     datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/certificadoMatricula2.jasper");
+                    report.setSrc(directorioReportes+"certificadoMatricula2.jasper");
             }else if(tipo.equals("LFEC")){
                     datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/conanioscumplidos.jasper");
+                    report.setSrc(directorioReportes+"conanioscumplidos.jasper");
             }else if(tipo.equals("LCAS")){
                     datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/concasilleros.jasper");
+                    report.setSrc(directorioReportes+"concasilleros.jasper");
             }else if(tipo.equals("LMIN")){
                     datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/conmatricula.jasper");
+                    report.setSrc(directorioReportes+"conmatricula.jasper");
             }else if(tipo.equals("LCED")){
                     datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/concedula.jasper");
+                    report.setSrc(directorioReportes+"concedula.jasper");
             }else if(tipo.equals("LREP2")){
                     datasource = certificados(listadoCursos,"LREP2");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/libromatriculas.jasper");
+                    report.setSrc(directorioReportes+"libromatriculas.jasper");
             }else if(tipo.equals("LINT2")){
                     datasource = certificados(listadoCursos,"LINT2");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/fechadiscapacidad.jasper");
+                    report.setSrc(directorioReportes+"fechadiscapacidad.jasper");
             }else if(tipo.equals("LREL")){
                     datasource = certificados(listadoCursos,"LREL");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/conreligion.jasper");
+                    report.setSrc(directorioReportes+"conreligion.jasper");
             }else if(tipo.equals("LPAS")){
                     datasource = pases(listadoCursos,"LPAS");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/conpase.jasper");
+                    report.setSrc(directorioReportes+"conpase.jasper");
             }else if(tipo.equals("LTRAN")){
                     datasource = transporte(listadoCursos,"LTRAN");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/transporte.jasper");
+                    report.setSrc(directorioReportes+"transporte.jasper");
             }else if(tipo.equals("LCART")){
                     datasource = transporte(listadoCursos,"LCART");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/paracarnet.jasper");
+                    report.setSrc(directorioReportes+"paracarnet.jasper");
             }
             else if(tipo.equals("LNUEV")){
                     datasource = nuevos(listadoCursos,"LNUEV");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/nuevos.jasper");
+                    report.setSrc(directorioReportes+"nuevos.jasper");
             }else if(tipo.equals("LINT")){
                     datasource = internos(listadoCursos,"LINT");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/internos.jasper");
+                    report.setSrc(directorioReportes+"internos.jasper");
             }else if(tipo.equals("LCA")){
                     datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo",titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/con1casilleros.jasper");
+                    report.setSrc(directorioReportes+"con1casilleros.jasper");
             }else if(tipo.equals("LASI")){
                     datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo",titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/conasistencia.jasper");
+                    report.setSrc(directorioReportes+"conasistencia.jasper");
             }else if(tipo.equals("LGEN")){
                     datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/congenero.jasper");
+                    report.setSrc(directorioReportes+"congenero.jasper");
             }else if(tipo.equals("AM")){
                     datasource = certificados(listadoCursos,"AM");
                     parametros.put("titulo", "Acta de Matricula");
-                    report.setSrc("WEB-INF/reportes/actaMatricula.jasper");
+                    report.setSrc(directorioReportes+"actaMatricula.jasper");
 
             }else if(tipo.equals("INS")){
                     datasource = inscritos(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/estudiantes.jasper");
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
             }else if(tipo.equals("MAT")){
                     datasource = inscritos(listadoCursos,"Matriculado");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/estudiantes.jasper");
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
             }else if(tipo.equals("RET")){
                     datasource = inscritos(listadoCursos,"Retirado");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/estudiantes.jasper");
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
             }else if(tipo.equals("LMAT")){
                     datasource = certificados(listadoCursos,"LMAT");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/estudiantes.jasper");
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
             }else if(tipo.equals("LMAT2")){
                     datasource = certificados(listadoCursos,"LMAT2");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/totalizados.jasper");
+                    report.setSrc(directorioReportes+"totalizados.jasper");
             }else if(tipo.equals("LCLA")){
                     datasource = certificados(listadoCursos,"LCLA");
                     parametros.put("titulo",titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/claves.jasper");
+                    report.setSrc(directorioReportes+"claves.jasper");
             }else if(tipo.equals("LCLA2")){
                     datasource = certificados(listadoCursos,"LCLA2");
                     parametros.put("titulo",titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/clavePersonalCompleto.jasper");
+                    report.setSrc(directorioReportes+"clavePersonalCompleto.jasper");
             }else if(tipo.equals("LCLA3")){
                     datasource = certificados(listadoCursos,"LCLA2");
                     parametros.put("titulo",titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/clavesRepre.jasper");
+                    report.setSrc(directorioReportes+"clavesRepre.jasper");
             }else if(tipo.equals("LCLA4")){
                     datasource = certificados(listadoCursos,"LCLA2");
                     parametros.put("titulo",titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/clavePersonalCompletoRepre.jasper");
+                    report.setSrc(directorioReportes+"clavePersonalCompletoRepre.jasper");
             }else if(tipo.equals("LCOR")){
                     datasource = certificados(listadoCursos,"LCOR");
                     parametros.put("titulo",titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/concorreos.jasper");
+                    report.setSrc(directorioReportes+"concorreos.jasper");
             }else if(tipo.equals("LREP")){
                     datasource = certificados(listadoCursos,"LREP");
                     parametros.put("titulo",titulo.getValue());
-                    report.setSrc("WEB-INF/reportes/representantes.jasper");
+                    report.setSrc(directorioReportes+"representantes.jasper");
             }else if(tipo.equals("LCAR")){
                     datasource = certificados(listadoCursos,"LCAR");
                     parametros.put("titulo", "Carné Estudiantil");
-                    report.setSrc("WEB-INF/reportes/carnet.jasper");
+                    report.setSrc(directorioReportes+"carnet.jasper");
             }else if(tipo.equals("LCAR1")){
                     datasource = certificados(listadoCursos,"LCAR");
                     parametros.put("titulo", "Carné Estudiantil");
-                    report.setSrc("WEB-INF/reportes/carnetMinisterio.jasper");
+                    report.setSrc(directorioReportes+"carnetMinisterio.jasper");
             }else if(tipo.equals("-1")){
                 alert("No ha seleccionado ningún reporte...!");
                     return;
@@ -422,7 +423,7 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                 report.setDatasource(datasource);
                 report.setType((String) format.getSelectedItem().getValue());
             }
-        }
+ }
 
 void campos(String valor){
     //curs.setSelectedIndex(0);
