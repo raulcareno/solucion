@@ -134,7 +134,7 @@ Boolean verificar(String accion){
             parametros.put("periodo", periodo.getDescripcion());
             parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
-
+ String directorioReportes = insts.getReportes();
                 ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
                 datasource = (ReporteNotasDataSource) arreglo.get(0);
                 parametros = (HashMap) arreglo.get(1);
@@ -144,7 +144,7 @@ Boolean verificar(String accion){
              parametros.put("materia", mate.getMateria().getDescripcion());
              parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
              parametros.put("titulo", "Notas Registradas");
-             report.setSrc("WEB-INF/reportes/notaspor.jasper");
+             report.setSrc(directorioReportes+"notaspor.jasper");
 
 
 

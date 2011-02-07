@@ -131,9 +131,9 @@ void notasd(){
             parametros.put("slogan", insts.getSlogan());
             parametros.put("titulo", "Libreta de Calificaciones");
             JRDataSource datasource = null;
-
+ String directorioReportes = insts.getReportes();
            datasource = noti.libretas(mat.getCurso(),mat,sistemasCombo.getSelectedItem().getValue());
-            report.setSrc("WEB-INF/reportes/libretasin.jasper");
+            report.setSrc(directorioReportes+"libretasin.jasper");
             parametros.put("pathSubRel", "reportes/libreta_sub.jasper");
             parametros.put("pathSubRel2", "reportes/libreta_subFaltas.jasper");
 

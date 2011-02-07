@@ -736,10 +736,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             parametros.put("secretaria", insts.getSecretaria());
             parametros.put("rectora", insts.getRector());
             JRDataSource datasource = null;
-
+String directorioReportes = insts.getReportes();
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
                     parametros.put("titulo", "Comprobante de Matricula");
-                    report.setSrc("WEB-INF/reportes/actaMatricula.jasper");
+                    report.setSrc(directorioReportes+"actaMatricula.jasper");
  
             if(!tipo.equals("-1")){
                 report.setParameters(parametros);
