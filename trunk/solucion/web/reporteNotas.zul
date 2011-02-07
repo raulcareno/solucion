@@ -256,7 +256,7 @@ void recalcular(){
                     parametros.put("faltas",false);
                 }
                      
-
+ String directorioReportes = insts.getReportes();
             if(sistemasCombo.disabled == false)
                 parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
             if(filamodalidad.visible == true)
@@ -266,28 +266,28 @@ void recalcular(){
 
             if(tipo.equals("DIS")){
                     datasource = distributivo();
-                    report.setSrc("WEB-INF/reportes/distributivo.jasper");
+                    report.setSrc(directorioReportes+"distributivo.jasper");
             }else if(tipo.equals("DIS2")){
                     datasource = distributivo2();
-                    report.setSrc("WEB-INF/reportes/firmascuadrocalificaciones.jasper");
+                    report.setSrc(directorioReportes+"firmascuadrocalificaciones.jasper");
             }else if(tipo.equals("PROF")){
                     datasource = profesores();
-                    report.setSrc("WEB-INF/reportes/profesores.jasper");
+                    report.setSrc(directorioReportes+"profesores.jasper");
             }else if(tipo.equals("PROFC")){
                     datasource = profesores();
-                    report.setSrc("WEB-INF/reportes/profesoresCompleto.jasper");
+                    report.setSrc(directorioReportes+"profesoresCompleto.jasper");
             }else if(tipo.equals("CERT")){
                     datasource = noti.promocion(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue());
-                    report.setSrc("WEB-INF/reportes/promocion.jasper");
+                    report.setSrc(directorioReportes+"promocion.jasper");
             }else if(tipo.equals("CERD")){
                     datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue());
-                    report.setSrc("WEB-INF/reportes/certificadoconducta.jasper");
+                    report.setSrc(directorioReportes+"certificadoconducta.jasper");
             }else if(tipo.equals("PCUR")){
                     datasource = noti.promediocurso(sistemasCombo.getSelectedItem().getValue());
-                    report.setSrc("WEB-INF/reportes/promedioporcurso.jasper");
+                    report.setSrc(directorioReportes+"promedioporcurso.jasper");
             }else if(tipo.equals("MEJ")){
                     datasource = noti.mejoresporcurso(sistemasCombo.getSelectedItem().getValue());
-                    report.setSrc("WEB-INF/reportes/mejoresporcurso.jasper");
+                    report.setSrc(directorioReportes+"mejoresporcurso.jasper");
             }else if(tipo.equals("NMAT")){
                     
                     ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
@@ -298,7 +298,7 @@ void recalcular(){
                     MateriaProfesor mate = ((MateriaProfesor)materiasCombo.getSelectedItem().getValue());
                     parametros.put("materia", mate.getMateria().getDescripcion());
                      parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
-                    report.setSrc("WEB-INF/reportes/notaspor.jasper");
+                    report.setSrc(directorioReportes+"notaspor.jasper");
                     parametros.put("titulo", titulo.value);
             }else if(tipo.equals("NMATD")){
 
@@ -307,67 +307,67 @@ void recalcular(){
                     MateriaProfesor mate = ((MateriaProfesor)materiasCombo.getSelectedItem().getValue());
                     parametros.put("materia", mate.getMateria().getDescripcion());
                     parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
-                    report.setSrc("WEB-INF/reportes/notaspor.jasper");
+                    report.setSrc(directorioReportes+"notaspor.jasper");
             }else if(tipo.equals("EXAM")){
                     datasource = noti.cuadroexamenes(curs.getSelectedItem().getValue());
-                    report.setSrc("WEB-INF/reportes/examenesgrado.jasper");
+                    report.setSrc(directorioReportes+"examenesgrado.jasper");
             }else if(tipo.equals("CDIS")){
                     ArrayList arreglo = discipli.reporteDisciplina(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     parametros = (HashMap) arreglo.get(1);
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     datasource = (DisciplinaDataSource) arreglo.get(0);
-                    report.setSrc("WEB-INF/reportes/disciplina.jasper");
+                    report.setSrc(directorioReportes+"disciplina.jasper");
                     parametros.put("titulo",titulo.value);
             }else if(tipo.equals("CCAL2")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
-                    report.setSrc("WEB-INF/reportes/cuadrocalificaciones2.jasper");
+                    report.setSrc(directorioReportes+"cuadrocalificaciones2.jasper");
                            
             }else if(tipo.equals("CCAL3")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
-                    report.setSrc("WEB-INF/reportes/cuadrocalificaciones3.jasper");
+                    report.setSrc(directorioReportes+"cuadrocalificaciones3.jasper");
             }else if(tipo.equals("CCAL")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
-                    report.setSrc("WEB-INF/reportes/cuadrocalificaciones.jasper");
+                    report.setSrc(directorioReportes+"cuadrocalificaciones.jasper");
 
             }else if(tipo.equals("CNF")){
                     
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
-                    report.setSrc("WEB-INF/reportes/cuadrofinal.jasper");
+                    report.setSrc(directorioReportes+"cuadrofinal.jasper");
             }else if(tipo.equals("CNF2")){
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
-                    report.setSrc("WEB-INF/reportes/cuadrofinal1.jasper");
+                    report.setSrc(directorioReportes+"cuadrofinal1.jasper");
             }else if(tipo.equals("CNF3")){
                     datasource = noti.cuadrofinal3(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
-                    report.setSrc("WEB-INF/reportes/cuadrofinal2.jasper");
+                    report.setSrc(directorioReportes+"cuadrofinal2.jasper");
             }else if(tipo.equals("CNF4")){
                  //   datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
-                 //   report.setSrc("WEB-INF/reportes/cuadrofinal1.jasper");
+                 //   report.setSrc(directorioReportes+"cuadrofinal1.jasper");
             }else if(tipo.equals("EST")){
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
-                    report.setSrc("WEB-INF/reportes/estadistico.jasper");
+                    report.setSrc(directorioReportes+"estadistico.jasper");
             }else if(tipo.equals("AG")){
                     datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"original");
-                    report.setSrc("WEB-INF/reportes/actaGrado.jasper");
+                    report.setSrc(directorioReportes+"actaGrado.jasper");
             }else if(tipo.equals("CAG")){
                     datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"copia");
-                    report.setSrc("WEB-INF/reportes/copiaactaGrado.jasper");
+                    report.setSrc(directorioReportes+"copiaactaGrado.jasper");
             }else if(tipo.equals("LAG")){
                     ArrayList arreglo = noti.actaGradoTodos(curs.getSelectedItem().getValue());
                     datasource = (ActaGeneralDataSource) arreglo.get(0);
                     parametros = (HashMap) arreglo.get(1);
-                    report.setSrc("WEB-INF/reportes/actaslistado.jasper");
+                    report.setSrc(directorioReportes+"actaslistado.jasper");
             }else if(tipo.equals("LIB")){
                    //alert(Executions.getCurrent().getDesktop().getWebApp().getRealPath("/libreta_sub.jasper"));
 
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
-                    report.setSrc("WEB-INF/reportes/libreta.jasper");
+                    report.setSrc(directorioReportes+"libreta.jasper");
                     String pat = report.getSrc().replace("libreta.jasper","");
                     System.out.println("EL PATH: "+pat);
                     parametros.put("pathSubRel","reportes/" );//libreta_sub.jasper
@@ -375,17 +375,17 @@ void recalcular(){
                    
             }else if(tipo.equals("MEJE")){
                     datasource = noti.reporteMejor(curs.getSelectedItem().getValue());
-                    report.setSrc("WEB-INF/reportes/mejoresacta.jasper");
+                    report.setSrc(directorioReportes+"mejoresacta.jasper");
             }else if(tipo.equals("LIB2")){
 
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
-                    report.setSrc("WEB-INF/reportes/libreta2.jasper");
+                    report.setSrc(directorioReportes+"libreta2.jasper");
                     parametros.put("pathSubRel", "reportes/");//libreta_subPequeno.jasper
                     parametros.put("pathSubRel2", "reportes/");//libreta_subFaltas.jasper
 
             }else if(tipo.equals("LIB3")){
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
-                    report.setSrc("WEB-INF/reportes/libreta3.jasper");
+                    report.setSrc(directorioReportes+"libreta3.jasper");
                     parametros.put("pathSubRel", "reportes/");//libreta_sub.jasper
                     parametros.put("pathSubRel2", "reportes/");//libreta_sub.jasper
 

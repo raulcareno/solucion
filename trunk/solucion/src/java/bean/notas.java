@@ -1272,7 +1272,7 @@ public class notas extends Rows {
                     + "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "'  "
                     + "AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                     + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  )"
-                    + "and notas.disciplina = false  GROUP BY notas.matricula "
+                    + "and notas.disciplina = false and notas.promedia = true  GROUP BY notas.matricula "
                     + "order by 1 desc limit 3";
             System.out.println("" + q);
             List nativo = adm.queryNativo(q);
@@ -1337,7 +1337,7 @@ public class notas extends Rows {
                         DecimalFormat decimalFormat = new DecimalFormat(s);
                         //DecimalFormat formateador = new DecimalFormat("####.###");
                         // Esto sale en pantalla con cuatro decimales, es decir, 3,4324
-                        System.out.println("formato: " + decimalFormat.format(redondear((Double) dos, 3)));
+//                        System.out.println("formato: " + decimalFormat.format(redondear((Double) dos, 3)));
                         nota.setNota(decimalFormat.format(redondear((Double) dos, 3)));
                     }
                     nota.setProfesor(((Materiasgrado) notas.get(ksis)).getProfesor().getApellidos() + " " + ((Materiasgrado) notas.get(0)).getProfesor().getNombres());
@@ -1507,7 +1507,7 @@ public class notas extends Rows {
 //                    }
                     //System.out.println("SELECT CAST(("+nfinal.getNota()+")as decimal (9,0)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND materia = 0 ");
                     valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
-                    System.out.println("" + valor);
+//                    System.out.println("" + valor);
                     if (valor.size() > 0) {
                         disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
                     }
@@ -1881,7 +1881,7 @@ public class notas extends Rows {
                         + "and notas.disciplina = false "
                         + "and notas.cuantitativa = true and notas.materia != 0 "
                         + "group by matricula  ";
-                System.out.println("NOTAS DE promedio " + q);
+//                System.out.println("NOTAS DE promedio " + q);
                 nativo = null;
                 nativo = adm.queryNativo(q);
                 for (Iterator itna = nativo.iterator(); itna.hasNext();) {
