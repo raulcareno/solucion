@@ -134,8 +134,8 @@ void notasd(){
  String directorioReportes = insts.getReportes();
            datasource = noti.libretas(mat.getCurso(),mat,sistemasCombo.getSelectedItem().getValue());
             report.setSrc(directorioReportes+"libretasin.jasper");
-            parametros.put("pathSubRel", "reportes/libreta_sub.jasper");
-            parametros.put("pathSubRel2", "reportes/libreta_subFaltas.jasper");
+            parametros.put("pathSubRel", directorioReportes+"libreta_sub.jasper");
+            parametros.put("pathSubRel2", directorioReportes+"libreta_subFaltas.jasper");
 
 
 
