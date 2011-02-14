@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window    onCreate="cargando();"    height="100%" border="normal"
-         >
+<window    onCreate="cargando();"    height="100%" border="normal">
     <zk xmlns="http://www.zkoss.org/2005/zul" >
 
         <zscript>
@@ -126,7 +125,7 @@ public JRDataSource pases(ArrayList listadodeCursos,String tipo){
                         query = "Select o from Matriculas as o " +
                                 "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                                 "and o.curso.codigocur in (" + curso + ") " +
-                                " and o.estado in ('Recibir Pase') order by o.curso.secuencia, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre";
+                                " and o.estado in ('Recibir Pase') order by o.curso.secuencia, (o.curso.descripcion, o.curso.paralelo.descripcion), (o.estudiante.apellido,o.estudiante.nombre) ";
 
 
                     List hoy = adm.query(query);
@@ -159,7 +158,7 @@ public JRDataSource transporte(ArrayList listadodeCursos,String tipo){
                                     "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                                     "and o.curso.codigocur in (" + curso + ") and  " +
                                     "o.estudiante.transporte = true  " +
-                                    "order by o.curso.secuencia, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre";
+                                    "order by o.curso.secuencia, (o.curso.descripcion, o.curso.paralelo.descripcion), (o.estudiante.apellido,o.estudiante.nombre) ";
                     
 
                         List hoy = adm.query(query);
@@ -571,36 +570,28 @@ void campos(String valor){
                                     <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
                                         <bandpopup>
                                             <vbox>
-                                                <listbox width="90px" id="format"  onSelect="bd.value=self.selectedItem.label; bd.close();showReport();">
-                                                    <listitem  value="pdf" selected="true">
-                                                        <listcell  image="/images/pdf.png" label="PDF" />
+                                                <listbox width="90px" id="format"  onSelect="bd.value=self.selectedItem.label; ejecutar.image = self.selectedItem.image;  bd.close();showReport();">
+                                                    <listitem  value="pdf" selected="true"><listcell  image="/images/pdf.png" label="PDF" />
                                                     </listitem>
-                                                    <listitem value="rtf">
-                                                        <listcell  image="/images/word.gif" label="Word" />
+                                                    <listitem value="rtf"><listcell  image="/images/word.gif" label="Word" />
                                                     </listitem>
-                                                    <listitem value="xls">
-                                                        <listcell  image="/images/excel.gif"  label="Excel" />
+                                                    <listitem value="xls"><listcell  image="/images/excel.gif"  label="Excel" />
                                                     </listitem>
-                                                    <listitem value="jxl">
-                                                        <listcell  image="/images/excel.gif" label="JXL" />
+                                                    <listitem value="jxl"><listcell  image="/images/excel.gif" label="JXL" />
                                                     </listitem>
-                                                    <listitem value="csv">
-                                                        <listcell  image="/images/csv.gif" label="CSV" />
+                                                    <listitem value="csv"><listcell  image="/images/csv.gif" label="CSV" />
                                                     </listitem>
-                                                    <listitem value="odt">
-                                                        <listcell  image="/images/open.png" label="OpenOfic" />
+                                                    <listitem value="odt"><listcell  image="/images/open.png" label="OpenOfic" />
                                                     </listitem>
-                                                    <listitem value="xml">
-                                                        <listcell  image="/images/xml.gif" label="XML" />
+                                                    <listitem value="xml"><listcell  image="/images/xml.gif" label="XML" />
                                                     </listitem>
-                                                    <listitem value="html">
-                                                        <listcell  image="/images/html.gif" label="HTML" />
+                                                    <listitem value="html"><listcell  image="/images/html.gif" label="HTML" />
                                                     </listitem>
                                                 </listbox>
                                             </vbox>
                                         </bandpopup>
                                     </bandbox>
-                                    <button label="Ejecutar...!"  image="/images/run.gif"  onClick='showReport();'/>
+                                    <button label="MOSTRAR REPORTE"  image="/images/pdf.png" id="ejecutar" onClick='showReport();'/>
                                 </span>
                             </div>
                         </row>
@@ -620,6 +611,7 @@ void campos(String valor){
                     }
 
                 </zscript>
+                
                 <grid id="reportese" visible="false" width="100%" height="100%">
                     <rows>
                         <row   spans="2">
@@ -688,6 +680,8 @@ void campos(String valor){
 
             }
         </zscript>
+
+
 
 
     </zk>
