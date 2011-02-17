@@ -9,10 +9,9 @@
 import sources.CustomDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import sources.*;
-import bean.notas;
 import bean.disciplina;
 import java.math.BigDecimal;
-import bean.notas;
+import bean.reportesClase;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
  
@@ -77,7 +76,8 @@ Cursos todos = new Cursos(-2);
 todos.setDescripcion("[TODOS]");
   if(user.getTipo().equals("Interna"))
     cursos.add(todos);
-notas noti = new notas();
+//notas noti = new notas();
+reportesClase  noti = new reportesClase();
 
 List materias = adm.query("Select o from Global as o where o.grupo = 'zz' ");
 void buscar2(Cursos cur){
@@ -267,6 +267,9 @@ void recalcular(){
             if(tipo.equals("DIS")){
                     datasource = distributivo();
                     report.setSrc(directorioReportes+"distributivo.jasper");
+            }else if(tipo.equals("ENC2")){
+                    datasource = noti.evaluacion(curs.selectedItem.value, estudiantesCombo.selectedItem.value);
+                    report.setSrc(directorioReportes+"evaluacionPrincipal.jasper");
             }else if(tipo.equals("DIS2")){
                     datasource = distributivo2();
                     report.setSrc(directorioReportes+"firmascuadrocalificaciones.jasper");
@@ -421,6 +424,11 @@ void campos(String valor){
         }else if(valor.equals("PCUR")){
              titulo.value= "Promedios por Curso";
             sistemasCombo.disabled = false;
+        }else if(valor.equals("ENC2")){
+             titulo.value= "Promedios por Curso";
+             sistemasCombo.disabled = true;
+             curs.disabled = false;
+             estudiantesCombo.disabled = false;
         }else if(valor.equals("MEJ")){
              titulo.value= "Mejores por Curso";
             sistemasCombo.disabled = false;
@@ -511,6 +519,7 @@ void campos(String valor){
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
                                     <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
                                     <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
+                                    <listitem  id="ENC2" label="Resultados por Estudiantes" value="ENC2"/>
                                     <listitem  id="EST" label="Estadístico por Curso" value="EST" />
                                     <listitem  id="AG" label="Acta de Grado" value="AG"/>
                                     <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
@@ -699,6 +708,7 @@ void cargando(){
 
         PCUR.visible = per.verificarPermisoReporte("PCUR", "Ingresar");
         MEJ.visible = per.verificarPermisoReporte("MEJ", "Ingresar");
+        ENC2.visible = per.verificarPermisoReporte("CERT", "Ingresar");
 
 }
         </zscript>
