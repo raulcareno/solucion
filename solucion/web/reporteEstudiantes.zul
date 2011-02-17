@@ -7,7 +7,7 @@
 import sources.CustomDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import sources.*;
-import bean.notas;
+import bean.reportesClase;
 import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
@@ -94,7 +94,7 @@ public JRDataSource certificados(ArrayList listadodeCursos,String tipo){
                 if(tipo.equals("CM")){
                      ds = new ReporteCertificadoDataSource(detalle);
                 }else if(tipo.equals("LMAT2")){
-                     notas noti = new notas();
+                     reportesClase noti = new reportesClase();
                      ds = noti.conteoMatriculas();
 
                 }else{

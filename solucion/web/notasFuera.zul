@@ -2,7 +2,7 @@
 <window     border="normal" id="principal">
 <zscript>
 <![CDATA[
-import bean.notas;
+import bean.reportesClase;
 import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
@@ -22,7 +22,7 @@ List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where
    Permisos permiso = new Permisos();
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 notas no = new notas();
-notas noti = new notas();
+reportesClase noti = new reportesClase();
 List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
 List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  order by o.orden ");
  String[][] cabes = new String[trimestres.size()][2];

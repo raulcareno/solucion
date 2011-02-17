@@ -2,7 +2,7 @@
 <window id="principal">
     <zscript>
         <![CDATA[
-import bean.notas;
+import bean.reportesClase;
 import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
@@ -17,7 +17,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
-notas noti = new notas();
+reportesClase noti = new reportesClase();
 Boolean guardando = false;
 Empleados user =  (Empleados)ses.getAttribute("user");
 List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
@@ -34,7 +34,7 @@ List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
 
  Permisos permiso = new Permisos();
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
-notas no = new notas();
+reportesClase no = new reportesClase();
 
 //List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  order by o.orden ");
 
