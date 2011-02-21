@@ -4,19 +4,7 @@
  */
 package bean;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import jcinform.persistencia.Inscripciones;
-import jcinform.procesos.Administrador;
-import org.zkoss.zk.ui.Session;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Panel;
-import org.zkoss.zul.Radio;
-import org.zkoss.zul.Radiogroup;
-import org.zkoss.zul.Progressmeter;
+import org.zkoss.zul.Listitem;
 
 
 //import org.zkoss.util.media.Media;
@@ -40,11 +28,6 @@ public class borrar {
 //DecimalFormat f = new DecimalFormat("");
 //           System.out.println(""+
 //           new java.text.DecimalFormat("####.00").format(3.40));
-
-            Radiogroup radio= new Radiogroup();
-            Radio r = new Radio("Apple");
-            radio.appendChild(r);
-
  
     }
 

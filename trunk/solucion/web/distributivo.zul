@@ -1,5 +1,24 @@
 
-<window title="Seleccione un Curso para continuar"  >
+<window >
+    <style>
+.MyGridRowHeight tr.z-row td.z-row-inner
+{
+      background: white;
+      border-top: none;
+      border-left: 1px solid white;
+      border-right: 1px solid #CCC;
+      border-bottom: 1px solid #DDD;
+
+}
+/*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+  background: #F8F8F8;
+} */
+.MyGridRowHeight td.z-row-inner
+{
+    padding: 0px;
+    //overflow: hidden;
+}
+    </style>
     <zscript><![CDATA[
   import jcinform.persistencia.Global;
   import bean.EventDAO;
@@ -352,7 +371,7 @@ Cursos cur = curs.selectedItem.value;
                              List children = object.children;
                               MateriaProfesor cor =   object.getValue();
                               cor.setCurso(hastaCurso.selectedItem.value);
-                                 List existe = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cor.getCurso().getCodigocur()+"'  "  + 
+                                     List existe = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cor.getCurso().getCodigocur()+"'  "  +
                                  " and o.materia.codigo = '"+cor.getMateria().getCodigo()+"' ");
                                     if(existe.size()>0){
                                         Messagebox.show("UNA O VARIAS MATERIAS YA ESTÁN ASIGNADAS...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -379,195 +398,812 @@ void vaciarList(){
             }
             
 }
+//PARA POR PROFESORES ***********************************************************************************************************************************************************************************************
+Listbox llenarComboMaterias(Global mat){
+        Listbox lista = new Listbox();
+        
+            for (Iterator it = materias.iterator(); it.hasNext();) {
+                       Global acceIt = (Global) it.next();
+                        Listitem li = new Listitem();
+                          li.setValue(acceIt);
+                          Listcell celda = new Listcell(acceIt.getDescripcion()+"");
+                      
+                          li.appendChild(celda);
+                            if(mat.getCodigo().equals(acceIt.getCodigo()))
+                                li.setSelected(true);
+                          lista.appendChild(li);
+
+            }
+            lista.setMold("select");
+             lista.setStyle("font-size:11px");
+        return lista;
+}
+
+Listbox llenarComboCursos(Cursos cur){
+        Listbox lista = new Listbox();
+            Cursos curse = new Cursos(-1);
+            Listitem li = new Listitem();
+            li.setValue(curse);
+            li.appendChild(new Listcell("[Seleccione]"));
+            if(cur.getCodigocur().equals(curse.getCodigocur())){
+                li.setSelected(true);
+             }
+            lista.appendChild(li);
+
+            for (Iterator it = cursos.iterator(); it.hasNext();) {
+                       Cursos acceIt = (Cursos) it.next();
+                         li = new Listitem();
+                         li.setValue(acceIt);
+                          li.appendChild(new Listcell(acceIt.getDescripcion()+" "+acceIt.getEspecialidad()+" "+acceIt.getParalelo()));
+                          if(cur.getCodigocur().equals(acceIt.getCodigocur()))
+                                li.setSelected(true);
+                          lista.appendChild(li);
+
+            }
+            
+            lista.setMold("select");
+            lista.setStyle("font-size:10px");
+        return lista;
+}
+
+llenarGrid(Empleados emp){
+
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+        " where o.empleado.codigoemp = '"+emp.getCodigoemp()+"' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' " +
+        " order by o.orden");
+        datos2 = new Grid();
+                    filas.getChildren().clear();
+            if(empleadosEncontrados.size()>0){
+                 
+                       for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                              MateriaProfesor acceIt = (MateriaProfesor) it.next();
+                                    Row row = new Row();
+                                    row.appendChild(new Label(""+acceIt.getCodigomap()));
+                                   row.appendChild(llenarComboMaterias(acceIt.getMateria()));
+                                    Listbox listaC = llenarComboCursos(acceIt.getCurso());
+                                    listaC.setMold("select");
+                                    row.appendChild(listaC);
+                                    Checkbox ch = new Checkbox();
+                                        ch.setChecked(acceIt.getCuantitativa());
+                                        row.appendChild(ch);
+                                    ch = new Checkbox();
+                                        ch.setChecked(acceIt.getMinisterio());
+                                        row.appendChild(ch);
+
+                                     ch = new Checkbox();
+                                        ch.setChecked(acceIt.getOpcional());
+                                        row.appendChild(ch);
+
+                                     ch = new Checkbox();
+                                        ch.setChecked(acceIt.getSeimprime());
+                                        row.appendChild(ch);
+
+                                        Intbox tx = new Intbox(acceIt.getOrden());
+                                        row.appendChild(tx);
+                                        Textbox formu = new Textbox(acceIt.getFormula());
+                                        row.appendChild(formu);
+
+
+                                          Toolbarbutton aButton = new Toolbarbutton("ELIMINAR");
+                                            aButton.setId("MAT"+acceIt.getCodigomap());
+                                            //aButton.setImage("/images/eliminar.gif");
+                                            aButton.setStyle("font-size:9px");
+                                            aButton.addEventListener("onClick", new EventListener() {
+                                                public void onEvent(Event event) throws Exception {
+                                                            int valor = Messagebox.show("Seguro que deséa eliminar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                            if(valor == Messagebox.YES){
+                                                                if(verificar("Eliminar")){
+                                                                        eliminando(aButton.getId().replace("MAT",""));
+                                                                }else{
+                                                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                                }
+                                                            }
+                                                }
+                                            });
+                                            row.appendChild(aButton);
+
+
+
+                                    filas.appendChild(row);
+                       }
+          }else{
+
+          }
+            
+           
+}
+
+ void eliminando(Object clave){
+    try{
+            try{
+                  Integer id = new Integer(clave.toString());
+                  adm.eliminarObjeto(MateriaProfesor.class,id);
+                  llenarGrid(profes2.selectedItem.value);
+            }catch(Exception e){
+                //quitarFila(clave);
+            }
+    }catch(Exception e){
+
+        System.out.println(e);
+        Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+
+ }
+
+  public void quitarFila(String codigoBuscar){
+
+                Rows filas = materias.getRows();
+                List listadoMaterias = filas.getChildren();
+                    for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                       Row object = (Row) listadoMaterias.get(i);
+                       MateriaProfesor nuevo = ((MateriaProfesor)object.getValue());
+                       String codigoA = "MAT"+nuevo.getMateria().getCodigo();
+                       if(codigoA.equals(codigoBuscar)){
+                            materias.getRows().removeChild(object);
+                            break;
+                       }
+                    }
+
+}
+
+llenarGrid2(Integer n){
+
+        datos2 = new Grid();
+                    for (int i=0 ; i<n; i++) {
+                                    Row row = new Row();
+                                    row.appendChild(new Label("0"));
+                                    Listbox lista = llenarComboMaterias(new Global(-1));
+                                    lista.setMold("select");
+                                    row.appendChild(lista);
+                                    Listbox listaC = llenarComboCursos(new Cursos(-1));
+                                    listaC.setMold("select");
+                                    row.appendChild(listaC);
+                                    Checkbox ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                    ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+
+                                     Intbox tx = new Intbox(0);
+                                        row.appendChild(tx);
+                                     Textbox formu = new Textbox("");
+                                        row.appendChild(formu);
+
+                                         Toolbarbutton aButton = new Toolbarbutton("_");
+                                         row.appendChild(aButton);
+
+                                    filas.appendChild(row);
+                       }
+
+
+
+}
+
+void guardarp(){
+   Rows filas001 = datos2.getRows();
+                List listadoMaterias = filas001.getChildren();
+
+                   for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                       Row object = (Row) listadoMaterias.get(i);
+                             List labels = object.getChildren();
+                                //Integer Orden = new Integer(((Textbox)labels.get(0)).value);
+                                    MateriaProfesor mateProfe = new MateriaProfesor();
+                                  mateProfe.setCodigomap(new Integer(((Label)labels.get(0)).value));
+
+                                  Cursos curSelec = ((Listbox)labels.get(2)).selectedItem.value;
+                                  Global matSelec = ((Listbox)labels.get(1)).selectedItem.value;
+                                  mateProfe.setEmpleado(profes2.selectedItem.value);
+                                  mateProfe.setMateria(matSelec);
+                                  mateProfe.setCurso(curSelec);
+                                  mateProfe.setCuantitativa(((Checkbox)labels.get(3)).isChecked());
+                                  mateProfe.setMinisterio(((Checkbox)labels.get(4)).isChecked());
+                                  mateProfe.setOpcional(((Checkbox)labels.get(5)).isChecked()); //ingresan disciplina
+                                  mateProfe.setSeimprime(((Checkbox)labels.get(6)).isChecked());
+                                  mateProfe.setOrden((((Intbox)labels.get(7)).value));
+                                  mateProfe.setFormula((((Textbox)labels.get(8)).value));
+                                  if((!mateProfe.getCodigomap().equals(0)) ){
+                                        if(!matSelec.getCodigo().equals(-1) && !curSelec.getCodigocur().equals(-1))
+                                            adm.actualizar(mateProfe);
+                                  }else{
+
+                                    if(!matSelec.getCodigo().equals(-1) && !curSelec.getCodigocur().equals(-1)){
+                                            mateProfe.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
+                                            adm.guardar(mateProfe);
+                                        }
+                                  }
+
+                   }
+                   llenarGrid(profes2.selectedItem.value);
+                   
+     /*
+
+        if((!mateProfe.getCodigomap().equals(0)) ){
+                adm.actualizar(mateProfe);
+
+                  try{
+                  if((mates.selectedItem.value).getCodigo().equals((matesAnterior.selectedItem.value).getCodigo())){
+                      String quera = "update notas set orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
+                      " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
+                      " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
+                      " and materia = "+mateProfe.getMateria().getCodigo()+" ";
+                     adm.ejecutaSqlNativo(quera);
+                  }else{
+
+                    String quera = "update notas set materia = '"+ mateProfe.getMateria().getCodigo() +"', orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
+                          " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
+                          " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
+                          " and materia = "+(matesAnterior.selectedItem.value).getCodigo()+" ";
+                        adm.ejecutaSqlNativo(quera);
+
+                  }
+                        //System.out.println("ACTUALIZANDO DISTRIBUTIVO NOTAS "+quera);
+                  }catch(Exception ae){
+                         System.out.println("ERROR EN ACTUALIZAR NOTAS "+ae);
+                  }
+
+         }else{
+            List existe = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+((Cursos)curs.selectedItem.value).getCodigocur()+"'  and o.materia.codigo = '"+((Global)mates.selectedItem.value).getCodigo()+"' ");
+                if(existe.size()>0){
+                    Messagebox.show("MATERIA YA ASIGNADA...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return;
+                }
+             mateProfe.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
+             adm.guardar(mateProfe);
+
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                permiso.auditar("Distributivo","Guardar",""+mateProfe.getCurso()+" "+mateProfe.getMateria());
+                guardar.disabled=true;
+                agregar.disabled=false;
+                estado(true,false);
+                llenar(new MateriaProfesor(0));
+                buscar2(curs.selectedItem.value);
+                */
+
+
+    }
+
+//************************************************ PRO CURSOS
+//PARA POR CURSOS***********************************************************************************************************************************************************************************************
+Listbox llenarComboEmpleados(Empleados emp){
+        Listbox lista = new Listbox();
+ 
+
+            for (Iterator it = profesores.iterator(); it.hasNext();) {
+                       Empleados acceIt = (Empleados) it.next();
+                         li = new Listitem();
+                         li.setValue(acceIt);
+                          li.appendChild(new Listcell(acceIt.getApellidos()+" "+acceIt.getNombres()));
+                          if(emp.getCodigoemp().equals(acceIt.getCodigoemp()))
+                                li.setSelected(true);
+                          lista.appendChild(li);
+
+            }
+
+            lista.setMold("select");
+            lista.setStyle("font-size:10px");
+        return lista;
+}
+
+llenarGrid3(Cursos cur){
+
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " +
+        " where o.curso.codigocur = '"+cur.getCodigocur() +"' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' " +
+        " order by o.orden");
+        datos2 = new Grid();
+                    filas3.getChildren().clear();
+            if(empleadosEncontrados.size()>0){
+
+                       for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                              MateriaProfesor acceIt = (MateriaProfesor) it.next();
+                                    Row row = new Row();
+                                    row.appendChild(new Label(""+acceIt.getCodigomap()));
+                                    Intbox tx = new Intbox(acceIt.getOrden());
+                                    row.appendChild(tx);
+                                   row.appendChild(llenarComboMaterias(acceIt.getMateria()));
+                                    Listbox listaC = llenarComboEmpleados(acceIt.getEmpleado());
+                                    listaC.setMold("select");
+                                    row.appendChild(listaC);
+                                    Checkbox ch = new Checkbox();
+                                        ch.setChecked(acceIt.getCuantitativa());
+                                        row.appendChild(ch);
+                                    ch = new Checkbox();
+                                        ch.setChecked(acceIt.getMinisterio());
+                                        row.appendChild(ch);
+
+                                     ch = new Checkbox();
+                                        ch.setChecked(acceIt.getOpcional());
+                                        row.appendChild(ch);
+
+                                     ch = new Checkbox();
+                                        ch.setChecked(acceIt.getSeimprime());
+                                        row.appendChild(ch);
+
+                                        
+                                        Textbox formu = new Textbox(acceIt.getFormula());
+                                        row.appendChild(formu);
+
+
+                                          Toolbarbutton aButton = new Toolbarbutton("ELIMINAR");
+                                            aButton.setId("CUR"+acceIt.getCodigomap());
+                                            //aButton.setImage("/images/eliminar.gif");
+                                            aButton.setStyle("font-size:9px");
+                                            aButton.addEventListener("onClick", new EventListener() {
+                                                public void onEvent(Event event) throws Exception {
+                                                            int valor = Messagebox.show("Seguro que deséa eliminar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                            if(valor == Messagebox.YES){
+                                                                if(verificar("Eliminar")){
+                                                                        eliminando3(aButton.getId().replace("CUR",""));
+                                                                }else{
+                                                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                                }
+                                                            }
+                                                }
+                                            });
+                                            row.appendChild(aButton);
+
+
+
+                                    filas3.appendChild(row);
+                       }
+          }else{
+
+          }
+
+
+}
+
+ void eliminando3(Object clave){
+    try{
+            try{
+                  Integer id = new Integer(clave.toString());
+                  adm.eliminarObjeto(MateriaProfesor.class,id);
+                  llenarGrid3(curs3.selectedItem.value);
+            }catch(Exception e){
+                
+            }
+    }catch(Exception e){
+        System.out.println(e);
+        Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+
+ }
+
+
+
+llenarGrid23(Integer n){
+
+        datos2 = new Grid();
+                    for (int i=0 ; i<n; i++) {
+                                    Row row = new Row();
+                                    row.appendChild(new Label("0"));
+                                         Intbox tx = new Intbox(0);
+                                        row.appendChild(tx);
+                                    Listbox lista = llenarComboMaterias(new Global(-1));
+                                    lista.setMold("select");
+                                    row.appendChild(lista);
+                                    Listbox listaC = llenarComboEmpleados(new Empleados(-1));
+                                    listaC.setMold("select");
+                                    row.appendChild(listaC);
+                                    Checkbox ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                    ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+
+                                
+                                     Textbox formu = new Textbox("");
+                                        row.appendChild(formu);
+                                    Toolbarbutton aButton = new Toolbarbutton("_");
+                                         row.appendChild(aButton);
+                                    filas3.appendChild(row);
+                       }
+
+
+
+}
+
+void guardarc(){
+   Rows filas001 = datos3.getRows();
+                List listadoMaterias = filas001.getChildren();
+
+                   for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                       Row object = (Row) listadoMaterias.get(i);
+                             List labels = object.getChildren();
+                          
+                                    MateriaProfesor mateProfe = new MateriaProfesor();
+                                  mateProfe.setCodigomap(new Integer(((Label)labels.get(0)).value));
+
+                                  
+                                  Global matSelec = ((Listbox)labels.get(2)).selectedItem.value;
+                                  Empleados empSelec = ((Listbox)labels.get(3)).selectedItem.value;
+                                  
+                                  mateProfe.setEmpleado(empSelec);
+                                  mateProfe.setMateria(matSelec);
+                                  mateProfe.setCurso(curs3.selectedItem.value);
+                                  mateProfe.setOrden((((Intbox)labels.get(1)).value));
+                                  mateProfe.setCuantitativa(((Checkbox)labels.get(4)).isChecked());
+                                  mateProfe.setMinisterio(((Checkbox)labels.get(5)).isChecked());
+                                  mateProfe.setOpcional(((Checkbox)labels.get(6)).isChecked()); //ingresan disciplina
+                                  mateProfe.setSeimprime(((Checkbox)labels.get(7)).isChecked());
+                                  mateProfe.setFormula((((Textbox)labels.get(8)).value));
+                                  if((!mateProfe.getCodigomap().equals(0)) ){
+                                        if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1))
+                                            adm.actualizar(mateProfe);
+                                  }else{
+
+                                    if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
+                                            mateProfe.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
+                                            adm.guardar(mateProfe);
+                                        }
+                                  }
+
+                   }
+                   llenarGrid3(curs3.selectedItem.value);
+
+     /*
+
+        if((!mateProfe.getCodigomap().equals(0)) ){
+                adm.actualizar(mateProfe);
+
+                  try{
+                  if((mates.selectedItem.value).getCodigo().equals((matesAnterior.selectedItem.value).getCodigo())){
+                      String quera = "update notas set orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
+                      " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
+                      " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
+                      " and materia = "+mateProfe.getMateria().getCodigo()+" ";
+                     adm.ejecutaSqlNativo(quera);
+                  }else{
+
+                    String quera = "update notas set materia = '"+ mateProfe.getMateria().getCodigo() +"', orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
+                          " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
+                          " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
+                          " and materia = "+(matesAnterior.selectedItem.value).getCodigo()+" ";
+                        adm.ejecutaSqlNativo(quera);
+
+                  }
+                        //System.out.println("ACTUALIZANDO DISTRIBUTIVO NOTAS "+quera);
+                  }catch(Exception ae){
+                         System.out.println("ERROR EN ACTUALIZAR NOTAS "+ae);
+                  }
+
+         }else{
+            List existe = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+((Cursos)curs.selectedItem.value).getCodigocur()+"'  and o.materia.codigo = '"+((Global)mates.selectedItem.value).getCodigo()+"' ");
+                if(existe.size()>0){
+                    Messagebox.show("MATERIA YA ASIGNADA...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return;
+                }
+             mateProfe.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
+             adm.guardar(mateProfe);
+
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                permiso.auditar("Distributivo","Guardar",""+mateProfe.getCurso()+" "+mateProfe.getMateria());
+                guardar.disabled=true;
+                agregar.disabled=false;
+                estado(true,false);
+                llenar(new MateriaProfesor(0));
+                buscar2(curs.selectedItem.value);
+                */
+
+
+    }
+
+
     
 ]]>
     </zscript>
- 
-    <grid width="100%">
-        <rows>
-            <row>
-                <span style="float:right"> Curso(*):
-                </span>
-                <span>
-                    <listbox id="curs" mold="select"  width="420px"
+    <tabbox>
+        <tabs>
+            <tab label="DISTRIBUTIVO POR CURSO" />
+            <tab  image="/images/pensum.png" label="POR PROFESOR" />
+            <tab  image="/images/cursos.png"  label="POR CURSO LINEAL" />
+        
+        </tabs>
+        <tabpanels>
+            <tabpanel>
+                <grid width="100%">
+                    <rows>
+                        <row>
+                            <span style="float:right"> Curso(*):
+                            </span>
+                            <span>
+                                <listbox id="curs" mold="select"  width="420px"
                                         onSelect=" buscar2(((Cursos)self.selectedItem.value));">
-                        <listitem    forEach="${cursos}" value="${each}">
-                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-                        </listitem>
-                        <listitem selected="true"   value="-1">
-                            <listcell label="[Seleccione]" />
-                        </listitem>
-                    </listbox>
-                    <intbox maxlength="14" cols="1"  readonly="true"   disabled="true" id="codigo"  />
-                     <button image="/images/add.png" id="copiarDistributivo" label="COPIAR EL DISTRIBUTIVO DE OTRO CURSO "     onClick="panel.visible = true;curs.selectedIndex = -1;desdeCurso.selectedIndex =-1; hastaCurso.selectedIndex = -1;vaciarList();"/>
-                </span>
+                                    <listitem    forEach="${cursos}" value="${each}">
+                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                    </listitem>
+                                    <listitem selected="true"   value="-1">
+                                        <listcell label="[Seleccione]" />
+                                    </listitem>
+                                </listbox>
+                                <intbox maxlength="14" cols="1"  readonly="true"   disabled="true" id="codigo"  />
+                                <button image="/images/add.png" id="copiarDistributivo" label="COPIAR EL DISTRIBUTIVO DE OTRO CURSO "     onClick="panel.visible = true;curs.selectedIndex = -1;desdeCurso.selectedIndex =-1; hastaCurso.selectedIndex = -1;vaciarList();"/>
+                            </span>
 
-            </row>
-            <row>
-                <span style="float:right"> Materias(*):
-                </span>
-                    <span>
-                <listbox id="mates"  disabled="true" mold="select" width="320px" >
-                    <listitem selected="true" forEach="${materias}" value="${each}">
-                        <listcell label="${each.descripcion}" />
-                    </listitem>
-                </listbox>
-                <listbox visible ="false" id="matesAnterior"  disabled="true" mold="select" width="320px" >
-                    <listitem selected="true" forEach="${materias}" value="${each}">
-                        <listcell label="${each.descripcion}" />
-                    </listitem>
-                </listbox>
-                </span>
-                    
+                        </row>
+                        <row>
+                            <span style="float:right"> Materias(*):
+                            </span>
+                            <span>
+                                <listbox id="mates"  disabled="true" mold="select" width="320px" >
+                                    <listitem selected="true" forEach="${materias}" value="${each}">
+                                        <listcell label="${each.descripcion}" />
+                                    </listitem>
+                                </listbox>
+                                <listbox visible ="false" id="matesAnterior"  disabled="true" mold="select" width="320px" >
+                                    <listitem selected="true" forEach="${materias}" value="${each}">
+                                        <listcell label="${each.descripcion}" />
+                                    </listitem>
+                                </listbox>
+                            </span>
 
-            </row>
-            <row>
-                <span style="float:right"> Profesores(*):
-                </span>
 
-                <listbox mold="select"   disabled="true"  id="profes" width="320px">
-                    <listitem selected="true"  forEach="${profesores}" value="${each}">
-                        <listcell label="${each.apellidos} ${each.nombres}" />
-                    </listitem>
-                </listbox>
-                            
-            </row>
-            <row>
-                <span style="float:right">
-                </span>
-                <span>
-                    <checkbox label="Cuantitativa"  id="cuantitativa"  disabled="true"    />
-                    <checkbox   label="Promediada"  id="promediada"  disabled="true"  />
-                    <checkbox  label="Ingresan Disciplina" id="opcional"  disabled="true"   />
-                    <checkbox  label="Se Imprime" id="seimprime"  disabled="true"   />
-                </span>
-            </row>
-                
-     
-            <row> <span style="float:right"> Orden(*):
-                </span><span>
-                <intbox id="orden" cols="2"  readonly="true"  />
-                    FÓRMULA:               
-                    <textbox id="formula" cols="63"  readonly="true"  />
-                    <button label="Ver" image="/images/expa.png" onClick=" cerrar.visible = true; ver.visible = false;  materias123(); " id="ver"/>
-                    <button  label="Cerrar" visible="false"  image="/images/contra.png"  id="cerrar" onClick="materiaslista.visible = false; cerrar.visible=false; verificar.visible = false; ver.visible = true;"/>
-                    <listbox onSelect="anadir(self.selectedItem.value)" visible="false" id="materiaslista" width="45%">
-                        <listhead>
-                            <listheader label="Materia"  sort="auto"/>
-                        </listhead>
-                    </listbox>
-                    
+                        </row>
+                        <row>
+                            <span style="float:right"> Profesores(*):
+                            </span>
+
+                            <listbox mold="select"   disabled="true"  id="profes" width="320px">
+                                <listitem selected="true"  forEach="${profesores}" value="${each}">
+                                    <listcell label="${each.apellidos} ${each.nombres}" />
+                                </listitem>
+                            </listbox>
+
+                        </row>
+                        <row>
+                            <span style="float:right">
+                            </span>
+                            <span>
+                                <checkbox label="Cuantitativa"  id="cuantitativa"  disabled="true"    />
+                                <checkbox   label="Promediada"  id="promediada"  disabled="true"  />
+                                <checkbox  label="Ingresan Disciplina" id="opcional"  disabled="true"   />
+                                <checkbox  label="Se Imprime" id="seimprime"  disabled="true"   />
+                            </span>
+                        </row>
+
+
+                        <row>
+                            <span style="float:right"> Orden(*):
+                            </span>
+                            <span>
+                                <intbox id="orden" cols="2"  readonly="true"  />
+                    FÓRMULA:
+                                <textbox id="formula" cols="63"  readonly="true"  />
+                                <button label="Ver" image="/images/expa.png" onClick=" cerrar.visible = true; ver.visible = false;  materias123(); " id="ver"/>
+                                <button  label="Cerrar" visible="false"  image="/images/contra.png"  id="cerrar" onClick="materiaslista.visible = false; cerrar.visible=false; verificar.visible = false; ver.visible = true;"/>
+                                <listbox onSelect="anadir(self.selectedItem.value)" visible="false" id="materiaslista" width="45%">
+                                    <listhead>
+                                        <listheader label="Materia"  sort="auto"/>
+                                    </listhead>
+                                </listbox>
+
                         <!--button  label="Verificar" visible="false" id="verificar"/-->
-                </span>
-            </row>
-        </rows>
-    </grid>
+                            </span>
+                        </row>
+                    </rows>
+                </grid>
 
-    <groupbox  width="100%"  mold="3d" >
-      
-        <vbox width="100%">
-            <hbox> <!--button label="Change Paging Mold">
+                <groupbox  width="100%"  mold="3d" >
+
+                    <vbox width="100%">
+                        <hbox> <!--button label="Change Paging Mold">
 		<attribute name="onClick">
 		datos.pagingChild.mold = "os".equals(datos.pagingChild.mold) ? "default" : "os";
 		</attribute>
-	</button--> </hbox>
-            <hbox width="100%">
-                <listbox mold="paging" rows="13" pageSize="13"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-                    <listhead>
-                        <listheader label="Orden"   sort="auto"/>
-                        <listheader label="Empleado"  sort="auto"/>
-                        <listheader label="Materia"   sort="auto"/>
-                        <listheader label="Cuant."   sort="auto"/>
-                        <listheader label="Prom."   sort="auto"/>
-                        <listheader label="Disc."   sort="auto"/>
-                        <listheader label="Impr."   sort="auto"/>
-                        
-                    </listhead>
-                    <listitem forEach="${allEvents}" value="${each}">
-                     
-                    </listitem>
-                </listbox>
-            </hbox>
-        </vbox>
-    </groupbox>
-    <vbox>
-        <hbox>
-            <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-            <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-            <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-            <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-        </hbox>
-    </vbox>
-       <panel id="panel" visible = "false" style="position:absolute; top:2%; left:1%" framable="true" height="400px"	title="COPIAR DISTRIBUTIVO" border="normal"   >
- 
-        <panelchildren>
-            <grid width="100%">
-                <rows>
-                    <row>
-                        <span > DESDE EL CURSO(*):
-                        </span>
-                        <span > HASTA EL CURSO(*):
-                        </span>
-                    </row>
-                    <row>
-                        <span>
-                            <listbox id="desdeCurso" mold="select"  width="420px"
+	</button-->
+                        </hbox>
+                        <hbox width="100%">
+                            <listbox mold="paging" rows="13" pageSize="13"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                                <listhead>
+                                    <listheader label="Orden"   sort="auto"/>
+                                    <listheader label="Empleado"  sort="auto"/>
+                                    <listheader label="Materia"   sort="auto"/>
+                                    <listheader label="Cuant."   sort="auto"/>
+                                    <listheader label="Prom."   sort="auto"/>
+                                    <listheader label="Disc."   sort="auto"/>
+                                    <listheader label="Impr."   sort="auto"/>
+
+                                </listhead>
+                                <listitem forEach="${allEvents}" value="${each}">
+
+                                </listitem>
+                            </listbox>
+                        </hbox>
+                    </vbox>
+                </groupbox>
+                <vbox>
+                    <hbox>
+                        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    </hbox>
+                </vbox>
+                <panel id="panel" visible = "false" style="position:absolute; top:2%; left:1%" framable="true" height="400px"	title="COPIAR DISTRIBUTIVO" border="normal"   >
+
+                    <panelchildren>
+                        <grid width="100%">
+                            <rows>
+                                <row>
+                                    <span > DESDE EL CURSO(*):
+                                    </span>
+                                    <span > HASTA EL CURSO(*):
+                                    </span>
+                                </row>
+                                <row>
+                                    <span>
+                                        <listbox id="desdeCurso" mold="select"  width="420px"
                             onSelect=" buscar2Desde(((Cursos)self.selectedItem.value));">
-                                <listitem    forEach="${cursos}" value="${each}">
-                                    <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-                                </listitem>
-                                <listitem selected="true"   value="-1">
-                                    <listcell label="[Seleccione]" />
-                                </listitem>
-                            </listbox>
-                        </span>
-                        <span>
-                            <listbox id="hastaCurso" mold="select"  width="420px"
+                                            <listitem    forEach="${cursos}" value="${each}">
+                                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                            </listitem>
+                                            <listitem selected="true"   value="-1">
+                                                <listcell label="[Seleccione]" />
+                                            </listitem>
+                                        </listbox>
+                                    </span>
+                                    <span>
+                                        <listbox id="hastaCurso" mold="select"  width="420px"
                             onSelect=" buscar2Hasta(((Cursos)self.selectedItem.value));">
-                                <listitem    forEach="${cursos}" value="${each}">
-                                    <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
-                                </listitem>
-                                <listitem selected="true"    value="-1">
-                                    <listcell label="[Seleccione]" />
-                                </listitem>
-                            </listbox>
-                        </span>
-                    </row>
-                    <row>
-                        <listbox  id="desCursos" multiple="true" checkmark="true" rows="60"  mold="paging" height="240px"  width="100%">
-                            <listhead>
-                                <listheader label="Seleccionar Todo"   sort="auto"/>
-                                <listheader label="Materia"  sort="auto"/>
-                            </listhead>
-                            <listitem forEach="${allEvents}" value="${each}">
-                                <listcell label="${each.apellido} ${each.nombre}" />
-                            </listitem>
-                        </listbox>
-                        <listbox  id="hasCursos"  multiple="true" checkmark="true"  rows="60" mold="paging" height="240px"  width="100%">
-                            <listhead>
-                                <listheader label="Seleccionar Todo"   sort="auto"/>
-                                <listheader label="Materia"  sort="auto"/>
-                            </listhead>
-                            <listitem forEach="${allEvents}" value="${each}">
+                                            <listitem    forEach="${cursos}" value="${each}">
+                                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                            </listitem>
+                                            <listitem selected="true"    value="-1">
+                                                <listcell label="[Seleccione]" />
+                                            </listitem>
+                                        </listbox>
+                                    </span>
+                                </row>
+                                <row>
+                                    <listbox  id="desCursos" multiple="true" checkmark="true" rows="60"  mold="paging" height="240px"  width="100%">
+                                        <listhead>
+                                            <listheader label="Seleccionar Todo"   sort="auto"/>
+                                            <listheader label="Materia"  sort="auto"/>
+                                        </listhead>
+                                        <listitem forEach="${allEvents}" value="${each}">
+                                            <listcell label="${each.apellido} ${each.nombre}" />
+                                        </listitem>
+                                    </listbox>
+                                    <listbox  id="hasCursos"  multiple="true" checkmark="true"  rows="60" mold="paging" height="240px"  width="100%">
+                                        <listhead>
+                                            <listheader label="Seleccionar Todo"   sort="auto"/>
+                                            <listheader label="Materia"  sort="auto"/>
+                                        </listhead>
+                                        <listitem forEach="${allEvents}" value="${each}">
 
-                                <listcell label="${each.apellido} ${each.nombre}" />
+                                            <listcell label="${each.apellido} ${each.nombre}" />
 
-                            </listitem>
-                        </listbox>
-                     
+                                        </listitem>
+                                    </listbox>
 
-                    </row>
-                    <row>
-                        <span style="float:right">
-                            <button image="/images/anadir.png" dir="reverse"  id="anadirCursos" label="Añadir al Curso"  disabled="false"  onClick="anadirCursos();"/>
-                        </span>
-                        <button image="/images/exit.gif" height="35px" label="Salir" width="150px"  onClick="panel.visible=false;"/>
+
+                                </row>
+                                <row>
+                                    <span style="float:right">
+                                        <button image="/images/anadir.png" dir="reverse"  id="anadirCursos" label="Añadir al Curso"  disabled="false"  onClick="anadirCursos();"/>
+                                    </span>
+                                    <button image="/images/exit.gif" height="35px" label="Salir" width="150px"  onClick="panel.visible=false;"/>
                         <!--button image="/images/quitar.png" id="quitarCursos" label="Quitar del Curso"  disabled="false"  onClick="guardar2();"/-->
-                    </row>
-                </rows>
-            </grid>
-        </panelchildren>
-    </panel>
+                                </row>
+                            </rows>
+                        </grid>
+                    </panelchildren>
+                </panel>
+            </tabpanel>
+            <tabpanel>
+                <grid>
+
+                    <rows>
+                        <row>
+                            <span style="float:right"> Profesores(*):
+                            </span>
+                            <span>
+                                <listbox mold="select"  onSelect="llenarGrid(self.selectedItem.value)"   id="profes2" width="320px">
+                                    <listitem selected="true" forEach="${profesores}" value="${each}">
+                                        <listcell label="${each.apellidos} ${each.nombres}" />
+                                    </listitem>
+                                    <listitem selected="true"   value="-1">
+                                        <listcell label="[Seleccione]" />
+                                    </listitem>
+                                </listbox>
+                                <button image="/images/guardar.gif" id="guardarp" label="Guardar"    onClick="guardarp();"/>
+                            </span>
+                        </row>
+                        <row spans="2">
+                            <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="datos2" >
+                                <columns>
+                                    <column  width="0px" label="Cod"/>
+                                    <column  width="120px" label="Materia"/>
+                                    <column  width="150px" label="Curso"/>
+                                    <column  width="15px" label="Cuant"/>
+                                    <column  width="15px" label="Prom"/>
+                                    <column  width="18px" label="Disc."/>
+                                    <column  width="15px" label="Impr"/>
+                                    <column  width="15px" label="Orden"/>
+                                    <column  width="30px" label="Formula"/>
+                                    <column  width="30px" label="Opción"/>
+                                </columns>
+                                <rows id="filas">
+                                </rows>
+                            </grid>
+                        </row>
+                        <row spans="2" style="background:yellow">
+                            <span>
+                                No. de Materias a Agregar
+                                <spinner value="3" constraint="no negative,no zero" id="nofilas" />
+                                <button label="Agregar más Filas" onClick="llenarGrid2(nofilas.value)"/>
+                            </span>
+                        </row>
+                    </rows>
+                </grid>
+            </tabpanel>
+            <tabpanel>
+                <grid>
+
+                    <rows>
+                        <row>
+                            <span style="float:right"> Curso(*):
+                            </span>
+                            <span>
+                                <listbox  onSelect="llenarGrid3(self.selectedItem.value)"  id="curs3" mold="select"  width="420px">
+                                    <listitem    forEach="${cursos}" value="${each}">
+                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                    </listitem>
+                                    <listitem selected="true"   value="-1">
+                                        <listcell label="[Seleccione]" />
+                                    </listitem>
+                                </listbox>
+                                <button image="/images/guardar.gif" id="guardarc" label="Guardar"    onClick="guardarc();"/>
+                            </span>
+                        </row>
+                        <row spans="2">
+                            <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="datos3" >
+                                <columns>
+                                    <column  width="1px" label="Cod"/>
+                                    <column  width="15px" label="Orden"/>
+                                    <column  width="120px" label="Materia"/>
+                                    <column  width="120px" label="Empleado"/>
+                                    <column  width="15px" label="Cuant"/>
+                                    <column  width="15px" label="Prom"/>
+                                    <column  width="18px" label="Disc."/>
+                                    <column  width="15px" label="Impr"/>
+                                    <column  width="30px" label="Formula"/>
+                                    <column  width="30px" label="Opción"/>
+                                </columns>
+                                <rows id="filas3">
+                                </rows>
+                            </grid>
+                        </row>
+                        <row spans="2" style="background:yellow">
+                            <span>
+                                No. de Materias a Agregar
+                                <spinner value="3" constraint="no negative,no zero" id="nofilas3" />
+                                <button label="Agregar más Filas" onClick="llenarGrid23(nofilas3.value)"/>
+                            </span>
+                        </row>
+                    </rows>
+                </grid>
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
+  
 </window>
 
  
