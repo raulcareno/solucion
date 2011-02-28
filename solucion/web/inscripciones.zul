@@ -2,7 +2,25 @@
 <?page   id="loginjx" title="Administrador Educativo" ?>
 <?link rel="shortcut icon" type="image/icono" href="/images/icono.jpg"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <style>
+      <style>
+.MyGridRowHeight tr.z-row td.z-row-inner
+{
+      background: white;
+      border-top: none;
+      border-left: 0px solid white;
+      border-right: 0px solid #CCC;
+      border-bottom: 0px solid #DDD;
+
+}
+/*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+  background: #F8F8F8;
+} */
+.MyGridRowHeight td.z-row-inner
+{
+    padding: 0px;
+    //overflow: hidden;
+}
+     
 
     .barra {
            scrollbar-3dlight-color:;
@@ -68,7 +86,7 @@ import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
 import bean.email;
 
-
+Boolean guardando = false;
     Administrador adm = new Administrador();
      secuencial sec = new secuencial();
      email ema = new email();
@@ -279,24 +297,31 @@ cedular.readonly= estado;
 
  void guardar(){
  try{
-if(!verificarNombres()){
+ if(guardando)
     return;
-}
+ 
+ guardando = true;
+
+    if(!verificarNombres()){
+        guardando = false;
+        return;
+    }
  
 String cpai = cpaingresado.value;
 String cpa = cpa.getValue();
  if(!cpai.equals(cpa)){
         Messagebox.show("ERROR AL VALIDAR TEXTO DE LA IMAGEN ...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        guardando = false;
         return;
  }
 
 
  //GUARDO EL ESTUDIANTE
         Periodo periodo = periodosListado.selectedItem.value;
-        nombres.value = nombres.value.toUpperCase().trim();
-        apellidos.value = apellidos.value.toUpperCase().trim();
-        nombres1.value = nombres1.value.toUpperCase().trim();
-        apellidos1.value = apellidos1.value.toUpperCase().trim();
+        nombres.value = nombres.value.toUpperCase().trim().replace(".","").replace(" ","");
+        apellidos.value = apellidos.value.toUpperCase().trim().replace(".","").replace(" ","");
+        nombres1.value = nombres1.value.toUpperCase().trim().replace(".","").replace(" ","");
+        apellidos1.value = apellidos1.value.toUpperCase().trim().replace(".","").replace(" ","");
         String nCodigo = sec.generarClave();
         codigo.value = nCodigo.trim();
         estudent.setCodigoest(nCodigo);
@@ -365,6 +390,7 @@ String cpa = cpa.getValue();
         estado(true);
 
         claveprint.disabled = false;
+        guardando = false;
         Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.value+"");
 
 
@@ -464,7 +490,7 @@ void modificar(){
 
   Boolean verificarNombres(){
         imprimir.disabled=true;
-        List empleados = adm.query("Select o from Inscripciones as o where o.apellido = '"+(apellidos.value.toUpperCase().trim()+" "+ apellidos1.value.toUpperCase().trim() ) +"' and  o.nombre = '"+( nombres.value.toUpperCase().trim()+" "+ nombres1.value.toUpperCase().trim()  )+"' ");
+        List empleados = adm.query("Select o from Inscripciones as o where o.apellido = '"+(apellidos.value.toUpperCase().trim().replace(".","").replace(" ","")+" "+ apellidos1.value.toUpperCase().trim().replace(".","").replace(" ","") ) +"' and  o.nombre = '"+( nombres.value.toUpperCase().trim().replace(".","").replace(" ","")+" "+ nombres1.value.toUpperCase().trim().replace(".","").replace(" ","")  )+"' ");
             if(empleados.size()>0){
                 
                 Inscripciones inscrip = new Inscripciones();
@@ -607,7 +633,7 @@ void seleccionPeriodo(){
             now.setValue("Tiempo Inicial: "+fecha.getHours()+":"+minutos+":"+segundos+" * ");
             timer.start();
             estado(false);
-            
+            datosGrid.visible= true;
         }
         }catch(Exception e){
 
@@ -633,14 +659,15 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
   ]]>
             </zscript>
             <window mode="modal" width="50%" id="informacion" >
+                
+
+                
                 <grid  id="datosGrid" >
                     <rows>
 
                         <row align="left"  style="background:#6699CC;border:0px;color:red" >
                             <div style="color:white;font-size:15px;font-weight:bold">IMPORTANTE LEER ANTES DE CONTINUAR: </div>
-                            <span style="float:right;font-size:11px">
-                                <button onClick="informacion.detach()" label="CERRAR" image="/images/exit.gif" />
-                            </span>
+                            
                         </row>
                         <row align="left"    spans="2" style="background:#E4EDF6;border:0px;color:blue" >
                             <span style="font-size:15px">
@@ -655,15 +682,21 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                
                             </span>
                         </row>
+                        <row align="center"    spans="2" style="background:#E4EDF6;border:0px;color:blue" >
+                            <span style="font-size:11px">
+                                <button onClick="panel.visible=true;informacion.detach()" orient="vertical" image="/images/ok.gif" height="50px" label="He Leído y Estoy de acuerdo con las condiciones" />
+                            </span>
+                        </row>
                     </rows>
                 </grid>
                                 
             </window>
-            <panel  style="border-color:blue" id="panel"  width="100%" height="1200px"  >
+            <html>
+                    &lt;a name=&quot;ancla&quot; id=&quot;ancla&quot;&gt;&lt;/a&gt;
+                      </html>
+            <panel  style="border-color:blue" id="panel" visible="false" width="100%" height="1200px"  >
                 <panelchildren>
-
-                       
-                    <grid   id="datosGrid" >
+                <grid  sclass="MyGridRowHeight"  id="seleccionGrid" >
                         <rows>
                             <row align="left"  spans="2" style="background:#6699CC;border:0px;color:blue" >
                                 <span>
@@ -674,11 +707,15 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                         </listitem>
                                     </listbox>
                                     <image src="/images/selec.png" />
-
-
                                 </span>
 
                             </row>
+                            </rows>
+                            </grid>
+                       
+                    <grid sclass="MyGridRowHeight"  id="datosGrid" visible="false">
+                        <rows>
+                            
                             <row align="left"    spans="2" style="background:#6699CC;border:0px;color:blue" >
                                 <span style="font-size:11px">
                                     <separator></separator>
@@ -833,7 +870,9 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </combobox>
 
                                     <label  style="font-size:11px" value="Fecha Nacimiento(*):" id="t7"/>
-                                    <datebox id="nacido" onFocus="changeStyle(t7)" onBlur="changeStyle(t7) "  constraint="no empty: Seleccione una fecha, no podra completar su inscripcion si no ingresa este campo"    readonly="true"  />
+                                    <span><datebox id="nacido" format="dd/MM/yyyy" onFocus="changeStyle(t7)" onBlur="changeStyle(t7) "  constraint="no empty: Seleccione una fecha, no podra completar su inscripcion si no ingresa este campo"    readonly="true"  />
+                                    Ejm.(27/01/2011)
+                                    </span>
                                 </span>
                             </row>
 
@@ -1302,12 +1341,12 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             <row align="left"   style="background:#E4EDF6;border:0px">
 
                                 <span style="float:right;font-size:11px">
-                                    <label style="font-size:11px"  value="Introduce el código(*):" id="t12"/>
+                                    <label style="font-size:11px"  value="Introduce el código de la Imagen(*):" id="t12"/>
                                 </span>
                                 <span>
                                     <textbox id="cpaingresado" style="font-size:25px" maxlength="4"   onFocus="changeStyle(t12)"  onBlur="changeStyle(t12) " constraint="no empty: Ingrese este campo con lo que se muestra en la imagen"  width="150px"/>
-                                    <captcha id="cpa" style="background-color:white" exclude="ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz" noise="false" length="4" width="125px" height="45px"/>
-                                    <button label="Otro Código" onClick="cpa.randomValue();" />
+                                    <captcha id="cpa" style="background-color:white" exclude="ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz" noise="true" length="4" width="125px" height="45px"/>
+                                    <button label="Ver otro código, no entiendo el actual" onClick="cpa.randomValue();" />
                                     <image src="/images/information.png" height="16px" width="16px" tooltip="captchaht" popup="captchaht" style="cursor: pointer" />
                                     <popup id="captchaht" width="300px">
                                         <html>
@@ -1320,7 +1359,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             <row align="left"  style="background:#E4EDF6;border:0px" >
                                 <span></span>
                                 <span>
-                                    <button image="/images/guardar.gif" id="guardar" disabled="false" label="INSCRIBIR" width="190px"  height="40px"  onClick="nombres.getValue();apellidos.getValue();direccion.getValue();mail.getValue();genero.getValue();nacido.getValue();cpaingresado.getValue();aprovechamiento.getValue();self.disabled = true; guardar();"/>
+                                    <button image="/images/guardar.gif" id="guardar" disabled="false" label="INSCRIBIR" width="190px"  height="40px"     onClick="nombres.getValue();apellidos.getValue();direccion.getValue();mail.getValue();genero.getValue();nacido.getValue();cpaingresado.getValue();aprovechamiento.getValue();self.disabled = true; guardar();"/>
                                     
                                     <button image="/images/imprimir.gif" id="imprimir" disabled="true" label="IMPRIMIR" width="190px"  height="40px"  onClick="imprision();"/>
 
@@ -1332,7 +1371,9 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                         </rows>
                     </grid>
 
-
+<!--html>
+                &lt;a href=&quot;#ancla&quot;&gt;enlace&lt;/a&gt;
+                       </html-->
 
 
                 </panelchildren>
