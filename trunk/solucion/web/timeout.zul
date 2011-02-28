@@ -11,6 +11,8 @@
         Executions.sendRedirect("login.zul");
      }else if(bsession.contains("loginRepresentantes.zul") || bsession.contains("indexRepresentantes.zul") ){
         Executions.sendRedirect("loginEstudiantes.zul");
+     }else if(bsession.contains("inscripciones.zul")){
+        Executions.sendRedirect("inscripciones.zul");
      }else{
         Executions.sendRedirect("login.zul");
      }
