@@ -536,10 +536,12 @@ void estado(Boolean estado,Boolean modificar){
  try{
             if(nombres.value=="" || apellidos.value =="" || direccion.value=="" || nacido.value=="" ){
                     Messagebox.show("Ingrese los datos del estudiante que están con (*)...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                    guardando = false;
                     return;
             }
             if(nombresre.value=="" || apellidosre.value =="" || direccionre.value=="" ){
                     Messagebox.show("Ingrese los datos del representante que estan con (*)...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                    guardando = false;
                     return;
             }
 
