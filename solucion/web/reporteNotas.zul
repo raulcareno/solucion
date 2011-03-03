@@ -202,9 +202,10 @@ void recalcular(){
    List hoy = adm.query("SELECT o FROM MateriaProfesor AS  o " +
                 " where o.curso.codigocur = '"+(curs.selectedItem.value).getCodigocur()+"'  order by o.orden ");
                         System.out.println("FIREC:"+new Date());
+                        bean.notas n = new bean.notas();
         for (Iterator it = hoy.iterator(); it.hasNext();) {
             MateriaProfesor materia = (MateriaProfesor) it.next();
-            noti.recalculoNotas(materia, curs.selectedItem.value);
+            n.recalculoNotas(materia, curs.selectedItem.value);
         }
                 System.out.println("FFREC:"+new Date());
  
@@ -587,7 +588,7 @@ void campos(String valor){
                             </listbox>
                         </row>
                         <row  style="background:transparent;border:0px" >
-                            <span style="float:right"> Sistema Notas: </span>
+                            <span style="float:right"> Aporte: </span>
 
                             <listbox id="sistemasCombo" width="450px"  mold="select" >
                                 <listitem  forEach="${sistemas}" value="${each}">
