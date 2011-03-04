@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="hibernate.Usuarios" table="usuarios">
-        <id column="codigo" name="codigo" type="java.lang.Integer">
-            <generator class="increment"/>
+  <class name="hibernate.Usuarios" table="usuarios">
+    <id column="codigo" name="codigo" type="java.lang.Integer">
+      <generator class="increment"/>
       <!--generator class="assigned"/-->
-        </id>
-        <property column="cedula" name="cedula" type="java.lang.String"/>
-        <property column="nombres" name="nombres" type="java.lang.String"/>
-        <property column="direccion" name="direccion" type="java.lang.String"/>
-        <property column="usuario" name="usuario" type="java.lang.String"/>
-        <property column="clave" name="clave" type="java.lang.String"/>
-        <many-to-one column="perfil" name="perfil"/>
-    </class>
+    </id>
+    <property column="cedula" name="cedula" type="java.lang.String"/>
+    <property column="nombres" name="nombres" type="java.lang.String"/>
+    <property column="direccion" name="direccion" type="java.lang.String"/>
+    <property column="usuario" name="usuario" type="java.lang.String"/>
+    <property column="clave" name="clave" type="java.lang.String"/>
+    <many-to-one column="perfil" name="perfil"/>
+  </class>
 </hibernate-mapping>
-   

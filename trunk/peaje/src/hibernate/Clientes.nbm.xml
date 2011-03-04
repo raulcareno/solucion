@@ -14,5 +14,25 @@
     <property column="estado" name="estado" type="java.lang.Boolean"/>
     <property column="ultimoacceso" name="ultimoacceso" type="timestamp"/>
     <property column="acceso" name="acceso" type="timestamp"/>
+    <!--set name="tarjetasCollection" inverse="true" lazy="true"  table="Tarjetas"  fetch="select">
+          <key>
+              <column name="codigo" not-null="true" />
+          </key>
+          <one-to-many class="hibernate.Tarjetas" />
+      </set-->
+    <!--set name="tarjetasCollection" inverse="true">
+             <key column="tarjeta"/>
+             <one-to-many class="hibernate.Tarjetas"/>
+        </set-->
+    <!--set name="tarjetasCollection" table="tarjetas">
+        <key column="tarjeta"/>
+        <one-to-many class="hibernate.Tarjetas"/>
+     </set-->
+    <!--set name="tarjetasCollection" inverse="true" table="tarjetas" >
+          <key>
+              <column name="tarjeta" not-null="true" />
+          </key>
+          <one-to-many class="hibernate.Tarjetas" />
+      </set-->
   </class>
 </hibernate-mapping>

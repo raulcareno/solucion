@@ -84,7 +84,7 @@ import javax.persistence.Id;
 
     @Override
     public String toString() {
-        return "persisten.Global[codigo=" + codigo + "]";
+        return nombre;
     }
 
 }

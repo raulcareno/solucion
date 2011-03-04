@@ -1,5 +1,6 @@
 package peaje.formas;
  
+import hibernate.cargar.WorkingDirectory;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -14,23 +15,29 @@ public class SimpleWrite {
 //    static String messageString = "Hello, world!\n";
 //    static SerialPort serialPort;
 //    static OutputStream outputStream;
-
+   static SerialPort serialPort = null;
     public static void main(String[] args) {
         try {
-            String temp_string = "D:\\PROYECTOS\\peaje\\lib\\javax.comm.properties";
+             WorkingDirectory w = new WorkingDirectory();
+//            String query = "";
+          String ubicacionDirectorio = w.get()+"\\";
+                if(ubicacionDirectorio.contains("build"))
+                    ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+
+            String temp_string = ubicacionDirectorio+"lib\\javax.comm.properties";
             Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
             loadDriver_Method.setAccessible(true);
             loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
             CommPortIdentifier portId;
             Enumeration portList = CommPortIdentifier.getPortIdentifiers();
-            SerialPort serialPort = null;
+         
             OutputStream outputStream = null;
 //            SimpleRead reader;
             portList = CommPortIdentifier.getPortIdentifiers();
             while (portList.hasMoreElements()) {
                 portId = (CommPortIdentifier) portList.nextElement();
                 if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                    if (portId.getName().equals("COM6")) {
+                    if (portId.getName().equals("COM7")) {
 //                if (portId.getName().equals("/dev/term/a")) {
                         try {
                             serialPort = (SerialPort) portId.open("SimpleWriteApp", 2000);
@@ -49,10 +56,10 @@ public class SimpleWrite {
                         }
                         try {
                             //ABRIR
-                            byte[] a = new byte[3];
-                            a[0] = (byte) 254;
-                            a[1] = 108;
-                            a[2] = 1;
+//                            byte[] a = new byte[3];
+//                            a[0] = (byte) 254;
+//                            a[1] = 108;
+//                            a[2] = 1;
 //                        //CERRAR
 //                        byte[] data = new byte[3];
 //                        data[0] =  (byte) 254;
@@ -60,7 +67,11 @@ public class SimpleWrite {
 //                        data[2] = 1;
                             //            serialPort1.Write(data, 0, 3);
 //                        outputStream.write(messageString.getBytes());
-                            outputStream.write(a);
+                            outputStream.write(1);
+                            
+//                            outputStream.write(2);
+                            //outputStream.w
+                            
                         } catch (IOException e) {
                             System.out.println("" + e);
                         }
