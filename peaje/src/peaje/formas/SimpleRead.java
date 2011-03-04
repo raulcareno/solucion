@@ -11,7 +11,7 @@ import peaje.formas.principal;
 
 public class SimpleRead implements Runnable, SerialPortEventListener {
 
-    static CommPortIdentifier portId;
+    static CommPortIdentifier puertoId;
 //  portList;
     InputStream inputStream;
     SerialPort serialPort;
@@ -19,16 +19,14 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
     public String tarjeta;
     principal princip;
 
-    
-
     @SuppressWarnings("static-access")
     public SimpleRead(CommPortIdentifier portIde, principal pantalla) {
 
         try {
-            this.tarjeta ="";
+            this.tarjeta = "";
             princip = pantalla;
-            this.portId = portIde;
-            serialPort = (SerialPort) portId.open("SimpleReadApp", 2000);
+            this.puertoId = portIde;
+            serialPort = (SerialPort) puertoId.open("SimpleReadApp", 2000);
         } catch (PortInUseException e) {
         }
         try {
@@ -63,7 +61,7 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
     public void setTarjeta(String tarjeta) {
         this.tarjeta = tarjeta;
     }
-    public int inicio=0;
+    public int inicio = 0;
 
     public void serialEvent(SerialPortEvent event) {
 //    if(tarjeta.length()>10){
@@ -82,31 +80,27 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
                 break;
             case SerialPortEvent.DATA_AVAILABLE:
                 byte[] readBuffer = new byte[10];
-			try {
-				while (inputStream.available() > 0) {
-					int numBytes = inputStream.read(readBuffer);
+                try {
+                    while (inputStream.available() > 0) {
+                        int numBytes = inputStream.read(readBuffer);
 
-                                            tarjeta += new String(readBuffer).trim();
-				}
-			} catch (IOException e) {
-			}
+                        tarjeta += new String(readBuffer).trim();
+                    }
+                } catch (IOException e) {
+                }
                 break;
         }
-          //System.out.println(""+tarjeta);
-          if(tarjeta.length()>=10){ 
-              
-              System.out.println(""+tarjeta);
-              princip.tarjetatxt.setText("");
-              princip.tarjetatxt.setText(tarjeta);
-              princip.buscarTarjeta();
-              tarjeta = "";
-              return;
-          }
-      
-          
+        //System.out.println(""+tarjeta);
+        if (tarjeta.length() >= 11) {
+
+            System.out.println("" + tarjeta);
+            princip.tarjetatxt.setText("");
+            princip.tarjetatxt.setText(tarjeta);
+            princip.buscarTarjeta();
+            tarjeta = "";
+            return;
+        }
+
+
     }
-
-   
 }
-
-

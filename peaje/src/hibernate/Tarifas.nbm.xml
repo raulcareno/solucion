@@ -10,5 +10,5 @@
     <property column="desde" name="desde" type="java.lang.Long"/>
     <property column="hasta" name="hasta" type="java.lang.Long"/>
     <property column="valor" name="valor" type="java.math.BigDecimal"/>
- </class>
+  </class>
 </hibernate-mapping>

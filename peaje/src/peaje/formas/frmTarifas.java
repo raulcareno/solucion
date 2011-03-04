@@ -93,6 +93,27 @@ public class frmTarifas extends javax.swing.JDialog {
         }
     }
 
+      public void llenarTarifas() {
+
+        try {
+
+            List<Tarifas> tar = adm.query("Select o from Tarifas as o ");
+            DefaultTableModel dtm = (DefaultTableModel) tarifario.getModel();
+            dtm.getDataVector().removeAllElements();
+            for (Tarifas tarifas : tar) {
+                Object[] obj = new Object[5];
+
+                obj[0] = tarifas.getDesde().intValue();
+                obj[1] = tarifas.getHasta().intValue();
+                obj[2] = tarifas.getValor().doubleValue();
+                dtm.addRow(obj);
+            }
+            tarifario.setModel(dtm);
+        } catch (Exception ex) {
+            Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 
 // <editor-fold defaultstate="collapsed" desc="PROPIEDADES">
     public String getClaveActual() {
@@ -154,6 +175,7 @@ public class frmTarifas extends javax.swing.JDialog {
         jScrollPane3 = new javax.swing.JScrollPane();
         busquedaTabla = new javax.swing.JTable();
         
+        jLabel4 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -162,6 +184,8 @@ public class frmTarifas extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tarifario = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -232,6 +256,11 @@ public class frmTarifas extends javax.swing.JDialog {
         formaEmpresa.getContentPane().add(jPanel7);
         jPanel7.setBounds(10, 60, 510, 180);
 
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("A COBRAR");
+        jLabel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         setTitle("Usuarios");
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -244,13 +273,13 @@ public class frmTarifas extends javax.swing.JDialog {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Catálogo de Tarifas ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Busqueda, Creación,Modificación,  Tarifas ..::..");
         jPanel3.add(jLabel10);
@@ -320,14 +349,28 @@ public class frmTarifas extends javax.swing.JDialog {
         jScrollPane1.setViewportView(tarifario);
 
         jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(10, 30, 350, 190);
+        jScrollPane1.setBounds(10, 50, 330, 170);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("TIEMPOS");
+        jLabel2.setText("EN MINUTOS");
         jLabel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(10, 10, 220, 20);
+        jLabel2.setBounds(10, 30, 220, 20);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("TIEMPOS");
+        jLabel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(10, 10, 220, 20);
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("USD");
+        jLabel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(jLabel5);
+        jLabel5.setBounds(230, 30, 110, 20);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(20, 50, 370, 230);
@@ -656,6 +699,9 @@ public class frmTarifas extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
@@ -666,10 +712,12 @@ public class frmTarifas extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.persistence.EntityManager peajePUEntityManager;
     private javax.swing.JTable tarifario;
-    
+
+
     // End of variables declaration//GEN-END:variables
 
     
 
+    
 
 }

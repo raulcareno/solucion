@@ -6,7 +6,6 @@
       <!--generator class="increment"/-->
       <generator class="assigned"/>
     </id>
-    
     <property column="Lunes" name="lunes" type="java.lang.Boolean"/>
     <property column="Martes" name="martes" type="java.lang.Boolean"/>
     <property column="Miercoles" name="miercoles" type="java.lang.Boolean"/>
@@ -26,4 +25,3 @@
     <many-to-one column="cliente" name="cliente"/>
   </class>
 </hibernate-mapping>
-  

@@ -1,23 +1,23 @@
 package peaje.formas;
 
- 
 import hibernate.Empresa;
 import hibernate.Global;
 import java.awt.Container;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.comm.CommPortIdentifier;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import peaje.Administrador;
 import peaje.validaciones;
- 
-//import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
 
+//import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
 /**
  *
  * @author geovanny
@@ -39,39 +39,88 @@ public class frmEmpresa extends javax.swing.JDialog {
 
     /** Creates new form frmProfesores */
     public frmEmpresa(java.awt.Frame parent, boolean modal, Administrador adm1) {
-          super(parent,modal);
+        super(parent, modal);
         adm = adm1;
-          llenarCombo();
+        llenarCombo();
         initComponents();
         this.setSize(615, 508);
         empresaObj = new Empresa();
-        
+
         val = new validaciones();
+
+            try {
+
+               Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                this.empresaObj = emp;
+                bindingGroup.unbind();
+                bindingGroup.bind();
+               
+            } catch (Exception ex) {
+                Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
     }
 
-    public frmEmpresa(java.awt.Frame parent, boolean modal,principal lo, Administrador adm1) {
-          super(parent,modal);
+    public frmEmpresa(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
+        super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         adm = adm1;
         llenarCombo();
         initComponents();
         this.setSize(615, 508);
         empresaObj = new Empresa();
-        
+
         val = new validaciones();
         principal = lo;
-         cmbTicket.removeAllItems();
-         cmbFactura.removeAllItems();
-          PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
-            for (int i = 0; i < services.length; i++) {
-                cmbTicket.addItem(services[i].getName());
-                cmbFactura.addItem(services[i].getName());
-                //String nombre = services[i].getName().toUpperCase();
+        cmbTicket.removeAllItems();
+        cmbFactura.removeAllItems();
+        PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
+        for (int i = 0; i < services.length; i++) {
+            cmbTicket.addItem(services[i].getName());
+            cmbFactura.addItem(services[i].getName());
+            //String nombre = services[i].getName().toUpperCase();
+        }
+        CommPortIdentifier portId;
+        Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+                cmbEntrada1.removeAllItems();
+                cmbEntrada2.removeAllItems();
+                cmbEntrada3.removeAllItems();
+                cmbSalida1.removeAllItems();
+                cmbSalida2.removeAllItems();
+                cmbSalida3.removeAllItems();
+                ArrayList arr = new ArrayList();
+         while (portList.hasMoreElements()) {
+            portId = (CommPortIdentifier) portList.nextElement();
+            if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                if(!arr.contains(portId.getName()))
+                    arr.add(portId.getName());
             }
 
+        }
+        for (Iterator it = arr.iterator(); it.hasNext();) {
+            Object object = it.next();
+                cmbEntrada1.addItem(object);
+                cmbEntrada2.addItem(object);
+                cmbEntrada3.addItem(object);
+                cmbSalida1.addItem(object);
+                cmbSalida2.addItem(object);
+                cmbSalida3.addItem(object);
 
+        }
+           try {
+
+
+                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                this.empresaObj = emp;
+                bindingGroup.unbind();
+                bindingGroup.bind();
+
+            } catch (Exception ex) {
+                Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+       
     }
-
     public void llenarCombo() {
         try {
             perfilesList = new ArrayList<Global>();
@@ -80,7 +129,6 @@ public class frmEmpresa extends javax.swing.JDialog {
             Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
 // <editor-fold defaultstate="collapsed" desc="PROPIEDADES">
     public String getClaveActual() {
@@ -108,9 +156,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         this.perfilesList = perfilesList;
     }
 
-
 // </editor-fold>
-
 // <editor-fold defaultstate="collapsed" desc="FUNCIONES ACCIONES">
     public void habilitar(Boolean estado) {
         codigo.setEditable(estado);
@@ -121,6 +167,14 @@ public class frmEmpresa extends javax.swing.JDialog {
         parqueaderos.setEditable(estado);
         cmbFactura.setEnabled(estado);
         cmbTicket.setEnabled(estado);
+        cmbEntrada1.setEnabled(estado);
+        cmbEntrada2.setEnabled(estado);
+        cmbEntrada3.setEnabled(estado);
+        cmbSalida1.setEnabled(estado);
+        cmbSalida2.setEnabled(estado);
+        cmbSalida3.setEnabled(estado);
+
+
 
     }
 
@@ -153,6 +207,8 @@ public class frmEmpresa extends javax.swing.JDialog {
         jPanel7 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         busquedaTabla = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jCheckBox2 = new javax.swing.JCheckBox();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -173,6 +229,21 @@ public class frmEmpresa extends javax.swing.JDialog {
         jLabel9 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         cmbTicket = new javax.swing.JComboBox();
+        cmbEntrada1 = new javax.swing.JComboBox();
+        cmbSalida1 = new javax.swing.JComboBox();
+        cmbSalida2 = new javax.swing.JComboBox();
+        cmbEntrada2 = new javax.swing.JComboBox();
+        cmbSalida3 = new javax.swing.JComboBox();
+        cmbEntrada3 = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        activo2 = new javax.swing.JCheckBox();
+        activo1 = new javax.swing.JCheckBox();
+        activo3 = new javax.swing.JCheckBox();
         jPanel4 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -242,6 +313,15 @@ public class frmEmpresa extends javax.swing.JDialog {
 
         formaEmpresa.getContentPane().add(jPanel7);
         jPanel7.setBounds(10, 60, 510, 180);
+
+        jLabel4.setText("Entrada 1:");
+
+        jCheckBox2.setText("Activo");
+        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox2ActionPerformed(evt);
+            }
+        });
 
         setTitle("Usuarios");
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -414,8 +494,95 @@ public class frmEmpresa extends javax.swing.JDialog {
         jPanel1.add(cmbTicket);
         cmbTicket.setBounds(80, 130, 240, 20);
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto1}"), cmbEntrada1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel1.add(cmbEntrada1);
+        cmbEntrada1.setBounds(80, 170, 60, 20);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto4}"), cmbSalida1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel1.add(cmbSalida1);
+        cmbSalida1.setBounds(200, 170, 60, 20);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto5}"), cmbSalida2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel1.add(cmbSalida2);
+        cmbSalida2.setBounds(200, 190, 60, 20);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto2}"), cmbEntrada2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel1.add(cmbEntrada2);
+        cmbEntrada2.setBounds(80, 190, 60, 20);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto6}"), cmbSalida3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel1.add(cmbSalida3);
+        cmbSalida3.setBounds(200, 210, 60, 20);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto3}"), cmbEntrada3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel1.add(cmbEntrada3);
+        cmbEntrada3.setBounds(80, 210, 60, 20);
+
+        jLabel3.setText("Salida 3:");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(150, 210, 51, 14);
+
+        jLabel14.setText("Entrada 1:");
+        jPanel1.add(jLabel14);
+        jLabel14.setBounds(20, 190, 51, 14);
+
+        jLabel15.setText("Entrada 1:");
+        jPanel1.add(jLabel15);
+        jLabel15.setBounds(20, 210, 51, 14);
+
+        jLabel16.setText("Entrada 1:");
+        jPanel1.add(jLabel16);
+        jLabel16.setBounds(20, 170, 51, 14);
+
+        jLabel17.setText("Salida 2:");
+        jPanel1.add(jLabel17);
+        jLabel17.setBounds(150, 190, 41, 14);
+
+        jLabel18.setText("Salida 1:");
+        jPanel1.add(jLabel18);
+        jLabel18.setBounds(150, 170, 41, 14);
+
+        activo2.setText("Activo");
+        activo2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activo2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(activo2);
+        activo2.setBounds(260, 190, 81, 23);
+
+        activo1.setText("Activo");
+        activo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activo1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(activo1);
+        activo1.setBounds(260, 170, 81, 23);
+
+        activo3.setText("Activo");
+        activo3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activo3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(activo3);
+        activo3.setBounds(260, 210, 81, 23);
+
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 50, 370, 180);
+        jPanel1.setBounds(20, 50, 370, 250);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -465,6 +632,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
         btnEliminar.setMnemonic('E');
         btnEliminar.setText("Eliminar");
+        btnEliminar.setEnabled(false);
         btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEliminar.setMargin(new java.awt.Insets(2, 2, 2, 2));
         btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -491,73 +659,77 @@ public class frmEmpresa extends javax.swing.JDialog {
         btnSalir.setBounds(290, 10, 60, 50);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(20, 230, 370, 70);
+        jPanel4.setBounds(20, 300, 370, 70);
 
         bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
- 
-
-    
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
         // TODO add your handling code here:
-        if(principal.permisos.getAgregar()){
-        if (grabar == false) {
-            this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
-            this.btnAgregar.setLabel("Guardar");
-            this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
-            this.btnModificar.setLabel("Cancelar");
-            grabar = true;
-            modificar = false;
-            habilitar(true);
-            limpiar();
-            codigo.requestFocusInWindow();
-            btnAgregar.setMnemonic('G');
-            btnModificar.setMnemonic('C');
-            btnBuscar.setEnabled(false);
-
-        } else if (grabar == true) {
-            if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty() || razonsocial.getText().trim().isEmpty() || razonsocial.getText().isEmpty() ) {
-                JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
-            } else {
-             empresaObj.setImpticket((String) cmbTicket.getSelectedItem());
-             empresaObj.setImpfactura((String) cmbFactura.getSelectedItem());
-                if (modificar) {
-                    try {
-                        adm.actualizar(empresaObj);
-                   
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                        Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
-                        return;
-                    }
-                } else {
-                    try {
-                        adm.guardar(empresaObj);
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                        Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
-                        return;
-                    }
-                }
-                this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
-                this.btnAgregar.setLabel("Nuevo");
-                this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
-                this.btnModificar.setLabel("Modificar");
-                btnAgregar.setMnemonic('N');
-                btnModificar.setMnemonic('M');
-                grabar = false;
+        if (principal.permisos.getAgregar()) {
+            if (grabar == false) {
+                this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
+                this.btnAgregar.setLabel("Guardar");
+                this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
+                this.btnModificar.setLabel("Cancelar");
+                grabar = true;
                 modificar = false;
-                habilitar(false);
-                btnBuscar.setEnabled(true);
+                habilitar(true);
+                limpiar();
+                codigo.requestFocusInWindow();
+                btnAgregar.setMnemonic('G');
+                btnModificar.setMnemonic('C');
+                btnBuscar.setEnabled(false);
+
+            } else if (grabar == true) {
+                if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty() || razonsocial.getText().trim().isEmpty() || razonsocial.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
+                } else {
+                    empresaObj.setImpticket((String) cmbTicket.getSelectedItem());
+                    empresaObj.setImpfactura((String) cmbFactura.getSelectedItem());
+                    empresaObj.setPuerto1((String)cmbEntrada1.getSelectedItem());
+                    empresaObj.setPuerto2((String)cmbEntrada2.getSelectedItem());
+                    empresaObj.setPuerto3((String)cmbEntrada3.getSelectedItem());
+                    empresaObj.setPuerto4((String)cmbSalida1.getSelectedItem());
+                    empresaObj.setPuerto5((String)cmbSalida2.getSelectedItem());
+                    empresaObj.setPuerto6((String)cmbSalida3.getSelectedItem());
+                    
+                    if (modificar) {
+                        try {
+                            adm.actualizar(empresaObj);
+
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                            Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+                            return;
+                        }
+                    } else {
+                        try {
+                            adm.guardar(empresaObj);
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                            Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+                            return;
+                        }
+                    }
+                    this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
+                    this.btnAgregar.setLabel("Nuevo");
+                    this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
+                    this.btnModificar.setLabel("Modificar");
+                    btnAgregar.setMnemonic('N');
+                    btnModificar.setMnemonic('M');
+                    grabar = false;
+                    modificar = false;
+                    habilitar(false);
+                    btnBuscar.setEnabled(true);
+
+                }
 
             }
-
-        }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
         }
 
@@ -568,23 +740,23 @@ public class frmEmpresa extends javax.swing.JDialog {
         // TODO add your handling code here:
 
         if (grabar == false) {
-            if(principal.permisos.getModificar()){
-            if (codigo.getText().trim().isEmpty()) {
-                return;
-            }
-            this.codigo.requestFocusInWindow();
-            this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
-            this.btnAgregar.setLabel("Guardar");
-            this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
-            this.btnModificar.setLabel("Cancelar");
-            btnAgregar.setMnemonic('G');
-            btnModificar.setMnemonic('C');
-            modificar = true;
-            grabar = true;
-            habilitar(true);
-            btnBuscar.setEnabled(false);
+            if (principal.permisos.getModificar()) {
+                if (codigo.getText().trim().isEmpty()) {
+                    return;
+                }
+                this.codigo.requestFocusInWindow();
+                this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
+                this.btnAgregar.setLabel("Guardar");
+                this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
+                this.btnModificar.setLabel("Cancelar");
+                btnAgregar.setMnemonic('G');
+                btnModificar.setMnemonic('C');
+                modificar = true;
+                grabar = true;
+                habilitar(true);
+                btnBuscar.setEnabled(false);
 
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
             }
         } else {
@@ -606,15 +778,15 @@ public class frmEmpresa extends javax.swing.JDialog {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        if(principal.permisos.getEliminar()){        // TODO add your handling code here:
+        if (principal.permisos.getEliminar()) {        // TODO add your handling code here:
             try {
                 adm.eliminarObjeto(Empresa.class, empresaObj.getRuc());
                 this.limpiar();
             } catch (Exception ex) {
                 Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
             }
- 
-        }else{
+
+        } else {
             JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
         }
 }//GEN-LAST:event_btnEliminarActionPerformed
@@ -629,19 +801,19 @@ public class frmEmpresa extends javax.swing.JDialog {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
-                formaEmpresa.setModal(true);
-                formaEmpresa.setSize(533, 300);
-                formaEmpresa.setLocation(250, 70);
-                formaEmpresa.show();
-                    
-                    this.codigoBuscar.requestFocusInWindow();
-                    DefaultTableModel dtm = (DefaultTableModel) busquedaTabla.getModel();
-                    dtm.getDataVector().removeAllElements();
-                    busquedaTabla.setModel(dtm);
-                    codigoBuscar.setText("");
+        formaEmpresa.setModal(true);
+        formaEmpresa.setSize(533, 300);
+        formaEmpresa.setLocation(250, 70);
+        formaEmpresa.show();
+
+        this.codigoBuscar.requestFocusInWindow();
+        DefaultTableModel dtm = (DefaultTableModel) busquedaTabla.getModel();
+        dtm.getDataVector().removeAllElements();
+        busquedaTabla.setModel(dtm);
+        codigoBuscar.setText("");
 //                    nombresBuscar.setText("");
 
-    
+
 
 
 }//GEN-LAST:event_btnBuscarActionPerformed
@@ -691,7 +863,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         if (evt.getClickCount() == 2) {
             try {
                 int fila = busquedaTabla.getSelectedRow();
-                this.empresaObj = (Empresa) adm.buscarClave((String)busquedaTabla.getValueAt(fila, 0), Empresa.class);
+                this.empresaObj = (Empresa) adm.buscarClave((String) busquedaTabla.getValueAt(fila, 0), Empresa.class);
                 bindingGroup.unbind();
                 bindingGroup.bind();
 
@@ -708,19 +880,19 @@ public class frmEmpresa extends javax.swing.JDialog {
         if (evt.getKeyCode() == evt.VK_ENTER) {
             try {
                 int fila = busquedaTabla.getSelectedRow();
-                this.empresaObj = (Empresa) adm.buscarClave((String)busquedaTabla.getValueAt(fila, 0), Empresa.class);
+                this.empresaObj = (Empresa) adm.buscarClave((String) busquedaTabla.getValueAt(fila, 0), Empresa.class);
                 bindingGroup.unbind();
                 bindingGroup.bind();
-               formaEmpresa.dispose();
+                formaEmpresa.dispose();
 
             } catch (Exception ex) {
                 Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
-           formaEmpresa.dispose();
+            formaEmpresa.dispose();
         }
-        
+
 
     }//GEN-LAST:event_busquedaTablaKeyPressed
 
@@ -767,25 +939,58 @@ public class frmEmpresa extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_parqueaderosKeyPressed
 
+    private void activo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activo2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_activo2ActionPerformed
+
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
+
+    private void activo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activo1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_activo1ActionPerformed
+
+    private void activo3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activo3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_activo3ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox activo1;
+    private javax.swing.JCheckBox activo2;
+    private javax.swing.JCheckBox activo3;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JTable busquedaTabla;
+    private javax.swing.JComboBox cmbEntrada1;
+    private javax.swing.JComboBox cmbEntrada2;
+    private javax.swing.JComboBox cmbEntrada3;
     private javax.swing.JComboBox cmbFactura;
+    private javax.swing.JComboBox cmbSalida1;
+    private javax.swing.JComboBox cmbSalida2;
+    private javax.swing.JComboBox cmbSalida3;
     private javax.swing.JComboBox cmbTicket;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JFormattedTextField direccion;
     private javax.swing.JDialog formaEmpresa;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;

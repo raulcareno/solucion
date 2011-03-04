@@ -2,6 +2,7 @@ package peaje.formas;
 
  
 import hibernate.*;
+import hibernate.cargar.WorkingDirectory;
 import java.awt.Container;
 import java.awt.print.PrinterJob;
 import java.math.BigDecimal;
@@ -567,7 +568,11 @@ public class frmFactura extends javax.swing.JDialog {
 
 //                    viewer.show();
         try {
-            JasperReport masterReport = (JasperReport) JRLoader.loadObject("D:\\PROYECTOS\\peaje\\src\\reportes\\factura.jasper");
+              WorkingDirectory w = new WorkingDirectory();
+             String ubicacionDirectorio = w.get()+"\\";
+                if(ubicacionDirectorio.contains("build"))
+                    ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio+"\\reportes\\factura.jasper");
 
             Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = "+cod+" ");
             ArrayList detalle = new ArrayList();
@@ -678,7 +683,7 @@ public class frmFactura extends javax.swing.JDialog {
                             codigoBuscar.requestFocusInWindow();
                         }
                     } catch (Exception ex) {
-                        Logger.getLogger(frmClientes2.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                     principal.procesando.setVisible(false);
@@ -705,7 +710,7 @@ public class frmFactura extends javax.swing.JDialog {
                 formaClientes.dispose();
                 client = null;
             } catch (Exception ex) {
-                Logger.getLogger(frmClientes2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         //        JOptionPane.showMessageDialog(this, usuarioObj);
@@ -725,7 +730,7 @@ public class frmFactura extends javax.swing.JDialog {
                 formaClientes.dispose();
                 client = null;
             } catch (Exception ex) {
-                Logger.getLogger(frmClientes2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             formaClientes.dispose();

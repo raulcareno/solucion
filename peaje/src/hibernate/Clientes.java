@@ -8,16 +8,14 @@ package hibernate;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+ 
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -50,7 +48,11 @@ public class Clientes implements Serializable {
     @Column(name = "acceso")
     @Temporal(TemporalType.TIMESTAMP)
     private Date acceso;
-  
+//
+//    @OneToMany(mappedBy = "cliente")
+//    @Column(name="tarjeta")
+//    private Collection<Tarjetas>  tarjetasCollection;
+//
     public Clientes() {
     }
 
@@ -129,7 +131,13 @@ public class Clientes implements Serializable {
     public void setAcceso(Date acceso) {
         this.acceso = acceso;
     }
-
+//    public Collection<Tarjetas> getTarjetasCollection() {
+//        return tarjetasCollection;
+//    }
+//
+//    public void setTarjetasCollection(Collection<Tarjetas> tarjetasCollection) {
+//        this.tarjetasCollection = tarjetasCollection;
+//    }
     
 
     @Override

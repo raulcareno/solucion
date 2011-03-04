@@ -28,6 +28,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import peaje.Administrador;
 import peaje.validaciones;
 import hibernate.*;
+import hibernate.cargar.WorkingDirectory;
 import sources.FacturaSource;
 
 //import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
@@ -292,7 +293,12 @@ public class frmTicket extends javax.swing.JDialog {
 
 //                    viewer.show();
         try {
-            JasperReport masterReport = (JasperReport) JRLoader.loadObject("D:\\PROYECTOS\\peaje\\src\\reportes\\ticket.jasper");
+             WorkingDirectory w = new WorkingDirectory();
+             String ubicacionDirectorio = w.get()+"\\";
+                if(ubicacionDirectorio.contains("build"))
+                    ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio+"reportes\\ticket.jasper");
 
             Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = "+cod+" ");
             ArrayList detalle = new ArrayList();

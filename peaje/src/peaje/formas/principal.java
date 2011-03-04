@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import peaje.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +34,10 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.Timer;
 
 /**
  *
@@ -47,10 +52,23 @@ public class principal extends javax.swing.JFrame {
     public boolean grabar = false;
     public boolean modificar = false;
     public boolean nuevaTarjeta = false;
+    public Usuarios usuarioActual;
+    public Empresa empresaObj;
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
 
     /** Creates new form principal */
     public principal() {
+
+
+
+        this.addWindowListener(new WindowAdapter() {
+              public void windowClosing(WindowEvent we) {
+                //JOptionPane.showMessageDialog(puertoBase, "mensaje");
+                  System.exit(0);
+                
+              }
+        });
+      
         Image im = new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage();
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //WINDOWS
@@ -133,8 +151,6 @@ public class principal extends javax.swing.JFrame {
                 String ubicacionDirectorio = w.get()+"\\";
                 if(ubicacionDirectorio.contains("build"))
                     ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
-        
-                
                 String temp_string = ubicacionDirectorio+"lib\\javax.comm.properties";
                 Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
                 loadDriver_Method.setAccessible(true);
@@ -176,6 +192,10 @@ public class principal extends javax.swing.JFrame {
 
     }
 
+
+
+
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -186,20 +206,6 @@ public class principal extends javax.swing.JFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        frmLogin = new javax.swing.JDialog();
-        jPanel2 = new javax.swing.JPanel();
-        usuariot = new javax.swing.JFormattedTextField();
-        mes1 = new javax.swing.JLabel();
-        clave = new javax.swing.JPasswordField();
-        mes2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jButton9 = new javax.swing.JButton();
-        btnIngresar = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        procesando = new javax.swing.JButton();
         frmClientes = new javax.swing.JDialog();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -254,7 +260,7 @@ public class principal extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        descripcionTarjeta = new javax.swing.JTextArea();
         formaUsuarios = new javax.swing.JDialog();
         jPanel8 = new javax.swing.JPanel();
         codigoBuscar = new javax.swing.JFormattedTextField();
@@ -278,6 +284,18 @@ public class principal extends javax.swing.JFrame {
         jLabel31 = new javax.swing.JLabel();
         jSplitPane1 = new javax.swing.JSplitPane();
         contenedor = new javax.swing.JDesktopPane();
+        frmIngresarSistema = new javax.swing.JInternalFrame();
+        jPanel2 = new javax.swing.JPanel();
+        usuariot = new javax.swing.JFormattedTextField();
+        clave = new javax.swing.JPasswordField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton9 = new javax.swing.JButton();
+        btnIngresar = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        procesando = new javax.swing.JButton();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         miPanel = new javax.swing.JPanel();
         jCalendar1 = new com.toedter.calendar.JCalendar();
@@ -311,110 +329,6 @@ public class principal extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         mnAcerca = new javax.swing.JMenuItem();
-
-        frmLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        frmLogin.setModal(true);
-        frmLogin.getContentPane().setLayout(null);
-
-        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 1, true));
-        jPanel2.setLayout(null);
-
-        usuariot.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
-        usuariot.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                usuariotKeyPressed(evt);
-            }
-        });
-        jPanel2.add(usuariot);
-        usuariot.setBounds(100, 80, 110, 16);
-
-        mes1.setText("Usuario o Contrasenas");
-        jPanel2.add(mes1);
-        mes1.setBounds(230, 80, 120, 20);
-
-        clave.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
-        clave.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                claveFocusLost(evt);
-            }
-        });
-        clave.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                claveKeyPressed(evt);
-            }
-        });
-        jPanel2.add(clave);
-        clave.setBounds(100, 100, 110, 16);
-
-        mes2.setText("Incorrectas");
-        jPanel2.add(mes2);
-        mes2.setBounds(230, 100, 120, 20);
-
-        jLabel1.setText("Usuario:");
-        jPanel2.add(jLabel1);
-        jLabel1.setBounds(40, 80, 50, 14);
-
-        jLabel2.setText("Clave:");
-        jPanel2.add(jLabel2);
-        jLabel2.setBounds(50, 100, 50, 14);
-
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
-        jButton9.setText("Sallir");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton9);
-        jButton9.setBounds(210, 140, 100, 30);
-
-        btnIngresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lock.gif"))); // NOI18N
-        btnIngresar.setText("Ingresar");
-        btnIngresar.setMargin(new java.awt.Insets(1, 1, 1, 1));
-        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIngresarActionPerformed(evt);
-            }
-        });
-        btnIngresar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnIngresarKeyPressed(evt);
-            }
-        });
-        jPanel2.add(btnIngresar);
-        btnIngresar.setBounds(80, 140, 110, 30);
-
-        jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
-        jPanel3.setLayout(null);
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
-        jLabel8.setForeground(new java.awt.Color(0, 51, 51));
-        jLabel8.setText("Acceso al Sistema");
-        jPanel3.add(jLabel8);
-        jLabel8.setBounds(10, 0, 270, 15);
-
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
-        jLabel10.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel10.setText("Ingrese el usuario proporcionado por el Administrador");
-        jPanel3.add(jLabel10);
-        jLabel10.setBounds(10, 20, 300, 13);
-
-        procesando.setBackground(new java.awt.Color(204, 204, 255));
-        procesando.setFont(new java.awt.Font("Tahoma", 0, 10));
-        procesando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
-        procesando.setBorderPainted(false);
-        procesando.setContentAreaFilled(false);
-        procesando.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        procesando.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
-        procesando.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        jPanel3.add(procesando);
-        procesando.setBounds(280, 0, 140, 40);
-
-        jPanel2.add(jPanel3);
-        jPanel3.setBounds(2, 2, 396, 40);
-
-        frmLogin.getContentPane().add(jPanel2);
-        jPanel2.setBounds(0, 0, 400, 220);
 
         frmClientes.setTitle("Clientes");
         frmClientes.getContentPane().setLayout(null);
@@ -496,26 +410,29 @@ public class principal extends javax.swing.JFrame {
         jPanel4.add(telefono);
         telefono.setBounds(80, 70, 220, 20);
 
-        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.tarjetasCollection}");
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, tarjetas);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${habilitada}"));
-        columnBinding.setColumnName("Habilitada");
-        columnBinding.setColumnClass(Boolean.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tarjeta}"));
-        columnBinding.setColumnName("Tarjeta");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${desde}"));
-        columnBinding.setColumnName("Desde");
-        columnBinding.setColumnClass(java.util.Date.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${hasta}"));
-        columnBinding.setColumnName("Hasta");
-        columnBinding.setColumnClass(java.util.Date.class);
-        columnBinding.setEditable(false);
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
+        tarjetas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Habilitada", "Tarjeta", "Desde", "Hasta"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tarjetas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tarjetasMouseClicked(evt);
@@ -785,9 +702,9 @@ public class principal extends javax.swing.JFrame {
         formaTarjetas.getContentPane().add(jLabel22);
         jLabel22.setBounds(20, 50, 70, 14);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        descripcionTarjeta.setColumns(20);
+        descripcionTarjeta.setRows(5);
+        jScrollPane2.setViewportView(descripcionTarjeta);
 
         formaTarjetas.getContentPane().add(jScrollPane2);
         jScrollPane2.setBounds(90, 50, 240, 40);
@@ -935,6 +852,112 @@ public class principal extends javax.swing.JFrame {
         });
 
         contenedor.setBackground(new java.awt.Color(240, 240, 240));
+
+        frmIngresarSistema.setTitle("Seguridad");
+        frmIngresarSistema.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/unlock.gif"))); // NOI18N
+        try {
+            frmIngresarSistema.setSelected(true);
+        } catch (java.beans.PropertyVetoException e1) {
+            e1.printStackTrace();
+        }
+        frmIngresarSistema.setVisible(true);
+        frmIngresarSistema.getContentPane().setLayout(null);
+
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 1, true));
+        jPanel2.setLayout(null);
+
+        usuariot.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
+        usuariot.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                usuariotKeyPressed(evt);
+            }
+        });
+        jPanel2.add(usuariot);
+        usuariot.setBounds(120, 20, 110, 16);
+
+        clave.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
+        clave.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                claveFocusLost(evt);
+            }
+        });
+        clave.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                claveKeyPressed(evt);
+            }
+        });
+        jPanel2.add(clave);
+        clave.setBounds(120, 40, 110, 16);
+
+        jLabel1.setText("Usuario:");
+        jPanel2.add(jLabel1);
+        jLabel1.setBounds(60, 20, 50, 14);
+
+        jLabel2.setText("Clave:");
+        jPanel2.add(jLabel2);
+        jLabel2.setBounds(70, 40, 50, 14);
+
+        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
+        jButton9.setText("Sallir");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton9);
+        jButton9.setBounds(200, 80, 100, 30);
+
+        btnIngresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lock.gif"))); // NOI18N
+        btnIngresar.setText("Ingresar");
+        btnIngresar.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresarActionPerformed(evt);
+            }
+        });
+        btnIngresar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnIngresarKeyPressed(evt);
+            }
+        });
+        jPanel2.add(btnIngresar);
+        btnIngresar.setBounds(70, 80, 110, 30);
+
+        frmIngresarSistema.getContentPane().add(jPanel2);
+        jPanel2.setBounds(0, 40, 390, 140);
+
+        jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
+        jPanel3.setLayout(null);
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel8.setText("Acceso al Sistema");
+        jPanel3.add(jLabel8);
+        jLabel8.setBounds(10, 0, 270, 15);
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel10.setText("Ingrese el usuario proporcionado por el Administrador");
+        jPanel3.add(jLabel10);
+        jLabel10.setBounds(10, 20, 300, 13);
+
+        procesando.setBackground(new java.awt.Color(204, 204, 255));
+        procesando.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        procesando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
+        procesando.setBorderPainted(false);
+        procesando.setContentAreaFilled(false);
+        procesando.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        procesando.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
+        procesando.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel3.add(procesando);
+        procesando.setBounds(280, 0, 140, 40);
+
+        frmIngresarSistema.getContentPane().add(jPanel3);
+        jPanel3.setBounds(0, 0, 396, 40);
+
+        frmIngresarSistema.setBounds(120, 170, 410, 220);
+        contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         jSplitPane1.setRightComponent(contenedor);
 
         jXTaskPaneContainer1.setAlignmentX(0.1F);
@@ -1104,8 +1127,8 @@ public class principal extends javax.swing.JFrame {
         jPanel1.add(tarjetatxt);
         tarjetatxt.setBounds(10, 30, 110, 20);
 
-        placa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         placa.setEditable(false);
+        placa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jPanel1.add(placa);
         placa.setBounds(110, 30, 70, 20);
 
@@ -1201,16 +1224,17 @@ public class principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 public void logear(){
-                frmLogin.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
+    frmIngresarSistema.setVisible(true);
+                //frmLogin.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
                 adm = new Administrador();
-                frmLogin.setModal(true);
-                frmLogin.setSize(400, 230);
-                frmLogin.setLocation(350, 300);
-                frmLogin.setFocusable(true);
-                frmLogin.setResizable(false);
-                frmLogin.setTitle("Inicio de Sesión");
-                frmLogin.setUndecorated(true);
-                frmLogin.show();
+//                frmLogin.setModal(true);
+//                frmLogin.setSize(400, 230);
+//                frmLogin.setLocation(350, 300);
+//                frmLogin.setFocusable(true);
+//                frmLogin.setResizable(false);
+//                frmLogin.setTitle("Inicio de Sesión");
+//                frmLogin.setUndecorated(true);
+//                frmLogin.show();
 }
     public Boolean comprobar() {
 
@@ -1293,9 +1317,11 @@ public void logear(){
             usuariot.setEditable(true);
             usuariot.setText("");
             clave.setText("");
-            frmLogin.dispose();
-
-        } else {
+            frmIngresarSistema.setVisible(false);
+            usuarioActual = usu;
+             List<Empresa> emp = adm.listar("Select o from Empresa as o ");
+                this.empresaObj = emp.get(0);
+           } else {
             clave.setEditable(true);
             usuariot.setEditable(true);
             usuariot.setText("");
@@ -1386,6 +1412,11 @@ public void logear(){
 
             try {
                 Tarjetas tarje = (Tarjetas) adm.buscarClave(tarjetatxt.getText(), Tarjetas.class);
+                try {
+                    String tar = tarje.getTarjeta();
+                } catch (Exception e) {
+                    tarje = null;
+                }
                 if (tarje == null) {
 //                      int val = JOptionPane.showConfirmDialog(getContentPane(), "Tarjeta " + "  NO registrada, \n Desea Registrar la tarjeta? ");
 //                    if(val ==0){
@@ -1613,6 +1644,11 @@ public void logear(){
         try {
             // TODO add your handling code here:
             Tarjetas tarje = (Tarjetas) adm.buscarClave(tarjetatxt.getText(), Tarjetas.class);
+            try {
+                String cli = tarje.getTarjeta();
+            } catch (Exception e) {
+                tarje = null;
+            }
             if (tarje != null) {
                 cliente.setText(tarje.getCliente().getNombres());
             } else {
@@ -1735,14 +1771,14 @@ public void logear(){
         // TODO add your handling code here:
         usuario = new Usuarios();
         permisos = new Accesos();
-
-        frmLogin.setModal(true);
-        frmLogin.setSize(400, 230);
-        frmLogin.setLocation(350, 300);
-        frmLogin.setResizable(false);
-        frmLogin.setTitle("Inicio de Sesión");
-        frmLogin.setUndecorated(true);
-        frmLogin.show();
+        frmIngresarSistema.setVisible(true);
+//        frmLogin.setModal(true);
+//        frmLogin.setSize(400, 230);
+//        frmLogin.setLocation(350, 300);
+//        frmLogin.setResizable(false);
+//        frmLogin.setTitle("Inicio de Sesión");
+//        frmLogin.setUndecorated(true);
+//        frmLogin.show();
 
     }//GEN-LAST:event_mnCerrarActionPerformed
 
@@ -1829,6 +1865,7 @@ public void logear(){
         noTarjeta.setText(tarjeta.getTarjeta());
         fechaDesde.setDate(tarjeta.getDesde());
         fechaHasta.setDate(tarjeta.getHasta());
+        descripcionTarjeta.setText(tarjeta.getDescripcion());
         placa1.setText(tarjeta.getPlaca());
 //                horaDesde.setValue(tarjeta.getHorainicio());
 //                horaHasta.setValue(tarjeta.getHorafin());
@@ -1869,7 +1906,7 @@ public void logear(){
                 formaTarjetas.setLocation(250, 70);
                 formaTarjetas.show();
             } catch (Exception ex) {
-                Logger.getLogger(frmClientes2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -1928,6 +1965,9 @@ public void logear(){
         usuarioObj = new Clientes();
         bindingGroup.unbind();
         bindingGroup.bind();
+        DefaultTableModel dtm = (DefaultTableModel) tarjetas.getModel();
+        dtm.getDataVector().removeAllElements();
+        tarjetas.setModel(dtm);
 
     }
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -1962,7 +2002,7 @@ public void logear(){
 
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                            Logger.getLogger(frmClientes2.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
                             return;
                         }
                     } else {
@@ -1974,7 +2014,7 @@ public void logear(){
                             formaTarjetas.show();
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                            Logger.getLogger(frmClientes2.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
                             return;
                         }
                     }
@@ -2045,7 +2085,7 @@ public void logear(){
                 adm.eliminarObjeto(Clientes.class, usuarioObj.getCodigo());
                 this.limpiar();
             } catch (Exception ex) {
-                Logger.getLogger(frmClientes2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } else {
@@ -2071,6 +2111,7 @@ public void logear(){
             fechaHas.setHours(23);
             fechaHas.setMinutes(59);
             fechaHas.setSeconds(59);
+            tarjeta.setDescripcion(descripcionTarjeta.getText());
             tarjeta.setHasta(fechaHas);
             tarjeta.setDias((Integer) ingresos.getValue());
             tarjeta.setIngresos((Integer) ingresos.getValue());
@@ -2087,9 +2128,7 @@ public void logear(){
             tarjeta.setPlaca(placa1.getText());
             adm.actualizar(tarjeta);
             formaTarjetas.dispose();
-            usuarioObj = (Clientes) adm.buscarClave(new Integer(usuarioObj.getCodigo()), Clientes.class);
-            bindingGroup.unbind();
-            bindingGroup.bind();
+            llenarTabla(usuarioObj.getCodigo());
             formaUsuarios.dispose();
 
         } catch (Exception e) {
@@ -2131,7 +2170,7 @@ public void logear(){
                             codigoBuscar.requestFocusInWindow();
                         }
                     } catch (Exception ex) {
-                        Logger.getLogger(frmClientes2.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                     procesando.setVisible(false);
@@ -2150,16 +2189,34 @@ public void logear(){
             try {
                 int fila = busquedaTabla.getSelectedRow();
                 this.usuarioObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
-                bindingGroup.unbind();
-                bindingGroup.bind();
+  llenarTabla(usuarioObj.getCodigo());
 
                 formaUsuarios.dispose();
+                 bindingGroup.unbind();
+                bindingGroup.bind();
             } catch (Exception ex) {
-                Logger.getLogger(frmClientes2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         //        JOptionPane.showMessageDialog(this, usuarioObj);
 }//GEN-LAST:event_busquedaTablaMouseClicked
+public void llenarTabla(Integer clie){
+    List<Tarjetas> tarjetasRs =   adm.query("Select o from Tarjetas as o where o.cliente.codigo = '"+clie+"'");
+
+            DefaultTableModel dtm =  (DefaultTableModel) tarjetas.getModel();
+            dtm.getDataVector().removeAllElements();
+
+            for (Iterator<Tarjetas> it = tarjetasRs.iterator(); it.hasNext();) {
+                    Tarjetas tarjetasIt = it.next();
+                   Object[] obj = new Object[4];
+                   obj[0] = tarjetasIt.getHabilitada();
+                    obj[1] = tarjetasIt.getTarjeta();
+                    obj[2] = tarjetasIt.getDesde();
+                    obj[3] = tarjetasIt.getHasta();
+                    dtm.addRow(obj);
+               }
+              tarjetas.setModel(dtm);
+}
 
     private void busquedaTablaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_busquedaTablaKeyPressed
         // TODO add your handling code here:
@@ -2167,12 +2224,12 @@ public void logear(){
             try {
                 int fila = busquedaTabla.getSelectedRow();
                 this.usuarioObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
-
-                bindingGroup.unbind();
-                bindingGroup.bind();
+        llenarTabla(usuarioObj.getCodigo());
                 formaUsuarios.dispose();
+                 bindingGroup.unbind();
+                bindingGroup.bind();
             } catch (Exception ex) {
-                Logger.getLogger(frmClientes2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             formaUsuarios.dispose();
@@ -2243,6 +2300,7 @@ public void logear(){
     private javax.swing.JFormattedTextField codigoBuscar;
     public javax.swing.JDesktopPane contenedor;
     private javax.swing.JButton continuar;
+    private javax.swing.JTextArea descripcionTarjeta;
     private javax.swing.JPanel diasHabiles;
     private javax.swing.JFormattedTextField direccion;
     private javax.swing.JCheckBox domingo;
@@ -2251,7 +2309,7 @@ public void logear(){
     private javax.swing.JDialog formaTarjetas;
     private javax.swing.JDialog formaUsuarios;
     private javax.swing.JDialog frmClientes;
-    private javax.swing.JDialog frmLogin;
+    private javax.swing.JInternalFrame frmIngresarSistema;
     private javax.swing.JDialog frmRegistrar;
     private javax.swing.JSpinner horaDesde;
     private javax.swing.JSpinner horaHasta;
@@ -2307,7 +2365,6 @@ public void logear(){
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private org.jdesktop.swingx.JXTaskPane jXTaskPane1;
@@ -2316,8 +2373,6 @@ public void logear(){
     private javax.swing.JCheckBox jueves;
     private javax.swing.JCheckBox lunes;
     private javax.swing.JCheckBox martes;
-    private javax.swing.JLabel mes1;
-    private javax.swing.JLabel mes2;
     private javax.swing.JPanel miPanel;
     private javax.swing.JCheckBox miercoles;
     private javax.swing.JMenuItem mnAcerca;
