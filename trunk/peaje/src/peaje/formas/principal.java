@@ -162,11 +162,11 @@ public class principal extends javax.swing.JFrame {
                 while (portList.hasMoreElements()) {
                     portId = (CommPortIdentifier) portList.nextElement();
                     if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                        if (portId.getName().equals("COM3")) {
+                        if (portId.getName().equals("COM30")) {
                             reader = new SimpleRead(portId, this);
                             read.add(reader);
 //                            break;
-                        } else if (portId.getName().equals("COM1")) {
+                        } else if (portId.getName().equals("COM10")) {
                             reader = new SimpleRead(portId, this);
                             read.add(reader);
 //                            break;
@@ -292,6 +292,8 @@ public class principal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
         btnIngresar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        puerto = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -923,26 +925,44 @@ public class principal extends javax.swing.JFrame {
         jPanel2.add(btnIngresar);
         btnIngresar.setBounds(70, 80, 110, 30);
 
+        jButton1.setText("ejectuar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1);
+        jButton1.setBounds(0, 60, 73, 23);
+
+        puerto.setText("COM3");
+        puerto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                puertoActionPerformed(evt);
+            }
+        });
+        jPanel2.add(puerto);
+        puerto.setBounds(0, 30, 35, 20);
+
         frmIngresarSistema.getContentPane().add(jPanel2);
         jPanel2.setBounds(0, 40, 390, 140);
 
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Acceso al Sistema");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Ingrese el usuario proporcionado por el Administrador");
         jPanel3.add(jLabel10);
         jLabel10.setBounds(10, 20, 300, 13);
 
         procesando.setBackground(new java.awt.Color(204, 204, 255));
-        procesando.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        procesando.setFont(new java.awt.Font("Tahoma", 0, 10));
         procesando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
         procesando.setBorderPainted(false);
         procesando.setContentAreaFilled(false);
@@ -2263,6 +2283,15 @@ public void llenarTabla(Integer clie){
 
     }//GEN-LAST:event_continuarActionPerformed
 
+    private void puertoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_puertoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_puertoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+//        demos.SimpleWrite.llamar(puerto.getText());
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2315,6 +2344,7 @@ public void llenarTabla(Integer clie){
     private javax.swing.JSpinner horaHasta;
     private javax.swing.JSpinner ingresos;
     private javax.swing.JFormattedTextField ipBase;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton9;
     private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
@@ -2385,6 +2415,7 @@ public void llenarTabla(Integer clie){
     private javax.swing.JFormattedTextField placa;
     private javax.swing.JFormattedTextField placa1;
     public javax.swing.JButton procesando;
+    private javax.swing.JTextField puerto;
     private javax.swing.JFormattedTextField puertoBase;
     private javax.swing.JCheckBox sabado;
     private javax.swing.JSpinner spConsumo;

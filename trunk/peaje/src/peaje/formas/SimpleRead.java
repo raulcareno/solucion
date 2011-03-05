@@ -91,6 +91,7 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
                 break;
         }
         //System.out.println(""+tarjeta);
+        
         if (tarjeta.length() >= 11) {
 
             System.out.println("" + tarjeta);
@@ -98,6 +99,7 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
             princip.tarjetatxt.setText(tarjeta);
             princip.buscarTarjeta();
             tarjeta = "";
+            peaje.formas.SimpleWrite.llamar("COM3");
             return;
         }
 
