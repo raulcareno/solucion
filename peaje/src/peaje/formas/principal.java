@@ -960,7 +960,7 @@ usuariot.requestFocusInWindow();
         jLabel10.setBounds(10, 20, 300, 13);
 
         procesando.setBackground(new java.awt.Color(204, 204, 255));
-        procesando.setFont(new java.awt.Font("Tahoma", 0, 10));
+        procesando.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         procesando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
         procesando.setBorderPainted(false);
         procesando.setContentAreaFilled(false);
@@ -968,7 +968,7 @@ usuariot.requestFocusInWindow();
         procesando.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
         procesando.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         jPanel3.add(procesando);
-        procesando.setBounds(280, 0, 140, 40);
+        procesando.setBounds(280, 0, 110, 40);
 
         frmIngresarSistema.getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 396, 40);
