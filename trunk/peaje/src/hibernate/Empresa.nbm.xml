@@ -23,5 +23,12 @@
     <property column="puerto5" name="puerto5" type="java.lang.String"/>
     <property column="puerto6" name="puerto6" type="java.lang.String"/>
     <property column="puerto7" name="puerto7" type="java.lang.String"/>
+    <property column="puerta1" name="puerta1" type="java.lang.String"/>
+    <property column="puerta2" name="puerta2" type="java.lang.String"/>
+    <property column="puerta3" name="puerta3" type="java.lang.String"/>
+    <property column="puerta4" name="puerta4" type="java.lang.String"/>
+    <property column="puerta5" name="puerta5" type="java.lang.String"/>
+    <property column="puerta6" name="puerta6" type="java.lang.String"/>
+    <property column="puerta7" name="puerta7" type="java.lang.String"/>
   </class>
 </hibernate-mapping>
