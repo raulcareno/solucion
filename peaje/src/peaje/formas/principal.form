@@ -1216,6 +1216,7 @@
                         </Property>
                       </Properties>
                       <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="usuariotActionPerformed"/>
                         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="usuariotKeyPressed"/>
                       </Events>
                       <Constraints>
@@ -1297,32 +1298,6 @@
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                           <AbsoluteConstraints x="70" y="80" width="110" height="30"/>
-                        </Constraint>
-                      </Constraints>
-                    </Component>
-                    <Component class="javax.swing.JButton" name="jButton1">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="ejectuar"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
-                      </Events>
-                      <Constraints>
-                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                          <AbsoluteConstraints x="0" y="60" width="-1" height="-1"/>
-                        </Constraint>
-                      </Constraints>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="puerto">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="COM3"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="puertoActionPerformed"/>
-                      </Events>
-                      <Constraints>
-                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                          <AbsoluteConstraints x="0" y="30" width="-1" height="-1"/>
                         </Constraint>
                       </Constraints>
                     </Component>
@@ -1461,7 +1436,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Container class="org.jdesktop.swingx.JXTaskPane" name="jXTaskPane1">
+            <Container class="org.jdesktop.swingx.JXTaskPane" name="contenedor1">
               <Properties>
                 <Property name="title" type="java.lang.String" value="Control"/>
               </Properties>
@@ -1540,7 +1515,7 @@
                 </Container>
               </SubComponents>
             </Container>
-            <Container class="org.jdesktop.swingx.JXTaskPane" name="jXTaskPane2">
+            <Container class="org.jdesktop.swingx.JXTaskPane" name="contenedor2">
               <Properties>
                 <Property name="title" type="java.lang.String" value="Administracion"/>
               </Properties>
@@ -1585,7 +1560,7 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEmpresaActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="tarifas">
+                    <Component class="javax.swing.JButton" name="btnTarifas">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/images/dinero.gif"/>
@@ -1597,7 +1572,7 @@
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tarifasActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTarifasActionPerformed"/>
                       </Events>
                     </Component>
                   </SubComponents>

@@ -56,6 +56,17 @@ public class principal extends javax.swing.JFrame {
     public Empresa empresaObj;
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
 
+    
+    public void habilitarBotones(Boolean estado){
+        btnClientes.setEnabled(estado);
+        btnCobrar.setEnabled(estado);
+        btnEmpresa.setEnabled(estado);
+        btnTicket.setEnabled(estado);
+        btnTarifas.setEnabled(estado);
+        btnReportes.setEnabled(estado);
+        btnUsuarios.setEnabled(estado);
+
+    }
     /** Creates new form principal */
     public principal() {
 
@@ -131,7 +142,7 @@ public class principal extends javax.swing.JFrame {
             }
             this.setIconImage(im);
 
-
+            habilitarBotones(false);
             if (comprobar()) {
                 logear();
             } else {
@@ -145,6 +156,7 @@ public class principal extends javax.swing.JFrame {
                 frmRegistrar.setUndecorated(false);
                 frmRegistrar.show();
  logear();
+  
             }
             try {
                 WorkingDirectory w = new WorkingDirectory();
@@ -188,7 +200,7 @@ public class principal extends javax.swing.JFrame {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-
+usuariot.requestFocusInWindow();
 
     }
 
@@ -292,8 +304,6 @@ public class principal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
         btnIngresar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        puerto = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -301,17 +311,17 @@ public class principal extends javax.swing.JFrame {
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         miPanel = new javax.swing.JPanel();
         jCalendar1 = new com.toedter.calendar.JCalendar();
-        jXTaskPane1 = new org.jdesktop.swingx.JXTaskPane();
+        contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
         btnClientes = new javax.swing.JButton();
         btnTicket = new javax.swing.JButton();
         btnCobrar = new javax.swing.JButton();
         btnReportes = new javax.swing.JButton();
-        jXTaskPane2 = new org.jdesktop.swingx.JXTaskPane();
+        contenedor2 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar2 = new javax.swing.JToolBar();
         btnUsuarios = new javax.swing.JButton();
         btnEmpresa = new javax.swing.JButton();
-        tarifas = new javax.swing.JButton();
+        btnTarifas = new javax.swing.JButton();
         taskTarjeta = new org.jdesktop.swingx.JXTaskPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -869,6 +879,11 @@ public class principal extends javax.swing.JFrame {
         jPanel2.setLayout(null);
 
         usuariot.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
+        usuariot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usuariotActionPerformed(evt);
+            }
+        });
         usuariot.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 usuariotKeyPressed(evt);
@@ -924,24 +939,6 @@ public class principal extends javax.swing.JFrame {
         });
         jPanel2.add(btnIngresar);
         btnIngresar.setBounds(70, 80, 110, 30);
-
-        jButton1.setText("ejectuar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton1);
-        jButton1.setBounds(0, 60, 73, 23);
-
-        puerto.setText("COM3");
-        puerto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                puertoActionPerformed(evt);
-            }
-        });
-        jPanel2.add(puerto);
-        puerto.setBounds(0, 30, 35, 20);
 
         frmIngresarSistema.getContentPane().add(jPanel2);
         jPanel2.setBounds(0, 40, 390, 140);
@@ -1001,7 +998,7 @@ public class principal extends javax.swing.JFrame {
         jCalendar1.setWeekdayForeground(new java.awt.Color(0, 0, 0));
         jXTaskPaneContainer1.add(jCalendar1);
 
-        jXTaskPane1.setTitle("Control");
+        contenedor1.setTitle("Control");
 
         jToolBar1.setFloatable(false);
         jToolBar1.setOrientation(1);
@@ -1058,11 +1055,11 @@ public class principal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnReportes);
 
-        jXTaskPane1.getContentPane().add(jToolBar1);
+        contenedor1.getContentPane().add(jToolBar1);
 
-        jXTaskPaneContainer1.add(jXTaskPane1);
+        jXTaskPaneContainer1.add(contenedor1);
 
-        jXTaskPane2.setTitle("Administracion");
+        contenedor2.setTitle("Administracion");
 
         jToolBar2.setFloatable(false);
         jToolBar2.setOrientation(1);
@@ -1095,22 +1092,22 @@ public class principal extends javax.swing.JFrame {
         });
         jToolBar2.add(btnEmpresa);
 
-        tarifas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
-        tarifas.setMnemonic('R');
-        tarifas.setText("Tarifas");
-        tarifas.setFocusable(false);
-        tarifas.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        tarifas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        tarifas.addActionListener(new java.awt.event.ActionListener() {
+        btnTarifas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
+        btnTarifas.setMnemonic('R');
+        btnTarifas.setText("Tarifas");
+        btnTarifas.setFocusable(false);
+        btnTarifas.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnTarifas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnTarifas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tarifasActionPerformed(evt);
+                btnTarifasActionPerformed(evt);
             }
         });
-        jToolBar2.add(tarifas);
+        jToolBar2.add(btnTarifas);
 
-        jXTaskPane2.getContentPane().add(jToolBar2);
+        contenedor2.getContentPane().add(jToolBar2);
 
-        jXTaskPaneContainer1.add(jXTaskPane2);
+        jXTaskPaneContainer1.add(contenedor2);
 
         taskTarjeta.setCollapsed(true);
         taskTarjeta.setTitle("Registro Tarjeta");
@@ -1341,6 +1338,7 @@ public void logear(){
             usuarioActual = usu;
              List<Empresa> emp = adm.listar("Select o from Empresa as o ");
                 this.empresaObj = emp.get(0);
+                 habilitarBotones(true);
            } else {
             clave.setEditable(true);
             usuariot.setEditable(true);
@@ -1701,7 +1699,7 @@ public void logear(){
 
     }//GEN-LAST:event_btnEmpresaActionPerformed
 
-    private void tarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tarifasActionPerformed
+    private void btnTarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTarifasActionPerformed
         // TODO add your handling code here:
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tarifas' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' ");
@@ -1718,7 +1716,7 @@ public void logear(){
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_tarifasActionPerformed
+    }//GEN-LAST:event_btnTarifasActionPerformed
 
     private void btnTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTicketActionPerformed
         try {
@@ -1792,6 +1790,8 @@ public void logear(){
         usuario = new Usuarios();
         permisos = new Accesos();
         frmIngresarSistema.setVisible(true);
+        habilitarBotones(false);
+        usuariot.requestFocusInWindow();
 //        frmLogin.setModal(true);
 //        frmLogin.setSize(400, 230);
 //        frmLogin.setLocation(350, 300);
@@ -2283,14 +2283,9 @@ public void llenarTabla(Integer clie){
 
     }//GEN-LAST:event_continuarActionPerformed
 
-    private void puertoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_puertoActionPerformed
+    private void usuariotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariotActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_puertoActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-//        demos.SimpleWrite.llamar(puerto.getText());
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_usuariotActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2318,6 +2313,7 @@ public void llenarTabla(Integer clie){
     private javax.swing.JButton btnReportes;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSalirTarjetas;
+    private javax.swing.JButton btnTarifas;
     private javax.swing.JButton btnTicket;
     private javax.swing.JButton btnUsuarios;
     private javax.swing.JTable busquedaTabla;
@@ -2328,6 +2324,8 @@ public void llenarTabla(Integer clie){
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
     public javax.swing.JDesktopPane contenedor;
+    private org.jdesktop.swingx.JXTaskPane contenedor1;
+    private org.jdesktop.swingx.JXTaskPane contenedor2;
     private javax.swing.JButton continuar;
     private javax.swing.JTextArea descripcionTarjeta;
     private javax.swing.JPanel diasHabiles;
@@ -2344,7 +2342,6 @@ public void llenarTabla(Integer clie){
     private javax.swing.JSpinner horaHasta;
     private javax.swing.JSpinner ingresos;
     private javax.swing.JFormattedTextField ipBase;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton9;
     private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
@@ -2397,8 +2394,6 @@ public void llenarTabla(Integer clie){
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
-    private org.jdesktop.swingx.JXTaskPane jXTaskPane1;
-    private org.jdesktop.swingx.JXTaskPane jXTaskPane2;
     private org.jdesktop.swingx.JXTaskPaneContainer jXTaskPaneContainer1;
     private javax.swing.JCheckBox jueves;
     private javax.swing.JCheckBox lunes;
@@ -2415,13 +2410,11 @@ public void llenarTabla(Integer clie){
     private javax.swing.JFormattedTextField placa;
     private javax.swing.JFormattedTextField placa1;
     public javax.swing.JButton procesando;
-    private javax.swing.JTextField puerto;
     private javax.swing.JFormattedTextField puertoBase;
     private javax.swing.JCheckBox sabado;
     private javax.swing.JSpinner spConsumo;
     private javax.swing.JSpinner spIngreso;
     private javax.swing.JSpinner spSalida;
-    private javax.swing.JButton tarifas;
     private javax.swing.JTable tarjetas;
     public javax.swing.JFormattedTextField tarjetatxt;
     private org.jdesktop.swingx.JXTaskPane taskTarjeta;

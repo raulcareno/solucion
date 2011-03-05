@@ -54,6 +54,20 @@ public class Empresa implements Serializable {
     private String puerto6;
     @Column(name = "puerto7")
     private String puerto7;
+    @Column(name = "puerta1")
+    private String puerta1;
+    @Column(name = "puerta2")
+    private String puerta2;
+    @Column(name = "puerta3")
+    private String puerta3;
+    @Column(name = "puerta4")
+    private String puerta4;
+    @Column(name = "puerta5")
+    private String puerta5;
+    @Column(name = "puerta6")
+    private String puerta6;
+    @Column(name = "puerta7")
+    private String puerta7;
 
     public Empresa() {
     }
@@ -206,6 +220,63 @@ public class Empresa implements Serializable {
         this.puerto7 = puerto7;
     }
 
+    public String getPuerta1() {
+        return puerta1;
+    }
+
+    public void setPuerta1(String puerta1) {
+        this.puerta1 = puerta1;
+    }
+
+    public String getPuerta2() {
+        return puerta2;
+    }
+
+    public void setPuerta2(String puerta2) {
+        this.puerta2 = puerta2;
+    }
+
+    public String getPuerta3() {
+        return puerta3;
+    }
+
+    public void setPuerta3(String puerta3) {
+        this.puerta3 = puerta3;
+    }
+
+    public String getPuerta4() {
+        return puerta4;
+    }
+
+    public void setPuerta4(String puerta4) {
+        this.puerta4 = puerta4;
+    }
+
+    public String getPuerta5() {
+        return puerta5;
+    }
+
+    public void setPuerta5(String puerta5) {
+        this.puerta5 = puerta5;
+    }
+
+    public String getPuerta6() {
+        return puerta6;
+    }
+
+    public void setPuerta6(String puerta6) {
+        this.puerta6 = puerta6;
+    }
+
+    public String getPuerta7() {
+        return puerta7;
+    }
+
+    public void setPuerta7(String puerta7) {
+        this.puerta7 = puerta7;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;
