@@ -82,7 +82,6 @@ public class SimpleWrite {
 //                            outputStream.write(uno.getBytes());
                             String dos = "2";
                             outputStream.write(dos.getBytes());
-                            
                         } catch (IOException e) {
                         }
                         try {
