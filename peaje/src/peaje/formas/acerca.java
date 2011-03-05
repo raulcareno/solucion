@@ -54,7 +54,7 @@ public class acerca extends javax.swing.JDialog {
 
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
         getContentPane().add(imageLabel);
-        imageLabel.setBounds(40, 40, 74, 80);
+        imageLabel.setBounds(40, 40, 47, 80);
 
         appTitleLabel.setFont(appTitleLabel.getFont().deriveFont(appTitleLabel.getFont().getStyle() | java.awt.Font.BOLD, appTitleLabel.getFont().getSize()+4));
         appTitleLabel.setText("SISTEMA DE PARQUEADERO");
@@ -92,9 +92,9 @@ public class acerca extends javax.swing.JDialog {
         getContentPane().add(appHomepageLabel1);
         appHomepageLabel1.setBounds(230, 150, 143, 14);
 
-        appHomepageLabel2.setText("http://www.jcinform.3a2.com");
+        appHomepageLabel2.setText("http://www.jcinform.com");
         getContentPane().add(appHomepageLabel2);
-        appHomepageLabel2.setBounds(230, 110, 143, 14);
+        appHomepageLabel2.setBounds(230, 110, 121, 14);
 
         jButton1.setText("Aceptar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

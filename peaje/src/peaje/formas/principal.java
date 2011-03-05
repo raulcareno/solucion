@@ -333,6 +333,7 @@ usuariot.requestFocusInWindow();
         spConsumo = new javax.swing.JSpinner();
         spIngreso = new javax.swing.JSpinner();
         spSalida = new javax.swing.JSpinner();
+        jLabel32 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnCerrar = new javax.swing.JMenuItem();
@@ -941,7 +942,7 @@ usuariot.requestFocusInWindow();
         btnIngresar.setBounds(70, 80, 110, 30);
 
         frmIngresarSistema.getContentPane().add(jPanel2);
-        jPanel2.setBounds(0, 40, 390, 140);
+        jPanel2.setBounds(0, 40, 390, 150);
 
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
@@ -1030,7 +1031,7 @@ usuariot.requestFocusInWindow();
         });
         jToolBar1.add(btnTicket);
 
-        btnCobrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Previous.gif"))); // NOI18N
+        btnCobrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
         btnCobrar.setText("Cobrar");
         btnCobrar.setFocusable(false);
         btnCobrar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -1189,6 +1190,10 @@ usuariot.requestFocusInWindow();
 
         jXTaskPaneContainer1.add(taskTarjeta);
 
+        jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
+        jLabel32.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jXTaskPaneContainer1.add(jLabel32);
+
         jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
 
         getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
@@ -1220,16 +1225,7 @@ usuariot.requestFocusInWindow();
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Ayuda");
-
-        jMenuItem3.setText("Ayuda de Contenidos");
         jMenu2.add(jMenuItem3);
-
-        mnAcerca.setText("Acerca de..");
-        mnAcerca.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnAcercaActionPerformed(evt);
-            }
-        });
         jMenu2.add(mnAcerca);
 
         jMenuBar1.add(jMenu2);
@@ -2369,6 +2365,7 @@ public void llenarTabla(Integer clie){
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

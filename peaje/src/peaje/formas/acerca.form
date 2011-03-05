@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.6" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
@@ -177,7 +177,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="appHomepageLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="http://www.jcinform.3a2.com"/>
+        <Property name="text" type="java.lang.String" value="http://www.jcinform.com"/>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
