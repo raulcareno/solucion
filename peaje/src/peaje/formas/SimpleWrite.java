@@ -1,49 +1,64 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package peaje.formas;
+
  
-import hibernate.cargar.WorkingDirectory;
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.comm.*;
 
+/**
+ * Class declaration
+ *
+ *
+ * @author
+ * @version 1.10, 08/04/00
+ */
 public class SimpleWrite {
-//    static Enumeration portList;
-//    static CommPortIdentifier portId;
-//    static String messageString = "Hello, world!\n";
-//    static SerialPort serialPort;
-//    static OutputStream outputStream;
-   static SerialPort serialPort = null;
-    public static void main(String[] args) {
-        try {
-             WorkingDirectory w = new WorkingDirectory();
-//            String query = "";
-          String ubicacionDirectorio = w.get()+"\\";
-                if(ubicacionDirectorio.contains("build"))
-                    ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+    static Enumeration	      portList;
+    static CommPortIdentifier portId;
+    static String	      messageString = "Hello, world!";
+    static SerialPort	      serialPort;
+    static OutputStream       outputStream;
+    static boolean	      outputBufferEmptyFlag = false;
+    /**
+     * Method declaration
+     *
+     *
+     * @param args
+     *
+     * @see
+     */
+    public static void llamar(String puerto) {
+	boolean portFound = false;
+	String  defaultPort = puerto;
+//	if (args.length > 0) {
+//	    defaultPort = args[0];
+//	}
+	portList = CommPortIdentifier.getPortIdentifiers();
 
-            String temp_string = ubicacionDirectorio+"lib\\javax.comm.properties";
-            Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
-            loadDriver_Method.setAccessible(true);
-            loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
-            CommPortIdentifier portId;
-            Enumeration portList = CommPortIdentifier.getPortIdentifiers();
-         
-            OutputStream outputStream = null;
-//            SimpleRead reader;
-            portList = CommPortIdentifier.getPortIdentifiers();
-            while (portList.hasMoreElements()) {
-                portId = (CommPortIdentifier) portList.nextElement();
-                if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                    if (portId.getName().equals("COM7")) {
-//                if (portId.getName().equals("/dev/term/a")) {
+	while (portList.hasMoreElements()) {
+	    portId = (CommPortIdentifier) portList.nextElement();
+
+	    if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+
+		if (portId.getName().equals(defaultPort)) {
+                    try {
+                        System.out.println("Found port " + defaultPort);
+                        portFound = true;
                         try {
-                            serialPort = (SerialPort) portId.open("SimpleWriteApp", 2000);
+                            serialPort = (SerialPort) portId.open("SimpleWrite", 2000);
+                            //serialPort = (SerialPort) puertoId.open("SimpleReadApp", 2000);
                         } catch (PortInUseException e) {
-                            System.out.println("" + e);
+                            System.out.println("Port in use.");
+                            continue;
                         }
+                        serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
                         try {
                             outputStream = serialPort.getOutputStream();
                         } catch (IOException e) {
@@ -55,39 +70,42 @@ public class SimpleWrite {
                             System.out.println("" + e);
                         }
                         try {
-                            //ABRIR
-//                            byte[] a = new byte[3];
-//                            a[0] = (byte) 254;
-//                            a[1] = 108;
-//                            a[2] = 1;
-//                        //CERRAR
-//                        byte[] data = new byte[3];
-//                        data[0] =  (byte) 254;
-//                        data[1] = 100;
-//                        data[2] = 1;
-                            //            serialPort1.Write(data, 0, 3);
-//                        outputStream.write(messageString.getBytes());
-                            outputStream.write(1);
-                            
-//                            outputStream.write(2);
-                            //outputStream.w
+                            serialPort.notifyOnOutputEmpty(true);
+                        } catch (Exception e) {
+                            System.out.println("Error setting event notification");
+                            System.out.println(e.toString());
+                            System.exit(-1);
+                        }
+                        System.out.println("Writing \"" + messageString + "\" to " + serialPort.getName());
+                        try {
+//                            String uno = "1";
+//                            outputStream.write(uno.getBytes());
+                            String dos = "2";
+                            outputStream.write(dos.getBytes());
                             
                         } catch (IOException e) {
-                            System.out.println("" + e);
                         }
+                        try {
+                            Thread.sleep(100); // Be sure data is xferred before closing
+                        } catch (Exception e) {
+                        }
+                        serialPort.close();
+//                        System.exit(1);
+                    } catch (UnsupportedCommOperationException ex) {
+                        Logger.getLogger(SimpleWrite.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-            }
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(SimpleWrite.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(SimpleWrite.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
-            Logger.getLogger(SimpleWrite.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchMethodException ex) {
-            Logger.getLogger(SimpleWrite.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
-            Logger.getLogger(SimpleWrite.class.getName()).log(Level.SEVERE, null, ex);
-        }
+		}
+	    }
+	}
+
+	if (!portFound) {
+	    System.out.println("port " + defaultPort + " not found.");
+	}
     }
+
+
 }
+
+
+
+
