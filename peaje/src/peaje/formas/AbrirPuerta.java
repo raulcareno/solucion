@@ -68,11 +68,11 @@ public class AbrirPuerta {
         } catch (InvocationTargetException ex) {
             Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalArgumentException ex) {
-            Logger.getLogger(SimpleWrite.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchMethodException ex) {
-            Logger.getLogger(SimpleWrite.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SecurityException ex) {
-            Logger.getLogger(SimpleWrite.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
