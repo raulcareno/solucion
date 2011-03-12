@@ -121,7 +121,7 @@ public class principal extends javax.swing.JFrame {
             });
             men.add(acerca);
 
-            final TrayIcon trayIcon = new TrayIcon(image, "JCINFORM \n Soluciones Informaticas \n 080 162 -211 / 5103 843 ", men);
+            final TrayIcon trayIcon = new TrayIcon(image, "JCINFORM \n Soluciones Informaticas \n www.jcinform.com ", men);
             if (SystemTray.isSupported()) {
                 SystemTray tray = SystemTray.getSystemTray();
                 trayIcon.setImageAutoSize(true);
@@ -129,11 +129,11 @@ public class principal extends javax.swing.JFrame {
 
                     public void actionPerformed(ActionEvent e) {
                         //System.out.println("In here");
-                        trayIcon.displayMessage("JCINFORM - SOLUCIONES INFORMATICAS \n Sistema de Parking \n ", "Telf. 5103 843", TrayIcon.MessageType.INFO);
+                        trayIcon.displayMessage("JCINFORM - SOLUCIONES INFORMATICAS \n Sistema de Parking \n ", "www.jcinform.com", TrayIcon.MessageType.INFO);
 //                        frmLogin.show(true);
                     }
                 });
-                trayIcon.displayMessage("Bienvenidos al Sistema", "Telf. 5103 843", TrayIcon.MessageType.INFO);
+                trayIcon.displayMessage("Bienvenidos al Sistema", "www.jcinform.com", TrayIcon.MessageType.INFO);
                 try {
                     tray.add(trayIcon);
                 } catch (AWTException e) {
@@ -1416,12 +1416,8 @@ public void logear(){
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnUsuariosActionPerformed
-    public void buscarTarjeta() {
+    public void buscarTarjeta(String puertoViene) {
         final principal pra = this;
-//        Thread cargar = new Thread() {
-//
-//            @SuppressWarnings("static-access")
-//            public void run() {
         try {
 
             try {
@@ -1466,6 +1462,7 @@ public void logear(){
                     if (habilitada) {
                         if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
                             System.out.println("EN EL RANGO DE FECHAS");
+                            abrirPuerta(puertoViene);
                         } else {
                             JOptionPane.showMessageDialog(getContentPane(), "Su Fecha de tarjeta expiró...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
                             return;
@@ -1477,6 +1474,7 @@ public void logear(){
                         LocalTime ahora = new LocalTime(new DateTime(new Date()));
                         if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
                             System.out.println("EN EL RANGO DE HORA");
+                            abrirPuerta(puertoViene);
                         } else {
                             JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
                             return;
@@ -1616,20 +1614,34 @@ public void logear(){
             }
 
             procesando.setVisible(false);
-//                    this.sleep(2000);
+ 
             taskTarjeta.setCollapsed(true);
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-//            }
-//        };
-//        cargar.start();
-
-
-
-//        JOptionPane.showMessageDialog(this, tarjetatxt.getText());
-
     }
+
+ void abrirPuerta(String puertoqueViene){
+     String lapuertaaAbrir ="";
+     if(puertoqueViene.equals(empresaObj.getPuerto1())){
+            lapuertaaAbrir = empresaObj.getPuerta1();
+     }else if(puertoqueViene.equals(empresaObj.getPuerto2())){
+            lapuertaaAbrir = empresaObj.getPuerta2();
+     }else if(puertoqueViene.equals(empresaObj.getPuerto3())){
+            lapuertaaAbrir = empresaObj.getPuerta3();
+     }else if(puertoqueViene.equals(empresaObj.getPuerto4())){
+            lapuertaaAbrir = empresaObj.getPuerta4();
+     }else if(puertoqueViene.equals(empresaObj.getPuerto5())){
+            lapuertaaAbrir = empresaObj.getPuerta5();
+     }else if(puertoqueViene.equals(empresaObj.getPuerto6())){
+            lapuertaaAbrir = empresaObj.getPuerta6();
+     }else if(puertoqueViene.equals(empresaObj.getPuerto7())){
+            lapuertaaAbrir = empresaObj.getPuerta7();
+     }
+        AbrirPuerta.abrir(empresaObj.getPuerto(),lapuertaaAbrir);
+ }
+
+
     private void tarjetatxtPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tarjetatxtPropertyChange
         //        try {
 //            // TODO add your handling code here:
@@ -1686,8 +1698,8 @@ public void logear(){
                 return;
             }
             frmEmpresa usu = new frmEmpresa(this, true, this, adm);
-            usu.setSize(441, 445);
-            usu.setLocation(240, 100);
+            usu.setSize(441, 470);
+            usu.setLocation(240, 80);
             usu.show();
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);

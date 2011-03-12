@@ -78,6 +78,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         for (int i = 0; i < services.length; i++) {
             cmbTicket.addItem(services[i].getName());
             cmbFactura.addItem(services[i].getName());
+            cmbImpresora.addItem(services[i].getName());
             //String nombre = services[i].getName().toUpperCase();
         }
         CommPortIdentifier portId;
@@ -85,6 +86,8 @@ public class frmEmpresa extends javax.swing.JDialog {
                 cmbEntrada1.removeAllItems();
                 cmbEntrada2.removeAllItems();
                 cmbEntrada3.removeAllItems();
+                cmbEntrada4.removeAllItems();
+                cmbPuertoPrincipal.removeAllItems();
 //                cmbSalida1.removeAllItems();
 //                cmbSalida2.removeAllItems();
 //                cmbSalida3.removeAllItems();
@@ -102,6 +105,8 @@ public class frmEmpresa extends javax.swing.JDialog {
                 cmbEntrada1.addItem(object);
                 cmbEntrada2.addItem(object);
                 cmbEntrada3.addItem(object);
+                cmbEntrada4.addItem(object);
+                cmbPuertoPrincipal.addItem(object);
 //                cmbSalida1.addItem(object);
 //                cmbSalida2.addItem(object);
 //                cmbSalida3.addItem(object);
@@ -170,9 +175,17 @@ public class frmEmpresa extends javax.swing.JDialog {
         cmbEntrada1.setEnabled(estado);
         cmbEntrada2.setEnabled(estado);
         cmbEntrada3.setEnabled(estado);
+        cmbEntrada4.setEnabled(estado);
+        cmbImpresora.setEnabled(estado);
+        cmbPuertoPrincipal.setEnabled(estado);
         cmbSalida1.setEnabled(estado);
         cmbSalida2.setEnabled(estado);
         cmbSalida3.setEnabled(estado);
+        cmbSalida4.setEnabled(estado);
+        chkActivo1.setEnabled(estado);
+        chkActivo2.setEnabled(estado);
+        chkActivo3.setEnabled(estado);
+        chkActivo4.setEnabled(estado);
 
 
 
@@ -244,6 +257,14 @@ public class frmEmpresa extends javax.swing.JDialog {
         cmbSalida4 = new javax.swing.JComboBox();
         jLabel21 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        cmbImpresora = new javax.swing.JComboBox();
+        jLabel20 = new javax.swing.JLabel();
+        cmbPuertoPrincipal = new javax.swing.JComboBox();
+        chkActivo1 = new javax.swing.JCheckBox();
+        chkActivo2 = new javax.swing.JCheckBox();
+        chkActivo3 = new javax.swing.JCheckBox();
+        chkActivo4 = new javax.swing.JCheckBox();
         jPanel4 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -357,14 +378,14 @@ public class frmEmpresa extends javax.swing.JDialog {
 
         jLabel1.setForeground(new java.awt.Color(0, 0, 153));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("CI/RUC");
+        jLabel1.setText("CI/RUC:");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(10, 10, 60, 14);
+        jLabel1.setBounds(20, 10, 100, 14);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Dirección:");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(10, 70, 60, 14);
+        jLabel2.setBounds(20, 70, 100, 14);
 
         nombres.setEditable(false);
 
@@ -377,7 +398,7 @@ public class frmEmpresa extends javax.swing.JDialog {
             }
         });
         jPanel1.add(nombres);
-        nombres.setBounds(80, 30, 220, 20);
+        nombres.setBounds(130, 30, 220, 20);
 
         direccion.setEditable(false);
 
@@ -390,13 +411,13 @@ public class frmEmpresa extends javax.swing.JDialog {
             }
         });
         jPanel1.add(direccion);
-        direccion.setBounds(80, 70, 220, 20);
+        direccion.setBounds(130, 70, 220, 20);
 
         jLabel12.setForeground(new java.awt.Color(0, 0, 153));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Nombres:");
         jPanel1.add(jLabel12);
-        jLabel12.setBounds(10, 30, 60, 14);
+        jLabel12.setBounds(20, 30, 100, 14);
 
         codigo.setEditable(false);
 
@@ -409,7 +430,7 @@ public class frmEmpresa extends javax.swing.JDialog {
             }
         });
         jPanel1.add(codigo);
-        codigo.setBounds(80, 10, 100, 20);
+        codigo.setBounds(130, 10, 100, 20);
 
         razonsocial.setEditable(false);
 
@@ -422,25 +443,25 @@ public class frmEmpresa extends javax.swing.JDialog {
             }
         });
         jPanel1.add(razonsocial);
-        razonsocial.setBounds(80, 50, 109, 20);
+        razonsocial.setBounds(130, 50, 109, 20);
 
         jLabel5.setForeground(new java.awt.Color(0, 0, 153));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("Razón Social");
+        jLabel5.setText("Razón Social:");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(0, 50, 70, 14);
+        jLabel5.setBounds(10, 50, 110, 14);
 
         jLabel6.setForeground(new java.awt.Color(0, 0, 153));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Teléfonos:");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(10, 90, 60, 14);
+        jLabel6.setBounds(20, 90, 100, 14);
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("Imp. Factura:");
+        jLabel7.setText("Puerto Tarjeta Princ.:");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(10, 150, 70, 14);
+        jLabel7.setBounds(10, 190, 110, 14);
 
         telefono.setEditable(false);
 
@@ -453,7 +474,7 @@ public class frmEmpresa extends javax.swing.JDialog {
             }
         });
         jPanel1.add(telefono);
-        telefono.setBounds(80, 90, 110, 20);
+        telefono.setBounds(130, 90, 110, 20);
 
         parqueaderos.setEditable(false);
 
@@ -466,7 +487,7 @@ public class frmEmpresa extends javax.swing.JDialog {
             }
         });
         jPanel1.add(parqueaderos);
-        parqueaderos.setBounds(80, 110, 40, 20);
+        parqueaderos.setBounds(130, 110, 40, 20);
 
         cmbFactura.setEnabled(false);
 
@@ -474,19 +495,19 @@ public class frmEmpresa extends javax.swing.JDialog {
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbFactura);
-        cmbFactura.setBounds(80, 150, 240, 20);
+        cmbFactura.setBounds(130, 150, 240, 20);
 
         jLabel9.setForeground(new java.awt.Color(0, 0, 153));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("Parqueaderos:");
+        jLabel9.setText("No. Parqueaderos:");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(-10, 110, 90, 14);
+        jLabel9.setBounds(-10, 110, 130, 14);
 
         jLabel13.setForeground(new java.awt.Color(0, 0, 153));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Imp. Ticket:");
         jPanel1.add(jLabel13);
-        jLabel13.setBounds(10, 130, 70, 14);
+        jLabel13.setBounds(10, 130, 110, 14);
 
         cmbTicket.setEnabled(false);
 
@@ -494,92 +515,188 @@ public class frmEmpresa extends javax.swing.JDialog {
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbTicket);
-        cmbTicket.setBounds(80, 130, 240, 20);
+        cmbTicket.setBounds(130, 130, 240, 20);
+
+        cmbEntrada1.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto1}"), cmbEntrada1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbEntrada1);
-        cmbEntrada1.setBounds(80, 190, 60, 20);
+        cmbEntrada1.setBounds(120, 230, 60, 20);
 
         cmbSalida1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
+        cmbSalida1.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta1}"), cmbSalida1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbSalida1);
-        cmbSalida1.setBounds(150, 190, 37, 20);
+        cmbSalida1.setBounds(190, 230, 37, 20);
 
         cmbSalida2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
+        cmbSalida2.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta2}"), cmbSalida2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbSalida2);
-        cmbSalida2.setBounds(150, 210, 37, 20);
+        cmbSalida2.setBounds(190, 250, 37, 20);
+
+        cmbEntrada2.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto2}"), cmbEntrada2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbEntrada2);
-        cmbEntrada2.setBounds(80, 210, 60, 20);
+        cmbEntrada2.setBounds(120, 250, 60, 20);
 
         cmbSalida3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
+        cmbSalida3.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta3}"), cmbSalida3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbSalida3);
-        cmbSalida3.setBounds(150, 230, 37, 20);
+        cmbSalida3.setBounds(190, 270, 37, 20);
+
+        cmbEntrada3.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto3}"), cmbEntrada3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbEntrada3);
-        cmbEntrada3.setBounds(80, 230, 60, 20);
+        cmbEntrada3.setBounds(120, 270, 60, 20);
 
         jLabel14.setText("1:");
         jPanel1.add(jLabel14);
-        jLabel14.setBounds(60, 190, 20, 14);
+        jLabel14.setBounds(100, 230, 20, 14);
 
         jLabel15.setText("4:");
         jPanel1.add(jLabel15);
-        jLabel15.setBounds(60, 250, 20, 14);
+        jLabel15.setBounds(100, 290, 20, 14);
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel16.setText("LECTORA");
+        jLabel16.setText("PUERTO LECTORA");
         jPanel1.add(jLabel16);
-        jLabel16.setBounds(70, 170, 70, 20);
+        jLabel16.setBounds(80, 210, 110, 20);
+
+        cmbEntrada4.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto4}"), cmbEntrada4, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbEntrada4);
-        cmbEntrada4.setBounds(80, 250, 60, 20);
+        cmbEntrada4.setBounds(120, 290, 60, 20);
 
         jLabel19.setText("2:");
         jPanel1.add(jLabel19);
-        jLabel19.setBounds(60, 210, 20, 14);
+        jLabel19.setBounds(100, 250, 20, 14);
 
         cmbSalida4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
+        cmbSalida4.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta4}"), cmbSalida4, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbSalida4);
-        cmbSalida4.setBounds(150, 250, 37, 20);
+        cmbSalida4.setBounds(190, 290, 37, 20);
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel21.setText("ABRE PUERTA");
         jPanel1.add(jLabel21);
-        jLabel21.setBounds(150, 170, 90, 20);
+        jLabel21.setBounds(190, 210, 90, 20);
 
         jLabel3.setText("3:");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(60, 230, 20, 14);
+        jLabel3.setBounds(100, 270, 20, 14);
+
+        jLabel18.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel18.setText("Imp. Factura:");
+        jPanel1.add(jLabel18);
+        jLabel18.setBounds(10, 150, 110, 14);
+
+        cmbImpresora.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.impresora}"), cmbImpresora, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel1.add(cmbImpresora);
+        cmbImpresora.setBounds(130, 170, 240, 20);
+
+        jLabel20.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel20.setText("Impresora Botón:");
+        jPanel1.add(jLabel20);
+        jLabel20.setBounds(0, 170, 120, 14);
+
+        cmbPuertoPrincipal.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto}"), cmbPuertoPrincipal, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel1.add(cmbPuertoPrincipal);
+        cmbPuertoPrincipal.setBounds(130, 190, 60, 20);
+
+        chkActivo1.setText("Activo");
+        chkActivo1.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.activa1}"), chkActivo1, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        chkActivo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkActivo1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(chkActivo1);
+        chkActivo1.setBounds(230, 230, 81, 23);
+
+        chkActivo2.setText("Activo");
+        chkActivo2.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.activa2}"), chkActivo2, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        chkActivo2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkActivo2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(chkActivo2);
+        chkActivo2.setBounds(230, 250, 81, 23);
+
+        chkActivo3.setText("Activo");
+        chkActivo3.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.activa3}"), chkActivo3, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        chkActivo3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkActivo3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(chkActivo3);
+        chkActivo3.setBounds(230, 270, 81, 23);
+
+        chkActivo4.setText("Activo");
+        chkActivo4.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.activa4}"), chkActivo4, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        chkActivo4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkActivo4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(chkActivo4);
+        chkActivo4.setBounds(230, 290, 81, 23);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 50, 370, 280);
+        jPanel1.setBounds(20, 40, 370, 320);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -587,6 +704,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.gif"))); // NOI18N
         btnBuscar.setMnemonic('B');
         btnBuscar.setText("Buscar");
+        btnBuscar.setEnabled(false);
         btnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnBuscar.setMargin(new java.awt.Insets(2, 2, 2, 2));
         btnBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -601,6 +719,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
         btnAgregar.setMnemonic('N');
         btnAgregar.setText("Nuevo");
+        btnAgregar.setEnabled(false);
         btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAgregar.setMargin(new java.awt.Insets(2, 2, 2, 2));
         btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -656,7 +775,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         btnSalir.setBounds(290, 10, 60, 50);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(20, 320, 370, 70);
+        jPanel4.setBounds(20, 360, 370, 70);
 
         bindingGroup.bind();
 
@@ -696,6 +815,9 @@ public class frmEmpresa extends javax.swing.JDialog {
                     empresaObj.setPuerta2((String)cmbSalida2.getSelectedItem());
                     empresaObj.setPuerta3((String)cmbSalida3.getSelectedItem());
                     empresaObj.setPuerta4((String)cmbSalida4.getSelectedItem());
+
+                    empresaObj.setPuerto((String)cmbPuertoPrincipal.getSelectedItem());
+                    empresaObj.setImpresora((String)cmbImpresora.getSelectedItem());
                     
                     
                     if (modificar) {
@@ -725,8 +847,8 @@ public class frmEmpresa extends javax.swing.JDialog {
                     grabar = false;
                     modificar = false;
                     habilitar(false);
-                    btnBuscar.setEnabled(true);
-
+                    btnBuscar.setEnabled(false);
+                    btnAgregar.setEnabled(false);
                 }
 
             }
@@ -751,11 +873,25 @@ public class frmEmpresa extends javax.swing.JDialog {
                 this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
                 this.btnModificar.setLabel("Cancelar");
                 btnAgregar.setMnemonic('G');
+                btnAgregar.setEnabled(true);
                 btnModificar.setMnemonic('C');
                 modificar = true;
                 grabar = true;
                 habilitar(true);
                 btnBuscar.setEnabled(false);
+
+                    cmbEntrada1.setEnabled(chkActivo1.isSelected()); cmbSalida1.setEnabled(chkActivo1.isSelected());
+
+
+                    cmbEntrada2.setEnabled(chkActivo2.isSelected()); cmbSalida2.setEnabled(chkActivo2.isSelected());
+
+
+                    cmbEntrada3.setEnabled(chkActivo3.isSelected()); cmbSalida3.setEnabled(chkActivo3.isSelected());
+
+
+
+                    cmbEntrada4.setEnabled(chkActivo4.isSelected()); cmbSalida4.setEnabled(chkActivo4.isSelected());
+                 
 
             } else {
                 JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
@@ -771,7 +907,8 @@ public class frmEmpresa extends javax.swing.JDialog {
             btnAgregar.setMnemonic('N');
             btnModificar.setMnemonic('M');
             habilitar(false);
-            btnBuscar.setEnabled(true);
+            btnBuscar.setEnabled(false);
+            btnAgregar.setEnabled(false);
 
         }
 
@@ -944,6 +1081,31 @@ public class frmEmpresa extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
+    private void chkActivo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkActivo1ActionPerformed
+        // TODO add your handling code here:
+
+        cmbEntrada1.setEnabled(chkActivo1.isSelected());
+        cmbSalida1.setEnabled(chkActivo1.isSelected());
+    }//GEN-LAST:event_chkActivo1ActionPerformed
+
+    private void chkActivo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkActivo2ActionPerformed
+        // TODO add your handling code here:
+        cmbEntrada2.setEnabled(chkActivo2.isSelected());
+        cmbSalida2.setEnabled(chkActivo2.isSelected());
+    }//GEN-LAST:event_chkActivo2ActionPerformed
+
+    private void chkActivo3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkActivo3ActionPerformed
+        // TODO add your handling code here:
+        cmbEntrada3.setEnabled(chkActivo3.isSelected());
+        cmbSalida3.setEnabled(chkActivo3.isSelected());
+    }//GEN-LAST:event_chkActivo3ActionPerformed
+
+    private void chkActivo4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkActivo4ActionPerformed
+        // TODO add your handling code here:
+        cmbEntrada4.setEnabled(chkActivo4.isSelected());
+        cmbSalida4.setEnabled(chkActivo4.isSelected());
+    }//GEN-LAST:event_chkActivo4ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
@@ -951,11 +1113,17 @@ public class frmEmpresa extends javax.swing.JDialog {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JTable busquedaTabla;
+    private javax.swing.JCheckBox chkActivo1;
+    private javax.swing.JCheckBox chkActivo2;
+    private javax.swing.JCheckBox chkActivo3;
+    private javax.swing.JCheckBox chkActivo4;
     private javax.swing.JComboBox cmbEntrada1;
     private javax.swing.JComboBox cmbEntrada2;
     private javax.swing.JComboBox cmbEntrada3;
     private javax.swing.JComboBox cmbEntrada4;
     private javax.swing.JComboBox cmbFactura;
+    private javax.swing.JComboBox cmbImpresora;
+    private javax.swing.JComboBox cmbPuertoPrincipal;
     private javax.swing.JComboBox cmbSalida1;
     private javax.swing.JComboBox cmbSalida2;
     private javax.swing.JComboBox cmbSalida3;
@@ -975,8 +1143,10 @@ public class frmEmpresa extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
