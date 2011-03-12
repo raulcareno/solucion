@@ -54,6 +54,21 @@ public class Empresa implements Serializable {
     private String puerto6;
     @Column(name = "puerto7")
     private String puerto7;
+    @Column(name = "activa1")
+    private Boolean activa1;
+    @Column(name = "activa2")
+    private Boolean activa2;
+    @Column(name = "activa3")
+    private Boolean activa3;
+    @Column(name = "activa4")
+    private Boolean activa4;
+    @Column(name = "activa5")
+    private Boolean activa5;
+    @Column(name = "activa6")
+    private Boolean activa6;
+    @Column(name = "activa7")
+    private Boolean activa7;
+    
     @Column(name = "puerta1")
     private String puerta1;
     @Column(name = "puerta2")
@@ -68,6 +83,12 @@ public class Empresa implements Serializable {
     private String puerta6;
     @Column(name = "puerta7")
     private String puerta7;
+    @Column(name = "puerto")
+    private String puerto;
+    @Column(name = "impresora")
+    private String impresora;
+    @Column(name = "impresora2")
+    private String impresora2;
 
     public Empresa() {
     }
@@ -212,6 +233,65 @@ public class Empresa implements Serializable {
         this.puerto6 = puerto6;
     }
 
+    public Boolean getActiva1() {
+        return activa1;
+    }
+
+    public void setActiva1(Boolean activa1) {
+        this.activa1 = activa1;
+    }
+
+    public Boolean getActiva2() {
+        return activa2;
+    }
+
+    public void setActiva2(Boolean activa2) {
+        this.activa2 = activa2;
+    }
+
+    public Boolean getActiva3() {
+        return activa3;
+    }
+
+    public void setActiva3(Boolean activa3) {
+        this.activa3 = activa3;
+    }
+
+    public Boolean getActiva4() {
+        return activa4;
+    }
+
+    public void setActiva4(Boolean activa4) {
+        this.activa4 = activa4;
+    }
+
+    public Boolean getActiva5() {
+        return activa5;
+    }
+
+    public void setActiva5(Boolean activa5) {
+        this.activa5 = activa5;
+    }
+
+    public Boolean getActiva6() {
+        return activa6;
+    }
+
+    public void setActiva6(Boolean activa6) {
+        this.activa6 = activa6;
+    }
+
+    public Boolean getActiva7() {
+        return activa7;
+    }
+
+    public void setActiva7(Boolean activa7) {
+        this.activa7 = activa7;
+    }
+
+   
+
+
     public String getPuerto7() {
         return puerto7;
     }
@@ -276,6 +356,31 @@ public class Empresa implements Serializable {
         this.puerta7 = puerta7;
     }
 
+    public String getImpresora() {
+        return impresora;
+    }
+
+    public void setImpresora(String impresora) {
+        this.impresora = impresora;
+    }
+
+    public String getImpresora2() {
+        return impresora2;
+    }
+
+    public void setImpresora2(String impresora2) {
+        this.impresora2 = impresora2;
+    }
+
+    public String getPuerto() {
+        return puerto;
+    }
+
+    public void setPuerto(String puerto) {
+        this.puerto = puerto;
+    }
+
+  
     
     @Override
     public int hashCode() {
@@ -299,7 +404,7 @@ public class Empresa implements Serializable {
 
     @Override
     public String toString() {
-        return "persisten.Empresa[ruc=" + ruc + "]";
+        return nombre;
     }
 
 }
