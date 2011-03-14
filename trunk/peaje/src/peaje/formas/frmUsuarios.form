@@ -404,11 +404,12 @@
         <Component class="javax.swing.JLabel" name="jLabel13">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Privilegios:"/>
+            <Property name="text" type="java.lang.String" value="Este Usuario es:"/>
+            <Property name="horizontalTextPosition" type="int" value="10"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="0" y="130" width="100" height="-1"/>
+              <AbsoluteConstraints x="0" y="130" width="100" height="40"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -430,14 +431,6 @@
                   <StringArray count="0"/>
                 </Property>
               </Properties>
-              <BindingProperties>
-                <BindingProperty name="elements" source="Form" sourcePath="${perfilesList}" target="perfil" targetPath="elements" updateStrategy="0" immediately="false">
-                  <BindingParameter name="DISPLAY" value="${nombre}"/>
-                </BindingProperty>
-                <BindingProperty name="selectedElement" source="Form" sourcePath="${usuarioObj.perfil}" target="perfil" targetPath="selectedElement" updateStrategy="0" immediately="false">
-                  <BindingParameter name="IGNORE_ADJUSTING" value="N"/>
-                </BindingProperty>
-              </BindingProperties>
               <Events>
                 <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="perfilValueChanged"/>
               </Events>
