@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.ListModel;
 import javax.swing.table.DefaultTableModel;
 import peaje.Administrador;
 import peaje.validaciones;
@@ -51,8 +52,9 @@ public class frmUsuarios extends javax.swing.JDialog {
         super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         adm = adm1;
-        llenarCombo();
+
         initComponents();
+                llenarCombo();
         this.setSize(615, 508);
         usuarioObj = new Usuarios();
 
@@ -61,11 +63,17 @@ public class frmUsuarios extends javax.swing.JDialog {
     }
 
     public void llenarCombo() {
-       
-        try {
-            perfilesList = new ArrayList<Global>();
-            perfilesList = adm.query("Select o from Global as o where o.grupo = 'PER'");
-        } catch (Exception ex) {
+try {
+            List listado = adm.query("Select o from Global as o where o.grupo = 'PER'");
+             Object [] listData = new Object[listado.size()];
+            int i=0;
+            for (Iterator<Global> it = listado.iterator(); it.hasNext();) {
+                Global global = it.next();
+                listData[i]= global;
+                i++;
+            }
+            perfil.setListData(listData);
+        }catch(Exception ex){
             Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -380,16 +388,10 @@ public class frmUsuarios extends javax.swing.JDialog {
         jLabel7.setBounds(0, 110, 100, 14);
 
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel13.setText("Privilegios:");
+        jLabel13.setText("Este Usuario es:");
+        jLabel13.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         jPanel1.add(jLabel13);
-        jLabel13.setBounds(0, 130, 100, 14);
-
-        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${perfilesList}");
-        org.jdesktop.swingbinding.JListBinding jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, perfil);
-        jListBinding.setDetailBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
-        bindingGroup.addBinding(jListBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.perfil}"), perfil, org.jdesktop.beansbinding.BeanProperty.create("selectedElement"));
-        bindingGroup.addBinding(binding);
+        jLabel13.setBounds(0, 130, 100, 40);
 
         perfil.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -490,6 +492,7 @@ public class frmUsuarios extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (principal.permisos.getAgregar()) {
             if (grabar == false) {
+                usuarioObj = new Usuarios();
                 this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
                 this.btnAgregar.setLabel("Guardar");
                 this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
@@ -508,12 +511,8 @@ public class frmUsuarios extends javax.swing.JDialog {
                 if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty() || usuario.getText().trim().isEmpty() || clave.getText().isEmpty() || confirmar.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
                 } else {
-//                    if (!claveActual.equals(usuarioObj.getClave())) {
-//                        usuarioObj.setClave(val.encriptar(usuarioObj.getClave()));
-//                        clave.setText(usuarioObj.getClave());
-//                        confirmar.setText(usuarioObj.getClave());
-//                    }
-                    usuarioObj.setClave(cl.encriptar(usuarioObj.getClave()));
+                     usuarioObj.setPerfil((Global)perfil.getSelectedValue());
+                     usuarioObj.setClave(cl.encriptar(usuarioObj.getClave()));
                     if (modificar) {
                         try {
                             adm.actualizar(usuarioObj);
@@ -684,9 +683,11 @@ public class frmUsuarios extends javax.swing.JDialog {
                 int fila = busquedaTabla.getSelectedRow();
                 this.usuarioObj = (Usuarios) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Usuarios.class);
                 usuarioObj.setClave(cl.desencriptar(usuarioObj.getClave()));
+                 Global g =  usuarioObj.getPerfil();
                 bindingGroup.unbind();
                 bindingGroup.bind();
-                perfil.setSelectedValue(usuarioObj.getPerfil(),true);
+                perfil.setSelectedValue(g+"",true);
+
                 claveActual = usuarioObj.getClave();
 
                 formaUsuarios.dispose();
@@ -698,16 +699,29 @@ public class frmUsuarios extends javax.swing.JDialog {
     }//GEN-LAST:event_busquedaTablaMouseClicked
 
     private void busquedaTablaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_busquedaTablaKeyPressed
+
+
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             try {
+                Global g = new Global();
                 int fila = busquedaTabla.getSelectedRow();
                 this.usuarioObj = (Usuarios) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Usuarios.class);
                 usuarioObj.setClave(cl.desencriptar(usuarioObj.getClave()));
+                g =  usuarioObj.getPerfil();
                 bindingGroup.unbind();
                 bindingGroup.bind();
-                //perfil.setSelectedItem(usuarioObj.getCodigo());
-                perfil.setSelectedValue(usuarioObj.getPerfil(),true);
+                ListModel datos = perfil.getModel();
+                   for (int i = 0; i < datos.getSize(); i++) {
+                    Global object = (Global) datos.getElementAt(i);
+                       if(g.getCodigo().equals(object.getCodigo())){
+                            perfil.setSelectedIndex(i);
+                        break;
+                       }
+
+                }
+                
+//                perfil.setSelectedValue(g,true);
                 formaUsuarios.dispose();
                 claveActual = usuarioObj.getClave();
 
