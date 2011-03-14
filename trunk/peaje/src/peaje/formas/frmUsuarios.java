@@ -153,8 +153,9 @@ public class frmUsuarios extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         confirmar = new javax.swing.JPasswordField();
         jLabel7 = new javax.swing.JLabel();
-        perfil = new javax.swing.JComboBox();
         jLabel13 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        perfil = new javax.swing.JList();
         jPanel4 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -378,22 +379,30 @@ public class frmUsuarios extends javax.swing.JDialog {
         jPanel1.add(jLabel7);
         jLabel7.setBounds(0, 110, 100, 14);
 
-        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${perfilesList}");
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, perfil);
-        bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.perfil}"), perfil, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(perfil);
-        perfil.setBounds(110, 130, 140, 20);
-
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Privilegios:");
         jPanel1.add(jLabel13);
         jLabel13.setBounds(0, 130, 100, 14);
 
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${perfilesList}");
+        org.jdesktop.swingbinding.JListBinding jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, perfil);
+        jListBinding.setDetailBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
+        bindingGroup.addBinding(jListBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.perfil}"), perfil, org.jdesktop.beansbinding.BeanProperty.create("selectedElement"));
+        bindingGroup.addBinding(binding);
+
+        perfil.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                perfilValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(perfil);
+
+        jPanel1.add(jScrollPane2);
+        jScrollPane2.setBounds(110, 130, 230, 50);
+
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 50, 370, 170);
+        jPanel1.setBounds(20, 50, 370, 190);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -469,7 +478,7 @@ public class frmUsuarios extends javax.swing.JDialog {
         btnSalir.setBounds(290, 10, 60, 50);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(20, 230, 370, 70);
+        jPanel4.setBounds(20, 240, 370, 70);
 
         bindingGroup.bind();
 
@@ -677,7 +686,7 @@ public class frmUsuarios extends javax.swing.JDialog {
                 usuarioObj.setClave(cl.desencriptar(usuarioObj.getClave()));
                 bindingGroup.unbind();
                 bindingGroup.bind();
-                perfil.setSelectedItem(usuarioObj.getCodigo());
+                perfil.setSelectedValue(usuarioObj.getPerfil(),true);
                 claveActual = usuarioObj.getClave();
 
                 formaUsuarios.dispose();
@@ -697,7 +706,8 @@ public class frmUsuarios extends javax.swing.JDialog {
                 usuarioObj.setClave(cl.desencriptar(usuarioObj.getClave()));
                 bindingGroup.unbind();
                 bindingGroup.bind();
-                perfil.setSelectedItem(usuarioObj.getCodigo());
+                //perfil.setSelectedItem(usuarioObj.getCodigo());
+                perfil.setSelectedValue(usuarioObj.getPerfil(),true);
                 formaUsuarios.dispose();
                 claveActual = usuarioObj.getClave();
 
@@ -779,6 +789,12 @@ public class frmUsuarios extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_confirmarFocusLost
 
+    private void perfilValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_perfilValueChanged
+        // TODO add your handling code here:
+//        listar();
+//        tablaPerfilesRubros.repaint();
+}//GEN-LAST:event_perfilValueChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
@@ -807,9 +823,10 @@ public class frmUsuarios extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JFormattedTextField nombres;
-    private javax.swing.JComboBox perfil;
+    private javax.swing.JList perfil;
     private javax.swing.JFormattedTextField usuario;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables

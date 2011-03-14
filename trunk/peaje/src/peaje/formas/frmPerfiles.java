@@ -76,10 +76,16 @@ public class frmPerfiles  extends javax.swing.JDialog {
 //           Global global = new Global(-1);
 //           global.setNombre("[Seleccione]");
 //           cmbPerfil.addItem(global);
+            Object [] listData = new Object[10];
+            int i=0;
             for (Iterator<Global> it = listado.iterator(); it.hasNext();) {
                 Global global = it.next();
-                cmbPerfil.addItem(global);
+//                jPerfil.addItem(global);
+                listData[i]= global;
+                i++;
             }
+            jPerfil.setListData(listData);
+            
         }catch(Exception ex){
             Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -103,8 +109,8 @@ public class frmPerfiles  extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        cmbPerfil = new javax.swing.JComboBox();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jPerfil = new javax.swing.JList();
 
         setTitle("Accesos a Usuarios");
         setBackground(new java.awt.Color(236, 246, 255));
@@ -148,7 +154,7 @@ public class frmPerfiles  extends javax.swing.JDialog {
         tablaPerfilesRubros.getColumnModel().getColumn(5).setMaxWidth(60);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(20, 80, 400, 240);
+        jScrollPane1.setBounds(20, 120, 400, 210);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
@@ -205,19 +211,17 @@ public class frmPerfiles  extends javax.swing.JDialog {
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Privilegios:");
         getContentPane().add(jLabel13);
-        jLabel13.setBounds(20, 50, 70, 14);
+        jLabel13.setBounds(10, 54, 70, 50);
 
-        jButton1.setText("Listar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        jPerfil.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jPerfilValueChanged(evt);
             }
         });
-        getContentPane().add(jButton1);
-        jButton1.setBounds(349, 50, 70, 23);
+        jScrollPane2.setViewportView(jPerfil);
 
-        getContentPane().add(cmbPerfil);
-        cmbPerfil.setBounds(100, 50, 240, 20);
+        getContentPane().add(jScrollPane2);
+        jScrollPane2.setBounds(90, 50, 330, 60);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -241,7 +245,7 @@ try{
                         mes.setAgregar((Boolean) tablaPerfilesRubros.getValueAt(i,3));
                         mes.setModificar((Boolean) tablaPerfilesRubros.getValueAt(i,4));
                         mes.setEliminar((Boolean) tablaPerfilesRubros.getValueAt(i,5));
-                        mes.setPerfil((Global)cmbPerfil.getSelectedItem());
+                        mes.setPerfil((Global)jPerfil.getSelectedValue());
                         adm.actualizar(mes);
                     }
                     JOptionPane.showMessageDialog(this, "Registros Actualizados");
@@ -276,15 +280,15 @@ private void tablaPerfilesRubrosMouseClicked(java.awt.event.MouseEvent evt) {//G
     //        this.chkFacturado.setSelected(Boolean.valueOf(val));
 }//GEN-LAST:event_tablaPerfilesRubrosMouseClicked
 
-private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+private void jPerfilValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jPerfilValueChanged
     // TODO add your handling code here:
-    listar();
-//    tablaPerfilesRubros.repaint();2384-198
-}//GEN-LAST:event_jButton1ActionPerformed
+       listar();
+       tablaPerfilesRubros.repaint();
+}//GEN-LAST:event_jPerfilValueChanged
     
    public void listar(){
     Administrador adm = new Administrador();
-       List lista = adm.query("Select o from Accesos as o where perfil.codigo = '"+((Global)cmbPerfil.getSelectedItem()).getCodigo()+"' order by o.pantalla ");
+       List lista = adm.query("Select o from Accesos as o where perfil.codigo = '"+((Global)jPerfil.getSelectedValue()).getCodigo()+"' order by o.pantalla ");
        DefaultTableModel dtm = (DefaultTableModel)tablaPerfilesRubros.getModel();
        dtm.getDataVector().removeAllElements();
        for (Iterator it = lista.iterator(); it.hasNext();) {
@@ -303,14 +307,14 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
-    private javax.swing.JComboBox cmbPerfil;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JList jPerfil;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JTable tablaPerfilesRubros;
     // End of variables declaration//GEN-END:variables
