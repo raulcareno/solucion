@@ -16,25 +16,24 @@ public class HibernateUtil {
         String url = "jdbc:mysql://" + UsuarioActivo.getIp() + ":" + UsuarioActivo.getPuerto() + "/peaje";
         String usu = UsuarioActivo.getNombre();
         String pass = cl.desencriptar(UsuarioActivo.getContrasenia());
-        // Create the SessionFactory from hibernate.cfg.xml
-        sessionFactory = new Configuration()
-                .configure("/hibernate/hibernate.cfg.xml")
+       //Create the SessionFactory from hibernate.cfg.xml
+        sessionFactory = new Configuration().configure("/hibernate/hibernate.cfg.xml")
                 .setProperty("hibernate.connection.url", url)
                 .setProperty("hibernate.connection.username", usu)
-                .setProperty("hibernate.connection.password", pass).buildSessionFactory();
+                .setProperty("hibernate.connection.password", pass)
+                .setProperty("hibernate.format_sql", "false")
+                .setProperty("hibernate.show_sql", "false").buildSessionFactory();
+        //hibernate.format_sql
                 //.setProperty("hibernate.hbm2ddl.auto", "update").buildSessionFactory();
-         
-    }
+    }//hibernate.show_sql
 
     public static Boolean conectar() {
         try{
             createSessionFactory();
             return true;
         }catch(Exception a){
-            
             a.printStackTrace();
             return false;
-            
         }
     }
 

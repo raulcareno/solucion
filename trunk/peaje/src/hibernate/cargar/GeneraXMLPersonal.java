@@ -253,19 +253,19 @@ public class GeneraXMLPersonal {
                     Element usuarioElement = (Element) usuarioList.item(0);
                     NodeList textFNList = usuarioElement.getChildNodes();
                     user.setNombre(((Node) textFNList.item(0)).getNodeValue().trim());
-                    System.out.println("USUARIO: " + ((Node) textFNList.item(0)).getNodeValue().trim());
+//                    System.out.println("USUARIO: " + ((Node) textFNList.item(0)).getNodeValue().trim());
                     //----------------------------------------------------------
                     NodeList lastNameList = firstPersonElement.getElementsByTagName("CLAVE");
                     Element lastNameElement = (Element) lastNameList.item(0);
                     NodeList claveList = lastNameElement.getChildNodes();
-                    System.out.println("CLAVE: " + ((Node) claveList.item(0)).getNodeValue().trim());
+//                    System.out.println("CLAVE: " + ((Node) claveList.item(0)).getNodeValue().trim());
                     user.setContrasenia(((Node) claveList.item(0)).getNodeValue().trim());
                     //----------------------------------------------------------
                     NodeList ageList = firstPersonElement.getElementsByTagName("IP");
                     Element ageElement = (Element) ageList.item(0);
 
                     NodeList textAgeList = ageElement.getChildNodes();
-                    System.out.println("IP: " + ((Node) textAgeList.item(0)).getNodeValue().trim());
+//                    System.out.println("IP: " + ((Node) textAgeList.item(0)).getNodeValue().trim());
                     user.setIp(((Node) textAgeList.item(0)).getNodeValue().trim());
                     //----------------------------------------------------------
                     //----
@@ -273,7 +273,7 @@ public class GeneraXMLPersonal {
                     Element puertoElement = (Element) puertoList.item(0);
 
                     NodeList puertoAgeList = puertoElement.getChildNodes();
-                    System.out.println("PUERTO : " + ((Node) puertoAgeList.item(0)).getNodeValue().trim());
+//                    System.out.println("PUERTO : " + ((Node) puertoAgeList.item(0)).getNodeValue().trim());
                     user.setPuerto(((Node) puertoAgeList.item(0)).getNodeValue().trim());
 
                     //------

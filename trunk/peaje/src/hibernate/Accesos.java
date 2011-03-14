@@ -37,6 +37,8 @@ public class Accesos implements Serializable {
     private Boolean modificar;
     @Column(name = "eliminar")
     private Boolean eliminar;
+    @Column(name = "ingresar")
+    private Boolean ingresar;
     @JoinColumn(name = "perfil", referencedColumnName = "codigo")
     @ManyToOne
     private Global perfil;
@@ -95,6 +97,16 @@ public class Accesos implements Serializable {
     public void setPerfil(Global perfil) {
         this.perfil = perfil;
     }
+
+    public Boolean getIngresar() {
+        return ingresar;
+    }
+
+    public void setIngresar(Boolean ingresar) {
+        this.ingresar = ingresar;
+    }
+
+
 
     @Override
     public int hashCode() {

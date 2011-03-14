@@ -48,12 +48,12 @@ public class principal extends javax.swing.JFrame {
     Administrador adm;
 //    Image image = Toolkit.getDefaultToolkit().getImage("C:\\Documents and Settings\\geovanny\\Escritorio\\JavaApplication3\\src\\javaapplication3\\tray.gif");
     public Tarjetas tarjeta;
-    private Clientes usuarioObj;
+    private Clientes clienteObj;
     public boolean grabar = false;
     public boolean modificar = false;
     public boolean nuevaTarjeta = false;
     public Usuarios usuarioActual;
-    public Empresa empresaObj;
+    public static Empresa empresaObj;
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
 
     
@@ -65,6 +65,7 @@ public class principal extends javax.swing.JFrame {
         btnTarifas.setEnabled(estado);
         btnReportes.setEnabled(estado);
         btnUsuarios.setEnabled(estado);
+        btnAccesos.setEnabled(estado);
 
     }
     /** Creates new form principal */
@@ -169,25 +170,46 @@ public class principal extends javax.swing.JFrame {
                 loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
                 CommPortIdentifier portId;
                 Enumeration portList = CommPortIdentifier.getPortIdentifiers();
-                SimpleRead reader;
+                LeerTarjeta reader;
                 ArrayList read = new ArrayList();
                 while (portList.hasMoreElements()) {
                     portId = (CommPortIdentifier) portList.nextElement();
                     if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                        if (portId.getName().equals("COM30")) {
-                            reader = new SimpleRead(portId, this);
+                        if (portId.getName().equals(empresaObj.getPuerto())) {
+                            reader = new LeerTarjeta(portId, this);
                             read.add(reader);
-//                            break;
-                        } else if (portId.getName().equals("COM10")) {
-                            reader = new SimpleRead(portId, this);
-                            read.add(reader);
-//                            break;
-
                         }
+                        if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
+                            reader = new LeerTarjeta(portId, this);
+                            read.add(reader);
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto2()) && empresaObj.getActiva2()) {
+                            reader = new LeerTarjeta(portId, this);
+                            read.add(reader);
+                        } if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
+                            reader = new LeerTarjeta(portId, this);
+                            read.add(reader);
+                        } if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
+                            reader = new LeerTarjeta(portId, this);
+                            read.add(reader);
+                        } if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
+                            reader = new LeerTarjeta(portId, this);
+                            read.add(reader);
+                        } if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
+                            reader = new LeerTarjeta(portId, this);
+                            read.add(reader);
+                        } if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
+                            reader = new LeerTarjeta(portId, this);
+                            read.add(reader);
+                        }
+//                        else if (portId.getName().equals("COM10")) {
+//                            reader = new LeerTarjeta(portId, this);
+//                            read.add(reader);
+//                        }
                     }
                 }
             } catch (Exception ex) {
-                Logger.getLogger(SimpleRead.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } catch (ClassNotFoundException ex) {
@@ -273,7 +295,7 @@ usuariot.requestFocusInWindow();
         jLabel22 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         descripcionTarjeta = new javax.swing.JTextArea();
-        formaUsuarios = new javax.swing.JDialog();
+        buscarClientes = new javax.swing.JDialog();
         jPanel8 = new javax.swing.JPanel();
         codigoBuscar = new javax.swing.JFormattedTextField();
         jLabel23 = new javax.swing.JLabel();
@@ -322,6 +344,7 @@ usuariot.requestFocusInWindow();
         btnUsuarios = new javax.swing.JButton();
         btnEmpresa = new javax.swing.JButton();
         btnTarifas = new javax.swing.JButton();
+        btnAccesos = new javax.swing.JButton();
         taskTarjeta = new org.jdesktop.swingx.JXTaskPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -722,8 +745,8 @@ usuariot.requestFocusInWindow();
         formaTarjetas.getContentPane().add(jScrollPane2);
         jScrollPane2.setBounds(90, 50, 240, 40);
 
-        formaUsuarios.setLocationByPlatform(true);
-        formaUsuarios.getContentPane().setLayout(null);
+        buscarClientes.setLocationByPlatform(true);
+        buscarClientes.getContentPane().setLayout(null);
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel8.setLayout(null);
@@ -740,7 +763,7 @@ usuariot.requestFocusInWindow();
         jPanel8.add(jLabel23);
         jLabel23.setBounds(10, 10, 70, 14);
 
-        formaUsuarios.getContentPane().add(jPanel8);
+        buscarClientes.getContentPane().add(jPanel8);
         jPanel8.setBounds(10, 10, 510, 40);
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -780,7 +803,7 @@ usuariot.requestFocusInWindow();
         jPanel9.add(jScrollPane3);
         jScrollPane3.setBounds(20, 20, 480, 150);
 
-        formaUsuarios.getContentPane().add(jPanel9);
+        buscarClientes.getContentPane().add(jPanel9);
         jPanel9.setBounds(10, 60, 510, 180);
 
         frmRegistrar.setModal(true);
@@ -960,7 +983,7 @@ usuariot.requestFocusInWindow();
         jLabel10.setBounds(10, 20, 300, 13);
 
         procesando.setBackground(new java.awt.Color(204, 204, 255));
-        procesando.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        procesando.setFont(new java.awt.Font("Tahoma", 0, 10));
         procesando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
         procesando.setBorderPainted(false);
         procesando.setContentAreaFilled(false);
@@ -1067,8 +1090,8 @@ usuariot.requestFocusInWindow();
         jToolBar2.setRollover(true);
 
         btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
-        btnUsuarios.setMnemonic('U');
-        btnUsuarios.setText("Usuarios");
+        btnUsuarios.setMnemonic('O');
+        btnUsuarios.setText("Operadores");
         btnUsuarios.setFocusable(false);
         btnUsuarios.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         btnUsuarios.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -1105,6 +1128,19 @@ usuariot.requestFocusInWindow();
             }
         });
         jToolBar2.add(btnTarifas);
+
+        btnAccesos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lock.gif"))); // NOI18N
+        btnAccesos.setMnemonic('A');
+        btnAccesos.setText("Accesos");
+        btnAccesos.setFocusable(false);
+        btnAccesos.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAccesos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAccesos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccesosActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(btnAccesos);
 
         contenedor2.getContentPane().add(jToolBar2);
 
@@ -1379,7 +1415,9 @@ public void logear(){
             // TODO add your handling code here:
             frmClientes.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
             //adm = new Administrador();
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Clientes' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " +
+                    "where o.pantalla = 'Clientes' " +
+                    "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -1389,6 +1427,7 @@ public void logear(){
 
             frmClientes.setSize(441, 455);
             frmClientes.setLocation(240, 100);
+            frmClientes.setModal(true);
             frmClientes.show();
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -1400,7 +1439,7 @@ public void logear(){
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
         try {
             // TODO add your handling code here:
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Usuarios' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Operadores' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -1690,7 +1729,7 @@ public void logear(){
 
     private void btnEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpresaActionPerformed
         try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Empresa' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Empresa' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -1710,7 +1749,7 @@ public void logear(){
     private void btnTarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTarifasActionPerformed
         // TODO add your handling code here:
         try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tarifas' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tarifas' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -1728,7 +1767,7 @@ public void logear(){
 
     private void btnTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTicketActionPerformed
         try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tickets' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tickets' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -1769,7 +1808,7 @@ public void logear(){
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
         // TODO add your handling code here:
         try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Factura' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Factura' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -1813,7 +1852,7 @@ public void logear(){
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
         // TODO add your handling code here:
         try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Reportes' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Reportes' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -1869,9 +1908,9 @@ public void logear(){
     private void codigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_codigoFocusLost
         // TODO add your handling code here:
         try {
-            usuarioObj = (Clientes) adm.querySimple("Select o from Clientes as o "
+            clienteObj = (Clientes) adm.querySimple("Select o from Clientes as o "
                     + "where o.identificacion = '" + codigo.getText().trim() + "' ");
-            if (usuarioObj != null) {
+            if (clienteObj != null) {
                 bindingGroup.unbind();
                 bindingGroup.bind();
                 modificar = true;
@@ -1942,7 +1981,7 @@ public void logear(){
 
     private void btnNuevaTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaTarjetaActionPerformed
         // TODO add your handling code here:
-        if (usuarioObj.getCodigo().equals(null)) {
+        if (clienteObj.getCodigo().equals(null)) {
             JOptionPane.showMessageDialog(this, "Guarde primero el cliente ");
             return;
         }
@@ -1969,10 +2008,10 @@ public void logear(){
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
-        formaUsuarios.setModal(true);
-        formaUsuarios.setSize(533, 300);
-        formaUsuarios.setLocation(250, 70);
-        formaUsuarios.show();
+        buscarClientes.setModal(true);
+        buscarClientes.setSize(533, 300);
+        buscarClientes.setLocation(250, 70);
+        buscarClientes.show();
         this.codigoBuscar.requestFocusInWindow();
         DefaultTableModel dtm = (DefaultTableModel) busquedaTabla.getModel();
         dtm.getDataVector().removeAllElements();
@@ -1990,7 +2029,7 @@ public void logear(){
     }
 
     public void limpiar() {
-        usuarioObj = new Clientes();
+        clienteObj = new Clientes();
         bindingGroup.unbind();
         bindingGroup.bind();
         DefaultTableModel dtm = (DefaultTableModel) tarjetas.getModel();
@@ -2020,13 +2059,13 @@ public void logear(){
                 if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
                 } else {
-                    usuarioObj.setDireccion(direccion.getText());
-                    usuarioObj.setNombres(nombres.getText());
-                    usuarioObj.setTelefono(telefono.getText());
-                    usuarioObj.setIdentificacion(codigo.getText());
+                    clienteObj.setDireccion(direccion.getText());
+                    clienteObj.setNombres(nombres.getText());
+                    clienteObj.setTelefono(telefono.getText());
+                    clienteObj.setIdentificacion(codigo.getText());
                     if (modificar) {
                         try {
-                            adm.actualizar(usuarioObj);
+                            adm.actualizar(clienteObj);
 
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
@@ -2036,7 +2075,7 @@ public void logear(){
                     } else {
                         try {
 
-                            adm.guardar(usuarioObj);
+                            adm.guardar(clienteObj);
                             formaTarjetas.setModal(true);
                             formaTarjetas.setSize(400, 388);
                             formaTarjetas.show();
@@ -2110,7 +2149,7 @@ public void logear(){
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (permisos.getEliminar()) {        // TODO add your handling code here:
             try {
-                adm.eliminarObjeto(Clientes.class, usuarioObj.getCodigo());
+                adm.eliminarObjeto(Clientes.class, clienteObj.getCodigo());
                 this.limpiar();
             } catch (Exception ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -2129,7 +2168,7 @@ public void logear(){
         // TODO add your handling code here:
         try {
             tarjeta.setTarjeta(noTarjeta.getText());
-            tarjeta.setCliente(usuarioObj);
+            tarjeta.setCliente(clienteObj);
             Date fechaDes = fechaDesde.getDate();
             fechaDes.setHours(0);
             fechaDes.setMinutes(01);
@@ -2156,8 +2195,8 @@ public void logear(){
             tarjeta.setPlaca(placa1.getText());
             adm.actualizar(tarjeta);
             formaTarjetas.dispose();
-            llenarTabla(usuarioObj.getCodigo());
-            formaUsuarios.dispose();
+            llenarTabla(clienteObj.getCodigo());
+            buscarClientes.dispose();
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al Guardar Tarjeta vuelva a intentarlo...!");
@@ -2207,7 +2246,7 @@ public void logear(){
             cargar.start();
 
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            formaUsuarios.dispose();
+            buscarClientes.dispose();
         }
     }//GEN-LAST:event_codigoBuscarKeyPressed
 
@@ -2216,10 +2255,10 @@ public void logear(){
         if (evt.getClickCount() == 2) {
             try {
                 int fila = busquedaTabla.getSelectedRow();
-                this.usuarioObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
-  llenarTabla(usuarioObj.getCodigo());
+                this.clienteObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
+  llenarTabla(clienteObj.getCodigo());
 
-                formaUsuarios.dispose();
+                buscarClientes.dispose();
                  bindingGroup.unbind();
                 bindingGroup.bind();
             } catch (Exception ex) {
@@ -2251,16 +2290,16 @@ public void llenarTabla(Integer clie){
         if (evt.getKeyCode() == evt.VK_ENTER) {
             try {
                 int fila = busquedaTabla.getSelectedRow();
-                this.usuarioObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
-        llenarTabla(usuarioObj.getCodigo());
-                formaUsuarios.dispose();
+                this.clienteObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
+        llenarTabla(clienteObj.getCodigo());
+                buscarClientes.dispose();
                  bindingGroup.unbind();
                 bindingGroup.bind();
             } catch (Exception ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            formaUsuarios.dispose();
+            buscarClientes.dispose();
         }
 }//GEN-LAST:event_busquedaTablaKeyPressed
 
@@ -2295,6 +2334,27 @@ public void llenarTabla(Integer clie){
         // TODO add your handling code here:
     }//GEN-LAST:event_usuariotActionPerformed
 
+    private void btnAccesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccesosActionPerformed
+        // TODO add your handling code here:
+           // TODO add your handling code here:
+        try {
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " +
+                    "where o.pantalla = 'Accesos' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "'  and o.ingresar = true  ");
+            if (accesosL.size() > 0) {
+                permisos = accesosL.get(0);
+            } else {
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar ");
+                return;
+            }
+            frmPerfiles usu = new frmPerfiles(this, true, this, adm);
+            usu.setSize(441, 445);
+            usu.setLocation(240, 100);
+            usu.show();
+        } catch (Exception ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAccesosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2308,6 +2368,7 @@ public void llenarTabla(Integer clie){
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox activa;
+    private javax.swing.JButton btnAccesos;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnClientes;
@@ -2324,6 +2385,7 @@ public void llenarTabla(Integer clie){
     private javax.swing.JButton btnTarifas;
     private javax.swing.JButton btnTicket;
     private javax.swing.JButton btnUsuarios;
+    private javax.swing.JDialog buscarClientes;
     private javax.swing.JTable busquedaTabla;
     private javax.swing.JPasswordField clave;
     private javax.swing.JPasswordField claveBase;
@@ -2342,7 +2404,6 @@ public void llenarTabla(Integer clie){
     private com.toedter.calendar.JDateChooser fechaDesde;
     private com.toedter.calendar.JDateChooser fechaHasta;
     private javax.swing.JDialog formaTarjetas;
-    private javax.swing.JDialog formaUsuarios;
     private javax.swing.JDialog frmClientes;
     private javax.swing.JInternalFrame frmIngresarSistema;
     private javax.swing.JDialog frmRegistrar;
@@ -2433,14 +2494,14 @@ public void llenarTabla(Integer clie){
     private javax.swing.JCheckBox viernes;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-    public Accesos permisos;
+    public static Accesos permisos;
 
     public Accesos getPermisos() {
         return permisos;
     }
 
     public void setPermisos(Accesos permisos) {
-        this.permisos = permisos;
+         this.permisos = permisos;
     }
     public Usuarios usuario;
 
@@ -2453,11 +2514,11 @@ public void llenarTabla(Integer clie){
     }
 
     public Clientes getUsuarioObj() {
-        return usuarioObj;
+        return clienteObj;
     }
 
     public void setUsuarioObj(Clientes usuarioObj) {
-        this.usuarioObj = usuarioObj;
+        this.clienteObj = usuarioObj;
     }
 
     public boolean getNuevaTarjeta() {
