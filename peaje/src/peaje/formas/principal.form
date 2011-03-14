@@ -792,7 +792,7 @@
         </Container>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JDialog" name="formaUsuarios">
+    <Container class="javax.swing.JDialog" name="buscarClientes">
       <Properties>
         <Property name="locationByPlatform" type="boolean" value="true"/>
       </Properties>
@@ -1525,8 +1525,8 @@
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/images/User3.gif"/>
                         </Property>
-                        <Property name="mnemonic" type="int" value="85"/>
-                        <Property name="text" type="java.lang.String" value="Usuarios"/>
+                        <Property name="mnemonic" type="int" value="79"/>
+                        <Property name="text" type="java.lang.String" value="Operadores"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalAlignment" type="int" value="4"/>
                         <Property name="horizontalTextPosition" type="int" value="4"/>
@@ -1564,6 +1564,21 @@
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTarifasActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="btnAccesos">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/images/lock.gif"/>
+                        </Property>
+                        <Property name="mnemonic" type="int" value="65"/>
+                        <Property name="text" type="java.lang.String" value="Accesos"/>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="horizontalTextPosition" type="int" value="4"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAccesosActionPerformed"/>
                       </Events>
                     </Component>
                   </SubComponents>

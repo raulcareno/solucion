@@ -33,6 +33,7 @@ public class frmUsuarios extends javax.swing.JDialog {
     private String claveActual;
     private validaciones val;
     private principal principal;
+    claves cl = new claves();
 
     /** Creates new form frmProfesores */
     public frmUsuarios(java.awt.Frame parent, boolean modal, Administrador adm1) {
@@ -256,27 +257,32 @@ public class frmUsuarios extends javax.swing.JDialog {
 
         jLabel1.setForeground(new java.awt.Color(0, 0, 153));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("CI/RUC");
+        jLabel1.setText("CI/RUC:");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(10, 10, 60, 14);
+        jLabel1.setBounds(10, 10, 90, 14);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Dirección:");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(10, 50, 60, 14);
+        jLabel2.setBounds(10, 50, 90, 14);
 
         nombres.setEditable(false);
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.nombres}"), nombres, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
+        nombres.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                nombresFocusLost(evt);
+            }
+        });
         nombres.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 nombresKeyPressed(evt);
             }
         });
         jPanel1.add(nombres);
-        nombres.setBounds(80, 30, 220, 20);
+        nombres.setBounds(110, 30, 220, 20);
 
         direccion.setEditable(false);
 
@@ -289,13 +295,13 @@ public class frmUsuarios extends javax.swing.JDialog {
             }
         });
         jPanel1.add(direccion);
-        direccion.setBounds(80, 50, 220, 20);
+        direccion.setBounds(110, 50, 220, 20);
 
         jLabel12.setForeground(new java.awt.Color(0, 0, 153));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Nombres:");
         jPanel1.add(jLabel12);
-        jLabel12.setBounds(10, 30, 60, 14);
+        jLabel12.setBounds(10, 30, 90, 14);
 
         codigo.setEditable(false);
 
@@ -308,7 +314,7 @@ public class frmUsuarios extends javax.swing.JDialog {
             }
         });
         jPanel1.add(codigo);
-        codigo.setBounds(80, 10, 100, 20);
+        codigo.setBounds(110, 10, 100, 20);
 
         usuario.setEditable(false);
 
@@ -321,13 +327,13 @@ public class frmUsuarios extends javax.swing.JDialog {
             }
         });
         jPanel1.add(usuario);
-        usuario.setBounds(80, 70, 109, 20);
+        usuario.setBounds(110, 70, 110, 20);
 
         jLabel5.setForeground(new java.awt.Color(0, 0, 153));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Usuario:");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(10, 70, 70, 14);
+        jLabel5.setBounds(10, 70, 90, 14);
 
         clave.setEditable(false);
 
@@ -340,32 +346,37 @@ public class frmUsuarios extends javax.swing.JDialog {
             }
         });
         jPanel1.add(clave);
-        clave.setBounds(80, 90, 110, 20);
+        clave.setBounds(110, 90, 110, 20);
 
         jLabel6.setForeground(new java.awt.Color(0, 0, 153));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Clave:");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(10, 90, 60, 14);
+        jLabel6.setBounds(10, 90, 90, 14);
 
         confirmar.setEditable(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.clave}"), confirmar, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
+        confirmar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                confirmarFocusLost(evt);
+            }
+        });
         confirmar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 confirmarKeyPressed(evt);
             }
         });
         jPanel1.add(confirmar);
-        confirmar.setBounds(80, 110, 110, 20);
+        confirmar.setBounds(110, 110, 110, 20);
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Confirmar:");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(0, 110, 70, 14);
+        jLabel7.setBounds(0, 110, 100, 14);
 
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${perfilesList}");
         org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, perfil);
@@ -374,15 +385,15 @@ public class frmUsuarios extends javax.swing.JDialog {
         bindingGroup.addBinding(binding);
 
         jPanel1.add(perfil);
-        perfil.setBounds(80, 130, 140, 20);
+        perfil.setBounds(110, 130, 140, 20);
 
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Privilegios:");
         jPanel1.add(jLabel13);
-        jLabel13.setBounds(0, 130, 70, 14);
+        jLabel13.setBounds(0, 130, 100, 14);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 50, 370, 160);
+        jPanel1.setBounds(20, 50, 370, 170);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -458,7 +469,7 @@ public class frmUsuarios extends javax.swing.JDialog {
         btnSalir.setBounds(290, 10, 60, 50);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(20, 220, 370, 80);
+        jPanel4.setBounds(20, 230, 370, 70);
 
         bindingGroup.bind();
 
@@ -482,16 +493,18 @@ public class frmUsuarios extends javax.swing.JDialog {
                 btnAgregar.setMnemonic('G');
                 btnModificar.setMnemonic('C');
                 btnBuscar.setEnabled(false);
+               codigo.requestFocusInWindow();
 
             } else if (grabar == true) {
                 if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty() || usuario.getText().trim().isEmpty() || clave.getText().isEmpty() || confirmar.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
                 } else {
-                    if (!claveActual.equals(usuarioObj.getClave())) {
-                        usuarioObj.setClave(val.encriptar(usuarioObj.getClave()));
-                        clave.setText(usuarioObj.getClave());
-                        confirmar.setText(usuarioObj.getClave());
-                    }
+//                    if (!claveActual.equals(usuarioObj.getClave())) {
+//                        usuarioObj.setClave(val.encriptar(usuarioObj.getClave()));
+//                        clave.setText(usuarioObj.getClave());
+//                        confirmar.setText(usuarioObj.getClave());
+//                    }
+                    usuarioObj.setClave(cl.encriptar(usuarioObj.getClave()));
                     if (modificar) {
                         try {
                             adm.actualizar(usuarioObj);
@@ -661,6 +674,7 @@ public class frmUsuarios extends javax.swing.JDialog {
             try {
                 int fila = busquedaTabla.getSelectedRow();
                 this.usuarioObj = (Usuarios) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Usuarios.class);
+                usuarioObj.setClave(cl.desencriptar(usuarioObj.getClave()));
                 bindingGroup.unbind();
                 bindingGroup.bind();
                 perfil.setSelectedItem(usuarioObj.getCodigo());
@@ -680,6 +694,7 @@ public class frmUsuarios extends javax.swing.JDialog {
             try {
                 int fila = busquedaTabla.getSelectedRow();
                 this.usuarioObj = (Usuarios) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Usuarios.class);
+                usuarioObj.setClave(cl.desencriptar(usuarioObj.getClave()));
                 bindingGroup.unbind();
                 bindingGroup.bind();
                 perfil.setSelectedItem(usuarioObj.getCodigo());
@@ -745,6 +760,25 @@ public class frmUsuarios extends javax.swing.JDialog {
             this.setVisible(false);
         }
     }//GEN-LAST:event_formKeyReleased
+
+    private void nombresFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nombresFocusLost
+        // TODO add your handling code here:
+        if(usuario.getText().trim().isEmpty()){
+            int vacio = nombres.getText().indexOf(" ");
+            usuario.setText(nombres.getText().replace(" ","").substring(0, vacio+1).toLowerCase());
+        }
+    }//GEN-LAST:event_nombresFocusLost
+
+    private void confirmarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_confirmarFocusLost
+        // TODO add your handling code here:
+        if(!clave.getText().equals(confirmar.getText())){
+            JOptionPane.showMessageDialog(this, "CLAVES NO COINCIDEN");
+            clave.setText("");
+            confirmar.setText("");
+            clave.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_confirmarFocusLost
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;

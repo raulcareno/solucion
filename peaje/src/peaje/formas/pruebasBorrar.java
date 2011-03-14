@@ -22,22 +22,25 @@ public class pruebasBorrar {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Date fecIn = new Date();
-        Date fecIn3 = new Date();
-        Date fechaO = new Date();
-
-        LocalTime horaIni = new LocalTime(new DateTime(fecIn));
-        System.out.println("INI "+horaIni);
-        LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
-        System.out.println("FIN "+horaFin);
-        LocalTime ahora = new LocalTime(new DateTime(fechaO));
-        System.out.println("AHORA "+ahora);
-        
-        if((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni)== 0 ) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0  )){
-            System.out.println("ESTA EN EL RANGO");
-        }
-        
-        
+        claves c = new claves();
+        System.out.println(""+c.encriptar("root"));
+        System.out.println(""+c.desencriptar(c.encriptar("root")));
+//        Date fecIn = new Date();
+//        Date fecIn3 = new Date();
+//        Date fechaO = new Date();
+//
+//        LocalTime horaIni = new LocalTime(new DateTime(fecIn));
+//        System.out.println("INI "+horaIni);
+//        LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
+//        System.out.println("FIN "+horaFin);
+//        LocalTime ahora = new LocalTime(new DateTime(fechaO));
+//        System.out.println("AHORA "+ahora);
+//
+//        if((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni)== 0 ) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0  )){
+//            System.out.println("ESTA EN EL RANGO");
+//        }
+//
+//
         
         
         

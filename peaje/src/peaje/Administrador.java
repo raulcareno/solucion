@@ -5,9 +5,9 @@
 package peaje;
 
 
-import hibernate.Comunicaciones;
 import hibernate.HibernateUtil;
 import hibernate.Usuarios;
+import hibernate.cargar.claves;
 import java.util.List;
 import org.hibernate.Session;
 
@@ -220,8 +220,8 @@ public class Administrador {
        
         try {
             // TODO:
-      validaciones val = new validaciones();
-            String clavellega = val.encriptar(clave);
+      claves cl = new claves();
+            String clavellega = cl.encriptar(clave);
             List lista  = s.createQuery("Select o from Usuarios o where o.usuario = '"+usuario.trim()+"'  " +
                     "and o.clave = '"+clavellega+"' ").list();
          if(lista.size()>0){

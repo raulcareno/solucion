@@ -10,6 +10,7 @@
     <property column="agregar" name="agregar" type="java.lang.Boolean"/>
     <property column="modificar" name="modificar" type="java.lang.Boolean"/>
     <property column="eliminar" name="eliminar" type="java.lang.Boolean"/>
+    <property column="ingresar" name="ingresar" type="java.lang.Boolean"/>
     <many-to-one column="perfil" name="perfil"/>
   </class>
 </hibernate-mapping>

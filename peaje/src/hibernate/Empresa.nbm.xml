@@ -16,9 +16,9 @@
     <property column="parqueaderos" name="parqueaderos" type="java.lang.Integer"/>
     <property column="impticket" name="impticket" type="java.lang.String"/>
     <property column="impfactura" name="impfactura" type="java.lang.String"/>
-        <property column="impresora" name="impresora" type="java.lang.String"/>
-            <property column="impresora2" name="impresora2" type="java.lang.String"/>
-                <property column="puerto" name="puerto" type="java.lang.String"/>
+    <property column="impresora" name="impresora" type="java.lang.String"/>
+    <property column="impresora2" name="impresora2" type="java.lang.String"/>
+    <property column="puerto" name="puerto" type="java.lang.String"/>
     <property column="puerto1" name="puerto1" type="java.lang.String"/>
     <property column="puerto2" name="puerto2" type="java.lang.String"/>
     <property column="puerto3" name="puerto3" type="java.lang.String"/>
@@ -26,7 +26,6 @@
     <property column="puerto5" name="puerto5" type="java.lang.String"/>
     <property column="puerto6" name="puerto6" type="java.lang.String"/>
     <property column="puerto7" name="puerto7" type="java.lang.String"/>
-
     <property column="activa1" name="activa1" type="java.lang.Boolean"/>
     <property column="activa2" name="activa2" type="java.lang.Boolean"/>
     <property column="activa3" name="activa3" type="java.lang.Boolean"/>
@@ -34,7 +33,6 @@
     <property column="activa5" name="activa5" type="java.lang.Boolean"/>
     <property column="activa6" name="activa6" type="java.lang.Boolean"/>
     <property column="activa7" name="activa7" type="java.lang.Boolean"/>
-
     <property column="puerta1" name="puerta1" type="java.lang.String"/>
     <property column="puerta2" name="puerta2" type="java.lang.String"/>
     <property column="puerta3" name="puerta3" type="java.lang.String"/>
