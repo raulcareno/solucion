@@ -1521,7 +1521,7 @@
             </Container>
             <Container class="org.jdesktop.swingx.JXTaskPane" name="contenedor3">
               <Properties>
-                <Property name="title" type="java.lang.String" value="Opciones"/>
+                <Property name="title" type="java.lang.String" value="Ayuda"/>
               </Properties>
               <SubComponents>
                 <Container class="javax.swing.JToolBar" name="jToolBar3">
@@ -1539,7 +1539,7 @@
                           <Image iconType="3" name="/images/help.gif"/>
                         </Property>
                         <Property name="mnemonic" type="int" value="69"/>
-                        <Property name="text" type="java.lang.String" value="Manual de Ayuda"/>
+                        <Property name="text" type="java.lang.String" value="Manual"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="4"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>

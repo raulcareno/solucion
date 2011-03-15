@@ -1142,7 +1142,7 @@ usuariot.requestFocusInWindow();
 
         jXTaskPaneContainer1.add(contenedor2);
 
-        contenedor3.setTitle("Opciones");
+        contenedor3.setTitle("Ayuda");
 
         jToolBar3.setFloatable(false);
         jToolBar3.setOrientation(1);
@@ -1150,7 +1150,7 @@ usuariot.requestFocusInWindow();
 
         btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/help.gif"))); // NOI18N
         btnAyuda.setMnemonic('E');
-        btnAyuda.setText("Manual de Ayuda");
+        btnAyuda.setText("Manual");
         btnAyuda.setFocusable(false);
         btnAyuda.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnAyuda.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
