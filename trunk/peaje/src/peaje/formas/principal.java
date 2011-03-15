@@ -66,6 +66,10 @@ public class principal extends javax.swing.JFrame {
         btnReportes.setEnabled(estado);
         btnUsuarios.setEnabled(estado);
         btnAccesos.setEnabled(estado);
+        btnAcerca.setEnabled(estado);
+        btnAyuda.setEnabled(estado);
+        btnSalir2.setEnabled(estado);
+        btnCerrar.setEnabled(estado);
 
     }
     /** Creates new form principal */
@@ -332,7 +336,6 @@ usuariot.requestFocusInWindow();
         procesando = new javax.swing.JButton();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         miPanel = new javax.swing.JPanel();
-        jCalendar1 = new com.toedter.calendar.JCalendar();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
         btnClientes = new javax.swing.JButton();
@@ -345,6 +348,12 @@ usuariot.requestFocusInWindow();
         btnEmpresa = new javax.swing.JButton();
         btnTarifas = new javax.swing.JButton();
         btnAccesos = new javax.swing.JButton();
+        contenedor3 = new org.jdesktop.swingx.JXTaskPane();
+        jToolBar3 = new javax.swing.JToolBar();
+        btnAyuda = new javax.swing.JButton();
+        btnAcerca = new javax.swing.JButton();
+        btnCerrar = new javax.swing.JButton();
+        btnSalir2 = new javax.swing.JButton();
         taskTarjeta = new org.jdesktop.swingx.JXTaskPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -357,14 +366,6 @@ usuariot.requestFocusInWindow();
         spIngreso = new javax.swing.JSpinner();
         spSalida = new javax.swing.JSpinner();
         jLabel32 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        mnCerrar = new javax.swing.JMenuItem();
-        mnCambioclave = new javax.swing.JMenuItem();
-        mnSalir = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        mnAcerca = new javax.swing.JMenuItem();
 
         frmClientes.setTitle("Clientes");
         frmClientes.getContentPane().setLayout(null);
@@ -903,6 +904,7 @@ usuariot.requestFocusInWindow();
         jPanel2.setLayout(null);
 
         usuariot.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
+        usuariot.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         usuariot.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usuariotActionPerformed(evt);
@@ -916,6 +918,7 @@ usuariot.requestFocusInWindow();
         jPanel2.add(usuariot);
         usuariot.setBounds(120, 20, 110, 16);
 
+        clave.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         clave.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
         clave.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -1014,13 +1017,6 @@ usuariot.requestFocusInWindow();
         miPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         miPanel.setPreferredSize(new java.awt.Dimension(100, 60));
         jXTaskPaneContainer1.add(miPanel);
-
-        jCalendar1.setFocusable(false);
-        jCalendar1.setMinimumSize(new java.awt.Dimension(158, 140));
-        jCalendar1.setPreferredSize(new java.awt.Dimension(134, 95));
-        jCalendar1.setWeekOfYearVisible(false);
-        jCalendar1.setWeekdayForeground(new java.awt.Color(0, 0, 0));
-        jXTaskPaneContainer1.add(jCalendar1);
 
         contenedor1.setTitle("Control");
 
@@ -1146,6 +1142,69 @@ usuariot.requestFocusInWindow();
 
         jXTaskPaneContainer1.add(contenedor2);
 
+        contenedor3.setTitle("Opciones");
+
+        jToolBar3.setFloatable(false);
+        jToolBar3.setOrientation(1);
+        jToolBar3.setRollover(true);
+
+        btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/help.gif"))); // NOI18N
+        btnAyuda.setMnemonic('E');
+        btnAyuda.setText("Manual de Ayuda");
+        btnAyuda.setFocusable(false);
+        btnAyuda.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAyuda.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAyuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAyudaActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(btnAyuda);
+
+        btnAcerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/info.gif"))); // NOI18N
+        btnAcerca.setMnemonic('O');
+        btnAcerca.setText("Acerca de");
+        btnAcerca.setFocusable(false);
+        btnAcerca.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        btnAcerca.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAcerca.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAcerca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAcercaActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(btnAcerca);
+
+        btnCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/undo.gif"))); // NOI18N
+        btnCerrar.setMnemonic('R');
+        btnCerrar.setText("Cerrar Sesión");
+        btnCerrar.setFocusable(false);
+        btnCerrar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnCerrar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(btnCerrar);
+
+        btnSalir2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
+        btnSalir2.setMnemonic('A');
+        btnSalir2.setText("Salir");
+        btnSalir2.setFocusable(false);
+        btnSalir2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnSalir2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalir2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalir2ActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(btnSalir2);
+
+        contenedor3.getContentPane().add(jToolBar3);
+
+        jXTaskPaneContainer1.add(contenedor3);
+
         taskTarjeta.setCollapsed(true);
         taskTarjeta.setTitle("Registro Tarjeta");
 
@@ -1233,40 +1292,6 @@ usuariot.requestFocusInWindow();
         jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
 
         getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
-
-        jMenu1.setText("Opciones");
-
-        mnCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/undo.gif"))); // NOI18N
-        mnCerrar.setText("Cerrar Sesión");
-        mnCerrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnCerrarActionPerformed(evt);
-            }
-        });
-        jMenu1.add(mnCerrar);
-
-        mnCambioclave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
-        mnCambioclave.setText("Cambio Clave");
-        jMenu1.add(mnCambioclave);
-
-        mnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
-        mnSalir.setText("Salir");
-        mnSalir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnSalirActionPerformed(evt);
-            }
-        });
-        jMenu1.add(mnSalir);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Ayuda");
-        jMenu2.add(jMenuItem3);
-        jMenu2.add(mnAcerca);
-
-        jMenuBar1.add(jMenu2);
-
-        setJMenuBar(jMenuBar1);
 
         bindingGroup.bind();
 
@@ -1826,29 +1851,6 @@ public void logear(){
 
     }//GEN-LAST:event_btnCobrarActionPerformed
 
-    private void mnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnSalirActionPerformed
-        // TODO add your handling code here:
-        System.exit(0);
-
-    }//GEN-LAST:event_mnSalirActionPerformed
-
-    private void mnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCerrarActionPerformed
-        // TODO add your handling code here:
-        usuario = new Usuarios();
-        permisos = new Accesos();
-        frmIngresarSistema.setVisible(true);
-        habilitarBotones(false);
-        usuariot.requestFocusInWindow();
-//        frmLogin.setModal(true);
-//        frmLogin.setSize(400, 230);
-//        frmLogin.setLocation(350, 300);
-//        frmLogin.setResizable(false);
-//        frmLogin.setTitle("Inicio de Sesión");
-//        frmLogin.setUndecorated(true);
-//        frmLogin.show();
-
-    }//GEN-LAST:event_mnCerrarActionPerformed
-
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
         // TODO add your handling code here:
         try {
@@ -2355,6 +2357,32 @@ public void llenarTabla(Integer clie){
         }
     }//GEN-LAST:event_btnAccesosActionPerformed
 
+    private void btnAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcercaActionPerformed
+        // TODO add your handling code here:
+           acerca ac = new acerca(this, true);
+           ac.setLocation(240, 100);
+           ac.show();
+    }//GEN-LAST:event_btnAcercaActionPerformed
+
+    private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnAyudaActionPerformed
+
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
+        // TODO add your handling code here:
+           usuario = new Usuarios();
+        permisos = new Accesos();
+        frmIngresarSistema.setVisible(true);
+        habilitarBotones(false);
+        usuariot.requestFocusInWindow();
+    }//GEN-LAST:event_btnCerrarActionPerformed
+
+    private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
+        // TODO add your handling code here:
+         System.exit(0);
+    }//GEN-LAST:event_btnSalir2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2369,8 +2397,11 @@ public void llenarTabla(Integer clie){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox activa;
     private javax.swing.JButton btnAccesos;
+    private javax.swing.JButton btnAcerca;
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnAyuda;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnClientes;
     private javax.swing.JButton btnCobrar;
     private javax.swing.JButton btnEliminar;
@@ -2381,6 +2412,7 @@ public void llenarTabla(Integer clie){
     private javax.swing.JButton btnNuevaTarjeta;
     private javax.swing.JButton btnReportes;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnSalir2;
     private javax.swing.JButton btnSalirTarjetas;
     private javax.swing.JButton btnTarifas;
     private javax.swing.JButton btnTicket;
@@ -2396,6 +2428,7 @@ public void llenarTabla(Integer clie){
     public javax.swing.JDesktopPane contenedor;
     private org.jdesktop.swingx.JXTaskPane contenedor1;
     private org.jdesktop.swingx.JXTaskPane contenedor2;
+    private org.jdesktop.swingx.JXTaskPane contenedor3;
     private javax.swing.JButton continuar;
     private javax.swing.JTextArea descripcionTarjeta;
     private javax.swing.JPanel diasHabiles;
@@ -2412,7 +2445,6 @@ public void llenarTabla(Integer clie){
     private javax.swing.JSpinner ingresos;
     private javax.swing.JFormattedTextField ipBase;
     private javax.swing.JButton jButton9;
-    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2445,10 +2477,6 @@ public void llenarTabla(Integer clie){
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -2464,16 +2492,13 @@ public void llenarTabla(Integer clie){
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JToolBar jToolBar3;
     private org.jdesktop.swingx.JXTaskPaneContainer jXTaskPaneContainer1;
     private javax.swing.JCheckBox jueves;
     private javax.swing.JCheckBox lunes;
     private javax.swing.JCheckBox martes;
     private javax.swing.JPanel miPanel;
     private javax.swing.JCheckBox miercoles;
-    private javax.swing.JMenuItem mnAcerca;
-    private javax.swing.JMenuItem mnCambioclave;
-    private javax.swing.JMenuItem mnCerrar;
-    private javax.swing.JMenuItem mnSalir;
     public javax.swing.JFormattedTextField noTarjeta;
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JPanel panelHoras;

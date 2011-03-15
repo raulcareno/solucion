@@ -24,7 +24,7 @@ public class acerca extends javax.swing.JDialog {
           super(parent,modal);
         //this.desktopContenedor = lo.contenedor;
         initComponents();
-        this.setSize(615, 508);
+        this.setSize(419, 214);
     }
     /** This method is called from within the constructor to
      * initialize the form.
@@ -54,7 +54,7 @@ public class acerca extends javax.swing.JDialog {
 
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
         getContentPane().add(imageLabel);
-        imageLabel.setBounds(40, 40, 47, 80);
+        imageLabel.setBounds(60, 50, 50, 80);
 
         appTitleLabel.setFont(appTitleLabel.getFont().deriveFont(appTitleLabel.getFont().getStyle() | java.awt.Font.BOLD, appTitleLabel.getFont().getSize()+4));
         appTitleLabel.setText("SISTEMA DE PARQUEADERO");
@@ -103,7 +103,7 @@ public class acerca extends javax.swing.JDialog {
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(30, 140, 90, 23);
+        jButton1.setBounds(50, 150, 90, 23);
 
         appHomepageLabel3.setText("jcinform@gmail.com");
         getContentPane().add(appHomepageLabel3);
