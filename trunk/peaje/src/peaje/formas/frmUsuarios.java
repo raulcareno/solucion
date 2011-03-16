@@ -234,7 +234,7 @@ try {
         formaUsuarios.getContentPane().add(jPanel7);
         jPanel7.setBounds(10, 60, 510, 180);
 
-        setTitle("Usuarios");
+        setTitle("Operadores y Usuarios del Sistema");
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
@@ -246,15 +246,15 @@ try {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
-        jLabel8.setText("Catálogo de Usuarios ..::..");
+        jLabel8.setText("Catálogo de Operadores ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel10.setText("Busqueda, Creación,Modificación,  Usuarios ..::..");
+        jLabel10.setText("Busqueda, Creación,Modificación,  Operadores u Usuarios ..::..");
         jPanel3.add(jLabel10);
         jLabel10.setBounds(10, 20, 250, 13);
 

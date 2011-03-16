@@ -599,6 +599,7 @@ usuariot.requestFocusInWindow();
         frmClientes.getContentPane().add(jPanel6);
         jPanel6.setBounds(0, 0, 600, 40);
 
+        formaTarjetas.setTitle("Tarjeta del Cliente");
         formaTarjetas.getContentPane().setLayout(null);
 
         jLabel14.setText("No. Tarjeta: ");
@@ -1446,7 +1447,7 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar ");
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -1468,7 +1469,7 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar ");
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -1758,7 +1759,7 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar ");
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmEmpresa usu = new frmEmpresa(this, true, this, adm);
@@ -1778,7 +1779,7 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar ");
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmTarifas usu = new frmTarifas(this, true, this, adm);
@@ -1796,7 +1797,7 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar ");
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmTicket usu = new frmTicket(this, true, this, adm);
@@ -1837,7 +1838,7 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar ");
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
@@ -1858,7 +1859,7 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar ");
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmReportes usu = new frmReportes(this, adm);
@@ -1880,7 +1881,7 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar ");
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
                 return;
             }
             acerca usu = new acerca(this, true);
@@ -2345,10 +2346,10 @@ public void llenarTabla(Integer clie){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar ");
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            frmPerfiles usu = new frmPerfiles(this, true, this, adm);
+            frmAccesos usu = new frmAccesos(this, true, this, adm);
             usu.setSize(441, 445);
             usu.setLocation(240, 100);
             usu.show();

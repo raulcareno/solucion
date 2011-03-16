@@ -346,7 +346,7 @@ public class frmEmpresa extends javax.swing.JDialog {
 
         jLabel17.setText("Lectora 1:");
 
-        setTitle("Usuarios");
+        setTitle("Datos de la Empresa");
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
@@ -364,9 +364,9 @@ public class frmEmpresa extends javax.swing.JDialog {
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel10.setText("Busqueda, Creación,Modificación,  Empresas ..::..");
+        jLabel10.setText("Configuración de la Empresa ..::..");
         jPanel3.add(jLabel10);
         jLabel10.setBounds(10, 20, 250, 13);
 
@@ -576,7 +576,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         jPanel1.add(jLabel15);
         jLabel15.setBounds(100, 290, 20, 14);
 
-        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel16.setText("PUERTO LECTORA");
         jPanel1.add(jLabel16);
         jLabel16.setBounds(80, 210, 110, 20);
@@ -602,7 +602,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         jPanel1.add(cmbSalida4);
         cmbSalida4.setBounds(190, 290, 37, 20);
 
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel21.setText("ABRE PUERTA");
         jPanel1.add(jLabel21);
         jLabel21.setBounds(190, 210, 90, 20);

@@ -25,7 +25,7 @@ import peaje.Administrador;
  *
  * @author  Francisco
  */
-public class frmPerfiles  extends javax.swing.JDialog {
+public class frmAccesos  extends javax.swing.JDialog {
     public boolean grabar =false;
     public boolean modificar =false;
     private Container desktopContenedor;
@@ -33,7 +33,7 @@ public class frmPerfiles  extends javax.swing.JDialog {
     /**
      * Creates new form frmRubros
      */
- public frmPerfiles(java.awt.Frame parent, boolean modal, Administrador adm1) {
+ public frmAccesos(java.awt.Frame parent, boolean modal, Administrador adm1) {
         super(parent, modal);
         adm = adm1;
         
@@ -42,7 +42,7 @@ public class frmPerfiles  extends javax.swing.JDialog {
     
     }
 
-    public frmPerfiles(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
+    public frmAccesos(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
         super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         adm = adm1;
@@ -240,6 +240,8 @@ try{
                     int filas = tablaPerfilesRubros.getRowCount();
                     for (int i = 0; i < filas; i++){
                         mes.setCodigo((Integer) tablaPerfilesRubros.getValueAt(i,0));
+                        if(mes.getCodigo().equals(0))
+                             mes.setCodigo(null);
                         mes.setPantalla((String) tablaPerfilesRubros.getValueAt(i,1));
                         mes.setIngresar((Boolean) tablaPerfilesRubros.getValueAt(i,2));
                         mes.setAgregar((Boolean) tablaPerfilesRubros.getValueAt(i,3));
@@ -248,6 +250,7 @@ try{
                         mes.setPerfil((Global)jPerfil.getSelectedValue());
                         adm.actualizar(mes);
                     }
+                    listar();
                     JOptionPane.showMessageDialog(this, "Registros Actualizados");
 }catch(Exception e){
     JOptionPane.showMessageDialog(this, "Error al Almacenar Registros \n Revise que los datos est�n ingresados correctamente");
@@ -287,14 +290,25 @@ private void jPerfilValueChanged(javax.swing.event.ListSelectionEvent evt) {//GE
 }//GEN-LAST:event_jPerfilValueChanged
     
    public void listar(){
-    Administrador adm = new Administrador();
+     
        List lista = adm.query("Select o from Accesos as o where perfil.codigo = '"+((Global)jPerfil.getSelectedValue()).getCodigo()+"' order by o.pantalla ");
+       Boolean nuevos = false;
+       if(lista.size() <= 0 ){
+                lista = adm.query("Select o from Accesos as o where perfil is null   order by o.pantalla ");
+                nuevos = true;
+       }
        DefaultTableModel dtm = (DefaultTableModel)tablaPerfilesRubros.getModel();
        dtm.getDataVector().removeAllElements();
+       
        for (Iterator it = lista.iterator(); it.hasNext();) {
            Accesos elem = (Accesos) it.next();
            Object obj[] = new Object[6];
-           obj[0]= elem.getCodigo();
+           if(nuevos){
+               obj[0]= 0;
+            }else{
+               obj[0]= elem.getCodigo();
+            }
+           
            obj[1] = elem.getPantalla();
            obj[2] = elem.getIngresar();
            obj[3] = elem.getAgregar();
