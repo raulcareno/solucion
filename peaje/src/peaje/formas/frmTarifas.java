@@ -66,7 +66,7 @@ public class frmTarifas extends javax.swing.JDialog {
  
         try {
 
-            List<Tarifas> tar = adm.query("Select o from Tarifas as o ");
+            List<Tarifas> tar = adm.query("Select o from Tarifas as o order by o.desde ");
             DefaultTableModel dtm = (DefaultTableModel) tarifario.getModel();
             dtm.getDataVector().removeAllElements();
             for (Tarifas tarifas : tar) {
@@ -79,7 +79,6 @@ public class frmTarifas extends javax.swing.JDialog {
             }
             for (int i = tar.size()+1; i < tar.size()+10; i++) {
                 Object[] obj = new Object[5];
-
                 obj[0] = null;
                 obj[1] = null;
                 obj[2] = null;
@@ -180,14 +179,11 @@ public class frmTarifas extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tarifario = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
@@ -261,7 +257,7 @@ public class frmTarifas extends javax.swing.JDialog {
         jLabel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        setTitle("Usuarios");
+        setTitle("Tarifarios");
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
@@ -286,17 +282,10 @@ public class frmTarifas extends javax.swing.JDialog {
         jLabel10.setBounds(10, 20, 250, 13);
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 600, 40);
+        jPanel3.setBounds(0, 0, 410, 40);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
-
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("A COBRAR");
-        jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(230, 10, 110, 20);
 
         tarifario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -346,52 +335,40 @@ public class frmTarifas extends javax.swing.JDialog {
         });
         tarifario.setEnabled(false);
         tarifario.setRowSelectionAllowed(false);
+        tarifario.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tarifarioPropertyChange(evt);
+            }
+        });
+        tarifario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tarifarioKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(tarifario);
 
         jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(10, 50, 330, 170);
+        jScrollPane1.setBounds(10, 30, 330, 190);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("EN MINUTOS");
+        jLabel2.setText("TIEMPO EN MINUTOS");
         jLabel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(10, 30, 220, 20);
-
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("TIEMPOS");
-        jLabel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(10, 10, 220, 20);
+        jLabel2.setBounds(10, 10, 220, 20);
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("USD");
+        jLabel5.setText("VALOR $(USD)");
         jLabel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(230, 30, 110, 20);
+        jLabel5.setBounds(230, 10, 110, 20);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(20, 50, 370, 230);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
-
-        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.gif"))); // NOI18N
-        btnBuscar.setMnemonic('B');
-        btnBuscar.setText("Buscar");
-        btnBuscar.setEnabled(false);
-        btnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnBuscar.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnBuscar);
-        btnBuscar.setBounds(50, 10, 60, 50);
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
         btnAgregar.setMnemonic('N');
@@ -475,7 +452,7 @@ public class frmTarifas extends javax.swing.JDialog {
             limpiar();
             btnAgregar.setMnemonic('G');
             btnModificar.setMnemonic('C');
-            btnBuscar.setEnabled(false);
+//            btnBuscar.setEnabled(false);
 
         } else if (grabar == true) {
                 try {
@@ -491,6 +468,7 @@ public class frmTarifas extends javax.swing.JDialog {
                         try {
                             adm.guardar(tar);
                         } catch (Exception e) {
+                            System.out.println(""+e);
                         }
                     }
 //                    } catch (Exception ex) {
@@ -511,7 +489,7 @@ public class frmTarifas extends javax.swing.JDialog {
                     grabar = false;
                     modificar = false;
                     habilitar(false);
-                    btnBuscar.setEnabled(true);
+//                    btnBuscar.setEnabled(true);
                     btnAgregar.setEnabled(false);
 
         }
@@ -538,7 +516,7 @@ public class frmTarifas extends javax.swing.JDialog {
             modificar = true;
             grabar = true;
             habilitar(true);
-            btnBuscar.setEnabled(false);
+//            btnBuscar.setEnabled(false);
 
             }else{
                 JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
@@ -555,7 +533,7 @@ public class frmTarifas extends javax.swing.JDialog {
             btnModificar.setMnemonic('M');
             btnAgregar.setEnabled(false);
             habilitar(false);
-            btnBuscar.setEnabled(true);
+//            btnBuscar.setEnabled(true);
 
         }
 
@@ -583,25 +561,6 @@ public class frmTarifas extends javax.swing.JDialog {
         empresaObj = null;
         System.gc();
 }//GEN-LAST:event_btnSalirActionPerformed
-
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
-                formaEmpresa.setModal(true);
-                formaEmpresa.setSize(533, 300);
-                formaEmpresa.setLocation(250, 70);
-                formaEmpresa.show();
-                    
-                    this.codigoBuscar.requestFocusInWindow();
-                    DefaultTableModel dtm = (DefaultTableModel) busquedaTabla.getModel();
-                    dtm.getDataVector().removeAllElements();
-                    busquedaTabla.setModel(dtm);
-                    codigoBuscar.setText("");
-//                    nombresBuscar.setText("");
-
-    
-
-
-}//GEN-LAST:event_btnBuscarActionPerformed
 
     private void codigoBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoBuscarKeyPressed
         // TODO add your handling code here:
@@ -686,20 +645,54 @@ public class frmTarifas extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_formKeyReleased
 
+    private void tarifarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tarifarioKeyPressed
+        // TODO add your handling code here:
+        if (!evt.isActionKey()) {
+                switch (evt.getKeyCode()) {
+                    case java.awt.event.KeyEvent.VK_ENTER:
+                        evt.setKeyCode(java.awt.event.KeyEvent.VK_TAB);
+                        break;
+                }
+            }
+                        int fila = tarifario.getSelectedRow();
+                int columna = tarifario.getSelectedColumn();
+                if (this.tarifario.getSelectedColumn() >= 0) {
+                Object obje = tarifario.getValueAt(fila, columna);
+                //tarifario.getCellEditor(fila, columna).isCellEditable(evt);
+                if (obje != null) {
+                    if (tarifario.isCellEditable(fila, columna) && evt.getKeyCode() != evt.VK_UP && evt.getKeyCode() != evt.VK_DOWN && evt.getKeyCode() != evt.VK_LEFT && evt.getKeyCode() != evt.VK_RIGHT && evt.getKeyCode() != evt.VK_ENTER && evt.getKeyCode() != evt.VK_TAB)
+                        tarifario.setValueAt(null, tarifario.getSelectedRow(), columna);
+                }
+                }
+
+    }//GEN-LAST:event_tarifarioKeyPressed
+
+    private void tarifarioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tarifarioPropertyChange
+        // TODO add your handling code here:
+//         int fila = tarifario.getSelectedRow();
+//        if (tarifario.getSelectedColumn() == 0) {
+//            tarifario.setValueAt(0.0, fila, 0);
+//        }
+//        if (tarifario.getSelectedColumn() == 1) {
+//            tarifario.setValueAt(0.0, fila, 1);
+//        }
+//         if (tarifario.getSelectedColumn() == 2) {
+//            tarifario.setValueAt(0.0, fila, 2);
+//        }
+        
+    }//GEN-LAST:event_tarifarioPropertyChange
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JTable busquedaTabla;
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JDialog formaEmpresa;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
@@ -710,10 +703,9 @@ public class frmTarifas extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.persistence.EntityManager peajePUEntityManager;
+   
     private javax.swing.JTable tarifario;
-
-
+  
     // End of variables declaration//GEN-END:variables
 
     
