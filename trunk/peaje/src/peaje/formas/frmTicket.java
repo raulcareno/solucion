@@ -76,6 +76,8 @@ public class frmTicket extends javax.swing.JDialog {
         val = new validaciones();
         principal = lo;
         placa.requestFocusInWindow();
+        placa.requestFocusInWindow();
+        
     }
 
     public void llenarCombo() {
@@ -366,7 +368,10 @@ public class frmTicket extends javax.swing.JDialog {
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            this.setVisible(false);
+          this.setVisible(false);
+        principal = null;
+        empresaObj = null;
+        System.gc();
         }
     }//GEN-LAST:event_formKeyReleased
 
@@ -376,6 +381,12 @@ public class frmTicket extends javax.swing.JDialog {
             placa.nextFocus();
         }
         placa.setText(placa.getText().toUpperCase());
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+             this.setVisible(false);
+        principal = null;
+        empresaObj = null;
+        System.gc();
+        }
     }//GEN-LAST:event_placaKeyPressed
 
     private void placaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaKeyReleased
@@ -396,6 +407,6 @@ public class frmTicket extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JFormattedTextField noTicket;
-    private javax.swing.JFormattedTextField placa;
+    public javax.swing.JFormattedTextField placa;
     // End of variables declaration//GEN-END:variables
 }

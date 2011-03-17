@@ -825,6 +825,12 @@ public class frmFactura extends javax.swing.JDialog {
                                tiempo.setDate(null);
             }
         }
+         if (evt.getKeyCode() == evt.VK_ESCAPE) {
+             this.setVisible(false);
+        principal = null;
+        empresaObj = null;
+        System.gc();
+        }
     }//GEN-LAST:event_noTicketKeyPressed
 
     public BigDecimal buscar(Integer minutos){

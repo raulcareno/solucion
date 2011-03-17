@@ -87,7 +87,7 @@ public class frmAccesos  extends javax.swing.JDialog {
             jPerfil.setListData(listData);
             
         }catch(Exception ex){
-            Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

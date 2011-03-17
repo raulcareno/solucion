@@ -6,6 +6,9 @@
       <Properties>
         <Property name="title" type="java.lang.String" value="Clientes"/>
       </Properties>
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="frmClientesSalir"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
@@ -350,6 +353,7 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSalirActionPerformed"/>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="btnSalirKeyPressed"/>
               </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -1367,7 +1371,8 @@
                           <Image iconType="3" name="/images/usr.png"/>
                         </Property>
                         <Property name="mnemonic" type="int" value="67"/>
-                        <Property name="text" type="java.lang.String" value="Clientes"/>
+                        <Property name="text" type="java.lang.String" value="Clientes (Alt + C)"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Crear nuevos clientes y asignar tarjetas"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="4"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -1382,7 +1387,8 @@
                           <Image iconType="3" name="/images/ticket.gif"/>
                         </Property>
                         <Property name="mnemonic" type="int" value="84"/>
-                        <Property name="text" type="java.lang.String" value="Ticket"/>
+                        <Property name="text" type="java.lang.String" value="Ticket (Alt+T)"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Registrar un ingreso de veh&#xed;culo"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="4"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -1396,7 +1402,9 @@
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/images/dinero.gif"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Cobrar"/>
+                        <Property name="mnemonic" type="int" value="66"/>
+                        <Property name="text" type="java.lang.String" value="Cobrar (Alt + B)"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Cobrar ticket"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="4"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -1491,7 +1499,7 @@
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/images/lock.gif"/>
                         </Property>
-                        <Property name="mnemonic" type="int" value="65"/>
+                        <Property name="mnemonic" type="int" value="83"/>
                         <Property name="text" type="java.lang.String" value="Accesos"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="4"/>
@@ -1555,7 +1563,7 @@
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/images/undo.gif"/>
                         </Property>
-                        <Property name="mnemonic" type="int" value="82"/>
+                        <Property name="mnemonic" type="int" value="83"/>
                         <Property name="text" type="java.lang.String" value="Cerrar Sesi&#xf3;n"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="4"/>
@@ -1570,7 +1578,7 @@
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/images/exit.gif"/>
                         </Property>
-                        <Property name="mnemonic" type="int" value="65"/>
+                        <Property name="mnemonic" type="int" value="88"/>
                         <Property name="text" type="java.lang.String" value="Salir"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="horizontalTextPosition" type="int" value="4"/>
