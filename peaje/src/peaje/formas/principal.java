@@ -251,7 +251,6 @@ usuariot.requestFocusInWindow();
         direccion = new javax.swing.JFormattedTextField();
         jLabel12 = new javax.swing.JLabel();
         codigo = new javax.swing.JFormattedTextField();
-        cmbTipo = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
         telefono = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -428,11 +427,6 @@ usuariot.requestFocusInWindow();
         });
         jPanel4.add(codigo);
         codigo.setBounds(80, 10, 100, 20);
-
-        cmbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "CEDULA", "RUC", "PASAPORTE" }));
-        cmbTipo.setEnabled(false);
-        jPanel4.add(cmbTipo);
-        cmbTipo.setBounds(180, 10, 120, 20);
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Dirección:");
@@ -1916,6 +1910,7 @@ public void logear(){
             if (clienteObj != null) {
                 bindingGroup.unbind();
                 bindingGroup.bind();
+                  llenarTabla(clienteObj.getCodigo());
                 modificar = true;
                 grabar = true;
             }
@@ -1984,7 +1979,7 @@ public void logear(){
 
     private void btnNuevaTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaTarjetaActionPerformed
         // TODO add your handling code here:
-        if (clienteObj.getCodigo().equals(null)) {
+        if (clienteObj == null) {
             JOptionPane.showMessageDialog(this, "Guarde primero el cliente ");
             return;
         }
@@ -2027,7 +2022,7 @@ public void logear(){
         direccion.setEditable(estado);
         telefono.setEditable(estado);
         tarjetas.setEnabled(estado);
-        cmbTipo.setEnabled(estado);
+
         btnNuevaTarjeta.setEnabled(estado);
     }
 
@@ -2053,6 +2048,9 @@ public void logear(){
                 modificar = false;
                 habilitar(true);
                 limpiar();
+                clienteObj = new Clientes();
+                 bindingGroup.unbind();
+                bindingGroup.bind();
                 codigo.requestFocusInWindow();
                 btnAgregar.setMnemonic('G');
                 btnModificar.setMnemonic('C');
@@ -2062,6 +2060,9 @@ public void logear(){
                 if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
                 } else {
+                    if(clienteObj == null){
+                        clienteObj = new Clientes();
+                    }
                     clienteObj.setDireccion(direccion.getText());
                     clienteObj.setNombres(nombres.getText());
                     clienteObj.setTelefono(telefono.getText());
@@ -2308,7 +2309,11 @@ public void llenarTabla(Integer clie){
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
+             grabar = false;
+        btnAgregar.doClick();
+        btnModificar.doClick();
         frmClientes.dispose();
+
 }//GEN-LAST:event_btnSalirActionPerformed
 
     private void continuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continuarActionPerformed
@@ -2423,7 +2428,6 @@ public void llenarTabla(Integer clie){
     private javax.swing.JPasswordField clave;
     private javax.swing.JPasswordField claveBase;
     private javax.swing.JFormattedTextField cliente;
-    private javax.swing.JComboBox cmbTipo;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
     public javax.swing.JDesktopPane contenedor;

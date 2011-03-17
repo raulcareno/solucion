@@ -107,7 +107,7 @@ try {
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="FUNCIONES ACCIONES">
     public void habilitar(Boolean estado) {
-        codigo.setEditable(estado);
+        cedula.setEditable(estado);
         nombres.setEditable(estado);
         direccion.setEditable(estado);
         usuario.setEditable(estado);
@@ -118,7 +118,8 @@ try {
 
     public void limpiar() {
         String estado = "";
-        codigo.setText(estado);
+        codigo.setText("");
+        cedula.setText(estado);
         nombres.setText(estado);
         direccion.setText(estado);
         usuario.setText(estado);
@@ -126,7 +127,16 @@ try {
         confirmar.setText(estado);
 
     }
+  public void llenar(Usuarios usuario001) {
+      codigo.setText(usuario001.getCodigo()+"");
+        cedula.setText(usuario001.getCedula());
+        nombres.setText(usuario001.getNombres());
+        direccion.setText(usuario001.getDireccion());
+        usuario.setText(usuario001.getUsuario());
+        clave.setText(usuario001.getClave());
+        confirmar.setText(usuario001.getClave());
 
+    }
     // </editor-fold >
     /** This method is called from within the constructor to
      * initialize the form.
@@ -136,7 +146,6 @@ try {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         formaUsuarios = new javax.swing.JDialog();
         jPanel8 = new javax.swing.JPanel();
@@ -154,7 +163,7 @@ try {
         nombres = new javax.swing.JFormattedTextField();
         direccion = new javax.swing.JFormattedTextField();
         jLabel12 = new javax.swing.JLabel();
-        codigo = new javax.swing.JFormattedTextField();
+        cedula = new javax.swing.JFormattedTextField();
         usuario = new javax.swing.JFormattedTextField();
         jLabel5 = new javax.swing.JLabel();
         clave = new javax.swing.JPasswordField();
@@ -164,6 +173,7 @@ try {
         jLabel13 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         perfil = new javax.swing.JList();
+        codigo = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -246,7 +256,7 @@ try {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Catálogo de Operadores ..::..");
         jPanel3.add(jLabel8);
@@ -256,7 +266,7 @@ try {
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Busqueda, Creación,Modificación,  Operadores u Usuarios ..::..");
         jPanel3.add(jLabel10);
-        jLabel10.setBounds(10, 20, 250, 13);
+        jLabel10.setBounds(10, 20, 350, 13);
 
         getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 600, 40);
@@ -276,10 +286,6 @@ try {
         jLabel2.setBounds(10, 50, 90, 14);
 
         nombres.setEditable(false);
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.nombres}"), nombres, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
         nombres.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 nombresFocusLost(evt);
@@ -294,10 +300,6 @@ try {
         nombres.setBounds(110, 30, 220, 20);
 
         direccion.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.direccion}"), direccion, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
         direccion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 direccionKeyPressed(evt);
@@ -312,24 +314,16 @@ try {
         jPanel1.add(jLabel12);
         jLabel12.setBounds(10, 30, 90, 14);
 
-        codigo.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.cedula}"), codigo, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
-        codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+        cedula.setEditable(false);
+        cedula.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                codigoKeyPressed(evt);
+                cedulaKeyPressed(evt);
             }
         });
-        jPanel1.add(codigo);
-        codigo.setBounds(110, 10, 100, 20);
+        jPanel1.add(cedula);
+        cedula.setBounds(110, 10, 100, 20);
 
         usuario.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.usuario}"), usuario, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
         usuario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 usuarioKeyPressed(evt);
@@ -345,10 +339,6 @@ try {
         jLabel5.setBounds(10, 70, 90, 14);
 
         clave.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.clave}"), clave, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
-
         clave.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 claveKeyPressed(evt);
@@ -364,10 +354,6 @@ try {
         jLabel6.setBounds(10, 90, 90, 14);
 
         confirmar.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.clave}"), confirmar, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
-
         confirmar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 confirmarFocusLost(evt);
@@ -401,7 +387,12 @@ try {
         jScrollPane2.setViewportView(perfil);
 
         jPanel1.add(jScrollPane2);
-        jScrollPane2.setBounds(110, 130, 230, 50);
+        jScrollPane2.setBounds(110, 130, 220, 50);
+
+        codigo.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
+        codigo.setText("0");
+        jPanel1.add(codigo);
+        codigo.setBounds(80, 160, 10, 14);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(20, 50, 370, 190);
@@ -482,8 +473,6 @@ try {
         getContentPane().add(jPanel4);
         jPanel4.setBounds(20, 240, 370, 70);
 
-        bindingGroup.bind();
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -492,7 +481,7 @@ try {
         // TODO add your handling code here:
         if (principal.permisos.getAgregar()) {
             if (grabar == false) {
-                usuarioObj = new Usuarios();
+                usuarioObj = new Usuarios(0);
                 this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
                 this.btnAgregar.setLabel("Guardar");
                 this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
@@ -501,18 +490,27 @@ try {
                 modificar = false;
                 habilitar(true);
                 limpiar();
-                codigo.requestFocusInWindow();
+                llenar(usuarioObj);
+                cedula.requestFocusInWindow();
                 btnAgregar.setMnemonic('G');
                 btnModificar.setMnemonic('C');
                 btnBuscar.setEnabled(false);
-               codigo.requestFocusInWindow();
+               cedula.requestFocusInWindow();
 
             } else if (grabar == true) {
-                if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty() || usuario.getText().trim().isEmpty() || clave.getText().isEmpty() || confirmar.getText().trim().isEmpty()) {
+                if (cedula.getText().isEmpty() || nombres.getText().trim().isEmpty() || usuario.getText().trim().isEmpty() || clave.getText().isEmpty() || confirmar.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
                 } else {
                      usuarioObj.setPerfil((Global)perfil.getSelectedValue());
-                     usuarioObj.setClave(cl.encriptar(usuarioObj.getClave()));
+                     usuarioObj.setClave(cl.encriptar(clave.getText()));
+                     usuarioObj.setCedula(cedula.getText());
+                     usuarioObj.setNombres(nombres.getText());
+                     usuarioObj.setDireccion(direccion.getText());
+                     usuarioObj.setUsuario(usuario.getText());
+                     usuarioObj.setCodigo(Integer.parseInt(codigo.getText()));
+                     if(usuarioObj.getCodigo().equals(0)){
+                         usuarioObj.setCodigo(null);
+                     }
                     if (modificar) {
                         try {
                             adm.actualizar(usuarioObj);
@@ -557,7 +555,7 @@ try {
 
         if (grabar == false) {
             if (principal.permisos.getModificar()) {
-                if (codigo.getText().trim().isEmpty()) {
+                if (cedula.getText().trim().isEmpty()) {
                     return;
                 }
                 this.codigo.requestFocusInWindow();
@@ -684,8 +682,7 @@ try {
                 this.usuarioObj = (Usuarios) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Usuarios.class);
                 usuarioObj.setClave(cl.desencriptar(usuarioObj.getClave()));
                  Global g =  usuarioObj.getPerfil();
-                bindingGroup.unbind();
-                bindingGroup.bind();
+                llenar(usuarioObj);
                 perfil.setSelectedValue(g+"",true);
 
                 claveActual = usuarioObj.getClave();
@@ -709,8 +706,7 @@ try {
                 this.usuarioObj = (Usuarios) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Usuarios.class);
                 usuarioObj.setClave(cl.desencriptar(usuarioObj.getClave()));
                 g =  usuarioObj.getPerfil();
-                bindingGroup.unbind();
-                bindingGroup.bind();
+              llenar(usuarioObj);
                 ListModel datos = perfil.getModel();
                    for (int i = 0; i < datos.getSize(); i++) {
                     Global object = (Global) datos.getElementAt(i);
@@ -736,12 +732,12 @@ try {
 
     }//GEN-LAST:event_busquedaTablaKeyPressed
 
-    private void codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyPressed
+    private void cedulaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cedulaKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
-            codigo.nextFocus();
+            cedula.nextFocus();
         }
-    }//GEN-LAST:event_codigoKeyPressed
+    }//GEN-LAST:event_cedulaKeyPressed
 
     private void nombresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyPressed
         // TODO add your handling code here:
@@ -816,8 +812,9 @@ try {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JTable busquedaTabla;
+    private javax.swing.JFormattedTextField cedula;
     private javax.swing.JPasswordField clave;
-    private javax.swing.JFormattedTextField codigo;
+    private javax.swing.JLabel codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JPasswordField confirmar;
     private javax.swing.JFormattedTextField direccion;
@@ -842,6 +839,5 @@ try {
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JList perfil;
     private javax.swing.JFormattedTextField usuario;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

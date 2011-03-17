@@ -460,13 +460,14 @@ public class frmTarifas extends javax.swing.JDialog {
                     int filas = tarifario.getRowCount();
                     adm.ejecutaSql("Delete from Tarifas ");
                     for (int i = 0; i < filas; i++) {
-                        Tarifas tar = new Tarifas();
+                        Tarifas tar = new Tarifas(null);
 //                        tar.setCodigo((Integer) tarifario.getValueAt(i, 0));
                         tar.setDesde(((Integer) tarifario.getValueAt(i, 0)).longValue());
                         tar.setHasta(((Integer) tarifario.getValueAt(i, 1)).longValue());
                         tar.setValor(new BigDecimal((Double) tarifario.getValueAt(i, 2)));
                         try {
                             adm.guardar(tar);
+                            
                         } catch (Exception e) {
                             System.out.println(""+e);
                         }
@@ -480,6 +481,7 @@ public class frmTarifas extends javax.swing.JDialog {
                 } catch (Exception ex) {
                     Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                llenarCombo();
    this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
                     this.btnAgregar.setLabel("Nuevo");
                     this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
