@@ -20,7 +20,7 @@ import hibernate.*;
  *
  * @author geovanny
  */
-public class frmUsuarios extends javax.swing.JDialog {
+public class frmOperadores extends javax.swing.JDialog {
 
     /** Creates new form frmUsuarios */
     public boolean grabar = false;
@@ -37,7 +37,7 @@ public class frmUsuarios extends javax.swing.JDialog {
     claves cl = new claves();
 
     /** Creates new form frmProfesores */
-    public frmUsuarios(java.awt.Frame parent, boolean modal, Administrador adm1) {
+    public frmOperadores(java.awt.Frame parent, boolean modal, Administrador adm1) {
         super(parent, modal);
         adm = adm1;
         llenarCombo();
@@ -48,7 +48,7 @@ public class frmUsuarios extends javax.swing.JDialog {
         val = new validaciones();
     }
 
-    public frmUsuarios(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
+    public frmOperadores(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
         super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         adm = adm1;
@@ -74,7 +74,7 @@ try {
             }
             perfil.setListData(listData);
         }catch(Exception ex){
-            Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -517,7 +517,7 @@ try {
 
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                            Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
                             return;
                         }
                     } else {
@@ -525,7 +525,7 @@ try {
                             adm.guardar(usuarioObj);
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                            Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
                             return;
                         }
                     }
@@ -597,7 +597,7 @@ try {
                 adm.eliminarObjeto(Usuarios.class, usuarioObj.getCodigo());
                 this.limpiar();
             } catch (Exception ex) {
-                Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } else {
@@ -660,7 +660,7 @@ try {
                             codigoBuscar.requestFocusInWindow();
                         }
                     } catch (Exception ex) {
-                        Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                     principal.procesando.setVisible(false);
@@ -689,7 +689,7 @@ try {
 
                 formaUsuarios.dispose();
             } catch (Exception ex) {
-                Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 //        JOptionPane.showMessageDialog(this, usuarioObj);
@@ -722,7 +722,7 @@ try {
                 claveActual = usuarioObj.getClave();
 
             } catch (Exception ex) {
-                Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {

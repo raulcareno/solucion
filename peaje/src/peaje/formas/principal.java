@@ -56,8 +56,7 @@ public class principal extends javax.swing.JFrame {
     public static Empresa empresaObj;
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
 
-    
-    public void habilitarBotones(Boolean estado){
+    public void habilitarBotones(Boolean estado) {
         btnClientes.setEnabled(estado);
         btnCobrar.setEnabled(estado);
         btnEmpresa.setEnabled(estado);
@@ -72,19 +71,21 @@ public class principal extends javax.swing.JFrame {
         btnCerrar.setEnabled(estado);
 
     }
+
     /** Creates new form principal */
     public principal() {
 
 
 
         this.addWindowListener(new WindowAdapter() {
-              public void windowClosing(WindowEvent we) {
+
+            public void windowClosing(WindowEvent we) {
                 //JOptionPane.showMessageDialog(puertoBase, "mensaje");
-                  System.exit(0);
-                
-              }
+                System.exit(0);
+
+            }
         });
-      
+
         Image im = new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage();
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //WINDOWS
@@ -101,7 +102,7 @@ public class principal extends javax.swing.JFrame {
             Image image = im;
             PopupMenu men = new PopupMenu("JCINFORMAMENU");
             MenuItem acerca = new MenuItem("Acerca de..");
-            acerca.addActionListener(new ActionListener()     {
+            acerca.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
                     //System.out.println("In here");
@@ -115,7 +116,7 @@ public class principal extends javax.swing.JFrame {
             });
             men.add(acerca);
             acerca = new MenuItem("Salir ");
-            acerca.addActionListener(new ActionListener()     {
+            acerca.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
                     //System.out.println("In here");
@@ -130,7 +131,7 @@ public class principal extends javax.swing.JFrame {
             if (SystemTray.isSupported()) {
                 SystemTray tray = SystemTray.getSystemTray();
                 trayIcon.setImageAutoSize(true);
-                trayIcon.addActionListener(new ActionListener()     {
+                trayIcon.addActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
                         //System.out.println("In here");
@@ -160,15 +161,16 @@ public class principal extends javax.swing.JFrame {
                 frmRegistrar.setTitle("Inicio de Sesión");
                 frmRegistrar.setUndecorated(false);
                 frmRegistrar.show();
- logear();
-  
+                logear();
+
             }
             try {
                 WorkingDirectory w = new WorkingDirectory();
-                String ubicacionDirectorio = w.get()+"\\";
-                if(ubicacionDirectorio.contains("build"))
+                String ubicacionDirectorio = w.get() + "\\";
+                if (ubicacionDirectorio.contains("build")) {
                     ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
-                String temp_string = ubicacionDirectorio+"lib\\javax.comm.properties";
+                }
+                String temp_string = ubicacionDirectorio + "lib\\javax.comm.properties";
                 Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
                 loadDriver_Method.setAccessible(true);
                 loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
@@ -190,19 +192,24 @@ public class principal extends javax.swing.JFrame {
                         if (portId.getName().equals(empresaObj.getPuerto2()) && empresaObj.getActiva2()) {
                             reader = new LeerTarjeta(portId, this);
                             read.add(reader);
-                        } if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
                             reader = new LeerTarjeta(portId, this);
                             read.add(reader);
-                        } if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
                             reader = new LeerTarjeta(portId, this);
                             read.add(reader);
-                        } if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
                             reader = new LeerTarjeta(portId, this);
                             read.add(reader);
-                        } if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
                             reader = new LeerTarjeta(portId, this);
                             read.add(reader);
-                        } if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
                             reader = new LeerTarjeta(portId, this);
                             read.add(reader);
                         }
@@ -226,13 +233,9 @@ public class principal extends javax.swing.JFrame {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-usuariot.requestFocusInWindow();
+        usuariot.requestFocusInWindow();
 
     }
-
-
-
-
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -367,6 +370,11 @@ usuariot.requestFocusInWindow();
         jLabel32 = new javax.swing.JLabel();
 
         frmClientes.setTitle("Clientes");
+        frmClientes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                frmClientesSalir(evt);
+            }
+        });
         frmClientes.getContentPane().setLayout(null);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -566,6 +574,11 @@ usuariot.requestFocusInWindow();
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
+            }
+        });
+        btnSalir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalirKeyPressed(evt);
             }
         });
         jPanel5.add(btnSalir);
@@ -1021,7 +1034,8 @@ usuariot.requestFocusInWindow();
 
         btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/usr.png"))); // NOI18N
         btnClientes.setMnemonic('C');
-        btnClientes.setText("Clientes");
+        btnClientes.setText("Clientes (Alt + C)");
+        btnClientes.setToolTipText("Crear nuevos clientes y asignar tarjetas");
         btnClientes.setFocusable(false);
         btnClientes.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnClientes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1034,7 +1048,8 @@ usuariot.requestFocusInWindow();
 
         btnTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ticket.gif"))); // NOI18N
         btnTicket.setMnemonic('T');
-        btnTicket.setText("Ticket");
+        btnTicket.setText("Ticket (Alt+T)");
+        btnTicket.setToolTipText("Registrar un ingreso de vehículo");
         btnTicket.setFocusable(false);
         btnTicket.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnTicket.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1046,7 +1061,9 @@ usuariot.requestFocusInWindow();
         jToolBar1.add(btnTicket);
 
         btnCobrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
-        btnCobrar.setText("Cobrar");
+        btnCobrar.setMnemonic('B');
+        btnCobrar.setText("Cobrar (Alt + B)");
+        btnCobrar.setToolTipText("Cobrar ticket");
         btnCobrar.setFocusable(false);
         btnCobrar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnCobrar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1121,7 +1138,7 @@ usuariot.requestFocusInWindow();
         jToolBar2.add(btnTarifas);
 
         btnAccesos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lock.gif"))); // NOI18N
-        btnAccesos.setMnemonic('A');
+        btnAccesos.setMnemonic('S');
         btnAccesos.setText("Accesos");
         btnAccesos.setFocusable(false);
         btnAccesos.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -1171,7 +1188,7 @@ usuariot.requestFocusInWindow();
         jToolBar3.add(btnAcerca);
 
         btnCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/undo.gif"))); // NOI18N
-        btnCerrar.setMnemonic('R');
+        btnCerrar.setMnemonic('S');
         btnCerrar.setText("Cerrar Sesión");
         btnCerrar.setFocusable(false);
         btnCerrar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -1184,7 +1201,7 @@ usuariot.requestFocusInWindow();
         jToolBar3.add(btnCerrar);
 
         btnSalir2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
-        btnSalir2.setMnemonic('A');
+        btnSalir2.setMnemonic('X');
         btnSalir2.setText("Salir");
         btnSalir2.setFocusable(false);
         btnSalir2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -1292,10 +1309,11 @@ usuariot.requestFocusInWindow();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-public void logear(){
-    frmIngresarSistema.setVisible(true);
-                //frmLogin.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
-                adm = new Administrador();
+
+    public void logear() {
+        frmIngresarSistema.setVisible(true);
+        //frmLogin.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
+        adm = new Administrador();
 //                frmLogin.setModal(true);
 //                frmLogin.setSize(400, 230);
 //                frmLogin.setLocation(350, 300);
@@ -1304,7 +1322,8 @@ public void logear(){
 //                frmLogin.setTitle("Inicio de Sesión");
 //                frmLogin.setUndecorated(true);
 //                frmLogin.show();
-}
+    }
+
     public Boolean comprobar() {
 
         GeneraXMLPersonal pXml = new GeneraXMLPersonal();
@@ -1353,7 +1372,7 @@ public void logear(){
     private void claveKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_claveKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
-            Thread cargar = new Thread()     {
+            Thread cargar = new Thread() {
 
                 public void run() {
                     btnIngresar.doClick();
@@ -1388,10 +1407,43 @@ public void logear(){
             clave.setText("");
             frmIngresarSistema.setVisible(false);
             usuarioActual = usu;
-             List<Empresa> emp = adm.listar("Select o from Empresa as o ");
-                this.empresaObj = emp.get(0);
-                 habilitarBotones(true);
-           } else {
+            List<Empresa> emp = adm.listar("Select o from Empresa as o ");
+            this.empresaObj = emp.get(0);
+            habilitarBotones(true);
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o "
+                    + "where o.perfil.codigo  = '" + usuarioActual.getPerfil().getCodigo() + "' ");
+            for (Iterator<Accesos> it = accesosL.iterator(); it.hasNext();) {
+                Accesos accesos = it.next();
+                if (accesos.getPantalla().equals("Clientes") && !accesos.getIngresar()) {
+                    btnClientes.setEnabled(false);
+                }
+                if (accesos.getPantalla().equals("Tickets") && !accesos.getIngresar()) {
+                    btnTicket.setEnabled(false);
+                }
+                if (accesos.getPantalla().equals("Tarifas") && !accesos.getIngresar()) {
+                    btnTarifas.setEnabled(false);
+                }
+                if (accesos.getPantalla().equals("Factura") && !accesos.getIngresar()) {
+                    btnCobrar.setEnabled(false);
+                }
+                if (accesos.getPantalla().equals("Reportes") && !accesos.getIngresar()) {
+                    btnReportes.setEnabled(false);
+                }
+                if (accesos.getPantalla().equals("Operadores") && !accesos.getIngresar()) {
+                    btnUsuarios.setEnabled(false);
+                }
+                if (accesos.getPantalla().equals("Empresa") && !accesos.getIngresar()) {
+                    btnEmpresa.setEnabled(false);
+                }
+                if (accesos.getPantalla().equals("Accesos") && !accesos.getIngresar()) {
+                    btnAccesos.setEnabled(false);
+                }
+
+
+            }
+
+
+        } else {
             clave.setEditable(true);
             usuariot.setEditable(true);
             usuariot.setText("");
@@ -1406,7 +1458,7 @@ public void logear(){
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         // TODO add your handling code here:
 
-        Thread cargar = new Thread()     {
+        Thread cargar = new Thread() {
 
             public void run() {
                 procesando.setVisible(true);
@@ -1435,20 +1487,23 @@ public void logear(){
             // TODO add your handling code here:
             frmClientes.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
             //adm = new Administrador();
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " +
-                    "where o.pantalla = 'Clientes' " +
-                    "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o "
+                    + "where o.pantalla = 'Clientes' "
+                    + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             frmClientes.setSize(441, 455);
             frmClientes.setLocation(240, 100);
             frmClientes.setModal(true);
+              btnSalir.requestFocusInWindow();
             frmClientes.show();
+             btnSalir.requestFocusInWindow();
+               btnSalir.requestFocusInWindow();
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1463,11 +1518,11 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            frmUsuarios usu = new frmUsuarios(this, true, this, adm);
+            frmOperadores usu = new frmOperadores(this, true, this, adm);
             usu.setSize(441, 445);
             usu.setLocation(240, 100);
             usu.show();
@@ -1673,33 +1728,32 @@ public void logear(){
             }
 
             procesando.setVisible(false);
- 
+
             taskTarjeta.setCollapsed(true);
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
- void abrirPuerta(String puertoqueViene){
-     String lapuertaaAbrir ="";
-     if(puertoqueViene.equals(empresaObj.getPuerto1())){
+    void abrirPuerta(String puertoqueViene) {
+        String lapuertaaAbrir = "";
+        if (puertoqueViene.equals(empresaObj.getPuerto1())) {
             lapuertaaAbrir = empresaObj.getPuerta1();
-     }else if(puertoqueViene.equals(empresaObj.getPuerto2())){
+        } else if (puertoqueViene.equals(empresaObj.getPuerto2())) {
             lapuertaaAbrir = empresaObj.getPuerta2();
-     }else if(puertoqueViene.equals(empresaObj.getPuerto3())){
+        } else if (puertoqueViene.equals(empresaObj.getPuerto3())) {
             lapuertaaAbrir = empresaObj.getPuerta3();
-     }else if(puertoqueViene.equals(empresaObj.getPuerto4())){
+        } else if (puertoqueViene.equals(empresaObj.getPuerto4())) {
             lapuertaaAbrir = empresaObj.getPuerta4();
-     }else if(puertoqueViene.equals(empresaObj.getPuerto5())){
+        } else if (puertoqueViene.equals(empresaObj.getPuerto5())) {
             lapuertaaAbrir = empresaObj.getPuerta5();
-     }else if(puertoqueViene.equals(empresaObj.getPuerto6())){
+        } else if (puertoqueViene.equals(empresaObj.getPuerto6())) {
             lapuertaaAbrir = empresaObj.getPuerta6();
-     }else if(puertoqueViene.equals(empresaObj.getPuerto7())){
+        } else if (puertoqueViene.equals(empresaObj.getPuerto7())) {
             lapuertaaAbrir = empresaObj.getPuerta7();
-     }
-        AbrirPuerta.abrir(empresaObj.getPuerto(),lapuertaaAbrir);
- }
-
+        }
+        AbrirPuerta.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
+    }
 
     private void tarjetatxtPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tarjetatxtPropertyChange
         //        try {
@@ -1753,7 +1807,7 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmEmpresa usu = new frmEmpresa(this, true, this, adm);
@@ -1773,11 +1827,11 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmTarifas usu = new frmTarifas(this, true, this, adm);
-            usu.setSize(441, 445);
+            usu.setSize(409, 413);
             usu.setLocation(240, 100);
             usu.show();
         } catch (Exception ex) {
@@ -1791,13 +1845,14 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmTicket usu = new frmTicket(this, true, this, adm);
             usu.setSize(334, 238);
             usu.setLocation(240, 100);
             usu.show();
+
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1832,7 +1887,7 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
@@ -1853,7 +1908,7 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmReportes usu = new frmReportes(this, adm);
@@ -1875,7 +1930,7 @@ public void logear(){
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             acerca usu = new acerca(this, true);
@@ -1910,7 +1965,7 @@ public void logear(){
             if (clienteObj != null) {
                 bindingGroup.unbind();
                 bindingGroup.bind();
-                  llenarTabla(clienteObj.getCodigo());
+                llenarTabla(clienteObj.getCodigo());
                 modificar = true;
                 grabar = true;
             }
@@ -2049,7 +2104,7 @@ public void logear(){
                 habilitar(true);
                 limpiar();
                 clienteObj = new Clientes();
-                 bindingGroup.unbind();
+                bindingGroup.unbind();
                 bindingGroup.bind();
                 codigo.requestFocusInWindow();
                 btnAgregar.setMnemonic('G');
@@ -2060,7 +2115,7 @@ public void logear(){
                 if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
                 } else {
-                    if(clienteObj == null){
+                    if (clienteObj == null) {
                         clienteObj = new Clientes();
                     }
                     clienteObj.setDireccion(direccion.getText());
@@ -2217,7 +2272,7 @@ public void logear(){
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
 
-            Thread cargar = new Thread()     {
+            Thread cargar = new Thread() {
 
                 public void run() {
                     procesando.setVisible(true);
@@ -2260,10 +2315,10 @@ public void logear(){
             try {
                 int fila = busquedaTabla.getSelectedRow();
                 this.clienteObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
-  llenarTabla(clienteObj.getCodigo());
+                llenarTabla(clienteObj.getCodigo());
 
                 buscarClientes.dispose();
-                 bindingGroup.unbind();
+                bindingGroup.unbind();
                 bindingGroup.bind();
             } catch (Exception ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -2271,23 +2326,23 @@ public void logear(){
         }
         //        JOptionPane.showMessageDialog(this, usuarioObj);
 }//GEN-LAST:event_busquedaTablaMouseClicked
-public void llenarTabla(Integer clie){
-    List<Tarjetas> tarjetasRs =   adm.query("Select o from Tarjetas as o where o.cliente.codigo = '"+clie+"'");
+    public void llenarTabla(Integer clie) {
+        List<Tarjetas> tarjetasRs = adm.query("Select o from Tarjetas as o where o.cliente.codigo = '" + clie + "'");
 
-            DefaultTableModel dtm =  (DefaultTableModel) tarjetas.getModel();
-            dtm.getDataVector().removeAllElements();
+        DefaultTableModel dtm = (DefaultTableModel) tarjetas.getModel();
+        dtm.getDataVector().removeAllElements();
 
-            for (Iterator<Tarjetas> it = tarjetasRs.iterator(); it.hasNext();) {
-                    Tarjetas tarjetasIt = it.next();
-                   Object[] obj = new Object[4];
-                   obj[0] = tarjetasIt.getHabilitada();
-                    obj[1] = tarjetasIt.getTarjeta();
-                    obj[2] = tarjetasIt.getDesde();
-                    obj[3] = tarjetasIt.getHasta();
-                    dtm.addRow(obj);
-               }
-              tarjetas.setModel(dtm);
-}
+        for (Iterator<Tarjetas> it = tarjetasRs.iterator(); it.hasNext();) {
+            Tarjetas tarjetasIt = it.next();
+            Object[] obj = new Object[4];
+            obj[0] = tarjetasIt.getHabilitada();
+            obj[1] = tarjetasIt.getTarjeta();
+            obj[2] = tarjetasIt.getDesde();
+            obj[3] = tarjetasIt.getHasta();
+            dtm.addRow(obj);
+        }
+        tarjetas.setModel(dtm);
+    }
 
     private void busquedaTablaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_busquedaTablaKeyPressed
         // TODO add your handling code here:
@@ -2295,9 +2350,9 @@ public void llenarTabla(Integer clie){
             try {
                 int fila = busquedaTabla.getSelectedRow();
                 this.clienteObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
-        llenarTabla(clienteObj.getCodigo());
+                llenarTabla(clienteObj.getCodigo());
                 buscarClientes.dispose();
-                 bindingGroup.unbind();
+                bindingGroup.unbind();
                 bindingGroup.bind();
             } catch (Exception ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -2309,7 +2364,7 @@ public void llenarTabla(Integer clie){
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
-             grabar = false;
+        grabar = false;
         btnAgregar.doClick();
         btnModificar.doClick();
         frmClientes.dispose();
@@ -2344,14 +2399,14 @@ public void llenarTabla(Integer clie){
 
     private void btnAccesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccesosActionPerformed
         // TODO add your handling code here:
-           // TODO add your handling code here:
+        // TODO add your handling code here:
         try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " +
-                    "where o.pantalla = 'Accesos' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "'  and o.ingresar = true  ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o "
+                    + "where o.pantalla = 'Accesos' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmAccesos usu = new frmAccesos(this, true, this, adm);
@@ -2365,19 +2420,18 @@ public void llenarTabla(Integer clie){
 
     private void btnAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcercaActionPerformed
         // TODO add your handling code here:
-           acerca ac = new acerca(this, true);
-           ac.setLocation(240, 100);
-           ac.show();
+        acerca ac = new acerca(this, true);
+        ac.setLocation(240, 100);
+        ac.show();
     }//GEN-LAST:event_btnAcercaActionPerformed
 
     private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
         // TODO add your handling code here:
-        
     }//GEN-LAST:event_btnAyudaActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         // TODO add your handling code here:
-           usuario = new Usuarios();
+        usuario = new Usuarios();
         permisos = new Accesos();
         frmIngresarSistema.setVisible(true);
         habilitarBotones(false);
@@ -2386,14 +2440,35 @@ public void llenarTabla(Integer clie){
 
     private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
         // TODO add your handling code here:
-         System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_btnSalir2ActionPerformed
+
+    private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
+        // TODO add your handling code here:
+         if (evt.getKeyCode() == evt.VK_ESCAPE) {
+             grabar = false;
+        btnAgregar.doClick();
+        btnModificar.doClick();
+        frmClientes.dispose();
+        }
+           
+    }//GEN-LAST:event_btnSalirKeyPressed
+
+    private void frmClientesSalir(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frmClientesSalir
+        // TODO add your handling code here:
+         if (evt.getKeyCode() == evt.VK_ESCAPE) {
+             grabar = false;
+        btnAgregar.doClick();
+        btnModificar.doClick();
+        frmClientes.dispose();
+        }
+    }//GEN-LAST:event_frmClientesSalir
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable()     {
+        java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
                 new principal().setVisible(true);
@@ -2531,7 +2606,7 @@ public void llenarTabla(Integer clie){
     }
 
     public void setPermisos(Accesos permisos) {
-         this.permisos = permisos;
+        this.permisos = permisos;
     }
     public Usuarios usuario;
 
