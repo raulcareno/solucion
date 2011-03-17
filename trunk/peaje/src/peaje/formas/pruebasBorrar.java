@@ -5,45 +5,50 @@
 
 package peaje.formas;
 
-import java.util.Date;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.Minutes;
-
-/**
- *
- * @author geovanny
- */
-public class pruebasBorrar {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        claves c = new claves();
-        System.out.println(""+c.encriptar("root"));
-        System.out.println(""+c.desencriptar(c.encriptar("root")));
-//        Date fecIn = new Date();
-//        Date fecIn3 = new Date();
-//        Date fechaO = new Date();
-//
-//        LocalTime horaIni = new LocalTime(new DateTime(fecIn));
-//        System.out.println("INI "+horaIni);
-//        LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
-//        System.out.println("FIN "+horaFin);
-//        LocalTime ahora = new LocalTime(new DateTime(fechaO));
-//        System.out.println("AHORA "+ahora);
-//
-//        if((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni)== 0 ) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0  )){
-//            System.out.println("ESTA EN EL RANGO");
-//        }
-//
-//
-        
-        
-        
-    }
-
-}
+   import java.util.logging.Level;
+    import java.util.logging.Logger;
+    public class pruebasBorrar {
+        public static void main(String args[]) {
+            Monitor monitor = new Monitor();
+            Escribir hola = new Escribir("hola", 0, monitor);
+            hola.start();
+            Escribir adios = new Escribir("adiós", 1, monitor);
+//           adios.start();
+       }
+   }
+   class Escribir extends Thread {
+       private Monitor monitor;
+       private String texto;
+       private int orden;
+       public Escribir(String texto, int orden, Monitor monitor) {
+           this.texto = texto;
+           this.monitor = monitor;
+           this.orden = orden;
+       }
+       @Override
+       public void run() {
+           for (int i = 0; i < 10; i++) {
+               try {
+                   monitor.escribir(texto + " ", orden);
+                   sleep((int) (Math.random() * 1000));
+               } catch (InterruptedException ex) {
+                   Logger.getLogger(pruebasBorrar.class.getName()).log(Level.SEVERE, null, ex);
+               }
+           }
+      }
+  }
+   class Monitor {
+     private int actual = 0;
+      public synchronized void escribir(String texto, int orden) {
+        while (orden != actual) {
+               try {
+                wait();
+             } catch (InterruptedException ex) {
+                  Logger.getLogger(pruebasBorrar.class.getName()).log(Level.SEVERE, null, ex);
+              }
+           }
+           System.out.print(texto);
+           actual = (actual + 1) % 2;
+           notifyAll();
+       }
+   }
