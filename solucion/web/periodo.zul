@@ -1,4 +1,4 @@
-<window   id="ventana"  title="Control de Años Lectivos"   border="normal"
+<window   id="ventana"   border="normal"
     xmlns:a="http://www.zkoss.org/2005/zk/annotation">
  <zscript>
      <![CDATA[
@@ -24,8 +24,8 @@
   </zscript>
    <tabbox width="100%">
             <tabs>
-                <tab id="registro" label="Crear Periodos" />
-                <tab id="representante" label="Copiar parametros" />
+                <tab id="registro" label="CREAR AÑOS LECTIVOS" />
+                <tab id="representante" label="COPIAR AÑOS PARAMETROS" />
             </tabs>
             <tabpanels>
                 <tabpanel>
@@ -123,29 +123,49 @@
 
 <groupbox width="100%"  mold="3d">
 <caption label="Copiar parametros a nuevo periodo" />
-<vbox>
-    <hbox> Desde </hbox>
-    <hbox>
-       <listbox id="periodosListado" mold="select" >
+<grid>
+    <rows>
+        <row>
+            Desde:
+            <listbox id="periodosListado" mold="select" >
             <listitem  label="[Seleccione]" value="-1"/>
 			<listitem forEach="${periodosListadod}" value="${each}">
                 <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
             </listitem>
 		</listbox>
-    </hbox>
-    <hbox>Hasta </hbox>
-    <hbox width="100%">
-       <listbox id="periodosListado2" mold="select" >
+        </row>
+       
+        <row>
+            Hasta:
+            <listbox id="periodosListado2" mold="select" >
             <listitem  label="[Seleccione]" value="-1"/>
 			<listitem forEach="${periodosListadod}" value="${each}">
                 <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
             </listitem>
 		</listbox>
-    </hbox>
- <hbox>
-    <button image="/images/guardar.gif" id="copiar" label="Copiar Parametros" onClick="copiando()"  />
-</hbox>
-</vbox>
+        </row>
+         <row spans="2" style="background:#99CCFF">
+        <span>
+            SE COPIARÁ:
+            <checkbox checked="true" id="ccursos" label="Cursos" />
+            <checkbox checked="true"  id="cequivalencias" label="Equivalencias" />
+            <checkbox checked="true"  id="cparametros" label="Parámetros" />
+            <checkbox checked="true"  id="ctextos" label="Textos" />
+            <checkbox checked="true"  id="caportes" label="Trimestres y Aportes" />
+            <checkbox checked="true"  id="cactas" label="Parametros de Actas de Grado" />
+        </span>
+        </row>
+        <row spans="2">
+                <button image="/images/guardar.gif" id="copiar" label="Copiar Parametros" onClick="copiando()"  />
+        </row>
+    </rows>
+    </grid>
+<listbox id="resultados" >
+    
+</listbox>
+
+    
+
 </groupbox>
 </tabpanel>
  </tabpanels>
@@ -293,58 +313,121 @@ public void copiando(){
      Periodo per = ((Periodo)periodosListado.selectedItem.value);
      Periodo has = ((Periodo)periodosListado2.selectedItem.value);
 
+        resultados = new Listbox();
+        int a=0;
+            for (Iterator it = resultados.getItems().iterator(); it.hasNext();) {
+                    resultados.getItems().remove(a);
+                }
+ 
      if(per.equals(has)){
-             alert("Periodo de origen es igual al de destino");
+             Messagebox.show("Periodo de origen es igual al de destino, No se puede continuar", "Administrador Educativo", Messagebox.CANCEL , Messagebox.ERROR);
              return;
      }
-     adm.ejecutaSql("Delete from Cursos where periodo.codigoper = '"+has.getCodigoper()+"'  ");
-     List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
-        for (Iterator it = cursos.iterator(); it.hasNext();) {
-                Cursos curso = (Cursos)it.next();
-                curso.setCodigocur(adm.getNuevaClave("Cursos","codigocur"));
-                curso.setPeriodo(has);
-                adm.guardar(curso);
-                System.out.println(""+curso);
+     Listitem li = new Listitem();
+     //COPIO CURSOS
+         if(ccursos.isChecked()){
+             adm.ejecutaSql("Delete from Cursos where periodo.codigoper = '"+has.getCodigoper()+"'  ");
+             List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
+             li = new Listitem();
+             Listcell celda = new Listcell("---------------------- CURSOS COPIADOS ---------------------- ");
+            celda.setStyle("background:yellow");
+            li.appendChild(celda);
+             resultados.appendChild(li);
+                for (Iterator it = cursos.iterator(); it.hasNext();) {
+                        Cursos curso = (Cursos)it.next();
+                        curso.setCodigocur(adm.getNuevaClave("Cursos","codigocur"));
+                        curso.setPeriodo(has);
+                        adm.guardar(curso);
+                        li = new Listitem();
+                        li.appendChild(new Listcell(" - "+curso));
+                        resultados.appendChild(li);
+                }
         }
+    //COPIO ACTAS DE GRADO
+    if(cactas.isChecked()){
     adm.ejecutaSql("Delete from Actagrado where periodo.codigoper = '"+has.getCodigoper()+"'  ");
      List actas = adm.query("Select o from Actagrado as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
+     li = new Listitem();
+     Listcell celda = new Listcell(" ---------------------- DATOS DE ACTA COPIADOS  ----------------------");
+     celda.setStyle("background:yellow");
+     li.appendChild(celda);
+     resultados.appendChild(li);
         for (Iterator it = actas.iterator(); it.hasNext();) {
                 Actagrado curso = (Actagrado)it.next();
                  curso.setCodigo(adm.getNuevaClave("Actagrado","codigo"));
                  curso.setPeriodo(has);
                  adm.guardar(curso);
-            System.out.println(""+curso);
+                 li = new Listitem();
+                li.appendChild(new Listcell(" - "+curso.getNombre()));
+                resultados.appendChild(li);
         }
+   }
+//COPIO EQUIVALENCIAS
+    if(cequivalencias.isChecked()){
+        adm.ejecutaSql("Delete from Equivalencias where periodo.codigoper = '"+has.getCodigoper()+"'  ");
+             List equivalencias = adm.query("Select o from Equivalencias as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
+             li = new Listitem();
+             Listcell celda = new Listcell("---------------------- EQUIVALENCIAS COPIADOS ---------------------- ");
+            celda.setStyle("background:yellow");
+            li.appendChild(celda);
+            resultados.appendChild(li);
+                for (Iterator it = equivalencias.iterator(); it.hasNext();) {
+                        Equivalencias curso = (Equivalencias)it.next();
+                        curso.setCodigoequi(adm.getNuevaClave("Equivalencias","codigoequi"));
+                         curso.setPeriodo(has);
+                         adm.guardar(curso);
+                        li = new Listitem();
+                        li.appendChild(new Listcell(" - "+curso.getNombre()));
+                resultados.appendChild(li);
+                }
+  }
+//COPIO PARAMETROS
+if(cparametros.isChecked()){
+        adm.ejecutaSql("Delete from ParametrosGlobales where periodo.codigoper = '"+has.getCodigoper()+"'  ");
+              List parametros = adm.query("Select o from ParametrosGlobales as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
+              li = new Listitem();
 
-adm.ejecutaSql("Delete from Equivalencias where periodo.codigoper = '"+has.getCodigoper()+"'  ");
-     List equivalencias = adm.query("Select o from Equivalencias as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
-        for (Iterator it = equivalencias.iterator(); it.hasNext();) {
-                Equivalencias curso = (Equivalencias)it.next();
-                curso.setCodigoequi(adm.getNuevaClave("Equivalencias","codigoequi"));
-                 curso.setPeriodo(has);
-                 adm.guardar(curso);
-                System.out.println(""+curso);
-        }
-adm.ejecutaSql("Delete from ParametrosGlobales where periodo.codigoper = '"+has.getCodigoper()+"'  ");
-      List parametros = adm.query("Select o from ParametrosGlobales as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
-        for (Iterator it = parametros.iterator(); it.hasNext();) {
-                ParametrosGlobales curso = (ParametrosGlobales)it.next();
-                curso.setCodigopar(adm.getNuevaClave("ParametrosGlobales","codigopar"));
-                 curso.setPeriodo(has);
-                 adm.guardar(curso);
-                System.out.println(""+curso);
-        }
-
-adm.ejecutaSql("Delete from Textos where periodo.codigoper = '"+has.getCodigoper()+"'  ");
+              Listcell celda = new Listcell("---------------------- PARAMETROS COPIADOS ---------------------- ");
+            celda.setStyle("background:yellow");
+            li.appendChild(celda);
+              resultados.appendChild(li);
+                for (Iterator it = parametros.iterator(); it.hasNext();) {
+                        ParametrosGlobales curso = (ParametrosGlobales)it.next();
+                        curso.setCodigopar(adm.getNuevaClave("ParametrosGlobales","codigopar"));
+                         curso.setPeriodo(has);
+                         adm.guardar(curso);
+                         li = new Listitem();
+                        li.appendChild(new Listcell(" - "+curso.getDescripcion()));
+                resultados.appendChild(li);
+                }
+    }
+//COPIO TEXTOS DE REPORTES
+if(ctextos.isChecked()){
+    adm.ejecutaSql("Delete from Textos where periodo.codigoper = '"+has.getCodigoper()+"'  ");
      List textos = adm.query("Select o from Textos as o where o.periodo.codigoper = '"+per.getCodigoper()+"'  ");
+     li = new Listitem();
+     Listcell celda = new Listcell("---------------------- TEXTOS DE REPORTES COPIADOS ---------------------- ");
+            celda.setStyle("background:yellow");
+            li.appendChild(celda);
+     resultados.appendChild(li);
         for (Iterator it = textos.iterator(); it.hasNext();) {
                 Textos curso = (Textos)it.next();
                 curso.setCodigotext(adm.getNuevaClave("Textos","codigotext"));
                  curso.setPeriodo(has);
                  adm.guardar(curso);
-                System.out.println(""+curso);
+                 li = new Listitem();
+                li.appendChild(new Listcell(" - "+curso.getNombre()));
+                resultados.appendChild(li);
         }
+}
+//COPIO
+if(caportes.isChecked()){
+li = new Listitem();
 
+     Listcell celda = new Listcell("---------------------- APORTES COPIADOS ---------------------- ");
+     celda.setStyle("background:yellow");
+            li.appendChild(celda);
+     resultados.appendChild(li);
 adm.ejecutaSql("Delete from Notanotas where sistema.periodo.codigoper = '"+has.getCodigoper()+"'  ");
 adm.ejecutaSql("Delete from Sistemacalificacion where periodo.codigoper = '"+has.getCodigoper()+"'  ");
 adm.ejecutaSql("Delete from Trimestres where periodo = '"+has.getCodigoper()+"'  ");
@@ -367,16 +450,20 @@ adm.ejecutaSql("Delete from Trimestres where periodo = '"+has.getCodigoper()+"' 
                         siste.setPeriodo(has);
                         siste.setCodigosis(adm.getNuevaClave("Sistemacalificacion","codigosis"));
                         adm.guardar(siste);
-                        System.out.println(""+siste);
+                        li = new Listitem();
+                        li.appendChild(new Listcell( " - "+siste.getTrimestre().getDescripcion() +" - "+siste.getNombre()));
+                        resultados.appendChild(li);
                             Notanotas notan = new Notanotas(adm.getNuevaClave("Notanotas","codigo"));
                             notan.setSistema(siste);
                             notan.setNota("nota"+i);
                             adm.guardar(notan);
                             i++;
+                            
                     }
         }
-        Messagebox.show("Copia realizada con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-
+        
+  }
+Messagebox.show("Copia realizada con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
 }
 
   ]]>
