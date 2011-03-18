@@ -8,9 +8,7 @@ package peaje;
 import javax.swing.JLabel;
 import java.util.Observer;
 import java.util.Observable;
-import java.util.Date;
 import java.awt.Dimension;
-import java.awt.Font;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingConstants;
 import java.text.SimpleDateFormat;
@@ -38,10 +36,13 @@ public class RelojVisual extends JLabel
                      public void run()
                      {
 
-                          setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 40)); // NOI18N
+                          //setFont(new java.awt.Font("Agency FB", 1, 40)); // NOI18N
+                          setFont(new java.awt.Font("DS-Digital", 1, 40)); // NOI18N
                           //setBounds(190, 100, 210, 500);
                           //#003366
-                        setForeground(new java.awt.Color(0,51,153));
+                        setForeground(new java.awt.Color(255,51,51));
+                        setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+                        setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
                          setText (format.format(fecha));
                      }
                  });
@@ -49,7 +50,9 @@ public class RelojVisual extends JLabel
          });
          
          // Se da una dimension al JLabel.
-         this.setPreferredSize(new Dimension (222, 50));
+           
+         this.setPreferredSize(new Dimension (222, 40));
+
      }
      
      /**

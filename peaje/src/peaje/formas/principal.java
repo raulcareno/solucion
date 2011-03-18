@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import peaje.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,8 +35,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.HashSet;
-import java.util.Timer;
 
 /**
  *
@@ -305,6 +302,7 @@ public class principal extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         codigoBuscar = new javax.swing.JFormattedTextField();
         jLabel23 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         busquedaTabla = new javax.swing.JTable();
@@ -336,6 +334,24 @@ public class principal extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         procesando = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        cliente = new javax.swing.JFormattedTextField();
+        tarjetatxt = new javax.swing.JFormattedTextField();
+        spIngreso = new javax.swing.JSpinner();
+        ingre = new javax.swing.JLabel();
+        spSalida = new javax.swing.JSpinner();
+        salid = new javax.swing.JLabel();
+        spConsumo = new javax.swing.JSpinner();
+        cons = new javax.swing.JLabel();
+        placa = new javax.swing.JFormattedTextField();
+        jToolBar4 = new javax.swing.JToolBar();
+        barrera1 = new javax.swing.JButton();
+        barrera2 = new javax.swing.JButton();
+        barrera3 = new javax.swing.JButton();
+        barrera4 = new javax.swing.JButton();
+        barrera5 = new javax.swing.JButton();
+        barrera6 = new javax.swing.JButton();
+        barrera7 = new javax.swing.JButton();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         miPanel = new javax.swing.JPanel();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
@@ -356,17 +372,6 @@ public class principal extends javax.swing.JFrame {
         btnAcerca = new javax.swing.JButton();
         btnCerrar = new javax.swing.JButton();
         btnSalir2 = new javax.swing.JButton();
-        taskTarjeta = new org.jdesktop.swingx.JXTaskPane();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        tarjetatxt = new javax.swing.JFormattedTextField();
-        placa = new javax.swing.JFormattedTextField();
-        cliente = new javax.swing.JFormattedTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        spConsumo = new javax.swing.JSpinner();
-        spIngreso = new javax.swing.JSpinner();
-        spSalida = new javax.swing.JSpinner();
         jLabel32 = new javax.swing.JLabel();
 
         frmClientes.setTitle("Clientes");
@@ -766,11 +771,16 @@ public class principal extends javax.swing.JFrame {
             }
         });
         jPanel8.add(codigoBuscar);
-        codigoBuscar.setBounds(100, 10, 220, 20);
+        codigoBuscar.setBounds(70, 10, 220, 20);
 
         jLabel23.setText("NOMBRES:");
         jPanel8.add(jLabel23);
         jLabel23.setBounds(10, 10, 70, 14);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
+        jLabel3.setText("Presione Enter");
+        jPanel8.add(jLabel3);
+        jLabel3.setBounds(300, 10, 110, 20);
 
         buscarClientes.getContentPane().add(jPanel8);
         jPanel8.setBounds(10, 10, 510, 40);
@@ -808,6 +818,8 @@ public class principal extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(busquedaTabla);
+        busquedaTabla.getColumnModel().getColumn(0).setPreferredWidth(0);
+        busquedaTabla.getColumnModel().getColumn(0).setMaxWidth(0);
 
         jPanel9.add(jScrollPane3);
         jScrollPane3.setBounds(20, 20, 480, 150);
@@ -889,7 +901,8 @@ public class principal extends javax.swing.JFrame {
             }
         });
 
-        jSplitPane1.setDividerLocation(220);
+        jSplitPane1.setDividerLocation(240);
+        jSplitPane1.setDividerSize(0);
         jSplitPane1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jSplitPane1KeyPressed(evt);
@@ -900,6 +913,7 @@ public class principal extends javax.swing.JFrame {
 
         frmIngresarSistema.setTitle("Seguridad");
         frmIngresarSistema.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/unlock.gif"))); // NOI18N
+        frmIngresarSistema.setOpaque(true);
         try {
             frmIngresarSistema.setSelected(true);
         } catch (java.beans.PropertyVetoException e1) {
@@ -1008,7 +1022,198 @@ public class principal extends javax.swing.JFrame {
         jPanel3.setBounds(0, 0, 396, 40);
 
         frmIngresarSistema.setBounds(120, 170, 410, 220);
-        contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.MODAL_LAYER);
+
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Último Ingreso"));
+        jPanel10.setLayout(null);
+
+        cliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        cliente.setEditable(false);
+        cliente.setForeground(new java.awt.Color(51, 51, 255));
+        cliente.setText(".");
+        cliente.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jPanel10.add(cliente);
+        cliente.setBounds(20, 20, 180, 20);
+
+        tarjetatxt.setBorder(null);
+        tarjetatxt.setEditable(false);
+        tarjetatxt.setForeground(new java.awt.Color(255, 0, 0));
+        tarjetatxt.setText(".");
+        tarjetatxt.setValue(new String(""));
+        tarjetatxt.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                tarjetatxtCaretUpdate(evt);
+            }
+        });
+        tarjetatxt.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tarjetatxtPropertyChange(evt);
+            }
+        });
+        tarjetatxt.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
+            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
+                tarjetatxtVetoableChange(evt);
+            }
+        });
+        jPanel10.add(tarjetatxt);
+        tarjetatxt.setBounds(20, 40, 190, 30);
+
+        spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
+        spIngreso.setEnabled(false);
+        spIngreso.setFocusable(false);
+        jPanel10.add(spIngreso);
+        spIngreso.setBounds(290, 20, 90, 20);
+
+        ingre.setFont(new java.awt.Font("Tahoma", 1, 11));
+        ingre.setForeground(new java.awt.Color(153, 153, 153));
+        ingre.setText("INGRESO:");
+        jPanel10.add(ingre);
+        ingre.setBounds(230, 20, 60, 20);
+
+        spSalida.setFont(new java.awt.Font("Tahoma", 0, 14));
+        spSalida.setEnabled(false);
+        spSalida.setFocusable(false);
+        jPanel10.add(spSalida);
+        spSalida.setBounds(290, 40, 90, 20);
+
+        salid.setFont(new java.awt.Font("Tahoma", 1, 11));
+        salid.setForeground(new java.awt.Color(153, 153, 153));
+        salid.setText("SALIDA:");
+        jPanel10.add(salid);
+        salid.setBounds(230, 40, 60, 20);
+
+        spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
+        spConsumo.setEnabled(false);
+        spConsumo.setFocusable(false);
+        jPanel10.add(spConsumo);
+        spConsumo.setBounds(290, 60, 90, 20);
+
+        cons.setFont(new java.awt.Font("Tahoma", 1, 11));
+        cons.setForeground(new java.awt.Color(153, 153, 153));
+        cons.setText("CONSUMO:");
+        jPanel10.add(cons);
+        cons.setBounds(230, 60, 60, 20);
+
+        placa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        placa.setEditable(false);
+        placa.setText(".");
+        jPanel10.add(placa);
+        placa.setBounds(20, 70, 180, 20);
+
+        jPanel10.setBounds(410, 0, 400, 100);
+        contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jToolBar4.setBorder(javax.swing.BorderFactory.createTitledBorder("Botones de Emergencia para Abrir Barreras"));
+        jToolBar4.setFloatable(false);
+        jToolBar4.setRollover(true);
+
+        barrera1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera1.setForeground(new java.awt.Color(255, 255, 255));
+        barrera1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera1.setText("1");
+        barrera1.setEnabled(false);
+        barrera1.setFocusable(false);
+        barrera1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera1.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera1ActionPerformed(evt);
+            }
+        });
+        jToolBar4.add(barrera1);
+
+        barrera2.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera2.setForeground(new java.awt.Color(255, 255, 255));
+        barrera2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera2.setText("2");
+        barrera2.setEnabled(false);
+        barrera2.setFocusable(false);
+        barrera2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera2.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera2ActionPerformed(evt);
+            }
+        });
+        jToolBar4.add(barrera2);
+
+        barrera3.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera3.setForeground(new java.awt.Color(255, 255, 255));
+        barrera3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera3.setText("3");
+        barrera3.setEnabled(false);
+        barrera3.setFocusable(false);
+        barrera3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera3.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera3ActionPerformed(evt);
+            }
+        });
+        jToolBar4.add(barrera3);
+
+        barrera4.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera4.setForeground(new java.awt.Color(255, 255, 255));
+        barrera4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera4.setText("4");
+        barrera4.setEnabled(false);
+        barrera4.setFocusable(false);
+        barrera4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera4.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera4ActionPerformed(evt);
+            }
+        });
+        jToolBar4.add(barrera4);
+
+        barrera5.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera5.setForeground(new java.awt.Color(255, 255, 255));
+        barrera5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera5.setText("5");
+        barrera5.setEnabled(false);
+        barrera5.setFocusable(false);
+        barrera5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera5.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera5ActionPerformed(evt);
+            }
+        });
+        jToolBar4.add(barrera5);
+
+        barrera6.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera6.setForeground(new java.awt.Color(255, 255, 255));
+        barrera6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera6.setText("6");
+        barrera6.setEnabled(false);
+        barrera6.setFocusable(false);
+        barrera6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera6.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera6ActionPerformed(evt);
+            }
+        });
+        jToolBar4.add(barrera6);
+
+        barrera7.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera7.setForeground(new java.awt.Color(255, 255, 255));
+        barrera7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera7.setText("7");
+        barrera7.setEnabled(false);
+        barrera7.setFocusable(false);
+        barrera7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera7.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera7ActionPerformed(evt);
+            }
+        });
+        jToolBar4.add(barrera7);
+
+        jToolBar4.setBounds(0, 0, 400, 100);
+        contenedor.add(jToolBar4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jSplitPane1.setRightComponent(contenedor);
 
@@ -1022,9 +1227,8 @@ public class principal extends javax.swing.JFrame {
             }
         });
 
-        miPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        miPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         miPanel.setPreferredSize(new java.awt.Dimension(100, 60));
-        jXTaskPaneContainer1.add(miPanel);
 
         contenedor1.setTitle("Control");
 
@@ -1089,8 +1293,6 @@ public class principal extends javax.swing.JFrame {
 
         contenedor1.getContentPane().add(jToolBar1);
 
-        jXTaskPaneContainer1.add(contenedor1);
-
         contenedor2.setTitle("Administracion");
 
         jToolBar2.setFloatable(false);
@@ -1151,8 +1353,6 @@ public class principal extends javax.swing.JFrame {
         jToolBar2.add(btnAccesos);
 
         contenedor2.getContentPane().add(jToolBar2);
-
-        jXTaskPaneContainer1.add(contenedor2);
 
         contenedor3.setTitle("Ayuda");
 
@@ -1215,91 +1415,38 @@ public class principal extends javax.swing.JFrame {
 
         contenedor3.getContentPane().add(jToolBar3);
 
-        jXTaskPaneContainer1.add(contenedor3);
-
-        taskTarjeta.setCollapsed(true);
-        taskTarjeta.setTitle("Registro Tarjeta");
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jPanel1.setPreferredSize(new java.awt.Dimension(0, 170));
-        jPanel1.setLayout(null);
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jLabel3.setText("CONSUMO:");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(10, 120, 60, 14);
-
-        tarjetatxt.setBorder(null);
-        tarjetatxt.setEditable(false);
-        tarjetatxt.setForeground(new java.awt.Color(255, 0, 0));
-        tarjetatxt.setText(".");
-        tarjetatxt.setValue(new String(""));
-        tarjetatxt.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                tarjetatxtCaretUpdate(evt);
-            }
-        });
-        tarjetatxt.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                tarjetatxtPropertyChange(evt);
-            }
-        });
-        tarjetatxt.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
-            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
-                tarjetatxtVetoableChange(evt);
-            }
-        });
-        jPanel1.add(tarjetatxt);
-        tarjetatxt.setBounds(10, 30, 110, 20);
-
-        placa.setEditable(false);
-        placa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jPanel1.add(placa);
-        placa.setBounds(110, 30, 70, 20);
-
-        cliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        cliente.setEditable(false);
-        cliente.setForeground(new java.awt.Color(51, 51, 255));
-        cliente.setText(".");
-        cliente.setFont(new java.awt.Font("Tahoma", 0, 12));
-        jPanel1.add(cliente);
-        cliente.setBounds(0, 0, 180, 30);
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jLabel7.setText("INGRESO:");
-        jPanel1.add(jLabel7);
-        jLabel7.setBounds(10, 60, 60, 14);
-
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jLabel9.setText("SALIDA:");
-        jPanel1.add(jLabel9);
-        jLabel9.setBounds(10, 90, 60, 14);
-
-        spConsumo.setFont(new java.awt.Font("Tahoma", 1, 14));
-        spConsumo.setForeground(new java.awt.Color(0, 153, 102));
-        spConsumo.setFocusable(false);
-        jPanel1.add(spConsumo);
-        spConsumo.setBounds(70, 110, 90, 30);
-
-        spIngreso.setFont(new java.awt.Font("Tahoma", 1, 14));
-        spIngreso.setForeground(new java.awt.Color(0, 102, 255));
-        spIngreso.setFocusable(false);
-        jPanel1.add(spIngreso);
-        spIngreso.setBounds(70, 50, 90, 30);
-
-        spSalida.setFont(new java.awt.Font("Tahoma", 1, 14));
-        spSalida.setForeground(new java.awt.Color(255, 0, 0));
-        spSalida.setFocusable(false);
-        jPanel1.add(spSalida);
-        spSalida.setBounds(70, 80, 90, 30);
-
-        taskTarjeta.getContentPane().add(jPanel1);
-
-        jXTaskPaneContainer1.add(taskTarjeta);
-
         jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
         jLabel32.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jXTaskPaneContainer1.add(jLabel32);
+
+        javax.swing.GroupLayout jXTaskPaneContainer1Layout = new javax.swing.GroupLayout(jXTaskPaneContainer1);
+        jXTaskPaneContainer1.setLayout(jXTaskPaneContainer1Layout);
+        jXTaskPaneContainer1Layout.setHorizontalGroup(
+            jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTaskPaneContainer1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(contenedor2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                    .addComponent(contenedor3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                    .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                    .addComponent(miPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                    .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jXTaskPaneContainer1Layout.setVerticalGroup(
+            jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(miPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(contenedor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(contenedor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53)
+                .addComponent(jLabel32)
+                .addContainerGap(109, Short.MAX_VALUE))
+        );
 
         jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
 
@@ -1408,7 +1555,38 @@ public class principal extends javax.swing.JFrame {
             frmIngresarSistema.setVisible(false);
             usuarioActual = usu;
             List<Empresa> emp = adm.listar("Select o from Empresa as o ");
+
             this.empresaObj = emp.get(0);
+            barrera1.setEnabled(false);
+            barrera2.setEnabled(false);
+            barrera3.setEnabled(false);
+            barrera4.setEnabled(false);
+            barrera5.setEnabled(false);
+            barrera6.setEnabled(false);
+            barrera7.setEnabled(false);
+
+            if(empresaObj.getActiva1()){
+                barrera1.setEnabled(true);
+            }
+            if(empresaObj.getActiva2()){
+                barrera2.setEnabled(true);
+            }
+            if(empresaObj.getActiva3()){
+                barrera3.setEnabled(true);
+            }
+            if(empresaObj.getActiva4()){
+                barrera4.setEnabled(true);
+            }
+            if(empresaObj.getActiva5()){
+                barrera5.setEnabled(true);
+            }
+            if(empresaObj.getActiva6()){
+                barrera6.setEnabled(true);
+            }
+            if(empresaObj.getActiva7()){
+                barrera7.setEnabled(true);
+            }
+
             habilitarBotones(true);
             List<Accesos> accesosL = adm.query("Select o from Accesos as o "
                     + "where o.perfil.codigo  = '" + usuarioActual.getPerfil().getCodigo() + "' ");
@@ -1632,7 +1810,7 @@ public class principal extends javax.swing.JFrame {
                         }
 
 
-                        taskTarjeta.setCollapsed(false);
+//                        taskTarjeta.setCollapsed(false);
                         procesando.setVisible(true);
                         cliente.setText(tarje.getCliente().getNombres());
                         List<Factura> facturas = adm.query("Select o from Factura as o "
@@ -1729,7 +1907,7 @@ public class principal extends javax.swing.JFrame {
 
             procesando.setVisible(false);
 
-            taskTarjeta.setCollapsed(true);
+//            taskTarjeta.setCollapsed(true);
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2464,6 +2642,41 @@ public class principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_frmClientesSalir
 
+    private void barrera1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera1ActionPerformed
+        // TODO add your handling code here:
+        AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+    }//GEN-LAST:event_barrera1ActionPerformed
+
+    private void barrera2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera2ActionPerformed
+        // TODO add your handling code here:
+         AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
+    }//GEN-LAST:event_barrera2ActionPerformed
+
+    private void barrera3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera3ActionPerformed
+        // TODO add your handling code here:
+         AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
+    }//GEN-LAST:event_barrera3ActionPerformed
+
+    private void barrera4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera4ActionPerformed
+        // TODO add your handling code here:
+         AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
+    }//GEN-LAST:event_barrera4ActionPerformed
+
+    private void barrera5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera5ActionPerformed
+        // TODO add your handling code here:
+         AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
+    }//GEN-LAST:event_barrera5ActionPerformed
+
+    private void barrera6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera6ActionPerformed
+        // TODO add your handling code here:
+         AbrirPuerta.abrir(empresaObj.getPuerto(), "6");
+    }//GEN-LAST:event_barrera6ActionPerformed
+
+    private void barrera7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera7ActionPerformed
+        // TODO add your handling code here:
+         AbrirPuerta.abrir(empresaObj.getPuerto(), "7");
+    }//GEN-LAST:event_barrera7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2477,6 +2690,13 @@ public class principal extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox activa;
+    private javax.swing.JButton barrera1;
+    private javax.swing.JButton barrera2;
+    private javax.swing.JButton barrera3;
+    private javax.swing.JButton barrera4;
+    private javax.swing.JButton barrera5;
+    private javax.swing.JButton barrera6;
+    private javax.swing.JButton barrera7;
     private javax.swing.JButton btnAccesos;
     private javax.swing.JButton btnAcerca;
     private javax.swing.JButton btnAgregar;
@@ -2505,6 +2725,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField cliente;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
+    private javax.swing.JLabel cons;
     public javax.swing.JDesktopPane contenedor;
     private org.jdesktop.swingx.JXTaskPane contenedor1;
     private org.jdesktop.swingx.JXTaskPane contenedor2;
@@ -2522,6 +2743,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JDialog frmRegistrar;
     private javax.swing.JSpinner horaDesde;
     private javax.swing.JSpinner horaHasta;
+    private javax.swing.JLabel ingre;
     private javax.swing.JSpinner ingresos;
     private javax.swing.JFormattedTextField ipBase;
     private javax.swing.JButton jButton9;
@@ -2554,10 +2776,8 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -2573,6 +2793,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JToolBar jToolBar3;
+    private javax.swing.JToolBar jToolBar4;
     private org.jdesktop.swingx.JXTaskPaneContainer jXTaskPaneContainer1;
     private javax.swing.JCheckBox jueves;
     private javax.swing.JCheckBox lunes;
@@ -2587,12 +2808,12 @@ public class principal extends javax.swing.JFrame {
     public javax.swing.JButton procesando;
     private javax.swing.JFormattedTextField puertoBase;
     private javax.swing.JCheckBox sabado;
+    private javax.swing.JLabel salid;
     private javax.swing.JSpinner spConsumo;
     private javax.swing.JSpinner spIngreso;
     private javax.swing.JSpinner spSalida;
     private javax.swing.JTable tarjetas;
     public javax.swing.JFormattedTextField tarjetatxt;
-    private org.jdesktop.swingx.JXTaskPane taskTarjeta;
     private javax.swing.JFormattedTextField telefono;
     private javax.swing.JFormattedTextField usuarioBase;
     private javax.swing.JFormattedTextField usuariot;

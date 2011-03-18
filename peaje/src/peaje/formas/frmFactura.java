@@ -1,6 +1,5 @@
 package peaje.formas;
 
- 
 import hibernate.*;
 import hibernate.cargar.WorkingDirectory;
 import java.awt.Container;
@@ -22,6 +21,7 @@ import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.MediaPrintableArea;
 import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.MediaSizeName;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -38,7 +38,7 @@ import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 import peaje.Administrador;
 import peaje.validaciones;
- 
+
 import sources.FacturaSource;
 //import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
 
@@ -62,24 +62,24 @@ public class frmFactura extends javax.swing.JDialog {
     private principal principal;
     List<Tarifas> tarifario;
 
-    
     /** Creates new form frmProfesores */
-    public frmFactura(java.awt.Frame parent, boolean modal,Administrador adm1) {
-          super(parent,modal);
+    public frmFactura(java.awt.Frame parent, boolean modal, Administrador adm1) {
+        super(parent, modal);
         llenarCombo();
         initComponents();
         this.setSize(615, 508);
         empresaObj = new Empresa();
-        adm =  adm1;
+        adm = adm1;
         val = new validaciones();
         noTicket.requestFocusInWindow();
-                            dias.setVisible(false);
-                            dias1.setVisible(false);
-                            dias2.setVisible(false);
+        dias.setVisible(false);
+        dias1.setVisible(false);
+        dias2.setVisible(false);
+        panelencontrados.setVisible(false);
     }
 
-    public frmFactura(java.awt.Frame parent, boolean modal,principal lo,Administrador adm1) {
-          super(parent,modal);
+    public frmFactura(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
+        super(parent, modal);
         try {
             this.desktopContenedor = lo.contenedor;
             adm = adm1;
@@ -87,7 +87,7 @@ public class frmFactura extends javax.swing.JDialog {
             initComponents();
             this.setSize(615, 508);
             empresaObj = new Empresa();
-    
+
             val = new validaciones();
             principal = lo;
             noTicket.requestFocusInWindow();
@@ -95,13 +95,14 @@ public class frmFactura extends javax.swing.JDialog {
             dias.setVisible(false);
             dias1.setVisible(false);
             dias2.setVisible(false);
+            panelencontrados.setVisible(false);
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void llenarCombo() {
-        
+
         try {
             perfilesList = new ArrayList<Global>();
             perfilesList = adm.query("Select o from Global as o where o.grupo = 'PER'");
@@ -109,7 +110,6 @@ public class frmFactura extends javax.swing.JDialog {
             Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
 // <editor-fold defaultstate="collapsed" desc="PROPIEDADES">
     public String getClaveActual() {
@@ -137,18 +137,12 @@ public class frmFactura extends javax.swing.JDialog {
         this.perfilesList = perfilesList;
     }
 
-
 // </editor-fold>
-
 // <editor-fold defaultstate="collapsed" desc="FUNCIONES ACCIONES">
     public void habilitar(Boolean estado) {
-
-
     }
 
     public void limpiar() {
-
-
     }
 
     // </editor-fold >
@@ -161,10 +155,11 @@ public class frmFactura extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        formaClientes = new javax.swing.JDialog();
+        formaBusqueda = new javax.swing.JDialog();
         jPanel9 = new javax.swing.JPanel();
         codigoBuscar = new javax.swing.JFormattedTextField();
         jLabel18 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         busquedaTabla = new javax.swing.JTable();
@@ -174,37 +169,41 @@ public class frmFactura extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         ingreso = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         noTicket = new javax.swing.JFormattedTextField();
-        jLabel1 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        telefono = new javax.swing.JFormattedTextField();
-        identificacion = new javax.swing.JFormattedTextField();
-        nombres = new javax.swing.JFormattedTextField();
-        direccion = new javax.swing.JFormattedTextField();
-        jButton1 = new javax.swing.JButton();
         salida = new com.toedter.calendar.JDateChooser();
         jLabel17 = new javax.swing.JLabel();
-        cliente = new javax.swing.JFormattedTextField();
         jLabel19 = new javax.swing.JLabel();
         tiempo = new com.toedter.calendar.JDateChooser();
         placa = new javax.swing.JFormattedTextField();
         jLabel12 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        total = new javax.swing.JFormattedTextField();
         codigo = new javax.swing.JFormattedTextField();
         dias = new javax.swing.JLabel();
         dias1 = new javax.swing.JLabel();
         dias2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btnAgregar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        total = new javax.swing.JFormattedTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        panelencontrados = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        encontrados = new javax.swing.JList();
+        telefono = new javax.swing.JFormattedTextField();
+        identificacion = new javax.swing.JFormattedTextField();
+        nombres = new javax.swing.JFormattedTextField();
+        direccion = new javax.swing.JFormattedTextField();
+        cliente = new javax.swing.JFormattedTextField();
+        btnNuevoCliente = new javax.swing.JButton();
 
-        formaClientes.setLocationByPlatform(true);
-        formaClientes.getContentPane().setLayout(null);
+        formaBusqueda.setLocationByPlatform(true);
+        formaBusqueda.getContentPane().setLayout(null);
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel9.setLayout(null);
@@ -215,13 +214,18 @@ public class frmFactura extends javax.swing.JDialog {
             }
         });
         jPanel9.add(codigoBuscar);
-        codigoBuscar.setBounds(100, 10, 220, 20);
+        codigoBuscar.setBounds(70, 10, 220, 20);
 
         jLabel18.setText("NOMBRES:");
         jPanel9.add(jLabel18);
         jLabel18.setBounds(10, 10, 70, 14);
 
-        formaClientes.getContentPane().add(jPanel9);
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
+        jLabel4.setText("Digite y luego Enter");
+        jPanel9.add(jLabel4);
+        jLabel4.setBounds(290, 10, 150, 22);
+
+        formaBusqueda.getContentPane().add(jPanel9);
         jPanel9.setBounds(10, 10, 510, 40);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -257,14 +261,16 @@ public class frmFactura extends javax.swing.JDialog {
             }
         });
         jScrollPane4.setViewportView(busquedaTabla);
+        busquedaTabla.getColumnModel().getColumn(0).setPreferredWidth(0);
+        busquedaTabla.getColumnModel().getColumn(0).setMaxWidth(0);
 
         jPanel10.add(jScrollPane4);
         jScrollPane4.setBounds(20, 20, 480, 150);
 
-        formaClientes.getContentPane().add(jPanel10);
+        formaBusqueda.getContentPane().add(jPanel10);
         jPanel10.setBounds(10, 60, 510, 180);
 
-        setTitle("Usuarios");
+        setTitle("Cobrar Ticket");
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
@@ -296,119 +302,57 @@ public class frmFactura extends javax.swing.JDialog {
 
         ingreso.setBackground(new java.awt.Color(255, 255, 255));
         ingreso.setDateFormatString("HH:mm:ss");
-        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14));
+        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel1.add(ingreso);
-        ingreso.setBounds(120, 50, 110, 20);
+        ingreso.setBounds(70, 50, 110, 20);
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("TICKET No:");
+        jLabel7.setText("TICKET No: ");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(50, 10, 60, 14);
+        jLabel7.setBounds(10, 10, 60, 14);
 
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("Teléfono:");
-        jPanel1.add(jLabel9);
-        jLabel9.setBounds(270, 90, 90, 20);
-
+        noTicket.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         noTicket.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 noTicketKeyPressed(evt);
             }
         });
         jPanel1.add(noTicket);
-        noTicket.setBounds(120, 10, 110, 20);
+        noTicket.setBounds(70, 10, 90, 21);
 
-        jLabel1.setText("Facturar a:");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(310, 10, 80, 14);
-
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 0, 204));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel13.setText("Tiempo:");
+        jLabel13.setText("Tiempo: ");
         jPanel1.add(jLabel13);
-        jLabel13.setBounds(10, 90, 100, 20);
-
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel14.setText("Identificación:");
-        jPanel1.add(jLabel14);
-        jLabel14.setBounds(270, 30, 90, 20);
-
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel15.setText("Dirección:");
-        jPanel1.add(jLabel15);
-        jLabel15.setBounds(270, 70, 90, 20);
-
-        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel16.setText("Cliente:");
-        jPanel1.add(jLabel16);
-        jLabel16.setBounds(270, 50, 90, 20);
-
-        telefono.setEditable(false);
-        telefono.setText("9999999999999");
-        jPanel1.add(telefono);
-        telefono.setBounds(370, 90, 140, 20);
-
-        identificacion.setEditable(false);
-        identificacion.setText("9999999999999");
-        identificacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                identificacionActionPerformed(evt);
-            }
-        });
-        jPanel1.add(identificacion);
-        identificacion.setBounds(370, 30, 110, 20);
-
-        nombres.setEditable(false);
-        nombres.setText("CONSUMIDOR FINAL");
-        jPanel1.add(nombres);
-        nombres.setBounds(370, 50, 190, 20);
-
-        direccion.setEditable(false);
-        direccion.setText("S/D");
-        jPanel1.add(direccion);
-        direccion.setBounds(370, 70, 190, 20);
-
-        jButton1.setText("Buscar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton1);
-        jButton1.setBounds(370, 10, 65, 20);
+        jLabel13.setBounds(20, 90, 50, 20);
 
         salida.setBackground(new java.awt.Color(255, 255, 255));
         salida.setDateFormatString("HH:mm:ss");
         salida.setFont(new java.awt.Font("Tahoma", 1, 14));
         jPanel1.add(salida);
-        salida.setBounds(120, 70, 110, 20);
+        salida.setBounds(70, 70, 110, 20);
 
-        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(0, 102, 0));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel17.setText("Ingreso:");
+        jLabel17.setText("Ingreso: ");
         jPanel1.add(jLabel17);
-        jLabel17.setBounds(10, 50, 100, 20);
+        jLabel17.setBounds(10, 50, 60, 20);
 
-        cliente.setEditable(false);
-        cliente.setText("1");
-        jPanel1.add(cliente);
-        cliente.setBounds(480, 30, 30, 20);
-
-        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(204, 0, 0));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel19.setText("Salida:");
+        jLabel19.setText("Salida: ");
         jPanel1.add(jLabel19);
-        jLabel19.setBounds(10, 70, 100, 20);
+        jLabel19.setBounds(20, 70, 50, 20);
 
         tiempo.setBackground(new java.awt.Color(255, 255, 255));
         tiempo.setDateFormatString("HH:mm");
         tiempo.setFont(new java.awt.Font("Tahoma", 1, 14));
         jPanel1.add(tiempo);
-        tiempo.setBounds(120, 90, 110, 20);
+        tiempo.setBounds(70, 90, 110, 20);
 
         placa.setEditable(false);
         placa.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -417,55 +361,47 @@ public class frmFactura extends javax.swing.JDialog {
             }
         });
         jPanel1.add(placa);
-        placa.setBounds(120, 30, 110, 20);
+        placa.setBounds(70, 30, 110, 20);
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel12.setText("Placa:");
+        jLabel12.setText("Placa: ");
         jPanel1.add(jLabel12);
-        jLabel12.setBounds(50, 30, 60, 14);
+        jLabel12.setBounds(20, 30, 50, 14);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18));
-        jLabel2.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel2.setLabelFor(total);
-        jLabel2.setText("A COBRAR:");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(270, 140, 130, 30);
-
-        total.setEditable(false);
-        total.setForeground(new java.awt.Color(51, 153, 0));
-        total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        total.setText("0.0");
-        total.setCaretColor(new java.awt.Color(0, 204, 0));
-        total.setFont(new java.awt.Font("Tahoma", 1, 24));
-        jPanel1.add(total);
-        total.setBounds(400, 140, 160, 30);
-
+        codigo.setBorder(null);
         codigo.setEditable(false);
+        codigo.setEnabled(false);
+        codigo.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
         jPanel1.add(codigo);
-        codigo.setBounds(230, 30, 40, 20);
+        codigo.setBounds(180, 30, 30, 20);
 
         dias.setFont(new java.awt.Font("Tahoma", 1, 11));
         dias.setForeground(new java.awt.Color(0, 0, 204));
         dias.setText("DIA(s)");
         jPanel1.add(dias);
-        dias.setBounds(160, 110, 60, 20);
+        dias.setBounds(130, 110, 60, 20);
 
-        dias1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        dias1.setFont(new java.awt.Font("Tahoma", 1, 11));
         dias1.setForeground(new java.awt.Color(204, 0, 0));
         dias1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias1.setText("0");
         jPanel1.add(dias1);
-        dias1.setBounds(120, 110, 30, 20);
+        dias1.setBounds(90, 110, 30, 20);
 
-        dias2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        dias2.setFont(new java.awt.Font("Tahoma", 1, 11));
         dias2.setForeground(new java.awt.Color(0, 0, 204));
         dias2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias2.setText("MAYOR A:");
         jPanel1.add(dias2);
-        dias2.setBounds(40, 110, 70, 20);
+        dias2.setBounds(10, 110, 60, 20);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
+        jLabel3.setText("Digite y luego Enter");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(160, 10, 130, 20);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(10, 70, 570, 180);
+        jPanel1.setBounds(10, 50, 280, 160);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -482,7 +418,7 @@ public class frmFactura extends javax.swing.JDialog {
             }
         });
         jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(150, 10, 60, 50);
+        btnAgregar.setBounds(440, 10, 60, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
@@ -496,85 +432,239 @@ public class frmFactura extends javax.swing.JDialog {
             }
         });
         jPanel4.add(btnSalir);
-        btnSalir.setBounds(210, 10, 60, 50);
+        btnSalir.setBounds(500, 10, 60, 50);
+
+        total.setBorder(null);
+        total.setEditable(false);
+        total.setForeground(new java.awt.Color(51, 153, 0));
+        total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        total.setText("0.0");
+        total.setCaretColor(new java.awt.Color(0, 204, 0));
+        total.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jPanel4.add(total);
+        total.setBounds(140, 10, 140, 50);
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel2.setLabelFor(total);
+        jLabel2.setText("A PAGAR:");
+        jPanel4.add(jLabel2);
+        jLabel2.setBounds(10, 20, 130, 30);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(290, 260, 280, 70);
+        jPanel4.setBounds(10, 220, 580, 70);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel2.setLayout(null);
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setText("Teléfono: ");
+        jPanel2.add(jLabel9);
+        jLabel9.setBounds(0, 70, 80, 20);
+
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel14.setText("CI/RUC: ");
+        jPanel2.add(jLabel14);
+        jLabel14.setBounds(0, 10, 80, 20);
+
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel15.setText("Dirección: ");
+        jPanel2.add(jLabel15);
+        jLabel15.setBounds(0, 50, 80, 20);
+
+        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel16.setText("Cliente: ");
+        jPanel2.add(jLabel16);
+        jLabel16.setBounds(0, 30, 80, 20);
+
+        panelencontrados.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
+        panelencontrados.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelencontrados.setLayout(null);
+
+        encontrados.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Lista Clientes", "Lista Clientes" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        encontrados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        encontrados.setAlignmentX(0.2F);
+        encontrados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                encontradosMouseClicked(evt);
+            }
+        });
+        encontrados.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                encontradosKeyPressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(encontrados);
+
+        panelencontrados.add(jScrollPane2);
+        jScrollPane2.setBounds(10, 10, 170, 90);
+
+        jPanel2.add(panelencontrados);
+        panelencontrados.setBounds(80, 50, 190, 110);
+
+        telefono.setEditable(false);
+        telefono.setText("9999999999999");
+        jPanel2.add(telefono);
+        telefono.setBounds(80, 70, 140, 20);
+
+        identificacion.setEditable(false);
+        identificacion.setText("9999999999999");
+        identificacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                identificacionActionPerformed(evt);
+            }
+        });
+        identificacion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                identificacionFocusLost(evt);
+            }
+        });
+        jPanel2.add(identificacion);
+        identificacion.setBounds(80, 10, 110, 20);
+
+        nombres.setEditable(false);
+        nombres.setText("CONSUMIDOR FINAL");
+        nombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nombresKeyReleased(evt);
+            }
+        });
+        jPanel2.add(nombres);
+        nombres.setBounds(80, 30, 190, 20);
+
+        direccion.setEditable(false);
+        direccion.setText("S/D");
+        jPanel2.add(direccion);
+        direccion.setBounds(80, 50, 190, 20);
+
+        cliente.setBorder(null);
+        cliente.setEditable(false);
+        cliente.setText("1");
+        cliente.setEnabled(false);
+        cliente.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
+        jPanel2.add(cliente);
+        cliente.setBounds(190, 10, 20, 10);
+
+        btnNuevoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
+        btnNuevoCliente.setText("CREAR O BUSCAR CLIENTE");
+        btnNuevoCliente.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnNuevoCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoClienteActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnNuevoCliente);
+        btnNuevoCliente.setBounds(40, 100, 230, 30);
+
+        getContentPane().add(jPanel2);
+        jPanel2.setBounds(310, 50, 280, 160);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
- 
-
-    
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        if(principal.permisos.getAgregar()){
-                    try {
-                        if(codigo.getText().isEmpty()){
-                            JOptionPane.showMessageDialog(this, "Seleccione o Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
-                            noTicket.requestFocusInWindow();
-                            return;
-                        }
-                        Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                         Factura facActual =  (Factura) adm.buscarClave(new Integer(codigo.getText()),Factura.class);
-                        facActual.setCliente(new Clientes(new Integer(cliente.getText())));
-                        Date fecSalida = new Date();
-                        fecSalida.setHours(salida.getDate().getHours());
-                        fecSalida.setMinutes(salida.getDate().getMinutes());
-                        fecSalida.setSeconds(salida.getDate().getSeconds());
-                        facActual.setFechafin(fecSalida);
+        if (principal.permisos.getAgregar()) {
+            try {
+                if (codigo.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
+                    noTicket.requestFocusInWindow();
+                    return;
+                }
+                if (cliente.getText().equals("0") && nombres.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Falta el ingresar o seleccionar el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
+                    identificacion.requestFocusInWindow();
+                    return;
+                }
+                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                Factura facActual = (Factura) adm.buscarClave(new Integer(codigo.getText()), Factura.class);
 
-                        facActual.setNumero(emp.getDocumentofac());
-                        facActual.setTotal(new BigDecimal(total.getText()));
+                if (cliente.getText().equals("0")) {
+                    Clientes nuevoCl = new Clientes();
+                    Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
+                    nuevoCl.setCodigo(codigoC);
+                    nuevoCl.setDireccion(direccion.getText());
+                    nuevoCl.setIdentificacion(identificacion.getText());
+                    nuevoCl.setTelefono(telefono.getText());
+                    nuevoCl.setNombres(nombres.getText());
+                    adm.guardar(nuevoCl);
+                    identificacion.setText("9999999999999");
+                    nombres.setText("CONSUMIDOR FINAL");
+                    direccion.setText("S/D");
+                    telefono.setText("9999999999999");
+                    cliente.setText("1");
+                    facActual.setCliente(nuevoCl);
+                } else {
+                    facActual.setCliente(new Clientes(new Integer(cliente.getText())));
+                }
 
-                        Date fecTiempo = new Date();
-                        fecTiempo.setHours(tiempo.getDate().getHours());
-                        fecTiempo.setMinutes(tiempo.getDate().getMinutes());
-                        fecTiempo.setSeconds(tiempo.getDate().getSeconds());
-                        facActual.setTiempo(fecTiempo);
+
+                Date fecSalida = new Date();
+                fecSalida.setHours(salida.getDate().getHours());
+                fecSalida.setMinutes(salida.getDate().getMinutes());
+                fecSalida.setSeconds(salida.getDate().getSeconds());
+                facActual.setFechafin(fecSalida);
+
+                facActual.setNumero(emp.getDocumentofac());
+                facActual.setTotal(new BigDecimal(total.getText()));
+
+                Date fecTiempo = new Date();
+                fecTiempo.setHours(tiempo.getDate().getHours());
+                fecTiempo.setMinutes(tiempo.getDate().getMinutes());
+                fecTiempo.setSeconds(tiempo.getDate().getSeconds());
+                facActual.setTiempo(fecTiempo);
 
 
-                        adm.actualizar(facActual);
-                        Integer numero = new Integer(emp.getDocumentofac());
-                        emp.setDocumentofac((numero+1)+"");
-                        int dia = 0;
-                        try {
-                            dia = new Integer(dias1.getText());
-                        } catch (Exception e) { dia = 0;}
-                        imprimir(facActual.getCodigo(), emp,dia);
-                        adm.actualizar(emp);
-                        ingreso.setDate(null);
-                        salida.setDate(null);
-                        placa.setText(null);
-                        tiempo.setDate(null);
-                        noTicket.setText("");
-                        codigo.setText("");
-                        
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                        Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
-                        return;
-                    }
-  
-        }else{
+                adm.actualizar(facActual);
+                Integer numero = new Integer(emp.getDocumentofac());
+                emp.setDocumentofac((numero + 1) + "");
+                int dia = 0;
+                try {
+                    dia = new Integer(dias1.getText());
+                } catch (Exception e) {
+                    dia = 0;
+                }
+                imprimir(facActual.getCodigo(), emp, dia);
+                adm.actualizar(emp);
+                ingreso.setDate(null);
+                salida.setDate(null);
+                placa.setText(null);
+                tiempo.setDate(null);
+                noTicket.setText("");
+                codigo.setText("");
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+                return;
+            }
+
+        } else {
             JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
         }
 
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    public void imprimir(int cod,Empresa emp,int dias) {
+    public void imprimir(int cod, Empresa emp, int dias) {
 
 //                    viewer.show();
         try {
-              WorkingDirectory w = new WorkingDirectory();
-             String ubicacionDirectorio = w.get()+"\\";
-                if(ubicacionDirectorio.contains("build"))
-                    ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
-            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio+"\\reportes\\factura.jasper");
+            WorkingDirectory w = new WorkingDirectory();
+            String ubicacionDirectorio = w.get() + "\\";
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+            }
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "\\reportes\\factura.jasper");
 
-            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = "+cod+" ");
+            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
             ArrayList detalle = new ArrayList();
             detalle.add(fac);
             FacturaSource ds = new FacturaSource(detalle);
@@ -583,10 +673,10 @@ public class frmFactura extends javax.swing.JDialog {
             parametros.put("empresa", emp.getRazon());
             parametros.put("direccion", emp.getDireccion());
             parametros.put("telefono", emp.getTelefonos());
-            parametros.put("dias", (dias>0?dias+ " Dias":""));
+            parametros.put("dias", (dias > 0 ? dias + " Dias" : ""));
 
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
-             PrinterJob job = PrinterJob.getPrinterJob();
+            PrinterJob job = PrinterJob.getPrinterJob();
             /* Create an array of PrintServices */
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
             int selectedService = 0;
@@ -598,7 +688,7 @@ public class frmFactura extends javax.swing.JDialog {
                 }
             }
             job.setPrintService(services[selectedService]);
-            PrintRequestAttributeSet  printRequestAttributeSet = new HashPrintRequestAttributeSet();
+            PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
             MediaSizeName mediaSizeName = MediaSize.findMedia(4, 4, MediaPrintableArea.INCH);
             printRequestAttributeSet.add(mediaSizeName);
             printRequestAttributeSet.add(new Copies(1));
@@ -628,8 +718,6 @@ public class frmFactura extends javax.swing.JDialog {
 //            ex.printStackTrace();
 //        }
     }
-    
-
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
@@ -666,7 +754,7 @@ public class frmFactura extends javax.swing.JDialog {
                 public void run() {
                     principal.procesando.setVisible(true);
                     try {
-                        List<Clientes> usuarios = adm.query("Select o from Clientes as o where o.nombres like '" + codigoBuscar.getText().trim() + "%' ");
+                        List<Clientes> usuarios = adm.query("Select o from Clientes as o where o.nombres like '%" + codigoBuscar.getText().trim() + "%' ");
                         Object[] obj = new Object[4];
                         DefaultTableModel dtm = (DefaultTableModel) busquedaTabla.getModel();
                         dtm.getDataVector().removeAllElements();
@@ -692,7 +780,7 @@ public class frmFactura extends javax.swing.JDialog {
             cargar.start();
 
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            formaClientes.dispose();
+            formaBusqueda.dispose();
         }
     }//GEN-LAST:event_codigoBuscarKeyPressed
 
@@ -701,13 +789,13 @@ public class frmFactura extends javax.swing.JDialog {
         if (evt.getClickCount() == 2) {
             try {
                 int fila = busquedaTabla.getSelectedRow();
-                 Clientes client = (Clientes) adm.buscarClave((Integer)busquedaTabla.getValueAt(fila, 0), Clientes.class);
-                 cliente.setText(client.getCodigo()+"");
-                 nombres.setText(client.getNombres());
-                 identificacion.setText(client.getIdentificacion());
-                 direccion.setText(client.getDireccion());
-                 telefono.setText(client.getTelefono());
-                formaClientes.dispose();
+                Clientes client = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
+                cliente.setText(client.getCodigo() + "");
+                nombres.setText(client.getNombres());
+                identificacion.setText(client.getIdentificacion());
+                direccion.setText(client.getDireccion());
+                telefono.setText(client.getTelefono());
+                formaBusqueda.dispose();
                 client = null;
             } catch (Exception ex) {
                 Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
@@ -721,144 +809,260 @@ public class frmFactura extends javax.swing.JDialog {
         if (evt.getKeyCode() == evt.VK_ENTER) {
             try {
                 int fila = busquedaTabla.getSelectedRow();
-                Clientes client = (Clientes) adm.buscarClave((Integer)busquedaTabla.getValueAt(fila, 0), Clientes.class);
-                 cliente.setText(client.getCodigo()+"");
-                 nombres.setText(client.getNombres());
-                 identificacion.setText(client.getIdentificacion());
-                 direccion.setText(client.getDireccion());
-                 telefono.setText(client.getTelefono());
-                formaClientes.dispose();
+                Clientes client = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
+                cliente.setText(client.getCodigo() + "");
+                nombres.setText(client.getNombres());
+                identificacion.setText(client.getIdentificacion());
+                direccion.setText(client.getDireccion());
+                telefono.setText(client.getTelefono());
+                formaBusqueda.dispose();
                 client = null;
             } catch (Exception ex) {
                 Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            formaClientes.dispose();
+            formaBusqueda.dispose();
         }
 }//GEN-LAST:event_busquedaTablaKeyPressed
 
     @SuppressWarnings("static-access")
     private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode()==evt.VK_ENTER){
+        if (evt.getKeyCode() == evt.VK_ENTER) {
             try {
+                ingreso.setDate(null);
+                salida.setDate(null);
+                placa.setText(null);
+                tiempo.setDate(null);
+
+                Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + noTicket.getText() + "' ");
+                if (fac != null) {
+                    dias.setVisible(false);
+                    dias1.setVisible(false);
+                    dias2.setVisible(false);
+                    if (fac.getFechafin() != null) {
+
+//                        int valor = JOptionPane.showConfirmDialog(this, ,"JCINFORM",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "opcion 1", "opcion 2", "opcion 3" },"opcion 1" );
+                        int seleccion = JOptionPane.showOptionDialog(this, "TICKET YA FACTURADO \n ¿Desea volver a imprimir la factura?",
+                                "JCINFORM",
+                                JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null, // null para icono por defecto.
+                                new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
+                                "NO");
+                        System.out.println("" + seleccion);
+
+                        if (0 == seleccion) {
+                            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                            imprimir(fac.getCodigo(), emp, 0);
+                        }
+                        noTicket.setText("");
+                        noTicket.requestFocusInWindow();
+                        return;
+                    }
+                    ingreso.setDate(fac.getFechaini());
+                    salida.setDate(new Date());
+
+
+
+                    Date act = new Date();
+                    int diasEntre = Days.daysBetween(new LocalDate(fac.getFechaini()), new LocalDate(new Date())).getDays();
+
+                    System.out.println("" + diasEntre);
+//                        LocalTime horaIni = new LocalTime(ingreso.getDate().getTime());
+//                        LocalTime horaFin = new LocalTime(salida.getDate().getTime());
+                    LocalTime horaIni = new LocalTime(new DateTime(ingreso.getDate()));
+                    LocalTime horaFin = new LocalTime(new DateTime(salida.getDate()));
+
+                    Integer minutos = (Minutes.minutesBetween(horaIni, horaFin).getMinutes());
+                    Integer horas = minutos / 60;
+                    if (minutos.intValue() < 0) {
+//                            horas = horas *-1 ;
+//                            horas += 24;
+                        horas = 0;
+                        minutos = 0;
+                        dias.setVisible(true);
+                        dias1.setVisible(true);
+                        dias2.setVisible(true);
+                    }
+                    for (int i = 0; i < diasEntre; i++) {
+                        horas += 24;
+                        dias.setVisible(true);
+                        dias1.setVisible(true);
+                        dias2.setVisible(true);
+                    }
+                    dias1.setText("" + diasEntre);
+
+                    Float min = minutos / 60f;
+                    int indice = min.toString().indexOf(".");
+                    Float valorf = new Float("0" + min.toString().substring(indice));
+                    int valor = java.lang.Math.round((valorf * 60));
+                    act.setHours(horas);
+                    act.setMinutes(valor);
+                    tiempo.setDate(act);
+                    placa.setText(fac.getPlaca());
+
+                    BigDecimal aCobrar = new BigDecimal(0);
+                    for (int a = 0; a < horas; a++) {
+                        aCobrar = aCobrar.add(buscar(60));
+
+                    }
+                    if (valor > 0) {
+                        aCobrar = aCobrar.add(buscar(valor));
+                    }
+                    total.setText(aCobrar + "");
+                    codigo.setText(fac.getCodigo() + "");
+                    //tiempo.setDate(Hours.hoursBetween(horaIni, horaFin));
+
+                    btnAgregar.requestFocusInWindow();
+                } else {
                     ingreso.setDate(null);
                     salida.setDate(null);
                     placa.setText(null);
                     tiempo.setDate(null);
-
-                    Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '"+noTicket.getText()+"' ");
-                    if(fac != null){
-                        dias.setVisible(false);
-                        dias1.setVisible(false);
-                        dias2.setVisible(false);
-                        if(fac.getFechafin()!= null){
-                            JOptionPane.showMessageDialog(this, "Ticket ya facturado seleccione otro...!");
-                                noTicket.setText("");
-                            return;
-                        }
-                        ingreso.setDate(fac.getFechaini());
-                        salida.setDate(new Date());
-
-                         
-
-                        Date act = new Date();
-                        int diasEntre = Days.daysBetween(new LocalDate(fac.getFechaini()), new LocalDate (new Date())).getDays();
-
-                        System.out.println(""+diasEntre);
-//                        LocalTime horaIni = new LocalTime(ingreso.getDate().getTime());
-//                        LocalTime horaFin = new LocalTime(salida.getDate().getTime());
-                        LocalTime horaIni = new LocalTime(new DateTime(ingreso.getDate()));
-                        LocalTime horaFin = new LocalTime(new DateTime(salida.getDate()));
-
-                        Integer minutos = (Minutes.minutesBetween(horaIni, horaFin).getMinutes());
-                        Integer horas = minutos/60;
-                        if(minutos.intValue() <0){
-//                            horas = horas *-1 ;
-//                            horas += 24;
-                            horas=0;
-                            minutos = 0;
-                            dias.setVisible(true);
-                            dias1.setVisible(true);
-                            dias2.setVisible(true);
-                        }
-                        for (int i = 0; i < diasEntre ; i++) {
-                                horas += 24;
-                            dias.setVisible(true);
-                            dias1.setVisible(true);
-                            dias2.setVisible(true);
-                        }
-                dias1.setText(""+diasEntre);
-
-                        Float min = minutos/60f;
-                        int indice =  min.toString().indexOf(".");
-                        Float  valorf = new Float("0"+min.toString().substring(indice));
-                        int valor = java.lang.Math.round((valorf*60));
-                        act.setHours(horas);
-                        act.setMinutes(valor);
-                        tiempo.setDate(act);
-                        placa.setText(fac.getPlaca());
-                        
-                        BigDecimal aCobrar = new BigDecimal(0);
-                        for(int a= 0; a<horas; a++){
-                            aCobrar =aCobrar.add(buscar(60));
-
-                        }
-                        if(valor>0){
-                            aCobrar = aCobrar.add(buscar(valor));
-                        }
-                        total.setText(aCobrar+"");
-                        codigo.setText(fac.getCodigo()+""); 
-                        //tiempo.setDate(Hours.hoursBetween(horaIni, horaFin));
-
-
-                    }else{
-                        ingreso.setDate(null);
-                        salida.setDate(null);
-                        placa.setText(null);
-                           tiempo.setDate(null);
-                    }
+                }
             } catch (Exception e) {
-                    ingreso.setDate(null);
-                        salida.setDate(null);
-                        placa.setText(null);
-                               tiempo.setDate(null);
+                ingreso.setDate(null);
+                salida.setDate(null);
+                placa.setText(null);
+                tiempo.setDate(null);
             }
         }
-         if (evt.getKeyCode() == evt.VK_ESCAPE) {
-             this.setVisible(false);
-        principal = null;
-        empresaObj = null;
-        System.gc();
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            this.setVisible(false);
+            principal = null;
+            empresaObj = null;
+            System.gc();
         }
     }//GEN-LAST:event_noTicketKeyPressed
 
-    public BigDecimal buscar(Integer minutos){
+    public BigDecimal buscar(Integer minutos) {
         for (Iterator<Tarifas> it = tarifario.iterator(); it.hasNext();) {
             Tarifas tarifas = it.next();
             int desde = tarifas.getDesde().intValue();
-            int hasta = tarifas.getHasta().intValue() ;
+            int hasta = tarifas.getHasta().intValue();
             int valo = minutos;
-                if(valo>=desde && valo <= hasta){
-                    return tarifas.getValor();
-                }
-            
+            if (valo >= desde && valo <= hasta) {
+                return tarifas.getValor();
+            }
+
         }
         return new BigDecimal(0);
 
 
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-         formaClientes.setModal(true);
-         formaClientes.setSize(533, 300);
-                formaClientes.setLocation(250, 70);
-                formaClientes.show();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    public void llenarCliente(Clientes nCliente) {
+        cliente.setText("" + nCliente.getCodigo());
+        identificacion.setText(nCliente.getIdentificacion());
+        nombres.setText(nCliente.getNombres());
+        direccion.setText(nCliente.getDireccion());
+        telefono.setText(nCliente.getTelefono());
+    }
 
+    private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
+        // TODO add your handling code here:
+
+        identificacion.setEditable(true);
+        nombres.setEditable(true);
+        direccion.setEditable(true);
+        telefono.setEditable(true);
+        llenarCliente(new Clientes(0));
+//            cliente.setEditable(true);
+        identificacion.requestFocusInWindow();
+
+
+    }//GEN-LAST:event_btnNuevoClienteActionPerformed
+
+    private void identificacionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_identificacionFocusLost
+        // TODO add your handling code here:
+        try {
+            Clientes cliObj = (Clientes) adm.querySimple("Select o from Clientes as o "
+                    + "where o.identificacion like '" + identificacion.getText().trim() + "%' ");
+            if (cliObj != null) {
+                cliente.setText(cliObj.getCodigo() + "");
+                identificacion.setText(cliObj.getIdentificacion());
+                nombres.setText(cliObj.getNombres());
+                direccion.setText(cliObj.getDireccion());
+                telefono.setText(cliObj.getTelefono());
+            }
+
+        } catch (Exception e) {
+            System.out.println("BUSCAR CEDULA UNICA " + e);
+        }
+    }//GEN-LAST:event_identificacionFocusLost
+
+    private void encontradosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontradosKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            this.panelencontrados.setVisible(false);
+            Clientes est = (Clientes) this.encontrados.getSelectedValue();
+            llenarCliente(est);
+
+
+        }
+        if (evt.getKeyCode() == evt.VK_UP && encontrados.getSelectedIndex() == 0) {
+            this.nombres.requestFocusInWindow();
+        }
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            this.panelencontrados.setVisible(false);
+
+        }
+}//GEN-LAST:event_encontradosKeyPressed
+
+    private void nombresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_DOWN) {
+            encontrados.setSelectedIndex(0);
+            encontrados.requestFocusInWindow();
+        }
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            panelencontrados.setVisible(false);
+        }
+    }//GEN-LAST:event_nombresKeyPressed
+
+    private void nombresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyReleased
+        // TODO add your handling code here:
+        if (!nombres.getText().isEmpty()) {
+
+            List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres.getText().trim() + "%' order by o.nombres ", 0, 10);
+            if (encon.size() > 0) {
+                DefaultListModel dtm = new DefaultListModel();
+                dtm.removeAllElements();
+                encontrados.setModel(dtm);
+                int j = 0;
+                for (Clientes est : encon) {
+                    dtm.add(j, est);
+                    j++;
+                }
+                encontrados.setModel(dtm);
+                this.panelencontrados.setVisible(true);
+            } else {
+                DefaultListModel dtm = new DefaultListModel();
+                dtm.removeAllElements();
+                encontrados.setModel(dtm);
+                this.panelencontrados.setVisible(false);
+            }
+
+        } else {
+            DefaultListModel dtm = new DefaultListModel();
+            dtm.removeAllElements();
+            encontrados.setModel(dtm);
+            this.panelencontrados.setVisible(false);
+        }
+    }//GEN-LAST:event_nombresKeyReleased
+
+    private void encontradosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encontradosMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            this.panelencontrados.setVisible(false);
+            Clientes est = (Clientes) this.encontrados.getSelectedValue();
+            llenarCliente(est);
+        }
+    }//GEN-LAST:event_encontradosMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnNuevoCliente;
     private javax.swing.JButton btnSalir;
     private javax.swing.JTable busquedaTabla;
     private javax.swing.JFormattedTextField cliente;
@@ -868,11 +1072,10 @@ public class frmFactura extends javax.swing.JDialog {
     private javax.swing.JLabel dias1;
     private javax.swing.JLabel dias2;
     private javax.swing.JFormattedTextField direccion;
-    private javax.swing.JDialog formaClientes;
+    private javax.swing.JList encontrados;
+    private javax.swing.JDialog formaBusqueda;
     private javax.swing.JFormattedTextField identificacion;
     private com.toedter.calendar.JDateChooser ingreso;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -883,17 +1086,22 @@ public class frmFactura extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JFormattedTextField noTicket;
     private javax.swing.JFormattedTextField nombres;
+    private javax.swing.JPanel panelencontrados;
     private javax.swing.JFormattedTextField placa;
     private com.toedter.calendar.JDateChooser salida;
     private javax.swing.JFormattedTextField telefono;
