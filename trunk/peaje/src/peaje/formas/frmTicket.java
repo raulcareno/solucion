@@ -29,6 +29,8 @@ import peaje.Administrador;
 import peaje.validaciones;
 import hibernate.*;
 import hibernate.cargar.WorkingDirectory;
+import java.text.ParseException;
+import javax.swing.text.MaskFormatter;
 import sources.FacturaSource;
 
 //import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
@@ -52,36 +54,48 @@ public class frmTicket extends javax.swing.JDialog {
     private principal principal;
 
     /** Creates new form frmProfesores */
-    public frmTicket(java.awt.Frame parent, boolean modal,Administrador adm1) {
+    public frmTicket(java.awt.Frame parent, boolean modal, Administrador adm1) {
         super(parent, modal);
         this.adm = adm1;
         llenarCombo();
         initComponents();
         this.setSize(615, 508);
         empresaObj = new Empresa();
-        
+
         val = new validaciones();
-        placa.requestFocusInWindow();
+        placa.requestFocusInWindow();mascaras() ;
     }
 
-    public frmTicket(java.awt.Frame parent, boolean modal, principal lo,Administrador adm1) {
+    public frmTicket(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
         super(parent, modal);
         this.desktopContenedor = lo.contenedor;
-    this.adm = adm1;
+        this.adm = adm1;
         llenarCombo();
         initComponents();
         this.setSize(615, 508);
         empresaObj = new Empresa();
-    
+
         val = new validaciones();
         principal = lo;
         placa.requestFocusInWindow();
         placa.requestFocusInWindow();
-        
+        mascaras() ;
+
+    }
+
+    public void mascaras() {
+        try {
+            MaskFormatter mf = new MaskFormatter("AAA-####");
+            mf.setPlaceholderCharacter('_');
+            mf.install(placa);
+
+        } catch (ParseException e) {
+        }
+
     }
 
     public void llenarCombo() {
-        
+
         try {
             perfilesList = new ArrayList<Global>();
             perfilesList = adm.query("Select o from Global as o where o.grupo = 'PER'");
@@ -141,9 +155,10 @@ public class frmTicket extends javax.swing.JDialog {
         fecha = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        placa = new javax.swing.JFormattedTextField();
         jLabel12 = new javax.swing.JLabel();
         noTicket = new javax.swing.JFormattedTextField();
+        jLabel3 = new javax.swing.JLabel();
+        placa = new javax.swing.JFormattedTextField();
         jPanel4 = new javax.swing.JPanel();
         btnAgregar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
@@ -168,9 +183,9 @@ public class frmTicket extends javax.swing.JDialog {
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel10.setText("Registro el Numero de placa y presiona GUARDAR..::..");
+        jLabel10.setText("Registro el Numero de placa y presiona ENTER..::..");
         jPanel3.add(jLabel10);
-        jLabel10.setBounds(10, 20, 290, 13);
+        jLabel10.setBounds(10, 20, 300, 13);
 
         getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 600, 40);
@@ -182,40 +197,42 @@ public class frmTicket extends javax.swing.JDialog {
         fecha.setDateFormatString("dd/MM/yyyy HH:mm:ss");
         fecha.setEnabled(false);
         jPanel1.add(fecha);
-        fecha.setBounds(120, 30, 150, 20);
+        fecha.setBounds(80, 30, 150, 20);
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("TICKET No:");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(50, 10, 60, 14);
+        jLabel7.setBounds(20, 10, 60, 14);
 
         jLabel9.setForeground(new java.awt.Color(0, 0, 153));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("FECHA Y HORA:");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(10, 30, 100, 20);
-
-        placa.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                placaKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                placaKeyReleased(evt);
-            }
-        });
-        jPanel1.add(placa);
-        placa.setBounds(120, 50, 110, 20);
+        jLabel9.setBounds(0, 30, 80, 20);
 
         jLabel12.setForeground(new java.awt.Color(0, 0, 153));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("PLACA:");
         jPanel1.add(jLabel12);
-        jLabel12.setBounds(50, 50, 60, 14);
+        jLabel12.setBounds(20, 50, 60, 14);
 
         noTicket.setEditable(false);
         jPanel1.add(noTicket);
-        noTicket.setBounds(120, 10, 110, 20);
+        noTicket.setBounds(80, 10, 150, 20);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
+        jLabel3.setText("Digite y luego Enter");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(160, 50, 130, 20);
+
+        placa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                placaKeyPressed(evt);
+            }
+        });
+        jPanel1.add(placa);
+        placa.setBounds(80, 50, 80, 20);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(20, 50, 290, 80);
@@ -252,7 +269,7 @@ public class frmTicket extends javax.swing.JDialog {
         btnSalir.setBounds(210, 10, 60, 50);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(20, 140, 290, 70);
+        jPanel4.setBounds(20, 130, 290, 70);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -266,18 +283,20 @@ public class frmTicket extends javax.swing.JDialog {
                     placa.requestFocusInWindow();
                     return;
                 }
+                btnAgregar.setEnabled(false);
                 Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
                 Factura fac = new Factura();
-                fac.setPlaca(placa.getText());
+                fac.setPlaca(placa.getText().replace("_",""));
                 fac.setFechaini(new Date());
                 fac.setFecha(new Date());
                 fac.setTicket(emp.getDocumentoticket());
                 noTicket.setText(emp.getDocumentoticket());
                 adm.guardar(fac);
+                btnAgregar.setEnabled(true);
                 Integer numero = new Integer(emp.getDocumentoticket());
                 emp.setDocumentoticket((numero + 1) + "");
                 adm.actualizar(emp);
-                imprimir(fac.getCodigo(),emp);
+                imprimir(fac.getCodigo(), emp);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
@@ -291,18 +310,19 @@ public class frmTicket extends javax.swing.JDialog {
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    public void imprimir(int cod,Empresa emp) {
+    public void imprimir(int cod, Empresa emp) {
 
 //                    viewer.show();
         try {
-             WorkingDirectory w = new WorkingDirectory();
-             String ubicacionDirectorio = w.get()+"\\";
-                if(ubicacionDirectorio.contains("build"))
-                    ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+            WorkingDirectory w = new WorkingDirectory();
+            String ubicacionDirectorio = w.get() + "\\";
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+            }
 
-            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio+"reportes\\ticket.jasper");
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes\\ticket.jasper");
 
-            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = "+cod+" ");
+            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
             ArrayList detalle = new ArrayList();
             detalle.add(fac);
             FacturaSource ds = new FacturaSource(detalle);
@@ -324,7 +344,7 @@ public class frmTicket extends javax.swing.JDialog {
                 }
             }
             job.setPrintService(services[selectedService]);
-            PrintRequestAttributeSet  printRequestAttributeSet = new HashPrintRequestAttributeSet();
+            PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
             MediaSizeName mediaSizeName = MediaSize.findMedia(4, 4, MediaPrintableArea.INCH);
             printRequestAttributeSet.add(mediaSizeName);
             printRequestAttributeSet.add(new Copies(1));
@@ -350,7 +370,7 @@ public class frmTicket extends javax.swing.JDialog {
 //            }
         } catch (Exception ex) {
             Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
-        }  
+        }
 
 //        } catch (JRException ex) {
 //            ex.printStackTrace();
@@ -368,38 +388,35 @@ public class frmTicket extends javax.swing.JDialog {
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ESCAPE) {
-          this.setVisible(false);
-        principal = null;
-        empresaObj = null;
-        System.gc();
+            this.setVisible(false);
+            principal = null;
+            empresaObj = null;
+            System.gc();
         }
     }//GEN-LAST:event_formKeyReleased
 
     private void placaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
-            placa.nextFocus();
+            btnAgregar.doClick();
+
         }
         placa.setText(placa.getText().toUpperCase());
         if (evt.getKeyCode() == evt.VK_ESCAPE) {
-             this.setVisible(false);
-        principal = null;
-        empresaObj = null;
-        System.gc();
+            this.setVisible(false);
+            principal = null;
+            empresaObj = null;
+            System.gc();
         }
+
     }//GEN-LAST:event_placaKeyPressed
-
-    private void placaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaKeyReleased
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_placaKeyReleased
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnSalir;
     private com.toedter.calendar.JDateChooser fecha;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -407,6 +424,6 @@ public class frmTicket extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JFormattedTextField noTicket;
-    public javax.swing.JFormattedTextField placa;
+    private javax.swing.JFormattedTextField placa;
     // End of variables declaration//GEN-END:variables
 }

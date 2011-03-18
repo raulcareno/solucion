@@ -9,6 +9,7 @@ import hibernate.HibernateUtil;
 import hibernate.Usuarios;
 import hibernate.cargar.claves;
 import java.util.List;
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 /**
@@ -43,6 +44,20 @@ public class Administrador {
 //    }
 //
 //
+         public Integer getNuevaClave(String clase, String campo){
+           s.beginTransaction();
+        try{
+            Integer pk = (Integer)s.createQuery("SELECT MAX(o."+campo+") FROM "+clase+" as o").uniqueResult();
+            if(pk == null)
+                return new Integer(1);
+
+            int a = pk.intValue()+1;
+            return new Integer(a);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
     public void guardar(Object object) {
 //         s = HibernateUtil.getSessionFactory().openSession();
         s.beginTransaction();
@@ -72,6 +87,29 @@ public class Administrador {
         } finally {
 //            s.close();
         }
+    }
+//javax.persistence.Query query =
+//  em.createQuery("select order from Order as order
+//  left join order.customer as customer
+//  where customer.name like '%' || :name || '%'");
+//
+//query.setParameter("name", name);
+//query.setFirstResult(0);
+//query.setMaxResults(10);
+ public List query(String query,int ini, int fin) {
+        try {
+//             s = HibernateUtil.getSessionFactory().openSession();
+            //HibernateUtil.conectar();
+            //s = HibernateUtil.getSessionFactory().getCurrentSession();
+           s.beginTransaction();
+        Query query3 =  s.createQuery(query);
+        query3.setFirstResult(ini);
+        query3.setMaxResults(fin);
+            return query3.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List listar(String query) {

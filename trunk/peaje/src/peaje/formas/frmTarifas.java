@@ -209,7 +209,7 @@ public class frmTarifas extends javax.swing.JDialog {
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Tarifario en minutos de cobros ..::..");
         jPanel3.add(jLabel10);
