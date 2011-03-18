@@ -2644,37 +2644,83 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera1ActionPerformed
         // TODO add your handling code here:
-        AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+        
+        Thread cargar = new Thread() {
+
+            public void run() {
+                  AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+            }
+        };
+        cargar.start();
+  
+
+
     }//GEN-LAST:event_barrera1ActionPerformed
 
     private void barrera2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera2ActionPerformed
         // TODO add your handling code here:
-         AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
+     Thread cargar = new Thread() {
+
+            public void run() {
+                  AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
+            }
+        };
+        cargar.start();
     }//GEN-LAST:event_barrera2ActionPerformed
 
     private void barrera3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera3ActionPerformed
         // TODO add your handling code here:
-         AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
+           Thread cargar = new Thread() {
+
+            public void run() {
+                  AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
+            }
+        };
+        cargar.start();
     }//GEN-LAST:event_barrera3ActionPerformed
 
     private void barrera4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera4ActionPerformed
         // TODO add your handling code here:
-         AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
+        Thread cargar = new Thread() {
+
+            public void run() {
+                  AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
+            }
+        };
+        cargar.start();
     }//GEN-LAST:event_barrera4ActionPerformed
 
     private void barrera5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera5ActionPerformed
         // TODO add your handling code here:
-         AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
+         Thread cargar = new Thread() {
+
+            public void run() {
+                  AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
+            }
+        };
+        cargar.start();
     }//GEN-LAST:event_barrera5ActionPerformed
 
     private void barrera6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera6ActionPerformed
         // TODO add your handling code here:
-         AbrirPuerta.abrir(empresaObj.getPuerto(), "6");
+         Thread cargar = new Thread() {
+
+            public void run() {
+                  AbrirPuerta.abrir(empresaObj.getPuerto(), "6");
+            }
+        };
+        cargar.start();
     }//GEN-LAST:event_barrera6ActionPerformed
 
     private void barrera7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera7ActionPerformed
         // TODO add your handling code here:
-         AbrirPuerta.abrir(empresaObj.getPuerto(), "7");
+         Thread cargar = new Thread() {
+
+            public void run() {
+                  AbrirPuerta.abrir(empresaObj.getPuerto(), "7");
+            }
+        };
+        cargar.start();
     }//GEN-LAST:event_barrera7ActionPerformed
 
     /**
