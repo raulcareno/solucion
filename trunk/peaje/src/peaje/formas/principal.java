@@ -927,6 +927,7 @@ public class principal extends javax.swing.JFrame {
 
         usuariot.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
         usuariot.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        usuariot.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         usuariot.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usuariotActionPerformed(evt);
@@ -938,8 +939,9 @@ public class principal extends javax.swing.JFrame {
             }
         });
         jPanel2.add(usuariot);
-        usuariot.setBounds(120, 20, 110, 16);
+        usuariot.setBounds(140, 20, 110, 19);
 
+        clave.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         clave.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         clave.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
         clave.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -953,15 +955,19 @@ public class principal extends javax.swing.JFrame {
             }
         });
         jPanel2.add(clave);
-        clave.setBounds(120, 40, 110, 16);
+        clave.setBounds(140, 50, 110, 19);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Usuario:");
         jPanel2.add(jLabel1);
-        jLabel1.setBounds(60, 20, 50, 14);
+        jLabel1.setBounds(50, 20, 70, 17);
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Clave:");
         jPanel2.add(jLabel2);
-        jLabel2.setBounds(70, 40, 50, 14);
+        jLabel2.setBounds(60, 50, 60, 17);
 
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
         jButton9.setText("Sallir");
@@ -971,7 +977,7 @@ public class principal extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jButton9);
-        jButton9.setBounds(200, 80, 100, 30);
+        jButton9.setBounds(200, 90, 110, 40);
 
         btnIngresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lock.gif"))); // NOI18N
         btnIngresar.setText("Ingresar");
@@ -987,7 +993,7 @@ public class principal extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnIngresar);
-        btnIngresar.setBounds(70, 80, 110, 30);
+        btnIngresar.setBounds(70, 90, 120, 40);
 
         frmIngresarSistema.getContentPane().add(jPanel2);
         jPanel2.setBounds(0, 40, 390, 150);
@@ -1100,7 +1106,7 @@ public class principal extends javax.swing.JFrame {
         jPanel10.add(placa);
         placa.setBounds(20, 70, 180, 20);
 
-        jPanel10.setBounds(410, 0, 400, 100);
+        jPanel10.setBounds(0, 70, 400, 100);
         contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jToolBar4.setBorder(javax.swing.BorderFactory.createTitledBorder("Botones de Emergencia para Abrir Barreras"));
@@ -1212,7 +1218,7 @@ public class principal extends javax.swing.JFrame {
         });
         jToolBar4.add(barrera7);
 
-        jToolBar4.setBounds(0, 0, 400, 100);
+        jToolBar4.setBounds(0, 0, 400, 60);
         contenedor.add(jToolBar4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jSplitPane1.setRightComponent(contenedor);

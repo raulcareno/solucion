@@ -13,7 +13,7 @@ public class HibernateUtil {
         claves cl = new claves();
 //        String url = "jdbc:mysql://" + XMLFileConfig.getHostConexion() + ":"
 //                + XMLFileConfig.getPuertoConexion() + "/" + XMLFileConfig.getBdConexion();
-        String url = "jdbc:mysql://" + UsuarioActivo.getIp() + ":" + UsuarioActivo.getPuerto() + "/peaje";
+        String url = "jdbc:mysql://" + UsuarioActivo.getIp() + ":" + UsuarioActivo.getPuerto() + "/peaje?zeroDateTimeBehavior=convertToNull";
         String usu = UsuarioActivo.getNombre();
         String pass = cl.desencriptar(UsuarioActivo.getContrasenia());
        //Create the SessionFactory from hibernate.cfg.xml
