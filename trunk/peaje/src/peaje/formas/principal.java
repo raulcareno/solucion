@@ -36,6 +36,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 /**
  *
@@ -65,6 +66,7 @@ public class principal extends javax.swing.JFrame {
         btnReportes.setEnabled(estado);
         btnUsuarios.setEnabled(estado);
         btnAccesos.setEnabled(estado);
+        btnReconfigurar.setEnabled(estado);
         btnAcerca.setEnabled(estado);
         btnAyuda.setEnabled(estado);
         btnSalir2.setEnabled(estado);
@@ -379,7 +381,7 @@ public class principal extends javax.swing.JFrame {
         btnEmpresa = new javax.swing.JButton();
         btnTarifas = new javax.swing.JButton();
         btnAccesos = new javax.swing.JButton();
-        btnAccesos1 = new javax.swing.JButton();
+        btnReconfigurar = new javax.swing.JButton();
         contenedor3 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar3 = new javax.swing.JToolBar();
         btnAyuda = new javax.swing.JButton();
@@ -1435,18 +1437,18 @@ public class principal extends javax.swing.JFrame {
         });
         jToolBar2.add(btnAccesos);
 
-        btnAccesos1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/configure.gif"))); // NOI18N
-        btnAccesos1.setMnemonic('S');
-        btnAccesos1.setText("Reconfigurar Sistema");
-        btnAccesos1.setFocusable(false);
-        btnAccesos1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnAccesos1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAccesos1.addActionListener(new java.awt.event.ActionListener() {
+        btnReconfigurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/configure.gif"))); // NOI18N
+        btnReconfigurar.setMnemonic('S');
+        btnReconfigurar.setText("Reconfigurar Sistema");
+        btnReconfigurar.setFocusable(false);
+        btnReconfigurar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnReconfigurar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnReconfigurar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAccesos1ActionPerformed(evt);
+                btnReconfigurarActionPerformed(evt);
             }
         });
-        jToolBar2.add(btnAccesos1);
+        jToolBar2.add(btnReconfigurar);
 
         contenedor2.getContentPane().add(jToolBar2);
 
@@ -1726,6 +1728,10 @@ public class principal extends javax.swing.JFrame {
                 }
                 if (accesos.getPantalla().equals("Accesos") && !accesos.getIngresar()) {
                     btnAccesos.setEnabled(false);
+                }
+                if (accesos.getPantalla().equals("Reconfigurar") && !accesos.getIngresar()) {
+
+                    btnReconfigurar.setEnabled(false);
                 }
 
 
@@ -2834,7 +2840,7 @@ public class principal extends javax.swing.JFrame {
         cargar.start();
     }//GEN-LAST:event_barrera7ActionPerformed
 
-    private void btnAccesos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccesos1ActionPerformed
+    private void btnReconfigurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReconfigurarActionPerformed
         // TODO add your handling code here:
         int seleccion = JOptionPane.showOptionDialog(this, "SE BORRARÁ LA CONFIGURACIÓN ACTUAL DEL SISTEMA \n ¿SEGURO QUE DESEA CONTINUAR?",
                 "JCINFORM",
@@ -2846,6 +2852,18 @@ public class principal extends javax.swing.JFrame {
         System.out.println("" + seleccion);
 
         if (0 == seleccion) {
+          WorkingDirectory w = new WorkingDirectory();
+          String ubicacionDirectorio = w.get()+"\\";
+                if(ubicacionDirectorio.contains("build"))
+                    ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+
+                File fichero = new File(ubicacionDirectorio+"KDJFASD5F4AS5D2.xml");
+                if (fichero.exists()) {
+                    fichero.delete();
+                    System.out.println("ELIMINADO: "+fichero.getAbsolutePath());
+                }
+
+
             frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
             frmRegistrar.setModal(true);
             frmRegistrar.setSize(474, 280);
@@ -2858,7 +2876,7 @@ public class principal extends javax.swing.JFrame {
             logear();
         }
 
-    }//GEN-LAST:event_btnAccesos1ActionPerformed
+    }//GEN-LAST:event_btnReconfigurarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2881,7 +2899,6 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JButton barrera6;
     private javax.swing.JButton barrera7;
     private javax.swing.JButton btnAccesos;
-    private javax.swing.JButton btnAccesos1;
     private javax.swing.JButton btnAcerca;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAyuda;
@@ -2895,6 +2912,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JButton btnIngresar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNuevaTarjeta;
+    private javax.swing.JButton btnReconfigurar;
     private javax.swing.JButton btnReportes;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSalir2;
