@@ -208,7 +208,7 @@ public class Factura implements Serializable {
 
     @Override
     public String toString() {
-        return "persisten.Factura[codigo=" + codigo + "]";
+        return placa+" TICK:"+ticket;
     }
 
 }
