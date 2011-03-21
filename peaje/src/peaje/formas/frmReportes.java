@@ -273,6 +273,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
     public void tickets(String dirreporte, String query, String titulo) {
         try {
+            System.out.println("QUERY: "+query);
             JasperReport masterReport = (JasperReport) JRLoader.loadObject(dirreporte);
             Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
 
@@ -465,13 +466,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         if (jComboBox1.getSelectedIndex() == 0) { //TICKEST POR COBRAR
             query = "Select o from Factura as o" +
-                    " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.fechafin is null and o.ticket is null ";
+                    " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.fechafin is null ";
             dirreporte = ubicacionDirectorio+"reportes\\ticketsporcobrar.jasper";
             titulo = "Tickest por Cobrar";
             tickets(dirreporte, query, titulo);
         } else if (jComboBox1.getSelectedIndex() == 1) {//TICKEST COBRADOS
             query = "Select o from Factura as o" +
-                    " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.fechafin is not null and o.ticket is null ";
+                    " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.fechafin is not null  ";
             dirreporte = ubicacionDirectorio+"reportes\\ticketscobrados.jasper";
             titulo = "Tickest Cobrados";
             tickets(dirreporte, query, titulo);

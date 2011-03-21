@@ -316,10 +316,16 @@ public class principal extends javax.swing.JFrame {
         ipBase = new javax.swing.JFormattedTextField();
         puertoBase = new javax.swing.JFormattedTextField();
         continuar = new javax.swing.JButton();
-        jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
+        cmbAbre = new javax.swing.JComboBox();
+        cmbCierra = new javax.swing.JComboBox();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
         jSplitPane1 = new javax.swing.JSplitPane();
         contenedor = new javax.swing.JDesktopPane();
         frmIngresarSistema = new javax.swing.JInternalFrame();
@@ -352,6 +358,10 @@ public class principal extends javax.swing.JFrame {
         barrera5 = new javax.swing.JButton();
         barrera6 = new javax.swing.JButton();
         barrera7 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        ocupados = new javax.swing.JLabel();
+        totales = new javax.swing.JLabel();
+        disponibles = new javax.swing.JLabel();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         miPanel = new javax.swing.JPanel();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
@@ -831,41 +841,41 @@ public class principal extends javax.swing.JFrame {
         frmRegistrar.getContentPane().setLayout(null);
 
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel24.setText("Usuario:");
+        jLabel24.setText("Usuario: ");
         frmRegistrar.getContentPane().add(jLabel24);
-        jLabel24.setBounds(12, 32, 40, 14);
+        jLabel24.setBounds(20, 30, 110, 14);
 
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel25.setText("Clave:");
+        jLabel25.setText("Clave: ");
         frmRegistrar.getContentPane().add(jLabel25);
-        jLabel25.setBounds(12, 60, 55, 14);
+        jLabel25.setBounds(20, 50, 110, 14);
 
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel26.setText("IP:");
+        jLabel26.setText("IP: ");
         frmRegistrar.getContentPane().add(jLabel26);
-        jLabel26.setBounds(12, 89, 55, 14);
+        jLabel26.setBounds(20, 70, 110, 14);
 
         jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel27.setText("PUERTO:");
+        jLabel27.setText("Puerta de Saldia: ");
         frmRegistrar.getContentPane().add(jLabel27);
-        jLabel27.setBounds(12, 118, 44, 14);
+        jLabel27.setBounds(20, 130, 110, 14);
 
         usuarioBase.setText("root");
         frmRegistrar.getContentPane().add(usuarioBase);
-        usuarioBase.setBounds(79, 27, 160, 20);
+        usuarioBase.setBounds(140, 30, 160, 20);
 
         claveBase.setText("jcinform@2020");
         frmRegistrar.getContentPane().add(claveBase);
-        claveBase.setBounds(79, 60, 160, 20);
+        claveBase.setBounds(140, 50, 160, 20);
 
         ipBase.setText("localhost");
         ipBase.setToolTipText("Si su máquina es el servidor escriba: localhost, caso contrario escriba el nombre del servidor o la dirección IP");
         frmRegistrar.getContentPane().add(ipBase);
-        ipBase.setBounds(79, 94, 160, 20);
+        ipBase.setBounds(140, 70, 160, 20);
 
         puertoBase.setText("3306");
         frmRegistrar.getContentPane().add(puertoBase);
-        puertoBase.setBounds(79, 128, 70, 20);
+        puertoBase.setBounds(140, 90, 70, 20);
 
         continuar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
         continuar.setText("Continuar");
@@ -875,23 +885,49 @@ public class principal extends javax.swing.JFrame {
             }
         });
         frmRegistrar.getContentPane().add(continuar);
-        continuar.setBounds(12, 173, 350, 23);
-
-        jLabel28.setText("(Puerto por el que se conecta)");
-        frmRegistrar.getContentPane().add(jLabel28);
-        jLabel28.setBounds(250, 130, 200, 14);
+        continuar.setBounds(140, 160, 260, 50);
 
         jLabel29.setText("(localhost o IP del servidor)");
         frmRegistrar.getContentPane().add(jLabel29);
-        jLabel29.setBounds(250, 100, 200, 14);
+        jLabel29.setBounds(310, 70, 200, 14);
 
         jLabel30.setText("(Clave del motor de BD)");
         frmRegistrar.getContentPane().add(jLabel30);
-        jLabel30.setBounds(250, 60, 200, 30);
+        jLabel30.setBounds(310, 40, 200, 30);
 
         jLabel31.setText("(Usuario de de BD)");
         frmRegistrar.getContentPane().add(jLabel31);
-        jLabel31.setBounds(250, 30, 200, 14);
+        jLabel31.setBounds(310, 30, 200, 14);
+
+        cmbAbre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7" }));
+        frmRegistrar.getContentPane().add(cmbAbre);
+        cmbAbre.setBounds(140, 110, 40, 20);
+
+        cmbCierra.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7" }));
+        frmRegistrar.getContentPane().add(cmbCierra);
+        cmbCierra.setBounds(140, 130, 40, 20);
+
+        jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel33.setText("Puerto: ");
+        frmRegistrar.getContentPane().add(jLabel33);
+        jLabel33.setBounds(20, 90, 110, 14);
+
+        jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel34.setText("Puerta de Entrada: ");
+        frmRegistrar.getContentPane().add(jLabel34);
+        jLabel34.setBounds(20, 110, 110, 14);
+
+        jLabel35.setText("(Puerto por el que se conecta)");
+        frmRegistrar.getContentPane().add(jLabel35);
+        jLabel35.setBounds(220, 90, 200, 20);
+
+        jLabel36.setText("(Puerta que se CIERRA desde este PC");
+        frmRegistrar.getContentPane().add(jLabel36);
+        jLabel36.setBounds(190, 130, 200, 20);
+
+        jLabel37.setText("(Puerta que se ABRE desde este PC");
+        frmRegistrar.getContentPane().add(jLabel37);
+        jLabel37.setBounds(190, 110, 200, 20);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de control de parqueaderos");
@@ -927,7 +963,7 @@ public class principal extends javax.swing.JFrame {
 
         usuariot.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
         usuariot.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        usuariot.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        usuariot.setFont(new java.awt.Font("Tahoma", 0, 14));
         usuariot.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usuariotActionPerformed(evt);
@@ -963,7 +999,7 @@ public class principal extends javax.swing.JFrame {
         jPanel2.add(jLabel1);
         jLabel1.setBounds(50, 20, 70, 17);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Clave:");
         jPanel2.add(jLabel2);
@@ -1001,13 +1037,13 @@ public class principal extends javax.swing.JFrame {
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Acceso al Sistema");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Ingrese el usuario proporcionado por el Administrador");
         jPanel3.add(jLabel10);
@@ -1027,8 +1063,8 @@ public class principal extends javax.swing.JFrame {
         frmIngresarSistema.getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 396, 40);
 
-        frmIngresarSistema.setBounds(120, 170, 410, 220);
-        contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.MODAL_LAYER);
+        frmIngresarSistema.setBounds(230, 230, 410, 220);
+        contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Último Ingreso"));
         jPanel10.setLayout(null);
@@ -1106,14 +1142,14 @@ public class principal extends javax.swing.JFrame {
         jPanel10.add(placa);
         placa.setBounds(20, 70, 180, 20);
 
-        jPanel10.setBounds(0, 70, 400, 100);
+        jPanel10.setBounds(0, 160, 400, 100);
         contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jToolBar4.setBorder(javax.swing.BorderFactory.createTitledBorder("Botones de Emergencia para Abrir Barreras"));
         jToolBar4.setFloatable(false);
         jToolBar4.setRollover(true);
 
-        barrera1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera1.setFont(new java.awt.Font("Tahoma", 1, 16));
         barrera1.setForeground(new java.awt.Color(255, 255, 255));
         barrera1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera1.setText("1");
@@ -1128,7 +1164,7 @@ public class principal extends javax.swing.JFrame {
         });
         jToolBar4.add(barrera1);
 
-        barrera2.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera2.setFont(new java.awt.Font("Tahoma", 1, 16));
         barrera2.setForeground(new java.awt.Color(255, 255, 255));
         barrera2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera2.setText("2");
@@ -1143,7 +1179,7 @@ public class principal extends javax.swing.JFrame {
         });
         jToolBar4.add(barrera2);
 
-        barrera3.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera3.setFont(new java.awt.Font("Tahoma", 1, 16));
         barrera3.setForeground(new java.awt.Color(255, 255, 255));
         barrera3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera3.setText("3");
@@ -1158,7 +1194,7 @@ public class principal extends javax.swing.JFrame {
         });
         jToolBar4.add(barrera3);
 
-        barrera4.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera4.setFont(new java.awt.Font("Tahoma", 1, 16));
         barrera4.setForeground(new java.awt.Color(255, 255, 255));
         barrera4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera4.setText("4");
@@ -1173,7 +1209,7 @@ public class principal extends javax.swing.JFrame {
         });
         jToolBar4.add(barrera4);
 
-        barrera5.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera5.setFont(new java.awt.Font("Tahoma", 1, 16));
         barrera5.setForeground(new java.awt.Color(255, 255, 255));
         barrera5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera5.setText("5");
@@ -1188,7 +1224,7 @@ public class principal extends javax.swing.JFrame {
         });
         jToolBar4.add(barrera5);
 
-        barrera6.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera6.setFont(new java.awt.Font("Tahoma", 1, 16));
         barrera6.setForeground(new java.awt.Color(255, 255, 255));
         barrera6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera6.setText("6");
@@ -1203,7 +1239,7 @@ public class principal extends javax.swing.JFrame {
         });
         jToolBar4.add(barrera6);
 
-        barrera7.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera7.setFont(new java.awt.Font("Tahoma", 1, 16));
         barrera7.setForeground(new java.awt.Color(255, 255, 255));
         barrera7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera7.setText("7");
@@ -1220,6 +1256,42 @@ public class principal extends javax.swing.JFrame {
 
         jToolBar4.setBounds(0, 0, 400, 60);
         contenedor.add(jToolBar4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Parqueaderos"));
+        jPanel1.setLayout(null);
+
+        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11));
+        ocupados.setForeground(new java.awt.Color(255, 0, 0));
+        ocupados.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ocupados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rojo.png"))); // NOI18N
+        ocupados.setText("OCUPADOS:");
+        ocupados.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ocupados.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jPanel1.add(ocupados);
+        ocupados.setBounds(260, 20, 100, 60);
+
+        totales.setFont(new java.awt.Font("Tahoma", 1, 11));
+        totales.setForeground(new java.awt.Color(255, 102, 0));
+        totales.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/naranja.png"))); // NOI18N
+        totales.setText("TOTAL: ");
+        totales.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        totales.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jPanel1.add(totales);
+        totales.setBounds(20, 20, 90, 60);
+
+        disponibles.setFont(new java.awt.Font("Tahoma", 1, 11));
+        disponibles.setForeground(new java.awt.Color(0, 153, 102));
+        disponibles.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        disponibles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/verde.png"))); // NOI18N
+        disponibles.setText("DISPONIBLES:  ");
+        disponibles.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        disponibles.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jPanel1.add(disponibles);
+        disponibles.setBounds(140, 20, 100, 60);
+
+        jPanel1.setBounds(0, 60, 400, 90);
+        contenedor.add(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jSplitPane1.setRightComponent(contenedor);
 
@@ -1501,6 +1573,9 @@ public class principal extends javax.swing.JFrame {
         beanEmpleado.setClave("" + cl.encriptar(claveBase.getText().trim()));
         beanEmpleado.setIp("" + ipBase.getText().trim());
         beanEmpleado.setPuerto("" + puertoBase.getText().trim());
+        beanEmpleado.setIn("" + cmbAbre.getSelectedItem().toString());
+        beanEmpleado.setOut("" + cmbCierra.getSelectedItem().toString());
+
 
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
@@ -1550,6 +1625,15 @@ public class principal extends javax.swing.JFrame {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
 }//GEN-LAST:event_jButton9ActionPerformed
+    public void noDisponibles(){
+         totales.setText("TOTAL: "+empresaObj.getParqueaderos());
+             Object con = adm.querySimple("Select count(o) from Factura as o" +
+                        " where  o.fechafin is null  ");
+             Long val2 = (Long) con;
+            disponibles.setText("DISPONIBLES: "+(empresaObj.getParqueaderos()-val2.intValue()));
+            ocupados.setText("OCUPADOS: "+val2.intValue());
+            
+    }
     public void verificarUsuario() {
         Usuarios usu = adm.ingresoSistema(usuariot.getText(), clave.getText());
         if (usu != null) {
@@ -1563,6 +1647,7 @@ public class principal extends javax.swing.JFrame {
             List<Empresa> emp = adm.listar("Select o from Empresa as o ");
 
             this.empresaObj = emp.get(0);
+            noDisponibles();
             barrera1.setEnabled(false);
             barrera2.setEnabled(false);
             barrera3.setEnabled(false);
@@ -1905,7 +1990,7 @@ public class principal extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(getContentPane(), "Tarjeta INHABILITADA ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
                     }
 
-
+                    noDisponibles();
                 }
             } catch (Exception ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -2775,6 +2860,8 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JPasswordField clave;
     private javax.swing.JPasswordField claveBase;
     private javax.swing.JFormattedTextField cliente;
+    private javax.swing.JComboBox cmbAbre;
+    private javax.swing.JComboBox cmbCierra;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JLabel cons;
@@ -2786,6 +2873,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JTextArea descripcionTarjeta;
     private javax.swing.JPanel diasHabiles;
     private javax.swing.JFormattedTextField direccion;
+    private javax.swing.JLabel disponibles;
     private javax.swing.JCheckBox domingo;
     private com.toedter.calendar.JDateChooser fechaDesde;
     private com.toedter.calendar.JDateChooser fechaHasta;
@@ -2819,16 +2907,21 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -2854,6 +2947,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JCheckBox miercoles;
     public javax.swing.JFormattedTextField noTarjeta;
     private javax.swing.JFormattedTextField nombres;
+    private javax.swing.JLabel ocupados;
     private javax.swing.JPanel panelHoras;
     private javax.swing.JFormattedTextField placa;
     private javax.swing.JFormattedTextField placa1;
@@ -2867,6 +2961,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JTable tarjetas;
     public javax.swing.JFormattedTextField tarjetatxt;
     private javax.swing.JFormattedTextField telefono;
+    private javax.swing.JLabel totales;
     private javax.swing.JFormattedTextField usuarioBase;
     private javax.swing.JFormattedTextField usuariot;
     private javax.swing.JCheckBox viernes;

@@ -15,6 +15,8 @@ public class BeanUsuario {
     private String clave;
     private String ip;
     private String puerto;
+    private String in;
+    private String out;
 
     public BeanUsuario() {
         fecha = new Date();
@@ -63,6 +65,22 @@ public class BeanUsuario {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public String getIn() {
+        return in;
+    }
+
+    public void setIn(String in) {
+        this.in = in;
+    }
+
+    public String getOut() {
+        return out;
+    }
+
+    public void setOut(String out) {
+        this.out = out;
     }
    
     
