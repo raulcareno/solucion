@@ -76,6 +76,7 @@ public class frmFactura extends javax.swing.JDialog {
         dias1.setVisible(false);
         dias2.setVisible(false);
         panelencontrados.setVisible(false);
+        panelencontrados1.setVisible(false);
     }
 
     public frmFactura(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
@@ -86,8 +87,7 @@ public class frmFactura extends javax.swing.JDialog {
             llenarCombo();
             initComponents();
             this.setSize(615, 508);
-            empresaObj = new Empresa();
-
+            empresaObj = lo.empresaObj;
             val = new validaciones();
             principal = lo;
             noTicket.requestFocusInWindow();
@@ -96,6 +96,7 @@ public class frmFactura extends javax.swing.JDialog {
             dias1.setVisible(false);
             dias2.setVisible(false);
             panelencontrados.setVisible(false);
+            panelencontrados1.setVisible(false);
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -167,6 +168,9 @@ public class frmFactura extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        panelencontrados1 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        encontrados1 = new javax.swing.JList();
         ingreso = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
         noTicket = new javax.swing.JFormattedTextField();
@@ -182,6 +186,7 @@ public class frmFactura extends javax.swing.JDialog {
         dias1 = new javax.swing.JLabel();
         dias2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btnAgregar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
@@ -201,6 +206,7 @@ public class frmFactura extends javax.swing.JDialog {
         direccion = new javax.swing.JFormattedTextField();
         cliente = new javax.swing.JFormattedTextField();
         btnNuevoCliente = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         formaBusqueda.setLocationByPlatform(true);
         formaBusqueda.getContentPane().setLayout(null);
@@ -300,9 +306,38 @@ public class frmFactura extends javax.swing.JDialog {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
 
+        panelencontrados1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
+        panelencontrados1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelencontrados1.setLayout(null);
+
+        encontrados1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Placas Ingresadas" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        encontrados1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        encontrados1.setAlignmentX(0.2F);
+        encontrados1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                encontrados1MouseClicked(evt);
+            }
+        });
+        encontrados1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                encontrados1KeyPressed(evt);
+            }
+        });
+        jScrollPane3.setViewportView(encontrados1);
+
+        panelencontrados1.add(jScrollPane3);
+        jScrollPane3.setBounds(10, 10, 170, 90);
+
+        jPanel1.add(panelencontrados1);
+        panelencontrados1.setBounds(70, 50, 190, 110);
+
         ingreso.setBackground(new java.awt.Color(255, 255, 255));
         ingreso.setDateFormatString("HH:mm:ss");
-        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14));
         jPanel1.add(ingreso);
         ingreso.setBounds(70, 50, 110, 20);
 
@@ -312,7 +347,7 @@ public class frmFactura extends javax.swing.JDialog {
         jPanel1.add(jLabel7);
         jLabel7.setBounds(10, 10, 60, 14);
 
-        noTicket.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        noTicket.setFont(new java.awt.Font("Tahoma", 1, 12));
         noTicket.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 noTicketKeyPressed(evt);
@@ -321,7 +356,7 @@ public class frmFactura extends javax.swing.JDialog {
         jPanel1.add(noTicket);
         noTicket.setBounds(70, 10, 90, 21);
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel13.setForeground(new java.awt.Color(0, 0, 204));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Tiempo: ");
@@ -334,14 +369,14 @@ public class frmFactura extends javax.swing.JDialog {
         jPanel1.add(salida);
         salida.setBounds(70, 70, 110, 20);
 
-        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel17.setForeground(new java.awt.Color(0, 102, 0));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel17.setText("Ingreso: ");
         jPanel1.add(jLabel17);
         jLabel17.setBounds(10, 50, 60, 20);
 
-        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel19.setForeground(new java.awt.Color(204, 0, 0));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel19.setText("Salida: ");
@@ -354,14 +389,16 @@ public class frmFactura extends javax.swing.JDialog {
         jPanel1.add(tiempo);
         tiempo.setBounds(70, 90, 110, 20);
 
-        placa.setEditable(false);
         placa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 placaKeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                placaKeyReleased(evt);
+            }
         });
         jPanel1.add(placa);
-        placa.setBounds(70, 30, 110, 20);
+        placa.setBounds(70, 30, 80, 20);
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Placa: ");
@@ -371,24 +408,24 @@ public class frmFactura extends javax.swing.JDialog {
         codigo.setBorder(null);
         codigo.setEditable(false);
         codigo.setEnabled(false);
-        codigo.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
+        codigo.setFont(new java.awt.Font("Tahoma", 0, 3));
         jPanel1.add(codigo);
-        codigo.setBounds(180, 30, 30, 20);
+        codigo.setBounds(10, 30, 20, 20);
 
-        dias.setFont(new java.awt.Font("Tahoma", 1, 11));
+        dias.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         dias.setForeground(new java.awt.Color(0, 0, 204));
         dias.setText("DIA(s)");
         jPanel1.add(dias);
         dias.setBounds(130, 110, 60, 20);
 
-        dias1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        dias1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         dias1.setForeground(new java.awt.Color(204, 0, 0));
         dias1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias1.setText("0");
         jPanel1.add(dias1);
         dias1.setBounds(90, 110, 30, 20);
 
-        dias2.setFont(new java.awt.Font("Tahoma", 1, 11));
+        dias2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         dias2.setForeground(new java.awt.Color(0, 0, 204));
         dias2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias2.setText("MAYOR A:");
@@ -400,8 +437,12 @@ public class frmFactura extends javax.swing.JDialog {
         jPanel1.add(jLabel3);
         jLabel3.setBounds(160, 10, 130, 20);
 
+        jLabel5.setText("En caso de pérdida Ticket");
+        jPanel1.add(jLabel5);
+        jLabel5.setBounds(150, 30, 140, 20);
+
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(10, 50, 280, 160);
+        jPanel1.setBounds(10, 50, 290, 160);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -440,11 +481,11 @@ public class frmFactura extends javax.swing.JDialog {
         total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         total.setText("0.0");
         total.setCaretColor(new java.awt.Color(0, 204, 0));
-        total.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        total.setFont(new java.awt.Font("Tahoma", 1, 36));
         jPanel4.add(total);
         total.setBounds(140, 10, 140, 50);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24));
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
         jLabel2.setLabelFor(total);
         jLabel2.setText("A PAGAR:");
@@ -482,7 +523,7 @@ public class frmFactura extends javax.swing.JDialog {
         panelencontrados.setLayout(null);
 
         encontrados.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Lista Clientes", "Lista Clientes" };
+            String[] strings = { "Lista Clientes" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -548,7 +589,7 @@ public class frmFactura extends javax.swing.JDialog {
         cliente.setEditable(false);
         cliente.setText("1");
         cliente.setEnabled(false);
-        cliente.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
+        cliente.setFont(new java.awt.Font("Tahoma", 0, 8));
         jPanel2.add(cliente);
         cliente.setBounds(190, 10, 20, 10);
 
@@ -565,6 +606,10 @@ public class frmFactura extends javax.swing.JDialog {
 
         getContentPane().add(jPanel2);
         jPanel2.setBounds(310, 50, 280, 160);
+
+        jLabel1.setText("NOTA: Para reimprimir el comprobante de pago, en caso de error en la impresora, digite nuevamente el No. de Ticket");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(20, 300, 570, 14);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -633,6 +678,15 @@ public class frmFactura extends javax.swing.JDialog {
                 }
                 imprimir(facActual.getCodigo(), emp, dia);
                 adm.actualizar(emp);
+                 Thread cargar = new Thread() {
+                        public void run() {
+                              AbrirPuerta.abrir(empresaObj.getPuerto(),principal.out);
+                              System.out.println("SALIO PUERTA: "+principal.out);
+                             
+                        }
+                    };
+                    cargar.start();
+ principal.noDisponibles();
                 ingreso.setDate(null);
                 salida.setDate(null);
                 placa.setText(null);
@@ -736,8 +790,12 @@ public class frmFactura extends javax.swing.JDialog {
 
     private void placaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaKeyPressed
         // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_ENTER) {
-            placa.nextFocus();
+        if (evt.getKeyCode() == evt.VK_DOWN) {
+            encontrados1.setSelectedIndex(0);
+            encontrados1.requestFocusInWindow();
+        }
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            panelencontrados1.setVisible(false);
         }
     }//GEN-LAST:event_placaKeyPressed
 
@@ -825,19 +883,8 @@ public class frmFactura extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_busquedaTablaKeyPressed
 
-    @SuppressWarnings("static-access")
-    private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_ENTER) {
-            try {
-                ingreso.setDate(null);
-                salida.setDate(null);
-                placa.setText(null);
-                tiempo.setDate(null);
-
-                Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + noTicket.getText() + "' ");
-                if (fac != null) {
-                    dias.setVisible(false);
+    void llenarFactura(Factura fac){
+ dias.setVisible(false);
                     dias1.setVisible(false);
                     dias2.setVisible(false);
                     if (fac.getFechafin() != null) {
@@ -915,6 +962,21 @@ public class frmFactura extends javax.swing.JDialog {
                     //tiempo.setDate(Hours.hoursBetween(horaIni, horaFin));
 
                     btnAgregar.requestFocusInWindow();
+    }
+
+    @SuppressWarnings("static-access")
+    private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            try {
+                ingreso.setDate(null);
+                salida.setDate(null);
+                placa.setText(null);
+                tiempo.setDate(null);
+
+                Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + noTicket.getText() + "' ");
+                if (fac != null) {
+                   llenarFactura(fac);
                 } else {
                     ingreso.setDate(null);
                     salida.setDate(null);
@@ -1060,6 +1122,64 @@ public class frmFactura extends javax.swing.JDialog {
             llenarCliente(est);
         }
     }//GEN-LAST:event_encontradosMouseClicked
+
+    private void encontrados1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encontrados1MouseClicked
+        // TODO add your handling code here:
+          if (evt.getClickCount() == 2) {
+            this.panelencontrados1.setVisible(false);
+          Factura fac = (Factura) this.encontrados1.getSelectedValue();
+            llenarFactura(fac);
+            noTicket.setText(fac.getTicket());
+        }
+    }//GEN-LAST:event_encontrados1MouseClicked
+
+    private void encontrados1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontrados1KeyPressed
+        // TODO add your handling code here:
+           if (evt.getKeyCode() == evt.VK_ENTER) {
+            this.panelencontrados1.setVisible(false);
+            Factura fac = (Factura) this.encontrados1.getSelectedValue();
+            llenarFactura(fac);
+            noTicket.setText(fac.getTicket());
+        }
+        if (evt.getKeyCode() == evt.VK_UP && encontrados1.getSelectedIndex() == 0) {
+            this.placa.requestFocusInWindow();
+        }
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            this.panelencontrados1.setVisible(false);
+
+        }
+    }//GEN-LAST:event_encontrados1KeyPressed
+
+    private void placaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaKeyReleased
+        // TODO add your handling code here:
+          if (!placa.getText().isEmpty()) {
+            List<Factura> encon = adm.query("Select o from Factura as o   where o.fechafin is null  and o.placa like  '%" + placa.getText().trim() + "%' order by o.fecha ", 0, 10);
+            if (encon.size() > 0) {
+                DefaultListModel dtm = new DefaultListModel();
+                dtm.removeAllElements();
+                encontrados1.setModel(dtm);
+                int j = 0;
+                for (Factura est : encon) {
+                    dtm.add(j, est);
+                    j++;
+                }
+                encontrados1.setModel(dtm);
+                this.panelencontrados1.setVisible(true);
+            } else {
+                DefaultListModel dtm = new DefaultListModel();
+                dtm.removeAllElements();
+                encontrados1.setModel(dtm);
+                this.panelencontrados1.setVisible(false);
+            }
+
+        } else {
+            DefaultListModel dtm = new DefaultListModel();
+            dtm.removeAllElements();
+            encontrados1.setModel(dtm);
+            this.panelencontrados1.setVisible(false);
+        }
+    }//GEN-LAST:event_placaKeyReleased
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnNuevoCliente;
@@ -1073,9 +1193,11 @@ public class frmFactura extends javax.swing.JDialog {
     private javax.swing.JLabel dias2;
     private javax.swing.JFormattedTextField direccion;
     private javax.swing.JList encontrados;
+    private javax.swing.JList encontrados1;
     private javax.swing.JDialog formaBusqueda;
     private javax.swing.JFormattedTextField identificacion;
     private com.toedter.calendar.JDateChooser ingreso;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -1088,6 +1210,7 @@ public class frmFactura extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -1098,10 +1221,12 @@ public class frmFactura extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JFormattedTextField noTicket;
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JPanel panelencontrados;
+    private javax.swing.JPanel panelencontrados1;
     private javax.swing.JFormattedTextField placa;
     private com.toedter.calendar.JDateChooser salida;
     private javax.swing.JFormattedTextField telefono;

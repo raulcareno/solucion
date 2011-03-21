@@ -25,6 +25,7 @@ import org.joda.time.Minutes;
 import hibernate.*;
 import hibernate.cargar.BeanUsuario;
 import hibernate.cargar.GeneraXMLPersonal;
+import hibernate.cargar.UsuarioActivo;
 import hibernate.cargar.WorkingDirectory;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -51,6 +52,8 @@ public class principal extends javax.swing.JFrame {
     public boolean nuevaTarjeta = false;
     public Usuarios usuarioActual;
     public static Empresa empresaObj;
+    public static String in;
+    public static String out;
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
 
     public void habilitarBotones(Boolean estado) {
@@ -155,7 +158,7 @@ public class principal extends javax.swing.JFrame {
                 frmRegistrar.setLocation(350, 300);
                 frmRegistrar.setFocusable(true);
                 frmRegistrar.setResizable(false);
-                frmRegistrar.setTitle("Inicio de Sesión");
+                frmRegistrar.setTitle("Configuración del Sistema");
                 frmRegistrar.setUndecorated(false);
                 frmRegistrar.show();
                 logear();
@@ -376,6 +379,7 @@ public class principal extends javax.swing.JFrame {
         btnEmpresa = new javax.swing.JButton();
         btnTarifas = new javax.swing.JButton();
         btnAccesos = new javax.swing.JButton();
+        btnAccesos1 = new javax.swing.JButton();
         contenedor3 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar3 = new javax.swing.JToolBar();
         btnAyuda = new javax.swing.JButton();
@@ -837,45 +841,46 @@ public class principal extends javax.swing.JFrame {
         buscarClientes.getContentPane().add(jPanel9);
         jPanel9.setBounds(10, 60, 510, 180);
 
-        frmRegistrar.setModal(true);
+        frmRegistrar.setTitle("Configuración del Sistema");
+        frmRegistrar.setModalityType(java.awt.Dialog.ModalityType.TOOLKIT_MODAL);
         frmRegistrar.getContentPane().setLayout(null);
 
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel24.setText("Usuario: ");
         frmRegistrar.getContentPane().add(jLabel24);
-        jLabel24.setBounds(20, 30, 110, 14);
+        jLabel24.setBounds(20, 20, 110, 14);
 
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel25.setText("Clave: ");
         frmRegistrar.getContentPane().add(jLabel25);
-        jLabel25.setBounds(20, 50, 110, 14);
+        jLabel25.setBounds(20, 40, 110, 14);
 
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel26.setText("IP: ");
         frmRegistrar.getContentPane().add(jLabel26);
-        jLabel26.setBounds(20, 70, 110, 14);
+        jLabel26.setBounds(20, 60, 110, 14);
 
         jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel27.setText("Puerta de Saldia: ");
         frmRegistrar.getContentPane().add(jLabel27);
-        jLabel27.setBounds(20, 130, 110, 14);
+        jLabel27.setBounds(20, 120, 110, 14);
 
         usuarioBase.setText("root");
         frmRegistrar.getContentPane().add(usuarioBase);
-        usuarioBase.setBounds(140, 30, 160, 20);
+        usuarioBase.setBounds(140, 20, 160, 20);
 
         claveBase.setText("jcinform@2020");
         frmRegistrar.getContentPane().add(claveBase);
-        claveBase.setBounds(140, 50, 160, 20);
+        claveBase.setBounds(140, 40, 160, 20);
 
         ipBase.setText("localhost");
         ipBase.setToolTipText("Si su máquina es el servidor escriba: localhost, caso contrario escriba el nombre del servidor o la dirección IP");
         frmRegistrar.getContentPane().add(ipBase);
-        ipBase.setBounds(140, 70, 160, 20);
+        ipBase.setBounds(140, 60, 160, 20);
 
         puertoBase.setText("3306");
         frmRegistrar.getContentPane().add(puertoBase);
-        puertoBase.setBounds(140, 90, 70, 20);
+        puertoBase.setBounds(140, 80, 70, 20);
 
         continuar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
         continuar.setText("Continuar");
@@ -885,49 +890,49 @@ public class principal extends javax.swing.JFrame {
             }
         });
         frmRegistrar.getContentPane().add(continuar);
-        continuar.setBounds(140, 160, 260, 50);
+        continuar.setBounds(140, 150, 260, 50);
 
         jLabel29.setText("(localhost o IP del servidor)");
         frmRegistrar.getContentPane().add(jLabel29);
-        jLabel29.setBounds(310, 70, 200, 14);
+        jLabel29.setBounds(310, 60, 200, 14);
 
         jLabel30.setText("(Clave del motor de BD)");
         frmRegistrar.getContentPane().add(jLabel30);
-        jLabel30.setBounds(310, 40, 200, 30);
+        jLabel30.setBounds(310, 30, 200, 30);
 
         jLabel31.setText("(Usuario de de BD)");
         frmRegistrar.getContentPane().add(jLabel31);
-        jLabel31.setBounds(310, 30, 200, 14);
+        jLabel31.setBounds(310, 20, 200, 14);
 
         cmbAbre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7" }));
         frmRegistrar.getContentPane().add(cmbAbre);
-        cmbAbre.setBounds(140, 110, 40, 20);
+        cmbAbre.setBounds(140, 100, 40, 20);
 
         cmbCierra.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7" }));
         frmRegistrar.getContentPane().add(cmbCierra);
-        cmbCierra.setBounds(140, 130, 40, 20);
+        cmbCierra.setBounds(140, 120, 40, 20);
 
         jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel33.setText("Puerto: ");
         frmRegistrar.getContentPane().add(jLabel33);
-        jLabel33.setBounds(20, 90, 110, 14);
+        jLabel33.setBounds(20, 80, 110, 14);
 
         jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel34.setText("Puerta de Entrada: ");
         frmRegistrar.getContentPane().add(jLabel34);
-        jLabel34.setBounds(20, 110, 110, 14);
+        jLabel34.setBounds(20, 100, 110, 14);
 
         jLabel35.setText("(Puerto por el que se conecta)");
         frmRegistrar.getContentPane().add(jLabel35);
-        jLabel35.setBounds(220, 90, 200, 20);
+        jLabel35.setBounds(220, 80, 200, 20);
 
         jLabel36.setText("(Puerta que se CIERRA desde este PC");
         frmRegistrar.getContentPane().add(jLabel36);
-        jLabel36.setBounds(190, 130, 200, 20);
+        jLabel36.setBounds(190, 120, 200, 20);
 
         jLabel37.setText("(Puerta que se ABRE desde este PC");
         frmRegistrar.getContentPane().add(jLabel37);
-        jLabel37.setBounds(190, 110, 200, 20);
+        jLabel37.setBounds(190, 100, 200, 20);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de control de parqueaderos");
@@ -1391,9 +1396,9 @@ public class principal extends javax.swing.JFrame {
         });
         jToolBar2.add(btnUsuarios);
 
-        btnEmpresa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/configure.gif"))); // NOI18N
+        btnEmpresa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/empresa.png"))); // NOI18N
         btnEmpresa.setMnemonic('E');
-        btnEmpresa.setText("Empresa");
+        btnEmpresa.setText("Datos Empresa");
         btnEmpresa.setFocusable(false);
         btnEmpresa.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnEmpresa.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1429,6 +1434,19 @@ public class principal extends javax.swing.JFrame {
             }
         });
         jToolBar2.add(btnAccesos);
+
+        btnAccesos1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/configure.gif"))); // NOI18N
+        btnAccesos1.setMnemonic('S');
+        btnAccesos1.setText("Reconfigurar Sistema");
+        btnAccesos1.setFocusable(false);
+        btnAccesos1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAccesos1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAccesos1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccesos1ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(btnAccesos1);
 
         contenedor2.getContentPane().add(jToolBar2);
 
@@ -1523,7 +1541,7 @@ public class principal extends javax.swing.JFrame {
                 .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53)
                 .addComponent(jLabel32)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -1625,15 +1643,16 @@ public class principal extends javax.swing.JFrame {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
 }//GEN-LAST:event_jButton9ActionPerformed
-    public void noDisponibles(){
-         totales.setText("TOTAL: "+empresaObj.getParqueaderos());
-             Object con = adm.querySimple("Select count(o) from Factura as o" +
-                        " where  o.fechafin is null  ");
-             Long val2 = (Long) con;
-            disponibles.setText("DISPONIBLES: "+(empresaObj.getParqueaderos()-val2.intValue()));
-            ocupados.setText("OCUPADOS: "+val2.intValue());
-            
+    public void noDisponibles() {
+        totales.setText("TOTAL: " + empresaObj.getParqueaderos());
+        Object con = adm.querySimple("Select count(o) from Factura as o"
+                + " where  o.fechafin is null  ");
+        Long val2 = (Long) con;
+        disponibles.setText("DISPONIBLES: " + (empresaObj.getParqueaderos() - val2.intValue()));
+        ocupados.setText("OCUPADOS: " + val2.intValue());
+
     }
+
     public void verificarUsuario() {
         Usuarios usu = adm.ingresoSistema(usuariot.getText(), clave.getText());
         if (usu != null) {
@@ -1656,28 +1675,29 @@ public class principal extends javax.swing.JFrame {
             barrera6.setEnabled(false);
             barrera7.setEnabled(false);
 
-            if(empresaObj.getActiva1()){
+            if (empresaObj.getActiva1()) {
                 barrera1.setEnabled(true);
             }
-            if(empresaObj.getActiva2()){
+            if (empresaObj.getActiva2()) {
                 barrera2.setEnabled(true);
             }
-            if(empresaObj.getActiva3()){
+            if (empresaObj.getActiva3()) {
                 barrera3.setEnabled(true);
             }
-            if(empresaObj.getActiva4()){
+            if (empresaObj.getActiva4()) {
                 barrera4.setEnabled(true);
             }
-            if(empresaObj.getActiva5()){
+            if (empresaObj.getActiva5()) {
                 barrera5.setEnabled(true);
             }
-            if(empresaObj.getActiva6()){
+            if (empresaObj.getActiva6()) {
                 barrera6.setEnabled(true);
             }
-            if(empresaObj.getActiva7()){
+            if (empresaObj.getActiva7()) {
                 barrera7.setEnabled(true);
             }
-
+            in = UsuarioActivo.getIn();
+            out = UsuarioActivo.getOut();
             habilitarBotones(true);
             List<Accesos> accesosL = adm.query("Select o from Accesos as o "
                     + "where o.perfil.codigo  = '" + usuarioActual.getPerfil().getCodigo() + "' ");
@@ -1769,10 +1789,10 @@ public class principal extends javax.swing.JFrame {
             frmClientes.setSize(441, 455);
             frmClientes.setLocation(240, 100);
             frmClientes.setModal(true);
-              btnSalir.requestFocusInWindow();
+            btnSalir.requestFocusInWindow();
             frmClientes.show();
-             btnSalir.requestFocusInWindow();
-               btnSalir.requestFocusInWindow();
+            btnSalir.requestFocusInWindow();
+            btnSalir.requestFocusInWindow();
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2714,46 +2734,46 @@ public class principal extends javax.swing.JFrame {
 
     private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
         // TODO add your handling code here:
-         if (evt.getKeyCode() == evt.VK_ESCAPE) {
-             grabar = false;
-        btnAgregar.doClick();
-        btnModificar.doClick();
-        frmClientes.dispose();
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            grabar = false;
+            btnAgregar.doClick();
+            btnModificar.doClick();
+            frmClientes.dispose();
         }
-           
+
     }//GEN-LAST:event_btnSalirKeyPressed
 
     private void frmClientesSalir(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frmClientesSalir
         // TODO add your handling code here:
-         if (evt.getKeyCode() == evt.VK_ESCAPE) {
-             grabar = false;
-        btnAgregar.doClick();
-        btnModificar.doClick();
-        frmClientes.dispose();
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            grabar = false;
+            btnAgregar.doClick();
+            btnModificar.doClick();
+            frmClientes.dispose();
         }
     }//GEN-LAST:event_frmClientesSalir
 
     private void barrera1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera1ActionPerformed
         // TODO add your handling code here:
-        
+
         Thread cargar = new Thread() {
 
             public void run() {
-                  AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
             }
         };
         cargar.start();
-  
+
 
 
     }//GEN-LAST:event_barrera1ActionPerformed
 
     private void barrera2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera2ActionPerformed
         // TODO add your handling code here:
-     Thread cargar = new Thread() {
+        Thread cargar = new Thread() {
 
             public void run() {
-                  AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
             }
         };
         cargar.start();
@@ -2761,10 +2781,10 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera3ActionPerformed
         // TODO add your handling code here:
-           Thread cargar = new Thread() {
+        Thread cargar = new Thread() {
 
             public void run() {
-                  AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
             }
         };
         cargar.start();
@@ -2775,7 +2795,7 @@ public class principal extends javax.swing.JFrame {
         Thread cargar = new Thread() {
 
             public void run() {
-                  AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
             }
         };
         cargar.start();
@@ -2783,10 +2803,10 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera5ActionPerformed
         // TODO add your handling code here:
-         Thread cargar = new Thread() {
+        Thread cargar = new Thread() {
 
             public void run() {
-                  AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
             }
         };
         cargar.start();
@@ -2794,10 +2814,10 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera6ActionPerformed
         // TODO add your handling code here:
-         Thread cargar = new Thread() {
+        Thread cargar = new Thread() {
 
             public void run() {
-                  AbrirPuerta.abrir(empresaObj.getPuerto(), "6");
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "6");
             }
         };
         cargar.start();
@@ -2805,14 +2825,40 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera7ActionPerformed
         // TODO add your handling code here:
-         Thread cargar = new Thread() {
+        Thread cargar = new Thread() {
 
             public void run() {
-                  AbrirPuerta.abrir(empresaObj.getPuerto(), "7");
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "7");
             }
         };
         cargar.start();
     }//GEN-LAST:event_barrera7ActionPerformed
+
+    private void btnAccesos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccesos1ActionPerformed
+        // TODO add your handling code here:
+        int seleccion = JOptionPane.showOptionDialog(this, "SE BORRARÁ LA CONFIGURACIÓN ACTUAL DEL SISTEMA \n ¿SEGURO QUE DESEA CONTINUAR?",
+                "JCINFORM",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, // null para icono por defecto.
+                new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
+                "NO");
+        System.out.println("" + seleccion);
+
+        if (0 == seleccion) {
+            frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
+            frmRegistrar.setModal(true);
+            frmRegistrar.setSize(474, 280);
+            frmRegistrar.setLocation(350, 300);
+            frmRegistrar.setFocusable(true);
+            frmRegistrar.setResizable(false);
+            frmRegistrar.setTitle("Configuración del Sistema");
+            frmRegistrar.setUndecorated(false);
+            frmRegistrar.show();
+            logear();
+        }
+
+    }//GEN-LAST:event_btnAccesos1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2835,6 +2881,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JButton barrera6;
     private javax.swing.JButton barrera7;
     private javax.swing.JButton btnAccesos;
+    private javax.swing.JButton btnAccesos1;
     private javax.swing.JButton btnAcerca;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAyuda;

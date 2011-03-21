@@ -52,6 +52,8 @@ public class frmTicket extends javax.swing.JDialog {
     private String claveActual;
     private validaciones val;
     private principal principal;
+    private String in ;
+    private String out ;
 
     /** Creates new form frmProfesores */
     public frmTicket(java.awt.Frame parent, boolean modal, Administrador adm1) {
@@ -60,10 +62,11 @@ public class frmTicket extends javax.swing.JDialog {
         llenarCombo();
         initComponents();
         this.setSize(615, 508);
-        empresaObj = new Empresa();
+//        empresaObj = lo.empresaObj;
 
         val = new validaciones();
-        placa.requestFocusInWindow();mascaras() ;
+        placa.requestFocusInWindow();
+        mascaras() ;
     }
 
     public frmTicket(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
@@ -73,11 +76,10 @@ public class frmTicket extends javax.swing.JDialog {
         llenarCombo();
         initComponents();
         this.setSize(615, 508);
-        empresaObj = new Empresa();
+        empresaObj = lo.empresaObj;
 
         val = new validaciones();
         principal = lo;
-       
         mascaras() ;
         placa.requestFocusInWindow();
         placa.requestFocusInWindow();
@@ -160,9 +162,11 @@ public class frmTicket extends javax.swing.JDialog {
         noTicket = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
         placa = new javax.swing.JFormattedTextField();
+        codigo = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btnAgregar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        btnReimprimir = new javax.swing.JButton();
 
         setTitle("Usuarios");
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -235,6 +239,10 @@ public class frmTicket extends javax.swing.JDialog {
         jPanel1.add(placa);
         placa.setBounds(80, 50, 80, 20);
 
+        codigo.setFont(new java.awt.Font("Tahoma", 0, 5)); // NOI18N
+        jPanel1.add(codigo);
+        codigo.setBounds(240, 10, 0, 0);
+
         getContentPane().add(jPanel1);
         jPanel1.setBounds(20, 50, 290, 80);
 
@@ -245,7 +253,7 @@ public class frmTicket extends javax.swing.JDialog {
         btnAgregar.setMnemonic('G');
         btnAgregar.setText("Guardar");
         btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregar.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnAgregar.setMargin(new java.awt.Insets(1, 1, 1, 1));
         btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -269,6 +277,20 @@ public class frmTicket extends javax.swing.JDialog {
         jPanel4.add(btnSalir);
         btnSalir.setBounds(210, 10, 60, 50);
 
+        btnReimprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fileprint.gif"))); // NOI18N
+        btnReimprimir.setMnemonic('P');
+        btnReimprimir.setText("ReImprimir");
+        btnReimprimir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnReimprimir.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnReimprimir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnReimprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReimprimirActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnReimprimir);
+        btnReimprimir.setBounds(80, 10, 70, 50);
+
         getContentPane().add(jPanel4);
         jPanel4.setBounds(20, 130, 290, 70);
 
@@ -287,17 +309,27 @@ public class frmTicket extends javax.swing.JDialog {
                 btnAgregar.setEnabled(false);
                 Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
                 Factura fac = new Factura();
-                fac.setPlaca(placa.getText().replace("_",""));
+                fac.setPlaca(placa.getText().replace("_","").toUpperCase());
                 fac.setFechaini(new Date());
                 fac.setFecha(new Date());
                 fac.setTicket(emp.getDocumentoticket());
                 noTicket.setText(emp.getDocumentoticket());
                 adm.guardar(fac);
+                codigo.setText(fac.getCodigo()+"");
                 btnAgregar.setEnabled(true);
                 Integer numero = new Integer(emp.getDocumentoticket());
                 emp.setDocumentoticket((numero + 1) + "");
                 adm.actualizar(emp);
                 imprimir(fac.getCodigo(), emp);
+                    Thread cargar = new Thread() {
+                        public void run() {
+                              AbrirPuerta.abrir(empresaObj.getPuerto(),principal.in);
+                              System.out.println("ABRIO PUERTA: "+principal.in);
+                              
+                        }
+                    };
+                    cargar.start();
+                    principal.noDisponibles();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
@@ -411,9 +443,17 @@ public class frmTicket extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_placaKeyPressed
+
+    private void btnReimprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReimprimirActionPerformed
+        // TODO add your handling code here:
+          imprimir(Integer.parseInt(codigo.getText()), empresaObj);
+    }//GEN-LAST:event_btnReimprimirActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnReimprimir;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JLabel codigo;
     private com.toedter.calendar.JDateChooser fecha;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
