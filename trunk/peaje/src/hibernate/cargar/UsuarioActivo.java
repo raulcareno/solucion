@@ -5,6 +5,8 @@ public class UsuarioActivo {
     private static String contrasenia;
     private static String ip;
     private static String puerto;
+    private static String in;
+    private static String out;
         
     public UsuarioActivo() {}
     
@@ -39,6 +41,24 @@ public class UsuarioActivo {
     public static void setPuerto(String puerto) {
         UsuarioActivo.puerto = puerto;
     }
+
+    public static String getIn() {
+        return in;
+    }
+
+    public static void setIn(String in) {
+        UsuarioActivo.in = in;
+    }
+
+    public static String getOut() {
+        return out;
+    }
+
+    public static void setOut(String out) {
+        UsuarioActivo.out = out;
+    }
+
+    
     
 
 }

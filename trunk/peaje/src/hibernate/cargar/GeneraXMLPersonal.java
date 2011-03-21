@@ -50,6 +50,8 @@ public class GeneraXMLPersonal {
     private static final String XML_ENCODING = "ISO-8859-1";
     private static final String JAVA_ENCODING = "8859_1";
     private static final String NOMBRE_ARCHIVO_XML = "KDJFASD5F4AS5D2.xml";
+    private static final String IN = "IN";
+    private static final String OUT = "OUT";
     // Variables
     private Document xmlDoc = null;
     private Element personal = null;
@@ -102,14 +104,23 @@ public class GeneraXMLPersonal {
         item.appendChild(xmlDoc.createTextNode(beanEmpleado.getClave()));
         personal.appendChild(item);
 
-        //agrega el elemento Salario dentro del elemento Empleado
+        //agrega el elemento IP  dentro del elemento 
         item = xmlDoc.createElement(IP);
         item.appendChild(xmlDoc.createTextNode(beanEmpleado.getIp()));
         personal.appendChild(item);
 
-        //agrega el elemento Edad dentro del elemento Empleado
+        //agrega el elemento Puerto dentro del elemento
         item = xmlDoc.createElement(PUERTO);
         item.appendChild(xmlDoc.createTextNode(beanEmpleado.getPuerto()));
+        personal.appendChild(item);
+
+        //agrega el elemento Edad dentro del elemento Empleado
+        item = xmlDoc.createElement(IN);
+        item.appendChild(xmlDoc.createTextNode(beanEmpleado.getIn()));
+        personal.appendChild(item);
+
+        item = xmlDoc.createElement(OUT);
+        item.appendChild(xmlDoc.createTextNode(beanEmpleado.getOut()));
         personal.appendChild(item);
     }
 
@@ -173,6 +184,8 @@ public class GeneraXMLPersonal {
             beanEmpleado.setClave("clavesss");
             beanEmpleado.setIp("localhost");
             beanEmpleado.setPuerto("puerto");
+            beanEmpleado.setIn("in");
+            beanEmpleado.setOut("out");
 
             //Generamos documento XML para los valores anteriores
             pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
@@ -207,6 +220,8 @@ public class GeneraXMLPersonal {
         beanEmpleado.setClave("clavesss");
         beanEmpleado.setIp("localhost");
         beanEmpleado.setPuerto("puerto");
+        beanEmpleado.setIn("in");
+        beanEmpleado.setOut("out");
 
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
@@ -273,8 +288,24 @@ public class GeneraXMLPersonal {
                     Element puertoElement = (Element) puertoList.item(0);
 
                     NodeList puertoAgeList = puertoElement.getChildNodes();
-//                    System.out.println("PUERTO : " + ((Node) puertoAgeList.item(0)).getNodeValue().trim());
                     user.setPuerto(((Node) puertoAgeList.item(0)).getNodeValue().trim());
+
+                    //------
+                      //----
+                    NodeList inList = firstPersonElement.getElementsByTagName("IN");
+                    Element inElement = (Element) inList.item(0);
+
+                    NodeList inAgeList = inElement.getChildNodes();
+                    user.setIn(((Node) inAgeList.item(0)).getNodeValue().trim());
+
+                    //------
+
+                        //----
+                    NodeList outList = firstPersonElement.getElementsByTagName("OUT");
+                    Element outElement = (Element) outList.item(0);
+
+                    NodeList outAgeList = outElement.getChildNodes();
+                    user.setOut(((Node) outAgeList.item(0)).getNodeValue().trim());
 
                     //------
 

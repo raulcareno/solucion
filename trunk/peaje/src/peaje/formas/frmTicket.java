@@ -77,9 +77,10 @@ public class frmTicket extends javax.swing.JDialog {
 
         val = new validaciones();
         principal = lo;
-        placa.requestFocusInWindow();
-        placa.requestFocusInWindow();
+       
         mascaras() ;
+        placa.requestFocusInWindow();
+        placa.requestFocusInWindow();
 
     }
 
