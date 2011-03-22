@@ -88,7 +88,7 @@ public class principal extends javax.swing.JFrame {
             }
         });
 
-        Image im = new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage();
+        Image im = new ImageIcon(getClass().getResource("/images_botones/icono.png")).getImage();
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //WINDOWS
             initComponents();
@@ -129,7 +129,7 @@ public class principal extends javax.swing.JFrame {
             });
             men.add(acerca);
 
-            final TrayIcon trayIcon = new TrayIcon(image, "JCINFORM \n Soluciones Informaticas \n www.jcinform.com ", men);
+            final TrayIcon trayIcon = new TrayIcon(image, "JCINFORM \n Soluciones Informaticas \n Sistema de Parking \n www.jcinform.com ", men);
             if (SystemTray.isSupported()) {
                 SystemTray tray = SystemTray.getSystemTray();
                 trayIcon.setImageAutoSize(true);
@@ -141,7 +141,7 @@ public class principal extends javax.swing.JFrame {
 //                        frmLogin.show(true);
                     }
                 });
-                trayIcon.displayMessage("Bienvenidos al Sistema", "www.jcinform.com", TrayIcon.MessageType.INFO);
+                trayIcon.displayMessage("Bienvenidos al Sistema", " Sistema de Parking \n www.jcinform.com ", TrayIcon.MessageType.INFO);
                 try {
                     tray.add(trayIcon);
                 } catch (AWTException e) {
@@ -154,7 +154,7 @@ public class principal extends javax.swing.JFrame {
             if (comprobar()) {
                 logear();
             } else {
-                frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
+                frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/icono.png")).getImage());
                 frmRegistrar.setModal(true);
                 frmRegistrar.setSize(474, 280);
                 frmRegistrar.setLocation(350, 300);
@@ -2761,11 +2761,11 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera1ActionPerformed
         // TODO add your handling code here:
-
+        barrera1.setEnabled(false);
         Thread cargar = new Thread() {
-
             public void run() {
                 AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                barrera1.setEnabled(true);
             }
         };
         cargar.start();
@@ -2776,10 +2776,12 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera2ActionPerformed
         // TODO add your handling code here:
+        barrera2.setEnabled(false);
         Thread cargar = new Thread() {
 
             public void run() {
                 AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
+                barrera2.setEnabled(true);
             }
         };
         cargar.start();
@@ -2787,10 +2789,11 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera3ActionPerformed
         // TODO add your handling code here:
+ barrera3.setEnabled(false);
         Thread cargar = new Thread() {
-
             public void run() {
                 AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
+                barrera3.setEnabled(true);
             }
         };
         cargar.start();
@@ -2798,10 +2801,12 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera4ActionPerformed
         // TODO add your handling code here:
+        barrera4.setEnabled(false);
         Thread cargar = new Thread() {
 
             public void run() {
                 AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
+                barrera4.setEnabled(true);
             }
         };
         cargar.start();
@@ -2809,10 +2814,12 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera5ActionPerformed
         // TODO add your handling code here:
+        barrera5.setEnabled(false);
         Thread cargar = new Thread() {
 
             public void run() {
                 AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
+                barrera5.setEnabled(true);
             }
         };
         cargar.start();
@@ -2820,10 +2827,12 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera6ActionPerformed
         // TODO add your handling code here:
+        barrera6.setEnabled(false);
         Thread cargar = new Thread() {
 
             public void run() {
                 AbrirPuerta.abrir(empresaObj.getPuerto(), "6");
+                barrera6.setEnabled(true);
             }
         };
         cargar.start();
@@ -2831,10 +2840,12 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera7ActionPerformed
         // TODO add your handling code here:
+        barrera7.setEnabled(false);
         Thread cargar = new Thread() {
 
             public void run() {
                 AbrirPuerta.abrir(empresaObj.getPuerto(), "7");
+                barrera7.setEnabled(true);
             }
         };
         cargar.start();
@@ -2864,7 +2875,7 @@ public class principal extends javax.swing.JFrame {
                 }
 
 
-            frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
+            frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/icono.png")).getImage());
             frmRegistrar.setModal(true);
             frmRegistrar.setSize(474, 280);
             frmRegistrar.setLocation(350, 300);

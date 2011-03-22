@@ -63,6 +63,17 @@ public class frmReportes extends javax.swing.JInternalFrame {
         this.setSize(615, 508);
         empresaObj = new Empresa();
         val = new validaciones();
+         Date desde1 = new Date();
+            Date hasta1 = new Date();
+            desde1.setHours(06);
+            desde1.setMinutes(00);
+            desde1.setSeconds(00);
+            hasta1.setHours(23);
+            hasta1.setMinutes(59);
+            hasta1.setSeconds(59);
+            desdehora2.setDate(desde1);
+            hastahora2.setDate(hasta1);
+       
     }
 //
 //    public frmReportes(java.awt.Frame parent, boolean modal,principal lo) {
@@ -137,6 +148,10 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        hastahora2 = new com.toedter.calendar.JDateChooser();
+        desdehora2 = new com.toedter.calendar.JDateChooser();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         panelReportes = new javax.swing.JPanel();
 
         setTitle("Reportes");
@@ -168,21 +183,26 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         jLabel1.setForeground(new java.awt.Color(0, 0, 153));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Hasta:");
+        jLabel1.setText("HORA:");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(190, 40, 60, 14);
+        jLabel1.setBounds(190, 60, 60, 14);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas diarias", "Listado clientes", " ", " " }));
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
         jPanel1.add(jComboBox1);
-        jComboBox1.setBounds(80, 10, 280, 20);
+        jComboBox1.setBounds(80, 10, 300, 20);
 
         desde.setDate(new Date());
         jPanel1.add(desde);
-        desde.setBounds(80, 40, 87, 20);
+        desde.setBounds(80, 40, 130, 20);
 
         hasta.setDate(new Date());
         jPanel1.add(hasta);
-        hasta.setBounds(260, 40, 87, 20);
+        hasta.setBounds(260, 40, 120, 20);
 
         jLabel2.setForeground(new java.awt.Color(0, 0, 153));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -192,9 +212,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         jLabel3.setForeground(new java.awt.Color(0, 0, 153));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("Desde:");
+        jLabel3.setText("HORA:");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(10, 40, 60, 14);
+        jLabel3.setBounds(10, 60, 60, 14);
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.gif"))); // NOI18N
         btnBuscar.setMnemonic('B');
@@ -224,6 +244,26 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jPanel1.add(btnSalir);
         btnSalir.setBounds(510, 10, 60, 50);
 
+        hastahora2.setDateFormatString("hh:mm:ss");
+        jPanel1.add(hastahora2);
+        hastahora2.setBounds(260, 60, 100, 20);
+
+        desdehora2.setDateFormatString("hh:mm:ss");
+        jPanel1.add(desdehora2);
+        desdehora2.setBounds(80, 60, 100, 20);
+
+        jLabel4.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setText("Desde:");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(10, 40, 60, 14);
+
+        jLabel5.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("Hasta:");
+        jPanel1.add(jLabel5);
+        jLabel5.setBounds(190, 40, 60, 14);
+
         panelReportes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelReportes.setLayout(new java.awt.BorderLayout());
 
@@ -235,11 +275,11 @@ public class frmReportes extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE)))
+                        .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)))
                 .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
@@ -247,9 +287,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
                 .addGap(17, 17, 17))
         );
 
@@ -455,7 +495,10 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         String desde2 = (desde.getDate().getYear() + 1900) + "-" + (desde.getDate().getMonth() + 1) + "-" + (desde.getDate().getDate());
         String hasta2 = (hasta.getDate().getYear() + 1900) + "-" + (hasta.getDate().getMonth() + 1) + "-" + (hasta.getDate().getDate());
-
+//        String desde02 = (desde.getDate().getYear() + 1900) + "-" + (desde.getDate().getMonth() + 1) + "-" + (desde.getDate().getDate());
+//        String hasta02 = (hasta.getDate().getYear() + 1900) + "-" + (hasta.getDate().getMonth() + 1) + "-" + (hasta.getDate().getDate());
+            desde2 = desde2+" "+desdehora2.getDate().getHours()+":"+desdehora2.getDate().getMinutes()+":"+desdehora2.getDate().getSeconds();
+            hasta2 = hasta2+" "+hastahora2.getDate().getHours()+":"+hastahora2.getDate().getMinutes()+":"+hastahora2.getDate().getSeconds();
         String titulo = "";
           WorkingDirectory w = new WorkingDirectory();
 //            String query = "";
@@ -502,16 +545,27 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        // TODO add your handling code here:
+        if(jComboBox1.getSelectedIndex() == 3){
+           
+        }
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnSalir;
     private com.toedter.calendar.JDateChooser desde;
+    private com.toedter.calendar.JDateChooser desdehora2;
     private com.toedter.calendar.JDateChooser hasta;
+    private com.toedter.calendar.JDateChooser hastahora2;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
