@@ -36,6 +36,7 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
+import org.joda.time.Seconds;
 import peaje.Administrador;
 import peaje.validaciones;
 
@@ -333,7 +334,7 @@ public class frmFactura extends javax.swing.JDialog {
         jScrollPane3.setBounds(10, 10, 170, 90);
 
         jPanel1.add(panelencontrados1);
-        panelencontrados1.setBounds(70, 50, 190, 110);
+        panelencontrados1.setBounds(70, 50, 200, 110);
 
         ingreso.setBackground(new java.awt.Color(255, 255, 255));
         ingreso.setDateFormatString("HH:mm:ss");
@@ -356,7 +357,7 @@ public class frmFactura extends javax.swing.JDialog {
         jPanel1.add(noTicket);
         noTicket.setBounds(70, 10, 90, 21);
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 0, 204));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Tiempo: ");
@@ -384,7 +385,7 @@ public class frmFactura extends javax.swing.JDialog {
         jLabel19.setBounds(20, 70, 50, 20);
 
         tiempo.setBackground(new java.awt.Color(255, 255, 255));
-        tiempo.setDateFormatString("HH:mm");
+        tiempo.setDateFormatString("HH:mm:ss");
         tiempo.setFont(new java.awt.Font("Tahoma", 1, 14));
         jPanel1.add(tiempo);
         tiempo.setBounds(70, 90, 110, 20);
@@ -412,20 +413,20 @@ public class frmFactura extends javax.swing.JDialog {
         jPanel1.add(codigo);
         codigo.setBounds(10, 30, 20, 20);
 
-        dias.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        dias.setFont(new java.awt.Font("Tahoma", 1, 11));
         dias.setForeground(new java.awt.Color(0, 0, 204));
         dias.setText("DIA(s)");
         jPanel1.add(dias);
         dias.setBounds(130, 110, 60, 20);
 
-        dias1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        dias1.setFont(new java.awt.Font("Tahoma", 1, 11));
         dias1.setForeground(new java.awt.Color(204, 0, 0));
         dias1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias1.setText("0");
         jPanel1.add(dias1);
         dias1.setBounds(90, 110, 30, 20);
 
-        dias2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        dias2.setFont(new java.awt.Font("Tahoma", 1, 11));
         dias2.setForeground(new java.awt.Color(0, 0, 204));
         dias2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias2.setText("MAYOR A:");
@@ -921,6 +922,8 @@ public class frmFactura extends javax.swing.JDialog {
                     LocalTime horaIni = new LocalTime(new DateTime(ingreso.getDate()));
                     LocalTime horaFin = new LocalTime(new DateTime(salida.getDate()));
 
+                    Integer segundos = Seconds.secondsBetween(horaIni, horaFin).getSeconds();
+                   Float seg = segundos /60f;
                     Integer minutos = (Minutes.minutesBetween(horaIni, horaFin).getMinutes());
                     Integer horas = minutos / 60;
                     if (minutos.intValue() < 0) {
@@ -928,6 +931,7 @@ public class frmFactura extends javax.swing.JDialog {
 //                            horas += 24;
                         horas = 0;
                         minutos = 0;
+
                         dias.setVisible(true);
                         dias1.setVisible(true);
                         dias2.setVisible(true);
@@ -943,9 +947,15 @@ public class frmFactura extends javax.swing.JDialog {
                     Float min = minutos / 60f;
                     int indice = min.toString().indexOf(".");
                     Float valorf = new Float("0" + min.toString().substring(indice));
-                    int valor = java.lang.Math.round((valorf * 60));
+                    int valorMinutos = java.lang.Math.round((valorf * 60));
                     act.setHours(horas);
-                    act.setMinutes(valor);
+                    act.setMinutes(valorMinutos);
+                    act.setSeconds((int) ((minutos - seg)*(60f)));
+                    if(horas.equals(0) && minutos.equals(0)){
+                        act.setSeconds(segundos);
+                        valorMinutos = 1;
+                    }
+//                    act.setSeconds(segundos);
                     tiempo.setDate(act);
                     placa.setText(fac.getPlaca());
 
@@ -954,8 +964,9 @@ public class frmFactura extends javax.swing.JDialog {
                         aCobrar = aCobrar.add(buscar(60));
 
                     }
-                    if (valor > 0) {
-                        aCobrar = aCobrar.add(buscar(valor));
+                    
+                    if (valorMinutos > 0) {
+                        aCobrar = aCobrar.add(buscar(valorMinutos));
                     }
                     total.setText(aCobrar + "");
                     codigo.setText(fac.getCodigo() + "");
