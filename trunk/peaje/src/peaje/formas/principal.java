@@ -2722,6 +2722,12 @@ public class principal extends javax.swing.JFrame {
 
     private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
         // TODO add your handling code here:
+         frmManual usu = new frmManual(this, adm);
+            usu.setSize(723, 557);
+            usu.setLocation(0, 0);
+            usu.setMaximizable(true);
+            contenedor.add(usu);
+            usu.show();
         
     }//GEN-LAST:event_btnAyudaActionPerformed
 

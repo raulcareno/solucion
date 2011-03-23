@@ -138,10 +138,22 @@ public class frmManual extends javax.swing.JInternalFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
+        jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
+        contenedor1 = new org.jdesktop.swingx.JXTaskPane();
+        jToolBar1 = new javax.swing.JToolBar();
+        btnClientes = new javax.swing.JButton();
+        btnTicket = new javax.swing.JButton();
+        btnReportes = new javax.swing.JButton();
+        contenedor2 = new org.jdesktop.swingx.JXTaskPane();
+        jToolBar2 = new javax.swing.JToolBar();
+        btnUsuarios = new javax.swing.JButton();
+        btnEmpresa = new javax.swing.JButton();
+        btnTarifas = new javax.swing.JButton();
+        btnAccesos = new javax.swing.JButton();
+        btnReconfigurar = new javax.swing.JButton();
+        jLabel32 = new javax.swing.JLabel();
 
         setTitle("Reportes");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.gif"))); // NOI18N
@@ -155,7 +167,7 @@ public class frmManual extends javax.swing.JInternalFrame {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Manual de Ayuda ..::..");
         jPanel3.add(jLabel8);
@@ -167,39 +179,187 @@ public class frmManual extends javax.swing.JInternalFrame {
         jPanel3.add(jLabel10);
         jLabel10.setBounds(10, 20, 250, 13);
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Manual");
-        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Crear Clientes");
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Tickets y Cobrar");
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Reportes");
-        treeNode1.add(treeNode2);
-        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        jScrollPane1.setViewportView(jTree1);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 487, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 488, Short.MAX_VALUE)
+            .addGap(0, 519, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("tab1", jPanel1);
+
+        jXTaskPaneContainer1.setAlignmentX(0.1F);
+        jXTaskPaneContainer1.setAlignmentY(0.1F);
+        jXTaskPaneContainer1.setMinimumSize(new java.awt.Dimension(154, 519));
+        jXTaskPaneContainer1.setPaintBorderInsets(false);
+        jXTaskPaneContainer1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jXTaskPaneContainer1KeyPressed(evt);
+            }
+        });
+
+        contenedor1.setTitle("Ayuda en Control");
+
+        jToolBar1.setFloatable(false);
+        jToolBar1.setOrientation(1);
+        jToolBar1.setRollover(true);
+
+        btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/usr.png"))); // NOI18N
+        btnClientes.setText("Clientes");
+        btnClientes.setToolTipText("Crear nuevos clientes y asignar tarjetas");
+        btnClientes.setFocusable(false);
+        btnClientes.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnClientes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClientesActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnClientes);
+
+        btnTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ticket.gif"))); // NOI18N
+        btnTicket.setText("Ticket y Cobros");
+        btnTicket.setToolTipText("Registrar un ingreso de vehículo");
+        btnTicket.setFocusable(false);
+        btnTicket.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnTicket.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTicketActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnTicket);
+
+        btnReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/resultados.png"))); // NOI18N
+        btnReportes.setText("Reportes");
+        btnReportes.setFocusable(false);
+        btnReportes.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnReportes.setPreferredSize(new java.awt.Dimension(101, 21));
+        btnReportes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportesActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnReportes);
+
+        contenedor1.getContentPane().add(jToolBar1);
+
+        contenedor2.setTitle("Ayuda Administracion");
+
+        jToolBar2.setFloatable(false);
+        jToolBar2.setOrientation(1);
+        jToolBar2.setRollover(true);
+
+        btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
+        btnUsuarios.setMnemonic('O');
+        btnUsuarios.setText("Operadores");
+        btnUsuarios.setFocusable(false);
+        btnUsuarios.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        btnUsuarios.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnUsuarios.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUsuariosActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(btnUsuarios);
+
+        btnEmpresa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/empresa.png"))); // NOI18N
+        btnEmpresa.setMnemonic('E');
+        btnEmpresa.setText("Datos Empresa");
+        btnEmpresa.setFocusable(false);
+        btnEmpresa.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnEmpresa.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEmpresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmpresaActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(btnEmpresa);
+
+        btnTarifas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
+        btnTarifas.setMnemonic('R');
+        btnTarifas.setText("Tarifas");
+        btnTarifas.setFocusable(false);
+        btnTarifas.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnTarifas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnTarifas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTarifasActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(btnTarifas);
+
+        btnAccesos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lock.gif"))); // NOI18N
+        btnAccesos.setMnemonic('S');
+        btnAccesos.setText("Accesos");
+        btnAccesos.setFocusable(false);
+        btnAccesos.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAccesos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAccesos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccesosActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(btnAccesos);
+
+        btnReconfigurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/configure.gif"))); // NOI18N
+        btnReconfigurar.setMnemonic('S');
+        btnReconfigurar.setText("Reconfigurar Sistema");
+        btnReconfigurar.setFocusable(false);
+        btnReconfigurar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnReconfigurar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnReconfigurar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReconfigurarActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(btnReconfigurar);
+
+        contenedor2.getContentPane().add(jToolBar2);
+
+        jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
+        jLabel32.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
+        javax.swing.GroupLayout jXTaskPaneContainer1Layout = new javax.swing.GroupLayout(jXTaskPaneContainer1);
+        jXTaskPaneContainer1.setLayout(jXTaskPaneContainer1Layout);
+        jXTaskPaneContainer1Layout.setHorizontalGroup(
+            jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(contenedor1, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                    .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                    .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jXTaskPaneContainer1Layout.setVerticalGroup(
+            jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(contenedor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(contenedor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel32)
+                .addContainerGap(336, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
@@ -207,10 +367,13 @@ public class frmManual extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTabbedPane1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
+                        .addContainerGap(236, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jXTaskPaneContainer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         pack();
@@ -222,6 +385,51 @@ public class frmManual extends javax.swing.JInternalFrame {
             this.setVisible(false);
         }
     }//GEN-LAST:event_formKeyReleased
+
+    private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
+
+        //<property name="toplink.cache.type.default" value="NONE"/>
+    }//GEN-LAST:event_btnClientesActionPerformed
+
+    private void btnTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTicketActionPerformed
+
+    }//GEN-LAST:event_btnTicketActionPerformed
+
+    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_btnReportesActionPerformed
+
+    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
+
+}//GEN-LAST:event_btnUsuariosActionPerformed
+
+    private void btnEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpresaActionPerformed
+
+    }//GEN-LAST:event_btnEmpresaActionPerformed
+
+    private void btnTarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTarifasActionPerformed
+        // TODO add your handling code here:
+
+}//GEN-LAST:event_btnTarifasActionPerformed
+
+    private void btnAccesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccesosActionPerformed
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+
+}//GEN-LAST:event_btnAccesosActionPerformed
+
+    private void btnReconfigurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReconfigurarActionPerformed
+        // TODO add your handling code here:
+         
+    }//GEN-LAST:event_btnReconfigurarActionPerformed
+
+    private void jXTaskPaneContainer1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jXTaskPaneContainer1KeyPressed
+        // TODO add your handling code here:
+        //        if(evt.getKeyCode()== evt.VK_F2){
+        //            JOptionPane.showMessageDialog(this, "PRESIONO F2");
+        //        }
+}//GEN-LAST:event_jXTaskPaneContainer1KeyPressed
 
     public void tickets(String dirreporte, String query, String titulo) {
         try {
@@ -297,12 +505,24 @@ public class frmManual extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAccesos;
+    private javax.swing.JButton btnClientes;
+    private javax.swing.JButton btnEmpresa;
+    private javax.swing.JButton btnReconfigurar;
+    private javax.swing.JButton btnReportes;
+    private javax.swing.JButton btnTarifas;
+    private javax.swing.JButton btnTicket;
+    private javax.swing.JButton btnUsuarios;
+    private org.jdesktop.swingx.JXTaskPane contenedor1;
+    private org.jdesktop.swingx.JXTaskPane contenedor2;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTree jTree1;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JToolBar jToolBar2;
+    private org.jdesktop.swingx.JXTaskPaneContainer jXTaskPaneContainer1;
     // End of variables declaration//GEN-END:variables
 }
