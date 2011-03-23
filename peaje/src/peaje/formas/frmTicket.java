@@ -29,6 +29,7 @@ import peaje.Administrador;
 import peaje.validaciones;
 import hibernate.*;
 import hibernate.cargar.WorkingDirectory;
+import java.io.File;
 import java.text.ParseException;
 import javax.swing.text.MaskFormatter;
 import sources.FacturaSource;
@@ -54,7 +55,7 @@ public class frmTicket extends javax.swing.JDialog {
     private principal principal;
     private String in ;
     private String out ;
-
+String separador = File.separatorChar+"";
     /** Creates new form frmProfesores */
     public frmTicket(java.awt.Frame parent, boolean modal, Administrador adm1) {
         super(parent, modal);
@@ -348,12 +349,12 @@ public class frmTicket extends javax.swing.JDialog {
 //                    viewer.show();
         try {
             WorkingDirectory w = new WorkingDirectory();
-            String ubicacionDirectorio = w.get() + "\\";
+            String ubicacionDirectorio = w.get() + separador;
             if (ubicacionDirectorio.contains("build")) {
-                ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
             }
 
-            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes\\ticket.jasper");
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes"+separador+"ticket.jasper");
 
             Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
             ArrayList detalle = new ArrayList();

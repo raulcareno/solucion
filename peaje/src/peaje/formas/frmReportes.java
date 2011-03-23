@@ -30,6 +30,7 @@ import peaje.Administrador;
 import peaje.validaciones;
 import hibernate.*;
 import hibernate.cargar.WorkingDirectory;
+import java.io.File;
 import sources.ClientesSource;
 import sources.FacturaSource;
 //import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
@@ -52,7 +53,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
     private String claveActual;
     private validaciones val;
     private principal principal;
-
+ String separador = File.separatorChar+"";
     /** Creates new form frmProfesores */
     public frmReportes(Container contendor,Administrador adm1) {
         this.desktopContenedor = contendor;
@@ -405,7 +406,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         String dirreporte = "", query = "", titulo = "";
         query = "Select o from Clientes as o" +
                 "  ";
-        dirreporte = "D:\\PROYECTOS\\peaje\\src\\reportes\\clientes.jasper";
+        dirreporte = "D:"+separador+"PROYECTOS"+separador+"peaje"+separador+"src"+separador+"reportes"+separador+"clientes.jasper";
         titulo = "Tickest por Cobrar";
 
         try {
@@ -492,6 +493,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String query = "";
         String dirreporte = "";
+       
 
         String desde2 = (desde.getDate().getYear() + 1900) + "-" + (desde.getDate().getMonth() + 1) + "-" + (desde.getDate().getDate());
         String hasta2 = (hasta.getDate().getYear() + 1900) + "-" + (hasta.getDate().getMonth() + 1) + "-" + (hasta.getDate().getDate());
@@ -502,41 +504,41 @@ public class frmReportes extends javax.swing.JInternalFrame {
         String titulo = "";
           WorkingDirectory w = new WorkingDirectory();
 //            String query = "";
-          String ubicacionDirectorio = w.get()+"\\";
+          String ubicacionDirectorio = w.get()+separador;
                 if(ubicacionDirectorio.contains("build"))
-                    ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+                    ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
         
 
         if (jComboBox1.getSelectedIndex() == 0) { //TICKEST POR COBRAR
             query = "Select o from Factura as o" +
                     " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.fechafin is null ";
-            dirreporte = ubicacionDirectorio+"reportes\\ticketsporcobrar.jasper";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsporcobrar.jasper";
             titulo = "Tickest por Cobrar";
             tickets(dirreporte, query, titulo);
         } else if (jComboBox1.getSelectedIndex() == 1) {//TICKEST COBRADOS
             query = "Select o from Factura as o" +
                     " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.fechafin is not null  ";
-            dirreporte = ubicacionDirectorio+"reportes\\ticketscobrados.jasper";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketscobrados.jasper";
             titulo = "Tickest Cobrados";
             tickets(dirreporte, query, titulo);
 
         } else if (jComboBox1.getSelectedIndex() == 2) {//PUESTO OCUPADOS
             query = "Select o from Factura as o" +
                     " where o.placa = 'xxxxxx..'";
-            dirreporte = ubicacionDirectorio+"reportes\\ocupados.jasper";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"ocupados.jasper";
             titulo = "Cupos Disponibles";
             tickets(dirreporte, query, titulo);
 
         } else if (jComboBox1.getSelectedIndex() == 3) {//FACTURADO
             query = "Select o from Factura as o" +
                     " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.fechafin is not null ";
-            dirreporte = ubicacionDirectorio+"reportes\\facturasdiarias.jasper";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiarias.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
 
         } else if (jComboBox1.getSelectedIndex() == 4) {//LISTADO DE CLIENTES
             query = "Select o from Clientes as o where o.codigo > 1 order by o.nombres";
-            dirreporte = ubicacionDirectorio+"reportes\\clientes.jasper";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes.jasper";
             titulo = " ";
             clientes(dirreporte, query, titulo);
 

@@ -12,15 +12,15 @@ import javax.comm.*;
 public class AbrirPuerta {
     static OutputStream outputStream;
     static SerialPort serialPort = null;
-
+static String separador = File.separatorChar+"";
     public static void abrir(String puertodeTarjet, String abrirPuerta) {
         try {
             WorkingDirectory w = new WorkingDirectory();
-            String ubicacionDirectorio = w.get() + "\\";
+            String ubicacionDirectorio = w.get() + separador;
             if (ubicacionDirectorio.contains("build")) {
-                ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
             }
-            String temp_string = ubicacionDirectorio + "lib\\javax.comm.properties";
+            String temp_string = ubicacionDirectorio + "lib"+separador+"javax.comm.properties";
             Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
             loadDriver_Method.setAccessible(true);
             loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
