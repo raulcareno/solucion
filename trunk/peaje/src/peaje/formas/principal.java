@@ -56,6 +56,7 @@ public class principal extends javax.swing.JFrame {
     public static String in;
     public static String out;
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
+     String separador = File.separatorChar+"";
 
     public void habilitarBotones(Boolean estado) {
         btnClientes.setEnabled(estado);
@@ -168,11 +169,11 @@ public class principal extends javax.swing.JFrame {
             }
             try {
                 WorkingDirectory w = new WorkingDirectory();
-                String ubicacionDirectorio = w.get() + "\\";
+                String ubicacionDirectorio = w.get() + separador;
                 if (ubicacionDirectorio.contains("build")) {
-                    ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+                    ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
                 }
-                String temp_string = ubicacionDirectorio + "lib\\javax.comm.properties";
+                String temp_string = ubicacionDirectorio + "lib"+separador+"javax.comm.properties";
                 Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
                 loadDriver_Method.setAccessible(true);
                 loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
@@ -2899,9 +2900,9 @@ public class principal extends javax.swing.JFrame {
 
         if (0 == seleccion) {
           WorkingDirectory w = new WorkingDirectory();
-          String ubicacionDirectorio = w.get()+"\\";
+          String ubicacionDirectorio = w.get()+separador;
                 if(ubicacionDirectorio.contains("build"))
-                    ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+                    ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
 
                 File fichero = new File(ubicacionDirectorio+"KDJFASD5F4AS5D2.xml");
                 if (fichero.exists()) {

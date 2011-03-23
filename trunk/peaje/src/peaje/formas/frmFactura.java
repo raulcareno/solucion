@@ -4,6 +4,7 @@ import hibernate.*;
 import hibernate.cargar.WorkingDirectory;
 import java.awt.Container;
 import java.awt.print.PrinterJob;
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,7 +63,7 @@ public class frmFactura extends javax.swing.JDialog {
     private validaciones val;
     private principal principal;
     List<Tarifas> tarifario;
-
+String separador = File.separatorChar+"";
     /** Creates new form frmProfesores */
     public frmFactura(java.awt.Frame parent, boolean modal, Administrador adm1) {
         super(parent, modal);
@@ -713,11 +714,11 @@ public class frmFactura extends javax.swing.JDialog {
 //                    viewer.show();
         try {
             WorkingDirectory w = new WorkingDirectory();
-            String ubicacionDirectorio = w.get() + "\\";
+            String ubicacionDirectorio = w.get() + separador;
             if (ubicacionDirectorio.contains("build")) {
-                ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
             }
-            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "\\reportes\\factura.jasper");
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador+"reportes"+separador+"factura.jasper");
 
             Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
             ArrayList detalle = new ArrayList();

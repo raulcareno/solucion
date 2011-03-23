@@ -41,7 +41,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     public String tarjeta;
     principal princip;
     Administrador adm = new Administrador();
-
+String separador = File.separatorChar+"";
     @SuppressWarnings("static-access")
     public LeerTarjeta(CommPortIdentifier portIde, principal pantalla) {
 
@@ -137,11 +137,11 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         public void imprimir(int cod) {
         try {
              WorkingDirectory w = new WorkingDirectory();
-             String ubicacionDirectorio = w.get()+"\\";
+             String ubicacionDirectorio = w.get()+separador;
                 if(ubicacionDirectorio.contains("build"))
-                    ubicacionDirectorio = ubicacionDirectorio.replace("\\build", "");
+                    ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
             Empresa emp = princip.empresaObj;
-            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio+"reportes\\ticket2.jasper");
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio+"reportes"+separador+"ticket2.jasper");
 
             Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = "+cod+" ");
             ArrayList detalle = new ArrayList();
