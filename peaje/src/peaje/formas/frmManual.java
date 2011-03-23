@@ -140,6 +140,7 @@ public class frmManual extends javax.swing.JInternalFrame {
         btnAccesos = new javax.swing.JButton();
         btnReconfigurar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        mipanel = new javax.swing.JPanel();
 
         setTitle("CONTENIDOS DE AYUDA");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.gif"))); // NOI18N
@@ -153,17 +154,17 @@ public class frmManual extends javax.swing.JInternalFrame {
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
-        jLabel8.setText("Manual de Ayuda ..::..");
+        jLabel8.setText("VIDEO TUTORIALES DE AYUDA ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel10.setText("Seleccione el tipo de ayuda que necesita ..::..");
+        jLabel10.setText("Recuerde tener encendidos sus parlantes ..::..");
         jPanel3.add(jLabel10);
-        jLabel10.setBounds(10, 20, 250, 13);
+        jLabel10.setBounds(10, 20, 600, 13);
 
         getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 601, 40);
@@ -171,7 +172,7 @@ public class frmManual extends javax.swing.JInternalFrame {
         jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
         jLabel32.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         getContentPane().add(jLabel32);
-        jLabel32.setBounds(340, 60, 225, 130);
+        jLabel32.setBounds(340, 60, 225, 80);
 
         btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/usr.png"))); // NOI18N
         btnClientes.setText("Clientes");
@@ -297,6 +298,20 @@ public class frmManual extends javax.swing.JInternalFrame {
         getContentPane().add(jButton1);
         jButton1.setBounds(390, 210, 120, 40);
 
+        javax.swing.GroupLayout mipanelLayout = new javax.swing.GroupLayout(mipanel);
+        mipanel.setLayout(mipanelLayout);
+        mipanelLayout.setHorizontalGroup(
+            mipanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 70, Short.MAX_VALUE)
+        );
+        mipanelLayout.setVerticalGroup(
+            mipanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 70, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(mipanel);
+        mipanel.setBounds(530, 190, 70, 70);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -316,8 +331,36 @@ public class frmManual extends javax.swing.JInternalFrame {
                     public void run() {
 
                         JFrame frame = new JFrame("MANUAL DE CLIENTES");
-                        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                         frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/CLIENTES.swf"), BorderLayout.CENTER);
+                        frame.setSize(800, 600);
+                        frame.setLocationByPlatform(true);
+                        frame.setVisible(true);
+
+                        mipanel.add(frame);
+
+                    }
+                });
+                NativeInterface.runEventPump();
+
+            }
+        };
+        cargar.start();
+
+        //<property name="toplink.cache.type.default" value="NONE"/>
+    }//GEN-LAST:event_btnClientesActionPerformed
+
+    private void btnTarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTarifasActionPerformed
+        // TODO add your handling code here:
+            Thread cargar = new Thread() {
+            public void run() {
+                NativeInterface.open();
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+
+                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
                         frame.setVisible(true);
@@ -331,31 +374,57 @@ public class frmManual extends javax.swing.JInternalFrame {
             }
         };
         cargar.start();
-
-        //<property name="toplink.cache.type.default" value="NONE"/>
-    }//GEN-LAST:event_btnClientesActionPerformed
-
-    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnReportesActionPerformed
-
-    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
-}//GEN-LAST:event_btnUsuariosActionPerformed
-
-    private void btnEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpresaActionPerformed
-    }//GEN-LAST:event_btnEmpresaActionPerformed
-
-    private void btnTarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTarifasActionPerformed
-        // TODO add your handling code here:
 }//GEN-LAST:event_btnTarifasActionPerformed
 
     private void btnAccesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccesosActionPerformed
         // TODO add your handling code here:
-        // TODO add your handling code here:
+         Thread cargar = new Thread() {
+            public void run() {
+                NativeInterface.open();
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+
+                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
+                        frame.setSize(800, 600);
+                        frame.setLocationByPlatform(true);
+                        frame.setVisible(true);
+
+//                        mipanel.add(frame);
+
+                    }
+                });
+                NativeInterface.runEventPump();
+
+            }
+        };
+        cargar.start();
 }//GEN-LAST:event_btnAccesosActionPerformed
 
     private void btnReconfigurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReconfigurarActionPerformed
-        // TODO add your handling code here:
+          Thread cargar = new Thread() {
+            public void run() {
+                NativeInterface.open();
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+
+                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
+                        frame.setSize(800, 600);
+                        frame.setLocationByPlatform(true);
+                        frame.setVisible(true);
+
+//                        mipanel.add(frame);
+
+                    }
+                });
+                NativeInterface.runEventPump();
+
+            }
+        };
+        cargar.start();
     }//GEN-LAST:event_btnReconfigurarActionPerformed
 
     private void btnTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTicketActionPerformed
@@ -367,7 +436,7 @@ public class frmManual extends javax.swing.JInternalFrame {
                     public void run() {
 
                         JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
-                        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                         frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
@@ -391,6 +460,84 @@ public class frmManual extends javax.swing.JInternalFrame {
         empresaObj = null;
         System.gc();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
+        // TODO add your handling code here:
+            Thread cargar = new Thread() {
+            public void run() {
+                NativeInterface.open();
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+
+                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
+                        frame.setSize(800, 600);
+                        frame.setLocationByPlatform(true);
+                        frame.setVisible(true);
+
+//                        mipanel.add(frame);
+
+                    }
+                });
+                NativeInterface.runEventPump();
+
+            }
+        };
+        cargar.start();
+    }//GEN-LAST:event_btnUsuariosActionPerformed
+
+    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+        // TODO add your handling code here:
+            Thread cargar = new Thread() {
+            public void run() {
+                NativeInterface.open();
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+
+                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
+                        frame.setSize(800, 600);
+                        frame.setLocationByPlatform(true);
+                        frame.setVisible(true);
+
+//                        mipanel.add(frame);
+
+                    }
+                });
+                NativeInterface.runEventPump();
+
+            }
+        };
+        cargar.start();
+    }//GEN-LAST:event_btnReportesActionPerformed
+
+    private void btnEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpresaActionPerformed
+        // TODO add your handling code here:
+            Thread cargar = new Thread() {
+            public void run() {
+                NativeInterface.open();
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+
+                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
+                        frame.setSize(800, 600);
+                        frame.setLocationByPlatform(true);
+                        frame.setVisible(true);
+
+//                        mipanel.add(frame);
+
+                    }
+                });
+                NativeInterface.runEventPump();
+
+            }
+        };
+        cargar.start();
+    }//GEN-LAST:event_btnEmpresaActionPerformed
 
     public void tickets(String dirreporte, String query, String titulo) {
         try {
@@ -477,5 +624,6 @@ public class frmManual extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel mipanel;
     // End of variables declaration//GEN-END:variables
 }
