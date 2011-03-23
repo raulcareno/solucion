@@ -367,6 +367,8 @@ public class principal extends javax.swing.JFrame {
         ocupados = new javax.swing.JLabel();
         totales = new javax.swing.JLabel();
         disponibles = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        usuarioLogeado = new javax.swing.JButton();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         miPanel = new javax.swing.JPanel();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
@@ -984,7 +986,7 @@ public class principal extends javax.swing.JFrame {
         jPanel2.add(usuariot);
         usuariot.setBounds(140, 20, 110, 19);
 
-        clave.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        clave.setFont(new java.awt.Font("Tahoma", 0, 14));
         clave.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         clave.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
         clave.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -1000,7 +1002,7 @@ public class principal extends javax.swing.JFrame {
         jPanel2.add(clave);
         clave.setBounds(140, 50, 110, 19);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Usuario:");
         jPanel2.add(jLabel1);
@@ -1044,13 +1046,13 @@ public class principal extends javax.swing.JFrame {
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Acceso al Sistema");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Ingrese el usuario proporcionado por el Administrador");
         jPanel3.add(jLabel10);
@@ -1073,7 +1075,7 @@ public class principal extends javax.swing.JFrame {
         frmIngresarSistema.setBounds(230, 230, 410, 220);
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Último Ingreso"));
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
         jPanel10.setLayout(null);
 
         cliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -1149,10 +1151,10 @@ public class principal extends javax.swing.JFrame {
         jPanel10.add(placa);
         placa.setBounds(20, 70, 180, 20);
 
-        jPanel10.setBounds(0, 160, 400, 100);
+        jPanel10.setBounds(0, 240, 400, 100);
         contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jToolBar4.setBorder(javax.swing.BorderFactory.createTitledBorder("Botones de Emergencia para Abrir Barreras"));
+        jToolBar4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Botones de Emergencia para Abrir Barreras", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
         jToolBar4.setFloatable(false);
         jToolBar4.setRollover(true);
 
@@ -1261,10 +1263,11 @@ public class principal extends javax.swing.JFrame {
         });
         jToolBar4.add(barrera7);
 
-        jToolBar4.setBounds(0, 0, 400, 60);
+        jToolBar4.setBounds(0, 70, 400, 60);
         contenedor.add(jToolBar4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Parqueaderos"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Parqueaderos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
+        jPanel1.setForeground(new java.awt.Color(0, 102, 204));
         jPanel1.setLayout(null);
 
         ocupados.setFont(new java.awt.Font("Tahoma", 1, 11));
@@ -1297,8 +1300,32 @@ public class principal extends javax.swing.JFrame {
         jPanel1.add(disponibles);
         disponibles.setBounds(140, 20, 100, 60);
 
-        jPanel1.setBounds(0, 60, 400, 90);
+        jPanel1.setBounds(0, 140, 400, 90);
         contenedor.add(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Usuario:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
+
+        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        usuarioLogeado.setText("...");
+        usuarioLogeado.setBorderPainted(false);
+        usuarioLogeado.setContentAreaFilled(false);
+        usuarioLogeado.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(usuarioLogeado, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addComponent(usuarioLogeado)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel11.setBounds(0, 10, 400, 60);
+        contenedor.add(jPanel11, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jSplitPane1.setRightComponent(contenedor);
 
@@ -1665,6 +1692,7 @@ public class principal extends javax.swing.JFrame {
             clave.setText("");
             frmIngresarSistema.setVisible(false);
             usuarioActual = usu;
+            usuarioLogeado.setText(usuarioActual.getNombres());
             List<Empresa> emp = adm.listar("Select o from Empresa as o ");
 
             this.empresaObj = emp.get(0);
@@ -3006,6 +3034,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -3046,6 +3075,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField telefono;
     private javax.swing.JLabel totales;
     private javax.swing.JFormattedTextField usuarioBase;
+    private javax.swing.JButton usuarioLogeado;
     private javax.swing.JFormattedTextField usuariot;
     private javax.swing.JCheckBox viernes;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;

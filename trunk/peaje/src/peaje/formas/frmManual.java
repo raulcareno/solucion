@@ -304,7 +304,7 @@ public class frmManual extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(390, 210, 120, 40);
+        jButton1.setBounds(340, 150, 190, 100);
 
         javax.swing.GroupLayout mipanelLayout = new javax.swing.GroupLayout(mipanel);
         mipanel.setLayout(mipanelLayout);
