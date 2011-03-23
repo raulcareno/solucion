@@ -179,6 +179,7 @@ public class frmManual extends javax.swing.JInternalFrame {
         btnClientes.setToolTipText("Crear nuevos clientes y asignar tarjetas");
         btnClientes.setFocusable(false);
         btnClientes.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnClientes.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/video.png"))); // NOI18N
         btnClientes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -193,6 +194,7 @@ public class frmManual extends javax.swing.JInternalFrame {
         btnTicket.setToolTipText("Registrar un ingreso de vehículo");
         btnTicket.setFocusable(false);
         btnTicket.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnTicket.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/video.png"))); // NOI18N
         btnTicket.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnTicket.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,6 +209,7 @@ public class frmManual extends javax.swing.JInternalFrame {
         btnReportes.setFocusable(false);
         btnReportes.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnReportes.setPreferredSize(new java.awt.Dimension(101, 21));
+        btnReportes.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/video.png"))); // NOI18N
         btnReportes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnReportes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -221,6 +224,7 @@ public class frmManual extends javax.swing.JInternalFrame {
         btnUsuarios.setText("Operadores");
         btnUsuarios.setFocusable(false);
         btnUsuarios.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnUsuarios.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/video.png"))); // NOI18N
         btnUsuarios.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -235,6 +239,7 @@ public class frmManual extends javax.swing.JInternalFrame {
         btnEmpresa.setText("Datos Empresa");
         btnEmpresa.setFocusable(false);
         btnEmpresa.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEmpresa.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/video.png"))); // NOI18N
         btnEmpresa.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnEmpresa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -249,6 +254,7 @@ public class frmManual extends javax.swing.JInternalFrame {
         btnTarifas.setText("Tarifas");
         btnTarifas.setFocusable(false);
         btnTarifas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnTarifas.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/video.png"))); // NOI18N
         btnTarifas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnTarifas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -263,6 +269,7 @@ public class frmManual extends javax.swing.JInternalFrame {
         btnAccesos.setText("Accesos");
         btnAccesos.setFocusable(false);
         btnAccesos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAccesos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/video.png"))); // NOI18N
         btnAccesos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnAccesos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -277,6 +284,7 @@ public class frmManual extends javax.swing.JInternalFrame {
         btnReconfigurar.setText("Reconfigurar Sistema");
         btnReconfigurar.setFocusable(false);
         btnReconfigurar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnReconfigurar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/video.png"))); // NOI18N
         btnReconfigurar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnReconfigurar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
