@@ -12,8 +12,10 @@ import javax.comm.*;
 public class AbrirPuerta {
     static OutputStream outputStream;
     static SerialPort serialPort = null;
+    static SerialPort serieI;
 static String separador = File.separatorChar+"";
     public static void abrir(String puertodeTarjet, String abrirPuerta) {
+        
         try {
             WorkingDirectory w = new WorkingDirectory();
             String ubicacionDirectorio = w.get() + separador;
@@ -36,7 +38,12 @@ static String separador = File.separatorChar+"";
                     if (portId.getName().equals(puertodeTarjet)) {
 //                if (portId.getName().equals("/dev/term/a")) {
                         try {
-                            serialPort = (SerialPort) portId.open("SimpleWriteApp", 2000);
+//                            if(portId.isCurrentlyOwned()){
+//                                serialPort = LeerTarjeta.serialPort;
+//                            }else{
+                                serialPort = (SerialPort) portId.open("COMPUERTA", 2001);
+//                            }
+                            
                         } catch (PortInUseException e) {
                             System.out.println("" + e);
                         }

@@ -56,7 +56,7 @@ public class principal extends javax.swing.JFrame {
     public static String in;
     public static String out;
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
-     String separador = File.separatorChar+"";
+    String separador = File.separatorChar + "";
 
     public void habilitarBotones(Boolean estado) {
         btnClientes.setEnabled(estado);
@@ -167,64 +167,7 @@ public class principal extends javax.swing.JFrame {
                 logear();
 
             }
-            try {
-                WorkingDirectory w = new WorkingDirectory();
-                String ubicacionDirectorio = w.get() + separador;
-                if (ubicacionDirectorio.contains("build")) {
-                    ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
-                }
-                String temp_string = ubicacionDirectorio + "lib"+separador+"javax.comm.properties";
-                Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
-                loadDriver_Method.setAccessible(true);
-                loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
-                CommPortIdentifier portId;
-                Enumeration portList = CommPortIdentifier.getPortIdentifiers();
-                LeerTarjeta reader;
-                ArrayList read = new ArrayList();
-                while (portList.hasMoreElements()) {
-                    portId = (CommPortIdentifier) portList.nextElement();
-                    if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                        if (portId.getName().equals(empresaObj.getPuerto())) {
-                            reader = new LeerTarjeta(portId, this);
-                            read.add(reader);
-                        }
-                        if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
-                            reader = new LeerTarjeta(portId, this);
-                            read.add(reader);
-                        }
-                        if (portId.getName().equals(empresaObj.getPuerto2()) && empresaObj.getActiva2()) {
-                            reader = new LeerTarjeta(portId, this);
-                            read.add(reader);
-                        }
-                        if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
-                            reader = new LeerTarjeta(portId, this);
-                            read.add(reader);
-                        }
-                        if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
-                            reader = new LeerTarjeta(portId, this);
-                            read.add(reader);
-                        }
-                        if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
-                            reader = new LeerTarjeta(portId, this);
-                            read.add(reader);
-                        }
-                        if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
-                            reader = new LeerTarjeta(portId, this);
-                            read.add(reader);
-                        }
-                        if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
-                            reader = new LeerTarjeta(portId, this);
-                            read.add(reader);
-                        }
-//                        else if (portId.getName().equals("COM10")) {
-//                            reader = new LeerTarjeta(portId, this);
-//                            read.add(reader);
-//                        }
-                    }
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -356,6 +299,7 @@ public class principal extends javax.swing.JFrame {
         spConsumo = new javax.swing.JSpinner();
         cons = new javax.swing.JLabel();
         placa = new javax.swing.JFormattedTextField();
+        errores = new javax.swing.JLabel();
         jToolBar4 = new javax.swing.JToolBar();
         barrera1 = new javax.swing.JButton();
         barrera2 = new javax.swing.JButton();
@@ -1073,7 +1017,7 @@ public class principal extends javax.swing.JFrame {
         frmIngresarSistema.getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 396, 40);
 
-        frmIngresarSistema.setBounds(230, 230, 410, 220);
+        frmIngresarSistema.setBounds(260, 230, 410, 220);
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
@@ -1108,9 +1052,9 @@ public class principal extends javax.swing.JFrame {
             }
         });
         jPanel10.add(tarjetatxt);
-        tarjetatxt.setBounds(20, 40, 190, 30);
+        tarjetatxt.setBounds(20, 40, 190, 20);
 
-        spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
+        spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         spIngreso.setEnabled(false);
         spIngreso.setFocusable(false);
         jPanel10.add(spIngreso);
@@ -1134,7 +1078,7 @@ public class principal extends javax.swing.JFrame {
         jPanel10.add(salid);
         salid.setBounds(230, 40, 60, 20);
 
-        spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
+        spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         spConsumo.setEnabled(false);
         spConsumo.setFocusable(false);
         jPanel10.add(spConsumo);
@@ -1152,7 +1096,13 @@ public class principal extends javax.swing.JFrame {
         jPanel10.add(placa);
         placa.setBounds(20, 70, 180, 20);
 
-        jPanel10.setBounds(0, 240, 400, 100);
+        errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        errores.setForeground(new java.awt.Color(255, 0, 0));
+        errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel10.add(errores);
+        errores.setBounds(20, 100, 360, 20);
+
+        jPanel10.setBounds(0, 240, 400, 130);
         contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jToolBar4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Botones de Emergencia para Abrir Barreras", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
@@ -1306,7 +1256,7 @@ public class principal extends javax.swing.JFrame {
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Usuario:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
 
-        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
         usuarioLogeado.setText("...");
         usuarioLogeado.setBorderPainted(false);
         usuarioLogeado.setContentAreaFilled(false);
@@ -1316,7 +1266,7 @@ public class principal extends javax.swing.JFrame {
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(usuarioLogeado, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+            .addComponent(usuarioLogeado, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1582,6 +1532,75 @@ public class principal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    void iniciarPuertos() {
+        try {
+            WorkingDirectory w = new WorkingDirectory();
+            String ubicacionDirectorio = w.get() + separador;
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
+            String temp_string = ubicacionDirectorio + "lib" + separador + "javax.comm.properties";
+            Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
+            loadDriver_Method.setAccessible(true);
+            loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
+            CommPortIdentifier portId;
+            Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+            LeerTarjeta reader;
+//            ArrayList read = new ArrayList();
+            while (portList.hasMoreElements()) {
+                portId = (CommPortIdentifier) portList.nextElement();
+                if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+//                    if (portId.getName().equals(empresaObj.getPuerto())) {
+//                        reader = new LeerTarjeta(portId, this);
+////                        read.add(reader);
+//                        System.out.println("ABIERTO: "+empresaObj.getPuerto());
+//                    }
+                    if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: "+empresaObj.getPuerto1());
+//                        read.add(reader);
+                    }
+                    if (portId.getName().equals(empresaObj.getPuerto2()) && empresaObj.getActiva2()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: "+empresaObj.getPuerto2());
+//                        read.add(reader);
+                    }
+                    if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: "+empresaObj.getPuerto3());
+//                        read.add(reader);
+                    }
+                    if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: "+empresaObj.getPuerto4());
+//                        read.add(reader);
+                    }
+                    if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: "+empresaObj.getPuerto5());
+//                        read.add(reader);
+                    }
+                    if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: "+empresaObj.getPuerto6());
+//                        read.add(reader);
+                    }
+                    if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: "+empresaObj.getPuerto7());
+//                        read.add(reader);
+                    }
+//                        else if (portId.getName().equals("COM10")) {
+//                            reader = new LeerTarjeta(portId, this);
+//                            read.add(reader);
+//                        }
+                }
+            }
+            portList = null;
+        } catch (Exception ex) {
+            Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void logear() {
         frmIngresarSistema.setVisible(true);
@@ -1766,7 +1785,7 @@ public class principal extends javax.swing.JFrame {
 
             }
 
-
+            iniciarPuertos();
         } else {
             clave.setEditable(true);
             usuariot.setEditable(true);
@@ -1856,10 +1875,17 @@ public class principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUsuariosActionPerformed
     public void buscarTarjeta(String puertoViene) {
         final principal pra = this;
+        if (puertoViene.length() > 10) {
+            puertoViene = puertoViene.substring(0, 10);
+        }
         try {
 
             try {
-                Tarjetas tarje = (Tarjetas) adm.buscarClave(tarjetatxt.getText(), Tarjetas.class);
+                String noTarjeta001 = tarjetatxt.getText();
+                if (noTarjeta001.length() > 10) {
+                    noTarjeta001 = noTarjeta001.substring(0, 10);
+                }
+                Tarjetas tarje = (Tarjetas) adm.buscarClave(noTarjeta001, Tarjetas.class);
                 try {
                     String tar = tarje.getTarjeta();
                 } catch (Exception e) {
@@ -1889,7 +1915,9 @@ public class principal extends javax.swing.JFrame {
 //                            }
 //
 //                        }
+                    errores.setText("");
                 } else {
+                    errores.setText("OK");
                     Date fechaActual = new Date();
                     Boolean habilitada = tarje.getHabilitada();
                     int diaActual = fechaActual.getDay(); //1=Domingo, 2=Lunes 3=Martes,4=Miercoles,5=Jueves,6=Viernes
@@ -1900,27 +1928,6 @@ public class principal extends javax.swing.JFrame {
                     if (habilitada) {
                         if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
                             System.out.println("EN EL RANGO DE FECHAS");
-                            abrirPuerta(puertoViene);
-                        } else {
-                            JOptionPane.showMessageDialog(getContentPane(), "Su Fecha de tarjeta expiró...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                        Date fecIn = tarje.getHorainicio();
-                        Date fecIn3 = tarje.getHorafin();
-                        LocalTime horaIni = new LocalTime(new DateTime(fecIn));
-                        LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
-                        LocalTime ahora = new LocalTime(new DateTime(new Date()));
-                        if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
-                            System.out.println("EN EL RANGO DE HORA");
-                            abrirPuerta(puertoViene);
-                        } else {
-                            JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-
-//                                System.out.println(""+desde);
-//                                System.out.println(""+hasta);
-//                                System.out.println(""+d.getDays());
 
                         if (diaActual == 0) {
                             if (tarje.getDomingo()) {
@@ -1952,8 +1959,44 @@ public class principal extends javax.swing.JFrame {
                             }
                         }
                         if (continua == false) {
-                            JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                            //JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                            errores.setText("NO PUEDE INGRESAR EN ÉSTE DÌA");
+                            return;
                         }
+
+
+                            Date fecIn = tarje.getHorainicio();
+                            Date fecIn3 = tarje.getHorafin();
+                            LocalTime horaIni = new LocalTime(new DateTime(fecIn));
+                            LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
+                            LocalTime ahora = new LocalTime(new DateTime(new Date()));
+                            if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
+                                System.out.println("EN EL RANGO DE HORA");
+                                try {
+                                        abrirPuerta(puertoViene);
+                                } catch (Exception e) {
+                                    System.out.println("PUERTO:"+puertoViene);
+                                    System.out.println("ERROR AL ABRIR PUERTA: "+e);
+                                }
+                                
+                            } else {
+                                //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                                errores.setText("NO PUEDE INGRESAR EN ESTE HORARIO ");
+                                return;
+                            }
+
+
+
+                        } else {
+                            //JOptionPane.showMessageDialog(getContentPane(), "Su Fecha de tarjeta expiró...! \n Cliente: ", "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                            errores.setText("TARJETA EXPIRADA");
+                            return;
+                        }
+
+
+//                                System.out.println(""+desde);
+//                                System.out.println(""+hasta);
+//                                System.out.println(""+d.getDays());
 
 
 //                        taskTarjeta.setCollapsed(false);
@@ -2042,7 +2085,8 @@ public class principal extends javax.swing.JFrame {
 
 
                     } else {
-                        JOptionPane.showMessageDialog(getContentPane(), "Tarjeta INHABILITADA ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                        //JOptionPane.showMessageDialog(getContentPane(), "Tarjeta INHABILITADA ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                        errores.setText("TARJETA DESHABILITADA");
                     }
 
                     noDisponibles();
@@ -2076,7 +2120,9 @@ public class principal extends javax.swing.JFrame {
         } else if (puertoqueViene.equals(empresaObj.getPuerto7())) {
             lapuertaaAbrir = empresaObj.getPuerta7();
         }
-        AbrirPuerta.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
+        //AbrirPuerta.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
+        LeerTarjeta le = new LeerTarjeta();
+                le.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
     }
 
     private void tarjetatxtPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tarjetatxtPropertyChange
@@ -2106,7 +2152,11 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            Tarjetas tarje = (Tarjetas) adm.buscarClave(tarjetatxt.getText(), Tarjetas.class);
+            String noTarjeta001 = tarjetatxt.getText();
+            if (noTarjeta001.length() > 10) {
+                noTarjeta001 = noTarjeta001.substring(0, 10);
+            }
+            Tarjetas tarje = (Tarjetas) adm.buscarClave(noTarjeta001, Tarjetas.class);
             try {
                 String cli = tarje.getTarjeta();
             } catch (Exception e) {
@@ -2751,13 +2801,13 @@ public class principal extends javax.swing.JFrame {
 
     private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
         // TODO add your handling code here:
-         frmManual usu = new frmManual(this, adm);
-            usu.setSize(617, 322);
-            usu.setLocation(0, 0);
+        frmManual usu = new frmManual(this, adm);
+        usu.setSize(617, 322);
+        usu.setLocation(0, 0);
 //            usu.setMaximizable(true);
-            contenedor.add(usu);
-            usu.show();
-        
+        contenedor.add(usu);
+        usu.show();
+
     }//GEN-LAST:event_btnAyudaActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
@@ -2799,6 +2849,7 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         barrera1.setEnabled(false);
         Thread cargar = new Thread() {
+
             public void run() {
                 AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                 barrera1.setEnabled(true);
@@ -2825,8 +2876,9 @@ public class principal extends javax.swing.JFrame {
 
     private void barrera3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera3ActionPerformed
         // TODO add your handling code here:
- barrera3.setEnabled(false);
+        barrera3.setEnabled(false);
         Thread cargar = new Thread() {
+
             public void run() {
                 AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
                 barrera3.setEnabled(true);
@@ -2899,16 +2951,17 @@ public class principal extends javax.swing.JFrame {
         System.out.println("" + seleccion);
 
         if (0 == seleccion) {
-          WorkingDirectory w = new WorkingDirectory();
-          String ubicacionDirectorio = w.get()+separador;
-                if(ubicacionDirectorio.contains("build"))
-                    ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
+            WorkingDirectory w = new WorkingDirectory();
+            String ubicacionDirectorio = w.get() + separador;
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
 
-                File fichero = new File(ubicacionDirectorio+"KDJFASD5F4AS5D2.xml");
-                if (fichero.exists()) {
-                    fichero.delete();
-                    System.out.println("ELIMINADO: "+fichero.getAbsolutePath());
-                }
+            File fichero = new File(ubicacionDirectorio + "KDJFASD5F4AS5D2.xml");
+            if (fichero.exists()) {
+                fichero.delete();
+                System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
+            }
 
 
             frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/icono.png")).getImage());
@@ -2987,6 +3040,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField direccion;
     private javax.swing.JLabel disponibles;
     private javax.swing.JCheckBox domingo;
+    private javax.swing.JLabel errores;
     private com.toedter.calendar.JDateChooser fechaDesde;
     private com.toedter.calendar.JDateChooser fechaHasta;
     private javax.swing.JDialog formaTarjetas;

@@ -9,6 +9,8 @@ import hibernate.Factura;
 import hibernate.cargar.WorkingDirectory;
 import java.awt.print.PrinterJob;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +43,78 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     public String tarjeta;
     principal princip;
     Administrador adm = new Administrador();
-String separador = File.separatorChar+"";
+    String separador = File.separatorChar + "";
+  public LeerTarjeta() {
+    }
+   public  void abrir(String puertodeTarjet, String abrirPuerta) {
+
+        try {
+            WorkingDirectory w = new WorkingDirectory();
+            String ubicacionDirectorio = w.get() + separador;
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
+            }
+            String temp_string = ubicacionDirectorio + "lib"+separador+"javax.comm.properties";
+            Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
+            loadDriver_Method.setAccessible(true);
+            loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
+            CommPortIdentifier portId;
+            Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+
+            OutputStream outputStream = null;
+//            SimpleRead reader;
+            portList = CommPortIdentifier.getPortIdentifiers();
+            while (portList.hasMoreElements()) {
+                portId = (CommPortIdentifier) portList.nextElement();
+                if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                    if (portId.getName().equals(puertodeTarjet)) {
+//                if (portId.getName().equals("/dev/term/a")) {
+                        try {
+//                            if(portId.isCurrentlyOwned()){
+//                                serialPort = LeerTarjeta.serialPort;
+//                            }else{
+                                serialPort = (SerialPort) portId.open("COMPUERTA", 2001);
+//                            }
+
+                        } catch (PortInUseException e) {
+                            System.out.println("" + e);
+                        }
+                        try {
+                            outputStream = serialPort.getOutputStream();
+                        } catch (IOException e) {
+                            System.out.println("" + e);
+                        }
+                        try {
+                            serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+                        } catch (UnsupportedCommOperationException e) {
+                            System.out.println("" + e);
+                        }
+                        try {
+                            outputStream.write(abrirPuerta.getBytes());
+                        } catch (IOException e) {
+                            System.out.println("" + e);
+                        }
+                        try {
+                            Thread.sleep(1000);  // Me aseguro que es transmitido correctamente antes de cerrar
+                        } catch (Exception e) {
+                        } //ESPERO UN POCO
+                        serialPort.close();
+                    }
+                }
+            }
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     @SuppressWarnings("static-access")
     public LeerTarjeta(CommPortIdentifier portIde, principal pantalla) {
 
@@ -49,7 +122,8 @@ String separador = File.separatorChar+"";
             this.tarjeta = "";
             princip = pantalla;
             this.puertoId = portIde;
-            serialPort = (SerialPort) puertoId.open("SimpleReadApp", 2000);
+            //SimpleReadApp
+            serialPort = (SerialPort) puertoId.open("LECTORA", 2000);
         } catch (PortInUseException e) {
         }
         try {
@@ -62,8 +136,7 @@ String separador = File.separatorChar+"";
         }
         serialPort.notifyOnDataAvailable(true);
         try {
-            serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8,
-                    SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+            serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
         } catch (UnsupportedCommOperationException e) {
         }
         readThread = new Thread(this);
@@ -72,7 +145,7 @@ String separador = File.separatorChar+"";
 
     public void run() {
         try {
-            Thread.sleep(20000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
         }
     }
@@ -102,23 +175,23 @@ String separador = File.separatorChar+"";
             case SerialPortEvent.OUTPUT_BUFFER_EMPTY:
                 break;
             case SerialPortEvent.DATA_AVAILABLE:
-                byte[] readBuffer = new byte[10];
+                byte[] readBuffer = new byte[8];
                 try {
-                    while (inputStream.available() > 0) {
-                        int numBytes = inputStream.read(readBuffer);
-                        tarjeta += new String(readBuffer).trim();
-                    }
-                } catch (IOException e) {
+//                    while (inputStream.available() > 0) {
+                    int numBytes = inputStream.read(readBuffer);
+                    tarjeta += new String(readBuffer).trim();
+//                    }
+                } catch (Exception e) {
                 }
                 break;
         }
         //System.out.println(""+tarjeta);
-        
-        if (tarjeta.length() >= 11) {
+
+        if (tarjeta.length() >= 10) {
 
             //System.out.println("" + tarjeta);
-            
-            if(puertoId.getName().equals(princip.empresaObj.getPuerto())){
+
+            if (puertoId.getName().equals(princip.empresaObj.getPuerto())) {
                 imprimir(56);
                 return;
             }
@@ -127,23 +200,24 @@ String separador = File.separatorChar+"";
             princip.buscarTarjeta(puertoId.getName());
             tarjeta = "";
             //peaje.formas.SimpleWrite.llamar("COM3");
-            
+
             return;
         }
 
 
     }
 
-        public void imprimir(int cod) {
+    public void imprimir(int cod) {
         try {
-             WorkingDirectory w = new WorkingDirectory();
-             String ubicacionDirectorio = w.get()+separador;
-                if(ubicacionDirectorio.contains("build"))
-                    ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
+            WorkingDirectory w = new WorkingDirectory();
+            String ubicacionDirectorio = w.get() + separador;
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
             Empresa emp = princip.empresaObj;
-            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio+"reportes"+separador+"ticket2.jasper");
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes" + separador + "ticket2.jasper");
 
-            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = "+cod+" ");
+            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
             ArrayList detalle = new ArrayList();
             detalle.add(fac);
             FacturaSource ds = new FacturaSource(detalle);
@@ -165,7 +239,7 @@ String separador = File.separatorChar+"";
                 }
             }
             job.setPrintService(services[selectedService]);
-            PrintRequestAttributeSet  printRequestAttributeSet = new HashPrintRequestAttributeSet();
+            PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
             MediaSizeName mediaSizeName = MediaSize.findMedia(4, 4, MediaPrintableArea.INCH);
             printRequestAttributeSet.add(mediaSizeName);
             printRequestAttributeSet.add(new Copies(1));
