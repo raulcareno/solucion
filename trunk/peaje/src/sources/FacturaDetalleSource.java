@@ -56,13 +56,7 @@ public class FacturaDetalleSource implements JRDataSource {
                 } catch (Exception e) {
                     System.out.println("ERROR EN FECHA" + e);
                 }
-            } else if ("ticket".equals(fieldName)) {
-                String codigo = nodo.getFactura().getTicket();
-                while (codigo.length() < 8) {
-                    codigo = "0" + codigo;
-                }
-                valor = codigo;
-            } else if ("cliente".equals(fieldName)) {
+            }  else if ("cliente".equals(fieldName)) {
                 valor = nodo.getFactura().getCliente().getNombres();
             } else if ("telefono".equals(fieldName)) {
                 valor = nodo.getFactura().getCliente().getTelefono();
@@ -87,7 +81,7 @@ public class FacturaDetalleSource implements JRDataSource {
             }else if ("cantidad".equals(fieldName)) {
                 valor = nodo.getCantidad();
             }else if ("producto".equals(fieldName)) {
-                valor = nodo.getProducto().getDescripcion();
+                valor = nodo.getDetalle();
             } else if ("vt".equals(fieldName)) {
                 valor = nodo.getSubtotal();
             }

@@ -950,7 +950,7 @@ public class frmFactura extends javax.swing.JDialog {
                 }
                 Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
                 Factura facActual = (Factura) adm.buscarClave(new Integer(codigo.getText()), Factura.class);
-
+                Clientes cli = new Clientes();
                 if (cliente.getText().equals("0")) {
                     Clientes nuevoCl = new Clientes();
                     Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
@@ -959,6 +959,7 @@ public class frmFactura extends javax.swing.JDialog {
                     nuevoCl.setIdentificacion(identificacion.getText());
                     nuevoCl.setTelefono(telefono.getText());
                     nuevoCl.setNombres(nombres.getText());
+                    cli = nuevoCl;
                     adm.guardar(nuevoCl);
                     identificacion.setText("9999999999999");
                     nombres.setText("CONSUMIDOR FINAL");
@@ -968,6 +969,11 @@ public class frmFactura extends javax.swing.JDialog {
                     facActual.setCliente(nuevoCl);
                 } else {
                     facActual.setCliente(new Clientes(new Integer(cliente.getText())));
+                    cli.setDireccion(direccion.getText());
+                    cli.setIdentificacion(identificacion.getText());
+                    cli.setTelefono(telefono.getText());
+                    cli.setNombres(nombres.getText());
+                    
                 }
 
 
@@ -996,7 +1002,7 @@ public class frmFactura extends javax.swing.JDialog {
                 } catch (Exception e) {
                     dia = 0;
                 }
-                imprimir(facActual.getCodigo(), emp, dia, false);
+                imprimir(facActual.getCodigo(), emp, dia, false,cli);
                 adm.actualizar(emp);
                 Thread cargar = new Thread() {
 
@@ -1028,7 +1034,7 @@ public class frmFactura extends javax.swing.JDialog {
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    public void imprimir(int cod, Empresa emp, int dias, Boolean mensual) {
+    public void imprimir(int cod, Empresa emp, int dias, Boolean mensual,Clientes cli) {
 
 //                    viewer.show();
         try {
@@ -1050,18 +1056,26 @@ public class frmFactura extends javax.swing.JDialog {
                 List<Detalle> fac = adm.query("Select o from Detalle as o where o.factura.codigo = " + cod + " ");
                 for (Iterator<Detalle> it = fac.iterator(); it.hasNext();) {
                     Detalle detalle1 = it.next();
+                    Factura fac1 = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + detalle1.getFactura().getCodigo() + " ");
+                    detalle1.setFactura(fac1);
                     detalle.add(detalle1);
                 }
                 ds = new FacturaDetalleSource(detalle);
             } else {
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
+                Clientes cli1 = (Clientes) fac.getCliente();
+                        cli1 = (Clientes) adm.querySimple("Select o from Clientes as o where o.codigo = " + cli1.getCodigo() + " ");
+                        System.out.println(""+cli1.getCodigo());
+                fac.setCliente(cli1);
                 detalle.add(fac);
+                cli = cli1;
                 ds = new FacturaSource(detalle);
 
             }
-            parametros.put("empresa", emp.getRazon());
-            parametros.put("direccion", emp.getDireccion());
-            parametros.put("telefono", emp.getTelefonos());
+            parametros.put("ruc", cli.getIdentificacion());
+            parametros.put("cliente", cli.getNombres());
+            parametros.put("direccion", cli.getDireccion());
+            parametros.put("telefono", cli.getTelefono());
             parametros.put("dias", (dias > 0 ? dias + " Dias" : ""));
 
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
@@ -1236,7 +1250,7 @@ public class frmFactura extends javax.swing.JDialog {
 
             if (0 == seleccion) {
                 Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                imprimir(fac.getCodigo(), emp, 0, false);
+                imprimir(fac.getCodigo(), emp, 0,false, new Clientes());
             }
             noTicket.setText("");
             noTicket.requestFocusInWindow();
@@ -1661,7 +1675,7 @@ public class frmFactura extends javax.swing.JDialog {
         }
         Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
         Factura facActual = new Factura();
-
+        Clientes cli = new Clientes();
         if (cliente1.getText().equals("0")) {
             Clientes nuevoCl = new Clientes();
             Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
@@ -1670,6 +1684,7 @@ public class frmFactura extends javax.swing.JDialog {
             nuevoCl.setIdentificacion(identificacion1.getText());
             nuevoCl.setTelefono(telefono1.getText());
             nuevoCl.setNombres(nombres1.getText());
+            cli = nuevoCl;
             adm.guardar(nuevoCl);
             identificacion1.setText("9999999999999");
             nombres1.setText("CONSUMIDOR FINAL");
@@ -1679,6 +1694,10 @@ public class frmFactura extends javax.swing.JDialog {
             facActual.setCliente(nuevoCl);
         } else {
             facActual.setCliente(new Clientes(new Integer(cliente1.getText())));
+            cli.setDireccion(direccion1.getText());
+            cli.setIdentificacion(identificacion1.getText());
+            cli.setTelefono(telefono1.getText());
+            cli.setNombres(nombres1.getText());
         }
 
         facActual.setSubtotal(new BigDecimal(txtSubtotal.getText()));
@@ -1701,15 +1720,17 @@ public class frmFactura extends javax.swing.JDialog {
         Detalle det = new Detalle();
         int filas = productos.getRowCount();
         for (int i = 0; i < filas; i++) {
+              det = new Detalle();
             det.setProducto(new Productos((Integer) productos.getValueAt(i, 0)));
             det.setCantidad((Integer) productos.getValueAt(i, 1));
+            det.setDetalle((String) productos.getValueAt(i,2));
             det.setSubtotal((BigDecimal) productos.getValueAt(i, 3));
             det.setIva((det.getSubtotal().multiply(new BigDecimal(empresaObj.getIva() / 100))));
             det.setTotal(det.getSubtotal().add(det.getIva()));
             det.setFactura(facActual);
             adm.guardar(det);
         }
-        imprimir(facActual.getCodigo(), emp, dia, true);
+        imprimir(facActual.getCodigo(), emp, dia, true,cli);
         //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito...!");
         DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
         dtm.getDataVector().removeAllElements();
