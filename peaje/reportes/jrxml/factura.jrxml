@@ -9,9 +9,11 @@
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="dias" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="cliente" class="java.lang.String"/>
+	<parameter name="direccion" class="java.lang.String"/>
+	<parameter name="telefono" class="java.lang.String"/>
+	<parameter name="ruc" class="java.lang.String"/>
 	<field name="numero" class="java.lang.String"/>
-	<field name="cliente" class="java.lang.String"/>
-	<field name="ruc" class="java.lang.String"/>
 	<field name="ticket" class="java.lang.String"/>
 	<field name="ingreso" class="java.util.Date"/>
 	<field name="salida" class="java.util.Date"/>
@@ -24,7 +26,6 @@
 	<field name="vt" class="java.math.BigDecimal"/>
 	<field name="subtotal" class="java.math.BigDecimal"/>
 	<field name="iva" class="java.math.BigDecimal"/>
-	<field name="telefono" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -109,7 +110,7 @@
 				<textElement>
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{cliente}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{cliente}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-3" x="-2" y="138" width="45" height="18"/>
@@ -135,7 +136,7 @@
 				<textElement>
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{ruc}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{ruc}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-4" x="-2" y="156" width="45" height="18"/>
@@ -337,7 +338,7 @@
 				<textElement>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{telefono}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{telefono}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

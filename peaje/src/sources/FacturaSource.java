@@ -80,6 +80,10 @@ public class FacturaSource implements JRDataSource {
                 valor = nodo.getTotal();
             } else if ("placa".equals(fieldName)) {
                 valor = nodo.getPlaca();
+            }else if ("subtotal".equals(fieldName)) {
+                valor = nodo.getSubtotal();
+            } else if ("iva".equals(fieldName)) {
+                valor = nodo.getIva();
             }
         } catch (Exception e) {
             Logger.getLogger(FacturaSource.class.getName()).log(Level.SEVERE, null, e);
