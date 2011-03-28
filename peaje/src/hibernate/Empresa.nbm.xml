@@ -34,7 +34,6 @@
     <property column="puerto12" name="puerto12" type="java.lang.String"/>
     <property column="puerto13" name="puerto13" type="java.lang.String"/>
     <property column="puerto14" name="puerto14" type="java.lang.String"/>
-
     <property column="activa1" name="activa1" type="java.lang.Boolean"/>
     <property column="activa2" name="activa2" type="java.lang.Boolean"/>
     <property column="activa3" name="activa3" type="java.lang.Boolean"/>
@@ -49,7 +48,6 @@
     <property column="activa12" name="activa12" type="java.lang.Boolean"/>
     <property column="activa13" name="activa13" type="java.lang.Boolean"/>
     <property column="activa14" name="activa14" type="java.lang.Boolean"/>
-
     <property column="puerta1" name="puerta1" type="java.lang.String"/>
     <property column="puerta2" name="puerta2" type="java.lang.String"/>
     <property column="puerta3" name="puerta3" type="java.lang.String"/>
@@ -64,6 +62,5 @@
     <property column="puerta12" name="puerta12" type="java.lang.String"/>
     <property column="puerta13" name="puerta13" type="java.lang.String"/>
     <property column="puerta14" name="puerta14" type="java.lang.String"/>
-
   </class>
 </hibernate-mapping>

@@ -8,9 +8,9 @@
     </id>
     <property column="detalle" name="detalle" type="java.lang.String"/>
     <property column="cantidad" name="cantidad" type="java.lang.Integer"/>
-    <property column="subtotal" name="subtotal" type="java.lang.Long"/>
-    <property column="iva" name="iva" type="java.lang.Long"/>
-    <property column="total" name="total" type="java.lang.Long"/>
+    <property column="subtotal" name="subtotal" type="java.math.BigDecimal"/>
+    <property column="iva" name="iva" type="java.math.BigDecimal"/>
+    <property column="total" name="total" type="java.math.BigDecimal"/>
     <many-to-one column="producto" name="producto"/>
     <many-to-one column="factura" name="factura"/>
   </class>

@@ -4,6 +4,7 @@
  */
 package sources;
 
+import hibernate.Detalle;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -11,20 +12,19 @@ import java.util.logging.Logger;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
-import hibernate.Factura;
 
 /**
  *
  * @author GEOVANNY
  */
-public class FacturaSource implements JRDataSource {
+public class FacturaDetalleSource implements JRDataSource {
 
     private Iterator itrAlumnos;
     private Iterator itrNodos;
     private Object valorAtual;
     private boolean irParaProximoAlumno = true;
 
-    public FacturaSource(List lista) {
+    public FacturaDetalleSource(List lista) {
         super();
         this.itrNodos = lista.iterator();
     }
@@ -43,43 +43,53 @@ public class FacturaSource implements JRDataSource {
      */
     public Object getFieldValue(JRField campo) throws JRException {
         Object valor = null;
-        Factura nodo = (Factura) valorAtual;
+        Detalle nodo = (Detalle) valorAtual;
         String fieldName = campo.getName();
         try {
 
 
             if ("numero".equals(fieldName)) {
-                valor = nodo.getNumero();
+                valor = nodo.getFactura().getNumero();
             } else if ("fecha".equals(fieldName)) {
                 try {
-                    valor = nodo.getFecha();
+                    valor = nodo.getFactura().getFecha();
                 } catch (Exception e) {
                     System.out.println("ERROR EN FECHA" + e);
                 }
             } else if ("ticket".equals(fieldName)) {
-                String codigo = nodo.getTicket();
+                String codigo = nodo.getFactura().getTicket();
                 while (codigo.length() < 8) {
                     codigo = "0" + codigo;
                 }
                 valor = codigo;
             } else if ("cliente".equals(fieldName)) {
-                valor = nodo.getCliente().getNombres();
-            } else if ("ruc".equals(fieldName)) {
-                valor = nodo.getCliente().getIdentificacion();
-            } else if ("ingreso".equals(fieldName)) {
-                valor = nodo.getFechaini();
+                valor = nodo.getFactura().getCliente().getNombres();
             } else if ("telefono".equals(fieldName)) {
-                valor = nodo.getCliente().getTelefono();
+                valor = nodo.getFactura().getCliente().getTelefono();
             } else if ("direccion".equals(fieldName)) {
-                valor = nodo.getCliente().getDireccion();
+                valor = nodo.getFactura().getCliente().getDireccion();
+            } else if ("ruc".equals(fieldName)) {
+                valor = nodo.getFactura().getCliente().getIdentificacion();
+            } else if ("ingreso".equals(fieldName)) {
+                valor = nodo.getFactura().getFechaini();
             } else if ("salida".equals(fieldName)) {
-                valor = nodo.getFechafin();
+                valor = nodo.getFactura().getFechafin();
             } else if ("tiempo".equals(fieldName)) {
-                valor = nodo.getTiempo();
+                valor = nodo.getFactura().getTiempo();
             } else if ("total".equals(fieldName)) {
-                valor = nodo.getTotal();
+                valor = nodo.getFactura().getTotal();
+            } else if ("subtotal".equals(fieldName)) {
+                valor = nodo.getFactura().getSubtotal();
+            } else if ("iva".equals(fieldName)) {
+                valor = nodo.getFactura().getIva();
             } else if ("placa".equals(fieldName)) {
-                valor = nodo.getPlaca();
+                valor = nodo.getFactura().getPlaca();
+            }else if ("cantidad".equals(fieldName)) {
+                valor = nodo.getCantidad();
+            }else if ("producto".equals(fieldName)) {
+                valor = nodo.getProducto().getDescripcion();
+            } else if ("vt".equals(fieldName)) {
+                valor = nodo.getSubtotal();
             }
         } catch (Exception e) {
             Logger.getLogger(FacturaSource.class.getName()).log(Level.SEVERE, null, e);
