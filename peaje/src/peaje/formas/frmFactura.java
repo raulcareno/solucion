@@ -171,6 +171,8 @@ String separador = File.separatorChar+"";
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel5 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         panelencontrados1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -191,11 +193,6 @@ String separador = File.separatorChar+"";
         dias2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        btnAgregar = new javax.swing.JButton();
-        btnSalir = new javax.swing.JButton();
-        total = new javax.swing.JFormattedTextField();
-        jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -210,7 +207,36 @@ String separador = File.separatorChar+"";
         direccion = new javax.swing.JFormattedTextField();
         cliente = new javax.swing.JFormattedTextField();
         btnNuevoCliente = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        btnAgregar = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
+        total = new javax.swing.JFormattedTextField();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        panelencontrados2 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        encontrados2 = new javax.swing.JList();
+        telefono1 = new javax.swing.JFormattedTextField();
+        identificacion1 = new javax.swing.JFormattedTextField();
+        nombres1 = new javax.swing.JFormattedTextField();
+        direccion1 = new javax.swing.JFormattedTextField();
+        cliente1 = new javax.swing.JFormattedTextField();
+        btnNuevoCliente1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel8 = new javax.swing.JPanel();
+        btnAgregar1 = new javax.swing.JButton();
+        btnSalir1 = new javax.swing.JButton();
+        total1 = new javax.swing.JFormattedTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
+        jButton1 = new javax.swing.JButton();
 
         formaBusqueda.setLocationByPlatform(true);
         formaBusqueda.getContentPane().setLayout(null);
@@ -292,9 +318,9 @@ String separador = File.separatorChar+"";
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
-        jLabel8.setText("Registro de Tickets ..::..");
+        jLabel8.setText("Facturación de Tickets ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
@@ -305,7 +331,9 @@ String separador = File.separatorChar+"";
         jLabel10.setBounds(10, 20, 290, 13);
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 600, 40);
+        jPanel3.setBounds(0, 0, 660, 40);
+
+        jPanel5.setLayout(null);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
@@ -341,7 +369,7 @@ String separador = File.separatorChar+"";
 
         ingreso.setBackground(new java.awt.Color(255, 255, 255));
         ingreso.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
-        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14));
         jPanel1.add(ingreso);
         ingreso.setBounds(70, 50, 210, 20);
 
@@ -360,7 +388,7 @@ String separador = File.separatorChar+"";
         jPanel1.add(noTicket);
         noTicket.setBounds(70, 10, 90, 21);
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel13.setForeground(new java.awt.Color(0, 0, 204));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Tiempo: ");
@@ -369,18 +397,18 @@ String separador = File.separatorChar+"";
 
         salida.setBackground(new java.awt.Color(255, 255, 255));
         salida.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
-        salida.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        salida.setFont(new java.awt.Font("Tahoma", 1, 14));
         jPanel1.add(salida);
         salida.setBounds(70, 70, 210, 20);
 
-        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel17.setForeground(new java.awt.Color(0, 102, 0));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel17.setText("Ingreso: ");
         jPanel1.add(jLabel17);
         jLabel17.setBounds(10, 50, 60, 20);
 
-        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel19.setForeground(new java.awt.Color(204, 0, 0));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel19.setText("Salida: ");
@@ -389,7 +417,7 @@ String separador = File.separatorChar+"";
 
         tiempo.setBackground(new java.awt.Color(255, 255, 255));
         tiempo.setDateFormatString("HH:mm");
-        tiempo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        tiempo.setFont(new java.awt.Font("Tahoma", 1, 14));
         jPanel1.add(tiempo);
         tiempo.setBounds(70, 90, 110, 20);
 
@@ -445,59 +473,8 @@ String separador = File.separatorChar+"";
         jPanel1.add(jLabel5);
         jLabel5.setBounds(150, 30, 140, 20);
 
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(10, 50, 290, 160);
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPanel4.setLayout(null);
-
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
-        btnAgregar.setMnemonic('G');
-        btnAgregar.setText("Guardar");
-        btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregar.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(440, 10, 60, 50);
-
-        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
-        btnSalir.setMnemonic('S');
-        btnSalir.setText("Salir");
-        btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalir.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSalir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalirActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnSalir);
-        btnSalir.setBounds(500, 10, 60, 50);
-
-        total.setBorder(null);
-        total.setEditable(false);
-        total.setForeground(new java.awt.Color(51, 153, 0));
-        total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        total.setText("0.0");
-        total.setCaretColor(new java.awt.Color(0, 204, 0));
-        total.setFont(new java.awt.Font("Tahoma", 1, 36));
-        jPanel4.add(total);
-        total.setBounds(140, 10, 140, 50);
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24));
-        jLabel2.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel2.setLabelFor(total);
-        jLabel2.setText("A PAGAR:");
-        jPanel4.add(jLabel2);
-        jLabel2.setBounds(10, 20, 130, 30);
-
-        getContentPane().add(jPanel4);
-        jPanel4.setBounds(10, 220, 580, 70);
+        jPanel5.add(jPanel1);
+        jPanel1.setBounds(20, 20, 290, 160);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel2.setLayout(null);
@@ -608,12 +585,261 @@ String separador = File.separatorChar+"";
         jPanel2.add(btnNuevoCliente);
         btnNuevoCliente.setBounds(40, 100, 230, 30);
 
-        getContentPane().add(jPanel2);
-        jPanel2.setBounds(310, 50, 280, 160);
+        jPanel5.add(jPanel2);
+        jPanel2.setBounds(320, 20, 280, 160);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel4.setLayout(null);
+
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
+        btnAgregar.setMnemonic('G');
+        btnAgregar.setText("Guardar");
+        btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregar.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnAgregar);
+        btnAgregar.setBounds(440, 10, 60, 50);
+
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
+        btnSalir.setMnemonic('S');
+        btnSalir.setText("Salir");
+        btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalir.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnSalir);
+        btnSalir.setBounds(500, 10, 60, 50);
+
+        total.setBorder(null);
+        total.setEditable(false);
+        total.setForeground(new java.awt.Color(51, 153, 0));
+        total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        total.setText("0.0");
+        total.setCaretColor(new java.awt.Color(0, 204, 0));
+        total.setFont(new java.awt.Font("Tahoma", 1, 36));
+        jPanel4.add(total);
+        total.setBounds(140, 10, 140, 50);
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24));
+        jLabel2.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel2.setLabelFor(total);
+        jLabel2.setText("A PAGAR:");
+        jPanel4.add(jLabel2);
+        jLabel2.setBounds(10, 20, 130, 30);
+
+        jPanel5.add(jPanel4);
+        jPanel4.setBounds(20, 190, 580, 70);
 
         jLabel1.setText("NOTA: Para reimprimir el comprobante de pago, en caso de error en la impresora, digite nuevamente el No. de Ticket");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(20, 300, 570, 14);
+        jPanel5.add(jLabel1);
+        jLabel1.setBounds(20, 270, 570, 14);
+
+        jTabbedPane1.addTab("TICKETS", jPanel5);
+
+        jPanel6.setLayout(null);
+
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel7.setLayout(null);
+
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel11.setText("Teléfono: ");
+        jPanel7.add(jLabel11);
+        jLabel11.setBounds(0, 70, 80, 20);
+
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel20.setText("CI/RUC: ");
+        jPanel7.add(jLabel20);
+        jLabel20.setBounds(0, 10, 80, 20);
+
+        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel21.setText("Dirección: ");
+        jPanel7.add(jLabel21);
+        jLabel21.setBounds(0, 50, 80, 20);
+
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel22.setText("Cliente: ");
+        jPanel7.add(jLabel22);
+        jLabel22.setBounds(0, 30, 80, 20);
+
+        panelencontrados2.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
+        panelencontrados2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelencontrados2.setLayout(null);
+
+        encontrados2.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Lista Clientes" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        encontrados2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        encontrados2.setAlignmentX(0.2F);
+        encontrados2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                encontrados2MouseClicked(evt);
+            }
+        });
+        encontrados2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                encontrados2KeyPressed(evt);
+            }
+        });
+        jScrollPane5.setViewportView(encontrados2);
+
+        panelencontrados2.add(jScrollPane5);
+        jScrollPane5.setBounds(10, 10, 170, 90);
+
+        jPanel7.add(panelencontrados2);
+        panelencontrados2.setBounds(80, 50, 190, 110);
+
+        telefono1.setEditable(false);
+        telefono1.setText("9999999999999");
+        jPanel7.add(telefono1);
+        telefono1.setBounds(80, 70, 140, 20);
+
+        identificacion1.setEditable(false);
+        identificacion1.setText("9999999999999");
+        identificacion1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                identificacion1ActionPerformed(evt);
+            }
+        });
+        identificacion1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                identificacion1FocusLost(evt);
+            }
+        });
+        jPanel7.add(identificacion1);
+        identificacion1.setBounds(80, 10, 110, 20);
+
+        nombres1.setEditable(false);
+        nombres1.setText("CONSUMIDOR FINAL");
+        nombres1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombres1KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nombres1KeyReleased(evt);
+            }
+        });
+        jPanel7.add(nombres1);
+        nombres1.setBounds(80, 30, 190, 20);
+
+        direccion1.setEditable(false);
+        direccion1.setText("S/D");
+        jPanel7.add(direccion1);
+        direccion1.setBounds(80, 50, 190, 20);
+
+        cliente1.setBorder(null);
+        cliente1.setEditable(false);
+        cliente1.setText("1");
+        cliente1.setEnabled(false);
+        cliente1.setFont(new java.awt.Font("Tahoma", 0, 8));
+        jPanel7.add(cliente1);
+        cliente1.setBounds(190, 10, 20, 10);
+
+        btnNuevoCliente1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
+        btnNuevoCliente1.setText("CREAR O BUSCAR CLIENTE");
+        btnNuevoCliente1.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnNuevoCliente1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoCliente1ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnNuevoCliente1);
+        btnNuevoCliente1.setBounds(40, 100, 230, 30);
+
+        jPanel6.add(jPanel7);
+        jPanel7.setBounds(10, 10, 280, 160);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Cod", "Descripcion", "Código Impreso", "Valor"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+        jTable1.getColumnModel().getColumn(0).setResizable(false);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+        jPanel6.add(jScrollPane1);
+        jScrollPane1.setBounds(300, 40, 320, 130);
+
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel8.setLayout(null);
+
+        btnAgregar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
+        btnAgregar1.setMnemonic('G');
+        btnAgregar1.setText("Guardar");
+        btnAgregar1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregar1.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnAgregar1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar1ActionPerformed(evt);
+            }
+        });
+        jPanel8.add(btnAgregar1);
+        btnAgregar1.setBounds(440, 10, 60, 50);
+
+        btnSalir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
+        btnSalir1.setMnemonic('S');
+        btnSalir1.setText("Salir");
+        btnSalir1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalir1.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnSalir1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalir1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalir1ActionPerformed(evt);
+            }
+        });
+        jPanel8.add(btnSalir1);
+        btnSalir1.setBounds(500, 10, 60, 50);
+
+        total1.setBorder(null);
+        total1.setEditable(false);
+        total1.setForeground(new java.awt.Color(51, 153, 0));
+        total1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        total1.setText("0.0");
+        total1.setCaretColor(new java.awt.Color(0, 204, 0));
+        total1.setFont(new java.awt.Font("Tahoma", 1, 36));
+        jPanel8.add(total1);
+        total1.setBounds(140, 10, 140, 50);
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 24));
+        jLabel6.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel6.setLabelFor(total);
+        jLabel6.setText("A PAGAR:");
+        jPanel8.add(jLabel6);
+        jLabel6.setBounds(10, 20, 130, 30);
+
+        jPanel6.add(jPanel8);
+        jPanel8.setBounds(10, 190, 580, 70);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel6.add(jComboBox1);
+        jComboBox1.setBounds(300, 10, 220, 20);
+
+        jButton1.setText("Añadir");
+        jPanel6.add(jButton1);
+        jButton1.setBounds(530, 10, 63, 23);
+
+        jTabbedPane1.addTab("VENTA DE TARJETAS", jPanel6);
+
+        getContentPane().add(jTabbedPane1);
+        jTabbedPane1.setBounds(10, 50, 640, 320);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1210,25 +1436,71 @@ String separador = File.separatorChar+"";
         }
     }//GEN-LAST:event_placaKeyReleased
 
+    private void encontrados2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encontrados2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_encontrados2MouseClicked
+
+    private void encontrados2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontrados2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_encontrados2KeyPressed
+
+    private void identificacion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identificacion1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_identificacion1ActionPerformed
+
+    private void identificacion1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_identificacion1FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_identificacion1FocusLost
+
+    private void nombres1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nombres1KeyPressed
+
+    private void nombres1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nombres1KeyReleased
+
+    private void btnNuevoCliente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoCliente1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNuevoCliente1ActionPerformed
+
+    private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregar1ActionPerformed
+
+    private void btnSalir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalir1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnAgregar1;
     private javax.swing.JButton btnNuevoCliente;
+    private javax.swing.JButton btnNuevoCliente1;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnSalir1;
     private javax.swing.JTable busquedaTabla;
     private javax.swing.JFormattedTextField cliente;
+    private javax.swing.JFormattedTextField cliente1;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JLabel dias;
     private javax.swing.JLabel dias1;
     private javax.swing.JLabel dias2;
     private javax.swing.JFormattedTextField direccion;
+    private javax.swing.JFormattedTextField direccion1;
     private javax.swing.JList encontrados;
     private javax.swing.JList encontrados1;
+    private javax.swing.JList encontrados2;
     private javax.swing.JDialog formaBusqueda;
     private javax.swing.JFormattedTextField identificacion;
+    private javax.swing.JFormattedTextField identificacion1;
     private com.toedter.calendar.JDateChooser ingreso;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -1238,9 +1510,13 @@ String separador = File.separatorChar+"";
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -1249,18 +1525,30 @@ String separador = File.separatorChar+"";
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JFormattedTextField noTicket;
     private javax.swing.JFormattedTextField nombres;
+    private javax.swing.JFormattedTextField nombres1;
     private javax.swing.JPanel panelencontrados;
     private javax.swing.JPanel panelencontrados1;
+    private javax.swing.JPanel panelencontrados2;
     private javax.swing.JFormattedTextField placa;
     private com.toedter.calendar.JDateChooser salida;
     private javax.swing.JFormattedTextField telefono;
+    private javax.swing.JFormattedTextField telefono1;
     private com.toedter.calendar.JDateChooser tiempo;
     private javax.swing.JFormattedTextField total;
+    private javax.swing.JFormattedTextField total1;
     // End of variables declaration//GEN-END:variables
 }
