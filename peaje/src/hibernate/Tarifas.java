@@ -27,9 +27,9 @@ public class Tarifas implements Serializable {
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "desde")
-    private Long desde;
+    private Integer desde;
     @Column(name = "hasta")
-    private Long hasta;
+    private Integer hasta;
     @Column(name = "valor")
     private BigDecimal valor;
 
@@ -56,21 +56,22 @@ public class Tarifas implements Serializable {
         this.nombre = nombre;
     }
 
-    public Long getDesde() {
+    public Integer getDesde() {
         return desde;
     }
 
-    public void setDesde(Long desde) {
+    public void setDesde(Integer desde) {
         this.desde = desde;
     }
 
-    public Long getHasta() {
+    public Integer getHasta() {
         return hasta;
     }
 
-    public void setHasta(Long hasta) {
+    public void setHasta(Integer hasta) {
         this.hasta = hasta;
     }
+
 
     public BigDecimal getValor() {
         return valor;

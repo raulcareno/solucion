@@ -1532,6 +1532,7 @@ public class principal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     void iniciarPuertos() {
         try {
             WorkingDirectory w = new WorkingDirectory();
@@ -1557,37 +1558,37 @@ public class principal extends javax.swing.JFrame {
 //                    }
                     if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
                         reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: "+empresaObj.getPuerto1());
+                        System.out.println("ABIERTO: " + empresaObj.getPuerto1());
 //                        read.add(reader);
                     }
                     if (portId.getName().equals(empresaObj.getPuerto2()) && empresaObj.getActiva2()) {
                         reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: "+empresaObj.getPuerto2());
+                        System.out.println("ABIERTO: " + empresaObj.getPuerto2());
 //                        read.add(reader);
                     }
                     if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
                         reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: "+empresaObj.getPuerto3());
+                        System.out.println("ABIERTO: " + empresaObj.getPuerto3());
 //                        read.add(reader);
                     }
                     if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
                         reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: "+empresaObj.getPuerto4());
+                        System.out.println("ABIERTO: " + empresaObj.getPuerto4());
 //                        read.add(reader);
                     }
                     if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
                         reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: "+empresaObj.getPuerto5());
+                        System.out.println("ABIERTO: " + empresaObj.getPuerto5());
 //                        read.add(reader);
                     }
                     if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
                         reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: "+empresaObj.getPuerto6());
+                        System.out.println("ABIERTO: " + empresaObj.getPuerto6());
 //                        read.add(reader);
                     }
                     if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
                         reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: "+empresaObj.getPuerto7());
+                        System.out.println("ABIERTO: " + empresaObj.getPuerto7());
 //                        read.add(reader);
                     }
 //                        else if (portId.getName().equals("COM10")) {
@@ -1929,40 +1930,40 @@ public class principal extends javax.swing.JFrame {
                         if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
                             System.out.println("EN EL RANGO DE FECHAS");
 
-                        if (diaActual == 0) {
-                            if (tarje.getDomingo()) {
-                                continua = true;
+                            if (diaActual == 0) {
+                                if (tarje.getDomingo()) {
+                                    continua = true;
+                                }
+                            } else if (diaActual == 1) {
+                                if (tarje.getLunes()) {
+                                    continua = true;
+                                }
+                            } else if (diaActual == 2) {
+                                if (tarje.getMartes()) {
+                                    continua = true;
+                                }
+                            } else if (diaActual == 3) {
+                                if (tarje.getMiercoles()) {
+                                    continua = true;
+                                }
+                            } else if (diaActual == 4) {
+                                if (tarje.getJueves()) {
+                                    continua = true;
+                                }
+                            } else if (diaActual == 5) {
+                                if (tarje.getViernes()) {
+                                    continua = true;
+                                }
+                            } else if (diaActual == 6) {
+                                if (tarje.getSabado()) {
+                                    continua = true;
+                                }
                             }
-                        } else if (diaActual == 1) {
-                            if (tarje.getLunes()) {
-                                continua = true;
+                            if (continua == false) {
+                                //JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                                errores.setText("NO PUEDE INGRESAR EN ÉSTE DÌA");
+                                return;
                             }
-                        } else if (diaActual == 2) {
-                            if (tarje.getMartes()) {
-                                continua = true;
-                            }
-                        } else if (diaActual == 3) {
-                            if (tarje.getMiercoles()) {
-                                continua = true;
-                            }
-                        } else if (diaActual == 4) {
-                            if (tarje.getJueves()) {
-                                continua = true;
-                            }
-                        } else if (diaActual == 5) {
-                            if (tarje.getViernes()) {
-                                continua = true;
-                            }
-                        } else if (diaActual == 6) {
-                            if (tarje.getSabado()) {
-                                continua = true;
-                            }
-                        }
-                        if (continua == false) {
-                            //JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                            errores.setText("NO PUEDE INGRESAR EN ÉSTE DÌA");
-                            return;
-                        }
 
 
                             Date fecIn = tarje.getHorainicio();
@@ -1973,12 +1974,12 @@ public class principal extends javax.swing.JFrame {
                             if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
                                 System.out.println("EN EL RANGO DE HORA");
                                 try {
-                                        abrirPuerta(puertoViene);
+                                    abrirPuerta(puertoViene);
                                 } catch (Exception e) {
-                                    System.out.println("PUERTO:"+puertoViene);
-                                    System.out.println("ERROR AL ABRIR PUERTA: "+e);
+                                    System.out.println("PUERTO:" + puertoViene);
+                                    System.out.println("ERROR AL ABRIR PUERTA: " + e);
                                 }
-                                
+
                             } else {
                                 //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
                                 errores.setText("NO PUEDE INGRESAR EN ESTE HORARIO ");
@@ -2120,9 +2121,12 @@ public class principal extends javax.swing.JFrame {
         } else if (puertoqueViene.equals(empresaObj.getPuerto7())) {
             lapuertaaAbrir = empresaObj.getPuerta7();
         }
-        //AbrirPuerta.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
-        LeerTarjeta le = new LeerTarjeta();
-                le.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
+        System.out.println("INI: " + (new Date()));
+        AbrirPuerta.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
+        System.out.println("FIN: " + (new Date()));
+
+//        LeerTarjeta le = new LeerTarjeta();
+//                le.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
     }
 
     private void tarjetatxtPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tarjetatxtPropertyChange
@@ -2941,40 +2945,51 @@ public class principal extends javax.swing.JFrame {
 
     private void btnReconfigurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReconfigurarActionPerformed
         // TODO add your handling code here:
-        int seleccion = JOptionPane.showOptionDialog(this, "SE BORRARÁ LA CONFIGURACIÓN ACTUAL DEL SISTEMA \n ¿SEGURO QUE DESEA CONTINUAR?",
-                "JCINFORM",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null, // null para icono por defecto.
-                new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
-                "NO");
-        System.out.println("" + seleccion);
+        try {
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o "
+                    + "where o.pantalla = 'Reconfigurar' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "'  and o.ingresar = true  ");
+            if (accesosL.size() > 0) {
+                permisos = accesosL.get(0);
 
-        if (0 == seleccion) {
-            WorkingDirectory w = new WorkingDirectory();
-            String ubicacionDirectorio = w.get() + separador;
-            if (ubicacionDirectorio.contains("build")) {
-                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                int seleccion = JOptionPane.showOptionDialog(this, "SE BORRARÁ LA CONFIGURACIÓN ACTUAL DEL SISTEMA \n ¿SEGURO QUE DESEA CONTINUAR?",
+                        "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null, // null para icono por defecto.
+                        new Object[]{"SI", "NO", "Cancelar"},"NO");// null para YES, NO y CANCEL
+                System.out.println("" + seleccion);
+                if (0 == seleccion) {
+                    WorkingDirectory w = new WorkingDirectory();
+                    String ubicacionDirectorio = w.get() + separador;
+                    if (ubicacionDirectorio.contains("build")) {
+                        ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                    }
+
+                    File fichero = new File(ubicacionDirectorio + "KDJFASD5F4AS5D2.xml");
+                    if (fichero.exists()) {
+                        fichero.delete();
+                        System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
+                    }
+
+
+                    frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/icono.png")).getImage());
+                    frmRegistrar.setModal(true);
+                    frmRegistrar.setSize(474, 280);
+                    frmRegistrar.setLocation(350, 300);
+                    frmRegistrar.setFocusable(true);
+                    frmRegistrar.setResizable(false);
+                    frmRegistrar.setTitle("Configuración del Sistema");
+                    frmRegistrar.setUndecorated(false);
+                    frmRegistrar.show();
+                    logear();
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-            File fichero = new File(ubicacionDirectorio + "KDJFASD5F4AS5D2.xml");
-            if (fichero.exists()) {
-                fichero.delete();
-                System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
-            }
-
-
-            frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/icono.png")).getImage());
-            frmRegistrar.setModal(true);
-            frmRegistrar.setSize(474, 280);
-            frmRegistrar.setLocation(350, 300);
-            frmRegistrar.setFocusable(true);
-            frmRegistrar.setResizable(false);
-            frmRegistrar.setTitle("Configuración del Sistema");
-            frmRegistrar.setUndecorated(false);
-            frmRegistrar.show();
-            logear();
+        } catch (Exception ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
+
 
     }//GEN-LAST:event_btnReconfigurarActionPerformed
 

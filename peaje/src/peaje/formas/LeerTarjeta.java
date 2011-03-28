@@ -73,7 +73,11 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //                            if(portId.isCurrentlyOwned()){
 //                                serialPort = LeerTarjeta.serialPort;
 //                            }else{
-                                serialPort = (SerialPort) portId.open("COMPUERTA", 2001);
+                            if(portId.isCurrentlyOwned()){
+                                portId.removePortOwnershipListener(null);
+                            }
+
+                                    serialPort = (SerialPort) portId.open("COMPUERTA", 2001);
 //                            }
 
                         } catch (PortInUseException e) {
