@@ -14,6 +14,18 @@ public class AbrirPuerta {
     static SerialPort serialPort = null;
     static SerialPort serieI;
 static String separador = File.separatorChar+"";
+
+  public static void main(String[] args) {
+        try {
+//            abrir("COM4","1");
+//            abrir("COM4","2");
+//            abrir("COM4","3");
+//            abrir("COM4","4");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
     public static void abrir(String puertodeTarjet, String abrirPuerta) {
         
         try {
@@ -32,7 +44,8 @@ static String separador = File.separatorChar+"";
             OutputStream outputStream = null;
 //            SimpleRead reader;
             portList = CommPortIdentifier.getPortIdentifiers();
-            while (portList.hasMoreElements()) {
+            Boolean abrioysalio = false;
+            while (portList.hasMoreElements() && abrioysalio == false) {
                 portId = (CommPortIdentifier) portList.nextElement();
                 if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                     if (portId.getName().equals(puertodeTarjet)) {
@@ -59,11 +72,13 @@ static String separador = File.separatorChar+"";
                         }
                         try {
                             outputStream.write(abrirPuerta.getBytes());
+                            System.out.println("ABRI PUERTA: "+abrirPuerta);
+                            abrioysalio = true;
                         } catch (IOException e) {
                             System.out.println("" + e);
                         }
                         try {
-                            Thread.sleep(1000);  // Me aseguro que es transmitido correctamente antes de cerrar
+//                            Thread.sleep(1000);  // Me aseguro que es transmitido correctamente antes de cerrar
                         } catch (Exception e) {
                         } //ESPERO UN POCO
                         serialPort.close();

@@ -76,52 +76,25 @@ public class frmTarifas extends javax.swing.JDialog {
 
         try {
 
-            List<Tarifas> tar = adm.query("Select o from Tarifas as o order by o.desde ");
+            List<Tarifas> tar = adm.query("Select o from Tarifas as o order by o.codigo ");
             DefaultTableModel dtm = (DefaultTableModel) tarifario.getModel();
             dtm.getDataVector().removeAllElements();
             for (Tarifas tarifas : tar) {
                 Object[] obj = new Object[5];
-
-                obj[0] = tarifas.getDesde().intValue();
-                obj[1] = tarifas.getHasta().intValue();
-                obj[2] = tarifas.getValor().doubleValue();
+                obj[0] = tarifas.getCodigo();
+                obj[1] = tarifas.getDesde();
+                obj[2] = tarifas.getHasta();
+                obj[3] = tarifas.getValor().doubleValue();
                 dtm.addRow(obj);
             }
-            for (int i = tar.size()+1; i < tar.size()+10; i++) {
-                Object[] obj = new Object[5];
-                obj[0] = null;
-                obj[1] = null;
-                obj[2] = null;
-                obj[3] = null;
-                dtm.addRow(obj);
-
-            }
+           
             tarifario.setModel(dtm);
         } catch (Exception ex) {
             Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-      public void llenarTarifas() {
-
-        try {
-
-            List<Tarifas> tar = adm.query("Select o from Tarifas as o ");
-            DefaultTableModel dtm = (DefaultTableModel) tarifario.getModel();
-            dtm.getDataVector().removeAllElements();
-            for (Tarifas tarifas : tar) {
-                Object[] obj = new Object[5];
-
-                obj[0] = tarifas.getDesde().intValue();
-                obj[1] = tarifas.getHasta().intValue();
-                obj[2] = tarifas.getValor().doubleValue();
-                dtm.addRow(obj);
-            }
-            tarifario.setModel(dtm);
-        } catch (Exception ex) {
-            Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+ 
 
 
 // <editor-fold defaultstate="collapsed" desc="PROPIEDADES">
@@ -223,48 +196,55 @@ public class frmTarifas extends javax.swing.JDialog {
 
         tarifario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Desde", "Hasta", "Valor"
+                "No.", "Desde", "Hasta", "Valor"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tarifario.setCellSelectionEnabled(true);
@@ -275,6 +255,10 @@ public class frmTarifas extends javax.swing.JDialog {
             }
         });
         jScrollPane1.setViewportView(tarifario);
+        tarifario.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        tarifario.getColumnModel().getColumn(0).setMinWidth(0);
+        tarifario.getColumnModel().getColumn(0).setPreferredWidth(10);
+        tarifario.getColumnModel().getColumn(0).setMaxWidth(25);
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(10, 30, 330, 180);
@@ -434,16 +418,27 @@ public class frmTarifas extends javax.swing.JDialog {
             } else if (grabar == true) {
                 try {
                     //                    try {
-                    int filas = tarifario.getRowCount();
-                    adm.ejecutaSql("Delete from Tarifas ");
+                    int filas = contarFilas();
+//                    adm.ejecutaSql("Delete from Tarifas ");
+                    System.out.println("FILAS: ENCONTRADAS: "+filas);
                     for (int i = 0; i < filas; i++) {
                         Tarifas tar = new Tarifas(null);
-                        //                        tar.setCodigo((Integer) tarifario.getValueAt(i, 0));
-                        tar.setDesde(((Integer) tarifario.getValueAt(i, 0)).longValue());
-                        tar.setHasta(((Integer) tarifario.getValueAt(i, 1)).longValue());
-                        tar.setValor(new BigDecimal((Double) tarifario.getValueAt(i, 2)));
+                        tar.setCodigo((Integer) tarifario.getValueAt(i, 0));
+                        int des = ((Integer) tarifario.getValueAt(i, 1));
+                        int has = ((Integer) tarifario.getValueAt(i, 2));
+                        
+                        BigDecimal val = null;
                         try {
-                            adm.guardar(tar);
+                           val = new BigDecimal((Double) tarifario.getValueAt(i, 3));
+                        } catch (Exception e) {
+                            System.out.println("ERROR 002: "+e);
+                        }
+                        
+                        tar.setDesde(des);
+                        tar.setHasta(has);
+                        tar.setValor(val);
+                        try {
+                            adm.actualizar(tar);
 
                         } catch (Exception e) {
                             System.out.println(""+e);
@@ -456,7 +451,8 @@ public class frmTarifas extends javax.swing.JDialog {
                     //                    }
 
                 } catch (Exception ex) {
-                    Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println(""+ex);
                 }
                 llenarCombo();
                 this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
@@ -477,6 +473,26 @@ public class frmTarifas extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
+    public int contarFilas(){
+        int filas = tarifario.getRowCount();
+        int m = 0;
+        
+        for (int i = 0; i < filas; i++) {
+            try {
+                System.out.println(i+" :"+tarifario.getValueAt(i, 0));
+              Object obj = (tarifario.getValueAt(i, 0) );
+              if(obj != null)
+                 m = m+1;
+                System.out.println(""+m);
+            } catch (Exception e) {
+                System.out.println("ERROR EN CONTAR FILAS: "+e);
+                return m;
+            }
+             
+        }
+        return m;
+
+    }
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
 

@@ -7,8 +7,8 @@
       <!--generator class="assigned"/-->
     </id>
     <property column="nombre" name="nombre" type="java.lang.String"/>
-    <property column="desde" name="desde" type="java.lang.Long"/>
-    <property column="hasta" name="hasta" type="java.lang.Long"/>
+    <property column="desde" name="desde" type="java.lang.Integer"/>
+    <property column="hasta" name="hasta" type="java.lang.Integer"/>
     <property column="valor" name="valor" type="java.math.BigDecimal"/>
   </class>
 </hibernate-mapping>

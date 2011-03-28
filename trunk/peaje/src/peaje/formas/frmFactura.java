@@ -6,6 +6,8 @@ import java.awt.Container;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -93,7 +95,7 @@ String separador = File.separatorChar+"";
             val = new validaciones();
             principal = lo;
             noTicket.requestFocusInWindow();
-            tarifario = adm.query("Select o from Tarifas as o ");
+            tarifario = adm.query("Select o from Tarifas as o order by o.codigo ");
             dias.setVisible(false);
             dias1.setVisible(false);
             dias2.setVisible(false);
@@ -338,10 +340,10 @@ String separador = File.separatorChar+"";
         panelencontrados1.setBounds(70, 50, 200, 110);
 
         ingreso.setBackground(new java.awt.Color(255, 255, 255));
-        ingreso.setDateFormatString("HH:mm:ss");
-        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14));
+        ingreso.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
+        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel1.add(ingreso);
-        ingreso.setBounds(70, 50, 110, 20);
+        ingreso.setBounds(70, 50, 210, 20);
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -366,19 +368,19 @@ String separador = File.separatorChar+"";
         jLabel13.setBounds(20, 90, 50, 20);
 
         salida.setBackground(new java.awt.Color(255, 255, 255));
-        salida.setDateFormatString("HH:mm:ss");
-        salida.setFont(new java.awt.Font("Tahoma", 1, 14));
+        salida.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
+        salida.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel1.add(salida);
-        salida.setBounds(70, 70, 110, 20);
+        salida.setBounds(70, 70, 210, 20);
 
-        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(0, 102, 0));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel17.setText("Ingreso: ");
         jPanel1.add(jLabel17);
         jLabel17.setBounds(10, 50, 60, 20);
 
-        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(204, 0, 0));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel19.setText("Salida: ");
@@ -386,8 +388,8 @@ String separador = File.separatorChar+"";
         jLabel19.setBounds(20, 70, 50, 20);
 
         tiempo.setBackground(new java.awt.Color(255, 255, 255));
-        tiempo.setDateFormatString("HH:mm:ss");
-        tiempo.setFont(new java.awt.Font("Tahoma", 1, 14));
+        tiempo.setDateFormatString("HH:mm");
+        tiempo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel1.add(tiempo);
         tiempo.setBounds(70, 90, 110, 20);
 
@@ -923,8 +925,9 @@ String separador = File.separatorChar+"";
                     LocalTime horaIni = new LocalTime(new DateTime(ingreso.getDate()));
                     LocalTime horaFin = new LocalTime(new DateTime(salida.getDate()));
 
-                    Integer segundos = Seconds.secondsBetween(horaIni, horaFin).getSeconds();
-                   Float seg = segundos /60f;
+//                   int segundos = Seconds.secondsBetween(horaIni, horaFin).getSeconds();
+                   //float seg = segundos /60f;
+                   
                     Integer minutos = (Minutes.minutesBetween(horaIni, horaFin).getMinutes());
                     Integer horas = minutos / 60;
                     if (minutos.intValue() < 0) {
@@ -951,11 +954,14 @@ String separador = File.separatorChar+"";
                     int valorMinutos = java.lang.Math.round((valorf * 60));
                     act.setHours(horas);
                     act.setMinutes(valorMinutos);
-                    act.setSeconds((int) ((minutos - seg)*(60f)));
-                    if(horas.equals(0) && minutos.equals(0)){
-                        act.setSeconds(segundos);
-                        valorMinutos = 1;
-                    }
+//                    act.setSeconds((int) ((minutos - seg)*(60f)));
+//                    if(horas.equals(0) && minutos.equals(0)){
+////                        act.setSeconds(segundos);
+//                        valorMinutos = 1;
+//                    }
+//                    if(segundos<=60){
+//                        valorMinutos = 1;
+//                    }
 //                    act.setSeconds(segundos);
                     tiempo.setDate(act);
                     placa.setText(fac.getPlaca());
@@ -968,14 +974,26 @@ String separador = File.separatorChar+"";
                     
                     if (valorMinutos > 0) {
                         aCobrar = aCobrar.add(buscar(valorMinutos));
+                    }else{
+                        aCobrar = aCobrar.add(buscar(1));
+                        
                     }
-                    total.setText(aCobrar + "");
+                    total.setText(aCobrar.setScale(2, RoundingMode.UP) + "");
                     codigo.setText(fac.getCodigo() + "");
                     //tiempo.setDate(Hours.hoursBetween(horaIni, horaFin));
 
-                    btnAgregar.requestFocusInWindow();
+//                    btnAgregar.requestFocusInWindow();
     }
 
+    public Double redondear(Double numero, int decimales){
+        try {
+            BigDecimal d = new BigDecimal(numero);
+            d = d.setScale(decimales);
+            return d.doubleValue();
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
     @SuppressWarnings("static-access")
     private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
         // TODO add your handling code here:
@@ -1013,8 +1031,8 @@ String separador = File.separatorChar+"";
     public BigDecimal buscar(Integer minutos) {
         for (Iterator<Tarifas> it = tarifario.iterator(); it.hasNext();) {
             Tarifas tarifas = it.next();
-            int desde = tarifas.getDesde().intValue();
-            int hasta = tarifas.getHasta().intValue();
+            int desde = tarifas.getDesde();
+            int hasta = tarifas.getHasta();
             int valo = minutos;
             if (valo >= desde && valo <= hasta) {
                 return tarifas.getValor();
