@@ -170,6 +170,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         razonsocial.setEditable(estado);
         telefono.setEditable(estado);
         parqueaderos.setEditable(estado);
+        iva.setEditable(estado);
         cmbFactura.setEnabled(estado);
         cmbTicket.setEnabled(estado);
         cmbEntrada1.setEnabled(estado);
@@ -265,6 +266,8 @@ public class frmEmpresa extends javax.swing.JDialog {
         chkActivo2 = new javax.swing.JCheckBox();
         chkActivo3 = new javax.swing.JCheckBox();
         chkActivo4 = new javax.swing.JCheckBox();
+        iva = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -364,7 +367,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Configuración de la Empresa ..::..");
         jPanel3.add(jLabel10);
@@ -459,9 +462,9 @@ public class frmEmpresa extends javax.swing.JDialog {
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("Puerto Tarjeta Princ.:");
+        jLabel7.setText("IVA %");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(10, 190, 110, 14);
+        jLabel7.setBounds(160, 110, 110, 20);
 
         telefono.setEditable(false);
 
@@ -523,7 +526,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbEntrada1);
-        cmbEntrada1.setBounds(120, 230, 60, 20);
+        cmbEntrada1.setBounds(120, 240, 60, 20);
 
         cmbSalida1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
         cmbSalida1.setEnabled(false);
@@ -532,7 +535,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbSalida1);
-        cmbSalida1.setBounds(190, 230, 37, 20);
+        cmbSalida1.setBounds(190, 240, 37, 20);
 
         cmbSalida2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
         cmbSalida2.setEnabled(false);
@@ -541,7 +544,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbSalida2);
-        cmbSalida2.setBounds(190, 250, 37, 20);
+        cmbSalida2.setBounds(190, 260, 37, 20);
 
         cmbEntrada2.setEnabled(false);
 
@@ -549,7 +552,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbEntrada2);
-        cmbEntrada2.setBounds(120, 250, 60, 20);
+        cmbEntrada2.setBounds(120, 260, 60, 20);
 
         cmbSalida3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
         cmbSalida3.setEnabled(false);
@@ -558,7 +561,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbSalida3);
-        cmbSalida3.setBounds(190, 270, 37, 20);
+        cmbSalida3.setBounds(190, 280, 37, 20);
 
         cmbEntrada3.setEnabled(false);
 
@@ -566,20 +569,20 @@ public class frmEmpresa extends javax.swing.JDialog {
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbEntrada3);
-        cmbEntrada3.setBounds(120, 270, 60, 20);
+        cmbEntrada3.setBounds(120, 280, 60, 20);
 
         jLabel14.setText("1:");
         jPanel1.add(jLabel14);
-        jLabel14.setBounds(100, 230, 20, 14);
+        jLabel14.setBounds(100, 240, 20, 14);
 
         jLabel15.setText("4:");
         jPanel1.add(jLabel15);
-        jLabel15.setBounds(100, 290, 20, 14);
+        jLabel15.setBounds(100, 300, 20, 14);
 
-        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel16.setText("PUERTO LECTORA");
         jPanel1.add(jLabel16);
-        jLabel16.setBounds(80, 210, 110, 20);
+        jLabel16.setBounds(80, 220, 110, 20);
 
         cmbEntrada4.setEnabled(false);
 
@@ -587,11 +590,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbEntrada4);
-        cmbEntrada4.setBounds(120, 290, 60, 20);
+        cmbEntrada4.setBounds(120, 300, 60, 20);
 
         jLabel19.setText("2:");
         jPanel1.add(jLabel19);
-        jLabel19.setBounds(100, 250, 20, 14);
+        jLabel19.setBounds(100, 260, 20, 14);
 
         cmbSalida4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
         cmbSalida4.setEnabled(false);
@@ -600,16 +603,16 @@ public class frmEmpresa extends javax.swing.JDialog {
         bindingGroup.addBinding(binding);
 
         jPanel1.add(cmbSalida4);
-        cmbSalida4.setBounds(190, 290, 37, 20);
+        cmbSalida4.setBounds(190, 300, 37, 20);
 
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel21.setText("ABRE PUERTA");
         jPanel1.add(jLabel21);
-        jLabel21.setBounds(190, 210, 90, 20);
+        jLabel21.setBounds(190, 220, 90, 20);
 
         jLabel3.setText("3:");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(100, 270, 20, 14);
+        jLabel3.setBounds(100, 280, 20, 14);
 
         jLabel18.setForeground(new java.awt.Color(0, 0, 153));
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -651,7 +654,7 @@ public class frmEmpresa extends javax.swing.JDialog {
             }
         });
         jPanel1.add(chkActivo1);
-        chkActivo1.setBounds(230, 230, 81, 23);
+        chkActivo1.setBounds(230, 240, 81, 23);
 
         chkActivo2.setText("Activo");
         chkActivo2.setEnabled(false);
@@ -665,7 +668,7 @@ public class frmEmpresa extends javax.swing.JDialog {
             }
         });
         jPanel1.add(chkActivo2);
-        chkActivo2.setBounds(230, 250, 81, 23);
+        chkActivo2.setBounds(230, 260, 81, 23);
 
         chkActivo3.setText("Activo");
         chkActivo3.setEnabled(false);
@@ -679,7 +682,7 @@ public class frmEmpresa extends javax.swing.JDialog {
             }
         });
         jPanel1.add(chkActivo3);
-        chkActivo3.setBounds(230, 270, 81, 23);
+        chkActivo3.setBounds(230, 280, 81, 23);
 
         chkActivo4.setText("Activo");
         chkActivo4.setEnabled(false);
@@ -693,10 +696,24 @@ public class frmEmpresa extends javax.swing.JDialog {
             }
         });
         jPanel1.add(chkActivo4);
-        chkActivo4.setBounds(230, 290, 81, 23);
+        chkActivo4.setBounds(230, 300, 81, 23);
+
+        iva.setEditable(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.iva}"), iva, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        jPanel1.add(iva);
+        iva.setBounds(280, 110, 59, 20);
+
+        jLabel22.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel22.setText("Puerto Tarjeta Princ.:");
+        jPanel1.add(jLabel22);
+        jLabel22.setBounds(10, 190, 110, 14);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 40, 370, 320);
+        jPanel1.setBounds(20, 40, 380, 330);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -775,7 +792,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         btnSalir.setBounds(290, 10, 60, 50);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(20, 360, 370, 70);
+        jPanel4.setBounds(30, 380, 370, 70);
 
         bindingGroup.bind();
 
@@ -838,6 +855,7 @@ public class frmEmpresa extends javax.swing.JDialog {
                             return;
                         }
                     }
+                    principal.empresaObj = empresaObj;
                     this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
                     this.btnAgregar.setLabel("Nuevo");
                     this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
@@ -1133,6 +1151,7 @@ public class frmEmpresa extends javax.swing.JDialog {
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JFormattedTextField direccion;
     private javax.swing.JDialog formaEmpresa;
+    private javax.swing.JTextField iva;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1148,6 +1167,7 @@ public class frmEmpresa extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
