@@ -27,6 +27,7 @@ import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -42,6 +43,7 @@ import org.joda.time.Minutes;
 import org.joda.time.Seconds;
 import peaje.Administrador;
 import peaje.validaciones;
+import sources.FacturaDetalleSource;
 
 import sources.FacturaSource;
 //import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
@@ -251,10 +253,18 @@ public class frmFactura extends javax.swing.JDialog {
         jPanel8 = new javax.swing.JPanel();
         btnAgregar1 = new javax.swing.JButton();
         btnSalir1 = new javax.swing.JButton();
-        total1 = new javax.swing.JFormattedTextField();
+        txtTotal1 = new javax.swing.JFormattedTextField();
         jLabel6 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        txtSubtotal = new javax.swing.JFormattedTextField();
+        txtIva = new javax.swing.JFormattedTextField();
         cmbProductos = new javax.swing.JComboBox();
         btnAnadirProducto = new javax.swing.JButton();
+        txtCantidad = new javax.swing.JFormattedTextField();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
 
         formaBusqueda.setLocationByPlatform(true);
         formaBusqueda.getContentPane().setLayout(null);
@@ -336,7 +346,7 @@ public class frmFactura extends javax.swing.JDialog {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Facturación de Tickets ..::..");
         jPanel3.add(jLabel8);
@@ -775,19 +785,26 @@ public class frmFactura extends javax.swing.JDialog {
         btnNuevoCliente1.setBounds(40, 100, 230, 30);
 
         jPanel6.add(jPanel7);
-        jPanel7.setBounds(10, 10, 280, 160);
+        jPanel7.setBounds(20, 10, 270, 160);
 
         productos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Cod", "Descripcion", "Código Impreso", "Valor"
+                "...", "Cantidad", "Descripcion", "Valor"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, true, true
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -799,11 +816,11 @@ public class frmFactura extends javax.swing.JDialog {
             }
         });
         jScrollPane1.setViewportView(productos);
-        productos.getColumnModel().getColumn(0).setResizable(false);
         productos.getColumnModel().getColumn(0).setPreferredWidth(0);
+        productos.getColumnModel().getColumn(0).setMaxWidth(5);
 
         jPanel6.add(jScrollPane1);
-        jScrollPane1.setBounds(300, 40, 320, 130);
+        jScrollPane1.setBounds(300, 50, 320, 120);
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel8.setLayout(null);
@@ -836,28 +853,50 @@ public class frmFactura extends javax.swing.JDialog {
         jPanel8.add(btnSalir1);
         btnSalir1.setBounds(500, 10, 60, 50);
 
-        total1.setBorder(null);
-        total1.setEditable(false);
-        total1.setForeground(new java.awt.Color(51, 153, 0));
-        total1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        total1.setText("0.0");
-        total1.setCaretColor(new java.awt.Color(0, 204, 0));
-        total1.setFont(new java.awt.Font("Tahoma", 1, 36));
-        jPanel8.add(total1);
-        total1.setBounds(140, 10, 140, 50);
+        txtTotal1.setBorder(null);
+        txtTotal1.setEditable(false);
+        txtTotal1.setForeground(new java.awt.Color(51, 153, 0));
+        txtTotal1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTotal1.setText("0.0");
+        txtTotal1.setCaretColor(new java.awt.Color(0, 204, 0));
+        txtTotal1.setFont(new java.awt.Font("Tahoma", 1, 36));
+        jPanel8.add(txtTotal1);
+        txtTotal1.setBounds(140, 60, 140, 40);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 24));
         jLabel6.setForeground(new java.awt.Color(255, 0, 0));
         jLabel6.setLabelFor(total);
         jLabel6.setText("A PAGAR:");
         jPanel8.add(jLabel6);
-        jLabel6.setBounds(10, 20, 130, 30);
+        jLabel6.setBounds(20, 70, 130, 30);
+
+        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel25.setText("IVA:");
+        jPanel8.add(jLabel25);
+        jLabel25.setBounds(67, 30, 90, 14);
+
+        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel26.setText("SUBTOTAL:");
+        jPanel8.add(jLabel26);
+        jLabel26.setBounds(80, 10, 80, 14);
+
+        txtSubtotal.setEditable(false);
+        txtSubtotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtSubtotal.setText("0.0");
+        jPanel8.add(txtSubtotal);
+        txtSubtotal.setBounds(172, 10, 110, 20);
+
+        txtIva.setEditable(false);
+        txtIva.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtIva.setText("0.0");
+        jPanel8.add(txtIva);
+        txtIva.setBounds(172, 30, 110, 20);
 
         jPanel6.add(jPanel8);
-        jPanel8.setBounds(10, 190, 580, 70);
+        jPanel8.setBounds(20, 190, 600, 100);
 
         jPanel6.add(cmbProductos);
-        cmbProductos.setBounds(300, 10, 220, 20);
+        cmbProductos.setBounds(300, 30, 200, 20);
 
         btnAnadirProducto.setText("Añadir");
         btnAnadirProducto.addActionListener(new java.awt.event.ActionListener() {
@@ -866,7 +905,26 @@ public class frmFactura extends javax.swing.JDialog {
             }
         });
         jPanel6.add(btnAnadirProducto);
-        btnAnadirProducto.setBounds(530, 10, 63, 23);
+        btnAnadirProducto.setBounds(550, 30, 63, 20);
+
+        txtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtCantidad.setText("1");
+        txtCantidad.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jPanel6.add(txtCantidad);
+        txtCantidad.setBounds(500, 30, 50, 20);
+
+        jLabel23.setText("Productos disponibles");
+        jPanel6.add(jLabel23);
+        jLabel23.setBounds(300, 10, 190, 14);
+
+        jLabel24.setText("Cantidad");
+        jPanel6.add(jLabel24);
+        jLabel24.setBounds(500, 10, 50, 14);
+
+        jLabel27.setForeground(new java.awt.Color(255, 51, 0));
+        jLabel27.setText("Para QUITAR un elemento seleccione y presione SUPRIMIR");
+        jPanel6.add(jLabel27);
+        jLabel27.setBounds(300, 170, 310, 14);
 
         jTabbedPane1.addTab("VENTA DE TARJETAS", jPanel6);
 
@@ -938,7 +996,7 @@ public class frmFactura extends javax.swing.JDialog {
                 } catch (Exception e) {
                     dia = 0;
                 }
-                imprimir(facActual.getCodigo(), emp, dia);
+                imprimir(facActual.getCodigo(), emp, dia, false);
                 adm.actualizar(emp);
                 Thread cargar = new Thread() {
 
@@ -962,7 +1020,7 @@ public class frmFactura extends javax.swing.JDialog {
                 Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
                 return;
             }
-
+            //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito");
         } else {
             JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
         }
@@ -970,7 +1028,7 @@ public class frmFactura extends javax.swing.JDialog {
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    public void imprimir(int cod, Empresa emp, int dias) {
+    public void imprimir(int cod, Empresa emp, int dias, Boolean mensual) {
 
 //                    viewer.show();
         try {
@@ -979,14 +1037,28 @@ public class frmFactura extends javax.swing.JDialog {
             if (ubicacionDirectorio.contains("build")) {
                 ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }
-            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura.jasper");
-
-            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
+            JasperReport masterReport = null;
+            if (mensual) {
+                masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura2.jasper");
+            } else {
+                masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura.jasper");
+            }
+            JRDataSource ds = null;
             ArrayList detalle = new ArrayList();
-            detalle.add(fac);
-            FacturaSource ds = new FacturaSource(detalle);
             Map parametros = new HashMap();
+            if (mensual) {
+                List<Detalle> fac = adm.query("Select o from Detalle as o where o.factura.codigo = " + cod + " ");
+                for (Iterator<Detalle> it = fac.iterator(); it.hasNext();) {
+                    Detalle detalle1 = it.next();
+                    detalle.add(detalle1);
+                }
+                ds = new FacturaDetalleSource(detalle);
+            } else {
+                Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
+                detalle.add(fac);
+                ds = new FacturaSource(detalle);
 
+            }
             parametros.put("empresa", emp.getRazon());
             parametros.put("direccion", emp.getDireccion());
             parametros.put("telefono", emp.getTelefonos());
@@ -1164,7 +1236,7 @@ public class frmFactura extends javax.swing.JDialog {
 
             if (0 == seleccion) {
                 Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                imprimir(fac.getCodigo(), emp, 0);
+                imprimir(fac.getCodigo(), emp, 0, false);
             }
             noTicket.setText("");
             noTicket.requestFocusInWindow();
@@ -1247,7 +1319,7 @@ public class frmFactura extends javax.swing.JDialog {
     public Double redondear(Double numero, int decimales) {
         try {
             BigDecimal d = new BigDecimal(numero);
-            d = d.setScale(decimales);
+            d = d.setScale(decimales, RoundingMode.HALF_UP);
             return d.doubleValue();
         } catch (Exception e) {
             return 0.0;
@@ -1312,7 +1384,7 @@ public class frmFactura extends javax.swing.JDialog {
         telefono.setText(nCliente.getTelefono());
     }
 
- public void llenarCliente2(Clientes nCliente) {
+    public void llenarCliente2(Clientes nCliente) {
         cliente1.setText("" + nCliente.getCodigo());
         identificacion1.setText(nCliente.getIdentificacion());
         nombres1.setText(nCliente.getNombres());
@@ -1480,7 +1552,7 @@ public class frmFactura extends javax.swing.JDialog {
 
     private void encontrados2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encontrados2MouseClicked
         // TODO add your handling code here:
-         if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 2) {
             this.panelencontrados2.setVisible(false);
             Clientes est = (Clientes) this.encontrados2.getSelectedValue();
             llenarCliente2(est);
@@ -1489,7 +1561,7 @@ public class frmFactura extends javax.swing.JDialog {
 
     private void encontrados2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontrados2KeyPressed
         // TODO add your handling code here:
-           if (evt.getKeyCode() == evt.VK_ENTER) {
+        if (evt.getKeyCode() == evt.VK_ENTER) {
             this.panelencontrados2.setVisible(false);
             Clientes est = (Clientes) this.encontrados2.getSelectedValue();
             llenarCliente2(est);
@@ -1511,7 +1583,7 @@ public class frmFactura extends javax.swing.JDialog {
 
     private void identificacion1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_identificacion1FocusLost
         // TODO add your handling code here:
-         try {
+        try {
             Clientes cliObj = (Clientes) adm.querySimple("Select o from Clientes as o "
                     + "where o.identificacion like '" + identificacion1.getText().trim() + "%' ");
             if (cliObj != null) {
@@ -1529,7 +1601,7 @@ public class frmFactura extends javax.swing.JDialog {
 
     private void nombres1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyPressed
         // TODO add your handling code here:
-           if (evt.getKeyCode() == evt.VK_DOWN) {
+        if (evt.getKeyCode() == evt.VK_DOWN) {
             encontrados2.setSelectedIndex(0);
             encontrados2.requestFocusInWindow();
         }
@@ -1540,9 +1612,9 @@ public class frmFactura extends javax.swing.JDialog {
 
     private void nombres1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyReleased
         // TODO add your handling code here:
-           if (!nombres1.getText().isEmpty()) {
+        if (!nombres1.getText().isEmpty()) {
 
-            List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres.getText().trim() + "%' order by o.nombres ", 0, 10);
+            List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres1.getText().trim() + "%' order by o.nombres ", 0, 10);
             if (encon.size() > 0) {
                 DefaultListModel dtm = new DefaultListModel();
                 dtm.removeAllElements();
@@ -1571,7 +1643,7 @@ public class frmFactura extends javax.swing.JDialog {
 
     private void btnNuevoCliente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoCliente1ActionPerformed
         // TODO add your handling code here:
-            identificacion1.setEditable(true);
+        identificacion1.setEditable(true);
         nombres1.setEditable(true);
         direccion1.setEditable(true);
         telefono1.setEditable(true);
@@ -1583,60 +1655,67 @@ public class frmFactura extends javax.swing.JDialog {
     private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
         // TODO add your handling code here:
         if (cliente1.getText().equals("0") && nombres1.getText().trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Falta el ingresar o seleccionar el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
-                    identificacion.requestFocusInWindow();
-                    return;
-                }
-                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                Factura facActual = new Factura();
+            JOptionPane.showMessageDialog(this, "Falta el ingresar o seleccionar el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
+            identificacion.requestFocusInWindow();
+            return;
+        }
+        Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+        Factura facActual = new Factura();
 
-                if (cliente1.getText().equals("0")) {
-                    Clientes nuevoCl = new Clientes();
-                    Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
-                    nuevoCl.setCodigo(codigoC);
-                    nuevoCl.setDireccion(direccion.getText());
-                    nuevoCl.setIdentificacion(identificacion.getText());
-                    nuevoCl.setTelefono(telefono.getText());
-                    nuevoCl.setNombres(nombres.getText());
-                    adm.guardar(nuevoCl);
-                    identificacion1.setText("9999999999999");
-                    nombres1.setText("CONSUMIDOR FINAL");
-                    direccion1.setText("S/D");
-                    telefono1.setText("9999999999999");
-                    cliente1.setText("1");
-                    facActual.setCliente(nuevoCl);
-                } else {
-                    facActual.setCliente(new Clientes(new Integer(cliente.getText())));
-                }
-                Double totalv  = Double.valueOf(total1.getText());
-                Double subtotal  = (totalv * 100 ) / empresaObj.getIva();
-                Double iva = subtotal * (empresaObj.getIva()/100);
-                
-                 facActual.setSubtotal(new BigDecimal(subtotal));
-                 facActual.setIva(new BigDecimal(iva));
-                 facActual.setTotal(new BigDecimal(totalv));
-                adm.guardar(facActual);
-                Integer numero = new Integer(emp.getDocumentofac());
-                emp.setDocumentofac((numero + 1) + "");
-                int dia = 0;
-                try {
-                    dia = new Integer(dias1.getText());
-                } catch (Exception e) {
-                    dia = 0;
-                }
-                imprimir(facActual.getCodigo(), emp, dia);
-                adm.actualizar(emp);
+        if (cliente1.getText().equals("0")) {
+            Clientes nuevoCl = new Clientes();
+            Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
+            nuevoCl.setCodigo(codigoC);
+            nuevoCl.setDireccion(direccion1.getText());
+            nuevoCl.setIdentificacion(identificacion1.getText());
+            nuevoCl.setTelefono(telefono1.getText());
+            nuevoCl.setNombres(nombres1.getText());
+            adm.guardar(nuevoCl);
+            identificacion1.setText("9999999999999");
+            nombres1.setText("CONSUMIDOR FINAL");
+            direccion1.setText("S/D");
+            telefono1.setText("9999999999999");
+            cliente1.setText("1");
+            facActual.setCliente(nuevoCl);
+        } else {
+            facActual.setCliente(new Clientes(new Integer(cliente1.getText())));
+        }
 
-                Detalle det = new Detalle();
-                int filas = productos.getRowCount();
-                for (int i = 0; i < filas; i++) {
-                        det.setProducto(new Productos((Integer) productos.getValueAt(i, 0)));
-                        det.setDetalle((String) productos.getValueAt(i, 2));
-                        
-                        det.setTotal((Long) productos.getValueAt(i, 3));
-                        det.setFactura(facActual);
-                        adm.guardar(det);
-                    }
+        facActual.setSubtotal(new BigDecimal(txtSubtotal.getText()));
+        facActual.setIva(new BigDecimal(txtIva.getText()));
+        facActual.setTotal(new BigDecimal(txtTotal1.getText()));
+        facActual.setFecha(new Date());
+        facActual.setNumero(emp.getDocumentofac());
+        adm.guardar(facActual);
+        Integer numero = new Integer(emp.getDocumentofac());
+        emp.setDocumentofac((numero + 1) + "");
+        int dia = 0;
+        try {
+            dia = new Integer(dias1.getText());
+        } catch (Exception e) {
+            dia = 0;
+        }
+
+        adm.actualizar(emp);
+
+        Detalle det = new Detalle();
+        int filas = productos.getRowCount();
+        for (int i = 0; i < filas; i++) {
+            det.setProducto(new Productos((Integer) productos.getValueAt(i, 0)));
+            det.setCantidad((Integer) productos.getValueAt(i, 1));
+            det.setSubtotal((BigDecimal) productos.getValueAt(i, 3));
+            det.setIva((det.getSubtotal().multiply(new BigDecimal(empresaObj.getIva() / 100))));
+            det.setTotal(det.getSubtotal().add(det.getIva()));
+            det.setFactura(facActual);
+            adm.guardar(det);
+        }
+        imprimir(facActual.getCodigo(), emp, dia, true);
+        //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito...!");
+        DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
+        dtm.getDataVector().removeAllElements();
+        productos.setModel(dtm);
+
+
 
     }//GEN-LAST:event_btnAgregar1ActionPerformed
 
@@ -1647,42 +1726,52 @@ public class frmFactura extends javax.swing.JDialog {
         empresaObj = null;
         System.gc();
     }//GEN-LAST:event_btnSalir1ActionPerformed
-  public void sumar() {
+    public void sumar() {
         int filasNo = this.productos.getRowCount();
-        double suma = 0.0;
+        BigDecimal suma = new BigDecimal(0.0);
         for (int i = 0; i < filasNo; i++) {
-            double valor = Double.parseDouble(this.productos.getValueAt(i, 3).toString());
-            suma += valor;
-
+            BigDecimal valor = new BigDecimal(this.productos.getValueAt(i, 3).toString());
+            suma  =suma.add(valor);
         }
-        this.total1.setText(redondear(suma, 2) + "");
+        BigDecimal subtotalv = suma;
+        BigDecimal ivav = subtotalv.multiply(new BigDecimal(empresaObj.getIva() / 100));
+        BigDecimal totalv = subtotalv.add(ivav);
+        txtSubtotal.setText( subtotalv.setScale(2, RoundingMode.HALF_UP) + "");
+        txtIva.setText(ivav.setScale(2, RoundingMode.HALF_UP) + "");
+        txtTotal1.setText(totalv.setScale(2, RoundingMode.HALF_UP) + "");
     }
     private void btnAnadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirProductoActionPerformed
         // TODO add your handling code here:
-        Productos asigRub = (Productos) cmbProductos.getSelectedItem();
-        DefaultTableModel dtm = (DefaultTableModel) this.productos.getModel();
-        Object[] obj = new Object[10];
-        obj[0] = asigRub.getCodigo();
-        obj[1] = asigRub.getDescripcion();
-        obj[2] = "";
-        obj[3] = asigRub.getValor();
-        dtm.addRow(obj);
-        productos.setModel(dtm);
-         sumar();
+        if (!txtCantidad.getText().isEmpty()) {
+            Productos asigRub = (Productos) cmbProductos.getSelectedItem();
+            DefaultTableModel dtm = (DefaultTableModel) this.productos.getModel();
+            Object[] obj = new Object[10];
+            obj[0] = asigRub.getCodigo();
+            obj[1] = Integer.parseInt( txtCantidad.getText());
+            obj[2] = asigRub.getDescripcion();
+            obj[3] = new BigDecimal(asigRub.getValor() * Integer.parseInt(txtCantidad.getText()));
+            dtm.addRow(obj);
+            productos.setModel(dtm);
+            sumar();
+        } else {
+            JOptionPane.showMessageDialog(this, "INGRESE UNA CANTIDAD");
+            txtCantidad.requestFocusInWindow();
+        }
+
+
     }//GEN-LAST:event_btnAnadirProductoActionPerformed
 
     private void productosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_productosKeyPressed
         // TODO add your handling code here:
-          if (evt.getKeyCode() == evt.VK_DELETE) {
+        if (evt.getKeyCode() == evt.VK_DELETE) {
             int fil = productos.getSelectedRow();
             DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
             dtm.removeRow(fil);
             productos.setModel(dtm);
             this.sumar();
-           
+
         }
     }//GEN-LAST:event_productosKeyPressed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
@@ -1724,6 +1813,11 @@ public class frmFactura extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1760,6 +1854,9 @@ public class frmFactura extends javax.swing.JDialog {
     private javax.swing.JFormattedTextField telefono1;
     private com.toedter.calendar.JDateChooser tiempo;
     private javax.swing.JFormattedTextField total;
-    private javax.swing.JFormattedTextField total1;
+    private javax.swing.JFormattedTextField txtCantidad;
+    private javax.swing.JFormattedTextField txtIva;
+    private javax.swing.JFormattedTextField txtSubtotal;
+    private javax.swing.JFormattedTextField txtTotal1;
     // End of variables declaration//GEN-END:variables
 }

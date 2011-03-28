@@ -6,6 +6,7 @@
 package hibernate;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -30,11 +31,11 @@ import javax.persistence.ManyToOne;
     @Column(name = "cantidad")
     private Integer cantidad;
     @Column(name = "subtotal")
-    private Long subtotal;
+    private BigDecimal subtotal;
     @Column(name = "iva")
-    private Long iva;
+    private BigDecimal iva;
     @Column(name = "total")
-    private java.lang.Long total;
+    private BigDecimal total;
     @JoinColumn(name = "producto", referencedColumnName = "codigo")
     @ManyToOne
     private Productos producto;
@@ -73,29 +74,31 @@ import javax.persistence.ManyToOne;
         this.cantidad = cantidad;
     }
 
-    public Long getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(Long subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public Long getIva() {
+    public BigDecimal getIva() {
         return iva;
     }
 
-    public void setIva(Long iva) {
+    public void setIva(BigDecimal iva) {
         this.iva = iva;
     }
 
-    public Long getTotal() {
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Long total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
+
+     
 
     public Productos getProducto() {
         return producto;
