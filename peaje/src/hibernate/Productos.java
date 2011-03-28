@@ -103,7 +103,7 @@ public class Productos implements Serializable {
 
     @Override
     public String toString() {
-        return "persisten.Productos[codigo=" + codigo + "]";
+        return descripcion + " "+ valor;
     }
 
 }

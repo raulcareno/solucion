@@ -65,7 +65,8 @@ public class frmFactura extends javax.swing.JDialog {
     private validaciones val;
     private principal principal;
     List<Tarifas> tarifario;
-String separador = File.separatorChar+"";
+    String separador = File.separatorChar + "";
+
     /** Creates new form frmProfesores */
     public frmFactura(java.awt.Frame parent, boolean modal, Administrador adm1) {
         super(parent, modal);
@@ -101,6 +102,8 @@ String separador = File.separatorChar+"";
             dias2.setVisible(false);
             panelencontrados.setVisible(false);
             panelencontrados1.setVisible(false);
+            panelencontrados2.setVisible(false);
+            llenarProductos();
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -111,6 +114,21 @@ String separador = File.separatorChar+"";
         try {
             perfilesList = new ArrayList<Global>();
             perfilesList = adm.query("Select o from Global as o where o.grupo = 'PER'");
+        } catch (Exception ex) {
+            Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void llenarProductos() {
+
+        try {
+            cmbProductos.removeAllItems();
+            List produc = adm.query("Select o from Productos as o");
+            for (Iterator it = produc.iterator(); it.hasNext();) {
+                Productos object = (Productos) it.next();
+                cmbProductos.addItem(object);
+
+            }
         } catch (Exception ex) {
             Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -229,14 +247,14 @@ String separador = File.separatorChar+"";
         cliente1 = new javax.swing.JFormattedTextField();
         btnNuevoCliente1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        productos = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
         btnAgregar1 = new javax.swing.JButton();
         btnSalir1 = new javax.swing.JButton();
         total1 = new javax.swing.JFormattedTextField();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
+        cmbProductos = new javax.swing.JComboBox();
+        btnAnadirProducto = new javax.swing.JButton();
 
         formaBusqueda.setLocationByPlatform(true);
         formaBusqueda.getContentPane().setLayout(null);
@@ -759,20 +777,30 @@ String separador = File.separatorChar+"";
         jPanel6.add(jPanel7);
         jPanel7.setBounds(10, 10, 280, 160);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        productos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Cod", "Descripcion", "Código Impreso", "Valor"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getColumn(0).setResizable(false);
-        jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        productos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                productosKeyPressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(productos);
+        productos.getColumnModel().getColumn(0).setResizable(false);
+        productos.getColumnModel().getColumn(0).setPreferredWidth(0);
 
         jPanel6.add(jScrollPane1);
         jScrollPane1.setBounds(300, 40, 320, 130);
@@ -828,13 +856,17 @@ String separador = File.separatorChar+"";
         jPanel6.add(jPanel8);
         jPanel8.setBounds(10, 190, 580, 70);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel6.add(jComboBox1);
-        jComboBox1.setBounds(300, 10, 220, 20);
+        jPanel6.add(cmbProductos);
+        cmbProductos.setBounds(300, 10, 220, 20);
 
-        jButton1.setText("Añadir");
-        jPanel6.add(jButton1);
-        jButton1.setBounds(530, 10, 63, 23);
+        btnAnadirProducto.setText("Añadir");
+        btnAnadirProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnadirProductoActionPerformed(evt);
+            }
+        });
+        jPanel6.add(btnAnadirProducto);
+        btnAnadirProducto.setBounds(530, 10, 63, 23);
 
         jTabbedPane1.addTab("VENTA DE TARJETAS", jPanel6);
 
@@ -908,15 +940,16 @@ String separador = File.separatorChar+"";
                 }
                 imprimir(facActual.getCodigo(), emp, dia);
                 adm.actualizar(emp);
-                 Thread cargar = new Thread() {
-                        public void run() {
-                              AbrirPuerta.abrir(empresaObj.getPuerto(),principal.out);
-                              System.out.println("SALIO PUERTA: "+principal.out);
-                             
-                        }
-                    };
-                    cargar.start();
- principal.noDisponibles();
+                Thread cargar = new Thread() {
+
+                    public void run() {
+                        AbrirPuerta.abrir(empresaObj.getPuerto(), principal.out);
+                        System.out.println("SALIO PUERTA: " + principal.out);
+
+                    }
+                };
+                cargar.start();
+                principal.noDisponibles();
                 ingreso.setDate(null);
                 salida.setDate(null);
                 placa.setText(null);
@@ -944,9 +977,9 @@ String separador = File.separatorChar+"";
             WorkingDirectory w = new WorkingDirectory();
             String ubicacionDirectorio = w.get() + separador;
             if (ubicacionDirectorio.contains("build")) {
-                ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }
-            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador+"reportes"+separador+"factura.jasper");
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura.jasper");
 
             Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
             ArrayList detalle = new ArrayList();
@@ -1113,73 +1146,73 @@ String separador = File.separatorChar+"";
         }
 }//GEN-LAST:event_busquedaTablaKeyPressed
 
-    void llenarFactura(Factura fac){
- dias.setVisible(false);
-                    dias1.setVisible(false);
-                    dias2.setVisible(false);
-                    if (fac.getFechafin() != null) {
+    void llenarFactura(Factura fac) {
+        dias.setVisible(false);
+        dias1.setVisible(false);
+        dias2.setVisible(false);
+        if (fac.getFechafin() != null) {
 
 //                        int valor = JOptionPane.showConfirmDialog(this, ,"JCINFORM",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "opcion 1", "opcion 2", "opcion 3" },"opcion 1" );
-                        int seleccion = JOptionPane.showOptionDialog(this, "TICKET YA FACTURADO \n ¿Desea volver a imprimir la factura?",
-                                "JCINFORM",
-                                JOptionPane.YES_NO_CANCEL_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null, // null para icono por defecto.
-                                new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
-                                "NO");
-                        System.out.println("" + seleccion);
+            int seleccion = JOptionPane.showOptionDialog(this, "TICKET YA FACTURADO \n ¿Desea volver a imprimir la factura?",
+                    "JCINFORM",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, // null para icono por defecto.
+                    new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
+                    "NO");
+            System.out.println("" + seleccion);
 
-                        if (0 == seleccion) {
-                            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                            imprimir(fac.getCodigo(), emp, 0);
-                        }
-                        noTicket.setText("");
-                        noTicket.requestFocusInWindow();
-                        return;
-                    }
-                    ingreso.setDate(fac.getFechaini());
-                    salida.setDate(new Date());
+            if (0 == seleccion) {
+                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                imprimir(fac.getCodigo(), emp, 0);
+            }
+            noTicket.setText("");
+            noTicket.requestFocusInWindow();
+            return;
+        }
+        ingreso.setDate(fac.getFechaini());
+        salida.setDate(new Date());
 
 
 
-                    Date act = new Date();
-                    int diasEntre = Days.daysBetween(new LocalDate(fac.getFechaini()), new LocalDate(new Date())).getDays();
+        Date act = new Date();
+        int diasEntre = Days.daysBetween(new LocalDate(fac.getFechaini()), new LocalDate(new Date())).getDays();
 
-                    System.out.println("" + diasEntre);
+        System.out.println("" + diasEntre);
 //                        LocalTime horaIni = new LocalTime(ingreso.getDate().getTime());
 //                        LocalTime horaFin = new LocalTime(salida.getDate().getTime());
-                    LocalTime horaIni = new LocalTime(new DateTime(ingreso.getDate()));
-                    LocalTime horaFin = new LocalTime(new DateTime(salida.getDate()));
+        LocalTime horaIni = new LocalTime(new DateTime(ingreso.getDate()));
+        LocalTime horaFin = new LocalTime(new DateTime(salida.getDate()));
 
 //                   int segundos = Seconds.secondsBetween(horaIni, horaFin).getSeconds();
-                   //float seg = segundos /60f;
-                   
-                    Integer minutos = (Minutes.minutesBetween(horaIni, horaFin).getMinutes());
-                    Integer horas = minutos / 60;
-                    if (minutos.intValue() < 0) {
+        //float seg = segundos /60f;
+
+        Integer minutos = (Minutes.minutesBetween(horaIni, horaFin).getMinutes());
+        Integer horas = minutos / 60;
+        if (minutos.intValue() < 0) {
 //                            horas = horas *-1 ;
 //                            horas += 24;
-                        horas = 0;
-                        minutos = 0;
+            horas = 0;
+            minutos = 0;
 
-                        dias.setVisible(true);
-                        dias1.setVisible(true);
-                        dias2.setVisible(true);
-                    }
-                    for (int i = 0; i < diasEntre; i++) {
-                        horas += 24;
-                        dias.setVisible(true);
-                        dias1.setVisible(true);
-                        dias2.setVisible(true);
-                    }
-                    dias1.setText("" + diasEntre);
+            dias.setVisible(true);
+            dias1.setVisible(true);
+            dias2.setVisible(true);
+        }
+        for (int i = 0; i < diasEntre; i++) {
+            horas += 24;
+            dias.setVisible(true);
+            dias1.setVisible(true);
+            dias2.setVisible(true);
+        }
+        dias1.setText("" + diasEntre);
 
-                    Float min = minutos / 60f;
-                    int indice = min.toString().indexOf(".");
-                    Float valorf = new Float("0" + min.toString().substring(indice));
-                    int valorMinutos = java.lang.Math.round((valorf * 60));
-                    act.setHours(horas);
-                    act.setMinutes(valorMinutos);
+        Float min = minutos / 60f;
+        int indice = min.toString().indexOf(".");
+        Float valorf = new Float("0" + min.toString().substring(indice));
+        int valorMinutos = java.lang.Math.round((valorf * 60));
+        act.setHours(horas);
+        act.setMinutes(valorMinutos);
 //                    act.setSeconds((int) ((minutos - seg)*(60f)));
 //                    if(horas.equals(0) && minutos.equals(0)){
 ////                        act.setSeconds(segundos);
@@ -1189,29 +1222,29 @@ String separador = File.separatorChar+"";
 //                        valorMinutos = 1;
 //                    }
 //                    act.setSeconds(segundos);
-                    tiempo.setDate(act);
-                    placa.setText(fac.getPlaca());
+        tiempo.setDate(act);
+        placa.setText(fac.getPlaca());
 
-                    BigDecimal aCobrar = new BigDecimal(0);
-                    for (int a = 0; a < horas; a++) {
-                        aCobrar = aCobrar.add(buscar(60));
+        BigDecimal aCobrar = new BigDecimal(0);
+        for (int a = 0; a < horas; a++) {
+            aCobrar = aCobrar.add(buscar(60));
 
-                    }
-                    
-                    if (valorMinutos > 0) {
-                        aCobrar = aCobrar.add(buscar(valorMinutos));
-                    }else{
-                        aCobrar = aCobrar.add(buscar(1));
-                        
-                    }
-                    total.setText(aCobrar.setScale(2, RoundingMode.UP) + "");
-                    codigo.setText(fac.getCodigo() + "");
-                    //tiempo.setDate(Hours.hoursBetween(horaIni, horaFin));
+        }
+
+        if (valorMinutos > 0) {
+            aCobrar = aCobrar.add(buscar(valorMinutos));
+        } else {
+            aCobrar = aCobrar.add(buscar(1));
+
+        }
+        total.setText(aCobrar.setScale(2, RoundingMode.UP) + "");
+        codigo.setText(fac.getCodigo() + "");
+        //tiempo.setDate(Hours.hoursBetween(horaIni, horaFin));
 
 //                    btnAgregar.requestFocusInWindow();
     }
 
-    public Double redondear(Double numero, int decimales){
+    public Double redondear(Double numero, int decimales) {
         try {
             BigDecimal d = new BigDecimal(numero);
             d = d.setScale(decimales);
@@ -1220,6 +1253,7 @@ String separador = File.separatorChar+"";
             return 0.0;
         }
     }
+
     @SuppressWarnings("static-access")
     private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
         // TODO add your handling code here:
@@ -1232,7 +1266,7 @@ String separador = File.separatorChar+"";
 
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + noTicket.getText() + "' ");
                 if (fac != null) {
-                   llenarFactura(fac);
+                    llenarFactura(fac);
                 } else {
                     ingreso.setDate(null);
                     salida.setDate(null);
@@ -1276,6 +1310,14 @@ String separador = File.separatorChar+"";
         nombres.setText(nCliente.getNombres());
         direccion.setText(nCliente.getDireccion());
         telefono.setText(nCliente.getTelefono());
+    }
+
+ public void llenarCliente2(Clientes nCliente) {
+        cliente1.setText("" + nCliente.getCodigo());
+        identificacion1.setText(nCliente.getIdentificacion());
+        nombres1.setText(nCliente.getNombres());
+        direccion1.setText(nCliente.getDireccion());
+        telefono1.setText(nCliente.getTelefono());
     }
 
     private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
@@ -1381,9 +1423,9 @@ String separador = File.separatorChar+"";
 
     private void encontrados1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encontrados1MouseClicked
         // TODO add your handling code here:
-          if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 2) {
             this.panelencontrados1.setVisible(false);
-          Factura fac = (Factura) this.encontrados1.getSelectedValue();
+            Factura fac = (Factura) this.encontrados1.getSelectedValue();
             llenarFactura(fac);
             noTicket.setText(fac.getTicket());
         }
@@ -1391,7 +1433,7 @@ String separador = File.separatorChar+"";
 
     private void encontrados1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontrados1KeyPressed
         // TODO add your handling code here:
-           if (evt.getKeyCode() == evt.VK_ENTER) {
+        if (evt.getKeyCode() == evt.VK_ENTER) {
             this.panelencontrados1.setVisible(false);
             Factura fac = (Factura) this.encontrados1.getSelectedValue();
             llenarFactura(fac);
@@ -1408,7 +1450,7 @@ String separador = File.separatorChar+"";
 
     private void placaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaKeyReleased
         // TODO add your handling code here:
-          if (!placa.getText().isEmpty()) {
+        if (!placa.getText().isEmpty()) {
             List<Factura> encon = adm.query("Select o from Factura as o   where o.fechafin is null  and o.placa like  '%" + placa.getText().trim() + "%' order by o.fecha ", 0, 10);
             if (encon.size() > 0) {
                 DefaultListModel dtm = new DefaultListModel();
@@ -1438,10 +1480,29 @@ String separador = File.separatorChar+"";
 
     private void encontrados2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encontrados2MouseClicked
         // TODO add your handling code here:
+         if (evt.getClickCount() == 2) {
+            this.panelencontrados2.setVisible(false);
+            Clientes est = (Clientes) this.encontrados2.getSelectedValue();
+            llenarCliente2(est);
+        }
     }//GEN-LAST:event_encontrados2MouseClicked
 
     private void encontrados2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontrados2KeyPressed
         // TODO add your handling code here:
+           if (evt.getKeyCode() == evt.VK_ENTER) {
+            this.panelencontrados2.setVisible(false);
+            Clientes est = (Clientes) this.encontrados2.getSelectedValue();
+            llenarCliente2(est);
+
+
+        }
+        if (evt.getKeyCode() == evt.VK_UP && encontrados2.getSelectedIndex() == 0) {
+            this.nombres1.requestFocusInWindow();
+        }
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            this.panelencontrados2.setVisible(false);
+
+        }
     }//GEN-LAST:event_encontrados2KeyPressed
 
     private void identificacion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identificacion1ActionPerformed
@@ -1450,31 +1511,182 @@ String separador = File.separatorChar+"";
 
     private void identificacion1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_identificacion1FocusLost
         // TODO add your handling code here:
+         try {
+            Clientes cliObj = (Clientes) adm.querySimple("Select o from Clientes as o "
+                    + "where o.identificacion like '" + identificacion1.getText().trim() + "%' ");
+            if (cliObj != null) {
+                cliente1.setText(cliObj.getCodigo() + "");
+                identificacion1.setText(cliObj.getIdentificacion());
+                nombres1.setText(cliObj.getNombres());
+                direccion1.setText(cliObj.getDireccion());
+                telefono1.setText(cliObj.getTelefono());
+            }
+
+        } catch (Exception e) {
+            System.out.println("BUSCAR CEDULA UNICA " + e);
+        }
     }//GEN-LAST:event_identificacion1FocusLost
 
     private void nombres1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyPressed
         // TODO add your handling code here:
+           if (evt.getKeyCode() == evt.VK_DOWN) {
+            encontrados2.setSelectedIndex(0);
+            encontrados2.requestFocusInWindow();
+        }
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            panelencontrados2.setVisible(false);
+        }
     }//GEN-LAST:event_nombres1KeyPressed
 
     private void nombres1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyReleased
         // TODO add your handling code here:
+           if (!nombres1.getText().isEmpty()) {
+
+            List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres.getText().trim() + "%' order by o.nombres ", 0, 10);
+            if (encon.size() > 0) {
+                DefaultListModel dtm = new DefaultListModel();
+                dtm.removeAllElements();
+                encontrados2.setModel(dtm);
+                int j = 0;
+                for (Clientes est : encon) {
+                    dtm.add(j, est);
+                    j++;
+                }
+                encontrados2.setModel(dtm);
+                this.panelencontrados2.setVisible(true);
+            } else {
+                DefaultListModel dtm = new DefaultListModel();
+                dtm.removeAllElements();
+                encontrados2.setModel(dtm);
+                this.panelencontrados2.setVisible(false);
+            }
+
+        } else {
+            DefaultListModel dtm = new DefaultListModel();
+            dtm.removeAllElements();
+            encontrados2.setModel(dtm);
+            this.panelencontrados2.setVisible(false);
+        }
     }//GEN-LAST:event_nombres1KeyReleased
 
     private void btnNuevoCliente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoCliente1ActionPerformed
         // TODO add your handling code here:
+            identificacion1.setEditable(true);
+        nombres1.setEditable(true);
+        direccion1.setEditable(true);
+        telefono1.setEditable(true);
+        llenarCliente2(new Clientes(0));
+//            cliente.setEditable(true);
+        identificacion1.requestFocusInWindow();
     }//GEN-LAST:event_btnNuevoCliente1ActionPerformed
 
     private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
         // TODO add your handling code here:
+        if (cliente1.getText().equals("0") && nombres1.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Falta el ingresar o seleccionar el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
+                    identificacion.requestFocusInWindow();
+                    return;
+                }
+                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                Factura facActual = new Factura();
+
+                if (cliente1.getText().equals("0")) {
+                    Clientes nuevoCl = new Clientes();
+                    Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
+                    nuevoCl.setCodigo(codigoC);
+                    nuevoCl.setDireccion(direccion.getText());
+                    nuevoCl.setIdentificacion(identificacion.getText());
+                    nuevoCl.setTelefono(telefono.getText());
+                    nuevoCl.setNombres(nombres.getText());
+                    adm.guardar(nuevoCl);
+                    identificacion1.setText("9999999999999");
+                    nombres1.setText("CONSUMIDOR FINAL");
+                    direccion1.setText("S/D");
+                    telefono1.setText("9999999999999");
+                    cliente1.setText("1");
+                    facActual.setCliente(nuevoCl);
+                } else {
+                    facActual.setCliente(new Clientes(new Integer(cliente.getText())));
+                }
+                Double totalv  = Double.valueOf(total1.getText());
+                Double subtotal  = (totalv * 100 ) / empresaObj.getIva();
+                Double iva = subtotal * (empresaObj.getIva()/100);
+                
+                 facActual.setSubtotal(new BigDecimal(subtotal));
+                 facActual.setIva(new BigDecimal(iva));
+                 facActual.setTotal(new BigDecimal(totalv));
+                adm.guardar(facActual);
+                Integer numero = new Integer(emp.getDocumentofac());
+                emp.setDocumentofac((numero + 1) + "");
+                int dia = 0;
+                try {
+                    dia = new Integer(dias1.getText());
+                } catch (Exception e) {
+                    dia = 0;
+                }
+                imprimir(facActual.getCodigo(), emp, dia);
+                adm.actualizar(emp);
+
+                Detalle det = new Detalle();
+                int filas = productos.getRowCount();
+                for (int i = 0; i < filas; i++) {
+                        det.setProducto(new Productos((Integer) productos.getValueAt(i, 0)));
+                        det.setDetalle((String) productos.getValueAt(i, 2));
+                        
+                        det.setTotal((Long) productos.getValueAt(i, 3));
+                        det.setFactura(facActual);
+                        adm.guardar(det);
+                    }
+
     }//GEN-LAST:event_btnAgregar1ActionPerformed
 
     private void btnSalir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir1ActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+        principal = null;
+        empresaObj = null;
+        System.gc();
     }//GEN-LAST:event_btnSalir1ActionPerformed
+  public void sumar() {
+        int filasNo = this.productos.getRowCount();
+        double suma = 0.0;
+        for (int i = 0; i < filasNo; i++) {
+            double valor = Double.parseDouble(this.productos.getValueAt(i, 3).toString());
+            suma += valor;
+
+        }
+        this.total1.setText(redondear(suma, 2) + "");
+    }
+    private void btnAnadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirProductoActionPerformed
+        // TODO add your handling code here:
+        Productos asigRub = (Productos) cmbProductos.getSelectedItem();
+        DefaultTableModel dtm = (DefaultTableModel) this.productos.getModel();
+        Object[] obj = new Object[10];
+        obj[0] = asigRub.getCodigo();
+        obj[1] = asigRub.getDescripcion();
+        obj[2] = "";
+        obj[3] = asigRub.getValor();
+        dtm.addRow(obj);
+        productos.setModel(dtm);
+         sumar();
+    }//GEN-LAST:event_btnAnadirProductoActionPerformed
+
+    private void productosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_productosKeyPressed
+        // TODO add your handling code here:
+          if (evt.getKeyCode() == evt.VK_DELETE) {
+            int fil = productos.getSelectedRow();
+            DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
+            dtm.removeRow(fil);
+            productos.setModel(dtm);
+            this.sumar();
+           
+        }
+    }//GEN-LAST:event_productosKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
+    private javax.swing.JButton btnAnadirProducto;
     private javax.swing.JButton btnNuevoCliente;
     private javax.swing.JButton btnNuevoCliente1;
     private javax.swing.JButton btnSalir;
@@ -1482,6 +1694,7 @@ String separador = File.separatorChar+"";
     private javax.swing.JTable busquedaTabla;
     private javax.swing.JFormattedTextField cliente;
     private javax.swing.JFormattedTextField cliente1;
+    private javax.swing.JComboBox cmbProductos;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JLabel dias;
@@ -1496,8 +1709,6 @@ String separador = File.separatorChar+"";
     private javax.swing.JFormattedTextField identificacion;
     private javax.swing.JFormattedTextField identificacion1;
     private com.toedter.calendar.JDateChooser ingreso;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1536,7 +1747,6 @@ String separador = File.separatorChar+"";
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JFormattedTextField noTicket;
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField nombres1;
@@ -1544,6 +1754,7 @@ String separador = File.separatorChar+"";
     private javax.swing.JPanel panelencontrados1;
     private javax.swing.JPanel panelencontrados2;
     private javax.swing.JFormattedTextField placa;
+    private javax.swing.JTable productos;
     private com.toedter.calendar.JDateChooser salida;
     private javax.swing.JFormattedTextField telefono;
     private javax.swing.JFormattedTextField telefono1;
