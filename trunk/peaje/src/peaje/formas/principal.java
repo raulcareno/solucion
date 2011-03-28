@@ -2269,7 +2269,7 @@ public class principal extends javax.swing.JFrame {
                 return;
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
-            usu.setSize(606, 354);
+            usu.setSize(659, 411);
             usu.setLocation(240, 120);
             usu.show();
         } catch (Exception ex) {

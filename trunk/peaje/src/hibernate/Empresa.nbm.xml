@@ -19,6 +19,7 @@
     <property column="impresora" name="impresora" type="java.lang.String"/>
     <property column="impresora2" name="impresora2" type="java.lang.String"/>
     <property column="puerto" name="puerto" type="java.lang.String"/>
+    <property column="iva" name="iva" type="java.lang.Double"/>
     <property column="puerto1" name="puerto1" type="java.lang.String"/>
     <property column="puerto2" name="puerto2" type="java.lang.String"/>
     <property column="puerto3" name="puerto3" type="java.lang.String"/>
@@ -26,6 +27,14 @@
     <property column="puerto5" name="puerto5" type="java.lang.String"/>
     <property column="puerto6" name="puerto6" type="java.lang.String"/>
     <property column="puerto7" name="puerto7" type="java.lang.String"/>
+    <property column="puerto8" name="puerto8" type="java.lang.String"/>
+    <property column="puerto9" name="puerto9" type="java.lang.String"/>
+    <property column="puerto10" name="puerto10" type="java.lang.String"/>
+    <property column="puerto11" name="puerto11" type="java.lang.String"/>
+    <property column="puerto12" name="puerto12" type="java.lang.String"/>
+    <property column="puerto13" name="puerto13" type="java.lang.String"/>
+    <property column="puerto14" name="puerto14" type="java.lang.String"/>
+
     <property column="activa1" name="activa1" type="java.lang.Boolean"/>
     <property column="activa2" name="activa2" type="java.lang.Boolean"/>
     <property column="activa3" name="activa3" type="java.lang.Boolean"/>
@@ -33,6 +42,14 @@
     <property column="activa5" name="activa5" type="java.lang.Boolean"/>
     <property column="activa6" name="activa6" type="java.lang.Boolean"/>
     <property column="activa7" name="activa7" type="java.lang.Boolean"/>
+    <property column="activa8" name="activa8" type="java.lang.Boolean"/>
+    <property column="activa9" name="activa9" type="java.lang.Boolean"/>
+    <property column="activa10" name="activa10" type="java.lang.Boolean"/>
+    <property column="activa11" name="activa11" type="java.lang.Boolean"/>
+    <property column="activa12" name="activa12" type="java.lang.Boolean"/>
+    <property column="activa13" name="activa13" type="java.lang.Boolean"/>
+    <property column="activa14" name="activa14" type="java.lang.Boolean"/>
+
     <property column="puerta1" name="puerta1" type="java.lang.String"/>
     <property column="puerta2" name="puerta2" type="java.lang.String"/>
     <property column="puerta3" name="puerta3" type="java.lang.String"/>
@@ -40,5 +57,13 @@
     <property column="puerta5" name="puerta5" type="java.lang.String"/>
     <property column="puerta6" name="puerta6" type="java.lang.String"/>
     <property column="puerta7" name="puerta7" type="java.lang.String"/>
+    <property column="puerta8" name="puerta8" type="java.lang.String"/>
+    <property column="puerta9" name="puerta9" type="java.lang.String"/>
+    <property column="puerta10" name="puerta10" type="java.lang.String"/>
+    <property column="puerta11" name="puerta11" type="java.lang.String"/>
+    <property column="puerta12" name="puerta12" type="java.lang.String"/>
+    <property column="puerta13" name="puerta13" type="java.lang.String"/>
+    <property column="puerta14" name="puerta14" type="java.lang.String"/>
+
   </class>
 </hibernate-mapping>
