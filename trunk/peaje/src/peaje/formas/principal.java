@@ -2,7 +2,6 @@ package peaje.formas;
 
 import java.awt.AWTException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
@@ -37,6 +36,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.math.BigDecimal;
+import javax.swing.ListModel;
 
 /**
  *
@@ -204,9 +205,13 @@ public class principal extends javax.swing.JFrame {
         telefono = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tarjetas = new javax.swing.JTable();
-        jLabel6 = new javax.swing.JLabel();
         btnNuevaTarjeta = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tarifas = new javax.swing.JList();
+        txtValor = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -415,7 +420,7 @@ public class principal extends javax.swing.JFrame {
         bindingGroup.addBinding(binding);
 
         jPanel4.add(telefono);
-        telefono.setBounds(80, 70, 220, 20);
+        telefono.setBounds(80, 70, 160, 20);
 
         tarjetas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -448,14 +453,10 @@ public class principal extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tarjetas);
 
         jPanel4.add(jScrollPane1);
-        jScrollPane1.setBounds(10, 120, 380, 150);
-
-        jLabel6.setText("Tarjetas");
-        jPanel4.add(jLabel6);
-        jLabel6.setBounds(20, 100, 70, 14);
+        jScrollPane1.setBounds(10, 180, 380, 90);
 
         btnNuevaTarjeta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/File3.gif"))); // NOI18N
-        btnNuevaTarjeta.setText("Nueva Tarjeta");
+        btnNuevaTarjeta.setText("Añadir Nueva Tarjeta");
         btnNuevaTarjeta.setEnabled(false);
         btnNuevaTarjeta.setMargin(new java.awt.Insets(1, 1, 1, 1));
         btnNuevaTarjeta.addActionListener(new java.awt.event.ActionListener() {
@@ -464,12 +465,36 @@ public class principal extends javax.swing.JFrame {
             }
         });
         jPanel4.add(btnNuevaTarjeta);
-        btnNuevaTarjeta.setBounds(80, 90, 100, 30);
+        btnNuevaTarjeta.setBounds(70, 150, 170, 30);
 
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel15.setText("Teléfono:");
         jPanel4.add(jLabel15);
         jLabel15.setBounds(10, 70, 60, 14);
+
+        jLabel7.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Valor Inc IVA:");
+        jPanel4.add(jLabel7);
+        jLabel7.setBounds(300, 100, 70, 14);
+
+        jLabel9.setForeground(new java.awt.Color(0, 51, 255));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setText("Tarifa: ");
+        jPanel4.add(jLabel9);
+        jLabel9.setBounds(20, 90, 50, 14);
+
+        tarifas.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                tarifasValueChanged(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tarifas);
+
+        jPanel4.add(jScrollPane4);
+        jScrollPane4.setBounds(80, 90, 220, 50);
+        jPanel4.add(txtValor);
+        txtValor.setBounds(310, 120, 50, 20);
 
         frmClientes.getContentPane().add(jPanel4);
         jPanel4.setBounds(10, 50, 400, 280);
@@ -986,12 +1011,12 @@ public class principal extends javax.swing.JFrame {
         btnIngresar.setBounds(70, 90, 120, 40);
 
         frmIngresarSistema.getContentPane().add(jPanel2);
-        jPanel2.setBounds(0, 40, 390, 150);
+        jPanel2.setBounds(0, 40, 380, 150);
 
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Acceso al Sistema");
         jPanel3.add(jLabel8);
@@ -1004,7 +1029,7 @@ public class principal extends javax.swing.JFrame {
         jLabel10.setBounds(10, 20, 300, 13);
 
         procesando.setBackground(new java.awt.Color(204, 204, 255));
-        procesando.setFont(new java.awt.Font("Tahoma", 0, 10));
+        procesando.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         procesando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
         procesando.setBorderPainted(false);
         procesando.setContentAreaFilled(false);
@@ -1015,9 +1040,9 @@ public class principal extends javax.swing.JFrame {
         procesando.setBounds(280, 0, 110, 40);
 
         frmIngresarSistema.getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 396, 40);
+        jPanel3.setBounds(0, 0, 380, 40);
 
-        frmIngresarSistema.setBounds(180, 220, 410, 220);
+        frmIngresarSistema.setBounds(180, 220, 390, 220);
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
@@ -1266,7 +1291,7 @@ public class principal extends javax.swing.JFrame {
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(usuarioLogeado, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+            .addComponent(usuarioLogeado, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1404,7 +1429,7 @@ public class principal extends javax.swing.JFrame {
 
         btnAccesos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lock.gif"))); // NOI18N
         btnAccesos.setMnemonic('S');
-        btnAccesos.setText("Accesos");
+        btnAccesos.setText("Privilegios");
         btnAccesos.setFocusable(false);
         btnAccesos.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnAccesos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1591,6 +1616,42 @@ public class principal extends javax.swing.JFrame {
                         System.out.println("ABIERTO: " + empresaObj.getPuerto7());
 //                        read.add(reader);
                     }
+
+                      if (portId.getName().equals(empresaObj.getSalida1()) && empresaObj.getActiva1()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: " + empresaObj.getSalida1());
+//                        read.add(reader);
+                    }
+                    if (portId.getName().equals(empresaObj.getSalida2()) && empresaObj.getActiva2()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: " + empresaObj.getSalida2());
+//                        read.add(reader);
+                    }
+                    if (portId.getName().equals(empresaObj.getSalida3()) && empresaObj.getActiva3()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: " + empresaObj.getSalida3());
+//                        read.add(reader);
+                    }
+                    if (portId.getName().equals(empresaObj.getSalida4()) && empresaObj.getActiva4()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: " + empresaObj.getSalida4());
+//                        read.add(reader);
+                    }
+                    if (portId.getName().equals(empresaObj.getSalida5()) && empresaObj.getActiva5()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: " + empresaObj.getSalida5());
+//                        read.add(reader);
+                    }
+                    if (portId.getName().equals(empresaObj.getSalida6()) && empresaObj.getActiva6()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: " + empresaObj.getSalida6());
+//                        read.add(reader);
+                    }
+                    if (portId.getName().equals(empresaObj.getSalida7()) && empresaObj.getActiva7()) {
+                        reader = new LeerTarjeta(portId, this);
+                        System.out.println("ABIERTO: " + empresaObj.getSalida7());
+//                        read.add(reader);
+                    }
 //                        else if (portId.getName().equals("COM10")) {
 //                            reader = new LeerTarjeta(portId, this);
 //                            read.add(reader);
@@ -1653,7 +1714,21 @@ public class principal extends javax.swing.JFrame {
         pXml.grabaDocumentoXML(textoXML);
 
     }
-
+    public void llenarCombo() {
+try {
+            List listado = adm.query("Select o from Productos as o ");
+             Object [] listData = new Object[listado.size()];
+            int i=0;
+            for (Iterator<Productos> it = listado.iterator(); it.hasNext();) {
+                Productos global = it.next();
+                listData[i]= global;
+                i++;
+            }
+            tarifas.setListData(listData);
+        }catch(Exception ex){
+            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void usuariotKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usuariotKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
@@ -1827,6 +1902,7 @@ public class principal extends javax.swing.JFrame {
 }//GEN-LAST:event_btnIngresarKeyPressed
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
+
         try {
             // TODO add your handling code here:
             frmClientes.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
@@ -1840,7 +1916,7 @@ public class principal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+ llenarCombo();
             frmClientes.setSize(441, 455);
             frmClientes.setLocation(240, 100);
             frmClientes.setModal(true);
@@ -1931,6 +2007,7 @@ public class principal extends javax.swing.JFrame {
                                 reg.setFechaini(new Date());
                                 reg.setTarjeta(tarje.getTarjeta());
                                 adm.guardar(reg);
+                                errores.setText("ENTRADA OK...!");
                                 //errores.setText("OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
                             }
                     }else{
@@ -1939,7 +2016,7 @@ public class principal extends javax.swing.JFrame {
                                 Registro reg = siHay.get(0);
                                 reg.setFechafin(new Date());
                                 adm.actualizar(reg);
-                                errores.setText("OK...!");
+                                errores.setText("SALIDA OK...!");
                             }else{
                                 Registro reg = new Registro();
                                 reg.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
@@ -2293,7 +2370,7 @@ public class principal extends javax.swing.JFrame {
                 return;
             }
             frmTarifas usu = new frmTarifas(this, true, this, adm);
-            usu.setSize(409, 413);
+            usu.setSize(409, 460);
             usu.setLocation(240, 100);
             usu.show();
         } catch (Exception ex) {
@@ -2527,11 +2604,12 @@ public class principal extends javax.swing.JFrame {
         buscarClientes.setSize(533, 300);
         buscarClientes.setLocation(250, 70);
         buscarClientes.show();
-        this.codigoBuscar.requestFocusInWindow();
+        
         DefaultTableModel dtm = (DefaultTableModel) busquedaTabla.getModel();
         dtm.getDataVector().removeAllElements();
         busquedaTabla.setModel(dtm);
         codigoBuscar.setText("");
+        this.codigoBuscar.requestFocusInWindow();
     }//GEN-LAST:event_btnBuscarActionPerformed
     public void habilitar(Boolean estado) {
         codigo.setEditable(estado);
@@ -2574,12 +2652,15 @@ public class principal extends javax.swing.JFrame {
                 btnBuscar.setEnabled(false);
 
             } else if (grabar == true) {
-                if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty()) {
+                if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty() || txtValor.getText().isEmpty() ) {
                     JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
                 } else {
                     if (clienteObj == null) {
                         clienteObj = new Clientes();
                     }
+                    clienteObj.setProducto((Productos)tarifas.getSelectedValue());
+                    Double valorv = Double.valueOf(txtValor.getText());
+                    clienteObj.setValor(new BigDecimal(valorv));
                     clienteObj.setDireccion(direccion.getText());
                     clienteObj.setNombres(nombres.getText());
                     clienteObj.setTelefono(telefono.getText());
@@ -2599,6 +2680,20 @@ public class principal extends javax.swing.JFrame {
                             adm.guardar(clienteObj);
                             formaTarjetas.setModal(true);
                             formaTarjetas.setSize(400, 388);
+                             tarjeta = new Tarjetas();
+                            tarjeta.setHabilitada(true);
+                            tarjeta.setLunes(false);
+                            tarjeta.setMartes(false);
+                            tarjeta.setMiercoles(false);
+                            tarjeta.setJueves(false);
+                            tarjeta.setViernes(false);
+                            tarjeta.setSabado(false);
+                            tarjeta.setDomingo(false);
+                            tarjeta.setHorainicio(new Date());
+                            tarjeta.setHorafin(new Date());
+                            tarjeta.setDesde(new Date());
+                            tarjeta.setHasta(new Date());
+                            llenarTarjeta();
                             formaTarjetas.show();
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
@@ -2775,13 +2870,26 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (evt.getClickCount() == 2) {
             try {
+                   Productos g = new Productos();
+            
                 int fila = busquedaTabla.getSelectedRow();
                 this.clienteObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
                 llenarTabla(clienteObj.getCodigo());
-
+                g  = clienteObj.getProducto();
                 buscarClientes.dispose();
                 bindingGroup.unbind();
                 bindingGroup.bind();
+
+                 ListModel datos = tarifas.getModel();
+                   for (int i = 0; i < datos.getSize(); i++) {
+                    Productos object = (Productos) datos.getElementAt(i);
+                       if(g.getCodigo().equals(object.getCodigo())){
+                            tarifas.setSelectedIndex(i);
+                        break;
+                       }
+                        }
+                 txtValor.setText(clienteObj.getValor()+"");
+
             } catch (Exception ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -2810,12 +2918,24 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             try {
+                Productos g = new Productos();
                 int fila = busquedaTabla.getSelectedRow();
                 this.clienteObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
                 llenarTabla(clienteObj.getCodigo());
+                g =  clienteObj.getProducto();
                 buscarClientes.dispose();
                 bindingGroup.unbind();
                 bindingGroup.bind();
+                 ListModel datos = tarifas.getModel();
+                   for (int i = 0; i < datos.getSize(); i++) {
+                    Productos object = (Productos) datos.getElementAt(i);
+                       if(g.getCodigo().equals(object.getCodigo())){
+                            tarifas.setSelectedIndex(i);
+                        break;
+                       }
+
+                    }
+                 txtValor.setText(clienteObj.getValor()+"");
             } catch (Exception ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -3062,7 +3182,7 @@ public class principal extends javax.swing.JFrame {
                     frmRegistrar.setTitle("Configuración del Sistema");
                     frmRegistrar.setUndecorated(false);
                     frmRegistrar.show();
-                    logear();
+                    logear(); 
                 }
 
             } else {
@@ -3076,6 +3196,15 @@ public class principal extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnReconfigurarActionPerformed
+
+    private void tarifasValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_tarifasValueChanged
+        // TODO add your handling code here:
+        //        listar();
+        //        tablaPerfilesRubros.repaint();
+        Productos pr = (Productos) tarifas.getSelectedValue();
+        txtValor.setText(pr.getValor()+"");
+        pr = null;
+}//GEN-LAST:event_tarifasValueChanged
 
     /**
      * @param args the command line arguments
@@ -3184,8 +3313,9 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -3200,6 +3330,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
@@ -3224,10 +3355,12 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JSpinner spConsumo;
     private javax.swing.JSpinner spIngreso;
     private javax.swing.JSpinner spSalida;
+    private javax.swing.JList tarifas;
     private javax.swing.JTable tarjetas;
     public javax.swing.JFormattedTextField tarjetatxt;
     private javax.swing.JFormattedTextField telefono;
     private javax.swing.JLabel totales;
+    private javax.swing.JTextField txtValor;
     private javax.swing.JFormattedTextField usuarioBase;
     private javax.swing.JButton usuarioLogeado;
     private javax.swing.JFormattedTextField usuariot;

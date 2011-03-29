@@ -232,7 +232,7 @@ public class Administrador {
             System.out.println("error al eliminar"+ e);
            s.getTransaction().rollback();
          } finally {
-            s.close();
+//            s.close();
         }
     }
       
@@ -246,7 +246,7 @@ public class Administrador {
             System.out.println("error al eliminar"+ e);
            s.getTransaction().rollback();
          } finally {
-            s.close();
+//            s.close();
         }
     }
 //

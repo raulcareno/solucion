@@ -653,7 +653,7 @@ public class frmFactura extends javax.swing.JDialog {
         total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         total.setText("0.0");
         total.setCaretColor(new java.awt.Color(0, 204, 0));
-        total.setFont(new java.awt.Font("Tahoma", 1, 36));
+        total.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jPanel4.add(total);
         total.setBounds(140, 10, 140, 50);
 
@@ -984,7 +984,13 @@ public class frmFactura extends javax.swing.JDialog {
                 facActual.setFechafin(fecSalida);
 
                 facActual.setNumero(emp.getDocumentofac());
-                facActual.setTotal(new BigDecimal(total.getText()));
+                Double ivav = ((empresaObj.getIva()+100)/100);
+                Double totalv = Double.parseDouble(total.getText());
+                Double subtotalv = totalv/ivav;
+                Double ivav1 = subtotalv* (empresaObj.getIva()/100);
+                facActual.setTotal(new BigDecimal(totalv));
+                facActual.setSubtotal(new BigDecimal(subtotalv));
+                facActual.setIva(new BigDecimal(ivav1));
 
                 Date fecTiempo = new Date();
                 fecTiempo.setHours(tiempo.getDate().getHours());
@@ -1092,7 +1098,7 @@ public class frmFactura extends javax.swing.JDialog {
             }
             job.setPrintService(services[selectedService]);
             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
-            MediaSizeName mediaSizeName = MediaSize.findMedia(4, 4, MediaPrintableArea.INCH);
+            MediaSizeName mediaSizeName = MediaSize.findMedia(7, 7, MediaPrintableArea.INCH);
             printRequestAttributeSet.add(mediaSizeName);
             printRequestAttributeSet.add(new Copies(1));
             JRPrintServiceExporter exporter;
@@ -1570,6 +1576,8 @@ public class frmFactura extends javax.swing.JDialog {
             this.panelencontrados2.setVisible(false);
             Clientes est = (Clientes) this.encontrados2.getSelectedValue();
             llenarCliente2(est);
+            cargarGrid(est.getProducto(),est.getValor());
+
         }
     }//GEN-LAST:event_encontrados2MouseClicked
 
@@ -1579,6 +1587,7 @@ public class frmFactura extends javax.swing.JDialog {
             this.panelencontrados2.setVisible(false);
             Clientes est = (Clientes) this.encontrados2.getSelectedValue();
             llenarCliente2(est);
+           cargarGrid(est.getProducto(),est.getValor());
 
 
         }
@@ -1594,7 +1603,19 @@ public class frmFactura extends javax.swing.JDialog {
     private void identificacion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identificacion1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_identificacion1ActionPerformed
+public void cargarGrid(Productos pro,BigDecimal valor){
+    Productos asigRub = pro;
+            DefaultTableModel dtm = (DefaultTableModel) this.productos.getModel();
+            Object[] obj = new Object[10];
+            obj[0] = asigRub.getCodigo();
+            obj[1] = new Integer(1);
+            obj[2] = asigRub.getDescripcion();
+            obj[3] = valor.setScale(2, RoundingMode.UP);
+            dtm.addRow(obj);
+            productos.setModel(dtm);
+            sumar();
 
+}
     private void identificacion1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_identificacion1FocusLost
         // TODO add your handling code here:
         try {
@@ -1606,6 +1627,7 @@ public class frmFactura extends javax.swing.JDialog {
                 nombres1.setText(cliObj.getNombres());
                 direccion1.setText(cliObj.getDireccion());
                 telefono1.setText(cliObj.getTelefono());
+                  cargarGrid(cliObj.getProducto(),cliObj.getValor());
             }
 
         } catch (Exception e) {
@@ -1704,6 +1726,7 @@ public class frmFactura extends javax.swing.JDialog {
         facActual.setIva(new BigDecimal(txtIva.getText()));
         facActual.setTotal(new BigDecimal(txtTotal1.getText()));
         facActual.setFecha(new Date());
+        facActual.setFechafin(new Date());
         facActual.setNumero(emp.getDocumentofac());
         adm.guardar(facActual);
         Integer numero = new Integer(emp.getDocumentofac());
@@ -1754,9 +1777,17 @@ public class frmFactura extends javax.swing.JDialog {
             BigDecimal valor = new BigDecimal(this.productos.getValueAt(i, 3).toString());
             suma  =suma.add(valor);
         }
-        BigDecimal subtotalv = suma;
-        BigDecimal ivav = subtotalv.multiply(new BigDecimal(empresaObj.getIva() / 100));
-        BigDecimal totalv = subtotalv.add(ivav);
+        Double totalv01 = suma.doubleValue();
+        Double iva01 = ((empresaObj.getIva()+100) / 100);
+        Double subtotalv01 = totalv01 / iva01;
+        Double iva02 = subtotalv01 * ((empresaObj.getIva()) / 100);
+        
+        BigDecimal subtotalv = new BigDecimal(subtotalv01);
+        BigDecimal ivav = new BigDecimal(iva02);
+        BigDecimal totalv = new BigDecimal(totalv01);
+//        BigDecimal subtotalv = suma;
+//        BigDecimal ivav = subtotalv.multiply(new BigDecimal(empresaObj.getIva() / 100));
+//        BigDecimal totalv = subtotalv.add(ivav);
         txtSubtotal.setText( subtotalv.setScale(2, RoundingMode.HALF_UP) + "");
         txtIva.setText(ivav.setScale(2, RoundingMode.HALF_UP) + "");
         txtTotal1.setText(totalv.setScale(2, RoundingMode.HALF_UP) + "");
