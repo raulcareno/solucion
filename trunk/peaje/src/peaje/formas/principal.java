@@ -2123,6 +2123,20 @@ public class principal extends javax.swing.JFrame {
             lapuertaaAbrir = empresaObj.getPuerta6();
         } else if (puertoqueViene.equals(empresaObj.getPuerto7())) {
             lapuertaaAbrir = empresaObj.getPuerta7();
+        }else if (puertoqueViene.equals(empresaObj.getSalida1())) {
+            lapuertaaAbrir = empresaObj.getPuerta1();
+        } else if (puertoqueViene.equals(empresaObj.getSalida2())) {
+            lapuertaaAbrir = empresaObj.getPuerta2();
+        } else if (puertoqueViene.equals(empresaObj.getSalida3())) {
+            lapuertaaAbrir = empresaObj.getPuerta3();
+        } else if (puertoqueViene.equals(empresaObj.getSalida4())) {
+            lapuertaaAbrir = empresaObj.getPuerta4();
+        } else if (puertoqueViene.equals(empresaObj.getSalida5())) {
+            lapuertaaAbrir = empresaObj.getPuerta5();
+        } else if (puertoqueViene.equals(empresaObj.getSalida6())) {
+            lapuertaaAbrir = empresaObj.getPuerta6();
+        } else if (puertoqueViene.equals(empresaObj.getSalida7())) {
+            lapuertaaAbrir = empresaObj.getPuerta7();
         }
         System.out.println("INI: " + (new Date()));
         AbrirPuerta.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
