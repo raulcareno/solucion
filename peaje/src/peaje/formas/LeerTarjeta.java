@@ -35,7 +35,7 @@ import sources.FacturaSource;
 
 public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
-    static CommPortIdentifier puertoId;
+    CommPortIdentifier puertoId;
 //  portList;
     InputStream inputStream;
     SerialPort serialPort;

@@ -6,16 +6,16 @@
 package hibernate;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
  
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -48,6 +48,11 @@ public class Clientes implements Serializable {
     @Column(name = "acceso")
     @Temporal(TemporalType.TIMESTAMP)
     private Date acceso;
+     @JoinColumn(name = "producto", referencedColumnName = "codigo")
+    @ManyToOne
+    private Productos producto;
+     @Column(name = "valor")
+    private BigDecimal valor;
 //
 //    @OneToMany(mappedBy = "cliente")
 //    @Column(name="tarjeta")
@@ -131,6 +136,24 @@ public class Clientes implements Serializable {
     public void setAcceso(Date acceso) {
         this.acceso = acceso;
     }
+
+    public Productos getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Productos producto) {
+        this.producto = producto;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+    
+
 //    public Collection<Tarjetas> getTarjetasCollection() {
 //        return tarjetasCollection;
 //    }

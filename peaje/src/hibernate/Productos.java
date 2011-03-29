@@ -35,7 +35,7 @@ public class Productos implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
     @Column(name = "valor")
-    private Long valor;
+    private Double valor;
     @Column(name = "bien")
     private Boolean bien;
     
@@ -63,13 +63,15 @@ public class Productos implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Long getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(Long valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
+
+  
 
     public Boolean getBien() {
         return bien;

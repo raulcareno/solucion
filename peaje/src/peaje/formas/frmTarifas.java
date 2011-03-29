@@ -13,6 +13,7 @@ package peaje.formas;
 
 import hibernate.Empresa;
 import hibernate.Global;
+import hibernate.Productos;
 import hibernate.Tarifas;
 import java.awt.Container;
 import java.math.BigDecimal;
@@ -32,6 +33,8 @@ import peaje.validaciones;
 public class frmTarifas extends javax.swing.JDialog {
    public boolean grabar = false;
     public boolean modificar = false;
+    public boolean grabar1 = false;
+    public boolean modificar1 = false;
     public List lista = null;
     public int posicion = 0;
     public int tamano = 0;
@@ -92,8 +95,30 @@ public class frmTarifas extends javax.swing.JDialog {
         } catch (Exception ex) {
             Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
 
+
+       llenarProductos();
+
+    }
+void llenarProductos(){
+      try {
+
+            List<Productos> tar = adm.query("Select o from Productos as o ");
+            DefaultTableModel dtm = (DefaultTableModel) tbTarifas.getModel();
+            dtm.getDataVector().removeAllElements();
+            for (Productos tarifas : tar) {
+                Object[] obj = new Object[5];
+                obj[0] = tarifas.getCodigo();
+                obj[1] = tarifas.getDescripcion();
+                obj[2] = tarifas.getValor();
+                dtm.addRow(obj);
+            }
+
+            tbTarifas.setModel(dtm);
+        } catch (Exception ex) {
+            Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
  
 
 
@@ -128,15 +153,15 @@ public class frmTarifas extends javax.swing.JDialog {
 
 // <editor-fold defaultstate="collapsed" desc="FUNCIONES ACCIONES">
     public void habilitar(Boolean estado) {
-      tarifario.setEnabled(estado);
+     
 
     }
 
     public void limpiar() {
         String estado = "";
-
-
-
+        txtCodigo.setText("");
+        txtNombre.setText("");
+        txtValor.setText("");
     }
 
     // </editor-fold >
@@ -153,11 +178,8 @@ public class frmTarifas extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tarifario = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel5 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         btnAgregar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
@@ -168,6 +190,25 @@ public class frmTarifas extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         minutos = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tarifario = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbTarifas = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtCodigo = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtValor = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
+        btnAgregar1 = new javax.swing.JButton();
+        btnModificar1 = new javax.swing.JButton();
+        btnEliminar1 = new javax.swing.JButton();
+        btnSalir1 = new javax.swing.JButton();
 
         setTitle("Tarifario");
         getContentPane().setLayout(null);
@@ -190,6 +231,100 @@ public class frmTarifas extends javax.swing.JDialog {
 
         getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 410, 40);
+
+        jPanel5.setLayout(null);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel4.setLayout(null);
+
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
+        btnAgregar.setMnemonic('N');
+        btnAgregar.setText("Nuevo");
+        btnAgregar.setEnabled(false);
+        btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregar.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnAgregar);
+        btnAgregar.setBounds(110, 10, 60, 50);
+
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
+        btnModificar.setMnemonic('M');
+        btnModificar.setText("Modificar");
+        btnModificar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnModificar.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnModificar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnModificar);
+        btnModificar.setBounds(170, 10, 60, 50);
+
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
+        btnEliminar.setMnemonic('E');
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setEnabled(false);
+        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEliminar.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnEliminar);
+        btnEliminar.setBounds(230, 10, 60, 50);
+
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
+        btnSalir.setMnemonic('S');
+        btnSalir.setText("Salir");
+        btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalir.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnSalir);
+        btnSalir.setBounds(290, 10, 60, 50);
+
+        jPanel5.add(jPanel4);
+        jPanel4.setBounds(10, 280, 370, 70);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Convertidor"));
+        jPanel2.setLayout(null);
+
+        horas.setText("0");
+        horas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                horasKeyReleased(evt);
+            }
+        });
+        jPanel2.add(horas);
+        horas.setBounds(50, 20, 30, 20);
+
+        jLabel1.setText("HORA EQUIVALE A ->");
+        jPanel2.add(jLabel1);
+        jLabel1.setBounds(90, 20, 120, 14);
+
+        minutos.setEditable(false);
+        minutos.setText("0");
+        jPanel2.add(minutos);
+        minutos.setBounds(210, 20, 60, 20);
+
+        jLabel3.setText(" MINUTOS");
+        jPanel2.add(jLabel3);
+        jLabel3.setBounds(270, 20, 80, 14);
+
+        jPanel5.add(jPanel2);
+        jPanel2.setBounds(10, 230, 370, 50);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
@@ -279,100 +414,135 @@ public class frmTarifas extends javax.swing.JDialog {
         jPanel1.add(jLabel5);
         jLabel5.setBounds(230, 10, 110, 20);
 
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 40, 370, 220);
+        jPanel5.add(jPanel1);
+        jPanel1.setBounds(10, 10, 370, 220);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPanel4.setLayout(null);
+        jTabbedPane1.addTab("Tarifas Diarias", jPanel5);
 
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
-        btnAgregar.setMnemonic('N');
-        btnAgregar.setText("Nuevo");
-        btnAgregar.setEnabled(false);
-        btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregar.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+        jPanel6.setLayout(null);
+
+        tbTarifas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Cod", "Nombre", "Valor"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbTarifas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbTarifasMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tbTarifas);
+        tbTarifas.getColumnModel().getColumn(0).setPreferredWidth(5);
+        tbTarifas.getColumnModel().getColumn(0).setMaxWidth(10);
+
+        jPanel6.add(jScrollPane2);
+        jScrollPane2.setBounds(20, 90, 330, 170);
+
+        jLabel4.setText("Codigo:");
+        jPanel6.add(jLabel4);
+        jLabel4.setBounds(30, 20, 50, 14);
+
+        jLabel6.setText("Nombre:");
+        jPanel6.add(jLabel6);
+        jLabel6.setBounds(30, 40, 50, 14);
+
+        jLabel7.setText("Valor:");
+        jPanel6.add(jLabel7);
+        jLabel7.setBounds(30, 60, 40, 14);
+
+        txtCodigo.setEditable(false);
+        txtCodigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
+                txtCodigoActionPerformed(evt);
             }
         });
-        jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(110, 10, 60, 50);
+        jPanel6.add(txtCodigo);
+        txtCodigo.setBounds(80, 20, 100, 20);
+        jPanel6.add(txtNombre);
+        txtNombre.setBounds(80, 40, 230, 20);
+        jPanel6.add(txtValor);
+        txtValor.setBounds(80, 60, 60, 20);
 
-        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
-        btnModificar.setMnemonic('M');
-        btnModificar.setText("Modificar");
-        btnModificar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnModificar.setMargin(new java.awt.Insets(1, 1, 1, 1));
-        btnModificar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel7.setLayout(null);
+
+        btnAgregar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
+        btnAgregar1.setMnemonic('N');
+        btnAgregar1.setText("Nuevo");
+        btnAgregar1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregar1.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnAgregar1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarActionPerformed(evt);
+                btnAgregar1ActionPerformed(evt);
             }
         });
-        jPanel4.add(btnModificar);
-        btnModificar.setBounds(170, 10, 60, 50);
+        jPanel7.add(btnAgregar1);
+        btnAgregar1.setBounds(80, 10, 60, 50);
 
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
-        btnEliminar.setMnemonic('E');
-        btnEliminar.setText("Eliminar");
-        btnEliminar.setEnabled(false);
-        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEliminar.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+        btnModificar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
+        btnModificar1.setMnemonic('M');
+        btnModificar1.setText("Modificar");
+        btnModificar1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnModificar1.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnModificar1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnModificar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
+                btnModificar1ActionPerformed(evt);
             }
         });
-        jPanel4.add(btnEliminar);
-        btnEliminar.setBounds(230, 10, 60, 50);
+        jPanel7.add(btnModificar1);
+        btnModificar1.setBounds(140, 10, 60, 50);
 
-        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
-        btnSalir.setMnemonic('S');
-        btnSalir.setText("Salir");
-        btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalir.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
+        btnEliminar1.setMnemonic('E');
+        btnEliminar1.setText("Eliminar");
+        btnEliminar1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEliminar1.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnEliminar1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalirActionPerformed(evt);
+                btnEliminar1ActionPerformed(evt);
             }
         });
-        jPanel4.add(btnSalir);
-        btnSalir.setBounds(290, 10, 60, 50);
+        jPanel7.add(btnEliminar1);
+        btnEliminar1.setBounds(200, 10, 60, 50);
 
-        getContentPane().add(jPanel4);
-        jPanel4.setBounds(20, 310, 370, 70);
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Convertidor"));
-        jPanel2.setLayout(null);
-
-        horas.setText("0");
-        horas.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                horasKeyReleased(evt);
+        btnSalir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
+        btnSalir1.setMnemonic('S');
+        btnSalir1.setText("Salir");
+        btnSalir1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalir1.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnSalir1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalir1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalir1ActionPerformed(evt);
             }
         });
-        jPanel2.add(horas);
-        horas.setBounds(50, 20, 30, 20);
+        jPanel7.add(btnSalir1);
+        btnSalir1.setBounds(260, 10, 60, 50);
 
-        jLabel1.setText("HORA EQUIVALE A ->");
-        jPanel2.add(jLabel1);
-        jLabel1.setBounds(90, 20, 120, 14);
+        jPanel6.add(jPanel7);
+        jPanel7.setBounds(20, 280, 330, 70);
 
-        minutos.setEditable(false);
-        minutos.setText("0");
-        jPanel2.add(minutos);
-        minutos.setBounds(210, 20, 60, 20);
+        jTabbedPane1.addTab("Tarifas Mensuales", jPanel6);
 
-        jLabel3.setText(" MINUTOS");
-        jPanel2.add(jLabel3);
-        jLabel3.setBounds(270, 20, 80, 14);
-
-        getContentPane().add(jPanel2);
-        jPanel2.setBounds(20, 260, 370, 50);
+        getContentPane().add(jTabbedPane1);
+        jTabbedPane1.setBounds(10, 50, 400, 400);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -409,7 +579,7 @@ public class frmTarifas extends javax.swing.JDialog {
                 this.btnModificar.setLabel("Cancelar");
                 grabar = true;
                 modificar = false;
-                habilitar(true);
+                 
                 limpiar();
                 btnAgregar.setMnemonic('G');
                 btnModificar.setMnemonic('C');
@@ -508,7 +678,8 @@ public class frmTarifas extends javax.swing.JDialog {
                 btnModificar.setMnemonic('C');
                 modificar = true;
                 grabar = true;
-                habilitar(true);
+
+                tarifario.setEnabled(true);
                 //            btnBuscar.setEnabled(false);
 
             }else{
@@ -525,7 +696,7 @@ public class frmTarifas extends javax.swing.JDialog {
             btnAgregar.setMnemonic('N');
             btnModificar.setMnemonic('M');
             btnAgregar.setEnabled(false);
-            habilitar(false);
+            tarifario.setEnabled(false);
             //            btnBuscar.setEnabled(true);
 
         }
@@ -560,26 +731,187 @@ public class frmTarifas extends javax.swing.JDialog {
         minutos.setText(min+"");
 }//GEN-LAST:event_horasKeyReleased
 
+    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigoActionPerformed
+
+    private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
+        // TODO add your handling code here:
+          // TODO add your handling code here:
+        if (principal.permisos.getAgregar()) {
+            if (grabar1 == false) {
+                
+                this.btnAgregar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
+                this.btnAgregar1.setLabel("Guardar");
+                this.btnModificar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
+                this.btnModificar1.setLabel("Cancelar");
+                grabar1 = true;
+                modificar1 = false;
+                habilitar(true);
+                limpiar();
+                
+                txtNombre.requestFocusInWindow();
+                btnAgregar1.setMnemonic('G');
+                btnModificar1.setMnemonic('C');
+                
+
+            } else if (grabar1 == true) {
+                if (txtNombre.getText().trim().isEmpty() || txtValor.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
+                } else {
+                    Productos usuarioObj = new Productos();
+
+                     usuarioObj.setDescripcion(txtNombre.getText());
+                     usuarioObj.setValor(Double.parseDouble(txtValor.getText()));
+                    if (modificar1) {
+                        try {
+                            usuarioObj.setCodigo(Integer.parseInt(txtCodigo.getText()));
+                            adm.actualizar(usuarioObj);
+
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+                            return;
+                        }
+                    } else {
+                        try {
+                            usuarioObj.setCodigo(null);
+                            adm.guardar(usuarioObj);
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+                            return;
+                        }
+                    }
+                    this.btnAgregar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
+                    this.btnAgregar1.setLabel("Nuevo");
+                    this.btnModificar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
+                    this.btnModificar1.setLabel("Modificar");
+                    btnAgregar1.setMnemonic('N');
+                    btnModificar1.setMnemonic('M');
+                    grabar1 = false;
+                    modificar1 = false;
+                    habilitar(false);
+                    llenarProductos();
+                    
+
+                }
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+        }
+
+    }//GEN-LAST:event_btnAgregar1ActionPerformed
+
+    private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
+        // TODO add your handling code here:
+         if (grabar1 == false) {
+            if(principal.permisos.getModificar()){
+
+                this.btnAgregar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
+                this.btnAgregar1.setLabel("Guardar");
+                btnAgregar1.setEnabled(true);
+                this.btnModificar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
+                this.btnModificar1.setLabel("Cancelar");
+                btnAgregar1.setMnemonic('G');
+                btnModificar1.setMnemonic('C');
+                modificar1 = true;
+                grabar1 = true;
+
+                habilitar(true);
+                //            btnBuscar.setEnabled(false);
+
+            }else{
+                JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+            }
+        } else {
+
+            grabar1 = false;
+            modificar1 = false;
+            this.btnAgregar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
+            this.btnAgregar1.setLabel("Nuevo");
+            this.btnModificar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
+            this.btnModificar1.setLabel("Modificar");
+            btnAgregar1.setMnemonic('N');
+            btnModificar1.setMnemonic('M');
+            btnAgregar1.setEnabled(false);
+
+            habilitar(false);
+            //            btnBuscar.setEnabled(true);
+
+        }
+    }//GEN-LAST:event_btnModificar1ActionPerformed
+
+    private void btnEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar1ActionPerformed
+        // TODO add your handling code here:
+          if (principal.permisos.getEliminar()) {        // TODO add your handling code here:
+            try {
+                adm.eliminarObjeto(Productos.class, new Integer(txtCodigo.getText()));
+                this.limpiar();
+                llenarProductos();
+
+            } catch (Exception ex) {
+                Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+        }
+    }//GEN-LAST:event_btnEliminar1ActionPerformed
+
+    private void btnSalir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir1ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        principal = null;
+        empresaObj = null;
+        System.gc();
+    }//GEN-LAST:event_btnSalir1ActionPerformed
+
+    private void tbTarifasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbTarifasMouseClicked
+        // TODO add your handling code here:
+        int fila = tbTarifas.getSelectedRow();
+        txtCodigo.setText((Integer) tbTarifas.getValueAt(fila,0)+"");
+        txtNombre.setText((String) tbTarifas.getValueAt(fila,1));
+        txtValor.setText((Double) tbTarifas.getValueAt(fila,2)+"");
+    }//GEN-LAST:event_tbTarifasMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnAgregar1;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnEliminar1;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnModificar1;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnSalir1;
     private javax.swing.JTextField horas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField minutos;
     private javax.swing.JTable tarifario;
+    private javax.swing.JTable tbTarifas;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -7,7 +7,7 @@
       <!--generator class="assigned"/-->
     </id>
     <property column="descripcion" name="descripcion" type="java.lang.String"/>
-    <property column="valor" name="valor" type="java.lang.Long"/>
+    <property column="valor" name="valor" type="java.lang.Double"/>
     <property column="bien" name="bien" type="java.lang.Boolean"/>
   </class>
 </hibernate-mapping>

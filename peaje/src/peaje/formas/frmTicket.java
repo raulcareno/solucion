@@ -379,7 +379,8 @@ String separador = File.separatorChar+"";
             }
             job.setPrintService(services[selectedService]);
             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
-            MediaSizeName mediaSizeName = MediaSize.findMedia(4, 4, MediaPrintableArea.INCH);
+            MediaSizeName mediaSizeName = MediaSize.findMedia(3.08F,3.70F, MediaPrintableArea.INCH);
+            //MediaSizeName mediaSizeName = MediaSize.findMedia(3F,3F, MediaPrintableArea.INCH);
             printRequestAttributeSet.add(mediaSizeName);
             printRequestAttributeSet.add(new Copies(1));
             JRPrintServiceExporter exporter;
