@@ -27,13 +27,13 @@
     <property column="puerto5" name="puerto5" type="java.lang.String"/>
     <property column="puerto6" name="puerto6" type="java.lang.String"/>
     <property column="puerto7" name="puerto7" type="java.lang.String"/>
-    <property column="puerto8" name="puerto8" type="java.lang.String"/>
-    <property column="puerto9" name="puerto9" type="java.lang.String"/>
-    <property column="puerto10" name="puerto10" type="java.lang.String"/>
-    <property column="puerto11" name="puerto11" type="java.lang.String"/>
-    <property column="puerto12" name="puerto12" type="java.lang.String"/>
-    <property column="puerto13" name="puerto13" type="java.lang.String"/>
-    <property column="puerto14" name="puerto14" type="java.lang.String"/>
+    <property column="salida1" name="salida1" type="java.lang.String"/>
+    <property column="salida2" name="salida2" type="java.lang.String"/>
+    <property column="salida3" name="salida3" type="java.lang.String"/>
+    <property column="salida4" name="salida4" type="java.lang.String"/>
+    <property column="salida5" name="salida5" type="java.lang.String"/>
+    <property column="salida6" name="salida6" type="java.lang.String"/>
+    <property column="salida7" name="salida7" type="java.lang.String"/>
     <property column="activa1" name="activa1" type="java.lang.Boolean"/>
     <property column="activa2" name="activa2" type="java.lang.Boolean"/>
     <property column="activa3" name="activa3" type="java.lang.Boolean"/>
