@@ -1919,6 +1919,39 @@ public class principal extends javax.swing.JFrame {
                     errores.setText("");
                 } else {
                     errores.setText("OK");
+                    String tipoIngreso = entradaosalida(puertoViene);
+                    List<Registro> siHay = adm.query("Select o from Registro as o where o.tarjeta = '"+tarje.getTarjeta()+"' and o.fechafin is null ");
+                    if(tipoIngreso.equals("e")){
+
+                            if(siHay.size()>0){
+                                errores.setText("OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
+                                return;
+                            }else{
+                                Registro reg = new Registro();
+                                reg.setFechaini(new Date());
+                                reg.setTarjeta(tarje.getTarjeta());
+                                adm.guardar(reg);
+                                //errores.setText("OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
+                            }
+                    }else{
+
+                        if(siHay.size()>0){
+                                Registro reg = siHay.get(0);
+                                reg.setFechafin(new Date());
+                                adm.actualizar(reg);
+                                errores.setText("OK...!");
+                            }else{
+                                Registro reg = new Registro();
+                                reg.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+                                 reg.setFechafin(new Date());// LA ENTRADA SE CREA UN REGISTRO DE ENTRADA Y SALIDA
+                                reg.setTarjeta(tarje.getTarjeta());
+                                adm.guardar(reg);
+                                errores.setText("OK...!");
+                            }
+
+                    }
+                    
+
                     Date fechaActual = new Date();
                     Boolean habilitada = tarje.getHabilitada();
                     int diaActual = fechaActual.getDay(); //1=Domingo, 2=Lunes 3=Martes,4=Miercoles,5=Jueves,6=Viernes
@@ -1974,12 +2007,9 @@ public class principal extends javax.swing.JFrame {
                             if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
                                 System.out.println("EN EL RANGO DE HORA");
                                 try {
-                                    List<Factura> siHay = adm.query("Select o from Factura as o where o.tarjeta = '"+tarje.getTarjeta()+"' and o.fechafin is null ");
-                                        if(siHay.size()>0){
-                                            errores.setText("OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
-                                        }else{
+                                    
                                                 abrirPuerta(puertoViene);
-                                        }
+
                                 } catch (Exception e) {
                                     System.out.println("PUERTO:" + puertoViene);
                                     System.out.println("ERROR AL ABRIR PUERTA: " + e);
@@ -2105,6 +2135,43 @@ public class principal extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public String entradaosalida(String puertoqueViene) {
+        String lapuertaaAbrir = "";
+        if (puertoqueViene.equals(empresaObj.getPuerto1())) {
+            lapuertaaAbrir = "e";
+        } else if (puertoqueViene.equals(empresaObj.getPuerto2())) {
+            lapuertaaAbrir = "e";
+        } else if (puertoqueViene.equals(empresaObj.getPuerto3())) {
+            lapuertaaAbrir = "e";
+        } else if (puertoqueViene.equals(empresaObj.getPuerto4())) {
+            lapuertaaAbrir = "e";
+        } else if (puertoqueViene.equals(empresaObj.getPuerto5())) {
+            lapuertaaAbrir = "e";
+        } else if (puertoqueViene.equals(empresaObj.getPuerto6())) {
+            lapuertaaAbrir = "e";
+        } else if (puertoqueViene.equals(empresaObj.getPuerto7())) {
+            lapuertaaAbrir = "e";
+        }else if (puertoqueViene.equals(empresaObj.getSalida1())) {
+            lapuertaaAbrir = "s";
+        } else if (puertoqueViene.equals(empresaObj.getSalida2())) {
+            lapuertaaAbrir = "s";
+        } else if (puertoqueViene.equals(empresaObj.getSalida3())) {
+            lapuertaaAbrir = "s";
+        } else if (puertoqueViene.equals(empresaObj.getSalida4())) {
+            lapuertaaAbrir = "s";
+        } else if (puertoqueViene.equals(empresaObj.getSalida5())) {
+            lapuertaaAbrir = "s";
+        } else if (puertoqueViene.equals(empresaObj.getSalida6())) {
+            lapuertaaAbrir = "s";
+        } else if (puertoqueViene.equals(empresaObj.getSalida7())) {
+            lapuertaaAbrir = "s";
+        }
+        return lapuertaaAbrir;
+
+//        LeerTarjeta le = new LeerTarjeta();
+//                le.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
     }
 
     void abrirPuerta(String puertoqueViene) {
