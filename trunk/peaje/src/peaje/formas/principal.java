@@ -1974,7 +1974,12 @@ public class principal extends javax.swing.JFrame {
                             if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
                                 System.out.println("EN EL RANGO DE HORA");
                                 try {
-                                    abrirPuerta(puertoViene);
+                                    List<Factura> siHay = adm.query("Select o from Factura as o where o.tarjeta = '"+tarje.getTarjeta()+"' and o.fechafin is null ");
+                                        if(siHay.size()>0){
+                                            errores.setText("OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
+                                        }else{
+                                                abrirPuerta(puertoViene);
+                                        }
                                 } catch (Exception e) {
                                     System.out.println("PUERTO:" + puertoViene);
                                     System.out.println("ERROR AL ABRIR PUERTA: " + e);
@@ -1985,8 +1990,6 @@ public class principal extends javax.swing.JFrame {
                                 errores.setText("NO PUEDE INGRESAR EN ESTE HORARIO ");
                                 return;
                             }
-
-
 
                         } else {
                             //JOptionPane.showMessageDialog(getContentPane(), "Su Fecha de tarjeta expiró...! \n Cliente: ", "JCINFORM ", JOptionPane.ERROR_MESSAGE);
