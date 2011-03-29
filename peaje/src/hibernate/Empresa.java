@@ -54,20 +54,20 @@ public class Empresa implements Serializable {
     private String puerto6;
     @Column(name = "puerto7")
     private String puerto7;
-    @Column(name = "puerto8")
-    private String puerto8;
-    @Column(name = "puerto9")
-    private String puerto9;
-    @Column(name = "puerto10")
-    private String puerto10;
-    @Column(name = "puerto11")
-    private String puerto11;
-    @Column(name = "puerto12")
-    private String puerto12;
-    @Column(name = "puerto13")
-    private String puerto13;
-    @Column(name = "puerto14")
-    private String puerto14;
+    @Column(name = "salida1")
+    private String salida1;
+    @Column(name = "salida2")
+    private String salida2;
+    @Column(name = "salida3")
+    private String salida3;
+    @Column(name = "salida4")
+    private String salida4;
+    @Column(name = "salida5")
+    private String salida5;
+    @Column(name = "salida6")
+    private String salida6;
+    @Column(name = "salida7")
+    private String salida7;
     @Column(name = "activa1")
     private Boolean activa1;
     @Column(name = "activa2")
@@ -544,61 +544,63 @@ public class Empresa implements Serializable {
         this.puerta9 = puerta9;
     }
 
-    public String getPuerto10() {
-        return puerto10;
+    public String getSalida1() {
+        return salida1;
     }
 
-    public void setPuerto10(String puerto10) {
-        this.puerto10 = puerto10;
+    public void setSalida1(String salida1) {
+        this.salida1 = salida1;
     }
 
-    public String getPuerto11() {
-        return puerto11;
+    public String getSalida2() {
+        return salida2;
     }
 
-    public void setPuerto11(String puerto11) {
-        this.puerto11 = puerto11;
+    public void setSalida2(String salida2) {
+        this.salida2 = salida2;
     }
 
-    public String getPuerto12() {
-        return puerto12;
+    public String getSalida3() {
+        return salida3;
     }
 
-    public void setPuerto12(String puerto12) {
-        this.puerto12 = puerto12;
+    public void setSalida3(String salida3) {
+        this.salida3 = salida3;
     }
 
-    public String getPuerto13() {
-        return puerto13;
+    public String getSalida4() {
+        return salida4;
     }
 
-    public void setPuerto13(String puerto13) {
-        this.puerto13 = puerto13;
+    public void setSalida4(String salida4) {
+        this.salida4 = salida4;
     }
 
-    public String getPuerto14() {
-        return puerto14;
+    public String getSalida5() {
+        return salida5;
     }
 
-    public void setPuerto14(String puerto14) {
-        this.puerto14 = puerto14;
+    public void setSalida5(String salida5) {
+        this.salida5 = salida5;
     }
 
-    public String getPuerto8() {
-        return puerto8;
+    public String getSalida6() {
+        return salida6;
     }
 
-    public void setPuerto8(String puerto8) {
-        this.puerto8 = puerto8;
+    public void setSalida6(String salida6) {
+        this.salida6 = salida6;
     }
 
-    public String getPuerto9() {
-        return puerto9;
+    public String getSalida7() {
+        return salida7;
     }
 
-    public void setPuerto9(String puerto9) {
-        this.puerto9 = puerto9;
+    public void setSalida7(String salida7) {
+        this.salida7 = salida7;
     }
+
+     
 
   
     

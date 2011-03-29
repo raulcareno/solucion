@@ -87,6 +87,10 @@ public class frmEmpresa extends javax.swing.JDialog {
                 cmbEntrada2.removeAllItems();
                 cmbEntrada3.removeAllItems();
                 cmbEntrada4.removeAllItems();
+                cmbSalida1.removeAllItems();
+                cmbSalida2.removeAllItems();
+                cmbSalida3.removeAllItems();
+                cmbSalida4.removeAllItems();
                 cmbPuertoPrincipal.removeAllItems();
 //                cmbSalida1.removeAllItems();
 //                cmbSalida2.removeAllItems();
@@ -106,6 +110,11 @@ public class frmEmpresa extends javax.swing.JDialog {
                 cmbEntrada2.addItem(object);
                 cmbEntrada3.addItem(object);
                 cmbEntrada4.addItem(object);
+                cmbSalida1.addItem(object);
+                cmbSalida2.addItem(object);
+                cmbSalida3.addItem(object);
+                cmbSalida4.addItem(object);
+
                 cmbPuertoPrincipal.addItem(object);
 //                cmbSalida1.addItem(object);
 //                cmbSalida2.addItem(object);
@@ -177,12 +186,16 @@ public class frmEmpresa extends javax.swing.JDialog {
         cmbEntrada2.setEnabled(estado);
         cmbEntrada3.setEnabled(estado);
         cmbEntrada4.setEnabled(estado);
-        cmbImpresora.setEnabled(estado);
-        cmbPuertoPrincipal.setEnabled(estado);
         cmbSalida1.setEnabled(estado);
         cmbSalida2.setEnabled(estado);
         cmbSalida3.setEnabled(estado);
         cmbSalida4.setEnabled(estado);
+        cmbImpresora.setEnabled(estado);
+        cmbPuertoPrincipal.setEnabled(estado);
+        cmbPuerta1.setEnabled(estado);
+        cmbPuerta2.setEnabled(estado);
+        cmbPuerta3.setEnabled(estado);
+        cmbPuerta4.setEnabled(estado);
         chkActivo1.setEnabled(estado);
         chkActivo2.setEnabled(estado);
         chkActivo3.setEnabled(estado);
@@ -227,7 +240,14 @@ public class frmEmpresa extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        btnBuscar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         nombres = new javax.swing.JFormattedTextField();
@@ -244,36 +264,38 @@ public class frmEmpresa extends javax.swing.JDialog {
         jLabel9 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         cmbTicket = new javax.swing.JComboBox();
-        cmbEntrada1 = new javax.swing.JComboBox();
-        cmbSalida1 = new javax.swing.JComboBox();
-        cmbSalida2 = new javax.swing.JComboBox();
-        cmbEntrada2 = new javax.swing.JComboBox();
-        cmbSalida3 = new javax.swing.JComboBox();
-        cmbEntrada3 = new javax.swing.JComboBox();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        cmbEntrada4 = new javax.swing.JComboBox();
-        jLabel19 = new javax.swing.JLabel();
-        cmbSalida4 = new javax.swing.JComboBox();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         cmbImpresora = new javax.swing.JComboBox();
         jLabel20 = new javax.swing.JLabel();
         cmbPuertoPrincipal = new javax.swing.JComboBox();
+        iva = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        cmbEntrada1 = new javax.swing.JComboBox();
+        cmbPuerta1 = new javax.swing.JComboBox();
+        cmbPuerta2 = new javax.swing.JComboBox();
+        cmbEntrada2 = new javax.swing.JComboBox();
+        cmbPuerta3 = new javax.swing.JComboBox();
+        cmbEntrada3 = new javax.swing.JComboBox();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        cmbEntrada4 = new javax.swing.JComboBox();
+        jLabel19 = new javax.swing.JLabel();
+        cmbPuerta4 = new javax.swing.JComboBox();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         chkActivo1 = new javax.swing.JCheckBox();
         chkActivo2 = new javax.swing.JCheckBox();
         chkActivo3 = new javax.swing.JCheckBox();
         chkActivo4 = new javax.swing.JCheckBox();
-        iva = new javax.swing.JTextField();
-        jLabel22 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        btnBuscar = new javax.swing.JButton();
-        btnAgregar = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnSalir = new javax.swing.JButton();
+        cmbSalida1 = new javax.swing.JComboBox();
+        cmbSalida3 = new javax.swing.JComboBox();
+        cmbSalida2 = new javax.swing.JComboBox();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        cmbSalida4 = new javax.swing.JComboBox();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
 
         formaEmpresa.setLocationByPlatform(true);
         formaEmpresa.getContentPane().setLayout(null);
@@ -376,345 +398,6 @@ public class frmEmpresa extends javax.swing.JDialog {
         getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 600, 40);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPanel1.setLayout(null);
-
-        jLabel1.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("CI/RUC:");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(20, 10, 100, 14);
-
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Dirección:");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(20, 70, 100, 14);
-
-        nombres.setEditable(false);
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.nombre}"), nombres, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
-        nombres.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                nombresKeyPressed(evt);
-            }
-        });
-        jPanel1.add(nombres);
-        nombres.setBounds(130, 30, 220, 20);
-
-        direccion.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.direccion}"), direccion, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
-        direccion.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                direccionKeyPressed(evt);
-            }
-        });
-        jPanel1.add(direccion);
-        direccion.setBounds(130, 70, 220, 20);
-
-        jLabel12.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel12.setText("Nombres:");
-        jPanel1.add(jLabel12);
-        jLabel12.setBounds(20, 30, 100, 14);
-
-        codigo.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.ruc}"), codigo, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
-        codigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                codigoKeyPressed(evt);
-            }
-        });
-        jPanel1.add(codigo);
-        codigo.setBounds(130, 10, 100, 20);
-
-        razonsocial.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.razon}"), razonsocial, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
-        razonsocial.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                razonsocialKeyPressed(evt);
-            }
-        });
-        jPanel1.add(razonsocial);
-        razonsocial.setBounds(130, 50, 109, 20);
-
-        jLabel5.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("Razón Social:");
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(10, 50, 110, 14);
-
-        jLabel6.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("Teléfonos:");
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(20, 90, 100, 14);
-
-        jLabel7.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("IVA %");
-        jPanel1.add(jLabel7);
-        jLabel7.setBounds(160, 110, 110, 20);
-
-        telefono.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.telefonos}"), telefono, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
-        telefono.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                telefonoKeyPressed(evt);
-            }
-        });
-        jPanel1.add(telefono);
-        telefono.setBounds(130, 90, 110, 20);
-
-        parqueaderos.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.parqueaderos}"), parqueaderos, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
-        parqueaderos.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                parqueaderosKeyPressed(evt);
-            }
-        });
-        jPanel1.add(parqueaderos);
-        parqueaderos.setBounds(130, 110, 40, 20);
-
-        cmbFactura.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.impfactura}"), cmbFactura, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(cmbFactura);
-        cmbFactura.setBounds(130, 150, 240, 20);
-
-        jLabel9.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("No. Parqueaderos:");
-        jPanel1.add(jLabel9);
-        jLabel9.setBounds(-10, 110, 130, 14);
-
-        jLabel13.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel13.setText("Imp. Ticket:");
-        jPanel1.add(jLabel13);
-        jLabel13.setBounds(10, 130, 110, 14);
-
-        cmbTicket.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.impticket}"), cmbTicket, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(cmbTicket);
-        cmbTicket.setBounds(130, 130, 240, 20);
-
-        cmbEntrada1.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto1}"), cmbEntrada1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(cmbEntrada1);
-        cmbEntrada1.setBounds(120, 240, 60, 20);
-
-        cmbSalida1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
-        cmbSalida1.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta1}"), cmbSalida1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(cmbSalida1);
-        cmbSalida1.setBounds(190, 240, 37, 20);
-
-        cmbSalida2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
-        cmbSalida2.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta2}"), cmbSalida2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(cmbSalida2);
-        cmbSalida2.setBounds(190, 260, 37, 20);
-
-        cmbEntrada2.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto2}"), cmbEntrada2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(cmbEntrada2);
-        cmbEntrada2.setBounds(120, 260, 60, 20);
-
-        cmbSalida3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
-        cmbSalida3.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta3}"), cmbSalida3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(cmbSalida3);
-        cmbSalida3.setBounds(190, 280, 37, 20);
-
-        cmbEntrada3.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto3}"), cmbEntrada3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(cmbEntrada3);
-        cmbEntrada3.setBounds(120, 280, 60, 20);
-
-        jLabel14.setText("1:");
-        jPanel1.add(jLabel14);
-        jLabel14.setBounds(100, 240, 20, 14);
-
-        jLabel15.setText("4:");
-        jPanel1.add(jLabel15);
-        jLabel15.setBounds(100, 300, 20, 14);
-
-        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel16.setText("PUERTO LECTORA");
-        jPanel1.add(jLabel16);
-        jLabel16.setBounds(80, 220, 110, 20);
-
-        cmbEntrada4.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto4}"), cmbEntrada4, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(cmbEntrada4);
-        cmbEntrada4.setBounds(120, 300, 60, 20);
-
-        jLabel19.setText("2:");
-        jPanel1.add(jLabel19);
-        jLabel19.setBounds(100, 260, 20, 14);
-
-        cmbSalida4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
-        cmbSalida4.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta4}"), cmbSalida4, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(cmbSalida4);
-        cmbSalida4.setBounds(190, 300, 37, 20);
-
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel21.setText("ABRE PUERTA");
-        jPanel1.add(jLabel21);
-        jLabel21.setBounds(190, 220, 90, 20);
-
-        jLabel3.setText("3:");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(100, 280, 20, 14);
-
-        jLabel18.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel18.setText("Imp. Factura:");
-        jPanel1.add(jLabel18);
-        jLabel18.setBounds(10, 150, 110, 14);
-
-        cmbImpresora.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.impresora}"), cmbImpresora, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(cmbImpresora);
-        cmbImpresora.setBounds(130, 170, 240, 20);
-
-        jLabel20.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel20.setText("Impresora Botón:");
-        jPanel1.add(jLabel20);
-        jLabel20.setBounds(0, 170, 120, 14);
-
-        cmbPuertoPrincipal.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto}"), cmbPuertoPrincipal, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(cmbPuertoPrincipal);
-        cmbPuertoPrincipal.setBounds(130, 190, 60, 20);
-
-        chkActivo1.setText("Activo");
-        chkActivo1.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.activa1}"), chkActivo1, org.jdesktop.beansbinding.BeanProperty.create("selected"));
-        bindingGroup.addBinding(binding);
-
-        chkActivo1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkActivo1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(chkActivo1);
-        chkActivo1.setBounds(230, 240, 81, 23);
-
-        chkActivo2.setText("Activo");
-        chkActivo2.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.activa2}"), chkActivo2, org.jdesktop.beansbinding.BeanProperty.create("selected"));
-        bindingGroup.addBinding(binding);
-
-        chkActivo2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkActivo2ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(chkActivo2);
-        chkActivo2.setBounds(230, 260, 81, 23);
-
-        chkActivo3.setText("Activo");
-        chkActivo3.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.activa3}"), chkActivo3, org.jdesktop.beansbinding.BeanProperty.create("selected"));
-        bindingGroup.addBinding(binding);
-
-        chkActivo3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkActivo3ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(chkActivo3);
-        chkActivo3.setBounds(230, 280, 81, 23);
-
-        chkActivo4.setText("Activo");
-        chkActivo4.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.activa4}"), chkActivo4, org.jdesktop.beansbinding.BeanProperty.create("selected"));
-        bindingGroup.addBinding(binding);
-
-        chkActivo4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkActivo4ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(chkActivo4);
-        chkActivo4.setBounds(230, 300, 81, 23);
-
-        iva.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.iva}"), iva, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
-
-        jPanel1.add(iva);
-        iva.setBounds(280, 110, 59, 20);
-
-        jLabel22.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel22.setText("Puerto Tarjeta Princ.:");
-        jPanel1.add(jLabel22);
-        jLabel22.setBounds(10, 190, 110, 14);
-
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 40, 380, 330);
-
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
 
@@ -792,7 +475,413 @@ public class frmEmpresa extends javax.swing.JDialog {
         btnSalir.setBounds(290, 10, 60, 50);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(30, 380, 370, 70);
+        jPanel4.setBounds(30, 340, 380, 70);
+
+        jPanel2.setLayout(null);
+
+        jLabel1.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("CI/RUC:");
+        jPanel2.add(jLabel1);
+        jLabel1.setBounds(10, 10, 100, 14);
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setText("Dirección:");
+        jPanel2.add(jLabel2);
+        jLabel2.setBounds(10, 70, 100, 14);
+
+        nombres.setEditable(false);
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.nombre}"), nombres, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        nombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+        });
+        jPanel2.add(nombres);
+        nombres.setBounds(120, 30, 220, 20);
+
+        direccion.setEditable(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.direccion}"), direccion, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        direccion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                direccionKeyPressed(evt);
+            }
+        });
+        jPanel2.add(direccion);
+        direccion.setBounds(120, 70, 220, 20);
+
+        jLabel12.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel12.setText("Nombres:");
+        jPanel2.add(jLabel12);
+        jLabel12.setBounds(10, 30, 100, 14);
+
+        codigo.setEditable(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.ruc}"), codigo, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                codigoKeyPressed(evt);
+            }
+        });
+        jPanel2.add(codigo);
+        codigo.setBounds(120, 10, 100, 20);
+
+        razonsocial.setEditable(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.razon}"), razonsocial, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        razonsocial.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                razonsocialKeyPressed(evt);
+            }
+        });
+        jPanel2.add(razonsocial);
+        razonsocial.setBounds(120, 50, 109, 20);
+
+        jLabel5.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("Razón Social:");
+        jPanel2.add(jLabel5);
+        jLabel5.setBounds(0, 50, 110, 14);
+
+        jLabel6.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel6.setText("Teléfonos:");
+        jPanel2.add(jLabel6);
+        jLabel6.setBounds(10, 90, 100, 14);
+
+        jLabel7.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("IVA %");
+        jPanel2.add(jLabel7);
+        jLabel7.setBounds(150, 110, 110, 20);
+
+        telefono.setEditable(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.telefonos}"), telefono, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        telefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                telefonoKeyPressed(evt);
+            }
+        });
+        jPanel2.add(telefono);
+        telefono.setBounds(120, 90, 110, 20);
+
+        parqueaderos.setEditable(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.parqueaderos}"), parqueaderos, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        parqueaderos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                parqueaderosKeyPressed(evt);
+            }
+        });
+        jPanel2.add(parqueaderos);
+        parqueaderos.setBounds(120, 110, 40, 20);
+
+        cmbFactura.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.impfactura}"), cmbFactura, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel2.add(cmbFactura);
+        cmbFactura.setBounds(120, 150, 240, 20);
+
+        jLabel9.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setText("No. Parqueaderos:");
+        jPanel2.add(jLabel9);
+        jLabel9.setBounds(-10, 110, 130, 14);
+
+        jLabel13.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel13.setText("Imp. Ticket:");
+        jPanel2.add(jLabel13);
+        jLabel13.setBounds(0, 130, 110, 14);
+
+        cmbTicket.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.impticket}"), cmbTicket, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel2.add(cmbTicket);
+        cmbTicket.setBounds(120, 130, 240, 20);
+
+        jLabel18.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel18.setText("Imp. Factura:");
+        jPanel2.add(jLabel18);
+        jLabel18.setBounds(0, 150, 110, 14);
+
+        cmbImpresora.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.impresora}"), cmbImpresora, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel2.add(cmbImpresora);
+        cmbImpresora.setBounds(120, 170, 240, 20);
+
+        jLabel20.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel20.setText("Impresora Botón:");
+        jPanel2.add(jLabel20);
+        jLabel20.setBounds(0, 170, 120, 14);
+
+        cmbPuertoPrincipal.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto}"), cmbPuertoPrincipal, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel2.add(cmbPuertoPrincipal);
+        cmbPuertoPrincipal.setBounds(120, 190, 60, 20);
+
+        iva.setEditable(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.iva}"), iva, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        jPanel2.add(iva);
+        iva.setBounds(270, 110, 59, 20);
+
+        jLabel22.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel22.setText("Puerto Tarjeta Princ.:");
+        jPanel2.add(jLabel22);
+        jLabel22.setBounds(0, 190, 110, 14);
+
+        jTabbedPane1.addTab("DATOS DE LA EMPRESA", jPanel2);
+
+        jPanel5.setLayout(null);
+
+        cmbEntrada1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        cmbEntrada1.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto1}"), cmbEntrada1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel5.add(cmbEntrada1);
+        cmbEntrada1.setBounds(70, 50, 60, 20);
+
+        cmbPuerta1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
+        cmbPuerta1.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta1}"), cmbPuerta1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel5.add(cmbPuerta1);
+        cmbPuerta1.setBounds(130, 50, 37, 20);
+
+        cmbPuerta2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
+        cmbPuerta2.setSelectedIndex(1);
+        cmbPuerta2.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta2}"), cmbPuerta2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel5.add(cmbPuerta2);
+        cmbPuerta2.setBounds(130, 70, 37, 20);
+
+        cmbEntrada2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        cmbEntrada2.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto3}"), cmbEntrada2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel5.add(cmbEntrada2);
+        cmbEntrada2.setBounds(70, 70, 60, 20);
+
+        cmbPuerta3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
+        cmbPuerta3.setSelectedIndex(2);
+        cmbPuerta3.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta3}"), cmbPuerta3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel5.add(cmbPuerta3);
+        cmbPuerta3.setBounds(130, 90, 37, 20);
+
+        cmbEntrada3.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        cmbEntrada3.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto2}"), cmbEntrada3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel5.add(cmbEntrada3);
+        cmbEntrada3.setBounds(70, 90, 60, 20);
+
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel14.setText("Entrada 1: ");
+        jPanel5.add(jLabel14);
+        jLabel14.setBounds(10, 50, 60, 20);
+
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel15.setText("Entrada 4: ");
+        jPanel5.add(jLabel15);
+        jLabel15.setBounds(10, 110, 60, 20);
+
+        cmbEntrada4.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        cmbEntrada4.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto4}"), cmbEntrada4, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel5.add(cmbEntrada4);
+        cmbEntrada4.setBounds(70, 110, 60, 20);
+
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel19.setText("Entrada 3: ");
+        jPanel5.add(jLabel19);
+        jLabel19.setBounds(10, 90, 60, 20);
+
+        cmbPuerta4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
+        cmbPuerta4.setSelectedIndex(3);
+        cmbPuerta4.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta4}"), cmbPuerta4, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel5.add(cmbPuerta4);
+        cmbPuerta4.setBounds(130, 110, 37, 20);
+
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel21.setText("PUERTA");
+        jPanel5.add(jLabel21);
+        jLabel21.setBounds(130, 30, 50, 20);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Entrada 2: ");
+        jPanel5.add(jLabel3);
+        jLabel3.setBounds(10, 70, 60, 20);
+
+        chkActivo1.setText("Activo");
+        chkActivo1.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.activa1}"), chkActivo1, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        chkActivo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkActivo1ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(chkActivo1);
+        chkActivo1.setBounds(290, 50, 81, 23);
+
+        chkActivo2.setText("Activo");
+        chkActivo2.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.activa2}"), chkActivo2, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        chkActivo2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkActivo2ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(chkActivo2);
+        chkActivo2.setBounds(290, 70, 81, 23);
+
+        chkActivo3.setText("Activo");
+        chkActivo3.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.activa3}"), chkActivo3, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        chkActivo3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkActivo3ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(chkActivo3);
+        chkActivo3.setBounds(290, 90, 81, 23);
+
+        chkActivo4.setText("Activo");
+        chkActivo4.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.activa4}"), chkActivo4, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        chkActivo4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkActivo4ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(chkActivo4);
+        chkActivo4.setBounds(290, 110, 81, 23);
+
+        cmbSalida1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        cmbSalida1.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida1}"), cmbSalida1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel5.add(cmbSalida1);
+        cmbSalida1.setBounds(230, 50, 60, 19);
+
+        cmbSalida3.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        cmbSalida3.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida3}"), cmbSalida3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel5.add(cmbSalida3);
+        cmbSalida3.setBounds(230, 90, 60, 19);
+
+        cmbSalida2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        cmbSalida2.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida2}"), cmbSalida2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel5.add(cmbSalida2);
+        cmbSalida2.setBounds(230, 70, 60, 19);
+
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel23.setText("Salida 1: ");
+        jPanel5.add(jLabel23);
+        jLabel23.setBounds(170, 50, 60, 20);
+
+        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel24.setText("Salida 4: ");
+        jPanel5.add(jLabel24);
+        jLabel24.setBounds(170, 110, 60, 20);
+
+        cmbSalida4.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        cmbSalida4.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida4}"), cmbSalida4, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jPanel5.add(cmbSalida4);
+        cmbSalida4.setBounds(230, 110, 60, 19);
+
+        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel25.setText("Salida 3: ");
+        jPanel5.add(jLabel25);
+        jLabel25.setBounds(170, 90, 60, 20);
+
+        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel26.setText("Salida 2: ");
+        jPanel5.add(jLabel26);
+        jLabel26.setBounds(170, 70, 60, 20);
+
+        jTabbedPane1.addTab("PUERTAS Y LECTORAS", jPanel5);
+
+        getContentPane().add(jTabbedPane1);
+        jTabbedPane1.setBounds(30, 50, 380, 280);
 
         bindingGroup.bind();
 
@@ -827,11 +916,16 @@ public class frmEmpresa extends javax.swing.JDialog {
                     empresaObj.setPuerto2((String)cmbEntrada2.getSelectedItem());
                     empresaObj.setPuerto3((String)cmbEntrada3.getSelectedItem());
                     empresaObj.setPuerto4((String)cmbEntrada4.getSelectedItem());
+
+                    empresaObj.setSalida1((String)cmbSalida1.getSelectedItem());
+                    empresaObj.setSalida2((String)cmbSalida2.getSelectedItem());
+                    empresaObj.setSalida3((String)cmbSalida3.getSelectedItem());
+                    empresaObj.setSalida4((String)cmbSalida4.getSelectedItem());
                     
-                    empresaObj.setPuerta1((String)cmbSalida1.getSelectedItem());
-                    empresaObj.setPuerta2((String)cmbSalida2.getSelectedItem());
-                    empresaObj.setPuerta3((String)cmbSalida3.getSelectedItem());
-                    empresaObj.setPuerta4((String)cmbSalida4.getSelectedItem());
+                    empresaObj.setPuerta1((String)cmbPuerta1.getSelectedItem());
+                    empresaObj.setPuerta2((String)cmbPuerta2.getSelectedItem());
+                    empresaObj.setPuerta3((String)cmbPuerta3.getSelectedItem());
+                    empresaObj.setPuerta4((String)cmbPuerta4.getSelectedItem());
 
                     empresaObj.setPuerto((String)cmbPuertoPrincipal.getSelectedItem());
                     empresaObj.setImpresora((String)cmbImpresora.getSelectedItem());
@@ -898,17 +992,10 @@ public class frmEmpresa extends javax.swing.JDialog {
                 habilitar(true);
                 btnBuscar.setEnabled(false);
 
-                    cmbEntrada1.setEnabled(chkActivo1.isSelected()); cmbSalida1.setEnabled(chkActivo1.isSelected());
-
-
-                    cmbEntrada2.setEnabled(chkActivo2.isSelected()); cmbSalida2.setEnabled(chkActivo2.isSelected());
-
-
-                    cmbEntrada3.setEnabled(chkActivo3.isSelected()); cmbSalida3.setEnabled(chkActivo3.isSelected());
-
-
-
-                    cmbEntrada4.setEnabled(chkActivo4.isSelected()); cmbSalida4.setEnabled(chkActivo4.isSelected());
+                    cmbEntrada1.setEnabled(chkActivo1.isSelected()); cmbPuerta1.setEnabled(chkActivo1.isSelected());cmbSalida1.setEnabled(chkActivo1.isSelected());
+                    cmbEntrada2.setEnabled(chkActivo2.isSelected()); cmbPuerta2.setEnabled(chkActivo2.isSelected());cmbSalida2.setEnabled(chkActivo2.isSelected());
+                    cmbEntrada3.setEnabled(chkActivo3.isSelected()); cmbPuerta3.setEnabled(chkActivo3.isSelected());cmbSalida3.setEnabled(chkActivo3.isSelected());
+                    cmbEntrada4.setEnabled(chkActivo4.isSelected()); cmbPuerta4.setEnabled(chkActivo4.isSelected());cmbSalida4.setEnabled(chkActivo4.isSelected());
                  
 
             } else {
@@ -1103,25 +1190,29 @@ public class frmEmpresa extends javax.swing.JDialog {
         // TODO add your handling code here:
 
         cmbEntrada1.setEnabled(chkActivo1.isSelected());
+        cmbPuerta1.setEnabled(chkActivo1.isSelected());
         cmbSalida1.setEnabled(chkActivo1.isSelected());
     }//GEN-LAST:event_chkActivo1ActionPerformed
 
     private void chkActivo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkActivo2ActionPerformed
         // TODO add your handling code here:
         cmbEntrada2.setEnabled(chkActivo2.isSelected());
-        cmbSalida2.setEnabled(chkActivo2.isSelected());
+        cmbPuerta2.setEnabled(chkActivo2.isSelected());
+        cmbSalida2.setEnabled(chkActivo1.isSelected());
     }//GEN-LAST:event_chkActivo2ActionPerformed
 
     private void chkActivo3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkActivo3ActionPerformed
         // TODO add your handling code here:
         cmbEntrada3.setEnabled(chkActivo3.isSelected());
-        cmbSalida3.setEnabled(chkActivo3.isSelected());
+        cmbPuerta3.setEnabled(chkActivo3.isSelected());
+        cmbSalida3.setEnabled(chkActivo1.isSelected());
     }//GEN-LAST:event_chkActivo3ActionPerformed
 
     private void chkActivo4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkActivo4ActionPerformed
         // TODO add your handling code here:
         cmbEntrada4.setEnabled(chkActivo4.isSelected());
-        cmbSalida4.setEnabled(chkActivo4.isSelected());
+        cmbPuerta4.setEnabled(chkActivo4.isSelected());
+        cmbSalida4.setEnabled(chkActivo1.isSelected());
     }//GEN-LAST:event_chkActivo4ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1141,6 +1232,10 @@ public class frmEmpresa extends javax.swing.JDialog {
     private javax.swing.JComboBox cmbEntrada4;
     private javax.swing.JComboBox cmbFactura;
     private javax.swing.JComboBox cmbImpresora;
+    private javax.swing.JComboBox cmbPuerta1;
+    private javax.swing.JComboBox cmbPuerta2;
+    private javax.swing.JComboBox cmbPuerta3;
+    private javax.swing.JComboBox cmbPuerta4;
     private javax.swing.JComboBox cmbPuertoPrincipal;
     private javax.swing.JComboBox cmbSalida1;
     private javax.swing.JComboBox cmbSalida2;
@@ -1160,7 +1255,6 @@ public class frmEmpresa extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -1168,6 +1262,10 @@ public class frmEmpresa extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1175,12 +1273,14 @@ public class frmEmpresa extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField parqueaderos;
     private javax.swing.JFormattedTextField razonsocial;

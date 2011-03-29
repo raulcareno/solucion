@@ -1017,7 +1017,7 @@ public class principal extends javax.swing.JFrame {
         frmIngresarSistema.getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 396, 40);
 
-        frmIngresarSistema.setBounds(260, 230, 410, 220);
+        frmIngresarSistema.setBounds(180, 220, 410, 220);
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
@@ -1054,7 +1054,7 @@ public class principal extends javax.swing.JFrame {
         jPanel10.add(tarjetatxt);
         tarjetatxt.setBounds(20, 40, 190, 20);
 
-        spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
         spIngreso.setEnabled(false);
         spIngreso.setFocusable(false);
         jPanel10.add(spIngreso);
@@ -1078,7 +1078,7 @@ public class principal extends javax.swing.JFrame {
         jPanel10.add(salid);
         salid.setBounds(230, 40, 60, 20);
 
-        spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
         spConsumo.setEnabled(false);
         spConsumo.setFocusable(false);
         jPanel10.add(spConsumo);
@@ -1096,7 +1096,7 @@ public class principal extends javax.swing.JFrame {
         jPanel10.add(placa);
         placa.setBounds(20, 70, 180, 20);
 
-        errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        errores.setFont(new java.awt.Font("Tahoma", 1, 12));
         errores.setForeground(new java.awt.Color(255, 0, 0));
         errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel10.add(errores);
@@ -1266,7 +1266,7 @@ public class principal extends javax.swing.JFrame {
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(usuarioLogeado, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+            .addComponent(usuarioLogeado, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

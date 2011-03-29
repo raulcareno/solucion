@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" pageWidth="198" pageHeight="425" columnWidth="182" leftMargin="8" rightMargin="8" topMargin="8" bottomMargin="8">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" pageWidth="212" pageHeight="425" whenNoDataType="AllSectionsNoDetail" columnWidth="196" leftMargin="8" rightMargin="8" topMargin="8" bottomMargin="8" isIgnorePagination="true">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="14"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -33,7 +33,7 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="294" splitType="Stretch">
+		<band height="329" splitType="Stretch">
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField" x="44" y="84" width="100" height="18"/>
 				<box leftPadding="3">
@@ -43,7 +43,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{numero}]]></textFieldExpression>
 			</textField>
@@ -56,7 +56,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<text><![CDATA[Número:]]></text>
 			</staticText>
@@ -69,7 +69,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
@@ -82,7 +82,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ticket}]]></textFieldExpression>
 			</textField>
@@ -95,7 +95,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<text><![CDATA[Ticket:]]></text>
 			</staticText>
@@ -108,7 +108,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{cliente}]]></textFieldExpression>
 			</textField>
@@ -121,7 +121,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<text><![CDATA[Cliente:]]></text>
 			</staticText>
@@ -134,7 +134,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{ruc}]]></textFieldExpression>
 			</textField>
@@ -147,7 +147,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<text><![CDATA[CI/RUC:]]></text>
 			</staticText>
@@ -160,7 +160,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{ingreso}]]></textFieldExpression>
 			</textField>
@@ -173,7 +173,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{salida}]]></textFieldExpression>
 			</textField>
@@ -186,7 +186,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{tiempo}]]></textFieldExpression>
 			</textField>
@@ -198,8 +198,8 @@
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
-					<font fontName="Arial" size="9"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
@@ -212,7 +212,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<text><![CDATA[Ingreso:]]></text>
 			</staticText>
@@ -225,7 +225,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<text><![CDATA[Salida:]]></text>
 			</staticText>
@@ -238,7 +238,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<text><![CDATA[Tiempo:]]></text>
 			</staticText>
@@ -251,7 +251,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
@@ -264,7 +264,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{dias}]]></textFieldExpression>
 			</textField>
@@ -277,7 +277,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<text><![CDATA[IVA 12%:]]></text>
 			</staticText>
@@ -289,8 +289,8 @@
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
-					<font fontName="Arial" size="9"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{iva}]]></textFieldExpression>
 			</textField>
@@ -302,8 +302,8 @@
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
-					<font fontName="Arial" size="9"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{subtotal}]]></textFieldExpression>
 			</textField>
@@ -316,7 +316,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<text><![CDATA[Subtotal:]]></text>
 			</staticText>
@@ -329,14 +329,14 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<text><![CDATA[Telf.:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="139" y="156" width="43" height="20"/>
 				<textElement>
-					<font size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{telefono}]]></textFieldExpression>
 			</textField>
