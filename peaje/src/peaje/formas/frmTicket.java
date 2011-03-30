@@ -180,6 +180,9 @@ String separador = File.separatorChar+"";
 
         setTitle("Usuarios");
         addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
             }
@@ -212,7 +215,7 @@ String separador = File.separatorChar+"";
         fecha.setDateFormatString("dd/MM/yyyy HH:mm:ss");
         fecha.setEnabled(false);
         jPanel1.add(fecha);
-        fecha.setBounds(80, 30, 150, 20);
+        fecha.setBounds(80, 30, 160, 20);
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -234,10 +237,10 @@ String separador = File.separatorChar+"";
 
         noTicket.setEditable(false);
         jPanel1.add(noTicket);
-        noTicket.setBounds(80, 10, 150, 20);
+        noTicket.setBounds(80, 10, 20, 20);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
-        jLabel3.setText("Digite y luego (1) Enter");
+        jLabel3.setText("Digite y luego Enter");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(160, 50, 140, 20);
 
@@ -273,6 +276,11 @@ String separador = File.separatorChar+"";
                 btnAgregarActionPerformed(evt);
             }
         });
+        btnAgregar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregarKeyPressed(evt);
+            }
+        });
         jPanel4.add(btnAgregar);
         btnAgregar.setBounds(150, 10, 60, 50);
 
@@ -285,6 +293,11 @@ String separador = File.separatorChar+"";
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
+            }
+        });
+        btnSalir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalirKeyPressed(evt);
             }
         });
         jPanel4.add(btnSalir);
@@ -418,6 +431,7 @@ String separador = File.separatorChar+"";
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
+        
         this.setVisible(false);
         principal.contenedor.requestFocus();
         principal = null;
@@ -439,13 +453,13 @@ String separador = File.separatorChar+"";
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             btnAgregar.requestFocusInWindow();
-           
-
         }else if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            this.setVisible(false);
+            
+            principal.contenedor.requestFocus();
             principal = null;
             empresaObj = null;
             System.gc();
+            this.setVisible(false);
         }else{
             principal.tecla(evt.getKeyCode());
         }
@@ -456,6 +470,22 @@ String separador = File.separatorChar+"";
         // TODO add your handling code here:
          placa.setText(placa.getText().toUpperCase());
     }//GEN-LAST:event_placaKeyReleased
+
+    private void btnAgregarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregarKeyPressed
+        // TODO add your handling code here:
+            principal.tecla(evt.getKeyCode());
+        
+    }//GEN-LAST:event_btnAgregarKeyPressed
+
+    private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnSalirKeyPressed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_formKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

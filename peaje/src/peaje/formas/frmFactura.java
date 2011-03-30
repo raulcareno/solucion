@@ -52,7 +52,7 @@ import sources.FacturaSource;
  *
  * @author geovanny
  */
-public class frmFactura extends javax.swing.JDialog {
+public class frmFactura extends javax.swing.JInternalFrame  {
 
     /** Creates new form frmEmpresa */
     public boolean grabar = false;
@@ -71,7 +71,7 @@ public class frmFactura extends javax.swing.JDialog {
 
     /** Creates new form frmProfesores */
     public frmFactura(java.awt.Frame parent, boolean modal, Administrador adm1) {
-        super(parent, modal);
+//        super(parent, modal);
         llenarCombo();
         initComponents();
         this.setSize(615, 508);
@@ -87,7 +87,7 @@ public class frmFactura extends javax.swing.JDialog {
     }
 
     public frmFactura(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
-        super(parent, modal);
+//        super(parent, modal);
         try {
             this.desktopContenedor = lo.contenedor;
             adm = adm1;
@@ -344,6 +344,9 @@ public class frmFactura extends javax.swing.JDialog {
 
         setTitle("Cobrar Ticket");
         addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
             }
@@ -351,7 +354,6 @@ public class frmFactura extends javax.swing.JDialog {
         getContentPane().setLayout(null);
 
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
-        jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
@@ -367,8 +369,13 @@ public class frmFactura extends javax.swing.JDialog {
         jLabel10.setBounds(10, 20, 290, 13);
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 660, 40);
+        jPanel3.setBounds(0, 0, 650, 40);
 
+        jPanel5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel5KeyPressed(evt);
+            }
+        });
         jPanel5.setLayout(null);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -638,6 +645,11 @@ public class frmFactura extends javax.swing.JDialog {
                 btnAgregarActionPerformed(evt);
             }
         });
+        btnAgregar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregarKeyPressed(evt);
+            }
+        });
         jPanel4.add(btnAgregar);
         btnAgregar.setBounds(440, 10, 60, 50);
 
@@ -652,6 +664,11 @@ public class frmFactura extends javax.swing.JDialog {
                 btnSalirActionPerformed(evt);
             }
         });
+        btnSalir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalirKeyPressed(evt);
+            }
+        });
         jPanel4.add(btnSalir);
         btnSalir.setBounds(500, 10, 60, 50);
 
@@ -661,7 +678,7 @@ public class frmFactura extends javax.swing.JDialog {
         total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         total.setText("0.0");
         total.setCaretColor(new java.awt.Color(0, 204, 0));
-        total.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        total.setFont(new java.awt.Font("Tahoma", 1, 36));
         jPanel4.add(total);
         total.setBounds(140, 10, 140, 50);
 
@@ -681,6 +698,11 @@ public class frmFactura extends javax.swing.JDialog {
 
         jTabbedPane1.addTab("TICKETS", jPanel5);
 
+        jPanel6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel6KeyPressed(evt);
+            }
+        });
         jPanel6.setLayout(null);
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -1142,6 +1164,7 @@ public class frmFactura extends javax.swing.JDialog {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
+        principal.contenedor.requestFocus();
         this.setVisible(false);
         principal = null;
         empresaObj = null;
@@ -1384,12 +1407,14 @@ public class frmFactura extends javax.swing.JDialog {
                 placa.setText(null);
                 tiempo.setDate(null);
             }
-        }
-        if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            this.setVisible(false);
+        }else if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            principal.contenedor.requestFocus();
             principal = null;
             empresaObj = null;
             System.gc();
+            this.setVisible(false);
+        }else{
+            principal.tecla(evt.getKeyCode()); 
         }
     }//GEN-LAST:event_noTicketKeyPressed
 
@@ -1778,6 +1803,7 @@ public void cargarGrid(Productos pro,BigDecimal valor){
 
     private void btnSalir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir1ActionPerformed
         // TODO add your handling code here:
+        principal.contenedor.requestFocus();
         this.setVisible(false);
         principal = null;
         empresaObj = null;
@@ -1837,6 +1863,32 @@ public void cargarGrid(Productos pro,BigDecimal valor){
 
         }
     }//GEN-LAST:event_productosKeyPressed
+
+    private void btnAgregarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregarKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode()); 
+    }//GEN-LAST:event_btnAgregarKeyPressed
+
+    private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode()); 
+    }//GEN-LAST:event_btnSalirKeyPressed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+           principal.tecla(evt.getKeyCode()); 
+    }//GEN-LAST:event_formKeyPressed
+
+    private void jPanel5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel5KeyPressed
+        // TODO add your handling code here:
+           principal.tecla(evt.getKeyCode()); 
+    }//GEN-LAST:event_jPanel5KeyPressed
+
+    private void jPanel6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel6KeyPressed
+        // TODO add your handling code here:
+           principal.tecla(evt.getKeyCode()); 
+    }//GEN-LAST:event_jPanel6KeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
@@ -1906,7 +1958,7 @@ public void cargarGrid(Productos pro,BigDecimal valor){
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JFormattedTextField noTicket;
+    public javax.swing.JFormattedTextField noTicket;
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField nombres1;
     private javax.swing.JPanel panelencontrados;
