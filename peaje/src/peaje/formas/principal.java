@@ -1052,7 +1052,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         });
         barraHerramients.add(barrera4);
 
-        barrera5.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera5.setForeground(new java.awt.Color(204, 102, 0));
         barrera5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera5.setText("F5");
@@ -1086,7 +1086,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         });
         barraHerramients.add(barrera6);
 
-        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera7.setForeground(new java.awt.Color(204, 102, 0));
         barrera7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera7.setText("F7");
@@ -1241,7 +1241,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         frmIngresarSistema.getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 380, 40);
 
-        frmIngresarSistema.setBounds(170, 180, 390, 220);
+        frmIngresarSistema.setBounds(170, 160, 390, 220);
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
@@ -1326,15 +1326,16 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         jPanel10.add(errores);
         errores.setBounds(20, 100, 360, 20);
 
-        jPanel10.setBounds(0, 60, 430, 130);
+        jPanel10.setBounds(0, 40, 430, 110);
         contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
+        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        usuarioLogeado.setForeground(new java.awt.Color(0, 102, 153));
         usuarioLogeado.setText("...");
         usuarioLogeado.setBorderPainted(false);
         usuarioLogeado.setContentAreaFilled(false);
         usuarioLogeado.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        usuarioLogeado.setBounds(10, 10, 388, -1);
+        usuarioLogeado.setBounds(10, 10, 420, 23);
         contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jSplitPane1.setRightComponent(contenedor);
@@ -1558,7 +1559,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
                 .addContainerGap()
                 .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(contenedor2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                    .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
                     .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
                     .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
                 .addContainerGap())
@@ -1568,13 +1569,13 @@ public class principal extends javax.swing.JFrame implements KeyListener {
             .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(contenedor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(contenedor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel32)
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap(140, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -1779,7 +1780,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
             clave.setText("");
             frmIngresarSistema.setVisible(false);
             usuarioActual = usu;
-            usuarioLogeado.setText(usuarioActual.getNombres());
+            usuarioLogeado.setText("Usuario: "+usuarioActual.getNombres());
             List<Empresa> emp = adm.listar("Select o from Empresa as o ");
 
             this.empresaObj = emp.get(0);
@@ -3127,6 +3128,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         cargar.start();
 
 
+
     }//GEN-LAST:event_barrera1ActionPerformed
 
     private void tarjetatxtVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_tarjetatxtVetoableChange
@@ -3254,17 +3256,17 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         if (teclaPresionada == evt.VK_F1) {
             barrera1.doClick();
         } else if (teclaPresionada == evt.VK_F2) {
-            barrera1.doClick();
+            barrera2.doClick();
         } else if (teclaPresionada == evt.VK_F3) {
-            barrera1.doClick();
+            barrera3.doClick();
         } else if (teclaPresionada == evt.VK_F4) {
-            barrera1.doClick();
+            barrera4.doClick();
         } else if (teclaPresionada == evt.VK_F5) {
-            barrera1.doClick();
+            barrera5.doClick();
         } else if (teclaPresionada == evt.VK_F6) {
-            barrera1.doClick();
+            barrera6.doClick();
         } else if (teclaPresionada == evt.VK_F7) {
-            barrera1.doClick();
+            barrera7.doClick();
         } else if (teclaPresionada == evt.VK_F8) {//ABRIR CLIENTES
             btnClientes.doClick();
         } else if (teclaPresionada == evt.VK_F9) {//ABRIR TICKETS
