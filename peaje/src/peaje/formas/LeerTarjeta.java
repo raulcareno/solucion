@@ -42,7 +42,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     Thread readThread;
     public String tarjeta;
     principal princip;
-    Administrador adm = new Administrador();
+     Administrador adm = new Administrador();
     String separador = File.separatorChar + "";
   public LeerTarjeta() {
     }
