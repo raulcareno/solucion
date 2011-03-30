@@ -1016,7 +1016,7 @@ public class principal extends javax.swing.JFrame {
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Acceso al Sistema");
         jPanel3.add(jLabel8);
@@ -1029,7 +1029,7 @@ public class principal extends javax.swing.JFrame {
         jLabel10.setBounds(10, 20, 300, 13);
 
         procesando.setBackground(new java.awt.Color(204, 204, 255));
-        procesando.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        procesando.setFont(new java.awt.Font("Tahoma", 0, 10));
         procesando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
         procesando.setBorderPainted(false);
         procesando.setContentAreaFilled(false);
@@ -1291,7 +1291,7 @@ public class principal extends javax.swing.JFrame {
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(usuarioLogeado, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+            .addComponent(usuarioLogeado, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1728,47 +1728,7 @@ try {
         }catch(Exception ex){
             Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    private void usuariotKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usuariotKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_ENTER) {
-            usuariot.nextFocus();
-        }
-}//GEN-LAST:event_usuariotKeyPressed
-
-    private void claveFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_claveFocusLost
-        // TODO add your handling code here:
-}//GEN-LAST:event_claveFocusLost
-
-    private void claveKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_claveKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_ENTER) {
-            Thread cargar = new Thread() {
-
-                public void run() {
-                    btnIngresar.doClick();
-                }
-            };
-            cargar.start();
-
-
-
-        }
-}//GEN-LAST:event_claveKeyPressed
-
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        try {
-            // TODO add your handling code here:
-            this.finalize();
-            this.hide();
-
-            System.exit(0);
-
-        } catch (Throwable ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-}//GEN-LAST:event_jButton9ActionPerformed
-    public void noDisponibles() {
+    }    public void noDisponibles() {
         totales.setText("TOTAL: " + empresaObj.getParqueaderos());
         Object con = adm.querySimple("Select count(o) from Factura as o"
                 + " where  o.fechafin is null  ");
@@ -1873,33 +1833,6 @@ try {
 
         }
     }
-
-    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        // TODO add your handling code here:
-
-        Thread cargar = new Thread() {
-
-            public void run() {
-                procesando.setVisible(true);
-                btnIngresar.setEnabled(false);
-                clave.setEditable(false);
-                usuariot.setEditable(false);
-                verificarUsuario();
-                procesando.setVisible(false);
-                btnIngresar.setEnabled(true);
-
-            }
-        };
-        cargar.start();
-
-
-//                Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
-
-}//GEN-LAST:event_btnIngresarActionPerformed
-
-    private void btnIngresarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnIngresarKeyPressed
-        // TODO add your handling code here:
-}//GEN-LAST:event_btnIngresarKeyPressed
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
 
@@ -2289,56 +2222,6 @@ try {
 //        LeerTarjeta le = new LeerTarjeta();
 //                le.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
     }
-
-    private void tarjetatxtPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tarjetatxtPropertyChange
-        //        try {
-//            // TODO add your handling code here:
-//            Tarjetas tarje = (Tarjetas) adm.buscarClave(tarjeta.getText(), Tarjetas.class);
-//            cliente.setText(tarje.getCliente().getNombres());
-//
-//        } catch (Exception ex) {
-//            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }//GEN-LAST:event_tarjetatxtPropertyChange
-
-    private void tarjetatxtVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_tarjetatxtVetoableChange
-        // TODO add your handling code here:
-//            try {
-//            // TODO add your handling code here:
-//            Tarjetas tarje = (Tarjetas) adm.buscarClave(tarjeta.getText(), Tarjetas.class);
-//            cliente.setText(tarje.getCliente().getNombres());
-//
-//        } catch (Exception ex) {
-//            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }//GEN-LAST:event_tarjetatxtVetoableChange
-
-    private void tarjetatxtCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_tarjetatxtCaretUpdate
-        // TODO add your handling code here:
-        try {
-            // TODO add your handling code here:
-            String noTarjeta001 = tarjetatxt.getText();
-            if (noTarjeta001.length() > 10) {
-                noTarjeta001 = noTarjeta001.substring(0, 10);
-            }
-            Tarjetas tarje = (Tarjetas) adm.buscarClave(noTarjeta001, Tarjetas.class);
-            try {
-                String cli = tarje.getTarjeta();
-            } catch (Exception e) {
-                tarje = null;
-            }
-            if (tarje != null) {
-                cliente.setText(tarje.getCliente().getNombres());
-            } else {
-                cliente.setText("");
-                placa.setText("");
-
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_tarjetatxtCaretUpdate
 
     private void btnEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpresaActionPerformed
         try {
@@ -2975,10 +2858,6 @@ try {
 
     }//GEN-LAST:event_continuarActionPerformed
 
-    private void usuariotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariotActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_usuariotActionPerformed
-
     private void btnAccesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccesosActionPerformed
         // TODO add your handling code here:
         // TODO add your handling code here:
@@ -3053,100 +2932,6 @@ try {
         }
     }//GEN-LAST:event_frmClientesSalir
 
-    private void barrera1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera1ActionPerformed
-        // TODO add your handling code here:
-        barrera1.setEnabled(false);
-        Thread cargar = new Thread() {
-
-            public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                barrera1.setEnabled(true);
-            }
-        };
-        cargar.start();
-
-
-
-    }//GEN-LAST:event_barrera1ActionPerformed
-
-    private void barrera2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera2ActionPerformed
-        // TODO add your handling code here:
-        barrera2.setEnabled(false);
-        Thread cargar = new Thread() {
-
-            public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
-                barrera2.setEnabled(true);
-            }
-        };
-        cargar.start();
-    }//GEN-LAST:event_barrera2ActionPerformed
-
-    private void barrera3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera3ActionPerformed
-        // TODO add your handling code here:
-        barrera3.setEnabled(false);
-        Thread cargar = new Thread() {
-
-            public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
-                barrera3.setEnabled(true);
-            }
-        };
-        cargar.start();
-    }//GEN-LAST:event_barrera3ActionPerformed
-
-    private void barrera4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera4ActionPerformed
-        // TODO add your handling code here:
-        barrera4.setEnabled(false);
-        Thread cargar = new Thread() {
-
-            public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
-                barrera4.setEnabled(true);
-            }
-        };
-        cargar.start();
-    }//GEN-LAST:event_barrera4ActionPerformed
-
-    private void barrera5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera5ActionPerformed
-        // TODO add your handling code here:
-        barrera5.setEnabled(false);
-        Thread cargar = new Thread() {
-
-            public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
-                barrera5.setEnabled(true);
-            }
-        };
-        cargar.start();
-    }//GEN-LAST:event_barrera5ActionPerformed
-
-    private void barrera6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera6ActionPerformed
-        // TODO add your handling code here:
-        barrera6.setEnabled(false);
-        Thread cargar = new Thread() {
-
-            public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "6");
-                barrera6.setEnabled(true);
-            }
-        };
-        cargar.start();
-    }//GEN-LAST:event_barrera6ActionPerformed
-
-    private void barrera7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera7ActionPerformed
-        // TODO add your handling code here:
-        barrera7.setEnabled(false);
-        Thread cargar = new Thread() {
-
-            public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "7");
-                barrera7.setEnabled(true);
-            }
-        };
-        cargar.start();
-    }//GEN-LAST:event_barrera7ActionPerformed
-
     private void btnReconfigurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReconfigurarActionPerformed
         // TODO add your handling code here:
         try {
@@ -3205,6 +2990,219 @@ try {
         txtValor.setText(pr.getValor()+"");
         pr = null;
 }//GEN-LAST:event_tarifasValueChanged
+
+    private void barrera7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera7ActionPerformed
+        // TODO add your handling code here:
+        barrera7.setEnabled(false);
+        Thread cargar = new Thread() {
+
+            public void run() {
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "7");
+                barrera7.setEnabled(true);
+            }
+        };
+        cargar.start();
+}//GEN-LAST:event_barrera7ActionPerformed
+
+    private void barrera6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera6ActionPerformed
+        // TODO add your handling code here:
+        barrera6.setEnabled(false);
+        Thread cargar = new Thread() {
+
+            public void run() {
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "6");
+                barrera6.setEnabled(true);
+            }
+        };
+        cargar.start();
+}//GEN-LAST:event_barrera6ActionPerformed
+
+    private void barrera5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera5ActionPerformed
+        // TODO add your handling code here:
+        barrera5.setEnabled(false);
+        Thread cargar = new Thread() {
+
+            public void run() {
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
+                barrera5.setEnabled(true);
+            }
+        };
+        cargar.start();
+}//GEN-LAST:event_barrera5ActionPerformed
+
+    private void barrera4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera4ActionPerformed
+        // TODO add your handling code here:
+        barrera4.setEnabled(false);
+        Thread cargar = new Thread() {
+
+            public void run() {
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
+                barrera4.setEnabled(true);
+            }
+        };
+        cargar.start();
+}//GEN-LAST:event_barrera4ActionPerformed
+
+    private void barrera3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera3ActionPerformed
+        // TODO add your handling code here:
+        barrera3.setEnabled(false);
+        Thread cargar = new Thread() {
+
+            public void run() {
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
+                barrera3.setEnabled(true);
+            }
+        };
+        cargar.start();
+}//GEN-LAST:event_barrera3ActionPerformed
+
+    private void barrera2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera2ActionPerformed
+        // TODO add your handling code here:
+        barrera2.setEnabled(false);
+        Thread cargar = new Thread() {
+
+            public void run() {
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
+                barrera2.setEnabled(true);
+            }
+        };
+        cargar.start();
+}//GEN-LAST:event_barrera2ActionPerformed
+
+    private void barrera1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera1ActionPerformed
+        // TODO add your handling code here:
+        barrera1.setEnabled(false);
+        Thread cargar = new Thread() {
+
+            public void run() {
+                AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                barrera1.setEnabled(true);
+            }
+        };
+        cargar.start();
+
+
+    }//GEN-LAST:event_barrera1ActionPerformed
+
+    private void tarjetatxtVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_tarjetatxtVetoableChange
+        // TODO add your handling code here:
+        //            try {
+        //            // TODO add your handling code here:
+        //            Tarjetas tarje = (Tarjetas) adm.buscarClave(tarjeta.getText(), Tarjetas.class);
+        //            cliente.setText(tarje.getCliente().getNombres());
+        //
+        //        } catch (Exception ex) {
+        //            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        //        }
+}//GEN-LAST:event_tarjetatxtVetoableChange
+
+    private void tarjetatxtPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tarjetatxtPropertyChange
+        //        try {
+        //            // TODO add your handling code here:
+        //            Tarjetas tarje = (Tarjetas) adm.buscarClave(tarjeta.getText(), Tarjetas.class);
+        //            cliente.setText(tarje.getCliente().getNombres());
+        //
+        //        } catch (Exception ex) {
+        //            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        //        }
+}//GEN-LAST:event_tarjetatxtPropertyChange
+
+    private void tarjetatxtCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_tarjetatxtCaretUpdate
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            String noTarjeta001 = tarjetatxt.getText();
+            if (noTarjeta001.length() > 10) {
+                noTarjeta001 = noTarjeta001.substring(0, 10);
+            }
+            Tarjetas tarje = (Tarjetas) adm.buscarClave(noTarjeta001, Tarjetas.class);
+            try {
+                String cli = tarje.getTarjeta();
+            } catch (Exception e) {
+                tarje = null;
+            }
+            if (tarje != null) {
+                cliente.setText(tarje.getCliente().getNombres());
+            } else {
+                cliente.setText("");
+                placa.setText("");
+
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}//GEN-LAST:event_tarjetatxtCaretUpdate
+
+    private void btnIngresarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnIngresarKeyPressed
+        // TODO add your handling code here:
+}//GEN-LAST:event_btnIngresarKeyPressed
+
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        // TODO add your handling code here:
+
+        Thread cargar = new Thread() {
+
+            public void run() {
+                procesando.setVisible(true);
+                btnIngresar.setEnabled(false);
+                clave.setEditable(false);
+                usuariot.setEditable(false);
+                verificarUsuario();
+                procesando.setVisible(false);
+                btnIngresar.setEnabled(true);
+
+            }
+        };
+        cargar.start();
+
+
+        //                Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+    }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        try {
+            // TODO add your handling code here:
+            this.finalize();
+            this.hide();
+
+            System.exit(0);
+
+        } catch (Throwable ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}//GEN-LAST:event_jButton9ActionPerformed
+
+    private void claveKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_claveKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            Thread cargar = new Thread() {
+
+                public void run() {
+                    btnIngresar.doClick();
+                }
+            };
+            cargar.start();
+
+
+
+        }
+}//GEN-LAST:event_claveKeyPressed
+
+    private void claveFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_claveFocusLost
+        // TODO add your handling code here:
+}//GEN-LAST:event_claveFocusLost
+
+    private void usuariotKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usuariotKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            usuariot.nextFocus();
+        }
+}//GEN-LAST:event_usuariotKeyPressed
+
+    private void usuariotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariotActionPerformed
+        // TODO add your handling code here:
+}//GEN-LAST:event_usuariotActionPerformed
 
     /**
      * @param args the command line arguments

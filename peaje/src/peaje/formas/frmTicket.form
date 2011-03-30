@@ -92,7 +92,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="20" y="50" width="290" height="80"/>
+          <AbsoluteConstraints x="10" y="50" width="300" height="80"/>
         </Constraint>
       </Constraints>
 
@@ -120,11 +120,11 @@
               <Color blue="99" green="0" red="0" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="TICKET No:"/>
+            <Property name="text" type="java.lang.String" value="Ticket No: "/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="20" y="10" width="60" height="-1"/>
+              <AbsoluteConstraints x="10" y="10" width="60" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -134,11 +134,11 @@
               <Color blue="99" green="0" red="0" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="FECHA Y HORA:"/>
+            <Property name="text" type="java.lang.String" value="Fecha y Hora: "/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="0" y="30" width="80" height="20"/>
+              <AbsoluteConstraints x="-10" y="30" width="80" height="20"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -148,11 +148,11 @@
               <Color blue="99" green="0" red="0" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="PLACA:"/>
+            <Property name="text" type="java.lang.String" value="Placa: "/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="20" y="50" width="60" height="-1"/>
+              <AbsoluteConstraints x="10" y="50" width="60" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -171,11 +171,11 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/images/enter.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Digite y luego Enter"/>
+            <Property name="text" type="java.lang.String" value="Digite y luego (1) Enter"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="160" y="50" width="130" height="20"/>
+              <AbsoluteConstraints x="160" y="50" width="140" height="20"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -213,7 +213,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="20" y="130" width="290" height="70"/>
+          <AbsoluteConstraints x="10" y="130" width="300" height="70"/>
         </Constraint>
       </Constraints>
 
