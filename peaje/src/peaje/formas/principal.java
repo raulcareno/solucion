@@ -1276,7 +1276,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
             }
         });
         jPanel10.add(tarjetatxt);
-        tarjetatxt.setBounds(20, 40, 190, 20);
+        tarjetatxt.setBounds(20, 50, 190, 20);
 
         spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
         spIngreso.setEnabled(false);
@@ -1326,7 +1326,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         jPanel10.add(errores);
         errores.setBounds(20, 100, 360, 20);
 
-        jPanel10.setBounds(0, 40, 430, 110);
+        jPanel10.setBounds(0, 40, 430, 130);
         contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
