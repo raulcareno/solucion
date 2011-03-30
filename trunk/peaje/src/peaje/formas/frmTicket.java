@@ -39,7 +39,7 @@ import sources.FacturaSource;
  *
  * @author geovanny
  */
-public class frmTicket extends javax.swing.JDialog {
+public class frmTicket extends javax.swing.JInternalFrame {
 
     /** Creates new form frmEmpresa */
     public boolean grabar = false;
@@ -58,7 +58,7 @@ public class frmTicket extends javax.swing.JDialog {
 String separador = File.separatorChar+"";
     /** Creates new form frmProfesores */
     public frmTicket(java.awt.Frame parent, boolean modal, Administrador adm1) {
-        super(parent, modal);
+//        super(parent, modal);
         this.adm = adm1;
         llenarCombo();
         initComponents();
@@ -71,7 +71,7 @@ String separador = File.separatorChar+"";
     }
 
     public frmTicket(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
-        super(parent, modal);
+//        super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         this.adm = adm1;
         llenarCombo();
@@ -83,17 +83,17 @@ String separador = File.separatorChar+"";
         principal = lo;
         //mascaras() ;
         placa.requestFocusInWindow();
-        placa.requestFocusInWindow();
-        placa.requestFocusInWindow();
-        placa.requestFocusInWindow();
-        placa.requestFocusInWindow();
-        placa.requestFocusInWindow();
-        placa.requestFocusInWindow();
-        placa.requestFocusInWindow();
-        placa.requestFocusInWindow();
-        placa.requestFocusInWindow();
-        placa.requestFocusInWindow();
-        placa.requestFocusInWindow();
+//        placa.requestFocusInWindow();
+//        placa.requestFocusInWindow();
+//        placa.requestFocusInWindow();
+//        placa.requestFocusInWindow();
+//        placa.requestFocusInWindow();
+//        placa.requestFocusInWindow();
+//        placa.requestFocusInWindow();
+//        placa.requestFocusInWindow();
+//        placa.requestFocusInWindow();
+//        placa.requestFocusInWindow();
+//        placa.requestFocusInWindow();
 
     }
 
@@ -203,7 +203,7 @@ String separador = File.separatorChar+"";
         jLabel10.setBounds(10, 20, 300, 13);
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 600, 40);
+        jPanel3.setBounds(0, 0, 320, 40);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
@@ -222,13 +222,13 @@ String separador = File.separatorChar+"";
 
         jLabel9.setForeground(new java.awt.Color(0, 0, 153));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("Fecha y Hora:");
+        jLabel9.setText("Fecha y Hora: ");
         jPanel1.add(jLabel9);
         jLabel9.setBounds(-10, 30, 80, 20);
 
         jLabel12.setForeground(new java.awt.Color(0, 0, 153));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel12.setText("Placa o Ref:");
+        jLabel12.setText("Placa: ");
         jPanel1.add(jLabel12);
         jLabel12.setBounds(10, 50, 70, 14);
 
@@ -244,6 +244,9 @@ String separador = File.separatorChar+"";
         placa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 placaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                placaKeyReleased(evt);
             }
         });
         jPanel1.add(placa);
@@ -416,6 +419,7 @@ String separador = File.separatorChar+"";
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
+        principal.contenedor.requestFocus();
         principal = null;
         empresaObj = null;
         System.gc();
@@ -437,16 +441,21 @@ String separador = File.separatorChar+"";
             btnAgregar.requestFocusInWindow();
            
 
-        }
-        placa.setText(placa.getText().toUpperCase());
-        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+        }else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             this.setVisible(false);
             principal = null;
             empresaObj = null;
             System.gc();
+        }else{
+            principal.tecla(evt.getKeyCode());
         }
 
     }//GEN-LAST:event_placaKeyPressed
+
+    private void placaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaKeyReleased
+        // TODO add your handling code here:
+         placa.setText(placa.getText().toUpperCase());
+    }//GEN-LAST:event_placaKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -463,6 +472,6 @@ String separador = File.separatorChar+"";
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JFormattedTextField noTicket;
-    private javax.swing.JFormattedTextField placa;
+    public javax.swing.JFormattedTextField placa;
     // End of variables declaration//GEN-END:variables
 }

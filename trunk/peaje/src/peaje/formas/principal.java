@@ -1,6 +1,7 @@
 package peaje.formas;
 
 import java.awt.AWTException;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,17 +35,29 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.math.BigDecimal;
 import javax.swing.ListModel;
+import peaje.formas.AbrirPuerta;
+import peaje.formas.LeerTarjeta;
+import peaje.formas.acerca;
+import peaje.formas.frmAccesos;
+import peaje.formas.frmEmpresa;
+import peaje.formas.frmFactura;
+import peaje.formas.frmManual;
+import peaje.formas.frmOperadores;
+import peaje.formas.frmReportes;
+import peaje.formas.frmTarifas;
+import peaje.formas.frmTicket;
 
 /**
  *
  * @author geovanny
  */
-public class principal extends javax.swing.JFrame {
+public class principal extends javax.swing.JFrame implements KeyListener {
 
     Administrador adm;
 //    Image image = Toolkit.getDefaultToolkit().getImage("C:\\Documents and Settings\\geovanny\\Escritorio\\JavaApplication3\\src\\javaapplication3\\tray.gif");
@@ -76,25 +89,31 @@ public class principal extends javax.swing.JFrame {
         btnCerrar.setEnabled(estado);
 
     }
+//public principal(){
+//
+//    }
 
     /** Creates new form principal */
     public principal() {
+//        super("principal");
+//        this.addKeyListener(this);
+//        this.setVisible(true);
+//        this.setVisible(true);
 
+//        this.addWindowListener(new WindowAdapter() {
 
-
-        this.addWindowListener(new WindowAdapter() {
-
-            public void windowClosing(WindowEvent we) {
-                //JOptionPane.showMessageDialog(puertoBase, "mensaje");
-                System.exit(0);
-
-            }
-        });
+//            public void windowClosing(WindowEvent we) {
+//                //JOptionPane.showMessageDialog(puertoBase, "mensaje");
+//                System.exit(0);
+//
+//            }
+//        });
 
         Image im = new ImageIcon(getClass().getResource("/images_botones/icono.png")).getImage();
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //WINDOWS
             initComponents();
+            contenedor.requestFocus();
             RelojModeloUtil modelo = new RelojModeloUtil();
             RelojVisual visual = new RelojVisual(modelo);
             visual.setLocation(100, 100);
@@ -922,6 +941,16 @@ public class principal extends javax.swing.JFrame {
         });
 
         contenedor.setBackground(new java.awt.Color(240, 240, 240));
+        contenedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                contenedorMouseClicked(evt);
+            }
+        });
+        contenedor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                contenedorKeyPressed(evt);
+            }
+        });
 
         frmIngresarSistema.setTitle("Seguridad");
         frmIngresarSistema.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/unlock.gif"))); // NOI18N
@@ -1131,7 +1160,7 @@ public class principal extends javax.swing.JFrame {
         jToolBar4.setFloatable(false);
         jToolBar4.setRollover(true);
 
-        barrera1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        barrera1.setFont(new java.awt.Font("Tahoma", 1, 16));
         barrera1.setForeground(new java.awt.Color(255, 255, 255));
         barrera1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera1.setText("1");
@@ -1614,7 +1643,7 @@ public class principal extends javax.swing.JFrame {
 //                        read.add(reader);
                     }
 
-                      if (portId.getName().equals(empresaObj.getSalida1()) && empresaObj.getActiva1()) {
+                    if (portId.getName().equals(empresaObj.getSalida1()) && empresaObj.getActiva1()) {
                         reader = new LeerTarjeta(portId, this);
                         System.out.println("ABIERTO: " + empresaObj.getSalida1());
 //                        read.add(reader);
@@ -1711,21 +1740,24 @@ public class principal extends javax.swing.JFrame {
         pXml.grabaDocumentoXML(textoXML);
 
     }
+
     public void llenarCombo() {
-try {
+        try {
             List listado = adm.query("Select o from Productos as o ");
-             Object [] listData = new Object[listado.size()];
-            int i=0;
+            Object[] listData = new Object[listado.size()];
+            int i = 0;
             for (Iterator<Productos> it = listado.iterator(); it.hasNext();) {
                 Productos global = it.next();
-                listData[i]= global;
+                listData[i] = global;
                 i++;
             }
             tarifas.setListData(listData);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    public void noDisponibles() {
+    }
+
+    public void noDisponibles() {
         totales.setText("TOTAL: " + empresaObj.getParqueaderos());
         Object con = adm.querySimple("Select count(o) from Factura as o"
                 + " where  o.fechafin is null  ");
@@ -1819,6 +1851,7 @@ try {
             }
 
             iniciarPuertos();
+            contenedor.requestFocus();
         } else {
             clave.setEditable(true);
             usuariot.setEditable(true);
@@ -1831,55 +1864,6 @@ try {
         }
     }
 
-    private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
-
-        try {
-            // TODO add your handling code here:
-            frmClientes.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
-            //adm = new Administrador();
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o "
-                    + "where o.pantalla = 'Clientes' "
-                    + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true ");
-            if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
-            } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
- llenarCombo();
-            frmClientes.setSize(441, 455);
-            frmClientes.setLocation(240, 100);
-            frmClientes.setModal(true);
-            btnSalir.requestFocusInWindow();
-            frmClientes.show();
-            btnSalir.requestFocusInWindow();
-            btnSalir.requestFocusInWindow();
-        } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        //<property name="toplink.cache.type.default" value="NONE"/>
-
-    }//GEN-LAST:event_btnClientesActionPerformed
-
-    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
-        try {
-            // TODO add your handling code here:
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Operadores' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "'  and o.ingresar = true  ");
-            if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
-            } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            frmOperadores usu = new frmOperadores(this, true, this, adm);
-            usu.setSize(441, 445);
-            usu.setLocation(240, 100);
-            usu.show();
-        } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnUsuariosActionPerformed
     public void buscarTarjeta(String puertoViene) {
         final principal pra = this;
         if (puertoViene.length() > 10) {
@@ -1926,38 +1910,38 @@ try {
                 } else {
                     errores.setText("OK");
                     String tipoIngreso = entradaosalida(puertoViene);
-                    List<Registro> siHay = adm.query("Select o from Registro as o where o.tarjeta = '"+tarje.getTarjeta()+"' and o.fechafin is null ");
-                    if(tipoIngreso.equals("e")){
+                    List<Registro> siHay = adm.query("Select o from Registro as o where o.tarjeta = '" + tarje.getTarjeta() + "' and o.fechafin is null ");
+                    if (tipoIngreso.equals("e")) {
 
-                            if(siHay.size()>0){
-                                errores.setText("OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
-                                return;
-                            }else{
-                                Registro reg = new Registro();
-                                reg.setFechaini(new Date());
-                                reg.setTarjeta(tarje.getTarjeta());
-                                adm.guardar(reg);
-                                errores.setText("ENTRADA OK...!");
-                                //errores.setText("OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
-                            }
-                    }else{
+                        if (siHay.size() > 0) {
+                            errores.setText("OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
+                            return;
+                        } else {
+                            Registro reg = new Registro();
+                            reg.setFechaini(new Date());
+                            reg.setTarjeta(tarje.getTarjeta());
+                            adm.guardar(reg);
+                            errores.setText("ENTRADA OK...!");
+                            //errores.setText("OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
+                        }
+                    } else {
 
-                        if(siHay.size()>0){
-                                Registro reg = siHay.get(0);
-                                reg.setFechafin(new Date());
-                                adm.actualizar(reg);
-                                errores.setText("SALIDA OK...!");
-                            }else{
-                                Registro reg = new Registro();
-                                reg.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
-                                 reg.setFechafin(new Date());// LA ENTRADA SE CREA UN REGISTRO DE ENTRADA Y SALIDA
-                                reg.setTarjeta(tarje.getTarjeta());
-                                adm.guardar(reg);
-                                errores.setText("OK...!");
-                            }
+                        if (siHay.size() > 0) {
+                            Registro reg = siHay.get(0);
+                            reg.setFechafin(new Date());
+                            adm.actualizar(reg);
+                            errores.setText("SALIDA OK...!");
+                        } else {
+                            Registro reg = new Registro();
+                            reg.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+                            reg.setFechafin(new Date());// LA ENTRADA SE CREA UN REGISTRO DE ENTRADA Y SALIDA
+                            reg.setTarjeta(tarje.getTarjeta());
+                            adm.guardar(reg);
+                            errores.setText("OK...!");
+                        }
 
                     }
-                    
+
 
                     Date fechaActual = new Date();
                     Boolean habilitada = tarje.getHabilitada();
@@ -2014,8 +1998,8 @@ try {
                             if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
                                 System.out.println("EN EL RANGO DE HORA");
                                 try {
-                                    
-                                                abrirPuerta(puertoViene);
+
+                                    abrirPuerta(puertoViene);
 
                                 } catch (Exception e) {
                                     System.out.println("PUERTO:" + puertoViene);
@@ -2160,7 +2144,7 @@ try {
             lapuertaaAbrir = "e";
         } else if (puertoqueViene.equals(empresaObj.getPuerto7())) {
             lapuertaaAbrir = "e";
-        }else if (puertoqueViene.equals(empresaObj.getSalida1())) {
+        } else if (puertoqueViene.equals(empresaObj.getSalida1())) {
             lapuertaaAbrir = "s";
         } else if (puertoqueViene.equals(empresaObj.getSalida2())) {
             lapuertaaAbrir = "s";
@@ -2197,7 +2181,7 @@ try {
             lapuertaaAbrir = empresaObj.getPuerta6();
         } else if (puertoqueViene.equals(empresaObj.getPuerto7())) {
             lapuertaaAbrir = empresaObj.getPuerta7();
-        }else if (puertoqueViene.equals(empresaObj.getSalida1())) {
+        } else if (puertoqueViene.equals(empresaObj.getSalida1())) {
             lapuertaaAbrir = empresaObj.getPuerta1();
         } else if (puertoqueViene.equals(empresaObj.getSalida2())) {
             lapuertaaAbrir = empresaObj.getPuerta2();
@@ -2219,6 +2203,57 @@ try {
 //        LeerTarjeta le = new LeerTarjeta();
 //                le.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
     }
+    private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
+        contenedor.requestFocus();
+        try {
+            // TODO add your handling code here:
+            frmClientes.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
+            //adm = new Administrador();
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o "
+                    + "where o.pantalla = 'Clientes' "
+                    + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true ");
+            if (accesosL.size() > 0) {
+                permisos = accesosL.get(0);
+            } else {
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            llenarCombo();
+            frmClientes.setSize(441, 455);
+            frmClientes.setLocation(240, 100);
+            frmClientes.setModal(true);
+            btnSalir.requestFocusInWindow();
+            frmClientes.show();
+            btnSalir.requestFocusInWindow();
+            btnSalir.requestFocusInWindow();
+        } catch (Exception ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        contenedor.requestFocus();
+        //<property name="toplink.cache.type.default" value="NONE"/>
+
+    }//GEN-LAST:event_btnClientesActionPerformed
+
+    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
+        try {
+            // TODO add your handling code here:
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Operadores' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "'  and o.ingresar = true  ");
+            if (accesosL.size() > 0) {
+                permisos = accesosL.get(0);
+            } else {
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            frmOperadores usu = new frmOperadores(this, true, this, adm);
+            usu.setSize(441, 445);
+            usu.setLocation(240, 100);
+            usu.show();
+        } catch (Exception ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        contenedor.requestFocus();
+    }//GEN-LAST:event_btnUsuariosActionPerformed
 
     private void btnEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpresaActionPerformed
         try {
@@ -2236,7 +2271,7 @@ try {
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        contenedor.requestFocus();
     }//GEN-LAST:event_btnEmpresaActionPerformed
 
     private void btnTarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTarifasActionPerformed
@@ -2256,6 +2291,7 @@ try {
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
+        contenedor.requestFocus();
     }//GEN-LAST:event_btnTarifasActionPerformed
 
     private void btnTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTicketActionPerformed
@@ -2267,15 +2303,23 @@ try {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+//            frmTicket usu = new frmTicket(this, true, this, adm);
+//            usu.setSize(334, 238);
+//            usu.setLocation(240, 100);
+//            usu.show();
+
             frmTicket usu = new frmTicket(this, true, this, adm);
             usu.setSize(334, 238);
             usu.setLocation(240, 100);
-            usu.show();
+//            usu.setMaximizable(true);
+            contenedor.add(usu);
+            usu.placa.requestFocusInWindow();
+            usu.show();usu.placa.requestFocusInWindow();
 
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+//        contenedor.requestFocus();
     }//GEN-LAST:event_btnTicketActionPerformed
 
     private void jXTaskPaneContainer1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jXTaskPaneContainer1KeyPressed
@@ -2309,7 +2353,7 @@ try {
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        contenedor.requestFocus();
 
     }//GEN-LAST:event_btnCobrarActionPerformed
 
@@ -2332,7 +2376,7 @@ try {
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        contenedor.requestFocus();
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void mnAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAcercaActionPerformed
@@ -2477,7 +2521,7 @@ try {
         buscarClientes.setSize(533, 300);
         buscarClientes.setLocation(250, 70);
         buscarClientes.show();
-        
+
         DefaultTableModel dtm = (DefaultTableModel) busquedaTabla.getModel();
         dtm.getDataVector().removeAllElements();
         busquedaTabla.setModel(dtm);
@@ -2525,13 +2569,13 @@ try {
                 btnBuscar.setEnabled(false);
 
             } else if (grabar == true) {
-                if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty() || txtValor.getText().isEmpty() ) {
+                if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty() || txtValor.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
                 } else {
                     if (clienteObj == null) {
                         clienteObj = new Clientes();
                     }
-                    clienteObj.setProducto((Productos)tarifas.getSelectedValue());
+                    clienteObj.setProducto((Productos) tarifas.getSelectedValue());
                     Double valorv = Double.valueOf(txtValor.getText());
                     clienteObj.setValor(new BigDecimal(valorv));
                     clienteObj.setDireccion(direccion.getText());
@@ -2553,7 +2597,7 @@ try {
                             adm.guardar(clienteObj);
                             formaTarjetas.setModal(true);
                             formaTarjetas.setSize(400, 388);
-                             tarjeta = new Tarjetas();
+                            tarjeta = new Tarjetas();
                             tarjeta.setHabilitada(true);
                             tarjeta.setLunes(false);
                             tarjeta.setMartes(false);
@@ -2638,7 +2682,7 @@ try {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (permisos.getEliminar()) {        // TODO add your handling code here:
             int conf = JOptionPane.showConfirmDialog(this, "Seguro que desea eliminar el registro? ", "JCINFORM", JOptionPane.OK_CANCEL_OPTION);
-            if(conf == JOptionPane.OK_OPTION){
+            if (conf == JOptionPane.OK_OPTION) {
                 try {
                     adm.eliminarObjeto(Clientes.class, clienteObj.getCodigo());
                     this.limpiar();
@@ -2746,25 +2790,25 @@ try {
         // TODO add your handling code here:
         if (evt.getClickCount() == 2) {
             try {
-                   Productos g = new Productos();
-            
+                Productos g = new Productos();
+
                 int fila = busquedaTabla.getSelectedRow();
                 this.clienteObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
                 llenarTabla(clienteObj.getCodigo());
-                g  = clienteObj.getProducto();
+                g = clienteObj.getProducto();
                 buscarClientes.dispose();
                 bindingGroup.unbind();
                 bindingGroup.bind();
 
-                 ListModel datos = tarifas.getModel();
-                   for (int i = 0; i < datos.getSize(); i++) {
+                ListModel datos = tarifas.getModel();
+                for (int i = 0; i < datos.getSize(); i++) {
                     Productos object = (Productos) datos.getElementAt(i);
-                       if(g.getCodigo().equals(object.getCodigo())){
-                            tarifas.setSelectedIndex(i);
+                    if (g.getCodigo().equals(object.getCodigo())) {
+                        tarifas.setSelectedIndex(i);
                         break;
-                       }
-                        }
-                 txtValor.setText(clienteObj.getValor()+"");
+                    }
+                }
+                txtValor.setText(clienteObj.getValor() + "");
 
             } catch (Exception ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -2798,20 +2842,20 @@ try {
                 int fila = busquedaTabla.getSelectedRow();
                 this.clienteObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
                 llenarTabla(clienteObj.getCodigo());
-                g =  clienteObj.getProducto();
+                g = clienteObj.getProducto();
                 buscarClientes.dispose();
                 bindingGroup.unbind();
                 bindingGroup.bind();
-                 ListModel datos = tarifas.getModel();
-                   for (int i = 0; i < datos.getSize(); i++) {
+                ListModel datos = tarifas.getModel();
+                for (int i = 0; i < datos.getSize(); i++) {
                     Productos object = (Productos) datos.getElementAt(i);
-                       if(g.getCodigo().equals(object.getCodigo())){
-                            tarifas.setSelectedIndex(i);
+                    if (g.getCodigo().equals(object.getCodigo())) {
+                        tarifas.setSelectedIndex(i);
                         break;
-                       }
-
                     }
-                 txtValor.setText(clienteObj.getValor()+"");
+
+                }
+                txtValor.setText(clienteObj.getValor() + "");
             } catch (Exception ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -2870,6 +2914,7 @@ try {
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
+        contenedor.requestFocus();
     }//GEN-LAST:event_btnAccesosActionPerformed
 
     private void btnAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcercaActionPerformed
@@ -2934,8 +2979,8 @@ try {
                 permisos = accesosL.get(0);
 
                 int seleccion = JOptionPane.showOptionDialog(this, "SE BORRARÁ LA CONFIGURACIÓN ACTUAL DEL SISTEMA \n ¿SEGURO QUE DESEA CONTINUAR?",
-                        "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null, // null para icono por defecto.
-                        new Object[]{"SI", "NO", "Cancelar"},"NO");// null para YES, NO y CANCEL
+                        "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
+                        new Object[]{"SI", "NO", "Cancelar"}, "NO");// null para YES, NO y CANCEL
                 System.out.println("" + seleccion);
                 if (0 == seleccion) {
                     WorkingDirectory w = new WorkingDirectory();
@@ -2960,7 +3005,7 @@ try {
                     frmRegistrar.setTitle("Configuración del Sistema");
                     frmRegistrar.setUndecorated(false);
                     frmRegistrar.show();
-                    logear(); 
+                    logear();
                 }
 
             } else {
@@ -2971,7 +3016,7 @@ try {
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        contenedor.requestFocus();
 
     }//GEN-LAST:event_btnReconfigurarActionPerformed
 
@@ -2980,7 +3025,7 @@ try {
         //        listar();
         //        tablaPerfilesRubros.repaint();
         Productos pr = (Productos) tarifas.getSelectedValue();
-        txtValor.setText(pr.getValor()+"");
+        txtValor.setText(pr.getValor() + "");
         pr = null;
 }//GEN-LAST:event_tarifasValueChanged
 
@@ -3196,10 +3241,53 @@ try {
     private void usuariotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariotActionPerformed
         // TODO add your handling code here:
 }//GEN-LAST:event_usuariotActionPerformed
+    public void tecla(int teclaPresionada) {
+        int WIDTH = 1;
+        KeyEvent evt = new KeyEvent(this, WIDTH, WIDTH, WIDTH, WIDTH);
+        if (teclaPresionada == evt.VK_F1) {
+            barrera1.doClick();
+        } else if (teclaPresionada == evt.VK_F2) {
+            barrera1.doClick();
+        } else if (teclaPresionada == evt.VK_F3) {
+            barrera1.doClick();
+        } else if (teclaPresionada == evt.VK_F4) {
+            barrera1.doClick();
+        } else if (teclaPresionada == evt.VK_F5) {
+            barrera1.doClick();
+        } else if (teclaPresionada == evt.VK_F6) {
+            barrera1.doClick();
+        } else if (teclaPresionada == evt.VK_F7) {
+            barrera1.doClick();
+        } else if (teclaPresionada == evt.VK_F8) {//ABRIR CLIENTES
+            btnClientes.doClick();
+        } else if (teclaPresionada == evt.VK_F9) {//ABRIR TICKETS
+            btnTicket.doClick();
+        } else if (teclaPresionada == evt.VK_F10) {
+            btnCobrar.doClick(); //ABRIR COBROS
+
+        }
+    }
+    private void contenedorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contenedorKeyPressed
+        // TODO add your handling code here:
+        int teclaPresionada = evt.getKeyCode();
+        tecla(teclaPresionada);
+
+
+
+    }//GEN-LAST:event_contenedorKeyPressed
+
+    private void contenedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contenedorMouseClicked
+        // TODO add your handling code here:
+        contenedor.requestFocus();
+    }//GEN-LAST:event_contenedorMouseClicked
 
     /**
      * @param args the command line arguments
      */
+//    public static void main(String args[]) {
+//        new principal();
+//
+//    }
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
@@ -3391,5 +3479,18 @@ try {
 
     public void setNuevaTarjeta(boolean nuevaTarjeta) {
         this.nuevaTarjeta = nuevaTarjeta;
+    }
+
+    public void keyTyped(KeyEvent e) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void keyPressed(KeyEvent e) {
+        int teclaPresionada = e.getKeyCode();
+        System.out.println("Tecla Presionada: code: " + teclaPresionada + " char:" + e.getKeyChar());
+    }
+
+    public void keyReleased(KeyEvent e) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
