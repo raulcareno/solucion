@@ -116,8 +116,8 @@ public class principal extends javax.swing.JFrame implements KeyListener {
             contenedor.requestFocus();
             RelojModeloUtil modelo = new RelojModeloUtil();
             RelojVisual visual = new RelojVisual(modelo);
-            visual.setLocation(100, 100);
-            miPanel.add(visual);
+//            visual.setLocation(100, 100);
+            barraHerramients.add(visual,2);
             //getContentPane().add(visual);
             this.setSize(600, 600);
             this.setExtendedState(this.MAXIMIZED_BOTH);
@@ -300,6 +300,23 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         jLabel35 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
+        barraHerramients = new javax.swing.JToolBar();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
+        jButton3 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        totales = new javax.swing.JLabel();
+        disponibles = new javax.swing.JLabel();
+        ocupados = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        barrera1 = new javax.swing.JButton();
+        barrera2 = new javax.swing.JButton();
+        barrera3 = new javax.swing.JButton();
+        barrera4 = new javax.swing.JButton();
+        barrera5 = new javax.swing.JButton();
+        barrera6 = new javax.swing.JButton();
+        barrera7 = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         contenedor = new javax.swing.JDesktopPane();
         frmIngresarSistema = new javax.swing.JInternalFrame();
@@ -325,22 +342,8 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         cons = new javax.swing.JLabel();
         placa = new javax.swing.JFormattedTextField();
         errores = new javax.swing.JLabel();
-        jToolBar4 = new javax.swing.JToolBar();
-        barrera1 = new javax.swing.JButton();
-        barrera2 = new javax.swing.JButton();
-        barrera3 = new javax.swing.JButton();
-        barrera4 = new javax.swing.JButton();
-        barrera5 = new javax.swing.JButton();
-        barrera6 = new javax.swing.JButton();
-        barrera7 = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        ocupados = new javax.swing.JLabel();
-        totales = new javax.swing.JLabel();
-        disponibles = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
         usuarioLogeado = new javax.swing.JButton();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
-        miPanel = new javax.swing.JPanel();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
         btnClientes = new javax.swing.JButton();
@@ -932,6 +935,176 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         setTitle("Sistema de control de parqueaderos");
         setName("miForma"); // NOI18N
 
+        barraHerramients.setBorder(null);
+        barraHerramients.setRollover(true);
+        barraHerramients.add(jSeparator3);
+
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraHerramients.add(jButton3);
+
+        jButton1.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraHerramients.add(jButton1);
+
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraHerramients.add(jButton2);
+        barraHerramients.add(jSeparator2);
+
+        totales.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        totales.setForeground(new java.awt.Color(255, 102, 0));
+        totales.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/naranja.png"))); // NOI18N
+        totales.setText("TOTAL: ");
+        totales.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        totales.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraHerramients.add(totales);
+
+        disponibles.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        disponibles.setForeground(new java.awt.Color(0, 153, 102));
+        disponibles.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        disponibles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/verde.png"))); // NOI18N
+        disponibles.setText("DISPONIBLES:  ");
+        disponibles.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        disponibles.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraHerramients.add(disponibles);
+
+        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11));
+        ocupados.setForeground(new java.awt.Color(255, 0, 0));
+        ocupados.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ocupados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rojo.png"))); // NOI18N
+        ocupados.setText("OCUPADOS:");
+        ocupados.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ocupados.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraHerramients.add(ocupados);
+        barraHerramients.add(jSeparator1);
+
+        barrera1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera1.setForeground(new java.awt.Color(204, 102, 0));
+        barrera1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera1.setText("F1");
+        barrera1.setEnabled(false);
+        barrera1.setFocusable(false);
+        barrera1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera1.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto1.png"))); // NOI18N
+        barrera1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barrera1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera1ActionPerformed(evt);
+            }
+        });
+        barraHerramients.add(barrera1);
+
+        barrera2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera2.setForeground(new java.awt.Color(204, 102, 0));
+        barrera2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera2.setText("F2");
+        barrera2.setEnabled(false);
+        barrera2.setFocusable(false);
+        barrera2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera2.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera2.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto1.png"))); // NOI18N
+        barrera2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barrera2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera2ActionPerformed(evt);
+            }
+        });
+        barraHerramients.add(barrera2);
+
+        barrera3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera3.setForeground(new java.awt.Color(204, 102, 0));
+        barrera3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera3.setText("F3");
+        barrera3.setEnabled(false);
+        barrera3.setFocusable(false);
+        barrera3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera3.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera3.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto1.png"))); // NOI18N
+        barrera3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barrera3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera3ActionPerformed(evt);
+            }
+        });
+        barraHerramients.add(barrera3);
+
+        barrera4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera4.setForeground(new java.awt.Color(204, 102, 0));
+        barrera4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera4.setText("F4");
+        barrera4.setEnabled(false);
+        barrera4.setFocusable(false);
+        barrera4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera4.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera4.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto1.png"))); // NOI18N
+        barrera4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barrera4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera4ActionPerformed(evt);
+            }
+        });
+        barraHerramients.add(barrera4);
+
+        barrera5.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera5.setForeground(new java.awt.Color(204, 102, 0));
+        barrera5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera5.setText("F5");
+        barrera5.setEnabled(false);
+        barrera5.setFocusable(false);
+        barrera5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera5.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera5.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto1.png"))); // NOI18N
+        barrera5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barrera5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera5ActionPerformed(evt);
+            }
+        });
+        barraHerramients.add(barrera5);
+
+        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera6.setForeground(new java.awt.Color(204, 102, 0));
+        barrera6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera6.setText("F6");
+        barrera6.setEnabled(false);
+        barrera6.setFocusable(false);
+        barrera6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera6.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera6.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto1.png"))); // NOI18N
+        barrera6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barrera6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera6ActionPerformed(evt);
+            }
+        });
+        barraHerramients.add(barrera6);
+
+        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera7.setForeground(new java.awt.Color(204, 102, 0));
+        barrera7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
+        barrera7.setText("F7");
+        barrera7.setEnabled(false);
+        barrera7.setFocusable(false);
+        barrera7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barrera7.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
+        barrera7.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto1.png"))); // NOI18N
+        barrera7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barrera7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrera7ActionPerformed(evt);
+            }
+        });
+        barraHerramients.add(barrera7);
+
+        getContentPane().add(barraHerramients, java.awt.BorderLayout.PAGE_START);
+
         jSplitPane1.setDividerLocation(240);
         jSplitPane1.setDividerSize(0);
         jSplitPane1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1068,7 +1241,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         frmIngresarSistema.getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 380, 40);
 
-        frmIngresarSistema.setBounds(180, 220, 390, 220);
+        frmIngresarSistema.setBounds(170, 180, 390, 220);
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
@@ -1147,187 +1320,22 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         jPanel10.add(placa);
         placa.setBounds(20, 70, 180, 20);
 
-        errores.setFont(new java.awt.Font("Tahoma", 1, 12));
+        errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         errores.setForeground(new java.awt.Color(255, 0, 0));
         errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel10.add(errores);
         errores.setBounds(20, 100, 360, 20);
 
-        jPanel10.setBounds(0, 240, 400, 130);
+        jPanel10.setBounds(0, 60, 430, 130);
         contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jToolBar4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Botones de Emergencia para Abrir Barreras", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
-        jToolBar4.setFloatable(false);
-        jToolBar4.setRollover(true);
-
-        barrera1.setFont(new java.awt.Font("Tahoma", 1, 16));
-        barrera1.setForeground(new java.awt.Color(255, 255, 255));
-        barrera1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
-        barrera1.setText("1");
-        barrera1.setEnabled(false);
-        barrera1.setFocusable(false);
-        barrera1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        barrera1.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
-        barrera1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                barrera1ActionPerformed(evt);
-            }
-        });
-        jToolBar4.add(barrera1);
-
-        barrera2.setFont(new java.awt.Font("Tahoma", 1, 16));
-        barrera2.setForeground(new java.awt.Color(255, 255, 255));
-        barrera2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
-        barrera2.setText("2");
-        barrera2.setEnabled(false);
-        barrera2.setFocusable(false);
-        barrera2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        barrera2.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
-        barrera2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                barrera2ActionPerformed(evt);
-            }
-        });
-        jToolBar4.add(barrera2);
-
-        barrera3.setFont(new java.awt.Font("Tahoma", 1, 16));
-        barrera3.setForeground(new java.awt.Color(255, 255, 255));
-        barrera3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
-        barrera3.setText("3");
-        barrera3.setEnabled(false);
-        barrera3.setFocusable(false);
-        barrera3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        barrera3.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
-        barrera3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                barrera3ActionPerformed(evt);
-            }
-        });
-        jToolBar4.add(barrera3);
-
-        barrera4.setFont(new java.awt.Font("Tahoma", 1, 16));
-        barrera4.setForeground(new java.awt.Color(255, 255, 255));
-        barrera4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
-        barrera4.setText("4");
-        barrera4.setEnabled(false);
-        barrera4.setFocusable(false);
-        barrera4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        barrera4.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
-        barrera4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                barrera4ActionPerformed(evt);
-            }
-        });
-        jToolBar4.add(barrera4);
-
-        barrera5.setFont(new java.awt.Font("Tahoma", 1, 16));
-        barrera5.setForeground(new java.awt.Color(255, 255, 255));
-        barrera5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
-        barrera5.setText("5");
-        barrera5.setEnabled(false);
-        barrera5.setFocusable(false);
-        barrera5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        barrera5.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
-        barrera5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                barrera5ActionPerformed(evt);
-            }
-        });
-        jToolBar4.add(barrera5);
-
-        barrera6.setFont(new java.awt.Font("Tahoma", 1, 16));
-        barrera6.setForeground(new java.awt.Color(255, 255, 255));
-        barrera6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
-        barrera6.setText("6");
-        barrera6.setEnabled(false);
-        barrera6.setFocusable(false);
-        barrera6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        barrera6.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
-        barrera6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                barrera6ActionPerformed(evt);
-            }
-        });
-        jToolBar4.add(barrera6);
-
-        barrera7.setFont(new java.awt.Font("Tahoma", 1, 16));
-        barrera7.setForeground(new java.awt.Color(255, 255, 255));
-        barrera7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
-        barrera7.setText("7");
-        barrera7.setEnabled(false);
-        barrera7.setFocusable(false);
-        barrera7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        barrera7.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto2.png"))); // NOI18N
-        barrera7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                barrera7ActionPerformed(evt);
-            }
-        });
-        jToolBar4.add(barrera7);
-
-        jToolBar4.setBounds(0, 70, 400, 60);
-        contenedor.add(jToolBar4, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Parqueaderos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
-        jPanel1.setForeground(new java.awt.Color(0, 102, 204));
-        jPanel1.setLayout(null);
-
-        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11));
-        ocupados.setForeground(new java.awt.Color(255, 0, 0));
-        ocupados.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ocupados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rojo.png"))); // NOI18N
-        ocupados.setText("OCUPADOS:");
-        ocupados.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ocupados.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(ocupados);
-        ocupados.setBounds(260, 20, 100, 60);
-
-        totales.setFont(new java.awt.Font("Tahoma", 1, 11));
-        totales.setForeground(new java.awt.Color(255, 102, 0));
-        totales.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        totales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/naranja.png"))); // NOI18N
-        totales.setText("TOTAL: ");
-        totales.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        totales.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(totales);
-        totales.setBounds(20, 20, 90, 60);
-
-        disponibles.setFont(new java.awt.Font("Tahoma", 1, 11));
-        disponibles.setForeground(new java.awt.Color(0, 153, 102));
-        disponibles.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        disponibles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/verde.png"))); // NOI18N
-        disponibles.setText("DISPONIBLES:  ");
-        disponibles.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        disponibles.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(disponibles);
-        disponibles.setBounds(140, 20, 100, 60);
-
-        jPanel1.setBounds(0, 140, 400, 90);
-        contenedor.add(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Usuario:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
 
         usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
         usuarioLogeado.setText("...");
         usuarioLogeado.setBorderPainted(false);
         usuarioLogeado.setContentAreaFilled(false);
         usuarioLogeado.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(usuarioLogeado, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addComponent(usuarioLogeado)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel11.setBounds(0, 10, 400, 60);
-        contenedor.add(jPanel11, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        usuarioLogeado.setBounds(10, 10, 388, -1);
+        contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jSplitPane1.setRightComponent(contenedor);
 
@@ -1341,9 +1349,6 @@ public class principal extends javax.swing.JFrame implements KeyListener {
             }
         });
 
-        miPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        miPanel.setPreferredSize(new java.awt.Dimension(100, 60));
-
         contenedor1.setTitle("Control");
 
         jToolBar1.setFloatable(false);
@@ -1352,7 +1357,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
 
         btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/usr.png"))); // NOI18N
         btnClientes.setMnemonic('C');
-        btnClientes.setText("Clientes (Alt + C)");
+        btnClientes.setText("Clientes (F8)");
         btnClientes.setToolTipText("Crear nuevos clientes y asignar tarjetas");
         btnClientes.setFocusable(false);
         btnClientes.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -1366,7 +1371,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
 
         btnTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ticket.gif"))); // NOI18N
         btnTicket.setMnemonic('T');
-        btnTicket.setText("Ticket (Alt+T)");
+        btnTicket.setText("Ticket (F9)");
         btnTicket.setToolTipText("Registrar un ingreso de vehículo");
         btnTicket.setFocusable(false);
         btnTicket.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -1380,7 +1385,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
 
         btnCobrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
         btnCobrar.setMnemonic('B');
-        btnCobrar.setText("Cobrar (Alt + B)");
+        btnCobrar.setText("Cobrar (F10)");
         btnCobrar.setToolTipText("Cobrar ticket");
         btnCobrar.setFocusable(false);
         btnCobrar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -1549,30 +1554,27 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         jXTaskPaneContainer1.setLayout(jXTaskPaneContainer1Layout);
         jXTaskPaneContainer1Layout.setHorizontalGroup(
             jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTaskPaneContainer1Layout.createSequentialGroup()
+            .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(contenedor2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(contenedor3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(miPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
+                .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                    .addComponent(contenedor2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                    .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                    .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jXTaskPaneContainer1Layout.setVerticalGroup(
             jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(miPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contenedor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
+                .addGap(18, 18, 18)
                 .addComponent(contenedor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
+                .addGap(18, 18, 18)
                 .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel32)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -1758,12 +1760,12 @@ public class principal extends javax.swing.JFrame implements KeyListener {
     }
 
     public void noDisponibles() {
-        totales.setText("TOTAL: " + empresaObj.getParqueaderos());
+        totales.setText("Total: " + empresaObj.getParqueaderos());
         Object con = adm.querySimple("Select count(o) from Factura as o"
                 + " where  o.fechafin is null  ");
         Long val2 = (Long) con;
-        disponibles.setText("DISPONIBLES: " + (empresaObj.getParqueaderos() - val2.intValue()));
-        ocupados.setText("OCUPADOS: " + val2.intValue());
+        disponibles.setText("Disponibles: " + (empresaObj.getParqueaderos() - val2.intValue()));
+        ocupados.setText("Ocupados: " + val2.intValue());
 
     }
 
@@ -2204,7 +2206,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
 //                le.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
     }
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
-        contenedor.requestFocus();
+//        contenedor.requestFocus();
         try {
             // TODO add your handling code here:
             frmClientes.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
@@ -2229,7 +2231,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        contenedor.requestFocus();
+//        contenedor.requestFocus();
         //<property name="toplink.cache.type.default" value="NONE"/>
 
     }//GEN-LAST:event_btnClientesActionPerformed
@@ -2252,7 +2254,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        contenedor.requestFocus();
+//        contenedor.requestFocus();
     }//GEN-LAST:event_btnUsuariosActionPerformed
 
     private void btnEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpresaActionPerformed
@@ -2271,7 +2273,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        contenedor.requestFocus();
+//        contenedor.requestFocus();
     }//GEN-LAST:event_btnEmpresaActionPerformed
 
     private void btnTarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTarifasActionPerformed
@@ -2291,7 +2293,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        contenedor.requestFocus();
+//        contenedor.requestFocus();
     }//GEN-LAST:event_btnTarifasActionPerformed
 
     private void btnTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTicketActionPerformed
@@ -2347,13 +2349,18 @@ public class principal extends javax.swing.JFrame implements KeyListener {
                 return;
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
-            usu.setSize(659, 411);
+            usu.setSize(669, 411);
             usu.setLocation(240, 120);
+            contenedor.add(usu);
+     
             usu.show();
+       usu.noTicket.requestFocusInWindow();
+
+
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        contenedor.requestFocus();
+//        contenedor.requestFocus();
 
     }//GEN-LAST:event_btnCobrarActionPerformed
 
@@ -2376,7 +2383,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        contenedor.requestFocus();
+//        contenedor.requestFocus();
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void mnAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAcercaActionPerformed
@@ -3298,6 +3305,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox activa;
+    private javax.swing.JToolBar barraHerramients;
     private javax.swing.JButton barrera1;
     private javax.swing.JButton barrera2;
     private javax.swing.JButton barrera3;
@@ -3359,6 +3367,9 @@ public class principal extends javax.swing.JFrame implements KeyListener {
     private javax.swing.JLabel ingre;
     private javax.swing.JSpinner ingresos;
     private javax.swing.JFormattedTextField ipBase;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -3395,9 +3406,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -3410,16 +3419,17 @@ public class principal extends javax.swing.JFrame implements KeyListener {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JToolBar jToolBar3;
-    private javax.swing.JToolBar jToolBar4;
     private org.jdesktop.swingx.JXTaskPaneContainer jXTaskPaneContainer1;
     private javax.swing.JCheckBox jueves;
     private javax.swing.JCheckBox lunes;
     private javax.swing.JCheckBox martes;
-    private javax.swing.JPanel miPanel;
     private javax.swing.JCheckBox miercoles;
     public javax.swing.JFormattedTextField noTarjeta;
     private javax.swing.JFormattedTextField nombres;

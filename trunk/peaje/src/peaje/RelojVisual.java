@@ -5,6 +5,9 @@
 
 package peaje;
 
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
 import javax.swing.JLabel;
 import java.util.Observer;
 import java.util.Observable;
@@ -12,6 +15,7 @@ import java.awt.Dimension;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingConstants;
 import java.text.SimpleDateFormat;
+import javax.swing.border.Border;
 
 /**
  * Visual para mostrar el reloj.
@@ -40,6 +44,8 @@ public class RelojVisual extends JLabel
                           setFont(new java.awt.Font("DS-Digital", 1, 40)); // NOI18N
                           //setBounds(190, 100, 210, 500);
                           //#003366
+//                          setSize(40,600);
+//                         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
                         setForeground(new java.awt.Color(255,51,51));
                         setVerticalAlignment(javax.swing.SwingConstants.CENTER);
                         setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
