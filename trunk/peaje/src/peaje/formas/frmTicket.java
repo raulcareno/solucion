@@ -207,30 +207,30 @@ String separador = File.separatorChar+"";
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("TICKET No:");
+        jLabel7.setText("Ticket No: ");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(20, 10, 60, 14);
+        jLabel7.setBounds(10, 10, 60, 14);
 
         jLabel9.setForeground(new java.awt.Color(0, 0, 153));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("FECHA Y HORA:");
+        jLabel9.setText("Fecha y Hora: ");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(0, 30, 80, 20);
+        jLabel9.setBounds(-10, 30, 80, 20);
 
         jLabel12.setForeground(new java.awt.Color(0, 0, 153));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel12.setText("PLACA:");
+        jLabel12.setText("Placa: ");
         jPanel1.add(jLabel12);
-        jLabel12.setBounds(20, 50, 60, 14);
+        jLabel12.setBounds(10, 50, 60, 14);
 
         noTicket.setEditable(false);
         jPanel1.add(noTicket);
         noTicket.setBounds(80, 10, 150, 20);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
-        jLabel3.setText("Digite y luego Enter");
+        jLabel3.setText("Digite y luego (1) Enter");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(160, 50, 130, 20);
+        jLabel3.setBounds(160, 50, 140, 20);
 
         placa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -240,12 +240,12 @@ String separador = File.separatorChar+"";
         jPanel1.add(placa);
         placa.setBounds(80, 50, 80, 20);
 
-        codigo.setFont(new java.awt.Font("Tahoma", 0, 5)); // NOI18N
+        codigo.setFont(new java.awt.Font("Tahoma", 0, 5));
         jPanel1.add(codigo);
         codigo.setBounds(240, 10, 0, 0);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 50, 290, 80);
+        jPanel1.setBounds(10, 50, 300, 80);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -293,7 +293,7 @@ String separador = File.separatorChar+"";
         btnReimprimir.setBounds(80, 10, 70, 50);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(20, 130, 290, 70);
+        jPanel4.setBounds(10, 130, 300, 70);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -307,6 +307,7 @@ String separador = File.separatorChar+"";
                     placa.requestFocusInWindow();
                     return;
                 }
+                 
                 btnAgregar.setEnabled(false);
                 Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
                 Factura fac = new Factura();
@@ -317,7 +318,7 @@ String separador = File.separatorChar+"";
                 noTicket.setText(emp.getDocumentoticket());
                 adm.guardar(fac);
                 codigo.setText(fac.getCodigo()+"");
-                btnAgregar.setEnabled(true);
+
                 Integer numero = new Integer(emp.getDocumentoticket());
                 emp.setDocumentoticket((numero + 1) + "");
                 adm.actualizar(emp);
@@ -326,14 +327,16 @@ String separador = File.separatorChar+"";
                         public void run() {
                               AbrirPuerta.abrir(empresaObj.getPuerto(),principal.in);
                               System.out.println("ABRIO PUERTA: "+principal.in);
-                              
+                             
                         }
                     };
                     cargar.start();
                     principal.noDisponibles();
+                 btnAgregar.setEnabled(true);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+                       btnAgregar.setEnabled(true);
                 return;
             }
 
@@ -433,7 +436,9 @@ String separador = File.separatorChar+"";
     private void placaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
+            btnAgregar.setEnabled(false);
             btnAgregar.doClick();
+           
 
         }
         placa.setText(placa.getText().toUpperCase());
