@@ -97,7 +97,7 @@ public class frmFactura extends javax.swing.JDialog {
             empresaObj = lo.empresaObj;
             val = new validaciones();
             principal = lo;
-            noTicket.requestFocusInWindow();
+            
             tarifario = adm.query("Select o from Tarifas as o order by o.codigo ");
             dias.setVisible(false);
             dias1.setVisible(false);
@@ -106,6 +106,14 @@ public class frmFactura extends javax.swing.JDialog {
             panelencontrados1.setVisible(false);
             panelencontrados2.setVisible(false);
             llenarProductos();
+            noTicket.requestFocusInWindow();
+            noTicket.requestFocusInWindow();
+            noTicket.requestFocusInWindow();
+            noTicket.requestFocusInWindow();
+            noTicket.requestFocusInWindow();
+            noTicket.requestFocusInWindow();
+            noTicket.requestFocusInWindow();
+            noTicket.requestFocusInWindow();
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1010,15 +1018,15 @@ public class frmFactura extends javax.swing.JDialog {
                 }
                 imprimir(facActual.getCodigo(), emp, dia, false,cli);
                 adm.actualizar(emp);
-                Thread cargar = new Thread() {
-
-                    public void run() {
-                        AbrirPuerta.abrir(empresaObj.getPuerto(), principal.out);
-                        System.out.println("SALIO PUERTA: " + principal.out);
-
-                    }
-                };
-                cargar.start();
+//                Thread cargar = new Thread() {
+//
+//                    public void run() {
+//                        AbrirPuerta.abrir(empresaObj.getPuerto(), principal.out);
+//                        System.out.println("SALIO PUERTA: " + principal.out);
+//
+//                    }
+//                };
+//                cargar.start();
                 principal.noDisponibles();
                 ingreso.setDate(null);
                 salida.setDate(null);
@@ -1026,6 +1034,10 @@ public class frmFactura extends javax.swing.JDialog {
                 tiempo.setDate(null);
                 noTicket.setText("");
                 codigo.setText("");
+                  this.setVisible(false);
+                  principal = null;
+                  empresaObj = null;
+                  System.gc();
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
@@ -1359,6 +1371,7 @@ public class frmFactura extends javax.swing.JDialog {
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + noTicket.getText() + "' ");
                 if (fac != null) {
                     llenarFactura(fac);
+                    btnAgregar.requestFocusInWindow();
                 } else {
                     ingreso.setDate(null);
                     salida.setDate(null);
