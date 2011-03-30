@@ -81,7 +81,17 @@ String separador = File.separatorChar+"";
 
         val = new validaciones();
         principal = lo;
-        mascaras() ;
+        //mascaras() ;
+        placa.requestFocusInWindow();
+        placa.requestFocusInWindow();
+        placa.requestFocusInWindow();
+        placa.requestFocusInWindow();
+        placa.requestFocusInWindow();
+        placa.requestFocusInWindow();
+        placa.requestFocusInWindow();
+        placa.requestFocusInWindow();
+        placa.requestFocusInWindow();
+        placa.requestFocusInWindow();
         placa.requestFocusInWindow();
         placa.requestFocusInWindow();
 
@@ -167,7 +177,6 @@ String separador = File.separatorChar+"";
         jPanel4 = new javax.swing.JPanel();
         btnAgregar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
-        btnReimprimir = new javax.swing.JButton();
 
         setTitle("Usuarios");
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -207,21 +216,21 @@ String separador = File.separatorChar+"";
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("Ticket No: ");
+        jLabel7.setText("Ticket No.");
         jPanel1.add(jLabel7);
         jLabel7.setBounds(10, 10, 60, 14);
 
         jLabel9.setForeground(new java.awt.Color(0, 0, 153));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("Fecha y Hora: ");
+        jLabel9.setText("Fecha y Hora:");
         jPanel1.add(jLabel9);
         jLabel9.setBounds(-10, 30, 80, 20);
 
         jLabel12.setForeground(new java.awt.Color(0, 0, 153));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel12.setText("Placa: ");
+        jLabel12.setText("Placa o Ref:");
         jPanel1.add(jLabel12);
-        jLabel12.setBounds(10, 50, 60, 14);
+        jLabel12.setBounds(10, 50, 70, 14);
 
         noTicket.setEditable(false);
         jPanel1.add(noTicket);
@@ -278,20 +287,6 @@ String separador = File.separatorChar+"";
         jPanel4.add(btnSalir);
         btnSalir.setBounds(210, 10, 60, 50);
 
-        btnReimprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fileprint.gif"))); // NOI18N
-        btnReimprimir.setMnemonic('P');
-        btnReimprimir.setText("ReImprimir");
-        btnReimprimir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnReimprimir.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnReimprimir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnReimprimir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReimprimirActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnReimprimir);
-        btnReimprimir.setBounds(80, 10, 70, 50);
-
         getContentPane().add(jPanel4);
         jPanel4.setBounds(10, 130, 300, 70);
 
@@ -315,7 +310,7 @@ String separador = File.separatorChar+"";
                 fac.setFechaini(new Date());
                 fac.setFecha(new Date());
                 fac.setTicket(emp.getDocumentoticket());
-                noTicket.setText(emp.getDocumentoticket());
+//                noTicket.setText(emp.getDocumentoticket());
                 adm.guardar(fac);
                 codigo.setText(fac.getCodigo()+"");
 
@@ -339,7 +334,10 @@ String separador = File.separatorChar+"";
                        btnAgregar.setEnabled(true);
                 return;
             }
-
+ this.setVisible(false);
+        principal = null;
+        empresaObj = null;
+        System.gc();
         } else {
             JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
         }
@@ -436,8 +434,7 @@ String separador = File.separatorChar+"";
     private void placaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
-            btnAgregar.setEnabled(false);
-            btnAgregar.doClick();
+            btnAgregar.requestFocusInWindow();
            
 
         }
@@ -451,14 +448,8 @@ String separador = File.separatorChar+"";
 
     }//GEN-LAST:event_placaKeyPressed
 
-    private void btnReimprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReimprimirActionPerformed
-        // TODO add your handling code here:
-          imprimir(Integer.parseInt(codigo.getText()), empresaObj);
-    }//GEN-LAST:event_btnReimprimirActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnReimprimir;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel codigo;
     private com.toedter.calendar.JDateChooser fecha;

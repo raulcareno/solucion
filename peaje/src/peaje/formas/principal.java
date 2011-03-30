@@ -29,6 +29,7 @@ import hibernate.cargar.WorkingDirectory;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
+import java.awt.Robot;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
@@ -910,11 +911,7 @@ public class principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de control de parqueaderos");
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
-            }
-        });
+        setName("miForma"); // NOI18N
 
         jSplitPane1.setDividerLocation(240);
         jSplitPane1.setDividerSize(0);
@@ -1134,7 +1131,7 @@ public class principal extends javax.swing.JFrame {
         jToolBar4.setFloatable(false);
         jToolBar4.setRollover(true);
 
-        barrera1.setFont(new java.awt.Font("Tahoma", 1, 16));
+        barrera1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         barrera1.setForeground(new java.awt.Color(255, 255, 255));
         barrera1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera1.setText("1");
@@ -2295,13 +2292,6 @@ try {
 //        }
     }//GEN-LAST:event_jSplitPane1KeyPressed
 
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        // TODO add your handling code here:
-//                if(evt.getKeyCode()== evt.VK_F2){
-//            JOptionPane.showMessageDialog(this, "PRESIONO F2");
-//        }
-    }//GEN-LAST:event_formKeyPressed
-
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
         // TODO add your handling code here:
         try {
@@ -2647,11 +2637,14 @@ try {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (permisos.getEliminar()) {        // TODO add your handling code here:
-            try {
-                adm.eliminarObjeto(Clientes.class, clienteObj.getCodigo());
-                this.limpiar();
-            } catch (Exception ex) {
-                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            int conf = JOptionPane.showConfirmDialog(this, "Seguro que desea eliminar el registro? ", "JCINFORM", JOptionPane.OK_CANCEL_OPTION);
+            if(conf == JOptionPane.OK_OPTION){
+                try {
+                    adm.eliminarObjeto(Clientes.class, clienteObj.getCodigo());
+                    this.limpiar();
+                } catch (Exception ex) {
+                    Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
         } else {
