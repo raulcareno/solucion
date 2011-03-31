@@ -200,7 +200,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Registro el Numero de placa y presiona ENTER..::..");
         jPanel3.add(jLabel10);
@@ -221,19 +221,19 @@ public class frmTicket extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(fecha);
-        fecha.setBounds(80, 30, 160, 20);
+        fecha.setBounds(90, 30, 150, 20);
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Ticket No.");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(10, 10, 60, 14);
+        jLabel7.setBounds(20, 10, 60, 14);
 
         jLabel9.setForeground(new java.awt.Color(0, 0, 153));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("Fecha y Hora: ");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(-10, 30, 80, 20);
+        jLabel9.setBounds(0, 30, 80, 20);
 
         jLabel12.setForeground(new java.awt.Color(0, 0, 153));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -248,7 +248,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(noTicket);
-        noTicket.setBounds(80, 10, 20, 20);
+        noTicket.setBounds(90, 10, 20, 20);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
         jLabel3.setText("Digite y luego Enter");
@@ -264,7 +264,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(placa);
-        placa.setBounds(80, 50, 80, 20);
+        placa.setBounds(90, 50, 70, 20);
 
         codigo.setFont(new java.awt.Font("Tahoma", 0, 5));
         jPanel1.add(codigo);
