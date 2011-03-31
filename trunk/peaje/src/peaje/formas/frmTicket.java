@@ -356,6 +356,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
                 cargar.start();
                 principal.noDisponibles();
                 btnAgregar.setEnabled(true);
+                principal.auditar("Ticket", "No."+fac.getTicket(), "GUARDAR");
                 principal.contenedor.requestFocus();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
