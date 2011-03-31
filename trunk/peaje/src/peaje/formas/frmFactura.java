@@ -759,6 +759,11 @@ public class frmFactura extends javax.swing.JInternalFrame  {
 
         telefono1.setEditable(false);
         telefono1.setText("9999999999999");
+        telefono1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                telefono1KeyPressed(evt);
+            }
+        });
         jPanel7.add(telefono1);
         telefono1.setBounds(80, 70, 140, 20);
 
@@ -772,6 +777,11 @@ public class frmFactura extends javax.swing.JInternalFrame  {
         identificacion1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 identificacion1FocusLost(evt);
+            }
+        });
+        identificacion1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                identificacion1KeyPressed(evt);
             }
         });
         jPanel7.add(identificacion1);
@@ -792,6 +802,11 @@ public class frmFactura extends javax.swing.JInternalFrame  {
 
         direccion1.setEditable(false);
         direccion1.setText("S/D");
+        direccion1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                direccion1KeyPressed(evt);
+            }
+        });
         jPanel7.add(direccion1);
         direccion1.setBounds(80, 50, 190, 20);
 
@@ -809,6 +824,11 @@ public class frmFactura extends javax.swing.JInternalFrame  {
         btnNuevoCliente1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoCliente1ActionPerformed(evt);
+            }
+        });
+        btnNuevoCliente1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnNuevoCliente1KeyPressed(evt);
             }
         });
         jPanel7.add(btnNuevoCliente1);
@@ -866,6 +886,11 @@ public class frmFactura extends javax.swing.JInternalFrame  {
                 btnAgregar1ActionPerformed(evt);
             }
         });
+        btnAgregar1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregar1KeyPressed(evt);
+            }
+        });
         jPanel8.add(btnAgregar1);
         btnAgregar1.setBounds(440, 10, 60, 50);
 
@@ -878,6 +903,11 @@ public class frmFactura extends javax.swing.JInternalFrame  {
         btnSalir1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalir1ActionPerformed(evt);
+            }
+        });
+        btnSalir1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalir1KeyPressed(evt);
             }
         });
         jPanel8.add(btnSalir1);
@@ -925,6 +955,11 @@ public class frmFactura extends javax.swing.JInternalFrame  {
         jPanel6.add(jPanel8);
         jPanel8.setBounds(20, 190, 600, 100);
 
+        cmbProductos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbProductosKeyPressed(evt);
+            }
+        });
         jPanel6.add(cmbProductos);
         cmbProductos.setBounds(300, 30, 200, 20);
 
@@ -934,12 +969,22 @@ public class frmFactura extends javax.swing.JInternalFrame  {
                 btnAnadirProductoActionPerformed(evt);
             }
         });
+        btnAnadirProducto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAnadirProductoKeyPressed(evt);
+            }
+        });
         jPanel6.add(btnAnadirProducto);
         btnAnadirProducto.setBounds(550, 30, 63, 20);
 
         txtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCantidad.setText("1");
         txtCantidad.setFont(new java.awt.Font("Tahoma", 1, 11));
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyPressed(evt);
+            }
+        });
         jPanel6.add(txtCantidad);
         txtCantidad.setBounds(500, 30, 50, 20);
 
@@ -1056,10 +1101,12 @@ public class frmFactura extends javax.swing.JInternalFrame  {
                 tiempo.setDate(null);
                 noTicket.setText("");
                 codigo.setText("");
-                  this.setVisible(false);
+                 principal.contenedor.requestFocus();
+                 this.setVisible(false);
                   principal = null;
                   empresaObj = null;
                   System.gc();
+               
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
@@ -1183,9 +1230,10 @@ public class frmFactura extends javax.swing.JInternalFrame  {
         if (evt.getKeyCode() == evt.VK_DOWN) {
             encontrados1.setSelectedIndex(0);
             encontrados1.requestFocusInWindow();
-        }
-        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+        }else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             panelencontrados1.setVisible(false);
+        }else {
+              principal.tecla(evt.getKeyCode());
         }
     }//GEN-LAST:event_placaKeyPressed
 
@@ -1498,6 +1546,7 @@ public class frmFactura extends javax.swing.JInternalFrame  {
             this.panelencontrados.setVisible(false);
 
         }
+        principal.tecla(evt.getKeyCode());
 }//GEN-LAST:event_encontradosKeyPressed
 
     private void nombresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyPressed
@@ -1568,13 +1617,14 @@ public class frmFactura extends javax.swing.JInternalFrame  {
             Factura fac = (Factura) this.encontrados1.getSelectedValue();
             llenarFactura(fac);
             noTicket.setText(fac.getTicket());
-        }
-        if (evt.getKeyCode() == evt.VK_UP && encontrados1.getSelectedIndex() == 0) {
+            btnAgregar.requestFocusInWindow();
+        }else if (evt.getKeyCode() == evt.VK_UP && encontrados1.getSelectedIndex() == 0) {
             this.placa.requestFocusInWindow();
-        }
-        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+        }else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             this.panelencontrados1.setVisible(false);
 
+        }else{
+              principal.tecla(evt.getKeyCode());
         }
     }//GEN-LAST:event_encontrados1KeyPressed
 
@@ -1682,6 +1732,7 @@ public void cargarGrid(Productos pro,BigDecimal valor){
         if (evt.getKeyCode() == evt.VK_ESCAPE) {
             panelencontrados2.setVisible(false);
         }
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_nombres1KeyPressed
 
     private void nombres1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyReleased
@@ -1797,7 +1848,7 @@ public void cargarGrid(Productos pro,BigDecimal valor){
         dtm.getDataVector().removeAllElements();
         productos.setModel(dtm);
 
-
+principal.contenedor.requestFocus();
 
     }//GEN-LAST:event_btnAgregar1ActionPerformed
 
@@ -1862,6 +1913,7 @@ public void cargarGrid(Productos pro,BigDecimal valor){
             this.sumar();
 
         }
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_productosKeyPressed
 
     private void btnAgregarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregarKeyPressed
@@ -1888,6 +1940,51 @@ public void cargarGrid(Productos pro,BigDecimal valor){
         // TODO add your handling code here:
            principal.tecla(evt.getKeyCode()); 
     }//GEN-LAST:event_jPanel6KeyPressed
+
+    private void identificacion1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_identificacion1KeyPressed
+principal.tecla(evt.getKeyCode());
+        // TODO add your handling code here:
+    }//GEN-LAST:event_identificacion1KeyPressed
+
+    private void telefono1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefono1KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_telefono1KeyPressed
+
+    private void direccion1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_direccion1KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_direccion1KeyPressed
+
+    private void cmbProductosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbProductosKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbProductosKeyPressed
+
+    private void txtCantidadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_txtCantidadKeyPressed
+
+    private void btnAnadirProductoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAnadirProductoKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnAnadirProductoKeyPressed
+
+    private void btnNuevoCliente1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnNuevoCliente1KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnNuevoCliente1KeyPressed
+
+    private void btnAgregar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregar1KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnAgregar1KeyPressed
+
+    private void btnSalir1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalir1KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnSalir1KeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

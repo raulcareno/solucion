@@ -12,7 +12,7 @@ import java.awt.Container;
  *
  * @author  geovanny
  */
-public class acerca extends javax.swing.JDialog {
+public class acerca  extends javax.swing.JInternalFrame  {
     private Container desktopContenedor;
 
     /** Creates new form acerca */
@@ -21,7 +21,7 @@ public class acerca extends javax.swing.JDialog {
         this.setSize(458, 205);
     }
   public acerca(java.awt.Frame parent, boolean modal) {
-          super(parent,modal);
+//          super(parent,modal);
         //this.desktopContenedor = lo.contenedor;
         initComponents();
         this.setSize(419, 214);
@@ -49,7 +49,6 @@ public class acerca extends javax.swing.JDialog {
         javax.swing.JLabel appHomepageLabel3 = new javax.swing.JLabel();
 
         setTitle("Acerca de ...");
-        setIconImage(null);
         getContentPane().setLayout(null);
 
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N

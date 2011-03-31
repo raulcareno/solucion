@@ -20,7 +20,7 @@ import hibernate.*;
  *
  * @author geovanny
  */
-public class frmOperadores extends javax.swing.JDialog {
+public class frmOperadores  extends javax.swing.JInternalFrame {
 
     /** Creates new form frmUsuarios */
     public boolean grabar = false;
@@ -38,7 +38,7 @@ public class frmOperadores extends javax.swing.JDialog {
 
     /** Creates new form frmProfesores */
     public frmOperadores(java.awt.Frame parent, boolean modal, Administrador adm1) {
-        super(parent, modal);
+//        super(parent, modal);
         adm = adm1;
         llenarCombo();
         initComponents();
@@ -49,7 +49,7 @@ public class frmOperadores extends javax.swing.JDialog {
     }
 
     public frmOperadores(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
-        super(parent, modal);
+//        super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         adm = adm1;
 
@@ -262,14 +262,14 @@ try {
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Busqueda, Creación,Modificación,  Operadores u Usuarios ..::..");
         jPanel3.add(jLabel10);
         jLabel10.setBounds(10, 20, 350, 13);
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 600, 40);
+        jPanel3.setBounds(0, 0, 420, 40);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
@@ -389,7 +389,7 @@ try {
         jPanel1.add(jScrollPane2);
         jScrollPane2.setBounds(110, 130, 220, 50);
 
-        codigo.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
+        codigo.setFont(new java.awt.Font("Tahoma", 0, 3));
         codigo.setText("0");
         jPanel1.add(codigo);
         codigo.setBounds(80, 160, 10, 14);

@@ -53,9 +53,10 @@ public class frmTicket extends javax.swing.JInternalFrame {
     private String claveActual;
     private validaciones val;
     private principal principal;
-    private String in ;
-    private String out ;
-String separador = File.separatorChar+"";
+    private String in;
+    private String out;
+    String separador = File.separatorChar + "";
+
     /** Creates new form frmProfesores */
     public frmTicket(java.awt.Frame parent, boolean modal, Administrador adm1) {
 //        super(parent, modal);
@@ -67,7 +68,7 @@ String separador = File.separatorChar+"";
 
         val = new validaciones();
         placa.requestFocusInWindow();
-        mascaras() ;
+        mascaras();
     }
 
     public frmTicket(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
@@ -214,6 +215,11 @@ String separador = File.separatorChar+"";
         fecha.setDate(new Date());
         fecha.setDateFormatString("dd/MM/yyyy HH:mm:ss");
         fecha.setEnabled(false);
+        fecha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                fechaKeyPressed(evt);
+            }
+        });
         jPanel1.add(fecha);
         fecha.setBounds(80, 30, 160, 20);
 
@@ -236,6 +242,11 @@ String separador = File.separatorChar+"";
         jLabel12.setBounds(10, 50, 70, 14);
 
         noTicket.setEditable(false);
+        noTicket.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                noTicketKeyPressed(evt);
+            }
+        });
         jPanel1.add(noTicket);
         noTicket.setBounds(80, 10, 20, 20);
 
@@ -318,42 +329,44 @@ String separador = File.separatorChar+"";
                     placa.requestFocusInWindow();
                     return;
                 }
-                 
+
                 btnAgregar.setEnabled(false);
                 Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
                 Factura fac = new Factura();
-                fac.setPlaca(placa.getText().replace("_","").toUpperCase());
+                fac.setPlaca(placa.getText().replace("_", "").toUpperCase());
                 fac.setFechaini(new Date());
                 fac.setFecha(new Date());
                 fac.setTicket(emp.getDocumentoticket());
 //                noTicket.setText(emp.getDocumentoticket());
                 adm.guardar(fac);
-                codigo.setText(fac.getCodigo()+"");
+                codigo.setText(fac.getCodigo() + "");
 
                 Integer numero = new Integer(emp.getDocumentoticket());
                 emp.setDocumentoticket((numero + 1) + "");
                 adm.actualizar(emp);
                 imprimir(fac.getCodigo(), emp);
-                    Thread cargar = new Thread() {
-                        public void run() {
-                              AbrirPuerta.abrir(empresaObj.getPuerto(),principal.in);
-                              System.out.println("ABRIO PUERTA: "+principal.in);
-                             
-                        }
-                    };
-                    cargar.start();
-                    principal.noDisponibles();
-                 btnAgregar.setEnabled(true);
+                Thread cargar = new Thread() {
+
+                    public void run() {
+                        AbrirPuerta.abrir(empresaObj.getPuerto(), principal.in);
+                        System.out.println("ABRIO PUERTA: " + principal.in);
+
+                    }
+                };
+                cargar.start();
+                principal.noDisponibles();
+                btnAgregar.setEnabled(true);
+                principal.contenedor.requestFocus();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
-                       btnAgregar.setEnabled(true);
+                btnAgregar.setEnabled(true);
                 return;
             }
- this.setVisible(false);
-        principal = null;
-        empresaObj = null;
-        System.gc();
+            this.setVisible(false);
+            principal = null;
+            empresaObj = null;
+            System.gc();
         } else {
             JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
         }
@@ -368,10 +381,10 @@ String separador = File.separatorChar+"";
             WorkingDirectory w = new WorkingDirectory();
             String ubicacionDirectorio = w.get() + separador;
             if (ubicacionDirectorio.contains("build")) {
-                ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }
 
-            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes"+separador+"ticket.jasper");
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes" + separador + "ticket.jasper");
 
             Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
             ArrayList detalle = new ArrayList();
@@ -396,7 +409,7 @@ String separador = File.separatorChar+"";
             }
             job.setPrintService(services[selectedService]);
             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
-            MediaSizeName mediaSizeName = MediaSize.findMedia(3.08F,3.70F, MediaPrintableArea.INCH);
+            MediaSizeName mediaSizeName = MediaSize.findMedia(3.08F, 3.70F, MediaPrintableArea.INCH);
             //MediaSizeName mediaSizeName = MediaSize.findMedia(3F,3F, MediaPrintableArea.INCH);
             printRequestAttributeSet.add(mediaSizeName);
             printRequestAttributeSet.add(new Copies(1));
@@ -431,7 +444,7 @@ String separador = File.separatorChar+"";
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
-        
+
         this.setVisible(false);
         principal.contenedor.requestFocus();
         principal = null;
@@ -453,14 +466,14 @@ String separador = File.separatorChar+"";
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             btnAgregar.requestFocusInWindow();
-        }else if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            
+        } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
+
             principal.contenedor.requestFocus();
             principal = null;
             empresaObj = null;
             System.gc();
             this.setVisible(false);
-        }else{
+        } else {
             principal.tecla(evt.getKeyCode());
         }
 
@@ -468,13 +481,13 @@ String separador = File.separatorChar+"";
 
     private void placaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaKeyReleased
         // TODO add your handling code here:
-         placa.setText(placa.getText().toUpperCase());
+        placa.setText(placa.getText().toUpperCase());
     }//GEN-LAST:event_placaKeyReleased
 
     private void btnAgregarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregarKeyPressed
         // TODO add your handling code here:
-            principal.tecla(evt.getKeyCode());
-        
+        principal.tecla(evt.getKeyCode());
+
     }//GEN-LAST:event_btnAgregarKeyPressed
 
     private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
@@ -487,6 +500,15 @@ String separador = File.separatorChar+"";
         principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_formKeyPressed
 
+    private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_noTicketKeyPressed
+
+    private void fechaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fechaKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_fechaKeyPressed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnSalir;

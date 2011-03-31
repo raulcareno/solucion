@@ -55,8 +55,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
     private principal principal;
  String separador = File.separatorChar+"";
     /** Creates new form frmProfesores */
-    public frmReportes(Container contendor,Administrador adm1) {
-        this.desktopContenedor = contendor;
+    public frmReportes(principal lo, Administrador adm1) {
+        this.principal = lo;
 //          super(parent,modal);
         adm = adm1;
         llenarCombo();
@@ -194,14 +194,29 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 jComboBox1ItemStateChanged(evt);
             }
         });
+        jComboBox1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jComboBox1KeyPressed(evt);
+            }
+        });
         jPanel1.add(jComboBox1);
         jComboBox1.setBounds(80, 10, 300, 20);
 
         desde.setDate(new Date());
+        desde.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                desdeKeyPressed(evt);
+            }
+        });
         jPanel1.add(desde);
         desde.setBounds(80, 40, 130, 20);
 
         hasta.setDate(new Date());
+        hasta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                hastaKeyPressed(evt);
+            }
+        });
         jPanel1.add(hasta);
         hasta.setBounds(260, 40, 120, 20);
 
@@ -246,10 +261,20 @@ public class frmReportes extends javax.swing.JInternalFrame {
         btnSalir.setBounds(510, 10, 60, 50);
 
         hastahora2.setDateFormatString("hh:mm:ss");
+        hastahora2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                hastahora2KeyPressed(evt);
+            }
+        });
         jPanel1.add(hastahora2);
         hastahora2.setBounds(260, 60, 100, 20);
 
         desdehora2.setDateFormatString("hh:mm:ss");
+        desdehora2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                desdehora2KeyPressed(evt);
+            }
+        });
         jPanel1.add(desdehora2);
         desdehora2.setBounds(80, 60, 100, 20);
 
@@ -290,7 +315,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
                 .addGap(17, 17, 17))
         );
 
@@ -306,6 +331,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
+                   principal.contenedor.requestFocus();
         this.setVisible(false);
         principal = null;
         empresaObj = null;
@@ -544,7 +570,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             clientes(dirreporte, query, titulo);
 
         }
-
+           principal.contenedor.requestFocus();
 
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -554,6 +580,32 @@ public class frmReportes extends javax.swing.JInternalFrame {
            
         }
     }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jComboBox1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jComboBox1KeyPressed
+        // TODO add your handling code here:
+        int cod = evt.getKeyCode();
+        principal.tecla(cod);
+    }//GEN-LAST:event_jComboBox1KeyPressed
+
+    private void desdeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_desdeKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_desdeKeyPressed
+
+    private void hastaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hastaKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_hastaKeyPressed
+
+    private void desdehora2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_desdehora2KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_desdehora2KeyPressed
+
+    private void hastahora2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hastahora2KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_hastahora2KeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

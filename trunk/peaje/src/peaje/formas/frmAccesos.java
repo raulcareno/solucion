@@ -25,7 +25,7 @@ import peaje.Administrador;
  *
  * @author  Francisco
  */
-public class frmAccesos  extends javax.swing.JDialog {
+public class frmAccesos   extends javax.swing.JInternalFrame  {
     public boolean grabar =false;
     public boolean modificar =false;
     private Container desktopContenedor;
@@ -34,7 +34,7 @@ public class frmAccesos  extends javax.swing.JDialog {
      * Creates new form frmRubros
      */
  public frmAccesos(java.awt.Frame parent, boolean modal, Administrador adm1) {
-        super(parent, modal);
+//        super(parent, modal);
         adm = adm1;
         
         initComponents();llenarCombo();
@@ -43,7 +43,7 @@ public class frmAccesos  extends javax.swing.JDialog {
     }
 
     public frmAccesos(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
-        super(parent, modal);
+//        super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         adm = adm1;
         
@@ -112,8 +112,8 @@ public class frmAccesos  extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         jPerfil = new javax.swing.JList();
 
-        setTitle("Accesos a Usuarios");
         setBackground(new java.awt.Color(236, 246, 255));
+        setTitle("Accesos a Usuarios");
         getContentPane().setLayout(null);
 
         tablaPerfilesRubros.setModel(new javax.swing.table.DefaultTableModel(
@@ -206,7 +206,7 @@ public class frmAccesos  extends javax.swing.JDialog {
         jLabel10.setBounds(10, 20, 230, 13);
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 660, 40);
+        jPanel3.setBounds(0, 0, 440, 40);
 
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Privilegios:");
