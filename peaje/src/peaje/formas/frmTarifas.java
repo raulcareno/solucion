@@ -30,7 +30,7 @@ import peaje.validaciones;
  *
  * @author Ismael Jadan
  */
-public class frmTarifas extends javax.swing.JDialog {
+public class frmTarifas   extends javax.swing.JInternalFrame {
    public boolean grabar = false;
     public boolean modificar = false;
     public boolean grabar1 = false;
@@ -46,11 +46,11 @@ public class frmTarifas extends javax.swing.JDialog {
     private principal principal;
     /** Creates new form frmTarifas1 */
     public frmTarifas(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+//        super(parent, modal);
         initComponents();
     }
   public frmTarifas(java.awt.Frame parent, boolean modal,Administrador adm1) {
-          super(parent,modal);
+//          super(parent,modal);
 
         initComponents();
         this.setSize(615, 508);
@@ -61,7 +61,7 @@ public class frmTarifas extends javax.swing.JDialog {
     }
 
     public frmTarifas(java.awt.Frame parent, boolean modal,principal lo,Administrador adm1) {
-          super(parent,modal);
+//          super(parent,modal);
         this.desktopContenedor = lo.contenedor;
 
         initComponents();

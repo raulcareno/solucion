@@ -22,7 +22,7 @@ import peaje.validaciones;
  *
  * @author geovanny
  */
-public class frmEmpresa extends javax.swing.JDialog {
+public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
     /** Creates new form frmEmpresa */
     public boolean grabar = false;
@@ -39,7 +39,7 @@ public class frmEmpresa extends javax.swing.JDialog {
 
     /** Creates new form frmProfesores */
     public frmEmpresa(java.awt.Frame parent, boolean modal, Administrador adm1) {
-        super(parent, modal);
+//        super(parent, modal);
         adm = adm1;
         llenarCombo();
         initComponents();
@@ -62,7 +62,7 @@ public class frmEmpresa extends javax.swing.JDialog {
     }
 
     public frmEmpresa(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
-        super(parent, modal);
+//        super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         adm = adm1;
         llenarCombo();
@@ -396,7 +396,7 @@ public class frmEmpresa extends javax.swing.JDialog {
         jLabel10.setBounds(10, 20, 250, 13);
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 600, 40);
+        jPanel3.setBounds(0, 0, 430, 40);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -411,6 +411,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarActionPerformed(evt);
+            }
+        });
+        btnBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnBuscarKeyPressed(evt);
             }
         });
         jPanel4.add(btnBuscar);
@@ -428,6 +433,11 @@ public class frmEmpresa extends javax.swing.JDialog {
                 btnAgregarActionPerformed(evt);
             }
         });
+        btnAgregar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregarKeyPressed(evt);
+            }
+        });
         jPanel4.add(btnAgregar);
         btnAgregar.setBounds(110, 10, 60, 50);
 
@@ -440,6 +450,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
+            }
+        });
+        btnModificar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnModificarKeyPressed(evt);
             }
         });
         jPanel4.add(btnModificar);
@@ -457,6 +472,11 @@ public class frmEmpresa extends javax.swing.JDialog {
                 btnEliminarActionPerformed(evt);
             }
         });
+        btnEliminar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnEliminarKeyPressed(evt);
+            }
+        });
         jPanel4.add(btnEliminar);
         btnEliminar.setBounds(230, 10, 60, 50);
 
@@ -469,6 +489,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
+            }
+        });
+        btnSalir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalirKeyPressed(evt);
             }
         });
         jPanel4.add(btnSalir);
@@ -597,6 +622,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.impfactura}"), cmbFactura, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbFactura.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbFacturaKeyPressed(evt);
+            }
+        });
         jPanel2.add(cmbFactura);
         cmbFactura.setBounds(120, 150, 240, 20);
 
@@ -617,6 +647,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.impticket}"), cmbTicket, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbTicket.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbTicketKeyPressed(evt);
+            }
+        });
         jPanel2.add(cmbTicket);
         cmbTicket.setBounds(120, 130, 240, 20);
 
@@ -631,6 +666,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.impresora}"), cmbImpresora, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbImpresora.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbImpresoraKeyPressed(evt);
+            }
+        });
         jPanel2.add(cmbImpresora);
         cmbImpresora.setBounds(120, 170, 240, 20);
 
@@ -645,6 +685,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto}"), cmbPuertoPrincipal, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbPuertoPrincipal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbPuertoPrincipalKeyPressed(evt);
+            }
+        });
         jPanel2.add(cmbPuertoPrincipal);
         cmbPuertoPrincipal.setBounds(120, 190, 60, 20);
 
@@ -653,6 +698,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.iva}"), iva, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
+        iva.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ivaKeyPressed(evt);
+            }
+        });
         jPanel2.add(iva);
         iva.setBounds(270, 110, 59, 20);
 
@@ -672,8 +722,13 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto1}"), cmbEntrada1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbEntrada1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbEntrada1KeyPressed(evt);
+            }
+        });
         jPanel5.add(cmbEntrada1);
-        cmbEntrada1.setBounds(70, 50, 60, 20);
+        cmbEntrada1.setBounds(70, 50, 60, 19);
 
         cmbPuerta1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
         cmbPuerta1.setEnabled(false);
@@ -681,6 +736,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta1}"), cmbPuerta1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbPuerta1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbPuerta1KeyPressed(evt);
+            }
+        });
         jPanel5.add(cmbPuerta1);
         cmbPuerta1.setBounds(130, 50, 37, 20);
 
@@ -691,6 +751,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta2}"), cmbPuerta2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbPuerta2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbPuerta2KeyPressed(evt);
+            }
+        });
         jPanel5.add(cmbPuerta2);
         cmbPuerta2.setBounds(130, 70, 37, 20);
 
@@ -700,8 +765,13 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto3}"), cmbEntrada2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbEntrada2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbEntrada2KeyPressed(evt);
+            }
+        });
         jPanel5.add(cmbEntrada2);
-        cmbEntrada2.setBounds(70, 70, 60, 20);
+        cmbEntrada2.setBounds(70, 70, 60, 19);
 
         cmbPuerta3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
         cmbPuerta3.setSelectedIndex(2);
@@ -710,6 +780,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta3}"), cmbPuerta3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbPuerta3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbPuerta3KeyPressed(evt);
+            }
+        });
         jPanel5.add(cmbPuerta3);
         cmbPuerta3.setBounds(130, 90, 37, 20);
 
@@ -719,8 +794,13 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto2}"), cmbEntrada3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbEntrada3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbEntrada3KeyPressed(evt);
+            }
+        });
         jPanel5.add(cmbEntrada3);
-        cmbEntrada3.setBounds(70, 90, 60, 20);
+        cmbEntrada3.setBounds(70, 90, 60, 19);
 
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel14.setText("Entrada 1: ");
@@ -738,8 +818,13 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto4}"), cmbEntrada4, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbEntrada4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbEntrada4KeyPressed(evt);
+            }
+        });
         jPanel5.add(cmbEntrada4);
-        cmbEntrada4.setBounds(70, 110, 60, 20);
+        cmbEntrada4.setBounds(70, 110, 60, 19);
 
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel19.setText("Entrada 3: ");
@@ -753,6 +838,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerta4}"), cmbPuerta4, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbPuerta4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbPuerta4KeyPressed(evt);
+            }
+        });
         jPanel5.add(cmbPuerta4);
         cmbPuerta4.setBounds(130, 110, 37, 20);
 
@@ -777,6 +867,11 @@ public class frmEmpresa extends javax.swing.JDialog {
                 chkActivo1ActionPerformed(evt);
             }
         });
+        chkActivo1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                chkActivo1KeyPressed(evt);
+            }
+        });
         jPanel5.add(chkActivo1);
         chkActivo1.setBounds(290, 50, 81, 23);
 
@@ -789,6 +884,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         chkActivo2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkActivo2ActionPerformed(evt);
+            }
+        });
+        chkActivo2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                chkActivo2KeyPressed(evt);
             }
         });
         jPanel5.add(chkActivo2);
@@ -805,6 +905,11 @@ public class frmEmpresa extends javax.swing.JDialog {
                 chkActivo3ActionPerformed(evt);
             }
         });
+        chkActivo3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                chkActivo3KeyPressed(evt);
+            }
+        });
         jPanel5.add(chkActivo3);
         chkActivo3.setBounds(290, 90, 81, 23);
 
@@ -819,6 +924,11 @@ public class frmEmpresa extends javax.swing.JDialog {
                 chkActivo4ActionPerformed(evt);
             }
         });
+        chkActivo4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                chkActivo4KeyPressed(evt);
+            }
+        });
         jPanel5.add(chkActivo4);
         chkActivo4.setBounds(290, 110, 81, 23);
 
@@ -828,6 +938,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida1}"), cmbSalida1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbSalida1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbSalida1KeyPressed(evt);
+            }
+        });
         jPanel5.add(cmbSalida1);
         cmbSalida1.setBounds(230, 50, 60, 19);
 
@@ -837,6 +952,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida3}"), cmbSalida3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbSalida3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbSalida3KeyPressed(evt);
+            }
+        });
         jPanel5.add(cmbSalida3);
         cmbSalida3.setBounds(230, 90, 60, 19);
 
@@ -846,6 +966,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida2}"), cmbSalida2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbSalida2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbSalida2KeyPressed(evt);
+            }
+        });
         jPanel5.add(cmbSalida2);
         cmbSalida2.setBounds(230, 70, 60, 19);
 
@@ -865,6 +990,11 @@ public class frmEmpresa extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida4}"), cmbSalida4, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cmbSalida4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbSalida4KeyPressed(evt);
+            }
+        });
         jPanel5.add(cmbSalida4);
         cmbSalida4.setBounds(230, 110, 60, 19);
 
@@ -1143,6 +1273,8 @@ public class frmEmpresa extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             codigo.nextFocus();
+        }else{
+            principal.tecla(evt.getKeyCode());
         }
     }//GEN-LAST:event_codigoKeyPressed
 
@@ -1150,6 +1282,8 @@ public class frmEmpresa extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             nombres.nextFocus();
+        }else{
+            principal.tecla(evt.getKeyCode());
         }
     }//GEN-LAST:event_nombresKeyPressed
 
@@ -1157,6 +1291,8 @@ public class frmEmpresa extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             direccion.nextFocus();
+        }else{
+            principal.tecla(evt.getKeyCode());
         }
     }//GEN-LAST:event_direccionKeyPressed
 
@@ -1164,6 +1300,8 @@ public class frmEmpresa extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             razonsocial.nextFocus();
+        }else{
+            principal.tecla(evt.getKeyCode());
         }
     }//GEN-LAST:event_razonsocialKeyPressed
 
@@ -1175,11 +1313,16 @@ public class frmEmpresa extends javax.swing.JDialog {
     }//GEN-LAST:event_formKeyReleased
 
     private void telefonoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyPressed
-        // TODO add your handling code here:
+        // TODO add your handling code here:else{
+            principal.tecla(evt.getKeyCode());
+        
     }//GEN-LAST:event_telefonoKeyPressed
 
     private void parqueaderosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_parqueaderosKeyPressed
         // TODO add your handling code here:
+
+            principal.tecla(evt.getKeyCode());
+        
     }//GEN-LAST:event_parqueaderosKeyPressed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
@@ -1214,6 +1357,140 @@ public class frmEmpresa extends javax.swing.JDialog {
         cmbPuerta4.setEnabled(chkActivo4.isSelected());
         cmbSalida4.setEnabled(chkActivo1.isSelected());
     }//GEN-LAST:event_chkActivo4ActionPerformed
+
+    private void ivaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ivaKeyPressed
+        // TODO add your handling code here:
+
+            principal.tecla(evt.getKeyCode());
+     
+    }//GEN-LAST:event_ivaKeyPressed
+
+    private void cmbTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbTicketKeyPressed
+        // TODO add your handling code here:
+
+            principal.tecla(evt.getKeyCode());
+
+    }//GEN-LAST:event_cmbTicketKeyPressed
+
+    private void cmbFacturaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbFacturaKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbFacturaKeyPressed
+
+    private void cmbImpresoraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbImpresoraKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbImpresoraKeyPressed
+
+    private void cmbPuertoPrincipalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPuertoPrincipalKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbPuertoPrincipalKeyPressed
+
+    private void btnAgregarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregarKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnAgregarKeyPressed
+
+    private void btnBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnBuscarKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnBuscarKeyPressed
+
+    private void btnModificarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnModificarKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnModificarKeyPressed
+
+    private void btnEliminarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEliminarKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnEliminarKeyPressed
+
+    private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnSalirKeyPressed
+
+    private void cmbEntrada1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbEntrada1KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbEntrada1KeyPressed
+
+    private void cmbPuerta1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPuerta1KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbPuerta1KeyPressed
+
+    private void cmbSalida1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbSalida1KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbSalida1KeyPressed
+
+    private void chkActivo1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chkActivo1KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_chkActivo1KeyPressed
+
+    private void cmbEntrada2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbEntrada2KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbEntrada2KeyPressed
+
+    private void cmbPuerta2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPuerta2KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbPuerta2KeyPressed
+
+    private void cmbSalida2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbSalida2KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbSalida2KeyPressed
+
+    private void chkActivo2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chkActivo2KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_chkActivo2KeyPressed
+
+    private void cmbEntrada3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbEntrada3KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbEntrada3KeyPressed
+
+    private void cmbPuerta3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPuerta3KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbPuerta3KeyPressed
+
+    private void cmbSalida3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbSalida3KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbSalida3KeyPressed
+
+    private void chkActivo3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chkActivo3KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_chkActivo3KeyPressed
+
+    private void cmbEntrada4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbEntrada4KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbEntrada4KeyPressed
+
+    private void cmbPuerta4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPuerta4KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbPuerta4KeyPressed
+
+    private void cmbSalida4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbSalida4KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbSalida4KeyPressed
+
+    private void chkActivo4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chkActivo4KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_chkActivo4KeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

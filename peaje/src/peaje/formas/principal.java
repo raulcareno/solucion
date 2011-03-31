@@ -132,8 +132,9 @@ public class principal extends javax.swing.JFrame implements KeyListener {
                     //System.out.println("In here");
                     //JOptionPane.showMessageDialog(getContentPane(), "JCINFORM ");
                     acerca ac = new acerca();
-                    ac.setModal(true);
+                    //ac.setModal(true);
                     ac.setLocation(250, 250);
+                    contenedor.add(ac);
                     ac.show();
 
                 }
@@ -261,6 +262,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         viernes = new javax.swing.JCheckBox();
         sabado = new javax.swing.JCheckBox();
         domingo = new javax.swing.JCheckBox();
+        todos = new javax.swing.JCheckBox();
         noTarjeta = new javax.swing.JFormattedTextField();
         ingresos = new javax.swing.JSpinner();
         jLabel20 = new javax.swing.JLabel();
@@ -442,6 +444,11 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.telefono}"), telefono, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
+        telefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                telefonoKeyPressed(evt);
+            }
+        });
         jPanel4.add(telefono);
         telefono.setBounds(80, 70, 160, 20);
 
@@ -473,6 +480,11 @@ public class principal extends javax.swing.JFrame implements KeyListener {
                 tarjetasMouseClicked(evt);
             }
         });
+        tarjetas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tarjetasKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(tarjetas);
 
         jPanel4.add(jScrollPane1);
@@ -485,6 +497,11 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         btnNuevaTarjeta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevaTarjetaActionPerformed(evt);
+            }
+        });
+        btnNuevaTarjeta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnNuevaTarjetaKeyPressed(evt);
             }
         });
         jPanel4.add(btnNuevaTarjeta);
@@ -512,10 +529,21 @@ public class principal extends javax.swing.JFrame implements KeyListener {
                 tarifasValueChanged(evt);
             }
         });
+        tarifas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tarifasKeyPressed(evt);
+            }
+        });
         jScrollPane4.setViewportView(tarifas);
 
         jPanel4.add(jScrollPane4);
         jScrollPane4.setBounds(80, 90, 220, 50);
+
+        txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtValorKeyPressed(evt);
+            }
+        });
         jPanel4.add(txtValor);
         txtValor.setBounds(310, 120, 50, 20);
 
@@ -661,8 +689,20 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         jLabel19.setText("Desde:");
         jPanel7.add(jLabel19);
         jLabel19.setBounds(10, 20, 50, 14);
+
+        horaDesde.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaDesdeKeyPressed(evt);
+            }
+        });
         jPanel7.add(horaDesde);
         horaDesde.setBounds(50, 20, 80, 20);
+
+        horaHasta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaHastaKeyPressed(evt);
+            }
+        });
         jPanel7.add(horaHasta);
         horaHasta.setBounds(50, 40, 80, 20);
 
@@ -673,16 +713,36 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         diasHabiles.setLayout(null);
 
         lunes.setText("Lunes");
+        lunes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lunesActionPerformed(evt);
+            }
+        });
+        lunes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                lunesKeyPressed(evt);
+            }
+        });
         diasHabiles.add(lunes);
-        lunes.setBounds(30, 20, 80, 23);
+        lunes.setBounds(30, 70, 80, 23);
 
         martes.setText("Martes");
+        martes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                martesKeyPressed(evt);
+            }
+        });
         diasHabiles.add(martes);
-        martes.setBounds(30, 50, 80, 23);
+        martes.setBounds(120, 10, 80, 23);
 
         miercoles.setText("Miércoles");
+        miercoles.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                miercolesKeyPressed(evt);
+            }
+        });
         diasHabiles.add(miercoles);
-        miercoles.setBounds(30, 80, 80, 23);
+        miercoles.setBounds(120, 40, 80, 23);
 
         jueves.setText("Jueves");
         jueves.addActionListener(new java.awt.event.ActionListener() {
@@ -690,27 +750,72 @@ public class principal extends javax.swing.JFrame implements KeyListener {
                 juevesActionPerformed(evt);
             }
         });
+        jueves.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                juevesKeyPressed(evt);
+            }
+        });
         diasHabiles.add(jueves);
-        jueves.setBounds(120, 20, 80, 23);
+        jueves.setBounds(120, 70, 80, 23);
 
         viernes.setText("Viernes");
+        viernes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                viernesKeyPressed(evt);
+            }
+        });
         diasHabiles.add(viernes);
-        viernes.setBounds(120, 50, 80, 23);
+        viernes.setBounds(230, 10, 80, 23);
 
         sabado.setText("Sábado");
+        sabado.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                sabadoKeyPressed(evt);
+            }
+        });
         diasHabiles.add(sabado);
-        sabado.setBounds(120, 80, 80, 23);
+        sabado.setBounds(230, 40, 80, 23);
 
         domingo.setText("Domingo");
+        domingo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                domingoKeyPressed(evt);
+            }
+        });
         diasHabiles.add(domingo);
-        domingo.setBounds(210, 20, 80, 23);
+        domingo.setBounds(230, 70, 80, 23);
+
+        todos.setText("Todos");
+        todos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                todosActionPerformed(evt);
+            }
+        });
+        todos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                todosKeyPressed(evt);
+            }
+        });
+        diasHabiles.add(todos);
+        todos.setBounds(30, 40, 55, 23);
 
         formaTarjetas.getContentPane().add(diasHabiles);
         diasHabiles.setBounds(30, 170, 320, 110);
 
         noTarjeta.setEditable(false);
+        noTarjeta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                noTarjetaKeyPressed(evt);
+            }
+        });
         formaTarjetas.getContentPane().add(noTarjeta);
         noTarjeta.setBounds(90, 10, 110, 20);
+
+        ingresos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ingresosKeyPressed(evt);
+            }
+        });
         formaTarjetas.getContentPane().add(ingresos);
         ingresos.setBounds(290, 30, 40, 20);
 
@@ -749,8 +854,19 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         activa.setText("Tarjeta Activa:   ");
         activa.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         activa.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        activa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                activaKeyPressed(evt);
+            }
+        });
         formaTarjetas.getContentPane().add(activa);
         activa.setBounds(210, 10, 110, 23);
+
+        placa1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                placa1KeyPressed(evt);
+            }
+        });
         formaTarjetas.getContentPane().add(placa1);
         placa1.setBounds(90, 30, 110, 20);
 
@@ -765,6 +881,11 @@ public class principal extends javax.swing.JFrame implements KeyListener {
 
         descripcionTarjeta.setColumns(20);
         descripcionTarjeta.setRows(5);
+        descripcionTarjeta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                descripcionTarjetaKeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(descripcionTarjeta);
 
         formaTarjetas.getContentPane().add(jScrollPane2);
@@ -956,7 +1077,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         barraHerramients.add(jButton2);
         barraHerramients.add(jSeparator2);
 
-        totales.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        totales.setFont(new java.awt.Font("Tahoma", 1, 11));
         totales.setForeground(new java.awt.Color(255, 102, 0));
         totales.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         totales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/naranja.png"))); // NOI18N
@@ -965,7 +1086,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         totales.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraHerramients.add(totales);
 
-        disponibles.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        disponibles.setFont(new java.awt.Font("Tahoma", 1, 11));
         disponibles.setForeground(new java.awt.Color(0, 153, 102));
         disponibles.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         disponibles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/verde.png"))); // NOI18N
@@ -984,7 +1105,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         barraHerramients.add(ocupados);
         barraHerramients.add(jSeparator1);
 
-        barrera1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera1.setFont(new java.awt.Font("Tahoma", 1, 11));
         barrera1.setForeground(new java.awt.Color(204, 102, 0));
         barrera1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera1.setText("F1");
@@ -1001,7 +1122,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         });
         barraHerramients.add(barrera1);
 
-        barrera2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera2.setFont(new java.awt.Font("Tahoma", 1, 11));
         barrera2.setForeground(new java.awt.Color(204, 102, 0));
         barrera2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera2.setText("F2");
@@ -1018,7 +1139,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         });
         barraHerramients.add(barrera2);
 
-        barrera3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera3.setFont(new java.awt.Font("Tahoma", 1, 11));
         barrera3.setForeground(new java.awt.Color(204, 102, 0));
         barrera3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera3.setText("F3");
@@ -1035,7 +1156,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         });
         barraHerramients.add(barrera3);
 
-        barrera4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera4.setFont(new java.awt.Font("Tahoma", 1, 11));
         barrera4.setForeground(new java.awt.Color(204, 102, 0));
         barrera4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera4.setText("F4");
@@ -1052,7 +1173,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         });
         barraHerramients.add(barrera4);
 
-        barrera5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera5.setFont(new java.awt.Font("Tahoma", 1, 11));
         barrera5.setForeground(new java.awt.Color(204, 102, 0));
         barrera5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera5.setText("F5");
@@ -1069,7 +1190,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         });
         barraHerramients.add(barrera5);
 
-        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11));
         barrera6.setForeground(new java.awt.Color(204, 102, 0));
         barrera6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera6.setText("F6");
@@ -1086,7 +1207,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         });
         barraHerramients.add(barrera6);
 
-        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11));
         barrera7.setForeground(new java.awt.Color(204, 102, 0));
         barrera7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera7.setText("F7");
@@ -1320,7 +1441,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         jPanel10.add(placa);
         placa.setBounds(20, 70, 180, 20);
 
-        errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        errores.setFont(new java.awt.Font("Tahoma", 1, 12));
         errores.setForeground(new java.awt.Color(255, 0, 0));
         errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel10.add(errores);
@@ -1329,13 +1450,13 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         jPanel10.setBounds(0, 40, 430, 130);
         contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
         usuarioLogeado.setForeground(new java.awt.Color(0, 102, 153));
         usuarioLogeado.setText("...");
         usuarioLogeado.setBorderPainted(false);
         usuarioLogeado.setContentAreaFilled(false);
         usuarioLogeado.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        usuarioLogeado.setBounds(10, 10, 420, 23);
+        usuarioLogeado.setBounds(10, 10, 420, -1);
         contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jSplitPane1.setRightComponent(contenedor);
@@ -2226,12 +2347,15 @@ public class principal extends javax.swing.JFrame implements KeyListener {
             frmClientes.setLocation(240, 100);
             frmClientes.setModal(true);
             btnSalir.requestFocusInWindow();
+            contenedor.requestFocus();
             frmClientes.show();
+
             btnSalir.requestFocusInWindow();
             btnSalir.requestFocusInWindow();
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
+
 //        contenedor.requestFocus();
         //<property name="toplink.cache.type.default" value="NONE"/>
 
@@ -2251,7 +2375,9 @@ public class principal extends javax.swing.JFrame implements KeyListener {
             frmOperadores usu = new frmOperadores(this, true, this, adm);
             usu.setSize(441, 445);
             usu.setLocation(240, 100);
+            contenedor.add(usu);
             usu.show();
+            contenedor.requestFocus();
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2270,7 +2396,9 @@ public class principal extends javax.swing.JFrame implements KeyListener {
             frmEmpresa usu = new frmEmpresa(this, true, this, adm);
             usu.setSize(441, 470);
             usu.setLocation(240, 80);
-            usu.show();
+            contenedor.add(usu);
+            
+            usu.show();contenedor.requestFocus();
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2290,7 +2418,9 @@ public class principal extends javax.swing.JFrame implements KeyListener {
             frmTarifas usu = new frmTarifas(this, true, this, adm);
             usu.setSize(409, 460);
             usu.setLocation(240, 100);
+              contenedor.add(usu);
             usu.show();
+            contenedor.requestFocus();
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2411,13 +2541,19 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             nombres.nextFocus();
+        }else{
+        
+            tecla(evt.getKeyCode());
         }
+
 }//GEN-LAST:event_nombresKeyPressed
 
     private void direccionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_direccionKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             direccion.nextFocus();
+        }else{
+            tecla(evt.getKeyCode());
         }
 }//GEN-LAST:event_direccionKeyPressed
 
@@ -2442,6 +2578,8 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             codigo.nextFocus();
+        }else{
+            tecla(evt.getKeyCode());
         }
 }//GEN-LAST:event_codigoKeyPressed
 
@@ -2874,10 +3012,12 @@ public class principal extends javax.swing.JFrame implements KeyListener {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
+          
         grabar = false;
         btnAgregar.doClick();
         btnModificar.doClick();
         frmClientes.dispose();
+         contenedor.requestFocus();
 
 }//GEN-LAST:event_btnSalirActionPerformed
 
@@ -2916,9 +3056,13 @@ public class principal extends javax.swing.JFrame implements KeyListener {
                 return;
             }
             frmAccesos usu = new frmAccesos(this, true, this, adm);
-            usu.setSize(441, 445);
+            usu.setSize(457, 449);
+          
             usu.setLocation(240, 100);
+            contenedor.add(usu);
             usu.show();
+//              contenedor.add(usu);
+            
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2929,6 +3073,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         // TODO add your handling code here:
         acerca ac = new acerca(this, true);
         ac.setLocation(240, 100);
+        contenedor.add(ac);
         ac.show();
     }//GEN-LAST:event_btnAcercaActionPerformed
 
@@ -2975,6 +3120,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
             btnAgregar.doClick();
             btnModificar.doClick();
             frmClientes.dispose();
+            contenedor.requestFocus();
         }
     }//GEN-LAST:event_frmClientesSalir
 
@@ -3290,6 +3436,132 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         contenedor.requestFocus();
     }//GEN-LAST:event_contenedorMouseClicked
 
+    private void telefonoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyPressed
+        // TODO add your handling code here:
+
+            tecla(evt.getKeyCode());
+       
+    }//GEN-LAST:event_telefonoKeyPressed
+
+    private void tarifasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tarifasKeyPressed
+        // TODO add your handling code here:
+
+            tecla(evt.getKeyCode());
+        
+    }//GEN-LAST:event_tarifasKeyPressed
+
+    private void txtValorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorKeyPressed
+        // TODO add your handling code here:
+
+            tecla(evt.getKeyCode());
+       
+    }//GEN-LAST:event_txtValorKeyPressed
+
+    private void btnNuevaTarjetaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnNuevaTarjetaKeyPressed
+  tecla(evt.getKeyCode());
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNuevaTarjetaKeyPressed
+
+    private void tarjetasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tarjetasKeyPressed
+        // TODO add your handling code here:
+          tecla(evt.getKeyCode());
+    }//GEN-LAST:event_tarjetasKeyPressed
+
+    private void noTarjetaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTarjetaKeyPressed
+        // TODO add your handling code here:
+  
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_noTarjetaKeyPressed
+
+    private void placa1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placa1KeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_placa1KeyPressed
+
+    private void activaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_activaKeyPressed
+        // TODO add your handling code here:
+
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_activaKeyPressed
+
+    private void ingresosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ingresosKeyPressed
+        // TODO add your handling code here:
+
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_ingresosKeyPressed
+
+    private void descripcionTarjetaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_descripcionTarjetaKeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_descripcionTarjetaKeyPressed
+
+    private void horaDesdeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaDesdeKeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_horaDesdeKeyPressed
+
+    private void horaHastaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaHastaKeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_horaHastaKeyPressed
+
+    private void lunesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lunesKeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_lunesKeyPressed
+
+    private void martesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_martesKeyPressed
+
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_martesKeyPressed
+
+    private void miercolesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_miercolesKeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_miercolesKeyPressed
+
+    private void juevesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_juevesKeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_juevesKeyPressed
+
+    private void viernesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_viernesKeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_viernesKeyPressed
+
+    private void sabadoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sabadoKeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_sabadoKeyPressed
+
+    private void domingoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_domingoKeyPressed
+
+
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_domingoKeyPressed
+
+    private void todosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todosActionPerformed
+        // TODO add your handling code here:
+         lunes.setSelected(todos.isSelected());
+        martes.setSelected(todos.isSelected());
+        miercoles.setSelected(todos.isSelected());
+        jueves.setSelected(todos.isSelected());
+        viernes.setSelected(todos.isSelected());
+        sabado.setSelected(todos.isSelected());
+        domingo.setSelected(todos.isSelected());
+    }//GEN-LAST:event_todosActionPerformed
+
+    private void lunesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lunesActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_lunesActionPerformed
+
+    private void todosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_todosKeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_todosKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -3450,6 +3722,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
     private javax.swing.JTable tarjetas;
     public javax.swing.JFormattedTextField tarjetatxt;
     private javax.swing.JFormattedTextField telefono;
+    private javax.swing.JCheckBox todos;
     private javax.swing.JLabel totales;
     private javax.swing.JTextField txtValor;
     private javax.swing.JFormattedTextField usuarioBase;
