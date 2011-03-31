@@ -1976,6 +1976,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
 
             iniciarPuertos();
             contenedor.requestFocus();
+            auditar("", "","Ingreso al Sistema");
         } else {
             clave.setEditable(true);
             usuariot.setEditable(true);
@@ -3784,8 +3785,10 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         aud.setAccion(accion);
         aud.setCampo(campo);
         aud.setTabla(tabla);
+        aud.setFecha(new Date());
         aud.setMaquina(System.getProperty("user.name"));
         aud.setUsuario(usuarioActual);
+        adm.guardar(aud);
 
     }
 }

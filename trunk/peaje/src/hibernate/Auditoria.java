@@ -6,6 +6,7 @@
 package hibernate;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -31,6 +32,9 @@ public class Auditoria implements Serializable {
     private String maquina;
     @Column(name = "accion")
     private String accion;
+    @Column(name = "fecha")
+    private Date fecha;
+
     @Column(name = "campo")
     private String campo;
     @JoinColumn(name = "usuario", referencedColumnName = "codigo")
@@ -74,6 +78,14 @@ public class Auditoria implements Serializable {
 
     public void setAccion(String accion) {
         this.accion = accion;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public String getCampo() {
