@@ -847,7 +847,6 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         formaTarjetas1.setTitle("Registro y Modificación de Tarjetas");
-        formaTarjetas1.setVisible(true);
         formaTarjetas1.getContentPane().setLayout(null);
 
         jLabel14.setText("No. Tarjeta: ");
