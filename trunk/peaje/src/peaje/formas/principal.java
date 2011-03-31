@@ -3,6 +3,7 @@ package peaje.formas;
 import java.awt.AWTException;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
+import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
@@ -30,28 +31,14 @@ import hibernate.cargar.WorkingDirectory;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
-import java.awt.Robot;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.math.BigDecimal;
 import javax.swing.ListModel;
-import peaje.formas.AbrirPuerta;
-import peaje.formas.LeerTarjeta;
-import peaje.formas.acerca;
-import peaje.formas.frmPrivilegios;
-import peaje.formas.frmEmpresa;
-import peaje.formas.frmFactura;
-import peaje.formas.frmManual;
-import peaje.formas.frmOperadores;
-import peaje.formas.frmReportes;
-import peaje.formas.frmTarifas;
-import peaje.formas.frmTicket;
 
 /**
  *
@@ -3781,14 +3768,22 @@ public class principal extends javax.swing.JFrame implements KeyListener {
     }
 
     public void auditar(String tabla,String campo,String accion){
-        Auditoria aud = new Auditoria();
-        aud.setAccion(accion);
-        aud.setCampo(campo);
-        aud.setTabla(tabla);
-        aud.setFecha(new Date());
-        aud.setMaquina(System.getProperty("user.name"));
-        aud.setUsuario(usuarioActual);
-        adm.guardar(aud);
+        try {
+            Auditoria aud = new Auditoria();
+            aud.setAccion(accion);
+            aud.setCampo(campo);
+            aud.setTabla(tabla);
+            aud.setFecha(new Date());
+            java.net.InetAddress i = java.net.InetAddress.getLocalHost();
+            System.out.println(i); // name and IP address
+            System.out.println(i.getHostName()); // name
+            System.out.println(i.getHostAddress()); // IP address only
+            aud.setMaquina(System.getProperty("user.name")+" IP: "+i.getHostAddress());
+            aud.setUsuario(usuarioActual);
+            adm.guardar(aud);
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 }
