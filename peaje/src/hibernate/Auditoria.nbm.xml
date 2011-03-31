@@ -10,6 +10,7 @@
     <property column="maquina" name="maquina" type="java.lang.String"/>
     <property column="accion" name="accion" type="java.lang.String"/>
     <property column="campo" name="campo" type="java.lang.String"/>
+    <property column="fecha" name="fecha" type="java.util.Date"/>
     <many-to-one column="usuario" name="usuario"/>
   </class>
 </hibernate-mapping>
