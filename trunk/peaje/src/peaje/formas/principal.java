@@ -3778,4 +3778,14 @@ public class principal extends javax.swing.JFrame implements KeyListener {
     public void keyReleased(KeyEvent e) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    public void auditar(String tabla,String campo,String accion){
+        Auditoria aud = new Auditoria();
+        aud.setAccion(accion);
+        aud.setCampo(campo);
+        aud.setTabla(tabla);
+        aud.setMaquina(System.getProperty("user.name"));
+        aud.setUsuario(usuarioActual);
+
+    }
 }
