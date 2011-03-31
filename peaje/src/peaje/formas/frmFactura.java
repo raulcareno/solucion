@@ -1101,6 +1101,7 @@ public class frmFactura extends javax.swing.JInternalFrame  {
                 tiempo.setDate(null);
                 noTicket.setText("");
                 codigo.setText("");
+                 principal.auditar("Cobros", "No"+facActual.getNumero(), "GUARDAR");
                  principal.contenedor.requestFocus();
                  this.setVisible(false);
                   principal = null;
@@ -1847,7 +1848,7 @@ public void cargarGrid(Productos pro,BigDecimal valor){
         DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
         dtm.getDataVector().removeAllElements();
         productos.setModel(dtm);
-
+ principal.auditar("Cobros", "No"+facActual.getNumero(), "GUARDAR");
 principal.contenedor.requestFocus();
 
     }//GEN-LAST:event_btnAgregar1ActionPerformed
