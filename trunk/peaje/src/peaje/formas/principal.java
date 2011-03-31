@@ -44,7 +44,7 @@ import javax.swing.ListModel;
 import peaje.formas.AbrirPuerta;
 import peaje.formas.LeerTarjeta;
 import peaje.formas.acerca;
-import peaje.formas.frmAccesos;
+import peaje.formas.frmPrivilegios;
 import peaje.formas.frmEmpresa;
 import peaje.formas.frmFactura;
 import peaje.formas.frmManual;
@@ -3055,7 +3055,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            frmAccesos usu = new frmAccesos(this, true, this, adm);
+            frmPrivilegios usu = new frmPrivilegios(this, true, this, adm);
             usu.setSize(457, 449);
           
             usu.setLocation(240, 100);

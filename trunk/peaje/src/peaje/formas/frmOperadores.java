@@ -384,6 +384,11 @@ try {
                 perfilValueChanged(evt);
             }
         });
+        perfil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                perfilKeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(perfil);
 
         jPanel1.add(jScrollPane2);
@@ -411,6 +416,11 @@ try {
                 btnBuscarActionPerformed(evt);
             }
         });
+        btnBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnBuscarKeyPressed(evt);
+            }
+        });
         jPanel4.add(btnBuscar);
         btnBuscar.setBounds(50, 10, 60, 50);
 
@@ -423,6 +433,11 @@ try {
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
+            }
+        });
+        btnAgregar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregarKeyPressed(evt);
             }
         });
         jPanel4.add(btnAgregar);
@@ -439,6 +454,11 @@ try {
                 btnModificarActionPerformed(evt);
             }
         });
+        btnModificar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnModificarKeyPressed(evt);
+            }
+        });
         jPanel4.add(btnModificar);
         btnModificar.setBounds(170, 10, 60, 50);
 
@@ -453,6 +473,11 @@ try {
                 btnEliminarActionPerformed(evt);
             }
         });
+        btnEliminar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnEliminarKeyPressed(evt);
+            }
+        });
         jPanel4.add(btnEliminar);
         btnEliminar.setBounds(230, 10, 60, 50);
 
@@ -465,6 +490,11 @@ try {
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
+            }
+        });
+        btnSalir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalirKeyPressed(evt);
             }
         });
         jPanel4.add(btnSalir);
@@ -804,6 +834,36 @@ try {
 //        listar();
 //        tablaPerfilesRubros.repaint();
 }//GEN-LAST:event_perfilValueChanged
+
+    private void btnBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnBuscarKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnBuscarKeyPressed
+
+    private void btnAgregarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregarKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnAgregarKeyPressed
+
+    private void btnModificarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnModificarKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnModificarKeyPressed
+
+    private void btnEliminarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEliminarKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnEliminarKeyPressed
+
+    private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnSalirKeyPressed
+
+    private void perfilKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_perfilKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_perfilKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

@@ -25,15 +25,16 @@ import peaje.Administrador;
  *
  * @author  Francisco
  */
-public class frmAccesos   extends javax.swing.JInternalFrame  {
+public class frmPrivilegios   extends javax.swing.JInternalFrame  {
     public boolean grabar =false;
     public boolean modificar =false;
     private Container desktopContenedor;
     Administrador adm;
+    principal principal; 
     /**
      * Creates new form frmRubros
      */
- public frmAccesos(java.awt.Frame parent, boolean modal, Administrador adm1) {
+ public frmPrivilegios(java.awt.Frame parent, boolean modal, Administrador adm1) {
 //        super(parent, modal);
         adm = adm1;
         
@@ -42,12 +43,13 @@ public class frmAccesos   extends javax.swing.JInternalFrame  {
     
     }
 
-    public frmAccesos(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
+    public frmPrivilegios(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
 //        super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         adm = adm1;
-        
+        principal  = lo;
         initComponents();
+
         llenarCombo();
         this.setSize(440, 428);
 
@@ -114,7 +116,18 @@ public class frmAccesos   extends javax.swing.JInternalFrame  {
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Accesos a Usuarios");
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
         getContentPane().setLayout(null);
+
+        jScrollPane1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jScrollPane1KeyPressed(evt);
+            }
+        });
 
         tablaPerfilesRubros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -169,6 +182,11 @@ public class frmAccesos   extends javax.swing.JInternalFrame  {
                 btnNuevoActionPerformed(evt);
             }
         });
+        btnNuevo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnNuevoKeyPressed(evt);
+            }
+        });
         jPanel1.add(btnNuevo);
         btnNuevo.setBounds(240, 10, 60, 50);
 
@@ -180,6 +198,11 @@ public class frmAccesos   extends javax.swing.JInternalFrame  {
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
+            }
+        });
+        btnSalir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalirKeyPressed(evt);
             }
         });
         jPanel1.add(btnSalir);
@@ -216,6 +239,11 @@ public class frmAccesos   extends javax.swing.JInternalFrame  {
         jPerfil.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jPerfilValueChanged(evt);
+            }
+        });
+        jPerfil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPerfilKeyPressed(evt);
             }
         });
         jScrollPane2.setViewportView(jPerfil);
@@ -288,6 +316,31 @@ private void jPerfilValueChanged(javax.swing.event.ListSelectionEvent evt) {//GE
        listar();
        tablaPerfilesRubros.repaint();
 }//GEN-LAST:event_jPerfilValueChanged
+
+private void jPerfilKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPerfilKeyPressed
+    // TODO add your handling code here:
+     principal.tecla(evt.getKeyCode());
+}//GEN-LAST:event_jPerfilKeyPressed
+
+private void jScrollPane1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jScrollPane1KeyPressed
+    // TODO add your handling code here:
+     principal.tecla(evt.getKeyCode());
+}//GEN-LAST:event_jScrollPane1KeyPressed
+
+private void btnNuevoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnNuevoKeyPressed
+    // TODO add your handling code here:
+     principal.tecla(evt.getKeyCode());
+}//GEN-LAST:event_btnNuevoKeyPressed
+
+private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
+    // TODO add your handling code here:
+     principal.tecla(evt.getKeyCode());
+}//GEN-LAST:event_btnSalirKeyPressed
+
+private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+    // TODO add your handling code here:
+     principal.tecla(evt.getKeyCode());
+}//GEN-LAST:event_formKeyPressed
     
    public void listar(){
      

@@ -249,6 +249,11 @@ void llenarProductos(){
                 btnAgregarActionPerformed(evt);
             }
         });
+        btnAgregar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregarKeyPressed(evt);
+            }
+        });
         jPanel4.add(btnAgregar);
         btnAgregar.setBounds(110, 10, 60, 50);
 
@@ -261,6 +266,11 @@ void llenarProductos(){
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
+            }
+        });
+        btnModificar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnModificarKeyPressed(evt);
             }
         });
         jPanel4.add(btnModificar);
@@ -278,6 +288,11 @@ void llenarProductos(){
                 btnEliminarActionPerformed(evt);
             }
         });
+        btnEliminar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnEliminarKeyPressed(evt);
+            }
+        });
         jPanel4.add(btnEliminar);
         btnEliminar.setBounds(230, 10, 60, 50);
 
@@ -292,6 +307,11 @@ void llenarProductos(){
                 btnSalirActionPerformed(evt);
             }
         });
+        btnSalir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalirKeyPressed(evt);
+            }
+        });
         jPanel4.add(btnSalir);
         btnSalir.setBounds(290, 10, 60, 50);
 
@@ -303,6 +323,9 @@ void llenarProductos(){
 
         horas.setText("0");
         horas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horasKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 horasKeyReleased(evt);
             }
@@ -316,6 +339,11 @@ void llenarProductos(){
 
         minutos.setEditable(false);
         minutos.setText("0");
+        minutos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                minutosKeyPressed(evt);
+            }
+        });
         jPanel2.add(minutos);
         minutos.setBounds(210, 20, 60, 20);
 
@@ -445,6 +473,11 @@ void llenarProductos(){
                 tbTarifasMouseClicked(evt);
             }
         });
+        tbTarifas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tbTarifasKeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbTarifas);
         tbTarifas.getColumnModel().getColumn(0).setPreferredWidth(5);
         tbTarifas.getColumnModel().getColumn(0).setMaxWidth(10);
@@ -472,8 +505,20 @@ void llenarProductos(){
         });
         jPanel6.add(txtCodigo);
         txtCodigo.setBounds(80, 20, 100, 20);
+
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNombreKeyPressed(evt);
+            }
+        });
         jPanel6.add(txtNombre);
         txtNombre.setBounds(80, 40, 230, 20);
+
+        txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtValorKeyPressed(evt);
+            }
+        });
         jPanel6.add(txtValor);
         txtValor.setBounds(80, 60, 60, 20);
 
@@ -491,6 +536,11 @@ void llenarProductos(){
                 btnAgregar1ActionPerformed(evt);
             }
         });
+        btnAgregar1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregar1KeyPressed(evt);
+            }
+        });
         jPanel7.add(btnAgregar1);
         btnAgregar1.setBounds(80, 10, 60, 50);
 
@@ -503,6 +553,11 @@ void llenarProductos(){
         btnModificar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificar1ActionPerformed(evt);
+            }
+        });
+        btnModificar1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnModificar1KeyPressed(evt);
             }
         });
         jPanel7.add(btnModificar1);
@@ -519,6 +574,11 @@ void llenarProductos(){
                 btnEliminar1ActionPerformed(evt);
             }
         });
+        btnEliminar1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnEliminar1KeyPressed(evt);
+            }
+        });
         jPanel7.add(btnEliminar1);
         btnEliminar1.setBounds(200, 10, 60, 50);
 
@@ -531,6 +591,11 @@ void llenarProductos(){
         btnSalir1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalir1ActionPerformed(evt);
+            }
+        });
+        btnSalir1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalir1KeyPressed(evt);
             }
         });
         jPanel7.add(btnSalir1);
@@ -566,6 +631,7 @@ void llenarProductos(){
                     tarifario.setValueAt(null, tarifario.getSelectedRow(), columna);
             }
         }
+         principal.tecla(evt.getKeyCode());
 }//GEN-LAST:event_tarifarioKeyPressed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -875,6 +941,71 @@ void llenarProductos(){
         txtNombre.setText((String) tbTarifas.getValueAt(fila,1));
         txtValor.setText((Double) tbTarifas.getValueAt(fila,2)+"");
     }//GEN-LAST:event_tbTarifasMouseClicked
+
+    private void horasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horasKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_horasKeyPressed
+
+    private void minutosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_minutosKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_minutosKeyPressed
+
+    private void btnAgregarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregarKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnAgregarKeyPressed
+
+    private void btnModificarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnModificarKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnModificarKeyPressed
+
+    private void btnEliminarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEliminarKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnEliminarKeyPressed
+
+    private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnSalirKeyPressed
+
+    private void txtNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_txtNombreKeyPressed
+
+    private void txtValorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_txtValorKeyPressed
+
+    private void tbTarifasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbTarifasKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_tbTarifasKeyPressed
+
+    private void btnAgregar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregar1KeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnAgregar1KeyPressed
+
+    private void btnModificar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnModificar1KeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnModificar1KeyPressed
+
+    private void btnEliminar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEliminar1KeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnEliminar1KeyPressed
+
+    private void btnSalir1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalir1KeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnSalir1KeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

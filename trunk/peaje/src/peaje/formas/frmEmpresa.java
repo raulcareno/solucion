@@ -373,6 +373,9 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
         setTitle("Datos de la Empresa");
         addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
             }
@@ -714,6 +717,11 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
         jTabbedPane1.addTab("DATOS DE LA EMPRESA", jPanel2);
 
+        jPanel5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel5KeyPressed(evt);
+            }
+        });
         jPanel5.setLayout(null);
 
         cmbEntrada1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -1491,6 +1499,16 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         // TODO add your handling code here:
         principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_chkActivo4KeyPressed
+
+    private void jPanel5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel5KeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_jPanel5KeyPressed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+         principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_formKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
