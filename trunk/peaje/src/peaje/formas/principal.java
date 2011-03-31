@@ -3087,6 +3087,7 @@ public class principal extends javax.swing.JFrame implements KeyListener {
 
     private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
         // TODO add your handling code here:
+        auditar("", "", "Salio del Sistema");
         System.exit(0);
     }//GEN-LAST:event_btnSalir2ActionPerformed
 
