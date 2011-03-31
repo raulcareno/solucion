@@ -1174,10 +1174,12 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
+        principal.contenedor.requestFocus();
         this.setVisible(false);
         principal = null;
         empresaObj = null;
         System.gc();
+
 }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed

@@ -7,6 +7,8 @@
         <Property name="title" type="java.lang.String" value="Clientes"/>
       </Properties>
       <Events>
+        <EventHandler event="windowClosed" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="frmClientesWindowClosed"/>
+        <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="frmClientesWindowClosing"/>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="frmClientesSalir"/>
       </Events>
 

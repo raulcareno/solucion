@@ -355,6 +355,14 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         jLabel32 = new javax.swing.JLabel();
 
         frmClientes.setTitle("Clientes");
+        frmClientes.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                frmClientesWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                frmClientesWindowClosing(evt);
+            }
+        });
         frmClientes.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 frmClientesSalir(evt);
@@ -3550,6 +3558,16 @@ public class principal extends javax.swing.JFrame implements KeyListener {
         // TODO add your handling code here:
         tecla(evt.getKeyCode());
     }//GEN-LAST:event_todosKeyPressed
+
+    private void frmClientesWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_frmClientesWindowClosed
+        // TODO add your handling code here:
+        contenedor.requestFocus();
+    }//GEN-LAST:event_frmClientesWindowClosed
+
+    private void frmClientesWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_frmClientesWindowClosing
+        // TODO add your handling code here:
+        contenedor.requestFocus();
+    }//GEN-LAST:event_frmClientesWindowClosing
 
     /**
      * @param args the command line arguments
