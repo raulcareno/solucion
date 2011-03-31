@@ -847,6 +847,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         formaTarjetas1.setTitle("Registro y Modificación de Tarjetas");
+        formaTarjetas1.setVisible(true);
         formaTarjetas1.getContentPane().setLayout(null);
 
         jLabel14.setText("No. Tarjeta: ");
@@ -2893,7 +2894,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             formaTarjetas1.setVisible(false);
             llenarTabla(clienteObj.getCodigo());
             buscarClientes.dispose();
-            auditar("Tarjetas", ""+tarjeta.getTarjeta()+" "+tarjeta.getDesde()+" "+tarjeta.getHasta(), "GUARDAR/ACTUALIZAR");
+            auditar("Tarjetas", ""+tarjeta.getTarjeta()+" "+tarjeta.getDesde().toLocaleString()+" "+tarjeta.getHasta().toLocaleString(), "GUARDAR/ACTUALIZAR");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al Guardar Tarjeta vuelva a intentarlo...!");
