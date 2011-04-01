@@ -1380,7 +1380,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         cliente.setText(".");
         cliente.setFont(new java.awt.Font("Tahoma", 0, 12));
         jPanel10.add(cliente);
-        cliente.setBounds(20, 20, 180, 20);
+        cliente.setBounds(20, 30, 180, 20);
 
         tarjetatxt.setBorder(null);
         tarjetatxt.setEditable(false);
@@ -1447,7 +1447,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         jPanel10.add(placa);
         placa.setBounds(20, 70, 180, 20);
 
-        errores.setFont(new java.awt.Font("Tahoma", 1, 12));
+        errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         errores.setForeground(new java.awt.Color(255, 0, 0));
         errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel10.add(errores);
