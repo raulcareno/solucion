@@ -372,8 +372,8 @@ void recalcular(){
 
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"libreta.jasper");
-                    String pat = report.getSrc().replace("libreta.jasper","");
-                    System.out.println("EL PATH: "+pat);
+                    //String pat = report.getSrc().replace("libreta.jasper","");
+                    //System.out.println("EL PATH: "+pat);
                     parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
                     parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
                    
