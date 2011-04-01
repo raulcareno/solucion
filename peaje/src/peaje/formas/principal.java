@@ -556,7 +556,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         barraHerramients.add(jButton2);
         barraHerramients.add(jSeparator2);
 
-        totales.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        totales.setFont(new java.awt.Font("Tahoma", 1, 11));
         totales.setForeground(new java.awt.Color(255, 102, 0));
         totales.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         totales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/naranja.png"))); // NOI18N
@@ -672,7 +672,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         });
         barraHerramients.add(barrera5);
 
-        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera6.setForeground(new java.awt.Color(204, 102, 0));
         barrera6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera6.setText("F6");
@@ -1091,6 +1091,11 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         contenedor.add(formaTarjetas1, javax.swing.JLayeredPane.MODAL_LAYER);
 
         frmClientes1.setTitle("Registro y Modifación de Clientes");
+        frmClientes1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                frmClientes1KeyPressed(evt);
+            }
+        });
         frmClientes1.getContentPane().setLayout(null);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -1378,7 +1383,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         cliente.setEditable(false);
         cliente.setForeground(new java.awt.Color(51, 51, 255));
         cliente.setText(".");
-        cliente.setFont(new java.awt.Font("Tahoma", 0, 12));
+        cliente.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel10.add(cliente);
         cliente.setBounds(20, 30, 180, 20);
 
@@ -1390,6 +1395,11 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         tarjetatxt.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 tarjetatxtCaretUpdate(evt);
+            }
+        });
+        tarjetatxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tarjetatxtActionPerformed(evt);
             }
         });
         tarjetatxt.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -1447,7 +1457,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         jPanel10.add(placa);
         placa.setBounds(20, 70, 180, 20);
 
-        errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        errores.setFont(new java.awt.Font("Tahoma", 1, 12));
         errores.setForeground(new java.awt.Color(255, 0, 0));
         errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel10.add(errores);
@@ -1462,7 +1472,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         usuarioLogeado.setBorderPainted(false);
         usuarioLogeado.setContentAreaFilled(false);
         usuarioLogeado.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        usuarioLogeado.setBounds(10, 10, 420, 23);
+        usuarioLogeado.setBounds(10, 10, 420, 30);
         contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jSplitPane1.setRightComponent(contenedor);
@@ -2357,12 +2367,10 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 //            frmClientes.setLocation(240, 100);
 //            frmClientes.setModal(true);
 //            btnSalir.requestFocusInWindow();
-            contenedor.requestFocus();
+            
 //            frmClientes.show();
             frmClientes1.setVisible(true);
-
-            btnSalir.requestFocusInWindow();
-            btnSalir.requestFocusInWindow();
+            contenedor.requestFocus();
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2917,7 +2925,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
 
                     try {
-                        List<Clientes> usuarios = adm.query("Select o from Clientes as o where o.nombres like '" + codigoBuscar.getText().trim() + "%' ");
+                        List<Clientes> usuarios = adm.query("Select o from Clientes as o where o.nombres like '%" + codigoBuscar.getText().trim() + "%' ");
                         Object[] obj = new Object[4];
                         DefaultTableModel dtm = (DefaultTableModel) busquedaTabla.getModel();
                         dtm.getDataVector().removeAllElements();
@@ -3027,7 +3035,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
-          
+        contenedor.requestFocus();
         grabar = false;
         btnAgregar.doClick();
         btnModificar.doClick();
@@ -3566,6 +3574,15 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         // TODO add your handling code here:
         tecla(evt.getKeyCode());
     }//GEN-LAST:event_todosKeyPressed
+
+    private void tarjetatxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tarjetatxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tarjetatxtActionPerformed
+
+    private void frmClientes1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frmClientes1KeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_frmClientes1KeyPressed
 
     /**
      * @param args the command line arguments

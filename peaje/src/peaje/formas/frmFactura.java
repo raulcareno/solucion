@@ -68,7 +68,7 @@ public class frmFactura extends javax.swing.JInternalFrame  {
     private principal principal;
     List<Tarifas> tarifario;
     String separador = File.separatorChar + "";
-
+        Boolean guardando = false;
     /** Creates new form frmProfesores */
     public frmFactura(java.awt.Frame parent, boolean modal, Administrador adm1) {
 //        super(parent, modal);
@@ -1011,6 +1011,8 @@ public class frmFactura extends javax.swing.JInternalFrame  {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
+        if(guardando == false){
+        guardando = true;
         if (principal.permisos.getAgregar()) {
             try {
                 if (codigo.getText().isEmpty()) {
@@ -1119,7 +1121,8 @@ public class frmFactura extends javax.swing.JInternalFrame  {
             JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
         }
 
-
+       guardando = false;
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     public void imprimir(int cod, Empresa emp, int dias, Boolean mensual,Clientes cli) {
