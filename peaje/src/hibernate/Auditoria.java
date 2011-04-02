@@ -9,16 +9,26 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
- * @author geovanny
+ * @author Familia Jadan Cahueñ
  */
+@Entity
+@Table(name = "auditoria")
+@NamedQueries({
+    @NamedQuery(name = "Auditoria.findAll", query = "SELECT a FROM Auditoria a")})
 public class Auditoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -32,14 +42,14 @@ public class Auditoria implements Serializable {
     private String maquina;
     @Column(name = "accion")
     private String accion;
-    @Column(name = "fecha")
-    private Date fecha;
-
     @Column(name = "campo")
     private String campo;
+    @Column(name = "fecha")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecha;
     @JoinColumn(name = "usuario", referencedColumnName = "codigo")
     @ManyToOne
-    private Usuarios usuario;
+    private Usuarios usuarios;
 
     public Auditoria() {
     }
@@ -80,14 +90,6 @@ public class Auditoria implements Serializable {
         this.accion = accion;
     }
 
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
     public String getCampo() {
         return campo;
     }
@@ -96,12 +98,20 @@ public class Auditoria implements Serializable {
         this.campo = campo;
     }
 
-    public Usuarios getUsuario() {
-        return usuario;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setUsuario(Usuarios usuario) {
-        this.usuario = usuario;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public Usuarios getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(Usuarios usuarios) {
+        this.usuarios = usuarios;
     }
 
     @Override
@@ -126,7 +136,7 @@ public class Auditoria implements Serializable {
 
     @Override
     public String toString() {
-        return "persisten.Auditoria[auditoria=" + auditoria + "]";
+        return "hibernate.Auditoria[auditoria=" + auditoria + "]";
     }
 
 }

@@ -25,8 +25,8 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
-import peaje.Administrador;
-import peaje.validaciones;
+import hibernate.cargar.Administrador;
+import hibernate.cargar.validaciones;
 import hibernate.*;
 import hibernate.cargar.WorkingDirectory;
 import java.io.File;
@@ -56,8 +56,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
     private String in;
     private String out;
     String separador = File.separatorChar + "";
-    Boolean guardando = false;
-
+   Boolean guardando = false;
     /** Creates new form frmProfesores */
     public frmTicket(java.awt.Frame parent, boolean modal, Administrador adm1) {
 //        super(parent, modal);
@@ -323,61 +322,61 @@ public class frmTicket extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        if (guardando==false) {
+              if (guardando == false) {
             guardando = true;
-            if (principal.permisos.getAgregar()) {
-                try {
-                    if (placa.getText().isEmpty()) {
-                        JOptionPane.showMessageDialog(this, "Ingrese el No. de Placa ...!", "", JOptionPane.ERROR_MESSAGE);
-                        placa.requestFocusInWindow();
-                        return;
-                    }
 
-                    btnAgregar.setEnabled(false);
-                    Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                    Factura fac = new Factura();
-                    fac.setPlaca(placa.getText().replace("_", "").toUpperCase());
-                    fac.setFechaini(new Date());
-                    fac.setFecha(new Date());
-                    fac.setTicket(emp.getDocumentoticket());
-//                noTicket.setText(emp.getDocumentoticket());
-                    adm.guardar(fac);
-                    codigo.setText(fac.getCodigo() + "");
-
-                    Integer numero = new Integer(emp.getDocumentoticket());
-                    emp.setDocumentoticket((numero + 1) + "");
-                    adm.actualizar(emp);
-                    imprimir(fac.getCodigo(), emp);
-                    Thread cargar = new Thread() {
-
-                        public void run() {
-                            AbrirPuerta.abrir(empresaObj.getPuerto(), principal.in);
-                            System.out.println("ABRIO PUERTA: " + principal.in);
-
-                        }
-                    };
-                    cargar.start();
-                    principal.noDisponibles();
-                    btnAgregar.setEnabled(true);
-                    principal.auditar("Ticket", "No." + fac.getTicket(), "GUARDAR");
-                    principal.contenedor.requestFocus();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                    Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
-                    btnAgregar.setEnabled(true);
+        if (principal.permisos.getAgregar()) {
+            try {
+                if (placa.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Ingrese el No. de Placa ...!", "", JOptionPane.ERROR_MESSAGE);
+                    placa.requestFocusInWindow();
                     return;
                 }
-                this.setVisible(false);
-                principal = null;
-                empresaObj = null;
-                System.gc();
-            } else {
-                JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+
+                btnAgregar.setEnabled(false);
+                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                Factura fac = new Factura();
+                fac.setPlaca(placa.getText().replace("_", "").toUpperCase());
+                fac.setFechaini(new Date());
+                fac.setFecha(new Date());
+                fac.setTicket(emp.getDocumentoticket());
+//                noTicket.setText(emp.getDocumentoticket());
+                adm.guardar(fac);
+                codigo.setText(fac.getCodigo() + "");
+
+                Integer numero = new Integer(emp.getDocumentoticket());
+                emp.setDocumentoticket((numero + 1) + "");
+                adm.actualizar(emp);
+                imprimir(fac.getCodigo(), emp);
+                Thread cargar = new Thread() {
+
+                    public void run() {
+                        AbrirPuerta.abrir(empresaObj.getPuerto(), principal.in);
+                        System.out.println("ABRIO PUERTA: " + principal.in);
+
+                    }
+                };
+                cargar.start();
+                principal.noDisponibles();
+                btnAgregar.setEnabled(true);
+                principal.auditar("Ticket", "No."+fac.getTicket(), "GUARDAR");
+                principal.contenedor.requestFocus();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+                btnAgregar.setEnabled(true);
+                return;
             }
-            guardando = false;
+            this.setVisible(false);
+            principal = null;
+            empresaObj = null;
+            System.gc();
+        } else {
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
         }
 
-
+ guardando = false;
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     public void imprimir(int cod, Empresa emp) {
@@ -450,8 +449,6 @@ public class frmTicket extends javax.swing.JInternalFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
-
-        
         principal.contenedor.requestFocus();
         this.setVisible(false);
         principal = null;

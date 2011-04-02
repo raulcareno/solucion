@@ -9,17 +9,25 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  *
- * @author geovanny
+ * @author Familia Jadan Cahueñ
  */
- public class Detalle implements Serializable {
+@Entity
+@Table(name = "detalle")
+@NamedQueries({
+    @NamedQuery(name = "Detalle.findAll", query = "SELECT d FROM Detalle d")})
+public class Detalle implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,12 +44,12 @@ import javax.persistence.ManyToOne;
     private BigDecimal iva;
     @Column(name = "total")
     private BigDecimal total;
-    @JoinColumn(name = "producto", referencedColumnName = "codigo")
-    @ManyToOne
-    private Productos producto;
     @JoinColumn(name = "factura", referencedColumnName = "codigo")
     @ManyToOne
     private Factura factura;
+    @JoinColumn(name = "producto", referencedColumnName = "codigo")
+    @ManyToOne
+    private Productos productos;
 
     public Detalle() {
     }
@@ -98,22 +106,21 @@ import javax.persistence.ManyToOne;
         this.total = total;
     }
 
-     
-
-    public Productos getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Productos producto) {
-        this.producto = producto;
-    }
-
+    
     public Factura getFactura() {
         return factura;
     }
 
     public void setFactura(Factura factura) {
         this.factura = factura;
+    }
+
+    public Productos getProductos() {
+        return productos;
+    }
+
+    public void setProductos(Productos productos) {
+        this.productos = productos;
     }
 
     @Override
@@ -138,7 +145,7 @@ import javax.persistence.ManyToOne;
 
     @Override
     public String toString() {
-        return "persisten.Detalle[codigo=" + codigo + "]";
+        return "hibernate.Detalle[codigo=" + codigo + "]";
     }
 
 }

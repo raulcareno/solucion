@@ -6,17 +6,27 @@
 package hibernate;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
- * @author geovanny
+ * @author Familia Jadan Cahueñ
  */
- public class Global implements Serializable {
+@Entity
+@Table(name = "global")
+@NamedQueries({
+    @NamedQuery(name = "Global.findAll", query = "SELECT g FROM Global g")})
+public class Global implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +37,10 @@ import javax.persistence.Id;
     private String nombre;
     @Column(name = "grupo")
     private String grupo;
- 
+    @OneToMany(mappedBy = "global")
+    private Collection<Accesos> accesosCollection;
+    @OneToMany(mappedBy = "global")
+    private Collection<Usuarios> usuariosCollection;
 
     public Global() {
     }
@@ -60,7 +73,21 @@ import javax.persistence.Id;
         this.grupo = grupo;
     }
 
-   
+    public Collection<Accesos> getAccesosCollection() {
+        return accesosCollection;
+    }
+
+    public void setAccesosCollection(Collection<Accesos> accesosCollection) {
+        this.accesosCollection = accesosCollection;
+    }
+
+    public Collection<Usuarios> getUsuariosCollection() {
+        return usuariosCollection;
+    }
+
+    public void setUsuariosCollection(Collection<Usuarios> usuariosCollection) {
+        this.usuariosCollection = usuariosCollection;
+    }
 
     @Override
     public int hashCode() {
@@ -84,7 +111,7 @@ import javax.persistence.Id;
 
     @Override
     public String toString() {
-        return nombre;
+        return "hibernate.Global[codigo=" + codigo + "]";
     }
 
 }

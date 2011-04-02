@@ -41,8 +41,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 import org.joda.time.Seconds;
-import peaje.Administrador;
-import peaje.validaciones;
+import hibernate.cargar.Administrador;
+import hibernate.cargar.validaciones;
 import sources.FacturaDetalleSource;
 
 import sources.FacturaSource;
@@ -52,7 +52,7 @@ import sources.FacturaSource;
  *
  * @author geovanny
  */
-public class frmFactura extends javax.swing.JInternalFrame  {
+public class frmFactura extends javax.swing.JInternalFrame {
 
     /** Creates new form frmEmpresa */
     public boolean grabar = false;
@@ -68,7 +68,8 @@ public class frmFactura extends javax.swing.JInternalFrame  {
     private principal principal;
     List<Tarifas> tarifario;
     String separador = File.separatorChar + "";
-        Boolean guardando = false;
+    Boolean guardando = false;
+
     /** Creates new form frmProfesores */
     public frmFactura(java.awt.Frame parent, boolean modal, Administrador adm1) {
 //        super(parent, modal);
@@ -97,7 +98,7 @@ public class frmFactura extends javax.swing.JInternalFrame  {
             empresaObj = lo.empresaObj;
             val = new validaciones();
             principal = lo;
-            
+
             tarifario = adm.query("Select o from Tarifas as o order by o.codigo ");
             dias.setVisible(false);
             dias1.setVisible(false);
@@ -1011,82 +1012,83 @@ public class frmFactura extends javax.swing.JInternalFrame  {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        if(guardando == false){
-        guardando = true;
-        if (principal.permisos.getAgregar()) {
-            try {
-                if (codigo.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
-                    noTicket.requestFocusInWindow();
-                    return;
-                }
-                if (cliente.getText().equals("0") && nombres.getText().trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Falta el ingresar o seleccionar el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
-                    identificacion.requestFocusInWindow();
-                    return;
-                }
-                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                Factura facActual = (Factura) adm.buscarClave(new Integer(codigo.getText()), Factura.class);
-                Clientes cli = new Clientes();
-                if (cliente.getText().equals("0")) {
-                    Clientes nuevoCl = new Clientes();
-                    Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
-                    nuevoCl.setCodigo(codigoC);
-                    nuevoCl.setDireccion(direccion.getText());
-                    nuevoCl.setIdentificacion(identificacion.getText());
-                    nuevoCl.setTelefono(telefono.getText());
-                    nuevoCl.setNombres(nombres.getText());
-                    cli = nuevoCl;
-                    adm.guardar(nuevoCl);
-                    identificacion.setText("9999999999999");
-                    nombres.setText("CONSUMIDOR FINAL");
-                    direccion.setText("S/D");
-                    telefono.setText("9999999999999");
-                    cliente.setText("1");
-                    facActual.setCliente(nuevoCl);
-                } else {
-                    facActual.setCliente(new Clientes(new Integer(cliente.getText())));
-                    cli.setDireccion(direccion.getText());
-                    cli.setIdentificacion(identificacion.getText());
-                    cli.setTelefono(telefono.getText());
-                    cli.setNombres(nombres.getText());
-                    
-                }
+        if (guardando == false) {
+            guardando = true;
 
-
-                Date fecSalida = new Date();
-                fecSalida.setHours(salida.getDate().getHours());
-                fecSalida.setMinutes(salida.getDate().getMinutes());
-                fecSalida.setSeconds(salida.getDate().getSeconds());
-                facActual.setFechafin(fecSalida);
-
-                facActual.setNumero(emp.getDocumentofac());
-                Double ivav = ((empresaObj.getIva()+100)/100);
-                Double totalv = Double.parseDouble(total.getText());
-                Double subtotalv = totalv/ivav;
-                Double ivav1 = subtotalv* (empresaObj.getIva()/100);
-                facActual.setTotal(new BigDecimal(totalv));
-                facActual.setSubtotal(new BigDecimal(subtotalv));
-                facActual.setIva(new BigDecimal(ivav1));
-
-                Date fecTiempo = new Date();
-                fecTiempo.setHours(tiempo.getDate().getHours());
-                fecTiempo.setMinutes(tiempo.getDate().getMinutes());
-                fecTiempo.setSeconds(tiempo.getDate().getSeconds());
-                facActual.setTiempo(fecTiempo);
-
-
-                adm.actualizar(facActual);
-                Integer numero = new Integer(emp.getDocumentofac());
-                emp.setDocumentofac((numero + 1) + "");
-                int dia = 0;
+            if (principal.permisos.getAgregar()) {
                 try {
-                    dia = new Integer(dias1.getText());
-                } catch (Exception e) {
-                    dia = 0;
-                }
-                imprimir(facActual.getCodigo(), emp, dia, false,cli);
-                adm.actualizar(emp);
+                    if (codigo.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
+                        noTicket.requestFocusInWindow();
+                        return;
+                    }
+                    if (cliente.getText().equals("0") && nombres.getText().trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "Falta el ingresar o seleccionar el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
+                        identificacion.requestFocusInWindow();
+                        return;
+                    }
+                    Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                    Factura facActual = (Factura) adm.buscarClave(new Integer(codigo.getText()), Factura.class);
+                    Clientes cli = new Clientes();
+                    if (cliente.getText().equals("0")) {
+                        Clientes nuevoCl = new Clientes();
+                        Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
+                        nuevoCl.setCodigo(codigoC);
+                        nuevoCl.setDireccion(direccion.getText());
+                        nuevoCl.setIdentificacion(identificacion.getText());
+                        nuevoCl.setTelefono(telefono.getText());
+                        nuevoCl.setNombres(nombres.getText());
+                        cli = nuevoCl;
+                        adm.guardar(nuevoCl);
+                        identificacion.setText("9999999999999");
+                        nombres.setText("CONSUMIDOR FINAL");
+                        direccion.setText("S/D");
+                        telefono.setText("9999999999999");
+                        cliente.setText("1");
+                        facActual.setClientes(nuevoCl);
+                    } else {
+                        facActual.setClientes(new Clientes(new Integer(cliente.getText())));
+                        cli.setDireccion(direccion.getText());
+                        cli.setIdentificacion(identificacion.getText());
+                        cli.setTelefono(telefono.getText());
+                        cli.setNombres(nombres.getText());
+
+                    }
+
+
+                    Date fecSalida = new Date();
+                    fecSalida.setHours(salida.getDate().getHours());
+                    fecSalida.setMinutes(salida.getDate().getMinutes());
+                    fecSalida.setSeconds(salida.getDate().getSeconds());
+                    facActual.setFechafin(fecSalida);
+
+                    facActual.setNumero(emp.getDocumentofac());
+                    Double ivav = ((empresaObj.getIva() + 100) / 100);
+                    Double totalv = Double.parseDouble(total.getText());
+                    Double subtotalv = totalv / ivav;
+                    Double ivav1 = subtotalv * (empresaObj.getIva() / 100);
+                    facActual.setTotal(new BigDecimal(totalv));
+                    facActual.setSubtotal(new BigDecimal(subtotalv));
+                    facActual.setIva(new BigDecimal(ivav1));
+
+                    Date fecTiempo = new Date();
+                    fecTiempo.setHours(tiempo.getDate().getHours());
+                    fecTiempo.setMinutes(tiempo.getDate().getMinutes());
+                    fecTiempo.setSeconds(tiempo.getDate().getSeconds());
+                    facActual.setTiempo(fecTiempo);
+
+
+                    adm.actualizar(facActual);
+                    Integer numero = new Integer(emp.getDocumentofac());
+                    emp.setDocumentofac((numero + 1) + "");
+                    int dia = 0;
+                    try {
+                        dia = new Integer(dias1.getText());
+                    } catch (Exception e) {
+                        dia = 0;
+                    }
+                    imprimir(facActual.getCodigo(), emp, dia, false, cli);
+                    adm.actualizar(emp);
 //                Thread cargar = new Thread() {
 //
 //                    public void run() {
@@ -1096,36 +1098,36 @@ public class frmFactura extends javax.swing.JInternalFrame  {
 //                    }
 //                };
 //                cargar.start();
-                principal.noDisponibles();
-                ingreso.setDate(null);
-                salida.setDate(null);
-                placa.setText(null);
-                tiempo.setDate(null);
-                noTicket.setText("");
-                codigo.setText("");
-                 principal.auditar("Cobros", "No"+facActual.getNumero(), "GUARDAR");
-                 principal.contenedor.requestFocus();
-                 this.setVisible(false);
-                  principal = null;
-                  empresaObj = null;
-                  System.gc();
-               
+                    principal.noDisponibles();
+                    ingreso.setDate(null);
+                    salida.setDate(null);
+                    placa.setText(null);
+                    tiempo.setDate(null);
+                    noTicket.setText("");
+                    codigo.setText("");
+                    principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
+                    principal.contenedor.requestFocus();
+                    this.setVisible(false);
+                    principal = null;
+                    empresaObj = null;
+                    System.gc();
 
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
-                return;
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                    Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+                    return;
+                }
+                //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito");
+            } else {
+                JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
             }
-            //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito");
-        } else {
-            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+            guardando = false;
         }
 
-       guardando = false;
-        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    public void imprimir(int cod, Empresa emp, int dias, Boolean mensual,Clientes cli) {
+    public void imprimir(int cod, Empresa emp, int dias, Boolean mensual, Clientes cli) {
 
 //                    viewer.show();
         try {
@@ -1154,10 +1156,10 @@ public class frmFactura extends javax.swing.JInternalFrame  {
                 ds = new FacturaDetalleSource(detalle);
             } else {
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
-                Clientes cli1 = (Clientes) fac.getCliente();
-                        cli1 = (Clientes) adm.querySimple("Select o from Clientes as o where o.codigo = " + cli1.getCodigo() + " ");
-                        System.out.println(""+cli1.getCodigo());
-                fac.setCliente(cli1);
+                Clientes cli1 = (Clientes) fac.getClientes();
+                cli1 = (Clientes) adm.querySimple("Select o from Clientes as o where o.codigo = " + cli1.getCodigo() + " ");
+                System.out.println("" + cli1.getCodigo());
+                fac.setClientes(cli1);
                 detalle.add(fac);
                 cli = cli1;
                 ds = new FacturaSource(detalle);
@@ -1234,10 +1236,10 @@ public class frmFactura extends javax.swing.JInternalFrame  {
         if (evt.getKeyCode() == evt.VK_DOWN) {
             encontrados1.setSelectedIndex(0);
             encontrados1.requestFocusInWindow();
-        }else if (evt.getKeyCode() == evt.VK_ESCAPE) {
+        } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             panelencontrados1.setVisible(false);
-        }else {
-              principal.tecla(evt.getKeyCode());
+        } else {
+            principal.tecla(evt.getKeyCode());
         }
     }//GEN-LAST:event_placaKeyPressed
 
@@ -1342,8 +1344,12 @@ public class frmFactura extends javax.swing.JInternalFrame  {
             System.out.println("" + seleccion);
 
             if (0 == seleccion) {
-                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                imprimir(fac.getCodigo(), emp, 0,false, new Clientes());
+                try {
+                    Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                    imprimir(fac.getCodigo(), emp, 0, false, new Clientes());
+                } catch (Exception ex) {
+                    Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             noTicket.setText("");
             noTicket.requestFocusInWindow();
@@ -1459,14 +1465,14 @@ public class frmFactura extends javax.swing.JInternalFrame  {
                 placa.setText(null);
                 tiempo.setDate(null);
             }
-        }else if (evt.getKeyCode() == evt.VK_ESCAPE) {
+        } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             principal.contenedor.requestFocus();
             principal = null;
             empresaObj = null;
             System.gc();
             this.setVisible(false);
-        }else{
-            principal.tecla(evt.getKeyCode()); 
+        } else {
+            principal.tecla(evt.getKeyCode());
         }
     }//GEN-LAST:event_noTicketKeyPressed
 
@@ -1622,13 +1628,13 @@ public class frmFactura extends javax.swing.JInternalFrame  {
             llenarFactura(fac);
             noTicket.setText(fac.getTicket());
             btnAgregar.requestFocusInWindow();
-        }else if (evt.getKeyCode() == evt.VK_UP && encontrados1.getSelectedIndex() == 0) {
+        } else if (evt.getKeyCode() == evt.VK_UP && encontrados1.getSelectedIndex() == 0) {
             this.placa.requestFocusInWindow();
-        }else if (evt.getKeyCode() == evt.VK_ESCAPE) {
+        } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             this.panelencontrados1.setVisible(false);
 
-        }else{
-              principal.tecla(evt.getKeyCode());
+        } else {
+            principal.tecla(evt.getKeyCode());
         }
     }//GEN-LAST:event_encontrados1KeyPressed
 
@@ -1668,7 +1674,7 @@ public class frmFactura extends javax.swing.JInternalFrame  {
             this.panelencontrados2.setVisible(false);
             Clientes est = (Clientes) this.encontrados2.getSelectedValue();
             llenarCliente2(est);
-            cargarGrid(est.getProducto(),est.getValor());
+            cargarGrid(est.getProductos(), est.getValor());
 
         }
     }//GEN-LAST:event_encontrados2MouseClicked
@@ -1679,7 +1685,7 @@ public class frmFactura extends javax.swing.JInternalFrame  {
             this.panelencontrados2.setVisible(false);
             Clientes est = (Clientes) this.encontrados2.getSelectedValue();
             llenarCliente2(est);
-           cargarGrid(est.getProducto(),est.getValor());
+            cargarGrid(est.getProductos(), est.getValor());
 
 
         }
@@ -1695,19 +1701,19 @@ public class frmFactura extends javax.swing.JInternalFrame  {
     private void identificacion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identificacion1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_identificacion1ActionPerformed
-public void cargarGrid(Productos pro,BigDecimal valor){
-    Productos asigRub = pro;
-            DefaultTableModel dtm = (DefaultTableModel) this.productos.getModel();
-            Object[] obj = new Object[10];
-            obj[0] = asigRub.getCodigo();
-            obj[1] = new Integer(1);
-            obj[2] = asigRub.getDescripcion();
-            obj[3] = valor.setScale(2, RoundingMode.UP);
-            dtm.addRow(obj);
-            productos.setModel(dtm);
-            sumar();
+    public void cargarGrid(Productos pro, BigDecimal valor) {
+        Productos asigRub = pro;
+        DefaultTableModel dtm = (DefaultTableModel) this.productos.getModel();
+        Object[] obj = new Object[10];
+        obj[0] = asigRub.getCodigo();
+        obj[1] = new Integer(1);
+        obj[2] = asigRub.getDescripcion();
+        obj[3] = valor.setScale(2, RoundingMode.UP);
+        dtm.addRow(obj);
+        productos.setModel(dtm);
+        sumar();
 
-}
+    }
     private void identificacion1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_identificacion1FocusLost
         // TODO add your handling code here:
         try {
@@ -1719,7 +1725,7 @@ public void cargarGrid(Productos pro,BigDecimal valor){
                 nombres1.setText(cliObj.getNombres());
                 direccion1.setText(cliObj.getDireccion());
                 telefono1.setText(cliObj.getTelefono());
-                  cargarGrid(cliObj.getProducto(),cliObj.getValor());
+                cargarGrid(cliObj.getProductos(), cliObj.getValor());
             }
 
         } catch (Exception e) {
@@ -1782,77 +1788,78 @@ public void cargarGrid(Productos pro,BigDecimal valor){
     }//GEN-LAST:event_btnNuevoCliente1ActionPerformed
 
     private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
-        // TODO add your handling code here:
-        if (cliente1.getText().equals("0") && nombres1.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Falta el ingresar o seleccionar el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
-            identificacion.requestFocusInWindow();
-            return;
-        }
-        Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-        Factura facActual = new Factura();
-        Clientes cli = new Clientes();
-        if (cliente1.getText().equals("0")) {
-            Clientes nuevoCl = new Clientes();
-            Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
-            nuevoCl.setCodigo(codigoC);
-            nuevoCl.setDireccion(direccion1.getText());
-            nuevoCl.setIdentificacion(identificacion1.getText());
-            nuevoCl.setTelefono(telefono1.getText());
-            nuevoCl.setNombres(nombres1.getText());
-            cli = nuevoCl;
-            adm.guardar(nuevoCl);
-            identificacion1.setText("9999999999999");
-            nombres1.setText("CONSUMIDOR FINAL");
-            direccion1.setText("S/D");
-            telefono1.setText("9999999999999");
-            cliente1.setText("1");
-            facActual.setCliente(nuevoCl);
-        } else {
-            facActual.setCliente(new Clientes(new Integer(cliente1.getText())));
-            cli.setDireccion(direccion1.getText());
-            cli.setIdentificacion(identificacion1.getText());
-            cli.setTelefono(telefono1.getText());
-            cli.setNombres(nombres1.getText());
-        }
-
-        facActual.setSubtotal(new BigDecimal(txtSubtotal.getText()));
-        facActual.setIva(new BigDecimal(txtIva.getText()));
-        facActual.setTotal(new BigDecimal(txtTotal1.getText()));
-        facActual.setFecha(new Date());
-        facActual.setFechafin(new Date());
-        facActual.setNumero(emp.getDocumentofac());
-        adm.guardar(facActual);
-        Integer numero = new Integer(emp.getDocumentofac());
-        emp.setDocumentofac((numero + 1) + "");
-        int dia = 0;
         try {
-            dia = new Integer(dias1.getText());
-        } catch (Exception e) {
-            dia = 0;
+            // TODO add your handling code here:
+            if (cliente1.getText().equals("0") && nombres1.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Falta el ingresar o seleccionar el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
+                identificacion.requestFocusInWindow();
+                return;
+            }
+            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+            Factura facActual = new Factura();
+            Clientes cli = new Clientes();
+            if (cliente1.getText().equals("0")) {
+                Clientes nuevoCl = new Clientes();
+                Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
+                nuevoCl.setCodigo(codigoC);
+                nuevoCl.setDireccion(direccion1.getText());
+                nuevoCl.setIdentificacion(identificacion1.getText());
+                nuevoCl.setTelefono(telefono1.getText());
+                nuevoCl.setNombres(nombres1.getText());
+                cli = nuevoCl;
+                adm.guardar(nuevoCl);
+                identificacion1.setText("9999999999999");
+                nombres1.setText("CONSUMIDOR FINAL");
+                direccion1.setText("S/D");
+                telefono1.setText("9999999999999");
+                cliente1.setText("1");
+                facActual.setClientes(nuevoCl);
+            } else {
+                facActual.setClientes(new Clientes(new Integer(cliente1.getText())));
+                cli.setDireccion(direccion1.getText());
+                cli.setIdentificacion(identificacion1.getText());
+                cli.setTelefono(telefono1.getText());
+                cli.setNombres(nombres1.getText());
+            }
+            facActual.setSubtotal(new BigDecimal(txtSubtotal.getText()));
+            facActual.setIva(new BigDecimal(txtIva.getText()));
+            facActual.setTotal(new BigDecimal(txtTotal1.getText()));
+            facActual.setFecha(new Date());
+            facActual.setFechafin(new Date());
+            facActual.setNumero(emp.getDocumentofac());
+            adm.guardar(facActual);
+            Integer numero = new Integer(emp.getDocumentofac());
+            emp.setDocumentofac((numero + 1) + "");
+            int dia = 0;
+            try {
+                dia = new Integer(dias1.getText());
+            } catch (Exception e) {
+                dia = 0;
+            }
+            adm.actualizar(emp);
+            Detalle det = new Detalle();
+            int filas = productos.getRowCount();
+            for (int i = 0; i < filas; i++) {
+                det = new Detalle();
+                det.setProductos(new Productos((Integer) productos.getValueAt(i, 0)));
+                det.setCantidad((Integer) productos.getValueAt(i, 1));
+                det.setDetalle((String) productos.getValueAt(i, 2));
+                det.setSubtotal((BigDecimal) productos.getValueAt(i, 3));
+                det.setIva(det.getSubtotal().multiply(new BigDecimal(empresaObj.getIva() / 100)));
+                det.setTotal(det.getSubtotal().add(det.getIva()));
+                det.setFactura(facActual);
+                adm.guardar(det);
+            }
+            imprimir(facActual.getCodigo(), emp, dia, true, cli);
+            //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito...!");
+            DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
+            dtm.getDataVector().removeAllElements();
+            productos.setModel(dtm);
+            principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
+            principal.contenedor.requestFocus();
+        } catch (Exception ex) {
+            Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        adm.actualizar(emp);
-
-        Detalle det = new Detalle();
-        int filas = productos.getRowCount();
-        for (int i = 0; i < filas; i++) {
-              det = new Detalle();
-            det.setProducto(new Productos((Integer) productos.getValueAt(i, 0)));
-            det.setCantidad((Integer) productos.getValueAt(i, 1));
-            det.setDetalle((String) productos.getValueAt(i,2));
-            det.setSubtotal((BigDecimal) productos.getValueAt(i, 3));
-            det.setIva((det.getSubtotal().multiply(new BigDecimal(empresaObj.getIva() / 100))));
-            det.setTotal(det.getSubtotal().add(det.getIva()));
-            det.setFactura(facActual);
-            adm.guardar(det);
-        }
-        imprimir(facActual.getCodigo(), emp, dia, true,cli);
-        //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito...!");
-        DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
-        dtm.getDataVector().removeAllElements();
-        productos.setModel(dtm);
- principal.auditar("Cobros", "No"+facActual.getNumero(), "GUARDAR");
-principal.contenedor.requestFocus();
 
     }//GEN-LAST:event_btnAgregar1ActionPerformed
 
@@ -1869,20 +1876,20 @@ principal.contenedor.requestFocus();
         BigDecimal suma = new BigDecimal(0.0);
         for (int i = 0; i < filasNo; i++) {
             BigDecimal valor = new BigDecimal(this.productos.getValueAt(i, 3).toString());
-            suma  =suma.add(valor);
+            suma = suma.add(valor);
         }
         Double totalv01 = suma.doubleValue();
-        Double iva01 = ((empresaObj.getIva()+100) / 100);
+        Double iva01 = ((empresaObj.getIva() + 100) / 100);
         Double subtotalv01 = totalv01 / iva01;
         Double iva02 = subtotalv01 * ((empresaObj.getIva()) / 100);
-        
+
         BigDecimal subtotalv = new BigDecimal(subtotalv01);
         BigDecimal ivav = new BigDecimal(iva02);
         BigDecimal totalv = new BigDecimal(totalv01);
 //        BigDecimal subtotalv = suma;
 //        BigDecimal ivav = subtotalv.multiply(new BigDecimal(empresaObj.getIva() / 100));
 //        BigDecimal totalv = subtotalv.add(ivav);
-        txtSubtotal.setText( subtotalv.setScale(2, RoundingMode.HALF_UP) + "");
+        txtSubtotal.setText(subtotalv.setScale(2, RoundingMode.HALF_UP) + "");
         txtIva.setText(ivav.setScale(2, RoundingMode.HALF_UP) + "");
         txtTotal1.setText(totalv.setScale(2, RoundingMode.HALF_UP) + "");
     }
@@ -1893,7 +1900,7 @@ principal.contenedor.requestFocus();
             DefaultTableModel dtm = (DefaultTableModel) this.productos.getModel();
             Object[] obj = new Object[10];
             obj[0] = asigRub.getCodigo();
-            obj[1] = Integer.parseInt( txtCantidad.getText());
+            obj[1] = Integer.parseInt(txtCantidad.getText());
             obj[2] = asigRub.getDescripcion();
             obj[3] = new BigDecimal(asigRub.getValor() * Integer.parseInt(txtCantidad.getText()));
             dtm.addRow(obj);
@@ -1922,31 +1929,31 @@ principal.contenedor.requestFocus();
 
     private void btnAgregarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregarKeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode()); 
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnAgregarKeyPressed
 
     private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode()); 
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnSalirKeyPressed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         // TODO add your handling code here:
-           principal.tecla(evt.getKeyCode()); 
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_formKeyPressed
 
     private void jPanel5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel5KeyPressed
         // TODO add your handling code here:
-           principal.tecla(evt.getKeyCode()); 
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_jPanel5KeyPressed
 
     private void jPanel6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel6KeyPressed
         // TODO add your handling code here:
-           principal.tecla(evt.getKeyCode()); 
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_jPanel6KeyPressed
 
     private void identificacion1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_identificacion1KeyPressed
-principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
         // TODO add your handling code here:
     }//GEN-LAST:event_identificacion1KeyPressed
 
@@ -1989,7 +1996,6 @@ principal.tecla(evt.getKeyCode());
         // TODO add your handling code here:
         principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnSalir1KeyPressed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;

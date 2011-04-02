@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import peaje.Administrador;
+import hibernate.cargar.Administrador;
 
 /**
  *
@@ -275,7 +275,7 @@ try{
                         mes.setAgregar((Boolean) tablaPerfilesRubros.getValueAt(i,3));
                         mes.setModificar((Boolean) tablaPerfilesRubros.getValueAt(i,4));
                         mes.setEliminar((Boolean) tablaPerfilesRubros.getValueAt(i,5));
-                        mes.setPerfil((Global)jPerfil.getSelectedValue());
+                        mes.setGlobal((Global)jPerfil.getSelectedValue());
                         adm.actualizar(mes);
                     }
                     listar();
@@ -343,33 +343,34 @@ private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_form
 }//GEN-LAST:event_formKeyPressed
     
    public void listar(){
-     
-       List lista = adm.query("Select o from Accesos as o where perfil.codigo = '"+((Global)jPerfil.getSelectedValue()).getCodigo()+"' order by o.pantalla ");
-       Boolean nuevos = false;
-       if(lista.size() <= 0 ){
+        try {
+            List lista = adm.query("Select o from Accesos as o where perfil.codigo = '" + ((Global) jPerfil.getSelectedValue()).getCodigo() + "' order by o.pantalla ");
+            Boolean nuevos = false;
+            if (lista.size() <= 0) {
                 lista = adm.query("Select o from Accesos as o where perfil is null   order by o.pantalla ");
                 nuevos = true;
-       }
-       DefaultTableModel dtm = (DefaultTableModel)tablaPerfilesRubros.getModel();
-       dtm.getDataVector().removeAllElements();
-       
-       for (Iterator it = lista.iterator(); it.hasNext();) {
-           Accesos elem = (Accesos) it.next();
-           Object obj[] = new Object[6];
-           if(nuevos){
-               obj[0]= 0;
-            }else{
-               obj[0]= elem.getCodigo();
             }
-           
-           obj[1] = elem.getPantalla();
-           obj[2] = elem.getIngresar();
-           obj[3] = elem.getAgregar();
-           obj[4] = elem.getModificar();
-           obj[5] = elem.getEliminar();
-           dtm.addRow(obj);
-       }
-       tablaPerfilesRubros.setModel(dtm);
+            DefaultTableModel dtm = (DefaultTableModel) tablaPerfilesRubros.getModel();
+            dtm.getDataVector().removeAllElements();
+            for (Iterator it = lista.iterator(); it.hasNext();) {
+                Accesos elem = (Accesos) it.next();
+                Object[] obj = new Object[6];
+                if (nuevos) {
+                    obj[0] = 0;
+                } else {
+                    obj[0] = elem.getCodigo();
+                }
+                obj[1] = elem.getPantalla();
+                obj[2] = elem.getIngresar();
+                obj[3] = elem.getAgregar();
+                obj[4] = elem.getModificar();
+                obj[5] = elem.getEliminar();
+                dtm.addRow(obj);
+            }
+            tablaPerfilesRubros.setModel(dtm);
+        } catch (Exception ex) {
+            Logger.getLogger(frmPrivilegios.class.getName()).log(Level.SEVERE, null, ex);
+        }
    } 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

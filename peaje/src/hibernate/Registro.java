@@ -21,9 +21,13 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author geovanny
+ * @author Familia Jadan Cahueñ
  */
- public class Registro implements Serializable {
+@Entity
+@Table(name = "registro")
+@NamedQueries({
+    @NamedQuery(name = "Registro.findAll", query = "SELECT r FROM Registro r")})
+public class Registro implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -121,7 +125,7 @@ import javax.persistence.TemporalType;
 
     @Override
     public String toString() {
-        return "persisten.Registro[codigo=" + codigo + "]";
+        return "hibernate.Registro[codigo=" + codigo + "]";
     }
 
 }

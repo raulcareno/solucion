@@ -3,13 +3,11 @@ package peaje.formas;
 import java.awt.AWTException;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
-import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import peaje.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.comm.*;
@@ -24,8 +22,11 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 import hibernate.*;
+import hibernate.cargar.Administrador;
 import hibernate.cargar.BeanUsuario;
 import hibernate.cargar.GeneraXMLPersonal;
+import hibernate.cargar.RelojModeloUtil;
+import hibernate.cargar.RelojVisual;
 import hibernate.cargar.UsuarioActivo;
 import hibernate.cargar.WorkingDirectory;
 import java.awt.Image;
@@ -62,7 +63,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     public static String out;
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
     String separador = File.separatorChar + "";
-
+static UsuarioActivo datosConecta;
     public void habilitarBotones(Boolean estado) {
         btnClientes.setEnabled(estado);
         btnCobrar.setEnabled(estado);
@@ -672,7 +673,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         });
         barraHerramients.add(barrera5);
 
-        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11));
         barrera6.setForeground(new java.awt.Color(204, 102, 0));
         barrera6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera6.setText("F6");
@@ -1091,11 +1092,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         contenedor.add(formaTarjetas1, javax.swing.JLayeredPane.MODAL_LAYER);
 
         frmClientes1.setTitle("Registro y Modifación de Clientes");
-        frmClientes1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                frmClientes1KeyPressed(evt);
-            }
-        });
+        frmClientes1.setAutoscrolls(true);
         frmClientes1.getContentPane().setLayout(null);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -1383,7 +1380,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         cliente.setEditable(false);
         cliente.setForeground(new java.awt.Color(51, 51, 255));
         cliente.setText(".");
-        cliente.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cliente.setFont(new java.awt.Font("Tahoma", 0, 12));
         jPanel10.add(cliente);
         cliente.setBounds(20, 30, 180, 20);
 
@@ -1395,11 +1392,6 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         tarjetatxt.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 tarjetatxtCaretUpdate(evt);
-            }
-        });
-        tarjetatxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tarjetatxtActionPerformed(evt);
             }
         });
         tarjetatxt.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -1466,7 +1458,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         jPanel10.setBounds(0, 40, 430, 130);
         contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
+        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         usuarioLogeado.setForeground(new java.awt.Color(0, 102, 153));
         usuarioLogeado.setText("...");
         usuarioLogeado.setBorderPainted(false);
@@ -1833,7 +1825,8 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     public void logear() {
         frmIngresarSistema.setVisible(true);
         //frmLogin.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
-        adm = new Administrador();
+      
+        adm = new Administrador(datosConecta);
 //                frmLogin.setModal(true);
 //                frmLogin.setSize(400, 230);
 //                frmLogin.setLocation(350, 300);
@@ -1841,15 +1834,25 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 //                frmLogin.setResizable(false);
 //                frmLogin.setTitle("Inicio de Sesión");
 //                frmLogin.setUndecorated(true);
-//                frmLogin.show();
+//                frmLogin.shogeova geow();
     }
 
     public Boolean comprobar() {
 
         GeneraXMLPersonal pXml = new GeneraXMLPersonal();
         pXml.inicio();
-        String textoXML = pXml.leerXML();
-        if (textoXML == null) {
+        pXml.leerXML();
+        datosConecta = pXml.user;
+        try {
+          String nombre =  datosConecta.getNombre();
+            System.out.println("NOMB:"+nombre);
+            if(nombre.equals("null") || datosConecta.getContrasenia().equals("null")){
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        if (datosConecta == null) {
             return false;
         } else {
             return true;
@@ -1898,104 +1901,104 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     }
 
     public void noDisponibles() {
-        totales.setText("Total: " + empresaObj.getParqueaderos());
-        Object con = adm.querySimple("Select count(o) from Factura as o"
-                + " where  o.fechafin is null  ");
-        Long val2 = (Long) con;
-        disponibles.setText("Disponibles: " + (empresaObj.getParqueaderos() - val2.intValue()));
-        ocupados.setText("Ocupados: " + val2.intValue());
+        try {
+            totales.setText("Total: " + empresaObj.getParqueaderos());
+            Object con = adm.querySimple("Select count(o) from Factura as o" + " where  o.fechafin is null  ");
+            Long val2 = (Long) con;
+            disponibles.setText("Disponibles: " + (empresaObj.getParqueaderos() - val2.intValue()));
+            ocupados.setText("Ocupados: " + val2.intValue());
+        } catch (Exception ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
     public void verificarUsuario() {
         Usuarios usu = adm.ingresoSistema(usuariot.getText(), clave.getText());
         if (usu != null) {
-            usuario = usu;
-            clave.setEditable(true);
-            usuariot.setEditable(true);
-            usuariot.setText("");
-            clave.setText("");
-            frmIngresarSistema.setVisible(false);
-            usuarioActual = usu;
-            usuarioLogeado.setText("Usuario: "+usuarioActual.getNombres());
-            List<Empresa> emp = adm.listar("Select o from Empresa as o ");
-
-            this.empresaObj = emp.get(0);
-            noDisponibles();
-            disponibles.setEnabled(true);
-            ocupados.setEnabled(true);
-            totales.setEnabled(true);
-            barrera1.setEnabled(false);
-            barrera2.setEnabled(false);
-            barrera3.setEnabled(false);
-            barrera4.setEnabled(false);
-            barrera5.setEnabled(false);
-            barrera6.setEnabled(false);
-            barrera7.setEnabled(false);
-
-            if (empresaObj.getActiva1()) {
-                barrera1.setEnabled(true);
+            try {
+                usuario = usu;
+                clave.setEditable(true);
+                usuariot.setEditable(true);
+                usuariot.setText("");
+                clave.setText("");
+                frmIngresarSistema.setVisible(false);
+                usuarioActual = usu;
+                usuarioLogeado.setText("Usuario: " + usuarioActual.getNombres());
+                List<Empresa> emp = adm.listar("Select o from Empresa as o ");
+                this.empresaObj = emp.get(0);
+                noDisponibles();
+                disponibles.setEnabled(true);
+                ocupados.setEnabled(true);
+                totales.setEnabled(true);
+                barrera1.setEnabled(false);
+                barrera2.setEnabled(false);
+                barrera3.setEnabled(false);
+                barrera4.setEnabled(false);
+                barrera5.setEnabled(false);
+                barrera6.setEnabled(false);
+                barrera7.setEnabled(false);
+                if (empresaObj.getActiva1()) {
+                    barrera1.setEnabled(true);
+                }
+                if (empresaObj.getActiva2()) {
+                    barrera2.setEnabled(true);
+                }
+                if (empresaObj.getActiva3()) {
+                    barrera3.setEnabled(true);
+                }
+                if (empresaObj.getActiva4()) {
+                    barrera4.setEnabled(true);
+                }
+                if (empresaObj.getActiva5()) {
+                    barrera5.setEnabled(true);
+                }
+                if (empresaObj.getActiva6()) {
+                    barrera6.setEnabled(true);
+                }
+                if (empresaObj.getActiva7()) {
+                    barrera7.setEnabled(true);
+                }
+                in = UsuarioActivo.getIn();
+                out = UsuarioActivo.getOut();
+                habilitarBotones(true);
+                List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.global.codigo  = '" + usuarioActual.getGlobal().getCodigo() + "' ");
+                for (Iterator<Accesos> it = accesosL.iterator(); it.hasNext();) {
+                    Accesos accesos = it.next();
+                    if (accesos.getPantalla().equals("Clientes") && !accesos.getIngresar()) {
+                        btnClientes.setEnabled(false);
+                    }
+                    if (accesos.getPantalla().equals("Tickets") && !accesos.getIngresar()) {
+                        btnTicket.setEnabled(false);
+                    }
+                    if (accesos.getPantalla().equals("Tarifas") && !accesos.getIngresar()) {
+                        btnTarifas.setEnabled(false);
+                    }
+                    if (accesos.getPantalla().equals("Factura") && !accesos.getIngresar()) {
+                        btnCobrar.setEnabled(false);
+                    }
+                    if (accesos.getPantalla().equals("Reportes") && !accesos.getIngresar()) {
+                        btnReportes.setEnabled(false);
+                    }
+                    if (accesos.getPantalla().equals("Operadores") && !accesos.getIngresar()) {
+                        btnUsuarios.setEnabled(false);
+                    }
+                    if (accesos.getPantalla().equals("Empresa") && !accesos.getIngresar()) {
+                        btnEmpresa.setEnabled(false);
+                    }
+                    if (accesos.getPantalla().equals("Accesos") && !accesos.getIngresar()) {
+                        btnAccesos.setEnabled(false);
+                    }
+                    if (accesos.getPantalla().equals("Reconfigurar") && !accesos.getIngresar()) {
+                        btnReconfigurar.setEnabled(false);
+                    }
+                }
+                iniciarPuertos();
+                contenedor.requestFocus();
+                auditar("", "", "Ingreso al Sistema");
+            } catch (Exception ex) {
+                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (empresaObj.getActiva2()) {
-                barrera2.setEnabled(true);
-            }
-            if (empresaObj.getActiva3()) {
-                barrera3.setEnabled(true);
-            }
-            if (empresaObj.getActiva4()) {
-                barrera4.setEnabled(true);
-            }
-            if (empresaObj.getActiva5()) {
-                barrera5.setEnabled(true);
-            }
-            if (empresaObj.getActiva6()) {
-                barrera6.setEnabled(true);
-            }
-            if (empresaObj.getActiva7()) {
-                barrera7.setEnabled(true);
-            }
-            in = UsuarioActivo.getIn();
-            out = UsuarioActivo.getOut();
-            habilitarBotones(true);
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o "
-                    + "where o.perfil.codigo  = '" + usuarioActual.getPerfil().getCodigo() + "' ");
-            for (Iterator<Accesos> it = accesosL.iterator(); it.hasNext();) {
-                Accesos accesos = it.next();
-                if (accesos.getPantalla().equals("Clientes") && !accesos.getIngresar()) {
-                    btnClientes.setEnabled(false);
-                }
-                if (accesos.getPantalla().equals("Tickets") && !accesos.getIngresar()) {
-                    btnTicket.setEnabled(false);
-                }
-                if (accesos.getPantalla().equals("Tarifas") && !accesos.getIngresar()) {
-                    btnTarifas.setEnabled(false);
-                }
-                if (accesos.getPantalla().equals("Factura") && !accesos.getIngresar()) {
-                    btnCobrar.setEnabled(false);
-                }
-                if (accesos.getPantalla().equals("Reportes") && !accesos.getIngresar()) {
-                    btnReportes.setEnabled(false);
-                }
-                if (accesos.getPantalla().equals("Operadores") && !accesos.getIngresar()) {
-                    btnUsuarios.setEnabled(false);
-                }
-                if (accesos.getPantalla().equals("Empresa") && !accesos.getIngresar()) {
-                    btnEmpresa.setEnabled(false);
-                }
-                if (accesos.getPantalla().equals("Accesos") && !accesos.getIngresar()) {
-                    btnAccesos.setEnabled(false);
-                }
-                if (accesos.getPantalla().equals("Reconfigurar") && !accesos.getIngresar()) {
-
-                    btnReconfigurar.setEnabled(false);
-                }
-
-
-            }
-
-            iniciarPuertos();
-            contenedor.requestFocus();
-            auditar("", "","Ingreso al Sistema");
         } else {
             clave.setEditable(true);
             usuariot.setEditable(true);
@@ -2032,7 +2035,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 //
 //                            try {
 //                                // TODO add your handling code here:
-//                                List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Clientes' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' ");
+//                                List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Clientes' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' ");
 //                                if (accesosL.size() > 0) {
 //                                    permisos = accesosL.get(0);
 //                                } else {
@@ -2170,7 +2173,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
 //                        taskTarjeta.setCollapsed(false);
                         procesando.setVisible(true);
-                        cliente.setText(tarje.getCliente().getNombres());
+                        cliente.setText(tarje.getClientes().getNombres());
                         List<Factura> facturas = adm.query("Select o from Factura as o "
                                 + "where o.tarjeta.tarjeta = '" + tarje.getTarjeta() + "' "
                                 + "and o.fechafin is null  ");
@@ -2223,7 +2226,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                             fac.setPlaca(placa.getText());
                             fac.setFechaini(new Date());
                             fac.setFecha(new Date());
-                            fac.setTarjeta(tarje);
+                            fac.setTarjetas(tarje);
                             fac.setTicket(null);
                             adm.guardar(fac);
 
@@ -2355,7 +2358,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             //adm = new Administrador();
             List<Accesos> accesosL = adm.query("Select o from Accesos as o "
                     + "where o.pantalla = 'Clientes' "
-                    + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true ");
+                    + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -2367,10 +2370,10 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 //            frmClientes.setLocation(240, 100);
 //            frmClientes.setModal(true);
 //            btnSalir.requestFocusInWindow();
-            
+         
 //            frmClientes.show();
             frmClientes1.setVisible(true);
-            contenedor.requestFocus();
+   contenedor.requestFocus();
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2383,7 +2386,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
         try {
             // TODO add your handling code here:
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Operadores' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "'  and o.ingresar = true  ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Operadores' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -2405,7 +2408,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
     private void btnEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpresaActionPerformed
         try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Empresa' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true  ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Empresa' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -2427,7 +2430,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     private void btnTarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTarifasActionPerformed
         // TODO add your handling code here:
         try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tarifas' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true  ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tarifas' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -2448,7 +2451,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
     private void btnTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTicketActionPerformed
         try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tickets' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "'  and o.ingresar = true  ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tickets' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -2491,7 +2494,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
         // TODO add your handling code here:
         try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Factura' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true  ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Factura' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -2517,7 +2520,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
         // TODO add your handling code here:
         try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Reportes' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' and o.ingresar = true  ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Reportes' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -2539,7 +2542,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     private void mnAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAcercaActionPerformed
         // TODO add your handling code here:
         try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Reportes' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "' ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Reportes' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -2741,7 +2744,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                     if (clienteObj == null) {
                         clienteObj = new Clientes();
                     }
-                    clienteObj.setProducto((Productos) tarifas.getSelectedValue());
+                    clienteObj.setProductos((Productos) tarifas.getSelectedValue());
                     Double valorv = Double.valueOf(txtValor.getText());
                     clienteObj.setValor(new BigDecimal(valorv));
                     clienteObj.setDireccion(direccion.getText());
@@ -2872,7 +2875,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         // TODO add your handling code here:
         try {
             tarjeta.setTarjeta(noTarjeta.getText());
-            tarjeta.setCliente(clienteObj);
+            tarjeta.setClientes(clienteObj);
             Date fechaDes = fechaDesde.getDate();
             fechaDes.setHours(0);
             fechaDes.setMinutes(01);
@@ -2964,7 +2967,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                 int fila = busquedaTabla.getSelectedRow();
                 this.clienteObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
                 llenarTabla(clienteObj.getCodigo());
-                g = clienteObj.getProducto();
+                g = clienteObj.getProductos();
                 buscarClientes.dispose();
                 bindingGroup.unbind();
                 bindingGroup.bind();
@@ -2986,21 +2989,23 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         //        JOptionPane.showMessageDialog(this, usuarioObj);
 }//GEN-LAST:event_busquedaTablaMouseClicked
     public void llenarTabla(Integer clie) {
-        List<Tarjetas> tarjetasRs = adm.query("Select o from Tarjetas as o where o.cliente.codigo = '" + clie + "'");
-
-        DefaultTableModel dtm = (DefaultTableModel) tarjetas.getModel();
-        dtm.getDataVector().removeAllElements();
-
-        for (Iterator<Tarjetas> it = tarjetasRs.iterator(); it.hasNext();) {
-            Tarjetas tarjetasIt = it.next();
-            Object[] obj = new Object[4];
-            obj[0] = tarjetasIt.getHabilitada();
-            obj[1] = tarjetasIt.getTarjeta();
-            obj[2] = tarjetasIt.getDesde();
-            obj[3] = tarjetasIt.getHasta();
-            dtm.addRow(obj);
+        try {
+            List<Tarjetas> tarjetasRs = adm.query("Select o from Tarjetas as o where o.clientes.codigo = '" + clie + "'");
+            DefaultTableModel dtm = (DefaultTableModel) tarjetas.getModel();
+            dtm.getDataVector().removeAllElements();
+            for (Iterator<Tarjetas> it = tarjetasRs.iterator(); it.hasNext();) {
+                Tarjetas tarjetasIt = it.next();
+                Object[] obj = new Object[4];
+                obj[0] = tarjetasIt.getHabilitada();
+                obj[1] = tarjetasIt.getTarjeta();
+                obj[2] = tarjetasIt.getDesde();
+                obj[3] = tarjetasIt.getHasta();
+                dtm.addRow(obj);
+            }
+            tarjetas.setModel(dtm);
+        } catch (Exception ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        tarjetas.setModel(dtm);
     }
 
     private void busquedaTablaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_busquedaTablaKeyPressed
@@ -3011,7 +3016,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                 int fila = busquedaTabla.getSelectedRow();
                 this.clienteObj = (Clientes) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Clientes.class);
                 llenarTabla(clienteObj.getCodigo());
-                g = clienteObj.getProducto();
+                g = clienteObj.getProductos();
                 buscarClientes.dispose();
                 bindingGroup.unbind();
                 bindingGroup.bind();
@@ -3035,7 +3040,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
-        contenedor.requestFocus();
+          
         grabar = false;
         btnAgregar.doClick();
         btnModificar.doClick();
@@ -3049,8 +3054,9 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         escribir();
         GeneraXMLPersonal pXml = new GeneraXMLPersonal();
         pXml.leerXML();
+        UsuarioActivo usuario = pXml.user;
         try {
-            adm = new Administrador();
+            adm = new Administrador(usuario);
             adm.query("Select o from Accesos as o where o.codigo = -1 ");
         } catch (Exception e) {
             e.printStackTrace();
@@ -3071,7 +3077,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         // TODO add your handling code here:
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o "
-                    + "where o.pantalla = 'Accesos' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "'  and o.ingresar = true  ");
+                    + "where o.pantalla = 'Accesos' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
@@ -3141,7 +3147,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         // TODO add your handling code here:
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o "
-                    + "where o.pantalla = 'Reconfigurar' " + "and o.perfil.codigo  = '" + usuario.getPerfil().getCodigo() + "'  and o.ingresar = true  ");
+                    + "where o.pantalla = 'Reconfigurar' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
 
@@ -3328,7 +3334,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                 tarje = null;
             }
             if (tarje != null) {
-                cliente.setText(tarje.getCliente().getNombres());
+                cliente.setText(tarje.getClientes().getNombres());
             } else {
                 cliente.setText("");
                 placa.setText("");
@@ -3575,15 +3581,6 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         tecla(evt.getKeyCode());
     }//GEN-LAST:event_todosKeyPressed
 
-    private void tarjetatxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tarjetatxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tarjetatxtActionPerformed
-
-    private void frmClientes1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frmClientes1KeyPressed
-        // TODO add your handling code here:
-        tecla(evt.getKeyCode());
-    }//GEN-LAST:event_frmClientes1KeyPressed
-
     /**
      * @param args the command line arguments
      */
@@ -3815,11 +3812,11 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             System.out.println(i.getHostName()); // name
             System.out.println(i.getHostAddress()); // IP address only
             aud.setMaquina(System.getProperty("user.name")+" IP: "+i.getHostAddress());
-            aud.setUsuario(usuarioActual);
+            aud.setUsuarios(usuarioActual);
             adm.guardar(aud);
-        } catch (UnknownHostException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
 
     }
 

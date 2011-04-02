@@ -30,7 +30,8 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
-import peaje.Administrador;
+import hibernate.cargar.Administrador;
+import hibernate.cargar.GeneraXMLPersonal;
 import sources.FacturaSource;
 
 public class LeerTarjeta implements Runnable, SerialPortEventListener {
@@ -42,7 +43,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     Thread readThread;
     public String tarjeta;
     principal princip;
-     Administrador adm = new Administrador();
+     Administrador adm = new Administrador(GeneraXMLPersonal.user);
     String separador = File.separatorChar + "";
   public LeerTarjeta() {
     }

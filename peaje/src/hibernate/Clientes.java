@@ -7,22 +7,31 @@ package hibernate;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
- 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
  *
- * @author geovanny
+ * @author Familia Jadan Cahueñ
  */
+@Entity
+@Table(name = "clientes")
+@NamedQueries({
+    @NamedQuery(name = "Clientes.findAll", query = "SELECT c FROM Clientes c")})
 public class Clientes implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,16 +57,18 @@ public class Clientes implements Serializable {
     @Column(name = "acceso")
     @Temporal(TemporalType.TIMESTAMP)
     private Date acceso;
-     @JoinColumn(name = "producto", referencedColumnName = "codigo")
-    @ManyToOne
-    private Productos producto;
-     @Column(name = "valor")
+    @Column(name = "tarifamensual")
+    private Double tarifamensual;
+    @Column(name = "valor")
     private BigDecimal valor;
-//
-//    @OneToMany(mappedBy = "cliente")
-//    @Column(name="tarjeta")
-//    private Collection<Tarjetas>  tarjetasCollection;
-//
+    @JoinColumn(name = "producto", referencedColumnName = "codigo")
+    @ManyToOne
+    private Productos productos;
+    @OneToMany(mappedBy = "clientes")
+    private Collection<Factura> facturaCollection;
+    @OneToMany(mappedBy = "clientes")
+    private Collection<Tarjetas> tarjetasCollection;
+
     public Clientes() {
     }
 
@@ -137,12 +148,12 @@ public class Clientes implements Serializable {
         this.acceso = acceso;
     }
 
-    public Productos getProducto() {
-        return producto;
+    public Double getTarifamensual() {
+        return tarifamensual;
     }
 
-    public void setProducto(Productos producto) {
-        this.producto = producto;
+    public void setTarifamensual(Double tarifamensual) {
+        this.tarifamensual = tarifamensual;
     }
 
     public BigDecimal getValor() {
@@ -152,16 +163,31 @@ public class Clientes implements Serializable {
     public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
-    
+ 
 
-//    public Collection<Tarjetas> getTarjetasCollection() {
-//        return tarjetasCollection;
-//    }
-//
-//    public void setTarjetasCollection(Collection<Tarjetas> tarjetasCollection) {
-//        this.tarjetasCollection = tarjetasCollection;
-//    }
-    
+    public Productos getProductos() {
+        return productos;
+    }
+
+    public void setProductos(Productos productos) {
+        this.productos = productos;
+    }
+
+    public Collection<Factura> getFacturaCollection() {
+        return facturaCollection;
+    }
+
+    public void setFacturaCollection(Collection<Factura> facturaCollection) {
+        this.facturaCollection = facturaCollection;
+    }
+
+    public Collection<Tarjetas> getTarjetasCollection() {
+        return tarjetasCollection;
+    }
+
+    public void setTarjetasCollection(Collection<Tarjetas> tarjetasCollection) {
+        this.tarjetasCollection = tarjetasCollection;
+    }
 
     @Override
     public int hashCode() {
@@ -185,7 +211,7 @@ public class Clientes implements Serializable {
 
     @Override
     public String toString() {
-        return nombres;
+        return "hibernate.Clientes[codigo=" + codigo + "]";
     }
 
 }
