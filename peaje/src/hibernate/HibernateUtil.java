@@ -21,8 +21,9 @@ public class HibernateUtil {
                 .setProperty("hibernate.connection.url", url)
                 .setProperty("hibernate.connection.username", usu)
                 .setProperty("hibernate.connection.password", pass)
-                .setProperty("hibernate.format_sql", "false")
-                .setProperty("hibernate.show_sql", "false").buildSessionFactory();
+                .buildSessionFactory();
+                //.setProperty("hibernate.format_sql", "false")
+                //.setProperty("hibernate.show_sql", "false").buildSessionFactory();
         //hibernate.format_sql
                 //.setProperty("hibernate.hbm2ddl.auto", "update").buildSessionFactory();
     }//hibernate.show_sql
