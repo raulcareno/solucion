@@ -11,19 +11,27 @@ import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
  *
- * @author geovanny
+ * @author Familia Jadan Cahueñ
  */
+@Entity
+@Table(name = "factura")
+@NamedQueries({
+    @NamedQuery(name = "Factura.findAll", query = "SELECT f FROM Factura f")})
 public class Factura implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -38,7 +46,7 @@ public class Factura implements Serializable {
     @Column(name = "placa")
     private String placa;
     @Column(name = "fecha")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
     @Column(name = "subtotal")
     private BigDecimal subtotal;
@@ -59,12 +67,12 @@ public class Factura implements Serializable {
     private Date tiempo;
     @JoinColumn(name = "tarjeta", referencedColumnName = "tarjeta")
     @ManyToOne
-    private Tarjetas tarjeta;
+    private Tarjetas tarjetas;
     @JoinColumn(name = "cliente", referencedColumnName = "codigo")
     @ManyToOne
-    private Clientes cliente;
-//    @OneToMany(mappedBy = "factura")
-//    private Collection<Detalle> detalleCollection;
+    private Clientes clientes;
+    @OneToMany(mappedBy = "factura")
+    private Collection<Detalle> detalleCollection;
 
     public Factura() {
     }
@@ -169,23 +177,30 @@ public class Factura implements Serializable {
         this.tiempo = tiempo;
     }
 
-    public Tarjetas getTarjeta() {
-        return tarjeta;
+    public Tarjetas getTarjetas() {
+        return tarjetas;
     }
 
-    public void setTarjeta(Tarjetas tarjeta) {
-        this.tarjeta = tarjeta;
+    public void setTarjetas(Tarjetas tarjetas) {
+        this.tarjetas = tarjetas;
     }
 
-    public Clientes getCliente() {
-        return cliente;
+    public Clientes getClientes() {
+        return clientes;
     }
 
-    public void setCliente(Clientes cliente) {
-        this.cliente = cliente;
+    public void setClientes(Clientes clientes) {
+        this.clientes = clientes;
     }
 
- 
+    public Collection<Detalle> getDetalleCollection() {
+        return detalleCollection;
+    }
+
+    public void setDetalleCollection(Collection<Detalle> detalleCollection) {
+        this.detalleCollection = detalleCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -208,7 +223,7 @@ public class Factura implements Serializable {
 
     @Override
     public String toString() {
-        return placa+" TICK:"+ticket;
+        return "hibernate.Factura[codigo=" + codigo + "]";
     }
 
 }

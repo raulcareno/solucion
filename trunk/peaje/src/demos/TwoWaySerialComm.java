@@ -4,7 +4,7 @@
  */
 package demos;
 
-import hibernate.cargar.WorkingDirectory;
+ 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +14,7 @@ import java.util.Enumeration;
 import javax.comm.CommPort;
 import javax.comm.CommPortIdentifier;
 import javax.comm.SerialPort;
+import hibernate.cargar.WorkingDirectory;
 
 public class TwoWaySerialComm {
 

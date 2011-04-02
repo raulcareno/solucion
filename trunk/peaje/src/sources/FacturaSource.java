@@ -63,15 +63,15 @@ public class FacturaSource implements JRDataSource {
                 }
                 valor = codigo;
             } else if ("cliente".equals(fieldName)) {
-                valor = nodo.getCliente().getNombres();
+                valor = nodo.getClientes().getNombres();
             } else if ("ruc".equals(fieldName)) {
-                valor = nodo.getCliente().getIdentificacion();
+                valor = nodo.getClientes().getIdentificacion();
             } else if ("ingreso".equals(fieldName)) {
                 valor = nodo.getFechaini();
             } else if ("telefono".equals(fieldName)) {
-                valor = nodo.getCliente().getTelefono();
+                valor = nodo.getClientes().getTelefono();
             } else if ("direccion".equals(fieldName)) {
-                valor = nodo.getCliente().getDireccion();
+                valor = nodo.getClientes().getDireccion();
             } else if ("salida".equals(fieldName)) {
                 valor = nodo.getFechafin();
             } else if ("tiempo".equals(fieldName)) {

@@ -20,11 +20,12 @@ import javax.persistence.Table;
 
 /**
  *
- * @author geovanny
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "productos")
-@NamedQueries({@NamedQuery(name = "Productos.findAll", query = "SELECT p FROM Productos p"), @NamedQuery(name = "Productos.findByCodigo", query = "SELECT p FROM Productos p WHERE p.codigo = :codigo"), @NamedQuery(name = "Productos.findByDescripcion", query = "SELECT p FROM Productos p WHERE p.descripcion = :descripcion"), @NamedQuery(name = "Productos.findByValor", query = "SELECT p FROM Productos p WHERE p.valor = :valor"), @NamedQuery(name = "Productos.findByBien", query = "SELECT p FROM Productos p WHERE p.bien = :bien")})
+@NamedQueries({
+    @NamedQuery(name = "Productos.findAll", query = "SELECT p FROM Productos p")})
 public class Productos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -38,7 +39,10 @@ public class Productos implements Serializable {
     private Double valor;
     @Column(name = "bien")
     private Boolean bien;
-    
+    @OneToMany(mappedBy = "productos")
+    private Collection<Clientes> clientesCollection;
+    @OneToMany(mappedBy = "productos")
+    private Collection<Detalle> detalleCollection;
 
     public Productos() {
     }
@@ -71,8 +75,6 @@ public class Productos implements Serializable {
         this.valor = valor;
     }
 
-  
-
     public Boolean getBien() {
         return bien;
     }
@@ -81,7 +83,21 @@ public class Productos implements Serializable {
         this.bien = bien;
     }
 
- 
+    public Collection<Clientes> getClientesCollection() {
+        return clientesCollection;
+    }
+
+    public void setClientesCollection(Collection<Clientes> clientesCollection) {
+        this.clientesCollection = clientesCollection;
+    }
+
+    public Collection<Detalle> getDetalleCollection() {
+        return detalleCollection;
+    }
+
+    public void setDetalleCollection(Collection<Detalle> detalleCollection) {
+        this.detalleCollection = detalleCollection;
+    }
 
     @Override
     public int hashCode() {
@@ -105,7 +121,7 @@ public class Productos implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion + " "+ valor;
+        return descripcion+" "+getValor();
     }
 
 }

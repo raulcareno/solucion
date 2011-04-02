@@ -1,5 +1,6 @@
 package hibernate.cargar;
 
+import com.sun.jmx.snmp.UserAcl;
 import java.io.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,7 +13,7 @@ import org.xml.sax.SAXParseException;
 
 /** Clase abstracta para implementar un objeto Personal que se guarde en un archivo XML. */
 public class GeneraXMLPersonal {
-
+public static UsuarioActivo user = new UsuarioActivo();
     public GeneraXMLPersonal() {
     }
 
@@ -24,6 +25,15 @@ public class GeneraXMLPersonal {
         }
 
     }
+
+    public static UsuarioActivo getUser() {
+        return user;
+    }
+
+    public static void setUser(UsuarioActivo user) {
+        GeneraXMLPersonal.user = user;
+    }
+    
     private static String separador = File.separator;
     private static String direccio = null;
 

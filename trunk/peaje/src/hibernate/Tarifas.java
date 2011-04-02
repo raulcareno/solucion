@@ -9,14 +9,22 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  *
- * @author geovanny
+ * @author Familia Jadan Cahueñ
  */
+@Entity
+@Table(name = "tarifas")
+@NamedQueries({
+    @NamedQuery(name = "Tarifas.findAll", query = "SELECT t FROM Tarifas t")})
 public class Tarifas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -72,7 +80,6 @@ public class Tarifas implements Serializable {
         this.hasta = hasta;
     }
 
-
     public BigDecimal getValor() {
         return valor;
     }
@@ -103,7 +110,7 @@ public class Tarifas implements Serializable {
 
     @Override
     public String toString() {
-        return "persisten.Tarifas[codigo=" + codigo + "]";
+        return nombre +" "+valor;
     }
 
 }

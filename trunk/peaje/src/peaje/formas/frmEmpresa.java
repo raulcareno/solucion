@@ -14,8 +14,9 @@ import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import peaje.Administrador;
-import peaje.validaciones;
+import hibernate.cargar.Administrador;
+import hibernate.cargar.validaciones;
+//import hibernate.cargar.validaciones;
 
 //import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
 /**

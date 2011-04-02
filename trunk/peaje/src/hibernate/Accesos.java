@@ -20,8 +20,12 @@ import javax.persistence.Table;
 
 /**
  *
- * @author geovanny
+ * @author Familia Jadan Cahueñ
  */
+@Entity
+@Table(name = "accesos")
+@NamedQueries({
+    @NamedQuery(name = "Accesos.findAll", query = "SELECT a FROM Accesos a")})
 public class Accesos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,7 +45,7 @@ public class Accesos implements Serializable {
     private Boolean ingresar;
     @JoinColumn(name = "perfil", referencedColumnName = "codigo")
     @ManyToOne
-    private Global perfil;
+    private Global global;
 
     public Accesos() {
     }
@@ -90,14 +94,6 @@ public class Accesos implements Serializable {
         this.eliminar = eliminar;
     }
 
-    public Global getPerfil() {
-        return perfil;
-    }
-
-    public void setPerfil(Global perfil) {
-        this.perfil = perfil;
-    }
-
     public Boolean getIngresar() {
         return ingresar;
     }
@@ -106,7 +102,13 @@ public class Accesos implements Serializable {
         this.ingresar = ingresar;
     }
 
+    public Global getGlobal() {
+        return global;
+    }
 
+    public void setGlobal(Global global) {
+        this.global = global;
+    }
 
     @Override
     public int hashCode() {
@@ -130,7 +132,7 @@ public class Accesos implements Serializable {
 
     @Override
     public String toString() {
-        return "persisten.Accesos[codigo=" + codigo + "]";
+        return "hibernate.Accesos[codigo=" + codigo + "]";
     }
 
 }

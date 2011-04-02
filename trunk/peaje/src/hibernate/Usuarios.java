@@ -22,11 +22,12 @@ import javax.persistence.Table;
 
 /**
  *
- * @author geovanny
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "usuarios")
-@NamedQueries({@NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u"), @NamedQuery(name = "Usuarios.findByCodigo", query = "SELECT u FROM Usuarios u WHERE u.codigo = :codigo"), @NamedQuery(name = "Usuarios.findByCedula", query = "SELECT u FROM Usuarios u WHERE u.cedula = :cedula"), @NamedQuery(name = "Usuarios.findByNombres", query = "SELECT u FROM Usuarios u WHERE u.nombres = :nombres"), @NamedQuery(name = "Usuarios.findByDireccion", query = "SELECT u FROM Usuarios u WHERE u.direccion = :direccion"), @NamedQuery(name = "Usuarios.findByUsuario", query = "SELECT u FROM Usuarios u WHERE u.usuario = :usuario"), @NamedQuery(name = "Usuarios.findByClave", query = "SELECT u FROM Usuarios u WHERE u.clave = :clave")})
+@NamedQueries({
+    @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u")})
 public class Usuarios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,11 +45,11 @@ public class Usuarios implements Serializable {
     private String usuario;
     @Column(name = "clave")
     private String clave;
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuarios")
     private Collection<Auditoria> auditoriaCollection;
     @JoinColumn(name = "perfil", referencedColumnName = "codigo")
     @ManyToOne
-    private Global perfil;
+    private Global global;
 
     public Usuarios() {
     }
@@ -113,12 +114,12 @@ public class Usuarios implements Serializable {
         this.auditoriaCollection = auditoriaCollection;
     }
 
-    public Global getPerfil() {
-        return perfil;
+    public Global getGlobal() {
+        return global;
     }
 
-    public void setPerfil(Global perfil) {
-        this.perfil = perfil;
+    public void setGlobal(Global global) {
+        this.global = global;
     }
 
     @Override
@@ -143,7 +144,7 @@ public class Usuarios implements Serializable {
 
     @Override
     public String toString() {
-        return "persisten.Usuarios[codigo=" + codigo + "]";
+        return "hibernate.Usuarios[codigo=" + codigo + "]";
     }
 
 }

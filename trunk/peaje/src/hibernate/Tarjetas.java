@@ -6,19 +6,29 @@
 package hibernate;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
  *
- * @author geovanny
+ * @author Familia Jadan Cahueñ
  */
+@Entity
+@Table(name = "tarjetas")
+@NamedQueries({
+    @NamedQuery(name = "Tarjetas.findAll", query = "SELECT t FROM Tarjetas t")})
 public class Tarjetas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -61,9 +71,11 @@ public class Tarjetas implements Serializable {
     private String placa;
     @Column(name = "descripcion")
     private String descripcion;
+    @OneToMany(mappedBy = "tarjetas")
+    private Collection<Factura> facturaCollection;
     @JoinColumn(name = "cliente", referencedColumnName = "codigo")
     @ManyToOne
-    private Clientes cliente;
+    private Clientes clientes;
 
     public Tarjetas() {
     }
@@ -208,13 +220,20 @@ public class Tarjetas implements Serializable {
         this.descripcion = descripcion;
     }
 
-
-    public Clientes getCliente() {
-        return cliente;
+    public Collection<Factura> getFacturaCollection() {
+        return facturaCollection;
     }
 
-    public void setCliente(Clientes cliente) {
-        this.cliente = cliente;
+    public void setFacturaCollection(Collection<Factura> facturaCollection) {
+        this.facturaCollection = facturaCollection;
+    }
+
+    public Clientes getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(Clientes clientes) {
+        this.clientes = clientes;
     }
 
     @Override
@@ -239,7 +258,7 @@ public class Tarjetas implements Serializable {
 
     @Override
     public String toString() {
-        return "persisten.Tarjetas[tarjeta=" + tarjeta + "]";
+        return "hibernate.Tarjetas[tarjeta=" + tarjeta + "]";
     }
 
 }

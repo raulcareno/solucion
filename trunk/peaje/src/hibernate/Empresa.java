@@ -8,12 +8,20 @@ package hibernate;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  *
- * @author geovanny
+ * @author Familia Jadan Cahueñ
  */
+@Entity
+@Table(name = "empresa")
+@NamedQueries({
+    @NamedQuery(name = "Empresa.findAll", query = "SELECT e FROM Empresa e")})
 public class Empresa implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,6 +48,14 @@ public class Empresa implements Serializable {
     private String impticket;
     @Column(name = "impfactura")
     private String impfactura;
+    @Column(name = "impresora")
+    private String impresora;
+    @Column(name = "impresora2")
+    private String impresora2;
+    @Column(name = "puerto")
+    private String puerto;
+    @Column(name = "iva")
+    private Double iva;
     @Column(name = "puerto1")
     private String puerto1;
     @Column(name = "puerto2")
@@ -96,7 +112,6 @@ public class Empresa implements Serializable {
     private Boolean activa13;
     @Column(name = "activa14")
     private Boolean activa14;
-    
     @Column(name = "puerta1")
     private String puerta1;
     @Column(name = "puerta2")
@@ -125,14 +140,6 @@ public class Empresa implements Serializable {
     private String puerta13;
     @Column(name = "puerta14")
     private String puerta14;
-@Column(name = "iva")
-    private Double iva;
-    @Column(name = "puerto")
-    private String puerto;
-    @Column(name = "impresora")
-    private String impresora;
-    @Column(name = "impresora2")
-    private String impresora2;
 
     public Empresa() {
     }
@@ -229,6 +236,38 @@ public class Empresa implements Serializable {
         this.impfactura = impfactura;
     }
 
+    public String getImpresora() {
+        return impresora;
+    }
+
+    public void setImpresora(String impresora) {
+        this.impresora = impresora;
+    }
+
+    public String getImpresora2() {
+        return impresora2;
+    }
+
+    public void setImpresora2(String impresora2) {
+        this.impresora2 = impresora2;
+    }
+
+    public String getPuerto() {
+        return puerto;
+    }
+
+    public void setPuerto(String puerto) {
+        this.puerto = puerto;
+    }
+
+    public Double getIva() {
+        return iva;
+    }
+
+    public void setIva(Double iva) {
+        this.iva = iva;
+    }
+
     public String getPuerto1() {
         return puerto1;
     }
@@ -277,271 +316,12 @@ public class Empresa implements Serializable {
         this.puerto6 = puerto6;
     }
 
-    public Boolean getActiva1() {
-        return activa1;
-    }
-
-    public void setActiva1(Boolean activa1) {
-        this.activa1 = activa1;
-    }
-
-    public Boolean getActiva2() {
-        return activa2;
-    }
-
-    public void setActiva2(Boolean activa2) {
-        this.activa2 = activa2;
-    }
-
-    public Boolean getActiva3() {
-        return activa3;
-    }
-
-    public void setActiva3(Boolean activa3) {
-        this.activa3 = activa3;
-    }
-
-    public Boolean getActiva4() {
-        return activa4;
-    }
-
-    public void setActiva4(Boolean activa4) {
-        this.activa4 = activa4;
-    }
-
-    public Boolean getActiva5() {
-        return activa5;
-    }
-
-    public void setActiva5(Boolean activa5) {
-        this.activa5 = activa5;
-    }
-
-    public Boolean getActiva6() {
-        return activa6;
-    }
-
-    public void setActiva6(Boolean activa6) {
-        this.activa6 = activa6;
-    }
-
-    public Boolean getActiva7() {
-        return activa7;
-    }
-
-    public void setActiva7(Boolean activa7) {
-        this.activa7 = activa7;
-    }
-
-   
-
-
     public String getPuerto7() {
         return puerto7;
     }
 
     public void setPuerto7(String puerto7) {
         this.puerto7 = puerto7;
-    }
-
-    public String getPuerta1() {
-        return puerta1;
-    }
-
-    public void setPuerta1(String puerta1) {
-        this.puerta1 = puerta1;
-    }
-
-    public String getPuerta2() {
-        return puerta2;
-    }
-
-    public void setPuerta2(String puerta2) {
-        this.puerta2 = puerta2;
-    }
-
-    public String getPuerta3() {
-        return puerta3;
-    }
-
-    public void setPuerta3(String puerta3) {
-        this.puerta3 = puerta3;
-    }
-
-    public String getPuerta4() {
-        return puerta4;
-    }
-
-    public void setPuerta4(String puerta4) {
-        this.puerta4 = puerta4;
-    }
-
-    public String getPuerta5() {
-        return puerta5;
-    }
-
-    public void setPuerta5(String puerta5) {
-        this.puerta5 = puerta5;
-    }
-
-    public String getPuerta6() {
-        return puerta6;
-    }
-
-    public void setPuerta6(String puerta6) {
-        this.puerta6 = puerta6;
-    }
-
-    public String getPuerta7() {
-        return puerta7;
-    }
-
-    public void setPuerta7(String puerta7) {
-        this.puerta7 = puerta7;
-    }
-
-    public String getImpresora() {
-        return impresora;
-    }
-
-    public void setImpresora(String impresora) {
-        this.impresora = impresora;
-    }
-
-    public String getImpresora2() {
-        return impresora2;
-    }
-
-    public void setImpresora2(String impresora2) {
-        this.impresora2 = impresora2;
-    }
-
-    public String getPuerto() {
-        return puerto;
-    }
-
-    public void setPuerto(String puerto) {
-        this.puerto = puerto;
-    }
-
-    public Boolean getActiva10() {
-        return activa10;
-    }
-
-    public void setActiva10(Boolean activa10) {
-        this.activa10 = activa10;
-    }
-
-    public Boolean getActiva11() {
-        return activa11;
-    }
-
-    public void setActiva11(Boolean activa11) {
-        this.activa11 = activa11;
-    }
-
-    public Boolean getActiva12() {
-        return activa12;
-    }
-
-    public void setActiva12(Boolean activa12) {
-        this.activa12 = activa12;
-    }
-
-    public Boolean getActiva13() {
-        return activa13;
-    }
-
-    public void setActiva13(Boolean activa13) {
-        this.activa13 = activa13;
-    }
-
-    public Boolean getActiva14() {
-        return activa14;
-    }
-
-    public void setActiva14(Boolean activa14) {
-        this.activa14 = activa14;
-    }
-
-    public Boolean getActiva8() {
-        return activa8;
-    }
-
-    public void setActiva8(Boolean activa8) {
-        this.activa8 = activa8;
-    }
-
-    public Boolean getActiva9() {
-        return activa9;
-    }
-
-    public void setActiva9(Boolean activa9) {
-        this.activa9 = activa9;
-    }
-
-    public Double getIva() {
-        return iva;
-    }
-
-    public void setIva(Double iva) {
-        this.iva = iva;
-    }
-
-    public String getPuerta10() {
-        return puerta10;
-    }
-
-    public void setPuerta10(String puerta10) {
-        this.puerta10 = puerta10;
-    }
-
-    public String getPuerta11() {
-        return puerta11;
-    }
-
-    public void setPuerta11(String puerta11) {
-        this.puerta11 = puerta11;
-    }
-
-    public String getPuerta12() {
-        return puerta12;
-    }
-
-    public void setPuerta12(String puerta12) {
-        this.puerta12 = puerta12;
-    }
-
-    public String getPuerta13() {
-        return puerta13;
-    }
-
-    public void setPuerta13(String puerta13) {
-        this.puerta13 = puerta13;
-    }
-
-    public String getPuerta14() {
-        return puerta14;
-    }
-
-    public void setPuerta14(String puerta14) {
-        this.puerta14 = puerta14;
-    }
-
-    public String getPuerta8() {
-        return puerta8;
-    }
-
-    public void setPuerta8(String puerta8) {
-        this.puerta8 = puerta8;
-    }
-
-    public String getPuerta9() {
-        return puerta9;
-    }
-
-    public void setPuerta9(String puerta9) {
-        this.puerta9 = puerta9;
     }
 
     public String getSalida1() {
@@ -600,10 +380,230 @@ public class Empresa implements Serializable {
         this.salida7 = salida7;
     }
 
-     
+    public Boolean getActiva1() {
+        return activa1;
+    }
 
-  
-    
+    public void setActiva1(Boolean activa1) {
+        this.activa1 = activa1;
+    }
+
+    public Boolean getActiva2() {
+        return activa2;
+    }
+
+    public void setActiva2(Boolean activa2) {
+        this.activa2 = activa2;
+    }
+
+    public Boolean getActiva3() {
+        return activa3;
+    }
+
+    public void setActiva3(Boolean activa3) {
+        this.activa3 = activa3;
+    }
+
+    public Boolean getActiva4() {
+        return activa4;
+    }
+
+    public void setActiva4(Boolean activa4) {
+        this.activa4 = activa4;
+    }
+
+    public Boolean getActiva5() {
+        return activa5;
+    }
+
+    public void setActiva5(Boolean activa5) {
+        this.activa5 = activa5;
+    }
+
+    public Boolean getActiva6() {
+        return activa6;
+    }
+
+    public void setActiva6(Boolean activa6) {
+        this.activa6 = activa6;
+    }
+
+    public Boolean getActiva7() {
+        return activa7;
+    }
+
+    public void setActiva7(Boolean activa7) {
+        this.activa7 = activa7;
+    }
+
+    public Boolean getActiva8() {
+        return activa8;
+    }
+
+    public void setActiva8(Boolean activa8) {
+        this.activa8 = activa8;
+    }
+
+    public Boolean getActiva9() {
+        return activa9;
+    }
+
+    public void setActiva9(Boolean activa9) {
+        this.activa9 = activa9;
+    }
+
+    public Boolean getActiva10() {
+        return activa10;
+    }
+
+    public void setActiva10(Boolean activa10) {
+        this.activa10 = activa10;
+    }
+
+    public Boolean getActiva11() {
+        return activa11;
+    }
+
+    public void setActiva11(Boolean activa11) {
+        this.activa11 = activa11;
+    }
+
+    public Boolean getActiva12() {
+        return activa12;
+    }
+
+    public void setActiva12(Boolean activa12) {
+        this.activa12 = activa12;
+    }
+
+    public Boolean getActiva13() {
+        return activa13;
+    }
+
+    public void setActiva13(Boolean activa13) {
+        this.activa13 = activa13;
+    }
+
+    public Boolean getActiva14() {
+        return activa14;
+    }
+
+    public void setActiva14(Boolean activa14) {
+        this.activa14 = activa14;
+    }
+
+    public String getPuerta1() {
+        return puerta1;
+    }
+
+    public void setPuerta1(String puerta1) {
+        this.puerta1 = puerta1;
+    }
+
+    public String getPuerta2() {
+        return puerta2;
+    }
+
+    public void setPuerta2(String puerta2) {
+        this.puerta2 = puerta2;
+    }
+
+    public String getPuerta3() {
+        return puerta3;
+    }
+
+    public void setPuerta3(String puerta3) {
+        this.puerta3 = puerta3;
+    }
+
+    public String getPuerta4() {
+        return puerta4;
+    }
+
+    public void setPuerta4(String puerta4) {
+        this.puerta4 = puerta4;
+    }
+
+    public String getPuerta5() {
+        return puerta5;
+    }
+
+    public void setPuerta5(String puerta5) {
+        this.puerta5 = puerta5;
+    }
+
+    public String getPuerta6() {
+        return puerta6;
+    }
+
+    public void setPuerta6(String puerta6) {
+        this.puerta6 = puerta6;
+    }
+
+    public String getPuerta7() {
+        return puerta7;
+    }
+
+    public void setPuerta7(String puerta7) {
+        this.puerta7 = puerta7;
+    }
+
+    public String getPuerta8() {
+        return puerta8;
+    }
+
+    public void setPuerta8(String puerta8) {
+        this.puerta8 = puerta8;
+    }
+
+    public String getPuerta9() {
+        return puerta9;
+    }
+
+    public void setPuerta9(String puerta9) {
+        this.puerta9 = puerta9;
+    }
+
+    public String getPuerta10() {
+        return puerta10;
+    }
+
+    public void setPuerta10(String puerta10) {
+        this.puerta10 = puerta10;
+    }
+
+    public String getPuerta11() {
+        return puerta11;
+    }
+
+    public void setPuerta11(String puerta11) {
+        this.puerta11 = puerta11;
+    }
+
+    public String getPuerta12() {
+        return puerta12;
+    }
+
+    public void setPuerta12(String puerta12) {
+        this.puerta12 = puerta12;
+    }
+
+    public String getPuerta13() {
+        return puerta13;
+    }
+
+    public void setPuerta13(String puerta13) {
+        this.puerta13 = puerta13;
+    }
+
+    public String getPuerta14() {
+        return puerta14;
+    }
+
+    public void setPuerta14(String puerta14) {
+        this.puerta14 = puerta14;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -626,7 +626,7 @@ public class Empresa implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "hibernate.Empresa[ruc=" + ruc + "]";
     }
 
 }

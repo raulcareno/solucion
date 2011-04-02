@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.table.DefaultTableModel;
-import peaje.Administrador;
-import peaje.validaciones;
+import hibernate.cargar.Administrador;
+import hibernate.cargar.validaciones;
 import hibernate.*;
 
 ;
@@ -531,7 +531,7 @@ try {
                 if (cedula.getText().isEmpty() || nombres.getText().trim().isEmpty() || usuario.getText().trim().isEmpty() || clave.getText().isEmpty() || confirmar.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
                 } else {
-                     usuarioObj.setPerfil((Global)perfil.getSelectedValue());
+                     usuarioObj.setGlobal((Global)perfil.getSelectedValue());
                      usuarioObj.setClave(cl.encriptar(clave.getText()));
                      usuarioObj.setCedula(cedula.getText());
                      usuarioObj.setNombres(nombres.getText());
@@ -711,7 +711,7 @@ try {
                 int fila = busquedaTabla.getSelectedRow();
                 this.usuarioObj = (Usuarios) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Usuarios.class);
                 usuarioObj.setClave(cl.desencriptar(usuarioObj.getClave()));
-                 Global g =  usuarioObj.getPerfil();
+                 Global g =  usuarioObj.getGlobal();
                 llenar(usuarioObj);
                 perfil.setSelectedValue(g+"",true);
 
@@ -735,7 +735,7 @@ try {
                 int fila = busquedaTabla.getSelectedRow();
                 this.usuarioObj = (Usuarios) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Usuarios.class);
                 usuarioObj.setClave(cl.desencriptar(usuarioObj.getClave()));
-                g =  usuarioObj.getPerfil();
+                g =  usuarioObj.getGlobal();
               llenar(usuarioObj);
                 ListModel datos = perfil.getModel();
                    for (int i = 0; i < datos.getSize(); i++) {
