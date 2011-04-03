@@ -344,10 +344,10 @@ private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_form
     
    public void listar(){
         try {
-            List lista = adm.query("Select o from Accesos as o where perfil.codigo = '" + ((Global) jPerfil.getSelectedValue()).getCodigo() + "' order by o.pantalla ");
+            List lista = adm.query("Select o from Accesos as o where o.global.codigo = '" + ((Global) jPerfil.getSelectedValue()).getCodigo() + "' order by o.pantalla ");
             Boolean nuevos = false;
             if (lista.size() <= 0) {
-                lista = adm.query("Select o from Accesos as o where perfil is null   order by o.pantalla ");
+                lista = adm.query("Select o from Accesos as o where o.global is null   order by o.pantalla ");
                 nuevos = true;
             }
             DefaultTableModel dtm = (DefaultTableModel) tablaPerfilesRubros.getModel();

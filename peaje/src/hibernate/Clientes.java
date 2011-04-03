@@ -64,10 +64,10 @@ public class Clientes implements Serializable {
     @JoinColumn(name = "producto", referencedColumnName = "codigo")
     @ManyToOne
     private Productos productos;
-    @OneToMany(mappedBy = "clientes")
-    private Collection<Factura> facturaCollection;
-    @OneToMany(mappedBy = "clientes")
-    private Collection<Tarjetas> tarjetasCollection;
+//    @OneToMany(mappedBy = "clientes")
+//    private Collection<Factura> facturaCollection;
+//    @OneToMany(mappedBy = "clientes")
+//    private Collection<Tarjetas> tarjetasCollection;
 
     public Clientes() {
     }
@@ -173,21 +173,21 @@ public class Clientes implements Serializable {
         this.productos = productos;
     }
 
-    public Collection<Factura> getFacturaCollection() {
-        return facturaCollection;
-    }
-
-    public void setFacturaCollection(Collection<Factura> facturaCollection) {
-        this.facturaCollection = facturaCollection;
-    }
-
-    public Collection<Tarjetas> getTarjetasCollection() {
-        return tarjetasCollection;
-    }
-
-    public void setTarjetasCollection(Collection<Tarjetas> tarjetasCollection) {
-        this.tarjetasCollection = tarjetasCollection;
-    }
+//    public Collection<Factura> getFacturaCollection() {
+//        return facturaCollection;
+//    }
+//
+//    public void setFacturaCollection(Collection<Factura> facturaCollection) {
+//        this.facturaCollection = facturaCollection;
+//    }
+//
+//    public Collection<Tarjetas> getTarjetasCollection() {
+//        return tarjetasCollection;
+//    }
+//
+//    public void setTarjetasCollection(Collection<Tarjetas> tarjetasCollection) {
+//        this.tarjetasCollection = tarjetasCollection;
+//    }
 
     @Override
     public int hashCode() {

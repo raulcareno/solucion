@@ -111,7 +111,7 @@ public class Global implements Serializable {
 
     @Override
     public String toString() {
-        return "hibernate.Global[codigo=" + codigo + "]";
+        return getNombre();
     }
 
 }

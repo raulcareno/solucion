@@ -71,8 +71,8 @@ public class Factura implements Serializable {
     @JoinColumn(name = "cliente", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
-    @OneToMany(mappedBy = "factura")
-    private Collection<Detalle> detalleCollection;
+//    @OneToMany(mappedBy = "factura")
+//    private Collection<Detalle> detalleCollection;
 
     public Factura() {
     }
@@ -192,14 +192,14 @@ public class Factura implements Serializable {
     public void setClientes(Clientes clientes) {
         this.clientes = clientes;
     }
-
-    public Collection<Detalle> getDetalleCollection() {
-        return detalleCollection;
-    }
-
-    public void setDetalleCollection(Collection<Detalle> detalleCollection) {
-        this.detalleCollection = detalleCollection;
-    }
+//
+//    public Collection<Detalle> getDetalleCollection() {
+//        return detalleCollection;
+//    }
+//
+//    public void setDetalleCollection(Collection<Detalle> detalleCollection) {
+//        this.detalleCollection = detalleCollection;
+//    }
 
     @Override
     public int hashCode() {

@@ -68,6 +68,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     String separador = File.separatorChar + "";
 static UsuarioActivo datosConecta;
     public void habilitarBotones(Boolean estado) {
+        btnAuditoria.setEnabled(estado);
         btnClientes.setEnabled(estado);
         btnCobrar.setEnabled(estado);
         btnEmpresa.setEnabled(estado);
@@ -356,6 +357,7 @@ static UsuarioActivo datosConecta;
         btnTarifas = new javax.swing.JButton();
         btnAccesos = new javax.swing.JButton();
         btnReconfigurar = new javax.swing.JButton();
+        btnAuditoria = new javax.swing.JButton();
         contenedor3 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar3 = new javax.swing.JToolBar();
         btnAyuda = new javax.swing.JButton();
@@ -1465,7 +1467,7 @@ static UsuarioActivo datosConecta;
         jPanel10.add(placa);
         placa.setBounds(20, 70, 180, 20);
 
-        errores.setFont(new java.awt.Font("Tahoma", 1, 12));
+        errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         errores.setForeground(new java.awt.Color(255, 0, 0));
         errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel10.add(errores);
@@ -1645,6 +1647,19 @@ static UsuarioActivo datosConecta;
         });
         jToolBar2.add(btnReconfigurar);
 
+        btnAuditoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/today.gif"))); // NOI18N
+        btnAuditoria.setMnemonic('S');
+        btnAuditoria.setText("Auditoria");
+        btnAuditoria.setFocusable(false);
+        btnAuditoria.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAuditoria.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAuditoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAuditoriaActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(btnAuditoria);
+
         contenedor2.getContentPane().add(jToolBar2);
 
         contenedor3.setTitle("Ayuda");
@@ -1745,7 +1760,7 @@ static UsuarioActivo datosConecta;
                 .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel32)
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -2044,6 +2059,9 @@ static UsuarioActivo datosConecta;
                     }
                     if (accesos.getPantalla().equals("Reconfigurar") && !accesos.getIngresar()) {
                         btnReconfigurar.setEnabled(false);
+                    }
+                     if (accesos.getPantalla().equals("Auditoria") && !accesos.getIngresar()) {
+                        btnAuditoria.setEnabled(false);
                     }
                 }
                 iniciarPuertos();
@@ -3671,6 +3689,29 @@ static UsuarioActivo datosConecta;
            tecla(evt.getKeyCode());
     }//GEN-LAST:event_barraHerramientsKeyPressed
 
+    private void btnAuditoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAuditoriaActionPerformed
+        // TODO add your handling code here:
+          try {
+            // TODO add your handling code here:
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Auditoria' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
+            if (accesosL.size() > 0) {
+                permisos = accesosL.get(0);
+            } else {
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            frmAuditoria usu = new frmAuditoria(this, true, this, adm);
+            usu.setSize(747, 539);
+            usu.setLocation(200, 40);
+            contenedor.add(usu);
+            usu.show();
+            contenedor.requestFocus();
+        } catch (Exception ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAuditoriaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3699,6 +3740,7 @@ static UsuarioActivo datosConecta;
     private javax.swing.JButton btnAccesos;
     private javax.swing.JButton btnAcerca;
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnAuditoria;
     private javax.swing.JButton btnAyuda;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCerrar;

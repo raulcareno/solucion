@@ -45,8 +45,8 @@ public class Usuarios implements Serializable {
     private String usuario;
     @Column(name = "clave")
     private String clave;
-    @OneToMany(mappedBy = "usuarios")
-    private Collection<Auditoria> auditoriaCollection;
+//    @OneToMany(mappedBy = "usuarios")
+//    private Collection<Auditoria> auditoriaCollection;
     @JoinColumn(name = "perfil", referencedColumnName = "codigo")
     @ManyToOne
     private Global global;
@@ -106,13 +106,13 @@ public class Usuarios implements Serializable {
         this.clave = clave;
     }
 
-    public Collection<Auditoria> getAuditoriaCollection() {
-        return auditoriaCollection;
-    }
-
-    public void setAuditoriaCollection(Collection<Auditoria> auditoriaCollection) {
-        this.auditoriaCollection = auditoriaCollection;
-    }
+//    public Collection<Auditoria> getAuditoriaCollection() {
+//        return auditoriaCollection;
+//    }
+//
+//    public void setAuditoriaCollection(Collection<Auditoria> auditoriaCollection) {
+//        this.auditoriaCollection = auditoriaCollection;
+//    }
 
     public Global getGlobal() {
         return global;
@@ -144,7 +144,7 @@ public class Usuarios implements Serializable {
 
     @Override
     public String toString() {
-        return "hibernate.Usuarios[codigo=" + codigo + "]";
+        return getNombres();
     }
 
 }

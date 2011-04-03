@@ -39,10 +39,10 @@ public class Productos implements Serializable {
     private Double valor;
     @Column(name = "bien")
     private Boolean bien;
-    @OneToMany(mappedBy = "productos")
-    private Collection<Clientes> clientesCollection;
-    @OneToMany(mappedBy = "productos")
-    private Collection<Detalle> detalleCollection;
+//    @OneToMany(mappedBy = "productos")
+//    private Collection<Clientes> clientesCollection;
+//    @OneToMany(mappedBy = "productos")
+//    private Collection<Detalle> detalleCollection;
 
     public Productos() {
     }
@@ -83,21 +83,21 @@ public class Productos implements Serializable {
         this.bien = bien;
     }
 
-    public Collection<Clientes> getClientesCollection() {
-        return clientesCollection;
-    }
-
-    public void setClientesCollection(Collection<Clientes> clientesCollection) {
-        this.clientesCollection = clientesCollection;
-    }
-
-    public Collection<Detalle> getDetalleCollection() {
-        return detalleCollection;
-    }
-
-    public void setDetalleCollection(Collection<Detalle> detalleCollection) {
-        this.detalleCollection = detalleCollection;
-    }
+//    public Collection<Clientes> getClientesCollection() {
+//        return clientesCollection;
+//    }
+//
+//    public void setClientesCollection(Collection<Clientes> clientesCollection) {
+//        this.clientesCollection = clientesCollection;
+//    }
+//
+//    public Collection<Detalle> getDetalleCollection() {
+//        return detalleCollection;
+//    }
+//
+//    public void setDetalleCollection(Collection<Detalle> detalleCollection) {
+//        this.detalleCollection = detalleCollection;
+//    }
 
     @Override
     public int hashCode() {

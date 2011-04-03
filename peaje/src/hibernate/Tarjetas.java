@@ -71,8 +71,8 @@ public class Tarjetas implements Serializable {
     private String placa;
     @Column(name = "descripcion")
     private String descripcion;
-    @OneToMany(mappedBy = "tarjetas")
-    private Collection<Factura> facturaCollection;
+//    @OneToMany(mappedBy = "tarjetas")
+//    private Collection<Factura> facturaCollection;
     @JoinColumn(name = "cliente", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
@@ -220,13 +220,13 @@ public class Tarjetas implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Collection<Factura> getFacturaCollection() {
-        return facturaCollection;
-    }
-
-    public void setFacturaCollection(Collection<Factura> facturaCollection) {
-        this.facturaCollection = facturaCollection;
-    }
+//    public Collection<Factura> getFacturaCollection() {
+//        return facturaCollection;
+//    }
+//
+//    public void setFacturaCollection(Collection<Factura> facturaCollection) {
+//        this.facturaCollection = facturaCollection;
+//    }
 
     public Clientes getClientes() {
         return clientes;
