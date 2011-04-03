@@ -1374,6 +1374,11 @@ static UsuarioActivo datosConecta;
         contenedor.add(frmClientes1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
+        jPanel10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel10KeyPressed(evt);
+            }
+        });
         jPanel10.setLayout(null);
 
         cliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -1458,7 +1463,7 @@ static UsuarioActivo datosConecta;
         jPanel10.setBounds(0, 40, 430, 130);
         contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
         usuarioLogeado.setForeground(new java.awt.Color(0, 102, 153));
         usuarioLogeado.setText("...");
         usuarioLogeado.setBorderPainted(false);
@@ -1480,6 +1485,11 @@ static UsuarioActivo datosConecta;
         });
 
         contenedor1.setTitle("Control");
+        contenedor1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                contenedor1KeyPressed(evt);
+            }
+        });
 
         jToolBar1.setFloatable(false);
         jToolBar1.setOrientation(1);
@@ -1543,6 +1553,11 @@ static UsuarioActivo datosConecta;
         contenedor1.getContentPane().add(jToolBar1);
 
         contenedor2.setTitle("Administracion");
+        contenedor2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                contenedor2KeyPressed(evt);
+            }
+        });
 
         jToolBar2.setFloatable(false);
         jToolBar2.setOrientation(1);
@@ -1617,6 +1632,11 @@ static UsuarioActivo datosConecta;
         contenedor2.getContentPane().add(jToolBar2);
 
         contenedor3.setTitle("Ayuda");
+        contenedor3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                contenedor3KeyPressed(evt);
+            }
+        });
 
         jToolBar3.setFloatable(false);
         jToolBar3.setOrientation(1);
@@ -1679,6 +1699,11 @@ static UsuarioActivo datosConecta;
 
         jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
         jLabel32.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jLabel32.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jLabel32KeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jXTaskPaneContainer1Layout = new javax.swing.GroupLayout(jXTaskPaneContainer1);
         jXTaskPaneContainer1.setLayout(jXTaskPaneContainer1Layout);
@@ -2482,6 +2507,7 @@ static UsuarioActivo datosConecta;
 //        if(evt.getKeyCode()== evt.VK_F2){
 //            JOptionPane.showMessageDialog(this, "PRESIONO F2");
 //        }
+           tecla(evt.getKeyCode());
     }//GEN-LAST:event_jXTaskPaneContainer1KeyPressed
 
     private void jSplitPane1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jSplitPane1KeyPressed
@@ -2489,6 +2515,7 @@ static UsuarioActivo datosConecta;
 //        if(evt.getKeyCode()== evt.VK_F2){
 //            JOptionPane.showMessageDialog(this, "PRESIONO F2");
 //        }
+           tecla(evt.getKeyCode());
     }//GEN-LAST:event_jSplitPane1KeyPressed
 
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
@@ -3580,6 +3607,31 @@ static UsuarioActivo datosConecta;
         // TODO add your handling code here:
         tecla(evt.getKeyCode());
     }//GEN-LAST:event_todosKeyPressed
+
+    private void jPanel10KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel10KeyPressed
+        // TODO add your handling code here:
+           tecla(evt.getKeyCode());
+    }//GEN-LAST:event_jPanel10KeyPressed
+
+    private void contenedor1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contenedor1KeyPressed
+        // TODO add your handling code here:
+           tecla(evt.getKeyCode());
+    }//GEN-LAST:event_contenedor1KeyPressed
+
+    private void contenedor2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contenedor2KeyPressed
+        // TODO add your handling code here:
+           tecla(evt.getKeyCode());
+    }//GEN-LAST:event_contenedor2KeyPressed
+
+    private void contenedor3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contenedor3KeyPressed
+        // TODO add your handling code here:
+           tecla(evt.getKeyCode());
+    }//GEN-LAST:event_contenedor3KeyPressed
+
+    private void jLabel32KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel32KeyPressed
+        // TODO add your handling code here:
+           tecla(evt.getKeyCode());
+    }//GEN-LAST:event_jLabel32KeyPressed
 
     /**
      * @param args the command line arguments
