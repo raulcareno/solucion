@@ -528,6 +528,11 @@ static UsuarioActivo datosConecta;
 
         barraHerramients.setBorder(null);
         barraHerramients.setRollover(true);
+        barraHerramients.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                barraHerramientsKeyPressed(evt);
+            }
+        });
 
         jButton4.setFocusable(false);
         jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -577,7 +582,7 @@ static UsuarioActivo datosConecta;
         disponibles.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraHerramients.add(disponibles);
 
-        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11));
+        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         ocupados.setForeground(new java.awt.Color(255, 0, 0));
         ocupados.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ocupados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rojo.png"))); // NOI18N
@@ -690,7 +695,7 @@ static UsuarioActivo datosConecta;
         });
         barraHerramients.add(barrera6);
 
-        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera7.setForeground(new java.awt.Color(204, 102, 0));
         barrera7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera7.setText("F7");
@@ -1469,6 +1474,11 @@ static UsuarioActivo datosConecta;
         usuarioLogeado.setBorderPainted(false);
         usuarioLogeado.setContentAreaFilled(false);
         usuarioLogeado.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        usuarioLogeado.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                usuarioLogeadoKeyPressed(evt);
+            }
+        });
         usuarioLogeado.setBounds(10, 10, 420, 30);
         contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -3632,6 +3642,16 @@ static UsuarioActivo datosConecta;
         // TODO add your handling code here:
            tecla(evt.getKeyCode());
     }//GEN-LAST:event_jLabel32KeyPressed
+
+    private void usuarioLogeadoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usuarioLogeadoKeyPressed
+        // TODO add your handling code here:
+           tecla(evt.getKeyCode());
+    }//GEN-LAST:event_usuarioLogeadoKeyPressed
+
+    private void barraHerramientsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_barraHerramientsKeyPressed
+        // TODO add your handling code here:
+           tecla(evt.getKeyCode());
+    }//GEN-LAST:event_barraHerramientsKeyPressed
 
     /**
      * @param args the command line arguments
