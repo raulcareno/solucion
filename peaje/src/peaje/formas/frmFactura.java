@@ -1857,6 +1857,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
             productos.setModel(dtm);
             principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
             principal.contenedor.requestFocus();
+            
+                    this.setVisible(false);
+                    principal = null;
+                    empresaObj = null;
+                    System.gc();
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }

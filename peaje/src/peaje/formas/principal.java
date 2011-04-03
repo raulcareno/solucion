@@ -334,6 +334,7 @@ static UsuarioActivo datosConecta;
         jPanel10 = new javax.swing.JPanel();
         cliente = new javax.swing.JFormattedTextField();
         tarjetatxt = new javax.swing.JFormattedTextField();
+        jPanel1 = new javax.swing.JPanel();
         spIngreso = new javax.swing.JSpinner();
         ingre = new javax.swing.JLabel();
         spSalida = new javax.swing.JSpinner();
@@ -531,7 +532,7 @@ static UsuarioActivo datosConecta;
         setTitle("Sistema de control de parqueaderos");
         setName("miForma"); // NOI18N
 
-        barraHerramients.setBorder(null);
+        barraHerramients.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         barraHerramients.setRollover(true);
         barraHerramients.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1383,7 +1384,7 @@ static UsuarioActivo datosConecta;
         frmClientes1.setBounds(40, 20, 440, 450);
         contenedor.add(frmClientes1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
         jPanel10.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jPanel10KeyPressed(evt);
@@ -1422,7 +1423,21 @@ static UsuarioActivo datosConecta;
         jPanel10.add(tarjetatxt);
         tarjetatxt.setBounds(20, 50, 190, 20);
 
-        spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 70, Short.MAX_VALUE)
+        );
+
+        jPanel10.add(jPanel1);
+        jPanel1.setBounds(360, 10, 20, 70);
+
+        spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
         spIngreso.setBorder(null);
         spIngreso.setEnabled(false);
         spIngreso.setFocusable(false);
@@ -1448,14 +1463,14 @@ static UsuarioActivo datosConecta;
         jPanel10.add(salid);
         salid.setBounds(230, 40, 60, 20);
 
-        spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
+        spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         spConsumo.setBorder(null);
         spConsumo.setEnabled(false);
         spConsumo.setFocusable(false);
         jPanel10.add(spConsumo);
         spConsumo.setBounds(290, 60, 90, 20);
 
-        cons.setFont(new java.awt.Font("Tahoma", 1, 11));
+        cons.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         cons.setForeground(new java.awt.Color(153, 153, 153));
         cons.setText("CONSUMO:");
         jPanel10.add(cons);
@@ -1473,11 +1488,11 @@ static UsuarioActivo datosConecta;
         jPanel10.add(errores);
         errores.setBounds(20, 100, 360, 20);
 
-        jPanel10.setBounds(0, 40, 430, 130);
+        jPanel10.setBounds(0, 40, 400, 130);
         contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
-        usuarioLogeado.setForeground(new java.awt.Color(0, 102, 153));
+        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        usuarioLogeado.setForeground(new java.awt.Color(0, 153, 204));
         usuarioLogeado.setText("...");
         usuarioLogeado.setBorderPainted(false);
         usuarioLogeado.setContentAreaFilled(false);
@@ -1760,7 +1775,7 @@ static UsuarioActivo datosConecta;
                 .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel32)
-                .addContainerGap(117, Short.MAX_VALUE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -3833,6 +3848,7 @@ static UsuarioActivo datosConecta;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
