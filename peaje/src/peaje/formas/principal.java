@@ -2,6 +2,7 @@ package peaje.formas;
 
 import java.awt.AWTException;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyVetoException;
 import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,10 +33,12 @@ import hibernate.cargar.WorkingDirectory;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
+import java.awt.Robot;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -582,7 +585,7 @@ static UsuarioActivo datosConecta;
         disponibles.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraHerramients.add(disponibles);
 
-        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11));
         ocupados.setForeground(new java.awt.Color(255, 0, 0));
         ocupados.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ocupados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rojo.png"))); // NOI18N
@@ -695,7 +698,7 @@ static UsuarioActivo datosConecta;
         });
         barraHerramients.add(barrera6);
 
-        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11));
         barrera7.setForeground(new java.awt.Color(204, 102, 0));
         barrera7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera7.setText("F7");
@@ -1858,18 +1861,30 @@ static UsuarioActivo datosConecta;
     }
 
     public void logear() {
-        frmIngresarSistema.setVisible(true);
-        //frmLogin.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
-      
-        adm = new Administrador(datosConecta);
-//                frmLogin.setModal(true);
-//                frmLogin.setSize(400, 230);
-//                frmLogin.setLocation(350, 300);
-//                frmLogin.setFocusable(true);
-//                frmLogin.setResizable(false);
-//                frmLogin.setTitle("Inicio de Sesión");
-//                frmLogin.setUndecorated(true);
-//                frmLogin.shogeova geow();
+//        try {
+            //        try {
+            
+            frmIngresarSistema.setVisible(true);
+//            frmIngresarSistema.;
+            //            Robot r = new Robot();
+            //            r.mouseMove(180,170);
+            //            r.
+            //frmLogin.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
+            adm = new Administrador(datosConecta);
+            //                frmLogin.setModal(true);
+            //                frmLogin.setSize(400, 230);
+            //                frmLogin.setLocation(350, 300);
+            //                frmLogin.setFocusable(true);
+            //                frmLogin.setResizable(false);
+            //                frmLogin.setTitle("Inicio de Sesión");
+            //                frmLogin.setUndecorated(true);
+            //                frmLogin.shogeova geow();
+            //        } catch (AWTException ex) {
+            //            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            //        }
+//        } catch (PropertyVetoException ex) {
+//            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     public Boolean comprobar() {
@@ -2540,7 +2555,7 @@ static UsuarioActivo datosConecta;
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
             usu.setSize(669, 411);
-            usu.setLocation(240, 120);
+            usu.setLocation(200, 120);
             contenedor.add(usu);
      
             usu.show();
