@@ -1420,7 +1420,8 @@ static UsuarioActivo datosConecta;
         jPanel10.add(tarjetatxt);
         tarjetatxt.setBounds(20, 50, 190, 20);
 
-        spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
+        spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        spIngreso.setBorder(null);
         spIngreso.setEnabled(false);
         spIngreso.setFocusable(false);
         jPanel10.add(spIngreso);
@@ -1432,7 +1433,8 @@ static UsuarioActivo datosConecta;
         jPanel10.add(ingre);
         ingre.setBounds(230, 20, 60, 20);
 
-        spSalida.setFont(new java.awt.Font("Tahoma", 0, 14));
+        spSalida.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        spSalida.setBorder(null);
         spSalida.setEnabled(false);
         spSalida.setFocusable(false);
         jPanel10.add(spSalida);
@@ -1445,6 +1447,7 @@ static UsuarioActivo datosConecta;
         salid.setBounds(230, 40, 60, 20);
 
         spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
+        spConsumo.setBorder(null);
         spConsumo.setEnabled(false);
         spConsumo.setFocusable(false);
         jPanel10.add(spConsumo);

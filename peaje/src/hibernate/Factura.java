@@ -223,7 +223,7 @@ public class Factura implements Serializable {
 
     @Override
     public String toString() {
-        return "hibernate.Factura[codigo=" + codigo + "]";
+        return getPlaca();
     }
 
 }
