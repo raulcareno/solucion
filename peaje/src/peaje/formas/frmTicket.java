@@ -180,6 +180,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
         btnSalir = new javax.swing.JButton();
 
         setTitle("Usuarios");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ticket.gif"))); // NOI18N
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
@@ -200,7 +201,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Registro el Numero de placa y presiona ENTER..::..");
         jPanel3.add(jLabel10);

@@ -245,6 +245,7 @@ try {
         jPanel7.setBounds(10, 60, 510, 180);
 
         setTitle("Operadores y Usuarios del Sistema");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);

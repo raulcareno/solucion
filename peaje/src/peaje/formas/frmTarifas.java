@@ -211,6 +211,7 @@ void llenarProductos(){
         btnSalir1 = new javax.swing.JButton();
 
         setTitle("Tarifario");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
         getContentPane().setLayout(null);
 
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N

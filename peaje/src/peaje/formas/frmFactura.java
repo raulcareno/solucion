@@ -344,6 +344,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel10.setBounds(10, 60, 510, 180);
 
         setTitle("Cobrar Ticket");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);

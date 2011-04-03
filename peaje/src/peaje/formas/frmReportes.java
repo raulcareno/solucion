@@ -156,7 +156,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         panelReportes = new javax.swing.JPanel();
 
         setTitle("Reportes");
-        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.gif"))); // NOI18N
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/resultados.png"))); // NOI18N
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
@@ -315,7 +315,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
                 .addGap(17, 17, 17))
         );
 

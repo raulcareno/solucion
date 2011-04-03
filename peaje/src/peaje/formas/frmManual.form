@@ -4,7 +4,7 @@
   <Properties>
     <Property name="title" type="java.lang.String" value="CONTENIDOS DE AYUDA"/>
     <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-      <Image iconType="3" name="/images_botones/ico.gif"/>
+      <Image iconType="3" name="/images/help.gif"/>
     </Property>
   </Properties>
   <SyntheticProperties>

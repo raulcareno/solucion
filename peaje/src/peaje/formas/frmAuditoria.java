@@ -198,6 +198,7 @@ void llenarUsuarios(){
         setMaximizable(true);
         setResizable(true);
         setTitle("Movimiento Realizados");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/today.gif"))); // NOI18N
 
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setOpaque(false);

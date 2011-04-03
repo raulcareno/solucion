@@ -1401,6 +1401,9 @@
               <Properties>
                 <Property name="title" type="java.lang.String" value="Registro y Modifaci&#xf3;n de Clientes"/>
                 <Property name="autoscrolls" type="boolean" value="true"/>
+                <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/images/clientes.png"/>
+                </Property>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
@@ -2197,7 +2200,7 @@
                     <Component class="javax.swing.JButton" name="btnClientes">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/images/usr.png"/>
+                          <Image iconType="3" name="/images/clientes.png"/>
                         </Property>
                         <Property name="mnemonic" type="int" value="67"/>
                         <Property name="text" type="java.lang.String" value="Clientes (F8)"/>

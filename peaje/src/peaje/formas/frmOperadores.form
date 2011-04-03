@@ -121,6 +121,9 @@
   </NonVisualComponents>
   <Properties>
     <Property name="title" type="java.lang.String" value="Operadores y Usuarios del Sistema"/>
+    <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+      <Image iconType="3" name="/images/User3.gif"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>

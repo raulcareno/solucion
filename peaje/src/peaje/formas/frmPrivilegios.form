@@ -6,6 +6,9 @@
       <Color blue="ff" green="f6" red="ec" type="rgb"/>
     </Property>
     <Property name="title" type="java.lang.String" value="Accesos a Usuarios"/>
+    <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+      <Image iconType="3" name="/images/lock.gif"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>

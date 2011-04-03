@@ -1104,6 +1104,7 @@ static UsuarioActivo datosConecta;
 
         frmClientes1.setTitle("Registro y Modifación de Clientes");
         frmClientes1.setAutoscrolls(true);
+        frmClientes1.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
         frmClientes1.getContentPane().setLayout(null);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -1450,7 +1451,7 @@ static UsuarioActivo datosConecta;
         jPanel10.add(ingre);
         ingre.setBounds(230, 20, 60, 20);
 
-        spSalida.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        spSalida.setFont(new java.awt.Font("Tahoma", 0, 14));
         spSalida.setBorder(null);
         spSalida.setEnabled(false);
         spSalida.setFocusable(false);
@@ -1463,14 +1464,14 @@ static UsuarioActivo datosConecta;
         jPanel10.add(salid);
         salid.setBounds(230, 40, 60, 20);
 
-        spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
         spConsumo.setBorder(null);
         spConsumo.setEnabled(false);
         spConsumo.setFocusable(false);
         jPanel10.add(spConsumo);
         spConsumo.setBounds(290, 60, 90, 20);
 
-        cons.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        cons.setFont(new java.awt.Font("Tahoma", 1, 11));
         cons.setForeground(new java.awt.Color(153, 153, 153));
         cons.setText("CONSUMO:");
         jPanel10.add(cons);
@@ -1482,7 +1483,7 @@ static UsuarioActivo datosConecta;
         jPanel10.add(placa);
         placa.setBounds(20, 70, 180, 20);
 
-        errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        errores.setFont(new java.awt.Font("Tahoma", 1, 12));
         errores.setForeground(new java.awt.Color(255, 0, 0));
         errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel10.add(errores);
@@ -1491,7 +1492,7 @@ static UsuarioActivo datosConecta;
         jPanel10.setBounds(0, 40, 400, 130);
         contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
         usuarioLogeado.setForeground(new java.awt.Color(0, 153, 204));
         usuarioLogeado.setText("...");
         usuarioLogeado.setBorderPainted(false);
@@ -1528,7 +1529,7 @@ static UsuarioActivo datosConecta;
         jToolBar1.setOrientation(1);
         jToolBar1.setRollover(true);
 
-        btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/usr.png"))); // NOI18N
+        btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
         btnClientes.setMnemonic('C');
         btnClientes.setText("Clientes (F8)");
         btnClientes.setToolTipText("Crear nuevos clientes y asignar tarjetas");
@@ -3068,7 +3069,7 @@ static UsuarioActivo datosConecta;
                         break;
                     }
                 }
-                txtValor.setText(clienteObj.getValor() + "");
+                txtValor.setText(clienteObj.getValor().setScale(2) + "");
 
             } catch (Exception ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -3117,7 +3118,7 @@ static UsuarioActivo datosConecta;
                     }
 
                 }
-                txtValor.setText(clienteObj.getValor() + "");
+                txtValor.setText(clienteObj.getValor().setScale(2) + "");
             } catch (Exception ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }

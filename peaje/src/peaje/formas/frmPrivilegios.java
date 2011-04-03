@@ -116,6 +116,7 @@ public class frmPrivilegios   extends javax.swing.JInternalFrame  {
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Accesos a Usuarios");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lock.gif"))); // NOI18N
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);

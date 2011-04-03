@@ -143,7 +143,7 @@ public class frmManual extends javax.swing.JInternalFrame {
         mipanel = new javax.swing.JPanel();
 
         setTitle("CONTENIDOS DE AYUDA");
-        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.gif"))); // NOI18N
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/help.gif"))); // NOI18N
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
@@ -154,13 +154,13 @@ public class frmManual extends javax.swing.JInternalFrame {
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("VIDEO TUTORIALES DE AYUDA ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Recuerde tener encendidos sus parlantes ..::..");
         jPanel3.add(jLabel10);
