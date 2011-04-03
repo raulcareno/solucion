@@ -537,14 +537,14 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         if (jComboBox1.getSelectedIndex() == 0) { //TICKEST POR COBRAR
             query = "Select o from Factura as o" +
-                    " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.tarjeta is null "
+                    " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.tarjetas is null "
                     + "and o.fechafin is null ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsporcobrar.jasper";
             titulo = "Tickest por Cobrar";
             tickets(dirreporte, query, titulo);
         } else if (jComboBox1.getSelectedIndex() == 1) {//TICKEST COBRADOS
             query = "Select o from Factura as o" +
-                    " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.tarjeta is null and o.fechafin is not null  ";
+                    " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.tarjetas is null and o.fechafin is not null  ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketscobrados.jasper";
             titulo = "Tickest Cobrados";
             tickets(dirreporte, query, titulo);
