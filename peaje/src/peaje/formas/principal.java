@@ -3880,9 +3880,6 @@ static UsuarioActivo datosConecta;
             aud.setTabla(tabla);
             aud.setFecha(new Date());
             java.net.InetAddress i = java.net.InetAddress.getLocalHost();
-            System.out.println(i); // name and IP address
-            System.out.println(i.getHostName()); // name
-            System.out.println(i.getHostAddress()); // IP address only
             aud.setMaquina(System.getProperty("user.name")+" IP: "+i.getHostAddress());
             aud.setUsuarios(usuarioActual);
             adm.guardar(aud);
