@@ -45,6 +45,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.StringTokenizer;
 import javax.swing.ListModel;
 
 /**
@@ -67,7 +68,8 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
     String separador = File.separatorChar + "";
     static UsuarioActivo datosConecta;
-static Boolean mostrar  = true;
+    static Boolean mostrar = true;
+
     public void habilitarBotones(Boolean estado) {
         btnAuditoria.setEnabled(estado);
         btnClientes.setEnabled(estado);
@@ -172,16 +174,16 @@ static Boolean mostrar  = true;
 
             habilitarBotones(false);
             if (comprobar()) {
-                  mostrar  = true;
+                mostrar = true;
                 logear();
             } else {
-             
-             
+
+
 //              this.hide();
 //              this.disable();
 //              this.dispose();
 //               new frmConfiguracion().show();
-               mostrar  = false;
+                mostrar = false;
                 //logear();
 
             }
@@ -324,6 +326,12 @@ static Boolean mostrar  = true;
         placa = new javax.swing.JFormattedTextField();
         errores = new javax.swing.JLabel();
         usuarioLogeado = new javax.swing.JButton();
+        frmRespaldarBase = new javax.swing.JInternalFrame();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -339,6 +347,7 @@ static Boolean mostrar  = true;
         btnAccesos = new javax.swing.JButton();
         btnReconfigurar = new javax.swing.JButton();
         btnAuditoria = new javax.swing.JButton();
+        btnAuditoria1 = new javax.swing.JButton();
         contenedor3 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar3 = new javax.swing.JToolBar();
         btnAyuda = new javax.swing.JButton();
@@ -636,7 +645,6 @@ static Boolean mostrar  = true;
         } catch (java.beans.PropertyVetoException e1) {
             e1.printStackTrace();
         }
-        frmIngresarSistema.setVisible(true);
         frmIngresarSistema.getContentPane().setLayout(null);
 
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 1, true));
@@ -1395,6 +1403,51 @@ static Boolean mostrar  = true;
         usuarioLogeado.setBounds(10, 10, 420, 30);
         contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+        jButton6.setText("SI ESWINDOWS");
+
+        jButton7.setText("SI ES LINUX");
+
+        jLabel6.setText("Nombre del Archivo:");
+
+        jLabel24.setText(".sql");
+
+        javax.swing.GroupLayout frmRespaldarBaseLayout = new javax.swing.GroupLayout(frmRespaldarBase.getContentPane());
+        frmRespaldarBase.getContentPane().setLayout(frmRespaldarBaseLayout);
+        frmRespaldarBaseLayout.setHorizontalGroup(
+            frmRespaldarBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frmRespaldarBaseLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(30, 30, 30)
+                .addGroup(frmRespaldarBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(frmRespaldarBaseLayout.createSequentialGroup()
+                        .addComponent(jButton6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton7))
+                    .addGroup(frmRespaldarBaseLayout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(172, 172, 172))
+        );
+        frmRespaldarBaseLayout.setVerticalGroup(
+            frmRespaldarBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frmRespaldarBaseLayout.createSequentialGroup()
+                .addContainerGap(62, Short.MAX_VALUE)
+                .addGroup(frmRespaldarBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel24))
+                .addGap(28, 28, 28)
+                .addGroup(frmRespaldarBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(70, 70, 70))
+        );
+
+        frmRespaldarBase.setBounds(30, 170, 450, 270);
+        contenedor.add(frmRespaldarBase, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         jSplitPane1.setRightComponent(contenedor);
 
         jXTaskPaneContainer1.setAlignmentX(0.1F);
@@ -1565,6 +1618,18 @@ static Boolean mostrar  = true;
         });
         jToolBar2.add(btnAuditoria);
 
+        btnAuditoria1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edittrash.gif"))); // NOI18N
+        btnAuditoria1.setText("Respaldar Base ");
+        btnAuditoria1.setFocusable(false);
+        btnAuditoria1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAuditoria1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAuditoria1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAuditoria1ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(btnAuditoria1);
+
         contenedor2.getContentPane().add(jToolBar2);
 
         contenedor3.setTitle("Ayuda");
@@ -1665,7 +1730,7 @@ static Boolean mostrar  = true;
                 .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel32)
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -1833,8 +1898,6 @@ static Boolean mostrar  = true;
 
     }
 
-
-
     public void llenarCombo() {
         try {
             List listado = adm.query("Select o from Productos as o ");
@@ -1882,10 +1945,10 @@ static Boolean mostrar  = true;
                 System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
             }
             this.dispose();
-              new frmConfiguracion().show();
+            new frmConfiguracion().show();
 
- 
- 
+
+
 
         }
 
@@ -3125,9 +3188,9 @@ static Boolean mostrar  = true;
                         fichero.delete();
                         System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
                     }
-                this.dispose();
+                    this.dispose();
 
-                  new frmConfiguracion().show();
+                    new frmConfiguracion().show();
                 }
 
             } else {
@@ -3587,20 +3650,104 @@ static Boolean mostrar  = true;
         }
     }//GEN-LAST:event_btnAuditoriaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        new principal();
+    private void btnAuditoria1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAuditoria1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAuditoria1ActionPerformed
+
+//    public void respaldar() {
+//
+//        try {
+//
+//            String sFichero = "C:\\WINDOWS\\system32\\mysqldump.exe";
+//            File fichero = new File(sFichero);
+//            if (!fichero.exists()) {
+//                JOptionPane.show(this, "No existe el archivo mysqldump.exe \n En el directorio  c:\\windows\\system32 \n copielo en el directorio indicado y vuelva a ejecutar" );
+//                return;
+//            }
+//
+//            List parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'IP'");
+//            ParametrosGlobales para = parame.get(0);
+//            String ip = para.getCvalor();
+//
+//            String direc = direccion.value;
+//
+//            parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'USUARIO'");
+//            para = parame.get(0);
+//            String usuario = para.getCvalor();
+//
+//            parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'CLAVES'");
+//            para = parame.get(0);
+//            String clave = para.getCvalor();
+//
+//            Date fechaActual = new Date();
+//            String fec = "fecha" + fechaActual.getDate() + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getYear() + 1900) + "_" + fechaActual.getHours() + "-" + fechaActual.getMinutes() + "-" + fechaActual.getSeconds() + "";
+//            File duir = new File(direc);
+//            duir.mkdir();
+//            Runtime.getRuntime().exec("cmd /c mysqldump -h " + ip + " --op -u " + usuario + " -p" + clave + " academico > " + direc + "\\academico" + fec + ".sql");
+//            respaldo.value = direc + "\\academico" + fec + ".sql ";
+//            alert("Respaldo realizado con Éxito en: " + direc + "\\academico" + fec + ".sql ");
+//        } catch (Exception e) {
+//            System.out.println("" + e);
+//            alert("No se pudo realizar el Respaldo");
+//        }
 //
 //    }
-    public static void main(String args[]) {
+//
+//    public void respaldarLinux() {
+//
+//        try {
+//            List parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'IP'");
+//            ParametrosGlobales para = parame.get(0);
+//            String ip = para.getCvalor();
+//
+//            String direc = direccion.value;
+//
+//            parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'USUARIO'");
+//            para = parame.get(0);
+//            String usuario = para.getCvalor();
+//
+//            parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'CLAVES'");
+//            para = parame.get(0);
+//            String clave = para.getCvalor();
+//            Date fechaActual = new Date();
+//            String fec = "fecha" + fechaActual.getDate() + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getYear() + 1900) + "_" + fechaActual.getHours() + "-" + fechaActual.getMinutes() + "-" + fechaActual.getSeconds() + "";
+//            File duir = new File(direc);
+//            duir.mkdir();
+//            String ubicacion = direccion.value + "/academico" + fec + ".sql";
+//            String cnd = "mysqldump -h" + ip + " -u" + usuario + " -p" + clave + " -B academico " + " -r" + ubicacion;
+//            StringTokenizer st = new StringTokenizer(cnd);
+//            String[] coma = new String[st.countTokens() + 1];
+//            int i = 0;
+//            while (st.hasMoreTokens()) {
+//                coma[i] = st.nextToken();
+//                System.out.println(coma[i] + " n:" + i);
+//                i++;
+//            }
+//            coma[7] = "-r" + ubicacion;
+//            Runtime.getRuntime().exec(coma);
+////            respaldo.value = ubicacion;
+////            alert("Respaldo realizado con Éxito en: " + ubicacion);
+//        } catch (Exception e) {
+//            System.out.println("" + e);
+////            alert("No se pudo realizar el Respaldo");
+//        }
+//
+//        /**
+//         * @param args the command line arguments
+//         */
+////    public static void main(String args[]) {
+////        new principal();
+////
+////    }
+//    public
+
+    static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
                 principal pr = new principal();
-                if(mostrar== true){
-                        pr.setVisible(true);
+                if (mostrar == true) {
+                    pr.setVisible(true);
                 } else {
                     pr.dispose();
                     pr.setVisible(false);
@@ -3624,6 +3771,7 @@ static Boolean mostrar  = true;
     private javax.swing.JButton btnAcerca;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAuditoria;
+    private javax.swing.JButton btnAuditoria1;
     private javax.swing.JButton btnAyuda;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCerrar;
@@ -3665,6 +3813,7 @@ static Boolean mostrar  = true;
     private javax.swing.JInternalFrame formaTarjetas1;
     private javax.swing.JInternalFrame frmClientes1;
     private javax.swing.JInternalFrame frmIngresarSistema;
+    private javax.swing.JInternalFrame frmRespaldarBase;
     private javax.swing.JSpinner horaDesde;
     private javax.swing.JSpinner horaHasta;
     private javax.swing.JLabel ingre;
@@ -3674,6 +3823,8 @@ static Boolean mostrar  = true;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -3691,10 +3842,12 @@ static Boolean mostrar  = true;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -3716,6 +3869,7 @@ static Boolean mostrar  = true;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JToolBar jToolBar3;
