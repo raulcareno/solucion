@@ -39,6 +39,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     CommPortIdentifier puertoId;
 //  portList;
     InputStream inputStream;
+    OutputStream outputSream;
     SerialPort serialPort;
     Thread readThread;
     public String tarjeta;
@@ -133,6 +134,10 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         }
         try {
             inputStream = serialPort.getInputStream();
+        } catch (IOException e) {
+        }
+         try {
+            outputSream = serialPort.getOutputStream();
         } catch (IOException e) {
         }
         try {

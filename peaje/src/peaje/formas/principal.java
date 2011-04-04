@@ -66,7 +66,8 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     public static String out;
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
     String separador = File.separatorChar + "";
-static UsuarioActivo datosConecta;
+    static UsuarioActivo datosConecta;
+
     public void habilitarBotones(Boolean estado) {
         btnAuditoria.setEnabled(estado);
         btnClientes.setEnabled(estado);
@@ -99,7 +100,7 @@ static UsuarioActivo datosConecta;
 
             public void windowClosing(WindowEvent we) {
                 //JOptionPane.showMessageDialog(puertoBase, "mensaje");
-                auditar("","", "Salir del Sistema");
+                auditar("", "", "Salir del Sistema");
                 System.exit(0);
 
             }
@@ -113,7 +114,7 @@ static UsuarioActivo datosConecta;
             RelojModeloUtil modelo = new RelojModeloUtil();
             RelojVisual visual = new RelojVisual(modelo);
 //            visual.setLocation(100, 100);
-            barraHerramients.add(visual,4);
+            barraHerramients.add(visual, 4);
             //getContentPane().add(visual);
             this.setSize(600, 600);
             this.setExtendedState(this.MAXIMIZED_BOTH);
@@ -532,7 +533,7 @@ static UsuarioActivo datosConecta;
         setTitle("Sistema de control de parqueaderos");
         setName("miForma"); // NOI18N
 
-        barraHerramients.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        barraHerramients.setBorder(null);
         barraHerramients.setRollover(true);
         barraHerramients.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -720,6 +721,7 @@ static UsuarioActivo datosConecta;
 
         getContentPane().add(barraHerramients, java.awt.BorderLayout.PAGE_START);
 
+        jSplitPane1.setBorder(null);
         jSplitPane1.setDividerLocation(240);
         jSplitPane1.setDividerSize(0);
         jSplitPane1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -748,6 +750,7 @@ static UsuarioActivo datosConecta;
         } catch (java.beans.PropertyVetoException e1) {
             e1.printStackTrace();
         }
+        frmIngresarSistema.setVisible(true);
         frmIngresarSistema.getContentPane().setLayout(null);
 
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 1, true));
@@ -1776,7 +1779,7 @@ static UsuarioActivo datosConecta;
                 .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel32)
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -1896,26 +1899,26 @@ static UsuarioActivo datosConecta;
 
     public void logear() {
 //        try {
-            //        try {
-            
-            frmIngresarSistema.setVisible(true);
+        //        try {
+
+        frmIngresarSistema.setVisible(true);
 //            frmIngresarSistema.;
-            //            Robot r = new Robot();
-            //            r.mouseMove(180,170);
-            //            r.
-            //frmLogin.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
-            adm = new Administrador(datosConecta);
-            //                frmLogin.setModal(true);
-            //                frmLogin.setSize(400, 230);
-            //                frmLogin.setLocation(350, 300);
-            //                frmLogin.setFocusable(true);
-            //                frmLogin.setResizable(false);
-            //                frmLogin.setTitle("Inicio de Sesión");
-            //                frmLogin.setUndecorated(true);
-            //                frmLogin.shogeova geow();
-            //        } catch (AWTException ex) {
-            //            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
-            //        }
+        //            Robot r = new Robot();
+        //            r.mouseMove(180,170);
+        //            r.
+        //frmLogin.setIconImage(new ImageIcon(getClass().getResource("/images_botones/ico.gif")).getImage());
+        adm = new Administrador(datosConecta);
+        //                frmLogin.setModal(true);
+        //                frmLogin.setSize(400, 230);
+        //                frmLogin.setLocation(350, 300);
+        //                frmLogin.setFocusable(true);
+        //                frmLogin.setResizable(false);
+        //                frmLogin.setTitle("Inicio de Sesión");
+        //                frmLogin.setUndecorated(true);
+        //                frmLogin.shogeova geow();
+        //        } catch (AWTException ex) {
+        //            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        //        }
 //        } catch (PropertyVetoException ex) {
 //            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
 //        }
@@ -1928,9 +1931,9 @@ static UsuarioActivo datosConecta;
         pXml.leerXML();
         datosConecta = pXml.user;
         try {
-          String nombre =  datosConecta.getNombre();
-            System.out.println("NOMB:"+nombre);
-            if(nombre.equals("null") || datosConecta.getContrasenia().equals("null")){
+            String nombre = datosConecta.getNombre();
+            System.out.println("NOMB:" + nombre);
+            if (nombre.equals("null") || datosConecta.getContrasenia().equals("null")) {
                 return false;
             }
         } catch (Exception e) {
@@ -1998,7 +2001,43 @@ static UsuarioActivo datosConecta;
     }
 
     public void verificarUsuario() {
-        Usuarios usu = adm.ingresoSistema(usuariot.getText(), clave.getText());
+        Usuarios usu = null;
+        try {
+            usu = adm.ingresoSistema(usuariot.getText(), clave.getText());
+        } catch (Exception e) {
+            //JOptionPane.showMessageDialog(this, "ERROR EN CONFIGURACION DEL SISTEMA"+e);
+            WorkingDirectory w = new WorkingDirectory();
+            String ubicacionDirectorio = w.get() + separador;
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
+
+            File fichero = new File(ubicacionDirectorio + "KDJFASD5F4AS5D2.xml");
+            if (fichero.exists()) {
+                fichero.delete();
+                System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
+            }
+
+                frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/icono.png")).getImage());
+                frmRegistrar.setModal(true);
+                frmRegistrar.setSize(474, 280);
+                frmRegistrar.setLocation(350, 300);
+                frmRegistrar.setFocusable(true);
+                frmRegistrar.setResizable(false);
+                frmRegistrar.setTitle("Configuración del Sistema");
+                frmRegistrar.setUndecorated(false);
+                frmRegistrar.show();
+                btnIngresar.setEnabled(true);
+                clave.setEditable(true);
+                usuariot.setEditable(true);
+                procesando.setVisible(false);
+                               logear();
+                return;
+ 
+ 
+
+        }
+
         if (usu != null) {
             try {
                 usuario = usu;
@@ -2076,7 +2115,7 @@ static UsuarioActivo datosConecta;
                     if (accesos.getPantalla().equals("Reconfigurar") && !accesos.getIngresar()) {
                         btnReconfigurar.setEnabled(false);
                     }
-                     if (accesos.getPantalla().equals("Auditoria") && !accesos.getIngresar()) {
+                    if (accesos.getPantalla().equals("Auditoria") && !accesos.getIngresar()) {
                         btnAuditoria.setEnabled(false);
                     }
                 }
@@ -2457,10 +2496,10 @@ static UsuarioActivo datosConecta;
 //            frmClientes.setLocation(240, 100);
 //            frmClientes.setModal(true);
 //            btnSalir.requestFocusInWindow();
-         
+
 //            frmClientes.show();
             frmClientes1.setVisible(true);
-   contenedor.requestFocus();
+            contenedor.requestFocus();
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2506,8 +2545,9 @@ static UsuarioActivo datosConecta;
             usu.setSize(441, 470);
             usu.setLocation(240, 80);
             contenedor.add(usu);
-            
-            usu.show();contenedor.requestFocus();
+
+            usu.show();
+            contenedor.requestFocus();
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2527,7 +2567,7 @@ static UsuarioActivo datosConecta;
             frmTarifas usu = new frmTarifas(this, true, this, adm);
             usu.setSize(409, 460);
             usu.setLocation(240, 100);
-              contenedor.add(usu);
+            contenedor.add(usu);
             usu.show();
             contenedor.requestFocus();
         } catch (Exception ex) {
@@ -2556,7 +2596,8 @@ static UsuarioActivo datosConecta;
 //            usu.setMaximizable(true);
             contenedor.add(usu);
             usu.placa.requestFocusInWindow();
-            usu.show();usu.placa.requestFocusInWindow();
+            usu.show();
+            usu.placa.requestFocusInWindow();
 
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -2569,7 +2610,7 @@ static UsuarioActivo datosConecta;
 //        if(evt.getKeyCode()== evt.VK_F2){
 //            JOptionPane.showMessageDialog(this, "PRESIONO F2");
 //        }
-           tecla(evt.getKeyCode());
+        tecla(evt.getKeyCode());
     }//GEN-LAST:event_jXTaskPaneContainer1KeyPressed
 
     private void jSplitPane1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jSplitPane1KeyPressed
@@ -2577,7 +2618,7 @@ static UsuarioActivo datosConecta;
 //        if(evt.getKeyCode()== evt.VK_F2){
 //            JOptionPane.showMessageDialog(this, "PRESIONO F2");
 //        }
-           tecla(evt.getKeyCode());
+        tecla(evt.getKeyCode());
     }//GEN-LAST:event_jSplitPane1KeyPressed
 
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
@@ -2594,9 +2635,9 @@ static UsuarioActivo datosConecta;
             usu.setSize(669, 411);
             usu.setLocation(200, 120);
             contenedor.add(usu);
-     
+
             usu.show();
-       usu.noTicket.requestFocusInWindow();
+            usu.noTicket.requestFocusInWindow();
 
 
         } catch (Exception ex) {
@@ -2652,8 +2693,8 @@ static UsuarioActivo datosConecta;
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             nombres.nextFocus();
-        }else{
-        
+        } else {
+
             tecla(evt.getKeyCode());
         }
 
@@ -2663,7 +2704,7 @@ static UsuarioActivo datosConecta;
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             direccion.nextFocus();
-        }else{
+        } else {
             tecla(evt.getKeyCode());
         }
 }//GEN-LAST:event_direccionKeyPressed
@@ -2689,7 +2730,7 @@ static UsuarioActivo datosConecta;
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             codigo.nextFocus();
-        }else{
+        } else {
             tecla(evt.getKeyCode());
         }
 }//GEN-LAST:event_codigoKeyPressed
@@ -2887,7 +2928,7 @@ static UsuarioActivo datosConecta;
                     modificar = false;
                     habilitar(false);
                     btnBuscar.setEnabled(true);
-                    auditar("Clientes", ""+clienteObj.getNombres(), "GUARDAR/ACTUALIZAR");
+                    auditar("Clientes", "" + clienteObj.getNombres(), "GUARDAR/ACTUALIZAR");
 
                 }
 
@@ -2943,7 +2984,7 @@ static UsuarioActivo datosConecta;
             int conf = JOptionPane.showConfirmDialog(this, "Seguro que desea eliminar el registro? ", "JCINFORM", JOptionPane.OK_CANCEL_OPTION);
             if (conf == JOptionPane.OK_OPTION) {
                 try {
-                     auditar("Clientes", ""+clienteObj.getNombres(), "ELIMINAR");
+                    auditar("Clientes", "" + clienteObj.getNombres(), "ELIMINAR");
                     adm.eliminarObjeto(Clientes.class, clienteObj.getCodigo());
                     this.limpiar();
                 } catch (Exception ex) {
@@ -2993,7 +3034,7 @@ static UsuarioActivo datosConecta;
             formaTarjetas1.setVisible(false);
             llenarTabla(clienteObj.getCodigo());
             buscarClientes.dispose();
-            auditar("Tarjetas", ""+tarjeta.getTarjeta()+" "+tarjeta.getDesde().toLocaleString()+" "+tarjeta.getHasta().toLocaleString(), "GUARDAR/ACTUALIZAR");
+            auditar("Tarjetas", "" + tarjeta.getTarjeta() + " " + tarjeta.getDesde().toLocaleString() + " " + tarjeta.getHasta().toLocaleString(), "GUARDAR/ACTUALIZAR");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al Guardar Tarjeta vuelva a intentarlo...!");
@@ -3129,12 +3170,12 @@ static UsuarioActivo datosConecta;
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
-          
+
         grabar = false;
         btnAgregar.doClick();
         btnModificar.doClick();
         frmClientes1.setVisible(false);
-         contenedor.requestFocus();
+        contenedor.requestFocus();
 
 }//GEN-LAST:event_btnSalirActionPerformed
 
@@ -3175,12 +3216,12 @@ static UsuarioActivo datosConecta;
             }
             frmPrivilegios usu = new frmPrivilegios(this, true, this, adm);
             usu.setSize(457, 449);
-          
+
             usu.setLocation(240, 100);
             contenedor.add(usu);
             usu.show();
 //              contenedor.add(usu);
-            
+
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -3547,37 +3588,37 @@ static UsuarioActivo datosConecta;
     private void telefonoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyPressed
         // TODO add your handling code here:
 
-            tecla(evt.getKeyCode());
-       
+        tecla(evt.getKeyCode());
+
     }//GEN-LAST:event_telefonoKeyPressed
 
     private void tarifasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tarifasKeyPressed
         // TODO add your handling code here:
 
-            tecla(evt.getKeyCode());
-        
+        tecla(evt.getKeyCode());
+
     }//GEN-LAST:event_tarifasKeyPressed
 
     private void txtValorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorKeyPressed
         // TODO add your handling code here:
 
-            tecla(evt.getKeyCode());
-       
+        tecla(evt.getKeyCode());
+
     }//GEN-LAST:event_txtValorKeyPressed
 
     private void btnNuevaTarjetaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnNuevaTarjetaKeyPressed
-  tecla(evt.getKeyCode());
+        tecla(evt.getKeyCode());
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNuevaTarjetaKeyPressed
 
     private void tarjetasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tarjetasKeyPressed
         // TODO add your handling code here:
-          tecla(evt.getKeyCode());
+        tecla(evt.getKeyCode());
     }//GEN-LAST:event_tarjetasKeyPressed
 
     private void noTarjetaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTarjetaKeyPressed
         // TODO add your handling code here:
-  
+
         tecla(evt.getKeyCode());
     }//GEN-LAST:event_noTarjetaKeyPressed
 
@@ -3651,7 +3692,7 @@ static UsuarioActivo datosConecta;
 
     private void todosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todosActionPerformed
         // TODO add your handling code here:
-         lunes.setSelected(todos.isSelected());
+        lunes.setSelected(todos.isSelected());
         martes.setSelected(todos.isSelected());
         miercoles.setSelected(todos.isSelected());
         jueves.setSelected(todos.isSelected());
@@ -3662,7 +3703,6 @@ static UsuarioActivo datosConecta;
 
     private void lunesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lunesActionPerformed
         // TODO add your handling code here:
-        
     }//GEN-LAST:event_lunesActionPerformed
 
     private void todosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_todosKeyPressed
@@ -3672,42 +3712,42 @@ static UsuarioActivo datosConecta;
 
     private void jPanel10KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel10KeyPressed
         // TODO add your handling code here:
-           tecla(evt.getKeyCode());
+        tecla(evt.getKeyCode());
     }//GEN-LAST:event_jPanel10KeyPressed
 
     private void contenedor1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contenedor1KeyPressed
         // TODO add your handling code here:
-           tecla(evt.getKeyCode());
+        tecla(evt.getKeyCode());
     }//GEN-LAST:event_contenedor1KeyPressed
 
     private void contenedor2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contenedor2KeyPressed
         // TODO add your handling code here:
-           tecla(evt.getKeyCode());
+        tecla(evt.getKeyCode());
     }//GEN-LAST:event_contenedor2KeyPressed
 
     private void contenedor3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contenedor3KeyPressed
         // TODO add your handling code here:
-           tecla(evt.getKeyCode());
+        tecla(evt.getKeyCode());
     }//GEN-LAST:event_contenedor3KeyPressed
 
     private void jLabel32KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel32KeyPressed
         // TODO add your handling code here:
-           tecla(evt.getKeyCode());
+        tecla(evt.getKeyCode());
     }//GEN-LAST:event_jLabel32KeyPressed
 
     private void usuarioLogeadoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usuarioLogeadoKeyPressed
         // TODO add your handling code here:
-           tecla(evt.getKeyCode());
+        tecla(evt.getKeyCode());
     }//GEN-LAST:event_usuarioLogeadoKeyPressed
 
     private void barraHerramientsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_barraHerramientsKeyPressed
         // TODO add your handling code here:
-           tecla(evt.getKeyCode());
+        tecla(evt.getKeyCode());
     }//GEN-LAST:event_barraHerramientsKeyPressed
 
     private void btnAuditoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAuditoriaActionPerformed
         // TODO add your handling code here:
-          try {
+        try {
             // TODO add your handling code here:
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Auditoria' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
@@ -3949,7 +3989,7 @@ static UsuarioActivo datosConecta;
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void auditar(String tabla,String campo,String accion){
+    public void auditar(String tabla, String campo, String accion) {
         try {
             Auditoria aud = new Auditoria();
             aud.setAccion(accion);
@@ -3957,12 +3997,12 @@ static UsuarioActivo datosConecta;
             aud.setTabla(tabla);
             aud.setFecha(new Date());
             java.net.InetAddress i = java.net.InetAddress.getLocalHost();
-            aud.setMaquina(System.getProperty("user.name")+" IP: "+i.getHostAddress());
+            aud.setMaquina(System.getProperty("user.name") + " IP: " + i.getHostAddress());
             aud.setUsuarios(usuarioActual);
             adm.guardar(aud);
         } catch (Exception ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
 
     }
 
