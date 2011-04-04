@@ -1446,11 +1446,23 @@ public class reportesClase {
         String cabecera = regresaTexto("CMAT", textos);
         String aprobado = regresaTexto("PACMAT", textos);
         String reprobado = regresaTexto("PRCMAT", textos);
+           List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
                 + "and o.sistema.promediofinal = 'PF' ");
+        
+        Integer noDecimales = 3;
+        try{
+            noDecimales = regresaVariableParametrosDecimal("DECIPROMOCION", parametrosGlobales).intValue();
+        }catch(Exception a){
+            noDecimales = 3;
+            
+        }
+       
+
         try {
             if (notas.size() <= 0) {
                 Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
@@ -1583,7 +1595,7 @@ public class reportesClase {
                         not.setMateriaProfesor(matep);
                         not.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
 
-                        not.setAprovechamiento(aprovechamiento);
+                        not.setAprovechamiento(redondear(aprovechamiento,noDecimales ));
                         not.setDisciplina(disciplina);
                         if ((Double) dos >= matriculas1.getCurso().getAprobacion()) {
                             not.setEstadoMateria("APROBADO");
