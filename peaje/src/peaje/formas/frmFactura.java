@@ -1362,19 +1362,38 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
 
         Date act = new Date();
-        int diasEntre = Days.daysBetween(new LocalDate(fac.getFechaini()), new LocalDate(new Date())).getDays();
+//        int diasEntre = Days.daysBetween(new LocalDate(fac.getFechaini()), new LocalDate(new Date())).getDays();
+//        Long horasEntre1 = diferenciaFechas(fac.getFechaini(), new Date());
+//        if (horasEntre1 >0) {
+//            diasEntre += 1;
+//            for (int i = 0; i < diasEntre; i++) {
+//                horas += 24;
+                dias.setVisible(true);
+                dias1.setVisible(true);
+                dias2.setVisible(true);
+//            }
 
-        System.out.println("" + diasEntre);
-//                        LocalTime horaIni = new LocalTime(ingreso.getDate().getTime());
-//                        LocalTime horaFin = new LocalTime(salida.getDate().getTime());
+//        }
+
         LocalTime horaIni = new LocalTime(new DateTime(ingreso.getDate()));
         LocalTime horaFin = new LocalTime(new DateTime(salida.getDate()));
+        //Integer minutos = (Minutes.minutesBetween(horaIni, horaFin).getMinutes());
+         Long minutos0 = diferenciaFechas(fac.getFechaini(), new Date());
+         Integer minutos = minutos0.intValue();
 
-//                   int segundos = Seconds.secondsBetween(horaIni, horaFin).getSeconds();
-        //float seg = segundos /60f;
-
-        Integer minutos = (Minutes.minutesBetween(horaIni, horaFin).getMinutes());
         Integer horas = minutos / 60;
+        if (minutos.intValue() < 0) {
+            minutos = minutos * -1;
+        }
+        if (horas.intValue() < 0) {
+            horas = horas * -1;
+//            horas += 24;
+            dias.setVisible(true);
+            dias1.setVisible(true);
+            dias2.setVisible(true);
+        }
+//        horas = horas + horasEntre1.intValue();
+//        int a = 0;
         if (minutos.intValue() < 0) {
 //                            horas = horas *-1 ;
 //                            horas += 24;
@@ -1385,13 +1404,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
             dias1.setVisible(true);
             dias2.setVisible(true);
         }
-        for (int i = 0; i < diasEntre; i++) {
-            horas += 24;
-            dias.setVisible(true);
-            dias1.setVisible(true);
-            dias2.setVisible(true);
-        }
-        dias1.setText("" + diasEntre);
+
+//        dias1.setText("" + diasEntre);
 
         Float min = minutos / 60f;
         int indice = min.toString().indexOf(".");
@@ -1399,15 +1413,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
         int valorMinutos = java.lang.Math.round((valorf * 60));
         act.setHours(horas);
         act.setMinutes(valorMinutos);
-//                    act.setSeconds((int) ((minutos - seg)*(60f)));
-//                    if(horas.equals(0) && minutos.equals(0)){
-////                        act.setSeconds(segundos);
-//                        valorMinutos = 1;
-//                    }
-//                    if(segundos<=60){
-//                        valorMinutos = 1;
-//                    }
-//                    act.setSeconds(segundos);
         tiempo.setDate(act);
         placa.setText(fac.getPlaca());
 
@@ -1417,10 +1422,23 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         }
 
-        if (valorMinutos > 0) {
-            aCobrar = aCobrar.add(buscar(valorMinutos));
+        if (horas.intValue() > 0) {
+            if (valorMinutos > 0) {
+                if (valorMinutos > empresaObj.getGracia().intValue()) {
+                    aCobrar = aCobrar.add(buscar(valorMinutos));
+                }
+            } else {
+//                aCobrar = aCobrar.add(buscar(1));
+            }
         } else {
-            aCobrar = aCobrar.add(buscar(1));
+            if (valorMinutos > 0) {
+//                if (valorMinutos > empresaObj.getGracia().intValue()) {
+                aCobrar = aCobrar.add(buscar(valorMinutos));
+//                }
+            } else {
+                aCobrar = aCobrar.add(buscar(1));
+
+            }
 
         }
         total.setText(aCobrar.setScale(2, RoundingMode.UP) + "");
@@ -1428,6 +1446,15 @@ public class frmFactura extends javax.swing.JInternalFrame {
         //tiempo.setDate(Hours.hoursBetween(horaIni, horaFin));
 
 //                    btnAgregar.requestFocusInWindow();
+    }
+
+    public long diferenciaFechas(Date fechai, Date fechaf) {
+        fechaf = new Date();
+        java.util.GregorianCalendar date1 = new java.util.GregorianCalendar(fechai.getYear(), fechai.getMonth(), fechai.getDate(), fechai.getHours(), fechai.getMinutes(), fechai.getSeconds());
+        java.util.GregorianCalendar date2 = new java.util.GregorianCalendar(fechaf.getYear(), fechaf.getMonth(), fechaf.getDate(), fechaf.getHours(), fechaf.getMinutes(), fechaf.getSeconds());
+        long difms = date2.getTimeInMillis() - date1.getTimeInMillis();
+        long difd = difms / (1000 * 60);
+        return difd;
     }
 
     public Double redondear(Double numero, int decimales) {
@@ -1472,18 +1499,18 @@ public class frmFactura extends javax.swing.JInternalFrame {
             empresaObj = null;
             System.gc();
             this.setVisible(false);
-        } else if(evt.getKeyCode() == evt.VK_F1 ||
-                evt.getKeyCode() == evt.VK_F2 ||
-                evt.getKeyCode() == evt.VK_F3 ||
-                evt.getKeyCode() == evt.VK_F4 ||
-                evt.getKeyCode() == evt.VK_F5 ||
-                evt.getKeyCode() == evt.VK_F6 ||
-                evt.getKeyCode() == evt.VK_F7 ||
-                evt.getKeyCode() == evt.VK_F8 ||
-                evt.getKeyCode() == evt.VK_F9 ||
-                evt.getKeyCode() == evt.VK_F10 ||
-                evt.getKeyCode() == evt.VK_F11 ||
-                evt.getKeyCode() == evt.VK_F12 ) {
+        } else if (evt.getKeyCode() == evt.VK_F1
+                || evt.getKeyCode() == evt.VK_F2
+                || evt.getKeyCode() == evt.VK_F3
+                || evt.getKeyCode() == evt.VK_F4
+                || evt.getKeyCode() == evt.VK_F5
+                || evt.getKeyCode() == evt.VK_F6
+                || evt.getKeyCode() == evt.VK_F7
+                || evt.getKeyCode() == evt.VK_F8
+                || evt.getKeyCode() == evt.VK_F9
+                || evt.getKeyCode() == evt.VK_F10
+                || evt.getKeyCode() == evt.VK_F11
+                || evt.getKeyCode() == evt.VK_F12) {
             principal.tecla(evt.getKeyCode());
         }
     }//GEN-LAST:event_noTicketKeyPressed
@@ -1869,11 +1896,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
             productos.setModel(dtm);
             principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
             principal.contenedor.requestFocus();
-            
-                    this.setVisible(false);
-                    principal = null;
-                    empresaObj = null;
-                    System.gc();
+
+            this.setVisible(false);
+            principal = null;
+            empresaObj = null;
+            System.gc();
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }

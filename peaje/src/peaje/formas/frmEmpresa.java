@@ -271,6 +271,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         cmbPuertoPrincipal = new javax.swing.JComboBox();
         iva = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -716,6 +718,24 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel22.setText("Puerto Tarjeta Princ.:");
         jPanel2.add(jLabel22);
         jLabel22.setBounds(0, 190, 110, 14);
+
+        jLabel16.setText("Tiempo de Gracia: ");
+        jPanel2.add(jLabel16);
+        jLabel16.setBounds(10, 210, 100, 14);
+
+        jFormattedTextField1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jFormattedTextField1.setText("0");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.gracia}"), jFormattedTextField1, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextField1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jFormattedTextField1);
+        jFormattedTextField1.setBounds(120, 210, 60, 20);
 
         jTabbedPane1.addTab("DATOS DE LA EMPRESA", jPanel2);
 
@@ -1514,6 +1534,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
          principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_formKeyPressed
 
+    private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
@@ -1547,6 +1571,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JDialog formaEmpresa;
     private javax.swing.JTextField iva;
     private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1554,6 +1579,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;

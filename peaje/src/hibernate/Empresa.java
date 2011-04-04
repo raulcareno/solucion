@@ -56,6 +56,8 @@ public class Empresa implements Serializable {
     private String puerto;
     @Column(name = "iva")
     private Double iva;
+    @Column(name = "gracia")
+    private Integer gracia;
     @Column(name = "puerto1")
     private String puerto1;
     @Column(name = "puerto2")
@@ -267,6 +269,16 @@ public class Empresa implements Serializable {
     public void setIva(Double iva) {
         this.iva = iva;
     }
+
+    public Integer getGracia() {
+        return gracia;
+    }
+
+    public void setGracia(Integer gracia) {
+        this.gracia = gracia;
+    }
+
+   
 
     public String getPuerto1() {
         return puerto1;
