@@ -495,7 +495,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel1.add(dias);
         dias.setBounds(130, 110, 60, 20);
 
-        dias1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        dias1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         dias1.setForeground(new java.awt.Color(204, 0, 0));
         dias1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias1.setText("0");
@@ -1421,6 +1421,19 @@ public class frmFactura extends javax.swing.JInternalFrame {
             aCobrar = aCobrar.add(buscar(60));
 
         }
+        int noDias = 0;
+        for (int a = 0; a < horas; a++) {
+
+            if(horas>=24){
+                noDias +=1;
+                horas = horas -24;
+            }
+            a+=24;
+            //else
+   
+
+        }
+        dias1.setText(noDias+"");
 
         if (horas.intValue() > 0) {
             if (valorMinutos > 0) {
