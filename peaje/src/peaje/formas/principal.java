@@ -67,7 +67,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
     String separador = File.separatorChar + "";
     static UsuarioActivo datosConecta;
-
+static Boolean mostrar  = true;
     public void habilitarBotones(Boolean estado) {
         btnAuditoria.setEnabled(estado);
         btnClientes.setEnabled(estado);
@@ -172,18 +172,17 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
             habilitarBotones(false);
             if (comprobar()) {
+                  mostrar  = true;
                 logear();
             } else {
-                frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/icono.png")).getImage());
-                frmRegistrar.setModal(true);
-                frmRegistrar.setSize(474, 280);
-                frmRegistrar.setLocation(350, 300);
-                frmRegistrar.setFocusable(true);
-                frmRegistrar.setResizable(false);
-                frmRegistrar.setTitle("Configuración del Sistema");
-                frmRegistrar.setUndecorated(false);
-                frmRegistrar.show();
-                logear();
+             
+             
+//              this.hide();
+//              this.disable();
+//              this.dispose();
+//               new frmConfiguracion().show();
+               mostrar  = false;
+                //logear();
 
             }
 
@@ -220,26 +219,6 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         jPanel9 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         busquedaTabla = new javax.swing.JTable();
-        frmRegistrar = new javax.swing.JDialog();
-        jLabel24 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
-        usuarioBase = new javax.swing.JFormattedTextField();
-        claveBase = new javax.swing.JPasswordField();
-        ipBase = new javax.swing.JFormattedTextField();
-        puertoBase = new javax.swing.JFormattedTextField();
-        continuar = new javax.swing.JButton();
-        jLabel29 = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
-        jLabel31 = new javax.swing.JLabel();
-        cmbAbre = new javax.swing.JComboBox();
-        cmbCierra = new javax.swing.JComboBox();
-        jLabel33 = new javax.swing.JLabel();
-        jLabel34 = new javax.swing.JLabel();
-        jLabel35 = new javax.swing.JLabel();
-        jLabel36 = new javax.swing.JLabel();
-        jLabel37 = new javax.swing.JLabel();
         barraHerramients = new javax.swing.JToolBar();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -435,99 +414,6 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
         buscarClientes.getContentPane().add(jPanel9);
         jPanel9.setBounds(10, 60, 510, 180);
-
-        frmRegistrar.setTitle("Configuración del Sistema");
-        frmRegistrar.setModalityType(java.awt.Dialog.ModalityType.TOOLKIT_MODAL);
-        frmRegistrar.getContentPane().setLayout(null);
-
-        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel24.setText("Usuario: ");
-        frmRegistrar.getContentPane().add(jLabel24);
-        jLabel24.setBounds(20, 20, 110, 14);
-
-        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel25.setText("Clave: ");
-        frmRegistrar.getContentPane().add(jLabel25);
-        jLabel25.setBounds(20, 40, 110, 14);
-
-        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel26.setText("IP: ");
-        frmRegistrar.getContentPane().add(jLabel26);
-        jLabel26.setBounds(20, 60, 110, 14);
-
-        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel27.setText("Puerta de Saldia: ");
-        frmRegistrar.getContentPane().add(jLabel27);
-        jLabel27.setBounds(20, 120, 110, 14);
-
-        usuarioBase.setText("root");
-        frmRegistrar.getContentPane().add(usuarioBase);
-        usuarioBase.setBounds(140, 20, 160, 20);
-
-        claveBase.setText("jcinform@2020");
-        frmRegistrar.getContentPane().add(claveBase);
-        claveBase.setBounds(140, 40, 160, 20);
-
-        ipBase.setText("localhost");
-        ipBase.setToolTipText("Si su máquina es el servidor escriba: localhost, caso contrario escriba el nombre del servidor o la dirección IP");
-        frmRegistrar.getContentPane().add(ipBase);
-        ipBase.setBounds(140, 60, 160, 20);
-
-        puertoBase.setText("3306");
-        frmRegistrar.getContentPane().add(puertoBase);
-        puertoBase.setBounds(140, 80, 70, 20);
-
-        continuar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
-        continuar.setText("Continuar");
-        continuar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                continuarActionPerformed(evt);
-            }
-        });
-        frmRegistrar.getContentPane().add(continuar);
-        continuar.setBounds(140, 150, 260, 50);
-
-        jLabel29.setText("(localhost o IP del servidor)");
-        frmRegistrar.getContentPane().add(jLabel29);
-        jLabel29.setBounds(310, 60, 200, 14);
-
-        jLabel30.setText("(Clave del motor de BD)");
-        frmRegistrar.getContentPane().add(jLabel30);
-        jLabel30.setBounds(310, 30, 200, 30);
-
-        jLabel31.setText("(Usuario de de BD)");
-        frmRegistrar.getContentPane().add(jLabel31);
-        jLabel31.setBounds(310, 20, 200, 14);
-
-        cmbAbre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7" }));
-        frmRegistrar.getContentPane().add(cmbAbre);
-        cmbAbre.setBounds(140, 100, 40, 20);
-
-        cmbCierra.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7" }));
-        frmRegistrar.getContentPane().add(cmbCierra);
-        cmbCierra.setBounds(140, 120, 40, 20);
-
-        jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel33.setText("Puerto: ");
-        frmRegistrar.getContentPane().add(jLabel33);
-        jLabel33.setBounds(20, 80, 110, 14);
-
-        jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel34.setText("Puerta de Entrada: ");
-        frmRegistrar.getContentPane().add(jLabel34);
-        jLabel34.setBounds(20, 100, 110, 14);
-
-        jLabel35.setText("(Puerto por el que se conecta)");
-        frmRegistrar.getContentPane().add(jLabel35);
-        jLabel35.setBounds(220, 80, 200, 20);
-
-        jLabel36.setText("(Puerta que se CIERRA desde este PC");
-        frmRegistrar.getContentPane().add(jLabel36);
-        jLabel36.setBounds(190, 120, 200, 20);
-
-        jLabel37.setText("(Puerta que se ABRE desde este PC");
-        frmRegistrar.getContentPane().add(jLabel37);
-        jLabel37.setBounds(190, 100, 200, 20);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de control de parqueaderos");
@@ -1762,10 +1648,10 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
+                    .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jXTaskPaneContainer1Layout.setVerticalGroup(
@@ -1947,29 +1833,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
     }
 
-    public void escribir() {
 
-        GeneraXMLPersonal pXml = new GeneraXMLPersonal();
-        pXml.generaDocumentoXMLPersonal();
-        BeanUsuario beanEmpleado = new BeanUsuario();
-        //Establecemos los valores de atributos de Empleado
-        beanEmpleado.setDNI("80114918");
-        beanEmpleado.setUsuario("" + usuarioBase.getText().trim());
-        beanEmpleado.setClave("" + cl.encriptar(claveBase.getText().trim()));
-        beanEmpleado.setIp("" + ipBase.getText().trim());
-        beanEmpleado.setPuerto("" + puertoBase.getText().trim());
-        beanEmpleado.setIn("" + cmbAbre.getSelectedItem().toString());
-        beanEmpleado.setOut("" + cmbCierra.getSelectedItem().toString());
-
-
-        //Generamos documento XML para los valores anteriores
-        pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
-        //obtenemos el documento XML en cadena de texto
-        String textoXML = pXml.obtenerTextoXML();
-        //grabamos en archivo el documento XML
-        pXml.grabaDocumentoXML(textoXML);
-
-    }
 
     public void llenarCombo() {
         try {
@@ -2017,22 +1881,9 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                 fichero.delete();
                 System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
             }
+            this.dispose();
+              new frmConfiguracion().show();
 
-                frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/icono.png")).getImage());
-                frmRegistrar.setModal(true);
-                frmRegistrar.setSize(474, 280);
-                frmRegistrar.setLocation(350, 300);
-                frmRegistrar.setFocusable(true);
-                frmRegistrar.setResizable(false);
-                frmRegistrar.setTitle("Configuración del Sistema");
-                frmRegistrar.setUndecorated(false);
-                frmRegistrar.show();
-                btnIngresar.setEnabled(true);
-                clave.setEditable(true);
-                usuariot.setEditable(true);
-                procesando.setVisible(false);
-                               logear();
-                return;
  
  
 
@@ -3179,29 +3030,6 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
 }//GEN-LAST:event_btnSalirActionPerformed
 
-    private void continuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continuarActionPerformed
-        // TODO add your handling code here:
-        escribir();
-        GeneraXMLPersonal pXml = new GeneraXMLPersonal();
-        pXml.leerXML();
-        UsuarioActivo usuario = pXml.user;
-        try {
-            adm = new Administrador(usuario);
-            adm.query("Select o from Accesos as o where o.codigo = -1 ");
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Conexión Erronea corrija y vuelva a intentarlo...", "", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        frmRegistrar.dispose();
-        btnAgregar.setEnabled(true);
-        //          btnBuscar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        btnModificar.setEnabled(true);
-        btnSalir.setEnabled(true);
-
-    }//GEN-LAST:event_continuarActionPerformed
-
     private void btnAccesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccesosActionPerformed
         // TODO add your handling code here:
         // TODO add your handling code here:
@@ -3297,18 +3125,9 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                         fichero.delete();
                         System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
                     }
+                this.dispose();
 
-
-                    frmRegistrar.setIconImage(new ImageIcon(getClass().getResource("/images_botones/icono.png")).getImage());
-                    frmRegistrar.setModal(true);
-                    frmRegistrar.setSize(474, 280);
-                    frmRegistrar.setLocation(350, 300);
-                    frmRegistrar.setFocusable(true);
-                    frmRegistrar.setResizable(false);
-                    frmRegistrar.setTitle("Configuración del Sistema");
-                    frmRegistrar.setUndecorated(false);
-                    frmRegistrar.show();
-                    logear();
+                  new frmConfiguracion().show();
                 }
 
             } else {
@@ -3779,7 +3598,15 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new principal().setVisible(true);
+                principal pr = new principal();
+                if(mostrar== true){
+                        pr.setVisible(true);
+                } else {
+                    pr.dispose();
+                    pr.setVisible(false);
+                    new frmConfiguracion().setVisible(true);
+                }
+
             }
         });
     }
@@ -3819,10 +3646,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     private javax.swing.JDialog buscarClientes;
     private javax.swing.JTable busquedaTabla;
     private javax.swing.JPasswordField clave;
-    private javax.swing.JPasswordField claveBase;
     private javax.swing.JFormattedTextField cliente;
-    private javax.swing.JComboBox cmbAbre;
-    private javax.swing.JComboBox cmbCierra;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JLabel cons;
@@ -3830,7 +3654,6 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     private org.jdesktop.swingx.JXTaskPane contenedor1;
     private org.jdesktop.swingx.JXTaskPane contenedor2;
     private org.jdesktop.swingx.JXTaskPane contenedor3;
-    private javax.swing.JButton continuar;
     private javax.swing.JTextArea descripcionTarjeta;
     private javax.swing.JPanel diasHabiles;
     private javax.swing.JFormattedTextField direccion;
@@ -3842,12 +3665,10 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     private javax.swing.JInternalFrame formaTarjetas1;
     private javax.swing.JInternalFrame frmClientes1;
     private javax.swing.JInternalFrame frmIngresarSistema;
-    private javax.swing.JDialog frmRegistrar;
     private javax.swing.JSpinner horaDesde;
     private javax.swing.JSpinner horaHasta;
     private javax.swing.JLabel ingre;
     private javax.swing.JSpinner ingresos;
-    private javax.swing.JFormattedTextField ipBase;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -3870,20 +3691,8 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
@@ -3922,7 +3731,6 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     private javax.swing.JFormattedTextField placa;
     private javax.swing.JFormattedTextField placa1;
     public javax.swing.JButton procesando;
-    private javax.swing.JFormattedTextField puertoBase;
     private javax.swing.JCheckBox sabado;
     private javax.swing.JLabel salid;
     private javax.swing.JSpinner spConsumo;
@@ -3935,7 +3743,6 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     private javax.swing.JCheckBox todos;
     private javax.swing.JLabel totales;
     private javax.swing.JTextField txtValor;
-    private javax.swing.JFormattedTextField usuarioBase;
     private javax.swing.JButton usuarioLogeado;
     private javax.swing.JFormattedTextField usuariot;
     private javax.swing.JCheckBox viernes;
