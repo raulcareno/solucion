@@ -24,8 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "global")
-@NamedQueries({
-    @NamedQuery(name = "Global.findAll", query = "SELECT g FROM Global g")})
+@NamedQueries({})
 public class Global implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

@@ -23,8 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tarifas")
-@NamedQueries({
-    @NamedQuery(name = "Tarifas.findAll", query = "SELECT t FROM Tarifas t")})
+@NamedQueries({})
 public class Tarifas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

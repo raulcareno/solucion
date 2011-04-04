@@ -27,8 +27,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "auditoria")
-@NamedQueries({
-    @NamedQuery(name = "Auditoria.findAll", query = "SELECT a FROM Auditoria a")})
+@NamedQueries({})
 public class Auditoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
