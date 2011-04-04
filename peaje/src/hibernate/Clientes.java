@@ -211,7 +211,7 @@ public class Clientes implements Serializable {
 
     @Override
     public String toString() {
-        return "hibernate.Clientes[codigo=" + codigo + "]";
+        return nombres;
     }
 
 }

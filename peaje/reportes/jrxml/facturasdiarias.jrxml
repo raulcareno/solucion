@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="10"/>
+	<property name="ireport.x" value="79"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -20,6 +20,7 @@
 	<field name="tiempo" class="java.util.Date"/>
 	<field name="cliente" class="java.lang.String"/>
 	<field name="ruc" class="java.lang.String"/>
+	<field name="factura" class="java.lang.String"/>
 	<variable name="SUMATORIA" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{total}]]></variableExpression>
 	</variable>
@@ -97,7 +98,7 @@
 	<columnHeader>
 		<band height="15" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-1" mode="Transparent" x="25" y="0" width="62" height="15" backcolor="#FFCC99"/>
+				<reportElement key="staticText-1" mode="Opaque" x="25" y="0" width="62" height="15" backcolor="#CCCCCC"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -110,7 +111,7 @@
 				<text><![CDATA[NO. TICKET]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-2" mode="Transparent" x="87" y="0" width="127" height="15" backcolor="#FFCC99"/>
+				<reportElement key="staticText-2" mode="Opaque" x="87" y="0" width="127" height="15" backcolor="#CCCCCC"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -123,7 +124,7 @@
 				<text><![CDATA[FECHA/HORA INGRESO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-4" mode="Transparent" x="408" y="0" width="58" height="15" backcolor="#FFCC99"/>
+				<reportElement key="staticText-4" mode="Opaque" x="408" y="0" width="58" height="15" backcolor="#CCCCCC"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -133,10 +134,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[PLACA]]></text>
+				<text><![CDATA[FACTURA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-5" mode="Transparent" x="0" y="0" width="25" height="15" backcolor="#FFCC99"/>
+				<reportElement key="staticText-5" mode="Opaque" x="0" y="0" width="25" height="15" backcolor="#CCCCCC"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -149,7 +150,7 @@
 				<text><![CDATA[No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-6" mode="Transparent" x="724" y="0" width="58" height="15" backcolor="#FFCC99"/>
+				<reportElement key="staticText-6" mode="Opaque" x="724" y="0" width="58" height="15" backcolor="#CCCCCC"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -162,7 +163,7 @@
 				<text><![CDATA[VALOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-7" mode="Transparent" x="214" y="0" width="128" height="15" backcolor="#FFCC99"/>
+				<reportElement key="staticText-7" mode="Opaque" x="214" y="0" width="128" height="15" backcolor="#CCCCCC"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -175,7 +176,7 @@
 				<text><![CDATA[FECHA/HORA SALIDA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-8" mode="Transparent" x="342" y="0" width="66" height="15" backcolor="#FFCC99"/>
+				<reportElement key="staticText-8" mode="Opaque" x="342" y="0" width="66" height="15" backcolor="#CCCCCC"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -188,7 +189,7 @@
 				<text><![CDATA[TIEMPO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-10" mode="Transparent" x="466" y="0" width="69" height="15" backcolor="#FFCC99"/>
+				<reportElement key="staticText-10" mode="Opaque" x="466" y="0" width="69" height="15" backcolor="#CCCCCC"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -201,7 +202,7 @@
 				<text><![CDATA[RUC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-11" mode="Transparent" x="535" y="0" width="189" height="15" backcolor="#FFCC99"/>
+				<reportElement key="staticText-11" mode="Opaque" x="535" y="0" width="189" height="15" backcolor="#CCCCCC"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -258,8 +259,8 @@
 					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{placa}]]></textFieldExpression>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{factura}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField" x="0" y="0" width="25" height="19"/>
@@ -349,7 +350,7 @@
 	<summary>
 		<band height="27" splitType="Stretch">
 			<textField pattern="##0.00" isBlankWhenNull="false">
-				<reportElement key="textField" mode="Opaque" x="724" y="0" width="58" height="15" backcolor="#FFCC99"/>
+				<reportElement key="textField" mode="Opaque" x="724" y="0" width="58" height="15" backcolor="#CCCCCC"/>
 				<box rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -362,14 +363,14 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUMATORIA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-9" mode="Transparent" x="666" y="0" width="58" height="15" backcolor="#FFCC99"/>
+				<reportElement key="staticText-9" mode="Opaque" x="0" y="0" width="724" height="15" backcolor="#CCCCCC"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TOTAL]]></text>

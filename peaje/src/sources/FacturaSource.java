@@ -48,11 +48,20 @@ public class FacturaSource implements JRDataSource {
         try {
 
 
-            if ("numero".equals(fieldName)) {
+            
+            if ("factura".equals(fieldName)) {
+                valor = nodo.getNumero();
+            }else if("numero".equals(fieldName)) {
                 valor = nodo.getNumero();
             } else if ("fecha".equals(fieldName)) {
                 try {
                     valor = nodo.getFecha();
+                } catch (Exception e) {
+                    System.out.println("ERROR EN FECHA" + e);
+                }
+            }else if ("fecha2".equals(fieldName)) {
+                try {
+                    valor = meses(nodo.getFecha().getMonth())+ (nodo.getFecha().getYear()+1900);
                 } catch (Exception e) {
                     System.out.println("ERROR EN FECHA" + e);
                 }
@@ -89,5 +98,35 @@ public class FacturaSource implements JRDataSource {
             Logger.getLogger(FacturaSource.class.getName()).log(Level.SEVERE, null, e);
         }
         return valor;
+    }
+    public String meses(int a){
+        if(a==0)
+          return "ENERO";
+        else if(a ==1)
+          return "FEBRERO";
+        else if(a ==2)
+          return "MARZO";
+        else if(a ==3)
+          return "ABRIL";
+        else if(a ==4)
+          return "MAYO";
+        else if(a ==5)
+          return "JUNIO";
+        else if(a ==6)
+          return "JULIO";
+        else if(a ==7)
+          return "AGOSTO";
+        else if(a ==8)
+          return "SEPTIEMBRE";
+        else if(a ==9)
+          return "OCTUBRE";
+        else if(a ==10)
+          return "NOVIEMBRE";
+        else if(a ==1)
+          return "DICIEMBRE";
+        else
+            return "";
+
+  
     }
 }

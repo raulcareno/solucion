@@ -1472,7 +1472,18 @@ public class frmFactura extends javax.swing.JInternalFrame {
             empresaObj = null;
             System.gc();
             this.setVisible(false);
-        } else {
+        } else if(evt.getKeyCode() == evt.VK_F1 ||
+                evt.getKeyCode() == evt.VK_F2 ||
+                evt.getKeyCode() == evt.VK_F3 ||
+                evt.getKeyCode() == evt.VK_F4 ||
+                evt.getKeyCode() == evt.VK_F5 ||
+                evt.getKeyCode() == evt.VK_F6 ||
+                evt.getKeyCode() == evt.VK_F7 ||
+                evt.getKeyCode() == evt.VK_F8 ||
+                evt.getKeyCode() == evt.VK_F9 ||
+                evt.getKeyCode() == evt.VK_F10 ||
+                evt.getKeyCode() == evt.VK_F11 ||
+                evt.getKeyCode() == evt.VK_F12 ) {
             principal.tecla(evt.getKeyCode());
         }
     }//GEN-LAST:event_noTicketKeyPressed

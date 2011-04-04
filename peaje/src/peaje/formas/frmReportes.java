@@ -31,6 +31,8 @@ import hibernate.cargar.validaciones;
 import hibernate.*;
 import hibernate.cargar.WorkingDirectory;
 import java.io.File;
+import java.math.BigDecimal;
+import java.util.Vector;
 import sources.ClientesSource;
 import sources.FacturaSource;
 //import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
@@ -188,7 +190,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(190, 60, 60, 14);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas diarias", "Listado clientes", " ", " " }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas diarias", "Listado clientes", "Consolidado por mes", "Clientes mas frecuentes", " ", " " }));
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
@@ -315,7 +317,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
                 .addGap(17, 17, 17))
         );
 
@@ -364,6 +366,54 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 System.out.println("" + con);
                 parametros.put("ocupados", val2.intValue());
             }
+
+
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+            JRViewer reporte = new JRViewer(masterPrint); //PARA VER EL REPORTE ANTES DE IMPRIMIR
+            panelReportes.removeAll();
+            reporte.repaint();
+            reporte.setLocation(0, 0);
+            reporte.setSize(723, 557);
+            reporte.setVisible(true);
+            panelReportes.add(reporte);
+            panelReportes.repaint();
+            this.repaint();
+        } catch (Exception ex) {
+            Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    public void consolidado(String dirreporte, String query, String titulo) {
+        try {
+            System.out.println("QUERY: "+query);
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(dirreporte);
+            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+
+            List fac = adm.queryNativo(query);
+            ArrayList detalle = new ArrayList();
+            for (Iterator it = fac.iterator(); it.hasNext();) {
+                Factura fac01 = new Factura();
+                 Vector factura =   (Vector) it.next();
+                 Date fecha = (Date) factura.get(0);
+                 BigDecimal valor = (BigDecimal) factura.get(1);
+                 fac01.setFecha(fecha);
+                 fac01.setTotal(valor);
+                detalle.add(fac01);
+            }
+            FacturaSource ds = new FacturaSource(detalle);
+            Map parametros = new HashMap();
+            parametros.put("empresa", emp.getRazon());
+            parametros.put("direccion", emp.getDireccion());
+            parametros.put("telefono", emp.getTelefonos());
+            parametros.put("titulo", titulo);
+            parametros.put("parqueaderos", emp.getParqueaderos());
+//            if (jComboBox1.getSelectedIndex() == 2) {
+//                Object con = adm.querySimple("Select count(o) from Factura as o" +
+//                        " where  o.fechafin is null  ");
+//                Long val2 = (Long) con;
+//                System.out.println("" + con);
+//                parametros.put("ocupados", val2.intValue());
+//            }
 
 
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
@@ -544,7 +594,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             tickets(dirreporte, query, titulo);
         } else if (jComboBox1.getSelectedIndex() == 1) {//TICKEST COBRADOS
             query = "Select o from Factura as o" +
-                    " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.tarjetas is null and o.fechafin is not null  ";
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' and o.tarjetas is null and o.fechafin is not null  ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketscobrados.jasper";
             titulo = "Tickest Cobrados";
             tickets(dirreporte, query, titulo);
@@ -558,12 +608,26 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         } else if (jComboBox1.getSelectedIndex() == 3) {//FACTURADO
             query = "Select o from Factura as o" +
-                    " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.fechafin is not null ";
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' and o.fechafin is not null ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiarias.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
 
         } else if (jComboBox1.getSelectedIndex() == 4) {//LISTADO DE CLIENTES
+            query = "Select o from Clientes as o where o.codigo > 1 order by o.nombres";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes.jasper";
+            titulo = " ";
+            clientes(dirreporte, query, titulo);
+
+        } else if (jComboBox1.getSelectedIndex() == 5) {//CONSOLIDADO POR MES CLIENTES
+            query = "Select date(o.fechafin),sum(o.total) from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "  group by month(o.fechafin) ";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"consolidado.jasper";
+            titulo = " ";
+            consolidado(dirreporte, query, titulo);
+
+        } else if (jComboBox1.getSelectedIndex() == 6) {//CLIENTES MAS FRECUENTS CON TARJETAS
             query = "Select o from Clientes as o where o.codigo > 1 order by o.nombres";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes.jasper";
             titulo = " ";
