@@ -157,7 +157,7 @@
 	</columnHeader>
 	<detail>
 		<band height="19" splitType="Stretch">
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement key="textField" x="25" y="0" width="111" height="19"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -168,7 +168,7 @@
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ticket}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement key="textField" x="136" y="0" width="111" height="19"/>
 				<box leftPadding="5" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -179,7 +179,7 @@
 				<textElement/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{ingreso}]]></textFieldExpression>
 			</textField>
-			<textField pattern="HH:mm:ss" isBlankWhenNull="false">
+			<textField pattern="HH:mm:ss" isBlankWhenNull="true">
 				<reportElement key="textField" x="247" y="0" width="111" height="19"/>
 				<box leftPadding="5" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -190,7 +190,7 @@
 				<textElement/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{ingreso}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField" x="358" y="0" width="111" height="19"/>
 				<box leftPadding="6" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -201,7 +201,7 @@
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{placa}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField" x="0" y="0" width="25" height="19"/>
 				<box leftPadding="3" rightPadding="1">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>

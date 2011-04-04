@@ -245,7 +245,7 @@ public static UsuarioActivo user = new UsuarioActivo();
     public String leerXML() {
         UsuarioActivo user = new UsuarioActivo();
 //        public void leerDocumento(){
-        System.out.println("" + direccio + NOMBRE_ARCHIVO_XML);
+//        System.out.println("" + direccio + NOMBRE_ARCHIVO_XML);
         try {
             File fichero = new File(direccio + NOMBRE_ARCHIVO_XML);
             if (!fichero.exists()) {
@@ -258,13 +258,13 @@ public static UsuarioActivo user = new UsuarioActivo();
 
             // normalize text representation
             doc.getDocumentElement().normalize();
-            System.out.println("Root element of the doc is "
-                    + doc.getDocumentElement().getNodeName());
+//            System.out.println("Root element of the doc is "
+//                    + doc.getDocumentElement().getNodeName());
 
 
             NodeList listOfPersons = doc.getElementsByTagName("JCINFORM");
             int totalPersons = listOfPersons.getLength();
-            System.out.println("Total no of people : " + totalPersons);
+//            System.out.println("Total no of people : " + totalPersons);
 
             for (int s = 0; s < listOfPersons.getLength(); s++) {
 

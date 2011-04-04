@@ -22,8 +22,6 @@ public class Administrador {
           claves val = new claves();
     public Administrador(UsuarioActivo user) {
         try {
-
-
         prop.put("toplink.jdbc.user", user.getNombre());
         prop.put("toplink.jdbc.password", val.desencriptar(user.getContrasenia()));
         prop.put("toplink.jdbc.url", "jdbc:mysql://"+user.getIp()+":"+user.getPuerto()+"/peaje?zeroDateTimeBehavior=convertToNull");
@@ -31,7 +29,6 @@ public class Administrador {
             System.out.println("ERROR EN ADMINISTRADOR LINEA 31;"+e);
         }
         //prop.put("toplink.jdbc.driver", "com.mysql.jdbc.Driver");
-        
     }
     EntityManagerFactory emf = null;
     //javax.persistence.Persistence.createEntityManagerFactory("peajePU");

@@ -144,7 +144,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel10 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        cmbTipoReporte = new javax.swing.JComboBox();
         desde = new com.toedter.calendar.JDateChooser();
         hasta = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
@@ -190,19 +190,19 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(190, 60, 60, 14);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas diarias", "Listado clientes", "Consolidado por mes", "Clientes mas frecuentes", " ", " " }));
-        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas diarias", "Listado clientes", "Consolidado por mes", "Clientes mas frecuentes", " ", " " }));
+        cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox1ItemStateChanged(evt);
+                cmbTipoReporteItemStateChanged(evt);
             }
         });
-        jComboBox1.addKeyListener(new java.awt.event.KeyAdapter() {
+        cmbTipoReporte.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jComboBox1KeyPressed(evt);
+                cmbTipoReporteKeyPressed(evt);
             }
         });
-        jPanel1.add(jComboBox1);
-        jComboBox1.setBounds(80, 10, 300, 20);
+        jPanel1.add(cmbTipoReporte);
+        cmbTipoReporte.setBounds(80, 10, 300, 20);
 
         desde.setDate(new Date());
         desde.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -246,7 +246,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnBuscar);
-        btnBuscar.setBounds(440, 10, 60, 50);
+        btnBuscar.setBounds(410, 30, 60, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
@@ -260,7 +260,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnSalir);
-        btnSalir.setBounds(510, 10, 60, 50);
+        btnSalir.setBounds(610, 30, 60, 50);
 
         hastahora2.setDateFormatString("hh:mm:ss");
         hastahora2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -350,6 +350,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
             ArrayList detalle = new ArrayList();
             for (Iterator<Factura> it = fac.iterator(); it.hasNext();) {
                 Factura factura = it.next();
+                if (cmbTipoReporte.getSelectedIndex() > 0) {
+                    factura.setFecha(factura.getFechafin());
+                }
                 detalle.add(factura);
             }
             FacturaSource ds = new FacturaSource(detalle);
@@ -359,7 +362,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             parametros.put("telefono", emp.getTelefonos());
             parametros.put("titulo", titulo);
             parametros.put("parqueaderos", emp.getParqueaderos());
-            if (jComboBox1.getSelectedIndex() == 2) {
+            if (cmbTipoReporte.getSelectedIndex() == 2) {
                 Object con = adm.querySimple("Select count(o) from Factura as o" +
                         " where  o.fechafin is null  ");
                 Long val2 = (Long) con;
@@ -450,7 +453,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             parametros.put("telefono", emp.getTelefonos());
             parametros.put("titulo", titulo);
             parametros.put("parqueaderos", emp.getParqueaderos());
-            if (jComboBox1.getSelectedIndex() == 2) {
+            if (cmbTipoReporte.getSelectedIndex() == 2) {
                 Object con = adm.querySimple("Select count(o) from Factura as o" +
                         " where  o.fechafin is null  ");
                 Long val2 = (Long) con;
@@ -502,7 +505,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             parametros.put("telefono", emp.getTelefonos());
             parametros.put("titulo", titulo);
             parametros.put("parqueaderos", emp.getParqueaderos());
-            if (jComboBox1.getSelectedIndex() == 2) {
+            if (cmbTipoReporte.getSelectedIndex() == 2) {
                 Object con = adm.querySimple("Select count(o) from Factura as o" +
                         " where  o.fechafin is null  ");
                 Long val2 = (Long) con;
@@ -585,41 +588,41 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
         
 
-        if (jComboBox1.getSelectedIndex() == 0) { //TICKEST POR COBRAR
+        if (cmbTipoReporte.getSelectedIndex() == 0) { //TICKEST POR COBRAR
             query = "Select o from Factura as o" +
                     " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.tarjetas is null "
                     + "and o.fechafin is null ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsporcobrar.jasper";
             titulo = "Tickest por Cobrar";
             tickets(dirreporte, query, titulo);
-        } else if (jComboBox1.getSelectedIndex() == 1) {//TICKEST COBRADOS
+        } else if (cmbTipoReporte.getSelectedIndex() == 1) {//TICKEST COBRADOS
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' and o.tarjetas is null and o.fechafin is not null  ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketscobrados.jasper";
             titulo = "Tickest Cobrados";
             tickets(dirreporte, query, titulo);
 
-        } else if (jComboBox1.getSelectedIndex() == 2) {//PUESTO OCUPADOS
+        } else if (cmbTipoReporte.getSelectedIndex() == 2) {//PUESTO OCUPADOS
             query = "Select o from Factura as o" +
                     " where o.placa = 'xxxxxx..'";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ocupados.jasper";
             titulo = "Cupos Disponibles";
             tickets(dirreporte, query, titulo);
 
-        } else if (jComboBox1.getSelectedIndex() == 3) {//FACTURADO
+        } else if (cmbTipoReporte.getSelectedIndex() == 3) {//FACTURADO
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' and o.fechafin is not null ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiarias.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
 
-        } else if (jComboBox1.getSelectedIndex() == 4) {//LISTADO DE CLIENTES
+        } else if (cmbTipoReporte.getSelectedIndex() == 4) {//LISTADO DE CLIENTES
             query = "Select o from Clientes as o where o.codigo > 1 order by o.nombres";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes.jasper";
             titulo = " ";
             clientes(dirreporte, query, titulo);
 
-        } else if (jComboBox1.getSelectedIndex() == 5) {//CONSOLIDADO POR MES CLIENTES
+        } else if (cmbTipoReporte.getSelectedIndex() == 5) {//CONSOLIDADO POR MES CLIENTES
             query = "Select date(o.fechafin),sum(o.total) from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "  group by month(o.fechafin) ";
@@ -627,7 +630,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             titulo = " ";
             consolidado(dirreporte, query, titulo);
 
-        } else if (jComboBox1.getSelectedIndex() == 6) {//CLIENTES MAS FRECUENTS CON TARJETAS
+        } else if (cmbTipoReporte.getSelectedIndex() == 6) {//CLIENTES MAS FRECUENTS CON TARJETAS
             query = "Select o from Clientes as o where o.codigo > 1 order by o.nombres";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes.jasper";
             titulo = " ";
@@ -638,18 +641,18 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+    private void cmbTipoReporteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTipoReporteItemStateChanged
         // TODO add your handling code here:
-        if(jComboBox1.getSelectedIndex() == 3){
+        if(cmbTipoReporte.getSelectedIndex() == 3){
            
         }
-    }//GEN-LAST:event_jComboBox1ItemStateChanged
+    }//GEN-LAST:event_cmbTipoReporteItemStateChanged
 
-    private void jComboBox1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jComboBox1KeyPressed
+    private void cmbTipoReporteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbTipoReporteKeyPressed
         // TODO add your handling code here:
         int cod = evt.getKeyCode();
         principal.tecla(cod);
-    }//GEN-LAST:event_jComboBox1KeyPressed
+    }//GEN-LAST:event_cmbTipoReporteKeyPressed
 
     private void desdeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_desdeKeyPressed
         // TODO add your handling code here:
@@ -674,11 +677,11 @@ public class frmReportes extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JComboBox cmbTipoReporte;
     private com.toedter.calendar.JDateChooser desde;
     private com.toedter.calendar.JDateChooser desdehora2;
     private com.toedter.calendar.JDateChooser hasta;
     private com.toedter.calendar.JDateChooser hastahora2;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
