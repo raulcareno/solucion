@@ -43,7 +43,7 @@ public class frmManual extends javax.swing.JInternalFrame {
     Administrador adm;
     private String claveActual;
     private validaciones val;
-    private principal principal;
+    private frmPrincipal principal;
 
     /** Creates new form frmProfesores */
     public frmManual(Container contendor, Administrador adm1) {
@@ -67,7 +67,7 @@ public class frmManual extends javax.swing.JInternalFrame {
 
     }
 //
-//    public frmReportes(java.awt.Frame parent, boolean modal,principal lo) {
+//    public frmReportes(java.awt.Frame parent, boolean modal,frmPrincipal lo) {
 //        super(parent,modal);
 //        this.desktopContenedor = lo.contenedor;
 //        llenarCombo();
@@ -76,7 +76,7 @@ public class frmManual extends javax.swing.JInternalFrame {
 //        empresaObj = new Empresa();
 //        adm = new Administrador();
 //        val = new validaciones();
-//        principal = lo;
+//        frmPrincipal = lo;
 //    }
 
     public void llenarCombo() {

@@ -30,7 +30,7 @@ public class frmPrivilegios   extends javax.swing.JInternalFrame  {
     public boolean modificar =false;
     private Container desktopContenedor;
     Administrador adm;
-    principal principal; 
+    frmPrincipal principal;
     /**
      * Creates new form frmRubros
      */
@@ -43,7 +43,7 @@ public class frmPrivilegios   extends javax.swing.JInternalFrame  {
     
     }
 
-    public frmPrivilegios(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
+    public frmPrivilegios(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
 //        super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         adm = adm1;

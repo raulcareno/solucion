@@ -52,7 +52,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
     Administrador adm;
     private String claveActual;
     private validaciones val;
-    private principal principal;
+    private frmPrincipal principal;
     private String in;
     private String out;
     String separador = File.separatorChar + "";
@@ -71,7 +71,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
         mascaras();
     }
 
-    public frmTicket(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
+    public frmTicket(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
 //        super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         this.adm = adm1;

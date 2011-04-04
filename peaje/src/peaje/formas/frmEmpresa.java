@@ -36,7 +36,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     Administrador adm;
     private String claveActual;
     private validaciones val;
-    private principal principal;
+    private frmPrincipal principal;
 
     /** Creates new form frmProfesores */
     public frmEmpresa(java.awt.Frame parent, boolean modal, Administrador adm1) {
@@ -62,7 +62,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
     }
 
-    public frmEmpresa(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
+    public frmEmpresa(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
 //        super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         adm = adm1;

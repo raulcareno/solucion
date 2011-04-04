@@ -65,7 +65,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     Administrador adm;
     private String claveActual;
     private validaciones val;
-    private principal principal;
+    private frmPrincipal principal;
     List<Tarifas> tarifario;
     String separador = File.separatorChar + "";
     Boolean guardando = false;
@@ -87,7 +87,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         panelencontrados1.setVisible(false);
     }
 
-    public frmFactura(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
+    public frmFactura(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
 //        super(parent, modal);
         try {
             this.desktopContenedor = lo.contenedor;
@@ -1093,8 +1093,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
 //                Thread cargar = new Thread() {
 //
 //                    public void run() {
-//                        AbrirPuerta.abrir(empresaObj.getPuerto(), principal.out);
-//                        System.out.println("SALIO PUERTA: " + principal.out);
+//                        AbrirPuerta.abrir(empresaObj.getPuerto(), frmPrincipal.out);
+//                        System.out.println("SALIO PUERTA: " + frmPrincipal.out);
 //
 //                    }
 //                };

@@ -33,7 +33,7 @@ public class frmOperadores  extends javax.swing.JInternalFrame {
     Administrador adm;
     private String claveActual;
     private validaciones val;
-    private principal principal;
+    private frmPrincipal principal;
     claves cl = new claves();
 
     /** Creates new form frmProfesores */
@@ -48,7 +48,7 @@ public class frmOperadores  extends javax.swing.JInternalFrame {
         val = new validaciones();
     }
 
-    public frmOperadores(java.awt.Frame parent, boolean modal, principal lo, Administrador adm1) {
+    public frmOperadores(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
 //        super(parent, modal);
         this.desktopContenedor = lo.contenedor;
         adm = adm1;

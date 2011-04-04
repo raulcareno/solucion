@@ -39,7 +39,7 @@ public class CodigoBarras implements Runnable{
     InputStream inputStream;
      Thread readThread;
     public String tarjeta;
-    principal princip;
+    frmPrincipal princip;
     Administrador adm = new Administrador(GeneraXMLPersonal.user);
 
     @SuppressWarnings("static-access")

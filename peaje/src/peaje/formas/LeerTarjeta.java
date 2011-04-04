@@ -43,7 +43,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     SerialPort serialPort;
     Thread readThread;
     public String tarjeta;
-    principal princip;
+    frmPrincipal princip;
      Administrador adm = new Administrador(GeneraXMLPersonal.user);
     String separador = File.separatorChar + "";
   public LeerTarjeta() {
@@ -122,7 +122,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     }
 
     @SuppressWarnings("static-access")
-    public LeerTarjeta(CommPortIdentifier portIde, principal pantalla) {
+    public LeerTarjeta(CommPortIdentifier portIde, frmPrincipal pantalla) {
 
         try {
             this.tarjeta = "";

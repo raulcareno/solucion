@@ -46,7 +46,7 @@ public class frmAuditoria   extends javax.swing.JInternalFrame {
     Administrador adm;
     private String claveActual;
     private validaciones val;
-    private principal principal;
+    private frmPrincipal principal;
     /** Creates new form frmTarifas1 */
     public frmAuditoria(java.awt.Frame parent, boolean modal) {
 //        super(parent, modal);
@@ -63,7 +63,7 @@ public class frmAuditoria   extends javax.swing.JInternalFrame {
 
     }
 
-    public frmAuditoria(java.awt.Frame parent, boolean modal,principal lo,Administrador adm1) {
+    public frmAuditoria(java.awt.Frame parent, boolean modal,frmPrincipal lo,Administrador adm1) {
 //          super(parent,modal);
         this.desktopContenedor = lo.contenedor;
 

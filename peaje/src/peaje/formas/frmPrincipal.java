@@ -52,7 +52,7 @@ import javax.swing.ListModel;
  *
  * @author geovanny
  */
-public class principal extends javax.swing.JFrame implements KeyListener, WindowListener {
+public class frmPrincipal extends javax.swing.JFrame implements KeyListener, WindowListener {
 
     Administrador adm;
 //    Image image = Toolkit.getDefaultToolkit().getImage("C:\\Documents and Settings\\geovanny\\Escritorio\\JavaApplication3\\src\\javaapplication3\\tray.gif");
@@ -87,13 +87,13 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         btnCerrar.setEnabled(estado);
 
     }
-//public principal(){
+//public frmPrincipal(){
 //
 //    }
 
-    /** Creates new form principal */
-    public principal() {
-//        super("principal");
+    /** Creates new form frmPrincipal */
+    public frmPrincipal() {
+//        super("frmPrincipal");
 //        this.addKeyListener(this);
 //        this.setVisible(true);
 //        this.setVisible(true);
@@ -190,13 +190,13 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
 
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         usuariot.requestFocusInWindow();
@@ -1333,7 +1333,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         );
 
         jPanel10.add(jPanel1);
-        jPanel1.setBounds(360, 10, 20, 70);
+        jPanel1.setBounds(360, 10, 0, 0);
 
         spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
         spIngreso.setBorder(null);
@@ -1868,10 +1868,10 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         //                frmLogin.setUndecorated(true);
         //                frmLogin.shogeova geow();
         //        } catch (AWTException ex) {
-        //            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        //            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         //        }
 //        } catch (PropertyVetoException ex) {
-//            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
 //        }
     }
 
@@ -1922,7 +1922,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             disponibles.setText("Disponibles: " + (empresaObj.getParqueaderos() - val2.intValue()));
             ocupados.setText("Ocupados: " + val2.intValue());
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -2037,7 +2037,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                 contenedor.requestFocus();
                 auditar("", "", "Ingreso al Sistema");
             } catch (Exception ex) {
-                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             clave.setEditable(true);
@@ -2052,7 +2052,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
     }
 
     public void buscarTarjeta(String puertoViene) {
-        final principal pra = this;
+        final frmPrincipal pra = this;
         if (puertoViene.length() > 10) {
             puertoViene = puertoViene.substring(0, 10);
         }
@@ -2089,7 +2089,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 //                            }
 //                                frmClientes.show();
 //                            } catch (Exception ex) {
-//                                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+//                                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
 //                            }
 //
 //                        }
@@ -2304,14 +2304,14 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                     noDisponibles();
                 }
             } catch (Exception ex) {
-                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             procesando.setVisible(false);
 
 //            taskTarjeta.setCollapsed(true);
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -2415,7 +2415,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             frmClientes1.setVisible(true);
             contenedor.requestFocus();
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 //        contenedor.requestFocus();
@@ -2441,7 +2441,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             usu.show();
             contenedor.requestFocus();
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        contenedor.requestFocus();
     }//GEN-LAST:event_btnUsuariosActionPerformed
@@ -2463,7 +2463,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             usu.show();
             contenedor.requestFocus();
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        contenedor.requestFocus();
     }//GEN-LAST:event_btnEmpresaActionPerformed
@@ -2485,7 +2485,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             usu.show();
             contenedor.requestFocus();
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        contenedor.requestFocus();
     }//GEN-LAST:event_btnTarifasActionPerformed
@@ -2514,7 +2514,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             usu.placa.requestFocusInWindow();
 
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        contenedor.requestFocus();
     }//GEN-LAST:event_btnTicketActionPerformed
@@ -2555,7 +2555,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
 
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        contenedor.requestFocus();
 
@@ -2578,7 +2578,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             contenedor.add(usu);
             usu.show();
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        contenedor.requestFocus();
     }//GEN-LAST:event_btnReportesActionPerformed
@@ -2598,7 +2598,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             usu.setLocation(260, 220);
             usu.show();
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_mnAcercaActionPerformed
@@ -2694,7 +2694,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                 formaTarjetas1.setLocation(250, 70);
                 formaTarjetas1.show();
             } catch (Exception ex) {
-                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -2801,7 +2801,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                             return;
                         }
                     } else {
@@ -2827,7 +2827,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                             formaTarjetas1.setVisible(true);
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                             return;
                         }
                     }
@@ -2902,7 +2902,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                     adm.eliminarObjeto(Clientes.class, clienteObj.getCodigo());
                     this.limpiar();
                 } catch (Exception ex) {
-                    Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -2989,7 +2989,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                             codigoBuscar.requestFocusInWindow();
                         }
                     } catch (Exception ex) {
-                        Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                     procesando.setVisible(false);
@@ -3027,7 +3027,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                 txtValor.setText(clienteObj.getValor().setScale(2) + "");
 
             } catch (Exception ex) {
-                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         //        JOptionPane.showMessageDialog(this, usuarioObj);
@@ -3048,7 +3048,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             }
             tarjetas.setModel(dtm);
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -3075,7 +3075,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
                 }
                 txtValor.setText(clienteObj.getValor().setScale(2) + "");
             } catch (Exception ex) {
-                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             buscarClientes.dispose();
@@ -3114,7 +3114,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 //              contenedor.add(usu);
 
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
         contenedor.requestFocus();
     }//GEN-LAST:event_btnAccesosActionPerformed
@@ -3199,7 +3199,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
         contenedor.requestFocus();
 
@@ -3316,7 +3316,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         //            cliente.setText(tarje.getCliente().getNombres());
         //
         //        } catch (Exception ex) {
-        //            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        //            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         //        }
 }//GEN-LAST:event_tarjetatxtVetoableChange
 
@@ -3327,7 +3327,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         //            cliente.setText(tarje.getCliente().getNombres());
         //
         //        } catch (Exception ex) {
-        //            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        //            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         //        }
 }//GEN-LAST:event_tarjetatxtPropertyChange
 
@@ -3354,7 +3354,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 }//GEN-LAST:event_tarjetatxtCaretUpdate
 
@@ -3393,7 +3393,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             System.exit(0);
 
         } catch (Throwable ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 }//GEN-LAST:event_jButton9ActionPerformed
 
@@ -3646,7 +3646,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             usu.show();
             contenedor.requestFocus();
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAuditoriaActionPerformed
 
@@ -3736,7 +3736,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
 //         * @param args the command line arguments
 //         */
 ////    public static void main(String args[]) {
-////        new principal();
+////        new frmPrincipal();
 ////
 ////    }
 //    public
@@ -3745,7 +3745,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                principal pr = new principal();
+                frmPrincipal pr = new frmPrincipal();
                 if (mostrar == true) {
                     pr.setVisible(true);
                 } else {
@@ -3962,7 +3962,7 @@ public class principal extends javax.swing.JFrame implements KeyListener, Window
             aud.setUsuarios(usuarioActual);
             adm.guardar(aud);
         } catch (Exception ex) {
-            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

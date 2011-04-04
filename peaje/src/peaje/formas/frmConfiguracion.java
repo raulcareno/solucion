@@ -232,7 +232,7 @@ public class frmConfiguracion extends javax.swing.JFrame {
         }
         this.disable();
         this.dispose();
-        new principal().show();
+        new frmPrincipal().show();
         
 //        btnAgregar.setEnabled(true);
 //        //          btnBuscar.setEnabled(true);
