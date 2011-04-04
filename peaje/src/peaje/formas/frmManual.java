@@ -264,9 +264,9 @@ public class frmManual extends javax.swing.JInternalFrame {
         getContentPane().add(btnTarifas);
         btnTarifas.setBounds(168, 112, 135, 43);
 
-        btnAccesos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lock.gif"))); // NOI18N
+        btnAccesos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/today.gif"))); // NOI18N
         btnAccesos.setMnemonic('S');
-        btnAccesos.setText("Accesos");
+        btnAccesos.setText("Auditoria");
         btnAccesos.setFocusable(false);
         btnAccesos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAccesos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/video.png"))); // NOI18N
@@ -366,9 +366,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
 
-                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
+                        JFrame frame = new JFrame("MANUAL DE TARIFARIO");
                         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
+                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TARIFAS.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
                         frame.setVisible(true);
@@ -392,9 +392,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
 
-                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
+                        JFrame frame = new JFrame("MANUAL DE AUDITORIA");
                         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
+                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/AUDITORIA.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
                         frame.setVisible(true);
@@ -417,9 +417,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
 
-                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
+                        JFrame frame = new JFrame("MANUAL DE RECONFIGURACION DEL SISTEMA");
                         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
+                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/RECONFIGURAR.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
                         frame.setVisible(true);
@@ -477,9 +477,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
 
-                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
+                        JFrame frame = new JFrame("MANUAL DE OPERADORES");
                         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
+                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/OPERADORES.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
                         frame.setVisible(true);
@@ -503,9 +503,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
 
-                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
+                        JFrame frame = new JFrame("MANUAL DE REPORTES");
                         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
+                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/REPORTES.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
                         frame.setVisible(true);
@@ -529,9 +529,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
 
-                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
+                        JFrame frame = new JFrame("MANUAL DE DATOS DE LA EMPRESA");
                         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
+                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/EMPRESA.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
                         frame.setVisible(true);

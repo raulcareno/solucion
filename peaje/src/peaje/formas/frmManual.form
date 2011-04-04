@@ -240,10 +240,10 @@
     <Component class="javax.swing.JButton" name="btnAccesos">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/images/lock.gif"/>
+          <Image iconType="3" name="/images/today.gif"/>
         </Property>
         <Property name="mnemonic" type="int" value="83"/>
-        <Property name="text" type="java.lang.String" value="Accesos"/>
+        <Property name="text" type="java.lang.String" value="Auditoria"/>
         <Property name="focusable" type="boolean" value="false"/>
         <Property name="horizontalTextPosition" type="int" value="0"/>
         <Property name="rolloverIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
