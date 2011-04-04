@@ -20,6 +20,7 @@ import javax.persistence.Query;
 public class Administrador {
     Map prop = new HashMap();
           claves val = new claves();
+    @SuppressWarnings("static-access")
     public Administrador(UsuarioActivo user) {
         try {
         prop.put("toplink.jdbc.user", user.getNombre());
