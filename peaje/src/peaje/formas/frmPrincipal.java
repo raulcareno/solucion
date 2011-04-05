@@ -3711,6 +3711,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     public void respaldar() {
 
         try {
+//            System.out.println(""+System.getProperty("os.name"));
+//            System.out.println(""+System.getProperty("os.arch"));
+//            System.out.println(""+System.getProperty("os.version"));
 
             String sFichero = "C:\\WINDOWS\\system32\\mysqldump.exe";
             File fichero = new File(sFichero);
@@ -3718,12 +3721,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 JOptionPane.showMessageDialog(this, "No existe el archivo mysqldump.exe \n En el directorio  c:\\windows\\system32 \n copielo en el directorio indicado y vuelva a ejecutar" );
                 return;
             }
-
             String ip = UsuarioActivo.getIp();
             String direc = ubicacionArchivo.getText();
-           
+          
             String usuario = UsuarioActivo.getNombre();
-
             String clave = cl.desencriptar(UsuarioActivo.getContrasenia());
 
 //            Date fechaActual = new Date();
