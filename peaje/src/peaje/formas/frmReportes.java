@@ -191,7 +191,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel1.setBounds(190, 60, 60, 14);
 
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas diarias", "Facturas de tickets", "Facturas de tarjetas", "Consolidado por mes", "Clientes mas frecuentes", "Listado clientes" }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas Tickest y Tarjetas", "Facturas de Tickets", "Facturas de Tarjetas", "Consolidado por Mes", "Clientes mas frecuentes", "Listado clientes" }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);

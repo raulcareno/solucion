@@ -138,10 +138,10 @@
                 <StringItem index="0" value="Tickets por cobrar"/>
                 <StringItem index="1" value="Tickets cobrados"/>
                 <StringItem index="2" value="Puestos ocupados"/>
-                <StringItem index="3" value="Facturas diarias"/>
-                <StringItem index="4" value="Facturas de tickets"/>
-                <StringItem index="5" value="Facturas de tarjetas"/>
-                <StringItem index="6" value="Consolidado por mes"/>
+                <StringItem index="3" value="Facturas Tickest y Tarjetas"/>
+                <StringItem index="4" value="Facturas de Tickets"/>
+                <StringItem index="5" value="Facturas de Tarjetas"/>
+                <StringItem index="6" value="Consolidado por Mes"/>
                 <StringItem index="7" value="Clientes mas frecuentes"/>
                 <StringItem index="8" value="Listado clientes"/>
               </StringArray>
