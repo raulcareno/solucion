@@ -190,7 +190,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(190, 60, 60, 14);
 
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas diarias", "Listado clientes", "Consolidado por mes", "Clientes mas frecuentes", " ", " " }));
+        cmbTipoReporte.setMaximumRowCount(12);
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas diarias", "Facturas de tickets", "Facturas de tarjetas", "Consolidado por mes", "Clientes mas frecuentes", "Listado clientes" }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -260,7 +261,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnSalir);
-        btnSalir.setBounds(610, 30, 60, 50);
+        btnSalir.setBounds(480, 30, 60, 50);
 
         hastahora2.setDateFormatString("hh:mm:ss");
         hastahora2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -300,14 +301,11 @@ public class frmReportes extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE)
+                    .addComponent(panelReportes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE))
                 .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
@@ -316,8 +314,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
                 .addGap(17, 17, 17))
         );
 
@@ -612,18 +610,28 @@ public class frmReportes extends javax.swing.JInternalFrame {
         } else if (cmbTipoReporte.getSelectedIndex() == 3) {//FACTURADO
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + "and o.fechafin is not null and o.tarjetas.tarjeta is null  ";
+                    + "and o.fechafin is not null and o.tarjetas is null  ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiarias.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
 
-        } else if (cmbTipoReporte.getSelectedIndex() == 4) {//LISTADO DE CLIENTES
-            query = "Select o from Clientes as o where o.codigo > 1 order by o.nombres";
-            dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes.jasper";
-            titulo = " ";
-            clientes(dirreporte, query, titulo);
+        }  else if (cmbTipoReporte.getSelectedIndex() == 4) {//FACTURADO SOLO TICKETS
+            query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and o.fechafin is not null and o.ticket is not null and o.tarjetas is null  ";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariastickets.jasper";
+            titulo = "Facturas ";
+            tickets(dirreporte, query, titulo);
 
-        } else if (cmbTipoReporte.getSelectedIndex() == 5) {//CONSOLIDADO POR MES CLIENTES
+        }  else if (cmbTipoReporte.getSelectedIndex() == 5) {//FACTURADO SOLO TARJETAS MENSUALES
+            query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and o.fechafin is not null  and o.ticket is null and o.tarjetas is null  ";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariastarjetas.jasper";
+            titulo = "Facturas ";
+            tickets(dirreporte, query, titulo);
+
+        }else if (cmbTipoReporte.getSelectedIndex() == 6) {//CONSOLIDADO POR MES CLIENTES
             query = "Select date(o.fechafin),sum(o.total) from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "  group by month(o.fechafin) ";
@@ -631,7 +639,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
             titulo = " ";
             consolidado(dirreporte, query, titulo);
 
-        } else if (cmbTipoReporte.getSelectedIndex() == 6) {//CLIENTES MAS FRECUENTS CON TARJETAS
+        } else if (cmbTipoReporte.getSelectedIndex() == 7) {//CLIENTES MAS FRECUENTS CON TARJETAS
+            query = "Select o from Clientes as o where o.codigo > 1 order by o.nombres";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes.jasper";
+            titulo = " ";
+            clientes(dirreporte, query, titulo);
+
+        } else if (cmbTipoReporte.getSelectedIndex() == 8) {//LISTADO DE CLIENTES
             query = "Select o from Clientes as o where o.codigo > 1 order by o.nombres";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes.jasper";
             titulo = " ";
