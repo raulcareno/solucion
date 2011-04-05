@@ -46,6 +46,7 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.StringTokenizer;
+import javax.swing.JFileChooser;
 import javax.swing.ListModel;
 
 /**
@@ -313,6 +314,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel6 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        frmRespaldarBase = new javax.swing.JInternalFrame();
+        btnRespaldoWindows = new javax.swing.JButton();
+        btnRespaldoLinux = new javax.swing.JButton();
+        ubicacionArchivo = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jButton8 = new javax.swing.JButton();
+        nombreArchivo = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         cliente = new javax.swing.JFormattedTextField();
         tarjetatxt = new javax.swing.JFormattedTextField();
@@ -326,12 +337,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         placa = new javax.swing.JFormattedTextField();
         errores = new javax.swing.JLabel();
         usuarioLogeado = new javax.swing.JButton();
-        frmRespaldarBase = new javax.swing.JInternalFrame();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -1282,6 +1287,67 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmClientes1.setBounds(40, 20, 440, 450);
         contenedor.add(frmClientes1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+        frmRespaldarBase.setTitle("Respaldo de Información");
+        frmRespaldarBase.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edittrash.gif"))); // NOI18N
+        frmRespaldarBase.setVisible(true);
+        frmRespaldarBase.getContentPane().setLayout(null);
+
+        btnRespaldoWindows.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/windows.png"))); // NOI18N
+        btnRespaldoWindows.setText("SI ESWINDOWS");
+        btnRespaldoWindows.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRespaldoWindowsActionPerformed(evt);
+            }
+        });
+        frmRespaldarBase.getContentPane().add(btnRespaldoWindows);
+        btnRespaldoWindows.setBounds(110, 120, 135, 60);
+
+        btnRespaldoLinux.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/linux.png"))); // NOI18N
+        btnRespaldoLinux.setText("SI ES LINUX");
+        btnRespaldoLinux.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRespaldoLinuxActionPerformed(evt);
+            }
+        });
+        frmRespaldarBase.getContentPane().add(btnRespaldoLinux);
+        btnRespaldoLinux.setBounds(290, 120, 153, 61);
+        frmRespaldarBase.getContentPane().add(ubicacionArchivo);
+        ubicacionArchivo.setBounds(140, 50, 205, 20);
+
+        jLabel6.setText("Nombre del Archivo:");
+        frmRespaldarBase.getContentPane().add(jLabel6);
+        jLabel6.setBounds(40, 90, 97, 14);
+
+        jLabel24.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel24.setText(".sql");
+        frmRespaldarBase.getContentPane().add(jLabel24);
+        jLabel24.setBounds(347, 80, 30, 30);
+
+        jButton8.setText("Examinar");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        frmRespaldarBase.getContentPane().add(jButton8);
+        jButton8.setBounds(350, 50, 77, 23);
+
+        nombreArchivo.setText("RESPALDO"+ (new Date()).toLocaleString().replace("/","").replace(" ","").replace(":",""));
+        frmRespaldarBase.getContentPane().add(nombreArchivo);
+        nombreArchivo.setBounds(140, 80, 205, 20);
+
+        jLabel25.setText("Ubicación:");
+        frmRespaldarBase.getContentPane().add(jLabel25);
+        jLabel25.setBounds(40, 60, 103, 14);
+
+        jLabel26.setForeground(new java.awt.Color(51, 0, 204));
+        jLabel26.setText("Recuerde respaldar su información periodicamente, para una mayor seguridad de su sistema");
+        frmRespaldarBase.getContentPane().add(jLabel26);
+        jLabel26.setBounds(40, 10, 480, 14);
+
+        frmRespaldarBase.setBounds(50, 120, 520, 270);
+        contenedor.add(frmRespaldarBase, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
         jPanel10.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1333,7 +1399,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         );
 
         jPanel10.add(jPanel1);
-        jPanel1.setBounds(360, 10, 0, 0);
+        jPanel1.setBounds(360, 10, 20, 70);
 
         spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
         spIngreso.setBorder(null);
@@ -1402,51 +1468,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         usuarioLogeado.setBounds(10, 10, 420, 30);
         contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jButton6.setText("SI ESWINDOWS");
-
-        jButton7.setText("SI ES LINUX");
-
-        jLabel6.setText("Nombre del Archivo:");
-
-        jLabel24.setText(".sql");
-
-        javax.swing.GroupLayout frmRespaldarBaseLayout = new javax.swing.GroupLayout(frmRespaldarBase.getContentPane());
-        frmRespaldarBase.getContentPane().setLayout(frmRespaldarBaseLayout);
-        frmRespaldarBaseLayout.setHorizontalGroup(
-            frmRespaldarBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frmRespaldarBaseLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addGap(30, 30, 30)
-                .addGroup(frmRespaldarBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(frmRespaldarBaseLayout.createSequentialGroup()
-                        .addComponent(jButton6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton7))
-                    .addGroup(frmRespaldarBaseLayout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(172, 172, 172))
-        );
-        frmRespaldarBaseLayout.setVerticalGroup(
-            frmRespaldarBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frmRespaldarBaseLayout.createSequentialGroup()
-                .addContainerGap(62, Short.MAX_VALUE)
-                .addGroup(frmRespaldarBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel24))
-                .addGap(28, 28, 28)
-                .addGroup(frmRespaldarBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(70, 70, 70))
-        );
-
-        frmRespaldarBase.setBounds(30, 170, 450, 270);
-        contenedor.add(frmRespaldarBase, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jSplitPane1.setRightComponent(contenedor);
 
@@ -3654,92 +3675,100 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAuditoria1ActionPerformed
 
-//    public void respaldar() {
-//
-//        try {
-//
-//            String sFichero = "C:\\WINDOWS\\system32\\mysqldump.exe";
-//            File fichero = new File(sFichero);
-//            if (!fichero.exists()) {
-//                JOptionPane.show(this, "No existe el archivo mysqldump.exe \n En el directorio  c:\\windows\\system32 \n copielo en el directorio indicado y vuelva a ejecutar" );
-//                return;
-//            }
-//
-//            List parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'IP'");
-//            ParametrosGlobales para = parame.get(0);
-//            String ip = para.getCvalor();
-//
-//            String direc = direccion.value;
-//
-//            parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'USUARIO'");
-//            para = parame.get(0);
-//            String usuario = para.getCvalor();
-//
-//            parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'CLAVES'");
-//            para = parame.get(0);
-//            String clave = para.getCvalor();
-//
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        JFileChooser f = new JFileChooser();
+        //f.setDialogType(JFileChooser.OPEN_DIALOG);
+        f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+       f.showOpenDialog(this);
+        ubicacionArchivo.setText(f.getSelectedFile().getAbsolutePath());
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void btnRespaldoWindowsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRespaldoWindowsActionPerformed
+        // TODO add your handling code here:
+        if(ubicacionArchivo.getText().isEmpty()){
+                JOptionPane.showMessageDialog(this,"Seleccione una ubicación haciendo click en EXAMINAR");
+                return;
+        }else if(nombreArchivo.getText().isEmpty()){
+                JOptionPane.showMessageDialog(this,"Escriba un nombre para su respaldo");
+                return;
+        }
+        respaldar();
+    }//GEN-LAST:event_btnRespaldoWindowsActionPerformed
+
+    private void btnRespaldoLinuxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRespaldoLinuxActionPerformed
+        // TODO add your handling code here:
+           if(ubicacionArchivo.getText().isEmpty()){
+                JOptionPane.showMessageDialog(this,"Seleccione una ubicación haciendo click en EXAMINAR");
+                return;
+        }else if(nombreArchivo.getText().isEmpty()){
+                JOptionPane.showMessageDialog(this,"Escriba un nombre para su respaldo");
+                return;
+        }
+           respaldarLinux();
+    }//GEN-LAST:event_btnRespaldoLinuxActionPerformed
+
+    public void respaldar() {
+
+        try {
+
+            String sFichero = "C:\\WINDOWS\\system32\\mysqldump.exe";
+            File fichero = new File(sFichero);
+            if (!fichero.exists()) {
+                JOptionPane.showMessageDialog(this, "No existe el archivo mysqldump.exe \n En el directorio  c:\\windows\\system32 \n copielo en el directorio indicado y vuelva a ejecutar" );
+                return;
+            }
+
+            String ip = UsuarioActivo.getIp();
+            String direc = ubicacionArchivo.getText();
+           
+            String usuario = UsuarioActivo.getNombre();
+
+            String clave = cl.desencriptar(UsuarioActivo.getContrasenia());
+
 //            Date fechaActual = new Date();
 //            String fec = "fecha" + fechaActual.getDate() + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getYear() + 1900) + "_" + fechaActual.getHours() + "-" + fechaActual.getMinutes() + "-" + fechaActual.getSeconds() + "";
-//            File duir = new File(direc);
-//            duir.mkdir();
-//            Runtime.getRuntime().exec("cmd /c mysqldump -h " + ip + " --op -u " + usuario + " -p" + clave + " academico > " + direc + "\\academico" + fec + ".sql");
+            File duir = new File(direc);
+            duir.mkdir();
+            Runtime.getRuntime().exec("cmd /c mysqldump -h " + ip + " --op -u " + usuario + " -p" + clave + " academico > " + direc + "\\" + nombreArchivo.getText() + ".sql");
 //            respaldo.value = direc + "\\academico" + fec + ".sql ";
-//            alert("Respaldo realizado con Éxito en: " + direc + "\\academico" + fec + ".sql ");
-//        } catch (Exception e) {
-//            System.out.println("" + e);
+            JOptionPane.showMessageDialog(this,"Respaldo realizado con Éxito ...! ");
+        } catch (Exception e) {
+            System.out.println("" + e);
+            JOptionPane.showMessageDialog(this,"No se pudo realizar el Respaldo");
+        }
+
+    }
+//
+    public void respaldarLinux() {
+        try {
+            String ip = UsuarioActivo.getIp();
+            String direc = ubicacionArchivo.getText();
+            String usuario = UsuarioActivo.getNombre();
+            String clave = cl.desencriptar(UsuarioActivo.getContrasenia());
+            File duir = new File(direc);
+            duir.mkdir();
+            String ubicacion = direc + "/" + nombreArchivo.getText() + ".sql";
+            String cnd = "mysqldump -h" + ip + " -u" + usuario + " -p" + clave + " -B academico " + " -r" + ubicacion;
+            StringTokenizer st = new StringTokenizer(cnd);
+            String[] coma = new String[st.countTokens() + 1];
+            int i = 0;
+            while (st.hasMoreTokens()) {
+                coma[i] = st.nextToken();
+                System.out.println(coma[i] + " n:" + i);
+                i++;
+            }
+            coma[7] = "-r" + ubicacion;
+            Runtime.getRuntime().exec(coma);
+//            respaldo.value = ubicacion;
+//            alert("Respaldo realizado con Éxito en: " + ubicacion);
+        } catch (Exception e) {
+            System.out.println("" + e);
 //            alert("No se pudo realizar el Respaldo");
-//        }
-//
-//    }
-//
-//    public void respaldarLinux() {
-//
-//        try {
-//            List parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'IP'");
-//            ParametrosGlobales para = parame.get(0);
-//            String ip = para.getCvalor();
-//
-//            String direc = direccion.value;
-//
-//            parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'USUARIO'");
-//            para = parame.get(0);
-//            String usuario = para.getCvalor();
-//
-//            parame = adm.query("Select o from ParametrosGlobales as o where o.variable= 'CLAVES'");
-//            para = parame.get(0);
-//            String clave = para.getCvalor();
-//            Date fechaActual = new Date();
-//            String fec = "fecha" + fechaActual.getDate() + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getYear() + 1900) + "_" + fechaActual.getHours() + "-" + fechaActual.getMinutes() + "-" + fechaActual.getSeconds() + "";
-//            File duir = new File(direc);
-//            duir.mkdir();
-//            String ubicacion = direccion.value + "/academico" + fec + ".sql";
-//            String cnd = "mysqldump -h" + ip + " -u" + usuario + " -p" + clave + " -B academico " + " -r" + ubicacion;
-//            StringTokenizer st = new StringTokenizer(cnd);
-//            String[] coma = new String[st.countTokens() + 1];
-//            int i = 0;
-//            while (st.hasMoreTokens()) {
-//                coma[i] = st.nextToken();
-//                System.out.println(coma[i] + " n:" + i);
-//                i++;
-//            }
-//            coma[7] = "-r" + ubicacion;
-//            Runtime.getRuntime().exec(coma);
-////            respaldo.value = ubicacion;
-////            alert("Respaldo realizado con Éxito en: " + ubicacion);
-//        } catch (Exception e) {
-//            System.out.println("" + e);
-////            alert("No se pudo realizar el Respaldo");
-//        }
-//
-//        /**
-//         * @param args the command line arguments
-//         */
-////    public static void main(String args[]) {
-////        new frmPrincipal();
-////
-////    }
-//    public
+        }
+
+ }
+
 
     static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -3785,6 +3814,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JButton btnNuevaTarjeta;
     private javax.swing.JButton btnReconfigurar;
     private javax.swing.JButton btnReportes;
+    private javax.swing.JButton btnRespaldoLinux;
+    private javax.swing.JButton btnRespaldoWindows;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSalir2;
     private javax.swing.JButton btnSalirTarjetas;
@@ -3823,8 +3854,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -3843,6 +3873,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
@@ -3869,7 +3901,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JToolBar jToolBar3;
@@ -3879,6 +3910,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JCheckBox martes;
     private javax.swing.JCheckBox miercoles;
     public javax.swing.JFormattedTextField noTarjeta;
+    private javax.swing.JTextField nombreArchivo;
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JLabel ocupados;
     private javax.swing.JPanel panelHoras;
@@ -3897,6 +3929,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JCheckBox todos;
     private javax.swing.JLabel totales;
     private javax.swing.JTextField txtValor;
+    private javax.swing.JTextField ubicacionArchivo;
     private javax.swing.JButton usuarioLogeado;
     private javax.swing.JFormattedTextField usuariot;
     private javax.swing.JCheckBox viernes;
