@@ -44,19 +44,21 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     Thread readThread;
     public String tarjeta;
     frmPrincipal princip;
-     Administrador adm = new Administrador(GeneraXMLPersonal.user);
+    Administrador adm = new Administrador(GeneraXMLPersonal.user);
     String separador = File.separatorChar + "";
-  public LeerTarjeta() {
+
+    public LeerTarjeta() {
     }
-   public  void abrir(String puertodeTarjet, String abrirPuerta) {
+
+    public void abrir(String puertodeTarjet, String abrirPuerta) {
 
         try {
             WorkingDirectory w = new WorkingDirectory();
             String ubicacionDirectorio = w.get() + separador;
             if (ubicacionDirectorio.contains("build")) {
-                ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }
-            String temp_string = ubicacionDirectorio + "lib"+separador+"javax.comm.properties";
+            String temp_string = ubicacionDirectorio + "lib" + separador + "javax.comm.properties";
             Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
             loadDriver_Method.setAccessible(true);
             loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
@@ -75,11 +77,11 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //                            if(portId.isCurrentlyOwned()){
 //                                serialPort = LeerTarjeta.serialPort;
 //                            }else{
-                            if(portId.isCurrentlyOwned()){
+                            if (portId.isCurrentlyOwned()) {
                                 portId.removePortOwnershipListener(null);
                             }
 
-                                    serialPort = (SerialPort) portId.open("COMPUERTA", 2001);
+                            serialPort = (SerialPort) portId.open("COMPUERTA", 2001);
 //                            }
 
                         } catch (PortInUseException e) {
@@ -136,7 +138,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             inputStream = serialPort.getInputStream();
         } catch (IOException e) {
         }
-         try {
+        try {
             outputSream = serialPort.getOutputStream();
         } catch (IOException e) {
         }
@@ -169,6 +171,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     }
     public int inicio = 0;
 
+    @Override
     public void serialEvent(SerialPortEvent event) {
 //    if(tarjeta.length()>10){
 //        tarjeta = "";
@@ -200,11 +203,14 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         if (tarjeta.length() >= 10) {
 
             //System.out.println("" + tarjeta);
-
-            if (puertoId.getName().equals(princip.empresaObj.getPuerto())) {
-                imprimir(56);
+            if("ingeniero1".equals(tarjeta)){
+                imprimir();
                 return;
             }
+//            if (puertoId.getName().equals(princip.empresaObj.getPuerto())) {
+//                imprimir();
+//                return;
+//            }
             princip.tarjetatxt.setText("");
             princip.tarjetatxt.setText(tarjeta);
             princip.buscarTarjeta(puertoId.getName());
@@ -217,7 +223,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
     }
 
-    public void imprimir(int cod) {
+    public void imprimir() {
         try {
             WorkingDirectory w = new WorkingDirectory();
             String ubicacionDirectorio = w.get() + separador;
@@ -227,7 +233,14 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             Empresa emp = princip.empresaObj;
             JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes" + separador + "ticket2.jasper");
 
-            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
+            Factura fac = new Factura();
+            fac.setPlaca("CLIENTE LECTORA");
+            fac.setFechaini(new Date());
+            fac.setFecha(new Date());
+            fac.setTicket(emp.getDocumentoticket());
+//                noTicket.setText(emp.getDocumentoticket());
+            adm.guardar(fac);
+//            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
             ArrayList detalle = new ArrayList();
             detalle.add(fac);
             FacturaSource ds = new FacturaSource(detalle);

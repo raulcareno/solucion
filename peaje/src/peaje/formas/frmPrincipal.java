@@ -3,6 +3,7 @@ package peaje.formas;
 import java.awt.AWTException;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,6 +46,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 import javax.swing.JFileChooser;
 import javax.swing.ListModel;
@@ -70,7 +72,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     String separador = File.separatorChar + "";
     static UsuarioActivo datosConecta;
     static Boolean mostrar = true;
-
+ static ArrayList puertoListo;
     public void habilitarBotones(Boolean estado) {
         btnAuditoria.setEnabled(estado);
         btnClientes.setEnabled(estado);
@@ -1789,15 +1791,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             CommPortIdentifier portId;
             Enumeration portList = CommPortIdentifier.getPortIdentifiers();
             LeerTarjeta reader;
-//            ArrayList read = new ArrayList();
+
+            puertoListo = new ArrayList();
             while (portList.hasMoreElements()) {
                 portId = (CommPortIdentifier) portList.nextElement();
                 if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-//                    if (portId.getName().equals(empresaObj.getPuerto())) {
-//                        reader = new LeerTarjeta(portId, this);
-////                        read.add(reader);
-//                        System.out.println("ABIERTO: "+empresaObj.getPuerto());
-//                    }
+                    if (portId.getName().equals(empresaObj.getPuerto())) {
+                        reader = new LeerTarjeta(portId, this);
+                        puertoListo.add(reader);
+                        System.out.println("ABIERTO: "+empresaObj.getPuerto());
+                    }
                     if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
                         reader = new LeerTarjeta(portId, this);
                         System.out.println("ABIERTO: " + empresaObj.getPuerto1());
@@ -3331,8 +3334,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         Thread cargar = new Thread() {
 
             public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                barrera1.setEnabled(true);
+                try {
+                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                    ta.outputSream.write("1".getBytes());
+                    //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                    barrera1.setEnabled(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         };
         cargar.start();
