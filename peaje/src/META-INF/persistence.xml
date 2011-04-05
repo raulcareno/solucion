@@ -19,6 +19,7 @@
       <!--property name="toplink.jdbc.user" value="root"/>
       <property name="toplink.jdbc.password" value=""/>
       <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/peaje?zeroDateTimeBehavior=convertToNull"/-->
+      <property name="toplink.weaving" value="false"/>
       <property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
     </properties>
   </persistence-unit>
