@@ -611,7 +611,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         } else if (cmbTipoReporte.getSelectedIndex() == 3) {//FACTURADO
             query = "Select o from Factura as o" +
-                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' and o.fechafin is not null ";
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and o.fechafin is not null and o.tarjetas.tarjeta is null  ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiarias.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);

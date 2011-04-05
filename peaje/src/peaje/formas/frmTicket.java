@@ -28,6 +28,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
 import hibernate.*;
+import hibernate.cargar.UsuarioActivo;
 import hibernate.cargar.WorkingDirectory;
 import java.io.File;
 import java.text.ParseException;
@@ -352,7 +353,15 @@ public class frmTicket extends javax.swing.JInternalFrame {
                 Thread cargar = new Thread() {
 
                     public void run() {
-                        AbrirPuerta.abrir(empresaObj.getPuerto(), principal.in);
+                         try {
+                    LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
+                    ta.outputSream.write(UsuarioActivo.getIn().getBytes());
+                    //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+//                    barrera1.setEnabled(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                        //AbrirPuerta.abrir(empresaObj.getPuerto(), principal.in);
                         System.out.println("ABRIO PUERTA: " + principal.in);
 
                     }

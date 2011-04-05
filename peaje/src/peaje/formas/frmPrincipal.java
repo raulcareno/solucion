@@ -72,7 +72,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     String separador = File.separatorChar + "";
     static UsuarioActivo datosConecta;
     static Boolean mostrar = true;
- static ArrayList puertoListo;
+    public static ArrayList puertoListo;
+
     public void habilitarBotones(Boolean estado) {
         btnAuditoria.setEnabled(estado);
         btnClientes.setEnabled(estado);
@@ -1799,7 +1800,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     if (portId.getName().equals(empresaObj.getPuerto())) {
                         reader = new LeerTarjeta(portId, this);
                         puertoListo.add(reader);
-                        System.out.println("ABIERTO: "+empresaObj.getPuerto());
+                        System.out.println("ABIERTO: " + empresaObj.getPuerto());
                     }
                     if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
                         reader = new LeerTarjeta(portId, this);
@@ -2251,7 +2252,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         procesando.setVisible(true);
                         cliente.setText(tarje.getClientes().getNombres());
                         List<Factura> facturas = adm.query("Select o from Factura as o "
-                                + "where o.tarjeta.tarjeta = '" + tarje.getTarjeta() + "' "
+                                + "where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
                                 + "and o.fechafin is null  ");
                         Factura fac = new Factura();
 
@@ -2420,7 +2421,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             lapuertaaAbrir = empresaObj.getPuerta7();
         }
         System.out.println("INI: " + (new Date()));
-        AbrirPuerta.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
+//        AbrirPuerta.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
+
+        try {
+            LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+            ta.outputSream.write(lapuertaaAbrir.getBytes());
+            //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+            barrera1.setEnabled(true);
+        } catch (IOException ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.out.println("FIN: " + (new Date()));
 
 //        LeerTarjeta le = new LeerTarjeta();
@@ -2583,7 +2593,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
             usu.setSize(669, 411);
-            usu.setLocation(200, 120);
+            usu.setLocation(100, 120);
             contenedor.add(usu);
 
             usu.show();
@@ -3256,7 +3266,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         Thread cargar = new Thread() {
 
             public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "7");
+                try {
+                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                    ta.outputSream.write("7".getBytes());
+                    //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                    barrera1.setEnabled(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //AbrirPuerta.abrir(empresaObj.getPuerto(), "7");
                 barrera7.setEnabled(true);
             }
         };
@@ -3269,7 +3287,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         Thread cargar = new Thread() {
 
             public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "6");
+                try {
+                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                    ta.outputSream.write("6".getBytes());
+                    //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                    barrera1.setEnabled(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //AbrirPuerta.abrir(empresaObj.getPuerto(), "6");
                 barrera6.setEnabled(true);
             }
         };
@@ -3282,7 +3308,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         Thread cargar = new Thread() {
 
             public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
+                try {
+                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                    ta.outputSream.write("5".getBytes());
+                    //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                    barrera1.setEnabled(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
                 barrera5.setEnabled(true);
             }
         };
@@ -3295,7 +3329,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         Thread cargar = new Thread() {
 
             public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
+                //AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
+                try {
+                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                    ta.outputSream.write("4".getBytes());
+                    //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                    barrera1.setEnabled(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 barrera4.setEnabled(true);
             }
         };
@@ -3308,7 +3350,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         Thread cargar = new Thread() {
 
             public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
+                try {
+                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                    ta.outputSream.write("3".getBytes());
+                    //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                    barrera1.setEnabled(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
                 barrera3.setEnabled(true);
             }
         };
@@ -3321,7 +3371,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         Thread cargar = new Thread() {
 
             public void run() {
-                AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
+                try {
+                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                    ta.outputSream.write("2".getBytes());
+                    //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                    barrera1.setEnabled(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
                 barrera2.setEnabled(true);
             }
         };
@@ -3702,32 +3760,32 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         JFileChooser f = new JFileChooser();
         //f.setDialogType(JFileChooser.OPEN_DIALOG);
         f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-       f.showOpenDialog(this);
+        f.showOpenDialog(this);
         ubicacionArchivo.setText(f.getSelectedFile().getAbsolutePath());
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void btnRespaldoWindowsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRespaldoWindowsActionPerformed
         // TODO add your handling code here:
-        if(ubicacionArchivo.getText().isEmpty()){
-                JOptionPane.showMessageDialog(this,"Seleccione una ubicación haciendo click en EXAMINAR");
-                return;
-        }else if(nombreArchivo.getText().isEmpty()){
-                JOptionPane.showMessageDialog(this,"Escriba un nombre para su respaldo");
-                return;
+        if (ubicacionArchivo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Seleccione una ubicación haciendo click en EXAMINAR");
+            return;
+        } else if (nombreArchivo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Escriba un nombre para su respaldo");
+            return;
         }
         respaldar();
     }//GEN-LAST:event_btnRespaldoWindowsActionPerformed
 
     private void btnRespaldoLinuxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRespaldoLinuxActionPerformed
         // TODO add your handling code here:
-           if(ubicacionArchivo.getText().isEmpty()){
-                JOptionPane.showMessageDialog(this,"Seleccione una ubicación haciendo click en EXAMINAR");
-                return;
-        }else if(nombreArchivo.getText().isEmpty()){
-                JOptionPane.showMessageDialog(this,"Escriba un nombre para su respaldo");
-                return;
+        if (ubicacionArchivo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Seleccione una ubicación haciendo click en EXAMINAR");
+            return;
+        } else if (nombreArchivo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Escriba un nombre para su respaldo");
+            return;
         }
-           respaldarLinux();
+        respaldarLinux();
     }//GEN-LAST:event_btnRespaldoLinuxActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -3745,12 +3803,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             String sFichero = "C:\\WINDOWS\\system32\\mysqldump.exe";
             File fichero = new File(sFichero);
             if (!fichero.exists()) {
-                JOptionPane.showMessageDialog(this, "No existe el archivo mysqldump.exe \n En el directorio  c:\\windows\\system32 \n copielo en el directorio indicado y vuelva a ejecutar" );
+                JOptionPane.showMessageDialog(this, "No existe el archivo mysqldump.exe \n En el directorio  c:\\windows\\system32 \n copielo en el directorio indicado y vuelva a ejecutar");
                 return;
             }
             String ip = UsuarioActivo.getIp();
             String direc = ubicacionArchivo.getText();
-          
+
             String usuario = UsuarioActivo.getNombre();
             String clave = cl.desencriptar(UsuarioActivo.getContrasenia());
 
@@ -3760,14 +3818,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             duir.mkdir();
             Runtime.getRuntime().exec("cmd /c mysqldump -h " + ip + " --op -u " + usuario + " -p" + clave + " academico > " + direc + "\\" + nombreArchivo.getText() + ".sql");
 //            respaldo.value = direc + "\\academico" + fec + ".sql ";
-            JOptionPane.showMessageDialog(this,"Respaldo realizado con Éxito ...! ");
+            JOptionPane.showMessageDialog(this, "Respaldo realizado con Éxito ...! ");
         } catch (Exception e) {
             System.out.println("" + e);
-            JOptionPane.showMessageDialog(this,"No se pudo realizar el Respaldo");
+            JOptionPane.showMessageDialog(this, "No se pudo realizar el Respaldo");
         }
 
     }
 //
+
     public void respaldarLinux() {
         try {
             String ip = UsuarioActivo.getIp();
@@ -3795,8 +3854,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //            alert("No se pudo realizar el Respaldo");
         }
 
- }
-
+    }
 
     static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

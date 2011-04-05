@@ -1421,19 +1421,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
             aCobrar = aCobrar.add(buscar(60));
 
         }
+        try {
+
+
         int noDias = 0;
-        for (int a = 0; a < horas; a++) {
 
-            if(horas>=24){
-                noDias +=1;
-                horas = horas -24;
-            }
-            a+=24;
-            //else
-   
-
-        }
+        noDias = (horas /24);
         dias1.setText(noDias+"");
+        } catch (Exception e) {
+            dias1.setText("0");
+        }
 
         if (horas.intValue() > 0) {
             if (valorMinutos > 0) {
