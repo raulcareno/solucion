@@ -737,7 +737,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel2.add(jFormattedTextField1);
         jFormattedTextField1.setBounds(120, 210, 60, 20);
 
-        jTabbedPane1.addTab("DATOS DE LA EMPRESA", jPanel2);
+        jTabbedPane1.addTab("DATOS DE LA EMPRESA", new javax.swing.ImageIcon(getClass().getResource("/images/empresa.png")), jPanel2); // NOI18N
 
         jPanel5.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1038,7 +1038,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.add(jLabel26);
         jLabel26.setBounds(170, 70, 60, 20);
 
-        jTabbedPane1.addTab("PUERTAS Y LECTORAS", jPanel5);
+        jTabbedPane1.addTab("PUERTAS Y LECTORAS", new javax.swing.ImageIcon(getClass().getResource("/images/admin.gif")), jPanel5); // NOI18N
 
         getContentPane().add(jTabbedPane1);
         jTabbedPane1.setBounds(30, 50, 380, 280);
