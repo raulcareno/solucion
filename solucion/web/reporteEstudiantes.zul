@@ -92,6 +92,14 @@ String query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOB
                     + " AND c.codigocur IN ("+curso+") "
                      + " AND o.estado IN ('Matriculado','Recibir Pase','Retirado','Emitir Pase') "
                      + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                     if(tipo.equals("LMAT")){
+                    query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                + " AND c.codigocur IN ("+curso+") "
+                                 + " AND o.estado IN ('Matriculado') "
+                                 + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                     }
             List hoy = adm.queryNativo(query,Matriculas.class);
                     for (Iterator it = hoy.iterator(); it.hasNext();) {
                         Matriculas elem = (Matriculas) it.next();
