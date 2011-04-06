@@ -19,8 +19,9 @@ import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
 import hibernate.*;
 import java.awt.BorderLayout;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import sources.ClientesSource;
 import sources.FacturaSource;
@@ -344,6 +345,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
                         frame.setVisible(true);
+                        Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
+                        frame.setIconImage(im);
+                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
 
                         mipanel.add(frame);
 
@@ -371,6 +375,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                         frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TARIFAS.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
+                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
+                          Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
+                        frame.setIconImage(im);
                         frame.setVisible(true);
 
 //                        mipanel.add(frame);
@@ -396,6 +403,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                         frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/AUDITORIA.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
+                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
+                          Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
+                        frame.setIconImage(im);
                         frame.setLocationByPlatform(true);
                         frame.setVisible(true);
 
@@ -421,6 +431,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                         frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/RECONFIGURAR.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
+                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
+                          Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
+                        frame.setIconImage(im);
                         frame.setLocationByPlatform(true);
                         frame.setVisible(true);
 
@@ -448,6 +461,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                         frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
+                         Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
+                        frame.setIconImage(im);
+                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
                         frame.setVisible(true);
 
 //                        mipanel.add(frame);
@@ -482,6 +498,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                         frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/OPERADORES.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
+                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
+                          Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
+                        frame.setIconImage(im);
                         frame.setVisible(true);
 
 //                        mipanel.add(frame);
@@ -508,6 +527,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                         frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/REPORTES.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
+                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
+                          Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
+                        frame.setIconImage(im);
                         frame.setVisible(true);
 
 //                        mipanel.add(frame);
@@ -534,6 +556,9 @@ public class frmManual extends javax.swing.JInternalFrame {
                         frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/EMPRESA.swf"), BorderLayout.CENTER);
                         frame.setSize(800, 600);
                         frame.setLocationByPlatform(true);
+                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
+                          Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
+                        frame.setIconImage(im);
                         frame.setVisible(true);
 
 //                        mipanel.add(frame);
