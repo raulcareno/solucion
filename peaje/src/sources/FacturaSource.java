@@ -66,11 +66,16 @@ public class FacturaSource implements JRDataSource {
                     System.out.println("ERROR EN FECHA" + e);
                 }
             } else if ("ticket".equals(fieldName)) {
+                try {
                 String codigo = nodo.getTicket();
                 while (codigo.length() < 8) {
                     codigo = "0" + codigo;
                 }
-                valor = codigo;
+                valor = codigo;    
+                } catch (Exception e) {
+                    valor ="   s/t";
+                }
+
             } else if ("cliente".equals(fieldName)) {
                 valor = nodo.getClientes().getNombres();
             } else if ("ruc".equals(fieldName)) {

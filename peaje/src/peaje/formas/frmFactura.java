@@ -1362,24 +1362,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
 
         Date act = new Date();
-//        int diasEntre = Days.daysBetween(new LocalDate(fac.getFechaini()), new LocalDate(new Date())).getDays();
-//        Long horasEntre1 = diferenciaFechas(fac.getFechaini(), new Date());
-//        if (horasEntre1 >0) {
-//            diasEntre += 1;
-//            for (int i = 0; i < diasEntre; i++) {
-//                horas += 24;
-                dias.setVisible(true);
-                dias1.setVisible(true);
-                dias2.setVisible(true);
-//            }
+        dias.setVisible(true);
+        dias1.setVisible(true);
+        dias2.setVisible(true);
 
-//        }
-
-        LocalTime horaIni = new LocalTime(new DateTime(ingreso.getDate()));
-        LocalTime horaFin = new LocalTime(new DateTime(salida.getDate()));
-        //Integer minutos = (Minutes.minutesBetween(horaIni, horaFin).getMinutes());
-         Long minutos0 = diferenciaFechas(fac.getFechaini(), new Date());
-         Integer minutos = minutos0.intValue();
+        Long minutos0 = diferenciaFechas(fac.getFechaini(), new Date());
+        Integer minutos = minutos0.intValue();
 
         Integer horas = minutos / 60;
         if (minutos.intValue() < 0) {
@@ -1392,21 +1380,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
             dias1.setVisible(true);
             dias2.setVisible(true);
         }
-//        horas = horas + horasEntre1.intValue();
-//        int a = 0;
         if (minutos.intValue() < 0) {
-//                            horas = horas *-1 ;
-//                            horas += 24;
             horas = 0;
             minutos = 0;
-
             dias.setVisible(true);
             dias1.setVisible(true);
             dias2.setVisible(true);
         }
-
-//        dias1.setText("" + diasEntre);
-
         Float min = minutos / 60f;
         int indice = min.toString().indexOf(".");
         Float valorf = new Float("0" + min.toString().substring(indice));
@@ -1415,47 +1395,34 @@ public class frmFactura extends javax.swing.JInternalFrame {
         act.setMinutes(valorMinutos);
         tiempo.setDate(act);
         placa.setText(fac.getPlaca());
-
-        BigDecimal aCobrar = new BigDecimal(0);
+       BigDecimal aCobrar = new BigDecimal(0);
         for (int a = 0; a < horas; a++) {
             aCobrar = aCobrar.add(buscar(60));
-
-        }
+       }
         try {
-
-
-        int noDias = 0;
-
-        noDias = (horas /24);
-        dias1.setText(noDias+"");
+            int noDias = 0;
+            noDias = (horas / 24);
+            dias1.setText(noDias + "");
         } catch (Exception e) {
             dias1.setText("0");
         }
-
         if (horas.intValue() > 0) {
             if (valorMinutos > 0) {
                 if (valorMinutos > empresaObj.getGracia().intValue()) {
                     aCobrar = aCobrar.add(buscar(valorMinutos));
                 }
             } else {
-//                aCobrar = aCobrar.add(buscar(1));
             }
         } else {
             if (valorMinutos > 0) {
-//                if (valorMinutos > empresaObj.getGracia().intValue()) {
                 aCobrar = aCobrar.add(buscar(valorMinutos));
-//                }
             } else {
                 aCobrar = aCobrar.add(buscar(1));
-
             }
 
         }
         total.setText(aCobrar.setScale(2, RoundingMode.UP) + "");
         codigo.setText(fac.getCodigo() + "");
-        //tiempo.setDate(Hours.hoursBetween(horaIni, horaFin));
-
-//                    btnAgregar.requestFocusInWindow();
     }
 
     public long diferenciaFechas(Date fechai, Date fechaf) {

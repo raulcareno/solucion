@@ -2,7 +2,6 @@ package peaje.formas;
 
 import java.awt.AWTException;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Calendar;
@@ -22,10 +21,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
-import org.joda.time.Minutes;
 import hibernate.*;
 import hibernate.cargar.Administrador;
-import hibernate.cargar.BeanUsuario;
 import hibernate.cargar.GeneraXMLPersonal;
 import hibernate.cargar.RelojModeloUtil;
 import hibernate.cargar.RelojVisual;
@@ -34,22 +31,41 @@ import hibernate.cargar.WorkingDirectory;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
-import java.awt.Robot;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.MediaPrintableArea;
+import javax.print.attribute.standard.MediaSize;
+import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JFileChooser;
 import javax.swing.ListModel;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import sources.FacturaDetalleSource;
+import sources.FacturaSource;
 
 /**
  *
@@ -634,7 +650,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
 
-        contenedor.setBackground(new java.awt.Color(240, 240, 240));
+        contenedor.setBackground(new java.awt.Color(255, 255, 255));
         contenedor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 contenedorMouseClicked(evt);
@@ -1323,7 +1339,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             frmRespaldarBase.getContentPane().add(jLabel6);
             jLabel6.setBounds(40, 90, 97, 14);
 
-            jLabel24.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+            jLabel24.setFont(new java.awt.Font("Tahoma", 1, 12));
             jLabel24.setText(".sql");
             frmRespaldarBase.getContentPane().add(jLabel24);
             jLabel24.setBounds(347, 80, 30, 30);
@@ -1363,6 +1379,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             frmRespaldarBase.setBounds(50, 120, 520, 210);
             contenedor.add(frmRespaldarBase, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+            jPanel10.setBackground(new java.awt.Color(255, 255, 255));
             jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
             jPanel10.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1371,6 +1388,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             jPanel10.setLayout(null);
 
+            cliente.setBackground(new java.awt.Color(255, 255, 255));
             cliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             cliente.setEditable(false);
             cliente.setForeground(new java.awt.Color(51, 51, 255));
@@ -1379,6 +1397,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jPanel10.add(cliente);
             cliente.setBounds(20, 30, 180, 20);
 
+            tarjetatxt.setBackground(new java.awt.Color(255, 255, 255));
             tarjetatxt.setBorder(null);
             tarjetatxt.setEditable(false);
             tarjetatxt.setForeground(new java.awt.Color(255, 0, 0));
@@ -1416,7 +1435,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jPanel10.add(jPanel1);
             jPanel1.setBounds(360, 10, 20, 70);
 
-            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
+            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
             spIngreso.setBorder(null);
             spIngreso.setEnabled(false);
             spIngreso.setFocusable(false);
@@ -1442,7 +1461,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jPanel10.add(salid);
             salid.setBounds(230, 40, 60, 20);
 
-            spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
+            spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
             spConsumo.setBorder(null);
             spConsumo.setEnabled(false);
             spConsumo.setFocusable(false);
@@ -1455,6 +1474,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jPanel10.add(cons);
             cons.setBounds(230, 60, 60, 20);
 
+            placa.setBackground(new java.awt.Color(255, 255, 255));
             placa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             placa.setEditable(false);
             placa.setText(".");
@@ -2106,239 +2126,229 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 } catch (Exception e) {
                     tarje = null;
                 }
-                if (tarje == null) {
-//                      int val = JOptionPane.showConfirmDialog(getContentPane(), "Tarjeta " + "  NO registrada, \n Desea Registrar la tarjeta? ");
-//                    if(val ==0){
-//
-//                            try {
-//                                // TODO add your handling code here:
-//                                List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Clientes' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' ");
-//                                if (accesosL.size() > 0) {
-//                                    permisos = accesosL.get(0);
-//                                } else {
-//                                    JOptionPane.showMessageDialog(pra, "No tiene permisos para ingresar ");
-//                                    return;
-//                                }
-//                                frmClientes.setSize(441, 455);
-//                                frmClientes.setLocation(240, 100);
-//                            if (nuevaTarjeta == true) {
+                if (tarje == null) {//SI LA TARJETA NO ESTÁ REGISTRADA, LE CARGO AL CLIENTE
                     noTarjeta.setText(tarjetatxt.getText());
-//                            }
-//                                frmClientes.show();
-//                            } catch (Exception ex) {
-//                                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
-//
-//                        }
                     errores.setText("");
                 } else {
-                    errores.setText("OK");
-                    String tipoIngreso = entradaosalida(puertoViene);
-                    List<Registro> siHay = adm.query("Select o from Registro as o where o.tarjeta = '" + tarje.getTarjeta() + "' and o.fechafin is null ");
-                    if (tipoIngreso.equals("e")) {
+                    if (tarje.getClientes().getCodigo().intValue() > 1) {
 
-                        if (siHay.size() > 0) {
-                            errores.setText("OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
-                            return;
-                        } else {
-                            Registro reg = new Registro();
-                            reg.setFechaini(new Date());
-                            reg.setTarjeta(tarje.getTarjeta());
-                            adm.guardar(reg);
-                            errores.setText("ENTRADA OK...!");
-                            //errores.setText("OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
-                        }
-                    } else {
+                        //VALIDO LA TARJETA QUE ESTE´HABILITADA Y ESTE EN LAS FECHAS ESTABELCIDAS
+                        Date fechaActual = new Date();
+                        Boolean habilitada = tarje.getHabilitada();
+                        int diaActual = fechaActual.getDay(); //1=Domingo, 2=Lunes 3=Martes,4=Miercoles,5=Jueves,6=Viernes
+                        DateTime desde = new DateTime(tarje.getDesde());
+                        DateTime hasta = new DateTime(tarje.getHasta());
+                        DateTime fechaAct = new DateTime(fechaActual);
+                        Boolean continua = false;
+                        if (habilitada) {
+                            if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
+                                System.out.println("EN EL RANGO DE FECHAS");
 
-                        if (siHay.size() > 0) {
-                            Registro reg = siHay.get(0);
-                            reg.setFechafin(new Date());
-                            adm.actualizar(reg);
-                            errores.setText("SALIDA OK...!");
-                        } else {
-                            Registro reg = new Registro();
-                            reg.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
-                            reg.setFechafin(new Date());// LA ENTRADA SE CREA UN REGISTRO DE ENTRADA Y SALIDA
-                            reg.setTarjeta(tarje.getTarjeta());
-                            adm.guardar(reg);
-                            errores.setText("OK...!");
-                        }
-
-                    }
-
-
-                    Date fechaActual = new Date();
-                    Boolean habilitada = tarje.getHabilitada();
-                    int diaActual = fechaActual.getDay(); //1=Domingo, 2=Lunes 3=Martes,4=Miercoles,5=Jueves,6=Viernes
-                    DateTime desde = new DateTime(tarje.getDesde());
-                    DateTime hasta = new DateTime(tarje.getHasta());
-                    DateTime fechaAct = new DateTime(fechaActual);
-                    Boolean continua = false;
-                    if (habilitada) {
-                        if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
-                            System.out.println("EN EL RANGO DE FECHAS");
-
-                            if (diaActual == 0) {
-                                if (tarje.getDomingo()) {
-                                    continua = true;
+                                if (diaActual == 0) {
+                                    if (tarje.getDomingo()) {
+                                        continua = true;
+                                    }
+                                } else if (diaActual == 1) {
+                                    if (tarje.getLunes()) {
+                                        continua = true;
+                                    }
+                                } else if (diaActual == 2) {
+                                    if (tarje.getMartes()) {
+                                        continua = true;
+                                    }
+                                } else if (diaActual == 3) {
+                                    if (tarje.getMiercoles()) {
+                                        continua = true;
+                                    }
+                                } else if (diaActual == 4) {
+                                    if (tarje.getJueves()) {
+                                        continua = true;
+                                    }
+                                } else if (diaActual == 5) {
+                                    if (tarje.getViernes()) {
+                                        continua = true;
+                                    }
+                                } else if (diaActual == 6) {
+                                    if (tarje.getSabado()) {
+                                        continua = true;
+                                    }
                                 }
-                            } else if (diaActual == 1) {
-                                if (tarje.getLunes()) {
-                                    continua = true;
+                                if (continua == false) {
+                                    //JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                                    errores.setText("NO PUEDE INGRESAR EN ÉSTE DÌA");
+                                    return;
                                 }
-                            } else if (diaActual == 2) {
-                                if (tarje.getMartes()) {
-                                    continua = true;
-                                }
-                            } else if (diaActual == 3) {
-                                if (tarje.getMiercoles()) {
-                                    continua = true;
-                                }
-                            } else if (diaActual == 4) {
-                                if (tarje.getJueves()) {
-                                    continua = true;
-                                }
-                            } else if (diaActual == 5) {
-                                if (tarje.getViernes()) {
-                                    continua = true;
-                                }
-                            } else if (diaActual == 6) {
-                                if (tarje.getSabado()) {
-                                    continua = true;
-                                }
-                            }
-                            if (continua == false) {
-                                //JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                                errores.setText("NO PUEDE INGRESAR EN ÉSTE DÌA");
-                                return;
-                            }
 
 
-                            Date fecIn = tarje.getHorainicio();
-                            Date fecIn3 = tarje.getHorafin();
-                            LocalTime horaIni = new LocalTime(new DateTime(fecIn));
-                            LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
-                            LocalTime ahora = new LocalTime(new DateTime(new Date()));
-                            if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
-                                System.out.println("EN EL RANGO DE HORA");
-                                try {
+                                Date fecIn = tarje.getHorainicio();
+                                Date fecIn3 = tarje.getHorafin();
+                                LocalTime horaIni = new LocalTime(new DateTime(fecIn));
+                                LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
+                                LocalTime ahora = new LocalTime(new DateTime(new Date()));
+                                if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
+                                    System.out.println("EN EL RANGO DE HORA");
+                                    try {
 
-                                    abrirPuerta(puertoViene);
+                                        abrirPuerta(puertoViene);
 
-                                } catch (Exception e) {
-                                    System.out.println("PUERTO:" + puertoViene);
-                                    System.out.println("ERROR AL ABRIR PUERTA: " + e);
+                                    } catch (Exception e) {
+                                        System.out.println("PUERTO:" + puertoViene);
+                                        System.out.println("ERROR AL ABRIR PUERTA: " + e);
+                                    }
+
+                                } else {
+                                    //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                                    errores.setText("NO PUEDE INGRESAR EN ESTE HORARIO ");
+                                    return;
                                 }
 
                             } else {
-                                //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                                errores.setText("NO PUEDE INGRESAR EN ESTE HORARIO ");
+                                //JOptionPane.showMessageDialog(getContentPane(), "Su Fecha de tarjeta expiró...! \n Cliente: ", "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                                errores.setText("TARJETA EXPIRADA");
                                 return;
                             }
 
-                        } else {
-                            //JOptionPane.showMessageDialog(getContentPane(), "Su Fecha de tarjeta expiró...! \n Cliente: ", "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                            errores.setText("TARJETA EXPIRADA");
-                            return;
-                        }
-
-
-//                                System.out.println(""+desde);
-//                                System.out.println(""+hasta);
-//                                System.out.println(""+d.getDays());
-
-
 //                        taskTarjeta.setCollapsed(false);
-                        procesando.setVisible(true);
-                        cliente.setText(tarje.getClientes().getNombres());
-                        List<Factura> facturas = adm.query("Select o from Factura as o "
-                                + "where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
+                            procesando.setVisible(true);
+                            cliente.setText(tarje.getClientes().getNombres());
+                        } else {
+                            //JOptionPane.showMessageDialog(getContentPane(), "Tarjeta INHABILITADA ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                            errores.setText("TARJETA DESHABILITADA");
+                        }
+                        errores.setText("OK");
+                        String tipoIngreso = entradaosalida(puertoViene);
+//EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
+                        List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
                                 + "and o.fechafin is null  ");
                         Factura fac = new Factura();
+                        if (tipoIngreso.equals("e")) {//ENTRANDO
+                            if (facturas.size() > 0) {
+                                errores.setText("ERROR: OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
+                                return;
+                            } else {
+                                fac.setPlaca("CLIENTE TARJETA");
+                                fac.setFechaini(new Date());
+                                fac.setFecha(new Date());
+                                fac.setTarjetas(tarje);
+                                fac.setTicket(null);
+                                adm.guardar(fac);
+                                llenarFechayHora(fac, "no");
+                                errores.setText("ENTRADA OK...!");
+                            }
+                        } else {        //SALIENDO
+
+                            if (facturas.size() > 0) {
 
 
 
-                        if (facturas.size() > 0) {
 
-                            //CALCULO DE TIEMPO QUE DURO
+                                fac = facturas.get(0);
+                                fac.setTarjetas(tarje);
+                                fac.setPlaca("CLIENTE TARJETA");
+                                fac.setFechafin(new Date());
+                                fac = calcularTiempo(fac);
+                                fac.setSubtotal(new BigDecimal(0));
+                                fac.setTotal(new BigDecimal(0));
+                                fac.setIva(new BigDecimal(0));
+                                fac.setClientes(tarje.getClientes());
+                                adm.actualizar(fac);
 
-                            LocalTime horaInicio = new LocalTime(new DateTime(fac.getFechaini()));
-                            LocalTime horaFini = new LocalTime(new DateTime(fac.getFechafin()));
-                            Integer minutos = (Minutes.minutesBetween(horaInicio, horaFini).getMinutes());
-                            Integer horas = minutos / 60;
-                            Date act = new Date();
-                            act.setHours(horas);
-                            Float min = minutos / 60f;
-                            int indice = min.toString().indexOf(".");
-                            Float valorf = new Float("0" + min.toString().substring(indice));
-                            int valor = java.lang.Math.round((valorf * 60));
-                            act.setMinutes(valor);
-                            //FIN DE CALCULO DEL TIEMPO
+                                llenarFechayHora(fac, "nuevo");
+                                errores.setText("SALIDA OK...!)");
 
-
-                            fac = facturas.get(0);
-                            fac.setFechafin(new Date());
-                            fac.setTiempo(act);
-                            adm.actualizar(fac);
-
-                            SpinnerDateModel sm = new SpinnerDateModel(fac.getFechaini(), null, null, Calendar.HOUR_OF_DAY);
-                            JSpinner spinner = new JSpinner(sm);
-                            JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm:ss");
-                            spIngreso.setModel(sm);
-                            spIngreso.setEditor(de);
-
-                            SpinnerDateModel sm2 = new SpinnerDateModel(fac.getFechafin(), null, null, Calendar.HOUR_OF_DAY);
-                            JSpinner spinner2 = new JSpinner(sm2);
-                            JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm:ss");
-                            spSalida.setModel(sm2);
-                            spSalida.setEditor(de2);
-
-                            SpinnerDateModel sm3 = new SpinnerDateModel(fac.getTiempo(), null, null, Calendar.HOUR_OF_DAY);
-                            JSpinner spinner3 = new JSpinner(sm3);
-                            JSpinner.DateEditor de3 = new JSpinner.DateEditor(spinner3, "HH:mm:ss");
-                            spConsumo.setModel(sm3);
-                            spConsumo.setEditor(de3);
-
-                        } else {
-                            fac.setPlaca(placa.getText());
-                            fac.setFechaini(new Date());
-                            fac.setFecha(new Date());
-                            fac.setTarjetas(tarje);
-                            fac.setTicket(null);
-                            adm.guardar(fac);
-
-                            SpinnerDateModel sm = new SpinnerDateModel(fac.getFechaini(), null, null, Calendar.HOUR_OF_DAY);
-                            JSpinner spinner = new JSpinner(sm);
-                            JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm:ss");
-                            spIngreso.setModel(sm);
-                            spIngreso.setEditor(de);
-                            Date f = new Date();
-                            f.setHours(0);
-                            f.setMinutes(0);
-                            f.setSeconds(0);
-
-                            SpinnerDateModel sm2 = new SpinnerDateModel(f, null, null, Calendar.HOUR_OF_DAY);
-                            JSpinner spinner2 = new JSpinner(sm2);
-                            JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm:ss");
-                            spSalida.setModel(sm2);
-                            spSalida.setEditor(de2);
-
-                            SpinnerDateModel sm3 = new SpinnerDateModel(f, null, null, Calendar.HOUR_OF_DAY);
-                            JSpinner spinner3 = new JSpinner(sm3);
-                            JSpinner.DateEditor de3 = new JSpinner.DateEditor(spinner3, "HH:mm:ss");
-                            spConsumo.setModel(sm3);
-                            spConsumo.setEditor(de3);
-
+                            } else {
+                                fac.setPlaca("CLIENTE TARJETA");
+                                fac.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+                                fac.setFechafin(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+                                fac.setFecha(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+                                fac.setTarjetas(tarje);
+                                fac.setTicket(null);
+//                                fac.set
+                                adm.guardar(fac);
+                                llenarFechayHora(fac, "no");
+                                errores.setText("OK...!  (NO SE REGISTRO EL INGRESO)");
+                            }
                         }
 
 
 
-                    } else {
-                        //JOptionPane.showMessageDialog(getContentPane(), "Tarjeta INHABILITADA ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                        errores.setText("TARJETA DESHABILITADA");
-                    }
 
-                    noDisponibles();
+                        noDisponibles();
+  } else {//EN EL CASO DE QUE SEA CONSUMIDOR FINAL Y PARA TARJETAS DE USUARIOS ESPORADICOS
+                        //CLIENTES QUE NO TIENEN TARJETA **********************************************************************************************
+
+                        errores.setText("OK");
+                        String tipoIngreso = entradaosalida(puertoViene);
+                        Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                        //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
+                        List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
+                                + "and o.fechafin is null  ");
+                        Factura fac = new Factura();
+                        if (tipoIngreso.equals("e")) {//ESTA ENTRANDO
+                            if (facturas.size() > 0) {
+                                errores.setText("ERROR: OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!");
+                                return;
+                            } else {
+                                fac.setFechaini(new Date());
+                                fac.setFecha(new Date());
+                                fac.setTarjetas(tarje);
+                                fac.setPlaca("NO CLIENTE TARJETA");
+                                fac.setTicket(null);
+                                fac.setClientes(new Clientes(1));
+                                adm.guardar(fac);
+                                llenarFechayHora(fac, "no");
+                                errores.setText("ENTRADA OK...!");
+                                imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+                            }
+                        } else {//ESTA SALIENDO
+
+                            if (facturas.size() > 0) {
+
+                                fac = facturas.get(0);
+                                fac.setPlaca("NO CLIENTE TARJETA");
+                                fac.setClientes(new Clientes(1));//CARGO EL CONSUMIDOR FINAL
+                                fac.setFechafin(new Date());
+                                fac.setTarjetas(tarje);
+                                fac = calcularTiempo(fac);
+                                fac.setNumero(emp.getDocumentofac());
+//                                fac.setClientes(new Clientes(1));
+                                adm.actualizar(fac);
+                                Integer numero = new Integer(emp.getDocumentofac());
+                                emp.setDocumentofac((numero + 1) + "");
+                                adm.actualizar(emp);
+
+                                llenarFechayHora(fac, "nuevo");
+                                errores.setText("SALIDA OK...!");
+                                imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+
+                            } else {
+                                fac.setPlaca(placa.getText());
+                                fac.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+                                fac.setFechafin(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+                                fac.setPlaca("NO CLIENTE TARJETA");
+                                fac.setFecha(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+                                fac.setTarjetas(tarje);
+                                fac = calcularTiempo(fac);
+                                fac.setClientes(new Clientes(1));
+                                fac.setTicket(null);
+                                fac.setNumero(emp.getDocumentofac());
+//                                fac.set
+                                adm.guardar(fac);
+
+                                Integer numero = new Integer(emp.getDocumentofac());
+                                emp.setDocumentofac((numero + 1) + "");
+                                adm.actualizar(emp);
+
+                                llenarFechayHora(fac, "no");
+                                errores.setText("OK...!  (NO SE REGISTRO EL INGRESO)");
+                                imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+                            }
+                        }
+                        noDisponibles();
+
+
+
+                    }
                 }
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -2350,6 +2360,248 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+  public void imprimir(int cod, Empresa emp, int dias, Boolean mensual, Clientes cli) {
+
+//                    viewer.show();
+        try {
+            WorkingDirectory w = new WorkingDirectory();
+            String ubicacionDirectorio = w.get() + separador;
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
+            JasperReport masterReport = null;
+            if (mensual) {
+                masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura2.jasper");
+            } else {
+                masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura.jasper");
+            }
+            JRDataSource ds = null;
+            ArrayList detalle = new ArrayList();
+            Map parametros = new HashMap();
+            if (mensual) {
+                List<Detalle> fac = adm.query("Select o from Detalle as o where o.factura.codigo = " + cod + " ");
+                for (Iterator<Detalle> it = fac.iterator(); it.hasNext();) {
+                    Detalle detalle1 = it.next();
+                    Factura fac1 = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + detalle1.getFactura().getCodigo() + " ");
+                    detalle1.setFactura(fac1);
+                    detalle.add(detalle1);
+                }
+                ds = new FacturaDetalleSource(detalle);
+            } else {
+                Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
+                Clientes cli1 = (Clientes) fac.getClientes();
+                cli1 = (Clientes) adm.querySimple("Select o from Clientes as o where o.codigo = " + cli1.getCodigo() + " ");
+                System.out.println("" + cli1.getCodigo());
+                fac.setClientes(cli1);
+                detalle.add(fac);
+                cli = cli1;
+                ds = new FacturaSource(detalle);
+
+            }
+            parametros.put("ruc", cli.getIdentificacion());
+            parametros.put("cliente", cli.getNombres());
+            parametros.put("direccion", cli.getDireccion());
+            parametros.put("telefono", cli.getTelefono());
+            parametros.put("dias", (dias > 0 ? dias + " Dias" : ""));
+
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+            PrinterJob job = PrinterJob.getPrinterJob();
+            /* Create an array of PrintServices */
+            PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
+            int selectedService = 0;
+            /* Scan found services to see if anyone suits our needs */
+            for (int i = 0; i < services.length; i++) {
+                String nombre = services[i].getName();
+                if (nombre.contains(emp.getImpfactura())) {
+                    selectedService = i;
+                }
+            }
+            job.setPrintService(services[selectedService]);
+            PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+            MediaSizeName mediaSizeName = MediaSize.findMedia(7, 7, MediaPrintableArea.INCH);
+            printRequestAttributeSet.add(mediaSizeName);
+            printRequestAttributeSet.add(new Copies(1));
+            JRPrintServiceExporter exporter;
+            exporter = new JRPrintServiceExporter();
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, masterPrint);
+            /* We set the selected service and pass it as a paramenter */
+            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, services[selectedService]);
+            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, services[selectedService].getAttributes());
+            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
+            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
+            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+            exporter.exportReport();
+
+//            JasperViewer viewer = new JasperViewer(masterPrint, false); //PARA VER EL REPORTE ANTES DE IMPRIMIR
+//            viewer.show();
+//            try {
+//                JasperPrintManager.printPage(masterPrint, 0, false);//LE ENVIO A IMPRIMIR false NO MUESTRA EL CUADRO DE DIALOGO
+//            } catch (JRException ex) {
+//                ex.printStackTrace();
+//            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+//        } catch (JRException ex) {
+//            ex.printStackTrace();
+//        }
+    }
+
+    public Factura calcularTiempo(Factura fac) {
+
+        Date act = new Date();
+        Long minutos0 = diferenciaFechas(fac.getFechaini(), new Date());
+        Integer minutos = minutos0.intValue();
+
+        Integer horas = minutos / 60;
+        if (minutos.intValue() < 0) {
+            minutos = minutos * -1;
+        }
+        if (horas.intValue() < 0) {
+            horas = horas * -1;
+//            dias.setVisible(true);
+//            dias1.setVisible(true);
+//            dias2.setVisible(true);
+        }
+        if (minutos.intValue() < 0) {
+            horas = 0;
+            minutos = 0;
+//            dias.setVisible(true);
+//            dias1.setVisible(true);
+//            dias2.setVisible(true);
+        }
+        Float min = minutos / 60f;
+        int indice = min.toString().indexOf(".");
+        Float valorf = new Float("0" + min.toString().substring(indice));
+        int valorMinutos = java.lang.Math.round((valorf * 60));
+        act.setHours(horas);
+        act.setMinutes(valorMinutos);
+        fac.setTiempo(act);
+        placa.setText(fac.getPlaca());
+        BigDecimal aCobrar = new BigDecimal(0);
+        for (int a = 0; a < horas; a++) {
+            aCobrar = aCobrar.add(buscar(60));
+        }
+        try {
+            int noDias = 0;
+            noDias = (horas / 24);
+            fac.setDias(noDias);
+            //dias1.setText(noDias + "");
+        } catch (Exception e) {
+            //dias1.setText("0");
+            fac.setDias(0);
+        }
+
+        if (horas.intValue() > 0) {
+            if (valorMinutos > 0) {
+                if (valorMinutos > empresaObj.getGracia().intValue()) {
+                    aCobrar = aCobrar.add(buscar(valorMinutos));
+                }
+            } else {
+            }
+        } else {
+            if (valorMinutos > 0) {
+                aCobrar = aCobrar.add(buscar(valorMinutos));
+            } else {
+                aCobrar = aCobrar.add(buscar(1));
+            }
+
+        }
+
+        Double totalv01 = aCobrar.doubleValue();
+        Double iva01 = ((empresaObj.getIva() + 100) / 100);
+        Double subtotalv01 = totalv01 / iva01;
+        Double iva02 = subtotalv01 * ((empresaObj.getIva()) / 100);
+
+        BigDecimal subtotalv = new BigDecimal(subtotalv01);
+        BigDecimal ivav = new BigDecimal(iva02);
+        BigDecimal totalv = new BigDecimal(totalv01);
+
+
+        fac.setSubtotal(subtotalv);
+        fac.setIva(ivav);
+        fac.setTotal(aCobrar);
+        return fac;
+
+    }
+
+    public long diferenciaFechas(Date fechai, Date fechaf) {
+        fechaf = new Date();
+        java.util.GregorianCalendar date1 = new java.util.GregorianCalendar(fechai.getYear(), fechai.getMonth(), fechai.getDate(), fechai.getHours(), fechai.getMinutes(), fechai.getSeconds());
+        java.util.GregorianCalendar date2 = new java.util.GregorianCalendar(fechaf.getYear(), fechaf.getMonth(), fechaf.getDate(), fechaf.getHours(), fechaf.getMinutes(), fechaf.getSeconds());
+        long difms = date2.getTimeInMillis() - date1.getTimeInMillis();
+        long difd = difms / (1000 * 60);
+        return difd;
+    }
+
+    public BigDecimal buscar(Integer minutos) {
+        try {
+            List<Tarifas> tarifario = adm.query("Select o from Tarifas as o order by o.codigo ");
+            for (Iterator<Tarifas> it = tarifario.iterator(); it.hasNext();) {
+                Tarifas tarifas = it.next();
+                int desde = tarifas.getDesde();
+                int hasta = tarifas.getHasta();
+                int valo = minutos;
+                if (valo >= desde && valo <= hasta) {
+                    return tarifas.getValor();
+                }
+            }
+            return new BigDecimal(0);
+        } catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new BigDecimal(0);
+
+    }
+
+    public void llenarFechayHora(Factura fac, String nuevo) {
+
+        if (nuevo.equals("si")) {
+
+            SpinnerDateModel sm = new SpinnerDateModel(fac.getFechaini(), null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner = new JSpinner(sm);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm:ss");
+            spIngreso.setModel(sm);
+            spIngreso.setEditor(de);
+
+            SpinnerDateModel sm2 = new SpinnerDateModel(fac.getFechafin(), null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner2 = new JSpinner(sm2);
+            JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm:ss");
+            spSalida.setModel(sm2);
+            spSalida.setEditor(de2);
+
+            SpinnerDateModel sm3 = new SpinnerDateModel(fac.getTiempo(), null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner3 = new JSpinner(sm3);
+            JSpinner.DateEditor de3 = new JSpinner.DateEditor(spinner3, "HH:mm:ss");
+            spConsumo.setModel(sm3);
+            spConsumo.setEditor(de3);
+        } else {
+
+            SpinnerDateModel sm = new SpinnerDateModel(fac.getFechaini(), null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner = new JSpinner(sm);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm:ss");
+            spIngreso.setModel(sm);
+            spIngreso.setEditor(de);
+            Date f = new Date();
+            f.setHours(0);
+            f.setMinutes(0);
+            f.setSeconds(0);
+
+            SpinnerDateModel sm2 = new SpinnerDateModel(f, null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner2 = new JSpinner(sm2);
+            JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm:ss");
+            spSalida.setModel(sm2);
+            spSalida.setEditor(de2);
+
+            SpinnerDateModel sm3 = new SpinnerDateModel(f, null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner3 = new JSpinner(sm3);
+            JSpinner.DateEditor de3 = new JSpinner.DateEditor(spinner3, "HH:mm:ss");
+            spConsumo.setModel(sm3);
+            spConsumo.setEditor(de3);
+        }
+
     }
 
     public String entradaosalida(String puertoqueViene) {

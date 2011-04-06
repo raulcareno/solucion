@@ -42,6 +42,8 @@ public class Factura implements Serializable {
     private String numero;
     @Column(name = "ticket")
     private String ticket;
+    @Column(name = "dias")
+    private Integer dias;
     @Column(name = "placa")
     private String placa;
     @Column(name = "fecha")
@@ -191,6 +193,16 @@ public class Factura implements Serializable {
     public void setClientes(Clientes clientes) {
         this.clientes = clientes;
     }
+
+    public Integer getDias() {
+        return dias;
+    }
+
+    public void setDias(Integer dias) {
+        this.dias = dias;
+    }
+
+    
 //
 //    public Collection<Detalle> getDetalleCollection() {
 //        return detalleCollection;
