@@ -475,6 +475,51 @@ public class frmReportes extends javax.swing.JInternalFrame {
         }
 
     }
+  public void clientes2(String dirreporte, String query, String titulo) {
+        try {
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(dirreporte);
+            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+    ArrayList detalle = new ArrayList();
+            List fac = adm.queryNativo(query);
+             for (Iterator it = fac.iterator(); it.hasNext();) {
+                Clientes cli = new Clientes();
+                 Vector clienteIt =   (Vector) it.next();
+                 Integer fecha = (Integer) clienteIt.get(0);
+                 Long valor = (Long) clienteIt.get(1);
+                 cli = (Clientes)adm.buscarClave(fecha, Clientes.class);
+                 cli.setTelefono(""+valor);
+                detalle.add(cli);
+            }
+        
+//            for (Iterator<Clientes> it = fac.iterator(); it.hasNext();) {
+//                Clientes factura = it.next();
+//                detalle.add(factura);
+//            }
+            ClientesSource ds = new ClientesSource(detalle);
+            Map parametros = new HashMap();
+            parametros.put("empresa", emp.getRazon());
+            parametros.put("direccion", emp.getDireccion());
+            parametros.put("telefono", emp.getTelefonos());
+            parametros.put("titulo", titulo);
+            parametros.put("parqueaderos", emp.getParqueaderos());
+
+
+
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+            JRViewer reporte = new JRViewer(masterPrint); //PARA VER EL REPORTE ANTES DE IMPRIMIR
+            panelReportes.removeAll();
+            reporte.repaint();
+            reporte.setLocation(0, 0);
+            reporte.setSize(723, 557);
+            reporte.setVisible(true);
+            panelReportes.add(reporte);
+            panelReportes.repaint();
+            this.repaint();
+        } catch (Exception ex) {
+            Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
     public void pruebas() {
         String desde2 = (desde.getDate().getYear() + 1900) + "-" + (desde.getDate().getMonth() + 1) + "-" + (desde.getDate().getDate());
@@ -588,14 +633,15 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         if (cmbTipoReporte.getSelectedIndex() == 0) { //TICKEST POR COBRAR
             query = "Select o from Factura as o" +
-                    " where o.fecha between '" + desde2 + "' and '" + hasta2 + "' and o.tarjetas is null "
+                    " where o.fecha between '" + desde2 + "' and '" + hasta2 + "'  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                     + "and o.fechafin is null ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsporcobrar.jasper";
             titulo = "Tickest por Cobrar";
             tickets(dirreporte, query, titulo);
         } else if (cmbTipoReporte.getSelectedIndex() == 1) {//TICKEST COBRADOS
             query = "Select o from Factura as o" +
-                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' and o.tarjetas is null and o.fechafin is not null  ";
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%')  ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketscobrados.jasper";
             titulo = "Tickest Cobrados";
             tickets(dirreporte, query, titulo);
@@ -610,7 +656,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         } else if (cmbTipoReporte.getSelectedIndex() == 3) {//FACTURADO
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + "and o.fechafin is not null and o.tarjetas is null  ";
+                    + "and o.fechafin is not null and o.numero is not null  ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiarias.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
@@ -618,7 +664,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         }  else if (cmbTipoReporte.getSelectedIndex() == 4) {//FACTURADO SOLO TICKETS
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + "and o.fechafin is not null and o.ticket is not null and o.tarjetas is null  ";
+                    + "and o.fechafin is not null and (o.ticket is not null or o.placa like '%NO CLIENTE%') ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariastickets.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
@@ -640,10 +686,10 @@ public class frmReportes extends javax.swing.JInternalFrame {
             consolidado(dirreporte, query, titulo);
 
         } else if (cmbTipoReporte.getSelectedIndex() == 7) {//CLIENTES MAS FRECUENTS CON TARJETAS
-            query = "Select o from Clientes as o where o.codigo > 1 order by o.nombres";
-            dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes.jasper";
+            query = "SELECT CLIENTE,COUNT(*) FROM FACTURA WHERE CLIENTE > 1 AND FECHA  between '" + desde2 + "' and '" + hasta2 + "' GROUP BY CLIENTE  ORDER BY COUNT(*) desc ";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes2.jasper";
             titulo = " ";
-            clientes(dirreporte, query, titulo);
+            clientes2(dirreporte, query, titulo);
 
         } else if (cmbTipoReporte.getSelectedIndex() == 8) {//LISTADO DE CLIENTES
             query = "Select o from Clientes as o where o.codigo > 1 order by o.nombres";
