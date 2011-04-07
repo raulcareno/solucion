@@ -1447,6 +1447,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     @SuppressWarnings("static-access")
     private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
         // TODO add your handling code here:
+        System.out.println(""+evt.getKeyChar());
         if (evt.getKeyCode() == evt.VK_ENTER) {
             try {
                 ingreso.setDate(null);
