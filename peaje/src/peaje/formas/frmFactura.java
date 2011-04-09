@@ -407,7 +407,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jScrollPane3.setViewportView(encontrados1);
 
         panelencontrados1.add(jScrollPane3);
-        jScrollPane3.setBounds(10, 10, 170, 90);
+        jScrollPane3.setBounds(10, 10, 180, 90);
 
         jPanel1.add(panelencontrados1);
         panelencontrados1.setBounds(70, 50, 200, 110);
@@ -489,20 +489,20 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel1.add(codigo);
         codigo.setBounds(10, 30, 20, 20);
 
-        dias.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        dias.setFont(new java.awt.Font("Tahoma", 1, 11));
         dias.setForeground(new java.awt.Color(0, 0, 204));
         dias.setText("DIA(s)");
         jPanel1.add(dias);
         dias.setBounds(130, 110, 60, 20);
 
-        dias1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        dias1.setFont(new java.awt.Font("Tahoma", 1, 13));
         dias1.setForeground(new java.awt.Color(204, 0, 0));
         dias1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias1.setText("0");
         jPanel1.add(dias1);
         dias1.setBounds(80, 110, 40, 20);
 
-        dias2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        dias2.setFont(new java.awt.Font("Tahoma", 1, 11));
         dias2.setForeground(new java.awt.Color(0, 0, 204));
         dias2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias2.setText("MAYOR A:");

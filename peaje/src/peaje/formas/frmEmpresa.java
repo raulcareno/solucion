@@ -93,6 +93,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                 cmbSalida3.removeAllItems();
                 cmbSalida4.removeAllItems();
                 cmbPuertoPrincipal.removeAllItems();
+                cmbPuertoLed.removeAllItems();
 //                cmbSalida1.removeAllItems();
 //                cmbSalida2.removeAllItems();
 //                cmbSalida3.removeAllItems();
@@ -117,6 +118,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                 cmbSalida4.addItem(object);
 
                 cmbPuertoPrincipal.addItem(object);
+                cmbPuertoLed.addItem(object);
 //                cmbSalida1.addItem(object);
 //                cmbSalida2.addItem(object);
 //                cmbSalida3.addItem(object);
@@ -193,6 +195,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         cmbSalida4.setEnabled(estado);
         cmbImpresora.setEnabled(estado);
         cmbPuertoPrincipal.setEnabled(estado);
+        cmbPuertoLed.setEnabled(estado);
         cmbPuerta1.setEnabled(estado);
         cmbPuerta2.setEnabled(estado);
         cmbPuerta3.setEnabled(estado);
@@ -273,6 +276,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel22 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        cmbPuertoLed = new javax.swing.JComboBox();
+        jLabel27 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -687,6 +692,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel2.add(jLabel20);
         jLabel20.setBounds(0, 170, 120, 14);
 
+        cmbPuertoPrincipal.setEditable(true);
         cmbPuertoPrincipal.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto}"), cmbPuertoPrincipal, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
@@ -736,6 +742,26 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         });
         jPanel2.add(jFormattedTextField1);
         jFormattedTextField1.setBounds(120, 210, 60, 20);
+
+        cmbPuertoLed.setEditable(true);
+        cmbPuertoLed.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.led}"), cmbPuertoLed, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        cmbPuertoLed.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbPuertoLedKeyPressed(evt);
+            }
+        });
+        jPanel2.add(cmbPuertoLed);
+        cmbPuertoLed.setBounds(300, 190, 60, 20);
+
+        jLabel27.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel27.setText("Puerto Pantalla LEDS:");
+        jPanel2.add(jLabel27);
+        jLabel27.setBounds(180, 190, 110, 14);
 
         jTabbedPane1.addTab("DATOS DE LA EMPRESA", new javax.swing.ImageIcon(getClass().getResource("/images/empresa.png")), jPanel2); // NOI18N
 
@@ -1088,6 +1114,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setPuerta4((String)cmbPuerta4.getSelectedItem());
 
                     empresaObj.setPuerto((String)cmbPuertoPrincipal.getSelectedItem());
+                    empresaObj.setLed((String)cmbPuertoLed.getSelectedItem());
                     empresaObj.setImpresora((String)cmbImpresora.getSelectedItem());
                     
                     
@@ -1538,6 +1565,11 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         // TODO add your handling code here:
     }//GEN-LAST:event_jFormattedTextField1ActionPerformed
 
+    private void cmbPuertoLedKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPuertoLedKeyPressed
+        // TODO add your handling code here:
+           principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_cmbPuertoLedKeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
@@ -1559,6 +1591,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JComboBox cmbPuerta2;
     private javax.swing.JComboBox cmbPuerta3;
     private javax.swing.JComboBox cmbPuerta4;
+    private javax.swing.JComboBox cmbPuertoLed;
     private javax.swing.JComboBox cmbPuertoPrincipal;
     private javax.swing.JComboBox cmbSalida1;
     private javax.swing.JComboBox cmbSalida2;
@@ -1591,6 +1624,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

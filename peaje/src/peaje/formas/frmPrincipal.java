@@ -670,6 +670,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         } catch (java.beans.PropertyVetoException e1) {
             e1.printStackTrace();
         }
+        frmIngresarSistema.setVisible(true);
         frmIngresarSistema.getContentPane().setLayout(null);
 
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 1, true));
@@ -1388,7 +1389,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             jPanel10.setLayout(null);
 
-            cliente.setBackground(new java.awt.Color(255, 255, 255));
             cliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             cliente.setEditable(false);
             cliente.setForeground(new java.awt.Color(51, 51, 255));
@@ -1397,7 +1397,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jPanel10.add(cliente);
             cliente.setBounds(20, 30, 180, 20);
 
-            tarjetatxt.setBackground(new java.awt.Color(255, 255, 255));
             tarjetatxt.setBorder(null);
             tarjetatxt.setEditable(false);
             tarjetatxt.setForeground(new java.awt.Color(255, 0, 0));
@@ -1435,7 +1434,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jPanel10.add(jPanel1);
             jPanel1.setBounds(360, 10, 20, 70);
 
-            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
             spIngreso.setBorder(null);
             spIngreso.setEnabled(false);
             spIngreso.setFocusable(false);
@@ -1461,7 +1460,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jPanel10.add(salid);
             salid.setBounds(230, 40, 60, 20);
 
-            spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+            spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
             spConsumo.setBorder(null);
             spConsumo.setEnabled(false);
             spConsumo.setFocusable(false);
@@ -1474,7 +1473,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jPanel10.add(cons);
             cons.setBounds(230, 60, 60, 20);
 
-            placa.setBackground(new java.awt.Color(255, 255, 255));
             placa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             placa.setEditable(false);
             placa.setText(".");
@@ -1987,7 +1985,65 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     public void verificarUsuario() {
         Usuarios usu = null;
         try {
+            Date fechaAc = new Date();
+//            String hora = fechaAc.getHours() + ":" + fechaAc.getMinutes() + ":" + fechaAc.getSeconds();
             usu = adm.ingresoSistema(usuariot.getText(), clave.getText());
+
+            if (usu != null) {
+                try {
+                        Date feI = usu.getHoraini();
+                        Date feF = usu.getHorafin();
+                        feI.setYear(fechaAc.getYear());
+                        feI.setMonth(fechaAc.getMonth());
+                        feI.setSeconds(fechaAc.getSeconds());
+                        feF.setYear(fechaAc.getYear());
+                        feF.setMonth(fechaAc.getMonth());
+                        feF.setSeconds(fechaAc.getSeconds());
+                        Boolean estado = false;
+                        Boolean estado2 = false;
+
+                        if (feI.getTime() <= fechaAc.getTime()){
+                            System.out.println("fecha ACTUAL es MAYOR A FECHA INICIAL");
+                            estado = true;
+                         }else{
+                            System.out.println("fecha ACTUAL es MENOR A FECHA INICIAL");
+                            estado = false;
+                         }
+                        if (feF.getTime() >= fechaAc.getTime()){
+                            System.out.println("fecha FINAL es MAYHOR A FECHA ACTUAL");
+                            estado2 = true;
+                         }else{
+                            System.out.println("fecha FINAL es MENOR A FECHA ACTUAL");
+                            estado2 = false;
+                         }
+
+
+                    if (estado && estado2) {
+                        
+
+                    }else{
+                        clave.setEditable(true);
+                        usuariot.setEditable(true);
+                        usuariot.setText("");
+                        clave.setText("");
+                        JOptionPane.showMessageDialog(this, "No puede ingresar en éste horario", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                        usuariot.requestFocusInWindow();
+                        return;
+                    }
+                } catch (Exception e) {
+                      clave.setEditable(true);
+                        usuariot.setEditable(true);
+                        usuariot.setText("");
+                        clave.setText("");
+                     JOptionPane.showMessageDialog(this, "No se ha cargado su horario de trabajo\n solicite a un administrador que realice éste proceso", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                        usuariot.requestFocusInWindow();
+                        System.out.println("NO SE HAN CARGADO LAS FECHAS " + e);
+                        return;
+                    
+                }
+            }
+
+
         } catch (Exception e) {
             //JOptionPane.showMessageDialog(this, "ERROR EN CONFIGURACION DEL SISTEMA"+e);
             WorkingDirectory w = new WorkingDirectory();
@@ -2274,7 +2330,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
                         noDisponibles();
-  } else {//EN EL CASO DE QUE SEA CONSUMIDOR FINAL Y PARA TARJETAS DE USUARIOS ESPORADICOS
+                    } else {//EN EL CASO DE QUE SEA CONSUMIDOR FINAL Y PARA TARJETAS DE USUARIOS ESPORADICOS
                         //CLIENTES QUE NO TIENEN TARJETA **********************************************************************************************
 
                         errores.setText("OK");
@@ -2361,7 +2417,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-  public void imprimir(int cod, Empresa emp, int dias, Boolean mensual, Clientes cli) {
+
+    public void imprimir(int cod, Empresa emp, int dias, Boolean mensual, Clientes cli) {
 
 //                    viewer.show();
         try {

@@ -57,6 +57,8 @@ public class Empresa implements Serializable {
     private Double iva;
     @Column(name = "gracia")
     private Integer gracia;
+      @Column(name = "led")
+    private String led;
     @Column(name = "puerto1")
     private String puerto1;
     @Column(name = "puerto2")
@@ -164,6 +166,15 @@ public class Empresa implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public String getLed() {
+        return led;
+    }
+
+    public void setLed(String led) {
+        this.led = led;
+    }
+
 
     public String getRazon() {
         return razon;

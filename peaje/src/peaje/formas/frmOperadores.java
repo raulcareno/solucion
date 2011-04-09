@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
 import hibernate.*;
+import java.util.Date;
 
 ;
 //import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
@@ -113,6 +114,8 @@ try {
         usuario.setEditable(estado);
         clave.setEditable(estado);
         confirmar.setEditable(estado);
+        ingreso.setEnabled(estado);
+        salida.setEnabled(estado);
 
     }
 
@@ -125,6 +128,8 @@ try {
         usuario.setText(estado);
         clave.setText(estado);
         confirmar.setText(estado);
+        ingreso.setDate(new Date());
+        salida.setDate(new Date());
 
     }
   public void llenar(Usuarios usuario001) {
@@ -174,6 +179,11 @@ try {
         jScrollPane2 = new javax.swing.JScrollPane();
         perfil = new javax.swing.JList();
         codigo = new javax.swing.JLabel();
+        ingreso = new com.toedter.calendar.JDateChooser();
+        salida = new com.toedter.calendar.JDateChooser();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -331,7 +341,7 @@ try {
             }
         });
         jPanel1.add(usuario);
-        usuario.setBounds(110, 70, 110, 20);
+        usuario.setBounds(110, 70, 80, 20);
 
         jLabel5.setForeground(new java.awt.Color(0, 0, 153));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -346,13 +356,13 @@ try {
             }
         });
         jPanel1.add(clave);
-        clave.setBounds(110, 90, 110, 20);
+        clave.setBounds(230, 70, 100, 20);
 
         jLabel6.setForeground(new java.awt.Color(0, 0, 153));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Clave:");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(10, 90, 90, 14);
+        jLabel6.setBounds(180, 70, 50, 14);
 
         confirmar.setEditable(false);
         confirmar.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -366,13 +376,13 @@ try {
             }
         });
         jPanel1.add(confirmar);
-        confirmar.setBounds(110, 110, 110, 20);
+        confirmar.setBounds(230, 90, 100, 20);
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Confirmar:");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(0, 110, 100, 14);
+        jLabel7.setBounds(130, 90, 100, 14);
 
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Este Usuario es:");
@@ -393,15 +403,40 @@ try {
         jScrollPane2.setViewportView(perfil);
 
         jPanel1.add(jScrollPane2);
-        jScrollPane2.setBounds(110, 130, 220, 50);
+        jScrollPane2.setBounds(110, 110, 220, 50);
 
         codigo.setFont(new java.awt.Font("Tahoma", 0, 3));
         codigo.setText("0");
         jPanel1.add(codigo);
         codigo.setBounds(80, 160, 10, 14);
 
+        ingreso.setBackground(new java.awt.Color(255, 255, 255));
+        ingreso.setDateFormatString("HH:mm:ss");
+        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jPanel1.add(ingreso);
+        ingreso.setBounds(120, 180, 110, 20);
+
+        salida.setBackground(new java.awt.Color(255, 255, 255));
+        salida.setDateFormatString("HH:mm:ss");
+        salida.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jPanel1.add(salida);
+        salida.setBounds(230, 180, 100, 20);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Horario Laboral:");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(4, 180, 100, 14);
+
+        jLabel4.setText("Ingreso");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(120, 160, 80, 20);
+
+        jLabel9.setText("Salida");
+        jPanel1.add(jLabel9);
+        jLabel9.setBounds(230, 160, 50, 20);
+
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 50, 370, 190);
+        jPanel1.setBounds(20, 50, 370, 210);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -502,7 +537,7 @@ try {
         btnSalir.setBounds(290, 10, 60, 50);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(20, 240, 370, 70);
+        jPanel4.setBounds(20, 260, 370, 70);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -539,6 +574,8 @@ try {
                      usuarioObj.setDireccion(direccion.getText());
                      usuarioObj.setUsuario(usuario.getText());
                      usuarioObj.setCodigo(Integer.parseInt(codigo.getText()));
+                     usuarioObj.setHoraini(ingreso.getDate());
+                     usuarioObj.setHorafin(salida.getDate());
                      if(usuarioObj.getCodigo().equals(0)){
                          usuarioObj.setCodigo(null);
                      }
@@ -717,7 +754,8 @@ try {
                 perfil.setSelectedValue(g+"",true);
 
                 claveActual = usuarioObj.getClave();
-
+                 ingreso.setDate(usuarioObj.getHoraini());
+                 salida.setDate(usuarioObj.getHorafin());
                 formaUsuarios.dispose();
             } catch (Exception ex) {
                 Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
@@ -751,6 +789,8 @@ try {
 //                perfil.setSelectedValue(g,true);
                 formaUsuarios.dispose();
                 claveActual = usuarioObj.getClave();
+                ingreso.setDate(usuarioObj.getHoraini());
+                 salida.setDate(usuarioObj.getHorafin());
 
             } catch (Exception ex) {
                 Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
@@ -880,16 +920,20 @@ try {
     private javax.swing.JPasswordField confirmar;
     private javax.swing.JFormattedTextField direccion;
     private javax.swing.JDialog formaUsuarios;
+    private com.toedter.calendar.JDateChooser ingreso;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -899,6 +943,7 @@ try {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JList perfil;
+    private com.toedter.calendar.JDateChooser salida;
     private javax.swing.JFormattedTextField usuario;
     // End of variables declaration//GEN-END:variables
 }

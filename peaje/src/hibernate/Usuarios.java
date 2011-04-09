@@ -6,7 +6,7 @@
 package hibernate;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,9 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -44,6 +44,12 @@ public class Usuarios implements Serializable {
     private String usuario;
     @Column(name = "clave")
     private String clave;
+      @Column(name = "horaini")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date horaini = new Date();
+      @Column(name = "horafin")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date horafin = new Date();
 //    @OneToMany(mappedBy = "usuarios")
 //    private Collection<Auditoria> auditoriaCollection;
     @JoinColumn(name = "perfil", referencedColumnName = "codigo")
@@ -104,6 +110,24 @@ public class Usuarios implements Serializable {
     public void setClave(String clave) {
         this.clave = clave;
     }
+
+    public Date getHorafin() {
+        return horafin;
+    }
+
+    public void setHorafin(Date horafin) {
+        this.horafin = horafin;
+    }
+
+    public Date getHoraini() {
+        return horaini;
+    }
+
+    public void setHoraini(Date horaini) {
+        this.horaini = horaini;
+    }
+
+    
 
 //    public Collection<Auditoria> getAuditoriaCollection() {
 //        return auditoriaCollection;

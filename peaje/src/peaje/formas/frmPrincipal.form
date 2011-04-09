@@ -510,6 +510,7 @@
                 </Property>
                 <Property name="opaque" type="boolean" value="true"/>
                 <Property name="selected" type="boolean" value="true"/>
+                <Property name="visible" type="boolean" value="true"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
