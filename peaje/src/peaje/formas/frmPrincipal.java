@@ -2003,17 +2003,17 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         Boolean estado2 = false;
 
                         if (feI.getTime() <= fechaAc.getTime()){
-                            System.out.println("fecha ACTUAL es MAYOR A FECHA INICIAL");
+//                            System.out.println("fecha ACTUAL es MAYOR A FECHA INICIAL");
                             estado = true;
                          }else{
-                            System.out.println("fecha ACTUAL es MENOR A FECHA INICIAL");
+//                            System.out.println("fecha ACTUAL es MENOR A FECHA INICIAL");
                             estado = false;
                          }
                         if (feF.getTime() >= fechaAc.getTime()){
-                            System.out.println("fecha FINAL es MAYHOR A FECHA ACTUAL");
+//                            System.out.println("fecha FINAL es MAYHOR A FECHA ACTUAL");
                             estado2 = true;
                          }else{
-                            System.out.println("fecha FINAL es MENOR A FECHA ACTUAL");
+//                            System.out.println("fecha FINAL es MENOR A FECHA ACTUAL");
                             estado2 = false;
                          }
 
