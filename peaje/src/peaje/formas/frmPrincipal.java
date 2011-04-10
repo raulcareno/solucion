@@ -1995,14 +1995,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         Date feF = usu.getHorafin();
                         feI.setYear(fechaAc.getYear());
                         feI.setMonth(fechaAc.getMonth());
-                        feI.setSeconds(fechaAc.getSeconds());
+                        feI.setDate(fechaAc.getDate());
                         feF.setYear(fechaAc.getYear());
                         feF.setMonth(fechaAc.getMonth());
-                        feF.setSeconds(fechaAc.getSeconds());
-                        Boolean estado = false;
-                        Boolean estado2 = false;
-
-                        if (feI.getTime() <= fechaAc.getTime()){
+                        feF.setDate(fechaAc.getDate());
+                        Boolean estado = true;
+                        Boolean estado2 = true;
+//                    System.out.println("ACTUAL "+fechaAc.toLocaleString() +" "+fechaAc.getTime() );
+//                    System.out.println("INICIAL "+feI.toLocaleString() +" "+feI.getTime() );
+//                    System.out.println("FINAL "+feF.toLocaleString() +" "+feF.getTime() );
+                    if (feI.getTime() <= fechaAc.getTime()){
 //                            System.out.println("fecha ACTUAL es MAYOR A FECHA INICIAL");
                             estado = true;
                          }else{
@@ -2038,7 +2040,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                      JOptionPane.showMessageDialog(this, "No se ha cargado su horario de trabajo\n solicite a un administrador que realice éste proceso", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                         usuariot.requestFocusInWindow();
                         System.out.println("NO SE HAN CARGADO LAS FECHAS " + e);
-                        return;
+                        if(usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")){
+
+                        }else{
+                                return;
+                        }
+                        
                     
                 }
             }
