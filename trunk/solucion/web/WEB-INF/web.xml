@@ -3,7 +3,7 @@
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-    <display-name>JCINFORM Administrador Educativo</display-name>
+    <display-name>JCINFORM Administrador Educativo www.jcinform.com</display-name>
     <!-- /// -->
     <!-- DSP -->
     <servlet>
@@ -127,9 +127,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SimpleUploader</servlet-name>
-        <url-pattern>
- /zkau/web/js/ext/FCKeditor/editor/filemanager/upload/simpleuploader
-     </url-pattern>
+        <url-pattern>/zkau/web/js/ext/FCKeditor/editor/filemanager/upload/simpleuploader</url-pattern>
     </servlet-mapping>
     <!-- FIN DE EL FCKEDITOR -->
     <mime-mapping>
@@ -201,6 +199,6 @@
         <mime-type>text/html</mime-type>
     </mime-mapping>
     <welcome-file-list>
-        <welcome-file>login.zul</welcome-file>
+        <welcome-file>inicio.zul</welcome-file>
     </welcome-file-list>
 </web-app>

@@ -1,0 +1,9 @@
+<window>
+    <zscript>
+        System.out.println("INICIO ***** "+new java.util.Date());
+         Executions.sendRedirect("login.zul");
+    </zscript>
+</window>
+
+
+
