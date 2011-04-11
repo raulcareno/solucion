@@ -52,14 +52,13 @@
 
 
  Administrador adm = new Administrador();
-cargar(){
-derechos.value = "Todos los derechos reservados a JCINFORM, derecho de copia @2009-"+ ((new Date()).getYear()+1900) +", web: ";
-}
- List perfiles = adm.query("Select o from Periodo as o where o.estado = true");
-  Periodo per = new Periodo(-1);
-  per.setDescripcion("[Seleccione]");
-  perfiles.add(0,per);
  Permisos permisos = new Permisos();
+ 
+cargar(){
+    derechos.value = "Todos los derechos reservados a JCINFORM, derecho de copia @2009-"+ ((new Date()).getYear()+1900) +", web: ";
+}
+ 
+
 
 void verificar(){
 error.visible = false;
