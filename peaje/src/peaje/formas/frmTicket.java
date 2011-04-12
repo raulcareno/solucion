@@ -324,68 +324,74 @@ public class frmTicket extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-              if (guardando == false) {
-            guardando = true;
-
-        if (principal.permisos.getAgregar()) {
-            try {
-                if (placa.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Ingrese el No. de Placa ...!", "", JOptionPane.ERROR_MESSAGE);
-                    placa.requestFocusInWindow();
-                    return;
-                }
-
+if (guardando == false) {
+      
+                guardando = true;
                 btnAgregar.setEnabled(false);
-                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                Factura fac = new Factura();
-                fac.setPlaca(placa.getText().replace("_", "").toUpperCase());
-                fac.setFechaini(new Date());
-                fac.setFecha(new Date());
-                fac.setTicket(emp.getDocumentoticket());
-//                noTicket.setText(emp.getDocumentoticket());
-                adm.guardar(fac);
-                codigo.setText(fac.getCodigo() + "");
+                btnAgregar.setVisible(false);
+//                Thread.sleep(500);
+                if (principal.permisos.getAgregar()) {
+                    try {
+                        if (placa.getText().isEmpty()) {
+                            JOptionPane.showMessageDialog(this, "Ingrese el No. de Placa ...!", "", JOptionPane.ERROR_MESSAGE);
+                            placa.requestFocusInWindow();
+                            btnAgregar.setVisible(true);
+                            btnAgregar.setEnabled(true);
+                            guardando = false;
+                            return;
+                        }
+                        btnAgregar.setVisible(false);
+                        Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                        Factura fac = new Factura();
+                        fac.setPlaca(placa.getText().replace("_", "").toUpperCase());
+                        fac.setFechaini(new Date());
+                        fac.setFecha(new Date());
+                        fac.setTicket(emp.getDocumentoticket());
+                        //                noTicket.setText(emp.getDocumentoticket());
+                        adm.guardar(fac);
+                        codigo.setText(fac.getCodigo() + "");
+                        Integer numero = new Integer(emp.getDocumentoticket());
+                        emp.setDocumentoticket((numero + 1) + "");
+                        adm.actualizar(emp);
+                        imprimir(fac.getCodigo(), emp);
+                        Thread cargar = new Thread() {
 
-                Integer numero = new Integer(emp.getDocumentoticket());
-                emp.setDocumentoticket((numero + 1) + "");
-                adm.actualizar(emp);
-                imprimir(fac.getCodigo(), emp);
-                Thread cargar = new Thread() {
-
-                    public void run() {
-                         try {
-                    LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
-                    ta.outputSream.write(UsuarioActivo.getIn().getBytes());
-                    //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-//                    barrera1.setEnabled(true);
-                } catch (Exception ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                        //AbrirPuerta.abrir(empresaObj.getPuerto(), principal.in);
-                        System.out.println("ABRIO PUERTA: " + principal.in);
-
+                            public void run() {
+                                try {
+                                    LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
+                                    ta.outputSream.write(UsuarioActivo.getIn().getBytes());
+                                    //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                                    //                    barrera1.setEnabled(true);
+                                } catch (Exception ex) {
+                                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                System.out.println("ABRIO PUERTA: " + principal.in);
+                            }
+                        };
+                        cargar.start();
+                        principal.noDisponibles();
+                        //                btnAgregar.setEnabled(true);
+                        principal.auditar("Ticket", "No." + fac.getTicket(), "GUARDAR");
+                        principal.contenedor.requestFocus();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                        Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+                        btnAgregar.setEnabled(true);
+                        btnAgregar.setVisible(true);
+                        guardando = false;
+                        return;
                     }
-                };
-                cargar.start();
-                principal.noDisponibles();
-                btnAgregar.setEnabled(true);
-                principal.auditar("Ticket", "No."+fac.getTicket(), "GUARDAR");
-                principal.contenedor.requestFocus();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
-                btnAgregar.setEnabled(true);
-                return;
-            }
-            this.setVisible(false);
-            principal = null;
-            empresaObj = null;
-            System.gc();
-        } else {
-            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
-        }
-
- guardando = false;
+                    this.setVisible(false);
+                    principal = null;
+                    empresaObj = null;
+                    System.gc();
+                } else {
+                    btnAgregar.setVisible(true);
+                    guardando = false;
+                    JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+                }
+                guardando = false;
+           
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 

@@ -1815,10 +1815,18 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             while (portList.hasMoreElements()) {
                 portId = (CommPortIdentifier) portList.nextElement();
                 if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                    
+                    //PUERTO DE LA TARJETA INTERFAZ PC - BARRERA
                     if (portId.getName().equals(empresaObj.getPuerto())) {
                         reader = new LeerTarjeta(portId, this);
                         puertoListo.add(reader);
                         System.out.println("ABIERTO: " + empresaObj.getPuerto());
+                    }
+                    //PUERTO DE LETRERO LEDS
+                    if (portId.getName().equals(empresaObj.getLed())) {
+                        reader = new LeerTarjeta(portId, this);
+                        puertoListo.add(reader);
+                        System.out.println("ABIERTO: " + empresaObj.getLed());
                     }
                     if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
                         reader = new LeerTarjeta(portId, this);
@@ -1976,6 +1984,24 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             Long val2 = (Long) con;
             disponibles.setText("Disponibles: " + (empresaObj.getParqueaderos() - val2.intValue()));
             ocupados.setText("Ocupados: " + val2.intValue());
+            final int dispo = (empresaObj.getParqueaderos() - val2.intValue());
+            //ENVIO A LA PANTALLA DE LEDS LA INFORMACIÓN
+            Thread cargar = new Thread() {
+            public void run() {
+                try {
+                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
+                    ta.outputSream.write(((""+dispo).getBytes()));
+                    //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                    barrera1.setEnabled(true);
+                } catch (IOException ex) {
+                    System.out.println("ERROR EN ENVIAR NO. DE DISPONIBLES ");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("FIN ERROR EN ENVIAR");
+                }
+            }
+        };
+        cargar.start();
+
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
