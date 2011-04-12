@@ -133,6 +133,9 @@ public class pendientes extends Rows {
                 nota = (Matriculas) adm.buscarClave(new Integer(valorCodigo), Matriculas.class);
                 Estudiantes est = nota.getEstudiante();
                 est.setPendientes(((Checkbox) labels.get(2)).isChecked());
+                Representante rep = est.getRepresentante();
+                rep.setEstado(true);
+                adm.actualizar(rep);
                 adm.actualizar(est);
                 nota = null;
 
