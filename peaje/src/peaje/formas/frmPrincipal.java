@@ -1815,17 +1815,29 @@ panelIngreso.setVisible(false);
                 portId = (CommPortIdentifier) portList.nextElement();
                 if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                     
-                    //PUERTO DE LA TARJETA INTERFAZ PC - BARRERA
+                //(0) //PUERTO DE LA TARJETA INTERFAZ PC - BARRERA
                     if (portId.getName().equals(empresaObj.getPuerto())) {
                         reader = new LeerTarjeta(portId, this);
                         puertoListo.add(reader);
                         System.out.println("ABIERTO: " + empresaObj.getPuerto());
                     }
-                    //PUERTO DE LETRERO LEDS
+                 //(1)    //PUERTO DE LETRERO LEDS
                     if (portId.getName().equals(empresaObj.getLed())) {
                         reader = new LeerTarjeta(portId, this);
                         puertoListo.add(reader);
                         System.out.println("ABIERTO: " + empresaObj.getLed());
+                    }
+                //(2)  //PUERTO DE CODIGO DE BARRAS
+                    if (portId.getName().equals(empresaObj.getBarras())) {
+                        reader = new LeerTarjeta(portId, this);
+                        puertoListo.add(reader);
+                        System.out.println("ABIERTO: " + empresaObj.getBarras());
+                    }
+                //(3)  //PUERTO DE CODIGO DE BARRAS 2
+                    if (portId.getName().equals(empresaObj.getBarras2())) {
+                        reader = new LeerTarjeta(portId, this);
+                        puertoListo.add(reader);
+                        System.out.println("ABIERTO: " + empresaObj.getBarras2());
                     }
                     if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
                         reader = new LeerTarjeta(portId, this);
@@ -2197,7 +2209,7 @@ panelIngreso.setVisible(false);
     }
 
     public void buscarTarjeta(String puertoViene) {
-        final frmPrincipal pra = this;
+//        final frmPrincipal pra = this;
         if (puertoViene.length() > 10) {
             puertoViene = puertoViene.substring(0, 10);
         }
@@ -2446,6 +2458,35 @@ panelIngreso.setVisible(false);
             procesando.setVisible(false);
 
 //            taskTarjeta.setCollapsed(true);
+        } catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void buscarTarjetaValidarSalida(String puertoViene,String noticket) {
+//        final frmPrincipal pra = this;
+        if (puertoViene.length() > 10) {
+            puertoViene = puertoViene.substring(0, 10);
+        }
+        try {
+            try {
+//                    verPanel();
+                       errores.setText("");
+                        //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
+                        List<Factura> facturas = adm.query("Select o from Factura as o where o.ticket = '" + noticket + "' "
+                                + "and o.fechafin is not null  ");
+                        Factura fac = new Factura();
+                            if (facturas.size() > 0) {
+                                errores.setText("EL CLIENTE HA PAGADO PERO FALTA VALIDAR SI NO SE HA PASADO EL TIEMPO LÍMITE");
+                                            abrirPuerta(puertoViene);
+                            } else {
+                                errores.setText("CLIENTE QUIERE SALIR SIN PAGAR)");
+                            }
+                        noDisponibles();
+            } catch (Exception ex) {
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            procesando.setVisible(false);
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2761,6 +2802,10 @@ panelIngreso.setVisible(false);
             lapuertaaAbrir = empresaObj.getPuerta6();
         } else if (puertoqueViene.equals(empresaObj.getSalida7())) {
             lapuertaaAbrir = empresaObj.getPuerta7();
+        } else if (puertoqueViene.equals(empresaObj.getBarras())) {
+            lapuertaaAbrir = empresaObj.getSale();
+        }else if (puertoqueViene.equals(empresaObj.getBarras2())) {
+            lapuertaaAbrir = empresaObj.getSale2();
         }
         System.out.println("INI: " + (new Date()));
 //        AbrirPuerta.abrir(empresaObj.getPuerto(), lapuertaaAbrir);

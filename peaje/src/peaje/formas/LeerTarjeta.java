@@ -207,10 +207,11 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 imprimir();
                 return;
             }
-//            if (puertoId.getName().equals(princip.empresaObj.getPuerto())) {
-//                imprimir();
-//                return;
-//            }
+            if (puertoId.getName().equals(princip.empresaObj.getBarras())) {
+                princip.buscarTarjetaValidarSalida(puertoId.getName(),tarjeta);//ENVIO EL NUMERO DE TICKET
+
+                return;
+            }
             princip.tarjetatxt.setText("");
             princip.tarjetatxt.setText(tarjeta);
             princip.buscarTarjeta(puertoId.getName());

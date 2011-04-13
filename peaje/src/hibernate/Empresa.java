@@ -61,6 +61,14 @@ public class Empresa implements Serializable {
     private Integer salida;
       @Column(name = "led")
     private String led;
+      @Column(name = "barras")
+    private String barras;
+      @Column(name = "barras2")
+    private String barras2;
+      @Column(name = "sale")
+    private String sale;
+      @Column(name = "sale2")
+    private String sale2;
     @Column(name = "puerto1")
     private String puerto1;
     @Column(name = "puerto2")
@@ -296,6 +304,38 @@ public class Empresa implements Serializable {
 
     public void setSalida(Integer salida) {
         this.salida = salida;
+    }
+
+    public String getBarras() {
+        return barras;
+    }
+
+    public void setBarras(String barras) {
+        this.barras = barras;
+    }
+
+    public String getBarras2() {
+        return barras2;
+    }
+
+    public void setBarras2(String barras2) {
+        this.barras2 = barras2;
+    }
+
+    public String getSale() {
+        return sale;
+    }
+
+    public void setSale(String sale) {
+        this.sale = sale;
+    }
+
+    public String getSale2() {
+        return sale2;
+    }
+
+    public void setSale2(String sale2) {
+        this.sale2 = sale2;
     }
 
    
