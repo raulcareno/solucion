@@ -997,7 +997,7 @@ public class reportesClase {
 
     }
 
-    public JRDataSource libretas(Cursos curso, Matriculas matri, Sistemacalificacion sistema) {
+    public JRDataSource libretas(Cursos curso, Matriculas matri, Sistemacalificacion sistema) throws InterruptedException {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -1265,9 +1265,21 @@ public class reportesClase {
                     query4 += "sum(nota" + w + "),";
                     w++;
                 }
-
-                query3 = query3.substring(0, query3.length() - 1);
+                try {
+                        query3 = query3.substring(0, query3.length() - 1);
+                } catch (Exception e) {
+                    Messagebox.show("No existen EQUIVALENCIAS \n Revise ADMINISTRACION > PARAMETROS > EQUIVALENCIAS >> DISCIPLINA", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                    System.out.println("************** LINEA: 1276: REPORTECLASE ERROR NO HAY EQUIVALENCIAS PARAMETRIZADAS"+e);
+                    return null;
+                }
+                try {
                 query4 = query4.substring(0, query4.length() - 1);
+                } catch (Exception e) {
+                    Messagebox.show("No existen EQUIVALENCIAS \n Revise ADMINISTRACION > PARAMETROS >> DISCIPLINA", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                    System.out.println("************** LINEA: 1276: REPORTECLASE ERROR NO HAY EQUIVALENCIAS PARAMETRIZADAS"+e);
+                    return null;
+                    
+                }
                 //IMPRIMO LAS FALTAS
                 q = "Select " + query4 + ", tri.descripcion from disciplina, sistemacalificacion  sis, trimestres tri "
                         + "where matricula = '" + matriculas1.getCodigomat() + "' and sis.trimestre = tri.codigotrim   "
