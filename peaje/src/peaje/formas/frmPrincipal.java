@@ -191,7 +191,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             }
             this.setIconImage(im);
-
+panelIngreso.setVisible(false);
             habilitarBotones(false);
             if (comprobar()) {
                 mostrar = true;
@@ -344,7 +344,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
-        jPanel10 = new javax.swing.JPanel();
+        panelIngreso = new javax.swing.JPanel();
         cliente = new javax.swing.JFormattedTextField();
         tarjetatxt = new javax.swing.JFormattedTextField();
         jPanel1 = new javax.swing.JPanel();
@@ -1380,21 +1380,20 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             frmRespaldarBase.setBounds(50, 120, 520, 210);
             contenedor.add(frmRespaldarBase, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            jPanel10.setBackground(new java.awt.Color(255, 255, 255));
-            jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
-            jPanel10.addKeyListener(new java.awt.event.KeyAdapter() {
+            panelIngreso.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
+            panelIngreso.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
-                    jPanel10KeyPressed(evt);
+                    panelIngresoKeyPressed(evt);
                 }
             });
-            jPanel10.setLayout(null);
+            panelIngreso.setLayout(null);
 
             cliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             cliente.setEditable(false);
             cliente.setForeground(new java.awt.Color(51, 51, 255));
             cliente.setText(".");
             cliente.setFont(new java.awt.Font("Tahoma", 0, 12));
-            jPanel10.add(cliente);
+            panelIngreso.add(cliente);
             cliente.setBounds(20, 30, 180, 20);
 
             tarjetatxt.setBorder(null);
@@ -1417,7 +1416,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     tarjetatxtVetoableChange(evt);
                 }
             });
-            jPanel10.add(tarjetatxt);
+            panelIngreso.add(tarjetatxt);
             tarjetatxt.setBounds(20, 50, 190, 20);
 
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -1431,64 +1430,64 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGap(0, 70, Short.MAX_VALUE)
             );
 
-            jPanel10.add(jPanel1);
+            panelIngreso.add(jPanel1);
             jPanel1.setBounds(360, 10, 20, 70);
 
             spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
             spIngreso.setBorder(null);
             spIngreso.setEnabled(false);
             spIngreso.setFocusable(false);
-            jPanel10.add(spIngreso);
+            panelIngreso.add(spIngreso);
             spIngreso.setBounds(290, 20, 90, 20);
 
             ingre.setFont(new java.awt.Font("Tahoma", 1, 11));
             ingre.setForeground(new java.awt.Color(153, 153, 153));
             ingre.setText("INGRESO:");
-            jPanel10.add(ingre);
+            panelIngreso.add(ingre);
             ingre.setBounds(230, 20, 60, 20);
 
             spSalida.setFont(new java.awt.Font("Tahoma", 0, 14));
             spSalida.setBorder(null);
             spSalida.setEnabled(false);
             spSalida.setFocusable(false);
-            jPanel10.add(spSalida);
+            panelIngreso.add(spSalida);
             spSalida.setBounds(290, 40, 90, 20);
 
             salid.setFont(new java.awt.Font("Tahoma", 1, 11));
             salid.setForeground(new java.awt.Color(153, 153, 153));
             salid.setText("SALIDA:");
-            jPanel10.add(salid);
+            panelIngreso.add(salid);
             salid.setBounds(230, 40, 60, 20);
 
             spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
             spConsumo.setBorder(null);
             spConsumo.setEnabled(false);
             spConsumo.setFocusable(false);
-            jPanel10.add(spConsumo);
+            panelIngreso.add(spConsumo);
             spConsumo.setBounds(290, 60, 90, 20);
 
             cons.setFont(new java.awt.Font("Tahoma", 1, 11));
             cons.setForeground(new java.awt.Color(153, 153, 153));
             cons.setText("CONSUMO:");
-            jPanel10.add(cons);
+            panelIngreso.add(cons);
             cons.setBounds(230, 60, 60, 20);
 
             placa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             placa.setEditable(false);
             placa.setText(".");
-            jPanel10.add(placa);
+            panelIngreso.add(placa);
             placa.setBounds(20, 70, 180, 20);
 
             errores.setFont(new java.awt.Font("Tahoma", 1, 12));
             errores.setForeground(new java.awt.Color(255, 0, 0));
             errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jPanel10.add(errores);
+            panelIngreso.add(errores);
             errores.setBounds(20, 100, 360, 20);
 
-            jPanel10.setBounds(0, 40, 400, 130);
-            contenedor.add(jPanel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
+            panelIngreso.setBounds(20, 40, 400, 130);
+            contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
+            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             usuarioLogeado.setForeground(new java.awt.Color(0, 153, 204));
             usuarioLogeado.setText("...");
             usuarioLogeado.setBorderPainted(false);
@@ -2219,6 +2218,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     noTarjeta.setText(tarjetatxt.getText());
                     errores.setText("");
                 } else {
+                    verPanel();
                     if (tarje.getClientes().getCodigo().intValue() > 1) {
 
                         //VALIDO LA TARJETA QUE ESTE´HABILITADA Y ESTE EN LAS FECHAS ESTABELCIDAS
@@ -4034,10 +4034,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         tecla(evt.getKeyCode());
     }//GEN-LAST:event_todosKeyPressed
 
-    private void jPanel10KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel10KeyPressed
+    private void panelIngresoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_panelIngresoKeyPressed
         // TODO add your handling code here:
         tecla(evt.getKeyCode());
-    }//GEN-LAST:event_jPanel10KeyPressed
+    }//GEN-LAST:event_panelIngresoKeyPressed
 
     private void contenedor1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contenedor1KeyPressed
         // TODO add your handling code here:
@@ -4134,7 +4134,24 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         frmRespaldarBase.setVisible(false);
     }//GEN-LAST:event_jButton6ActionPerformed
+public void verPanel(){
+    panelIngreso.setVisible(true);
+        Thread cargar = new Thread() {
 
+            public void run() {
+                    try {
+                        
+                        sleep(30000);
+                        panelIngreso.setVisible(false);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+            }
+        };
+        cargar.start();
+
+}
     public void respaldar() {
 
         try {
@@ -4313,7 +4330,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -4343,6 +4359,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JLabel ocupados;
     private javax.swing.JPanel panelHoras;
+    private javax.swing.JPanel panelIngreso;
     private javax.swing.JFormattedTextField placa;
     private javax.swing.JFormattedTextField placa1;
     public javax.swing.JButton procesando;
