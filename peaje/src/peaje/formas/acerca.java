@@ -7,6 +7,9 @@
 package peaje.formas;
 
 import java.awt.Container;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,7 +27,7 @@ public class acerca  extends javax.swing.JInternalFrame  {
 //          super(parent,modal);
         //this.desktopContenedor = lo.contenedor;
         initComponents();
-        this.setSize(419, 214);
+        this.setSize(464, 220);
     }
     /** This method is called from within the constructor to
      * initialize the form.
@@ -36,6 +39,8 @@ public class acerca  extends javax.swing.JInternalFrame  {
     private void initComponents() {
 
         javax.swing.JLabel imageLabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         javax.swing.JLabel appTitleLabel = new javax.swing.JLabel();
         javax.swing.JLabel versionLabel = new javax.swing.JLabel();
         javax.swing.JLabel appVersionLabel = new javax.swing.JLabel();
@@ -44,69 +49,93 @@ public class acerca  extends javax.swing.JInternalFrame  {
         javax.swing.JLabel homepageLabel = new javax.swing.JLabel();
         javax.swing.JLabel vendorLabel = new javax.swing.JLabel();
         javax.swing.JLabel appHomepageLabel1 = new javax.swing.JLabel();
-        javax.swing.JLabel appHomepageLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         javax.swing.JLabel appHomepageLabel3 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        javax.swing.JLabel homepageLabel1 = new javax.swing.JLabel();
 
         setTitle("Acerca de ...");
         getContentPane().setLayout(null);
 
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
         getContentPane().add(imageLabel);
-        imageLabel.setBounds(60, 50, 50, 80);
-
-        appTitleLabel.setFont(appTitleLabel.getFont().deriveFont(appTitleLabel.getFont().getStyle() | java.awt.Font.BOLD, appTitleLabel.getFont().getSize()+4));
-        appTitleLabel.setText("SISTEMA DE PARQUEADERO");
-        getContentPane().add(appTitleLabel);
-        appTitleLabel.setBounds(60, 10, 240, 19);
-
-        versionLabel.setFont(versionLabel.getFont().deriveFont(versionLabel.getFont().getStyle() | java.awt.Font.BOLD));
-        versionLabel.setText("Version:");
-        getContentPane().add(versionLabel);
-        versionLabel.setBounds(150, 50, 45, 14);
-
-        appVersionLabel.setText("0.0.1");
-        getContentPane().add(appVersionLabel);
-        appVersionLabel.setBounds(230, 50, 70, 14);
-
-        appVendorLabel.setText("JCINFORM");
-        getContentPane().add(appVendorLabel);
-        appVendorLabel.setBounds(230, 70, 107, 14);
-
-        appHomepageLabel.setText("Ing. Geovanny Jadán Ortega");
-        getContentPane().add(appHomepageLabel);
-        appHomepageLabel.setBounds(230, 90, 141, 14);
-
-        homepageLabel.setFont(homepageLabel.getFont().deriveFont(homepageLabel.getFont().getStyle() | java.awt.Font.BOLD));
-        homepageLabel.setText("Homepage:");
-        getContentPane().add(homepageLabel);
-        homepageLabel.setBounds(150, 110, 64, 14);
-
-        vendorLabel.setFont(vendorLabel.getFont().deriveFont(vendorLabel.getFont().getStyle() | java.awt.Font.BOLD));
-        vendorLabel.setText("Vendor:");
-        getContentPane().add(vendorLabel);
-        vendorLabel.setBounds(150, 70, 43, 14);
-
-        appHomepageLabel1.setText("080-162 211");
-        getContentPane().add(appHomepageLabel1);
-        appHomepageLabel1.setBounds(230, 150, 143, 14);
-
-        appHomepageLabel2.setText("http://www.jcinform.com");
-        getContentPane().add(appHomepageLabel2);
-        appHomepageLabel2.setBounds(230, 110, 121, 14);
+        imageLabel.setBounds(10, 10, 190, 90);
 
         jButton1.setText("Aceptar");
+        jButton1.setSelected(true);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(50, 150, 90, 23);
+        jButton1.setBounds(40, 130, 120, 40);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setLayout(null);
+
+        appTitleLabel.setFont(appTitleLabel.getFont().deriveFont(appTitleLabel.getFont().getStyle() | java.awt.Font.BOLD, appTitleLabel.getFont().getSize()+4));
+        appTitleLabel.setForeground(new java.awt.Color(0, 51, 153));
+        appTitleLabel.setText("Sistema de Parqueadero");
+        jPanel1.add(appTitleLabel);
+        appTitleLabel.setBounds(30, 10, 190, 19);
+
+        versionLabel.setFont(versionLabel.getFont().deriveFont(versionLabel.getFont().getStyle() | java.awt.Font.BOLD));
+        versionLabel.setText("Version:");
+        jPanel1.add(versionLabel);
+        versionLabel.setBounds(10, 40, 70, 14);
+
+        appVersionLabel.setText("1.0");
+        jPanel1.add(appVersionLabel);
+        appVersionLabel.setBounds(80, 40, 70, 14);
+
+        appVendorLabel.setText("JCINFORM");
+        jPanel1.add(appVendorLabel);
+        appVendorLabel.setBounds(80, 60, 107, 14);
+
+        appHomepageLabel.setText("Ing. Geovanny Jadán Ortega");
+        jPanel1.add(appHomepageLabel);
+        appHomepageLabel.setBounds(80, 100, 141, 14);
+
+        homepageLabel.setFont(homepageLabel.getFont().deriveFont(homepageLabel.getFont().getStyle() | java.awt.Font.BOLD));
+        homepageLabel.setText("Ventas:");
+        jPanel1.add(homepageLabel);
+        homepageLabel.setBounds(10, 100, 70, 14);
+
+        vendorLabel.setFont(vendorLabel.getFont().deriveFont(vendorLabel.getFont().getStyle() | java.awt.Font.BOLD));
+        vendorLabel.setText("Proveedor:");
+        jPanel1.add(vendorLabel);
+        vendorLabel.setBounds(10, 60, 70, 14);
+
+        appHomepageLabel1.setText("080-162 211");
+        jPanel1.add(appHomepageLabel1);
+        appHomepageLabel1.setBounds(80, 140, 143, 14);
 
         appHomepageLabel3.setText("jcinform@gmail.com");
-        getContentPane().add(appHomepageLabel3);
-        appHomepageLabel3.setBounds(230, 130, 143, 14);
+        jPanel1.add(appHomepageLabel3);
+        appHomepageLabel3.setBounds(80, 120, 143, 14);
+
+        jButton2.setForeground(new java.awt.Color(0, 0, 255));
+        jButton2.setText("http://www.jcinform.com");
+        jButton2.setBorder(null);
+        jButton2.setContentAreaFilled(false);
+        jButton2.setFocusPainted(false);
+        jButton2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton2.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2);
+        jButton2.setBounds(80, 80, 140, 14);
+
+        homepageLabel1.setFont(homepageLabel1.getFont().deriveFont(homepageLabel1.getFont().getStyle() | java.awt.Font.BOLD));
+        homepageLabel1.setText("Web:");
+        jPanel1.add(homepageLabel1);
+        homepageLabel1.setBounds(10, 80, 70, 14);
+
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(210, 10, 230, 160);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -116,9 +145,22 @@ public class acerca  extends javax.swing.JInternalFrame  {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            // TODO add your handling code here:
+            Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+"http://www.jcinform.com");
+        } catch (IOException ex) {
+            Logger.getLogger(acerca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
 }
