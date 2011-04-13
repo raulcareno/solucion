@@ -278,6 +278,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
         cmbPuertoLed = new javax.swing.JComboBox();
         jLabel27 = new javax.swing.JLabel();
+        graciasalida = new javax.swing.JFormattedTextField();
+        jLabel28 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -725,9 +727,9 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel2.add(jLabel22);
         jLabel22.setBounds(0, 190, 110, 14);
 
-        jLabel16.setText("Tiempo de Gracia: ");
+        jLabel16.setText("Tiempo Gracia Entrada: ");
         jPanel2.add(jLabel16);
-        jLabel16.setBounds(10, 210, 100, 14);
+        jLabel16.setBounds(0, 210, 120, 20);
 
         jFormattedTextField1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jFormattedTextField1.setText("0");
@@ -762,6 +764,24 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel27.setText("Puerto Pantalla LEDS:");
         jPanel2.add(jLabel27);
         jLabel27.setBounds(180, 190, 110, 14);
+
+        graciasalida.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        graciasalida.setText("0");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida}"), graciasalida, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        graciasalida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                graciasalidaActionPerformed(evt);
+            }
+        });
+        jPanel2.add(graciasalida);
+        graciasalida.setBounds(300, 210, 60, 20);
+
+        jLabel28.setText("Tiempo Gracia Salida: ");
+        jPanel2.add(jLabel28);
+        jLabel28.setBounds(180, 210, 120, 20);
 
         jTabbedPane1.addTab("DATOS DE LA EMPRESA", new javax.swing.ImageIcon(getClass().getResource("/images/empresa.png")), jPanel2); // NOI18N
 
@@ -1570,6 +1590,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
            principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_cmbPuertoLedKeyPressed
 
+    private void graciasalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graciasalidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_graciasalidaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
@@ -1602,6 +1626,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JFormattedTextField direccion;
     private javax.swing.JDialog formaEmpresa;
+    private javax.swing.JFormattedTextField graciasalida;
     private javax.swing.JTextField iva;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JFormattedTextField jFormattedTextField1;
@@ -1625,6 +1650,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
