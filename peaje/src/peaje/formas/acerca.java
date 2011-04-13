@@ -38,6 +38,8 @@ public class acerca  extends javax.swing.JInternalFrame  {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel2 = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
         javax.swing.JLabel imageLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -55,6 +57,28 @@ public class acerca  extends javax.swing.JInternalFrame  {
 
         setTitle("Acerca de ...");
         getContentPane().setLayout(null);
+
+        jPanel2.setLayout(null);
+
+        jButton3.setFont(new java.awt.Font("Arial Unicode MS", 1, 12)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(51, 51, 51));
+        jButton3.setText("www.jcinform.com");
+        jButton3.setBorder(null);
+        jButton3.setContentAreaFilled(false);
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3.setFocusPainted(false);
+        jButton3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton3.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton3);
+        jButton3.setBounds(10, 0, 140, 14);
+
+        getContentPane().add(jPanel2);
+        jPanel2.setBounds(50, 80, 140, 20);
 
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
         getContentPane().add(imageLabel);
@@ -118,6 +142,7 @@ public class acerca  extends javax.swing.JInternalFrame  {
         jButton2.setText("http://www.jcinform.com");
         jButton2.setBorder(null);
         jButton2.setContentAreaFilled(false);
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton2.setFocusPainted(false);
         jButton2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton2.setMargin(new java.awt.Insets(2, 2, 2, 2));
@@ -146,21 +171,29 @@ public class acerca  extends javax.swing.JInternalFrame  {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
+     abrirurl();
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        abrirurl();
+    }//GEN-LAST:event_jButton3ActionPerformed
+void abrirurl(){
+     try {
             // TODO add your handling code here:
             Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+"http://www.jcinform.com");
         } catch (IOException ex) {
             Logger.getLogger(acerca.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 
 }
