@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
+import xml.XMLEmpresa;
 //import hibernate.cargar.validaciones;
 
 //import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
@@ -1260,6 +1261,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                 } else {
                     empresaObj.setImpticket((String) cmbTicket.getSelectedItem());
                     empresaObj.setImpfactura((String) cmbFactura.getSelectedItem());
+                    empresaObj.setImpresora((String)cmbImpresora.getSelectedItem());
+
                     empresaObj.setPuerto1((String)cmbEntrada1.getSelectedItem());
                     empresaObj.setPuerto2((String)cmbEntrada2.getSelectedItem());
                     empresaObj.setPuerto3((String)cmbEntrada3.getSelectedItem());
@@ -1269,7 +1272,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setSalida2((String)cmbSalida2.getSelectedItem());
                     empresaObj.setSalida3((String)cmbSalida3.getSelectedItem());
                     empresaObj.setSalida4((String)cmbSalida4.getSelectedItem());
-                    
+
                     empresaObj.setPuerta1((String)cmbPuerta1.getSelectedItem());
                     empresaObj.setPuerta2((String)cmbPuerta2.getSelectedItem());
                     empresaObj.setPuerta3((String)cmbPuerta3.getSelectedItem());
@@ -1281,7 +1284,11 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setBarras2((String)cmbPortBarras2.getSelectedItem());
                     empresaObj.setSale((String)cmbPuertaSale.getSelectedItem());
                     empresaObj.setSale2((String)cmbPuertaSale2.getSelectedItem());
-                    empresaObj.setImpresora((String)cmbImpresora.getSelectedItem());
+
+                    XMLEmpresa xm = new XMLEmpresa();
+                    xm.inicio();
+                    xm.escribir(empresaObj);
+                   
                     
                     
                     if (modificar) {

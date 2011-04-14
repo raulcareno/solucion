@@ -66,6 +66,7 @@ import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import sources.FacturaDetalleSource;
 import sources.FacturaSource;
+import xml.XMLEmpresa;
 
 /**
  *
@@ -89,6 +90,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     static UsuarioActivo datosConecta;
     static Boolean mostrar = true;
     public static ArrayList puertoListo;
+    static WorkingDirectory w = new WorkingDirectory();
+    String ubicacionDirectorio = w.get() + separador;
 
     public void habilitarBotones(Boolean estado) {
         btnAuditoria.setEnabled(estado);
@@ -191,7 +194,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             }
             this.setIconImage(im);
-panelIngreso.setVisible(false);
+            panelIngreso.setVisible(false);
             habilitarBotones(false);
             if (comprobar()) {
                 mostrar = true;
@@ -1814,26 +1817,26 @@ panelIngreso.setVisible(false);
             while (portList.hasMoreElements()) {
                 portId = (CommPortIdentifier) portList.nextElement();
                 if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                    
-                //(0) //PUERTO DE LA TARJETA INTERFAZ PC - BARRERA
+
+                    //(0) //PUERTO DE LA TARJETA INTERFAZ PC - BARRERA
                     if (portId.getName().equals(empresaObj.getPuerto())) {
                         reader = new LeerTarjeta(portId, this);
                         puertoListo.add(reader);
                         System.out.println("ABIERTO: " + empresaObj.getPuerto());
                     }
-                 //(1)    //PUERTO DE LETRERO LEDS
+                    //(1)    //PUERTO DE LETRERO LEDS
                     if (portId.getName().equals(empresaObj.getLed())) {
                         reader = new LeerTarjeta(portId, this);
                         puertoListo.add(reader);
                         System.out.println("ABIERTO: " + empresaObj.getLed());
                     }
-                //(2)  //PUERTO DE CODIGO DE BARRAS
+                    //(2)  //PUERTO DE CODIGO DE BARRAS
                     if (portId.getName().equals(empresaObj.getBarras())) {
                         reader = new LeerTarjeta(portId, this);
                         puertoListo.add(reader);
                         System.out.println("ABIERTO: " + empresaObj.getBarras());
                     }
-                //(3)  //PUERTO DE CODIGO DE BARRAS 2
+                    //(3)  //PUERTO DE CODIGO DE BARRAS 2
                     if (portId.getName().equals(empresaObj.getBarras2())) {
                         reader = new LeerTarjeta(portId, this);
                         puertoListo.add(reader);
@@ -1998,25 +2001,70 @@ panelIngreso.setVisible(false);
             final int dispo = (empresaObj.getParqueaderos() - val2.intValue());
             //ENVIO A LA PANTALLA DE LEDS LA INFORMACIÓN
             Thread cargar = new Thread() {
-            public void run() {
-                try {
-                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
-                    ta.outputSream.write(((""+dispo).getBytes()));
-                    //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                    barrera1.setEnabled(true);
-                } catch (IOException ex) {
-                    System.out.println("ERROR EN ENVIAR NO. DE DISPONIBLES ");
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                    System.out.println("FIN ERROR EN ENVIAR");
+
+                public void run() {
+                    try {
+                        LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
+                        ta.outputSream.write((("" + dispo).getBytes()));
+                        //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                        barrera1.setEnabled(true);
+                    } catch (IOException ex) {
+                        System.out.println("ERROR EN ENVIAR NO. DE DISPONIBLES ");
+                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("FIN ERROR EN ENVIAR");
+                    }
                 }
-            }
-        };
-        cargar.start();
+            };
+            cargar.start();
 
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    public void cargarEmpresa(EmpresaPuertosStatic emp){
+
+        empresaObj.setPuerto(emp.getPuerto());
+        empresaObj.setBarras(emp.getBarras());
+        empresaObj.setBarras2(emp.getBarras2());
+        empresaObj.setLed(emp.getLed());
+        empresaObj.setSale(emp.getSale());
+        empresaObj.setSale2(emp.getSale2());
+
+        empresaObj.setActiva1(emp.getActiva1());
+        empresaObj.setActiva2(emp.getActiva2());
+        empresaObj.setActiva3(emp.getActiva3());
+        empresaObj.setActiva4(emp.getActiva4());
+        empresaObj.setActiva5(emp.getActiva5());
+        empresaObj.setActiva6(emp.getActiva6());
+        empresaObj.setActiva7(emp.getActiva7());
+
+        empresaObj.setSalida1(emp.getSalida1());
+        empresaObj.setSalida2(emp.getSalida2());
+        empresaObj.setSalida3(emp.getSalida3());
+        empresaObj.setSalida4(emp.getSalida4());
+        empresaObj.setSalida5(emp.getSalida5());
+        empresaObj.setSalida6(emp.getSalida6());
+        empresaObj.setSalida7(emp.getSalida7());
+
+        empresaObj.setPuerta1(emp.getPuerta1());
+        empresaObj.setPuerta2(emp.getPuerta2());
+        empresaObj.setPuerta3(emp.getPuerta3());
+        empresaObj.setPuerta4(emp.getPuerta4());
+        empresaObj.setPuerta5(emp.getPuerta5());
+        empresaObj.setPuerta6(emp.getPuerta6());
+        empresaObj.setPuerta7(emp.getPuerta7());
+
+        empresaObj.setPuerto1(emp.getPuerto1());
+        empresaObj.setPuerto2(emp.getPuerto2());
+        empresaObj.setPuerto3(emp.getPuerto3());
+        empresaObj.setPuerto4(emp.getPuerto4());
+        empresaObj.setPuerto5(emp.getPuerto5());
+        empresaObj.setPuerto6(emp.getPuerto6());
+        empresaObj.setPuerto7(emp.getPuerto7());
+
+        
     }
 
     public void verificarUsuario() {
@@ -2028,39 +2076,29 @@ panelIngreso.setVisible(false);
 
             if (usu != null) {
                 try {
-                        Date feI = usu.getHoraini();
-                        Date feF = usu.getHorafin();
-                        feI.setYear(fechaAc.getYear());
-                        feI.setMonth(fechaAc.getMonth());
-                        feI.setDate(fechaAc.getDate());
-                        feF.setYear(fechaAc.getYear());
-                        feF.setMonth(fechaAc.getMonth());
-                        feF.setDate(fechaAc.getDate());
-                        Boolean estado = true;
-                        Boolean estado2 = true;
-//                    System.out.println("ACTUAL "+fechaAc.toLocaleString() +" "+fechaAc.getTime() );
-//                    System.out.println("INICIAL "+feI.toLocaleString() +" "+feI.getTime() );
-//                    System.out.println("FINAL "+feF.toLocaleString() +" "+feF.getTime() );
-                    if (feI.getTime() <= fechaAc.getTime()){
-//                            System.out.println("fecha ACTUAL es MAYOR A FECHA INICIAL");
-                            estado = true;
-                         }else{
-//                            System.out.println("fecha ACTUAL es MENOR A FECHA INICIAL");
-                            estado = false;
-                         }
-                        if (feF.getTime() >= fechaAc.getTime()){
-//                            System.out.println("fecha FINAL es MAYHOR A FECHA ACTUAL");
-                            estado2 = true;
-                         }else{
-//                            System.out.println("fecha FINAL es MENOR A FECHA ACTUAL");
-                            estado2 = false;
-                         }
-
+                    Date feI = usu.getHoraini();
+                    Date feF = usu.getHorafin();
+                    feI.setYear(fechaAc.getYear());
+                    feI.setMonth(fechaAc.getMonth());
+                    feI.setDate(fechaAc.getDate());
+                    feF.setYear(fechaAc.getYear());
+                    feF.setMonth(fechaAc.getMonth());
+                    feF.setDate(fechaAc.getDate());
+                    Boolean estado = true;
+                    Boolean estado2 = true;
+                    if (feI.getTime() <= fechaAc.getTime()) {
+                        estado = true;
+                    } else {
+                        estado = false;
+                    }
+                    if (feF.getTime() >= fechaAc.getTime()) {
+                        estado2 = true;
+                    } else {
+                        estado2 = false;
+                    }
 
                     if (estado && estado2) {
-                        
-
-                    }else{
+                    } else {
                         clave.setEditable(true);
                         usuariot.setEditable(true);
                         usuariot.setText("");
@@ -2070,28 +2108,38 @@ panelIngreso.setVisible(false);
                         return;
                     }
                 } catch (Exception e) {
-                      clave.setEditable(true);
-                        usuariot.setEditable(true);
-                        usuariot.setText("");
-                        clave.setText("");
-                     JOptionPane.showMessageDialog(this, "No se ha cargado su horario de trabajo\n solicite a un administrador que realice éste proceso", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                        usuariot.requestFocusInWindow();
-                        System.out.println("NO SE HAN CARGADO LAS FECHAS " + e);
-                        if(usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")){
-
+                    clave.setEditable(true);
+                    usuariot.setEditable(true);
+                    usuariot.setText("");
+                    clave.setText("");
+                    JOptionPane.showMessageDialog(this, "No se ha cargado su horario de trabajo\n solicite a un administrador que realice éste proceso", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                    usuariot.requestFocusInWindow();
+                    System.out.println("NO SE HAN CARGADO LAS FECHAS " + e);
+                    if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")) {
+                        //  PASA A LOS SIGUIENTES PROCESOS Y NO TOMA EN CUENTA LAS FECHAS YA QUE SOY ADMINISTRADOR
+                          File fichero = new File(ubicacionDirectorio + "config.xml");
+                        if (fichero.exists()) {
+                            fichero.delete();
+                            System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
+                            XMLEmpresa pXml = new XMLEmpresa();
+                            pXml.inicio();
+                            pXml.leerXML();
                         }else{
-                                return;
+                            JOptionPane.showMessageDialog(this, "CONFIGURE LOS PUERTOS DE LA EMPRESA Y VUELVA A REINICIAR LA APLICACIÓN");
                         }
-                        
-                    
+
+                    } else {
+                        return;
+                    }
+
+
                 }
             }
 
 
         } catch (Exception e) {
             //JOptionPane.showMessageDialog(this, "ERROR EN CONFIGURACION DEL SISTEMA"+e);
-            WorkingDirectory w = new WorkingDirectory();
-            String ubicacionDirectorio = w.get() + separador;
+
             if (ubicacionDirectorio.contains("build")) {
                 ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }
@@ -2193,6 +2241,22 @@ panelIngreso.setVisible(false);
                 iniciarPuertos();
                 contenedor.requestFocus();
                 auditar("", "", "Ingreso al Sistema");
+
+                if (ubicacionDirectorio.contains("build")) {
+                    ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                }
+
+                File fichero = new File(ubicacionDirectorio + "config.xml");
+                if (fichero.exists()) {
+                    //System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
+                    XMLEmpresa pXml = new XMLEmpresa();
+                    pXml.inicio();
+                    pXml.leerXML();
+                }else{
+                    JOptionPane.showMessageDialog(this, "Configurar PUERTOS en modulo EMPRESA y reinicie la aplicación");
+                }
+
+               
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -2463,7 +2527,7 @@ panelIngreso.setVisible(false);
         }
     }
 
-    public void buscarTarjetaValidarSalida(String puertoViene,String noticket) {
+    public void buscarTarjetaValidarSalida(String puertoViene, String noticket) {
 //        final frmPrincipal pra = this;
         if (puertoViene.length() > 10) {
             puertoViene = puertoViene.substring(0, 10);
@@ -2471,18 +2535,18 @@ panelIngreso.setVisible(false);
         try {
             try {
 //                    verPanel();
-                       errores.setText("");
-                        //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
-                        List<Factura> facturas = adm.query("Select o from Factura as o where o.ticket = '" + noticket + "' "
-                                + "and o.fechafin is not null  ");
-                        Factura fac = new Factura();
-                            if (facturas.size() > 0) {
-                                errores.setText("EL CLIENTE HA PAGADO PERO FALTA VALIDAR SI NO SE HA PASADO EL TIEMPO LÍMITE");
-                                            abrirPuerta(puertoViene);
-                            } else {
-                                errores.setText("CLIENTE QUIERE SALIR SIN PAGAR)");
-                            }
-                        noDisponibles();
+                errores.setText("");
+                //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
+                List<Factura> facturas = adm.query("Select o from Factura as o where o.ticket = '" + noticket + "' "
+                        + "and o.fechafin is not null  ");
+                Factura fac = new Factura();
+                if (facturas.size() > 0) {
+                    errores.setText("EL CLIENTE HA PAGADO PERO FALTA VALIDAR SI NO SE HA PASADO EL TIEMPO LÍMITE");
+                    abrirPuerta(puertoViene);
+                } else {
+                    errores.setText("CLIENTE QUIERE SALIR SIN PAGAR)");
+                }
+                noDisponibles();
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -2804,7 +2868,7 @@ panelIngreso.setVisible(false);
             lapuertaaAbrir = empresaObj.getPuerta7();
         } else if (puertoqueViene.equals(empresaObj.getBarras())) {
             lapuertaaAbrir = empresaObj.getSale();
-        }else if (puertoqueViene.equals(empresaObj.getBarras2())) {
+        } else if (puertoqueViene.equals(empresaObj.getBarras2())) {
             lapuertaaAbrir = empresaObj.getSale2();
         }
         System.out.println("INI: " + (new Date()));
@@ -4179,24 +4243,25 @@ panelIngreso.setVisible(false);
         // TODO add your handling code here:
         frmRespaldarBase.setVisible(false);
     }//GEN-LAST:event_jButton6ActionPerformed
-public void verPanel(){
-    panelIngreso.setVisible(true);
+    public void verPanel() {
+        panelIngreso.setVisible(true);
         Thread cargar = new Thread() {
 
             public void run() {
-                    try {
-                        
-                        sleep(30000);
-                        panelIngreso.setVisible(false);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                try {
+
+                    sleep(30000);
+                    panelIngreso.setVisible(false);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
             }
         };
         cargar.start();
 
-}
+    }
+
     public void respaldar() {
 
         try {
