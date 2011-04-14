@@ -2245,10 +2245,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         btnAuditoria.setEnabled(false);
                     }
                 }
-                iniciarPuertos();
-                contenedor.requestFocus();
-                auditar("", "", "Ingreso al Sistema");
-
                 if (ubicacionDirectorio.contains("build")) {
                     ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                 }
@@ -2258,10 +2254,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     //System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
                     XMLEmpresa pXml = new XMLEmpresa();
                     pXml.inicio();
-                    pXml.leerXML();
+                    EmpresaPuertosStatic amp = pXml.leerXML();
+                    cargarEmpresa(amp);
                 }else{
                     JOptionPane.showMessageDialog(this, "Configurar PUERTOS en modulo EMPRESA y reinicie la aplicación");
                 }
+                iniciarPuertos();
+                contenedor.requestFocus();
+                auditar("", "", "Ingreso al Sistema");
+
+              
 
                
             } catch (Exception ex) {

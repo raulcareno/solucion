@@ -70,7 +70,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         llenarCombo();
         initComponents();
         this.setSize(615, 508);
-        empresaObj = new Empresa();
+        empresaObj = lo.empresaObj;
 
         val = new validaciones();
         principal = lo;
@@ -153,8 +153,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
            try {
 
 
-                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                this.empresaObj = emp;
+//                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+//                this.empresaObj = emp;
                 bindingGroup.unbind();
                 bindingGroup.bind();
 
@@ -1581,21 +1581,21 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         // TODO add your handling code here:
         cmbEntrada2.setEnabled(chkActivo2.isSelected());
         cmbPuerta2.setEnabled(chkActivo2.isSelected());
-        cmbSalida2.setEnabled(chkActivo1.isSelected());
+        cmbSalida2.setEnabled(chkActivo2.isSelected());
     }//GEN-LAST:event_chkActivo2ActionPerformed
 
     private void chkActivo3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkActivo3ActionPerformed
         // TODO add your handling code here:
         cmbEntrada3.setEnabled(chkActivo3.isSelected());
         cmbPuerta3.setEnabled(chkActivo3.isSelected());
-        cmbSalida3.setEnabled(chkActivo1.isSelected());
+        cmbSalida3.setEnabled(chkActivo3.isSelected());
     }//GEN-LAST:event_chkActivo3ActionPerformed
 
     private void chkActivo4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkActivo4ActionPerformed
         // TODO add your handling code here:
         cmbEntrada4.setEnabled(chkActivo4.isSelected());
         cmbPuerta4.setEnabled(chkActivo4.isSelected());
-        cmbSalida4.setEnabled(chkActivo1.isSelected());
+        cmbSalida4.setEnabled(chkActivo4.isSelected());
     }//GEN-LAST:event_chkActivo4ActionPerformed
 
     private void ivaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ivaKeyPressed
