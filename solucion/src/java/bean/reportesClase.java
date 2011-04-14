@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.persistencia.Actagrado;
 import jcinform.persistencia.Cursos;
+import jcinform.persistencia.Detallepregunta;
 import jcinform.persistencia.Equivalencias;
 import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Global;
@@ -30,6 +31,7 @@ import jcinform.persistencia.Notasacta;
 import jcinform.persistencia.Notasrecord;
 import jcinform.persistencia.ParametrosGlobales;
 import jcinform.persistencia.Periodo;
+import jcinform.persistencia.Pregunta;
 import jcinform.persistencia.Respuestasencuesta;
 import jcinform.persistencia.Sistemacalificacion;
 import jcinform.persistencia.Textos;
@@ -51,6 +53,8 @@ import sources.ReporteNoasLibretaDataSource;
 import sources.ReporteNotasDataSource;
 import sources.ReporteProfesorDataSource;
 import sources.ReportePromocionDataSource;
+import sources.ReporteResumenDataSource;
+import sources.ResumenClase;
 
 /**
  *
@@ -60,7 +64,8 @@ public class reportesClase {
 
     public reportesClase() {
     }
-    public JRDataSource evaluacion(Cursos curso,Matriculas matricula) {
+
+    public JRDataSource evaluacion(Cursos curso, Matriculas matricula) {
         Administrador adm = new Administrador();
 //        Session ses = Sessions.getCurrent();
 //        Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -1266,19 +1271,19 @@ public class reportesClase {
                     w++;
                 }
                 try {
-                        query3 = query3.substring(0, query3.length() - 1);
+                    query3 = query3.substring(0, query3.length() - 1);
                 } catch (Exception e) {
                     Messagebox.show("No existen EQUIVALENCIAS \n Revise ADMINISTRACION > PARAMETROS > EQUIVALENCIAS >> DISCIPLINA", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
-                    System.out.println("************** LINEA: 1276: REPORTECLASE ERROR NO HAY EQUIVALENCIAS PARAMETRIZADAS"+e);
+                    System.out.println("************** LINEA: 1276: REPORTECLASE ERROR NO HAY EQUIVALENCIAS PARAMETRIZADAS" + e);
                     return null;
                 }
                 try {
-                query4 = query4.substring(0, query4.length() - 1);
+                    query4 = query4.substring(0, query4.length() - 1);
                 } catch (Exception e) {
                     Messagebox.show("No existen EQUIVALENCIAS \n Revise ADMINISTRACION > PARAMETROS >> DISCIPLINA", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
-                    System.out.println("************** LINEA: 1276: REPORTECLASE ERROR NO HAY EQUIVALENCIAS PARAMETRIZADAS"+e);
+                    System.out.println("************** LINEA: 1276: REPORTECLASE ERROR NO HAY EQUIVALENCIAS PARAMETRIZADAS" + e);
                     return null;
-                    
+
                 }
                 //IMPRIMO LAS FALTAS
                 q = "Select " + query4 + ", tri.descripcion from disciplina, sistemacalificacion  sis, trimestres tri "
@@ -1458,22 +1463,22 @@ public class reportesClase {
         String cabecera = regresaTexto("CMAT", textos);
         String aprobado = regresaTexto("PACMAT", textos);
         String reprobado = regresaTexto("PRCMAT", textos);
-           List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
                 + "and o.sistema.promediofinal = 'PF' ");
-        
+
         Integer noDecimales = 3;
-        try{
+        try {
             noDecimales = regresaVariableParametrosDecimal("DECIPROMOCION", parametrosGlobales).intValue();
-        }catch(Exception a){
+        } catch (Exception a) {
             noDecimales = 3;
-            
+
         }
-       
+
 
         try {
             if (notas.size() <= 0) {
@@ -1607,7 +1612,7 @@ public class reportesClase {
                         not.setMateriaProfesor(matep);
                         not.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
 
-                        not.setAprovechamiento(redondear(aprovechamiento,noDecimales ));
+                        not.setAprovechamiento(redondear(aprovechamiento, noDecimales));
                         not.setDisciplina(disciplina);
                         if ((Double) dos >= matriculas1.getCurso().getAprobacion()) {
                             not.setEstadoMateria("APROBADO");
@@ -2414,6 +2419,62 @@ public class reportesClase {
         otro.add(ds);
         otro.add(parametros);
         return otro;
+
+    }
+    //resumen encuesta
+
+    public JRDataSource resumen(Cursos cursoLlega) {
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+        List<Cursos> lisCursos = new ArrayList<Cursos>();
+
+        if (cursoLlega.getCodigocur().equals(-2)) {
+            lisCursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '" + periodo.getCodigoper() + "'  order by o.secuencia ");
+        } else {
+            lisCursos.add(cursoLlega);
+        }
+
+        List<Pregunta> preg = adm.query("Select o from Pregunta as o  order by o.orden ");
+  
+          ArrayList listaResultados = new ArrayList();
+        for (Iterator<Cursos> itCursos = lisCursos.iterator(); itCursos.hasNext();) {
+            Cursos curso = itCursos.next();
+            int i = 1;
+            for (Iterator<Pregunta> it = preg.iterator(); it.hasNext();) {
+                Pregunta pregunta = it.next();
+//                System.out.println(i + ") " + pregunta.getPregunta());
+                List<Detallepregunta> detall = adm.query("Select o from Detallepregunta as o where o.pregunta.codigo = '" + pregunta.getCodigo() + "' order by o.secuencia ");
+                int a = 1;
+
+                for (Iterator<Detallepregunta> it1 = detall.iterator(); it1.hasNext();) {
+                    Detallepregunta detallepregunta = it1.next();
+//                rep.setId(i);
+                    ResumenClase rep = new ResumenClase();
+                    rep.setCurso(curso + "");
+                    rep.setPregunta(i + ".- " + pregunta.getPregunta());
+                    rep.setRespuesta(detallepregunta.getOpcion());
+                    Object respuestas = adm.querySimple("Select count(o) from Respuestasencuesta as o "
+                            + "where o.detallepregunta.codigo = '" + detallepregunta.getCodigo() + "' and o.matricula.curso.codigocur  = '" + curso.getCodigocur() + "' ");
+                    Long valor = (Long) respuestas;
+                    int val = valor.intValue();
+//                    System.out.println("\t *  " + detallepregunta.getOpcion() + "\t" + respuestas);
+                    rep.setValor(val);
+                    listaResultados.add(rep);
+                    a++;
+                }
+//                System.out.println("");
+//                System.out.println("-----------------------------------------------------------------------");
+                i++;
+            }
+
+        }
+
+
+        ReporteResumenDataSource ds = new ReporteResumenDataSource(listaResultados);
+        return ds;
+
 
     }
 
