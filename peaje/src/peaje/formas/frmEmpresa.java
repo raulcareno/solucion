@@ -423,7 +423,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
         jLabel17.setText("Lectora 1:");
 
-        jLabel32.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel32.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel32.setText("Puerta");
 
         cmbPuertoBarras1.setEditable(true);
@@ -809,7 +809,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         });
         jPanel5.setLayout(null);
 
-        cmbEntrada1.setFont(new java.awt.Font("Tahoma", 0, 10));
+        cmbEntrada1.setEditable(true);
+        cmbEntrada1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         cmbEntrada1.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto1}"), cmbEntrada1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
@@ -852,6 +853,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.add(cmbPuerta2);
         cmbPuerta2.setBounds(130, 170, 37, 20);
 
+        cmbEntrada2.setEditable(true);
         cmbEntrada2.setFont(new java.awt.Font("Tahoma", 0, 10));
         cmbEntrada2.setEnabled(false);
 
@@ -881,6 +883,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.add(cmbPuerta3);
         cmbPuerta3.setBounds(130, 190, 37, 20);
 
+        cmbEntrada3.setEditable(true);
         cmbEntrada3.setFont(new java.awt.Font("Tahoma", 0, 10));
         cmbEntrada3.setEnabled(false);
 
@@ -905,6 +908,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.add(jLabel15);
         jLabel15.setBounds(10, 210, 60, 20);
 
+        cmbEntrada4.setEditable(true);
         cmbEntrada4.setFont(new java.awt.Font("Tahoma", 0, 10));
         cmbEntrada4.setEnabled(false);
 
@@ -939,7 +943,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.add(cmbPuerta4);
         cmbPuerta4.setBounds(130, 210, 37, 20);
 
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel21.setText("Puerta");
         jPanel5.add(jLabel21);
         jLabel21.setBounds(130, 130, 50, 20);
@@ -1025,6 +1029,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.add(chkActivo4);
         chkActivo4.setBounds(290, 210, 81, 23);
 
+        cmbSalida1.setEditable(true);
         cmbSalida1.setFont(new java.awt.Font("Tahoma", 0, 10));
         cmbSalida1.setEnabled(false);
 
@@ -1039,7 +1044,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.add(cmbSalida1);
         cmbSalida1.setBounds(230, 150, 60, 19);
 
-        cmbSalida3.setFont(new java.awt.Font("Tahoma", 0, 10));
+        cmbSalida3.setEditable(true);
+        cmbSalida3.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         cmbSalida3.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida3}"), cmbSalida3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
@@ -1053,7 +1059,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.add(cmbSalida3);
         cmbSalida3.setBounds(230, 190, 60, 19);
 
-        cmbSalida2.setFont(new java.awt.Font("Tahoma", 0, 10));
+        cmbSalida2.setEditable(true);
+        cmbSalida2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         cmbSalida2.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida2}"), cmbSalida2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
@@ -1077,6 +1084,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.add(jLabel24);
         jLabel24.setBounds(170, 210, 60, 20);
 
+        cmbSalida4.setEditable(true);
         cmbSalida4.setFont(new java.awt.Font("Tahoma", 0, 10));
         cmbSalida4.setEnabled(false);
 
@@ -1196,7 +1204,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.add(jLabel31);
         jLabel31.setBounds(300, 70, 50, 14);
 
-        jLabel33.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel33.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel33.setText("Puerta");
         jPanel5.add(jLabel33);
         jLabel33.setBounds(360, 50, 50, 20);

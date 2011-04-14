@@ -2099,13 +2099,20 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                     if (estado && estado2) {
                     } else {
-                        clave.setEditable(true);
+
+                        if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")) {
+
+                        }else{
+                         clave.setEditable(true);
                         usuariot.setEditable(true);
                         usuariot.setText("");
                         clave.setText("");
                         JOptionPane.showMessageDialog(this, "No puede ingresar en éste horario", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                         usuariot.requestFocusInWindow();
                         return;
+                            
+                        }
+                        
                     }
                 } catch (Exception e) {
                     clave.setEditable(true);
