@@ -277,6 +277,12 @@ void recalcular(){
             }else if(tipo.equals("ENC4")){
                     datasource = noti.resumen(curs.selectedItem.value);
                     report.setSrc(directorioReportes+"resumenEncuestaGraficas.jasper");
+            }else if(tipo.equals("ENC5")){
+                    datasource = noti.resumenGrupal();
+                    report.setSrc(directorioReportes+"resumenEncuesta.jasper");
+            }else if(tipo.equals("ENC6")){
+                    datasource = noti.resumenGrupal();
+                    report.setSrc(directorioReportes+"resumenEncuestaGraficas.jasper");
             }else if(tipo.equals("DIS2")){
                     datasource = distributivo2();
                     report.setSrc(directorioReportes+"firmascuadrocalificaciones.jasper");
@@ -439,6 +445,9 @@ void campos(String valor){
         }else if(valor.equals("ENC3") || valor.equals("ENC4")){
              titulo.value= "RESULTADO DE LA INVESTIGACIÓN SOCIO-ECONÓMICA";
              curs.disabled = false;
+        }else if(valor.equals("ENC5") || valor.equals("ENC6")){
+             titulo.value= "RESULTADO DE LA INVESTIGACIÓN SOCIO-ECONÓMICA";
+             //curs.disabled = false;
         }else if(valor.equals("MEJ")){
              titulo.value= "Mejores por Curso";
             sistemasCombo.disabled = false;
@@ -542,6 +551,8 @@ void campos(String valor){
                                     <listitem  id="ENC2" label="Resultados por Estudiantes" value="ENC2"/>
                                     <listitem  id="ENC3" label="Resumen y Resultados de Encuesta" value="ENC3"/>
                                     <listitem  id="ENC4" label="Resumen y Resultados de Encuesta(GRAFICAS)" value="ENC4"/>
+                                    <listitem  id="ENC5" label="Resumen y Resultados de Encuesta por Sección" value="ENC5"/>
+                                    <listitem  id="ENC6" label="Resumen y Resultados de Encuesta por Sección(GRAFICAS)" value="ENC6"/>
                                     <listitem  id="linea2" label="=========================" value="linea2" />
          <!--listitem  label="Mejor egresado(*)" value="CDIS"/>
         <listitem label="Cuadro juntas de curso(*)" value="CDIS"/>
@@ -725,6 +736,8 @@ void cargando(){
         ENC2.visible = per.verificarPermisoReporte("ETD", "Ingresar");
         ENC3.visible = per.verificarPermisoReporte("ETD", "Ingresar");
         ENC4.visible = per.verificarPermisoReporte("ETD", "Ingresar");
+        ENC5.visible = per.verificarPermisoReporte("ETD", "Ingresar");
+        ENC6.visible = per.verificarPermisoReporte("ETD", "Ingresar");
 
 }
         </zscript>
