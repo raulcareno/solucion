@@ -2478,6 +2478,59 @@ public class reportesClase {
 
     }
 
+       public JRDataSource resumenGrupal() {
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+        List<Cursos> lisCursos = new ArrayList<Cursos>();
+
+
+        lisCursos = adm.queryNativo("Select o.* from Cursos as o where o.periodo = '" + periodo.getCodigoper() + "'  group by o.secuencia order by o.secuencia ",Cursos.class);
+
+
+        List<Pregunta> preg = adm.query("Select o from Pregunta as o  order by o.orden ");
+
+          ArrayList listaResultados = new ArrayList();
+        for (Iterator<Cursos> itCursos = lisCursos.iterator(); itCursos.hasNext();) {
+            Cursos curso = itCursos.next();
+            int i = 1;
+            for (Iterator<Pregunta> it = preg.iterator(); it.hasNext();) {
+                Pregunta pregunta = it.next();
+//                System.out.println(i + ") " + pregunta.getPregunta());
+                List<Detallepregunta> detall = adm.query("Select o from Detallepregunta as o where o.pregunta.codigo = '" + pregunta.getCodigo() + "' order by o.secuencia ");
+                int a = 1;
+
+                for (Iterator<Detallepregunta> it1 = detall.iterator(); it1.hasNext();) {
+                    Detallepregunta detallepregunta = it1.next();
+//                rep.setId(i);
+                    ResumenClase rep = new ResumenClase();
+                    rep.setCurso(curso.getDescripcion() + " " );
+                    rep.setPregunta(i + ".- " + pregunta.getPregunta());
+                    rep.setRespuesta(detallepregunta.getOpcion());
+                    Object respuestas = adm.querySimple("Select count(o) from Respuestasencuesta as o "
+                            + "where o.detallepregunta.codigo = '" + detallepregunta.getCodigo() + "' and o.matricula.curso.secuencia  = '" + curso.getSecuencia() + "' ");
+                    Long valor = (Long) respuestas;
+                    int val = valor.intValue();
+//                    System.out.println("\t *  " + detallepregunta.getOpcion() + "\t" + respuestas);
+                    rep.setValor(val);
+                    listaResultados.add(rep);
+                    a++;
+                }
+//                System.out.println("");
+//                System.out.println("-----------------------------------------------------------------------");
+                i++;
+            }
+
+        }
+
+
+        ReporteResumenDataSource ds = new ReporteResumenDataSource(listaResultados);
+        return ds;
+
+
+    }
+
     public Double redondear(Double numero, int decimales) {
         try {
 
