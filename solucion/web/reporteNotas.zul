@@ -722,9 +722,9 @@ void cargando(){
 
         PCUR.visible = per.verificarPermisoReporte("PCUR", "Ingresar");
         MEJ.visible = per.verificarPermisoReporte("MEJ", "Ingresar");
-        ENC2.visible = per.verificarPermisoReporte("CERT", "Ingresar");
-        ENC3.visible = per.verificarPermisoReporte("CERT", "Ingresar");
-        ENC4.visible = per.verificarPermisoReporte("CERT", "Ingresar");
+        ENC2.visible = per.verificarPermisoReporte("ETD", "Ingresar");
+        ENC3.visible = per.verificarPermisoReporte("ETD", "Ingresar");
+        ENC4.visible = per.verificarPermisoReporte("ETD", "Ingresar");
 
 }
         </zscript>
