@@ -183,7 +183,7 @@ public class ServerFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SERVIDOR");
+        setTitle("Chat");
 
         areaPantalla.setColumns(20);
         areaPantalla.setRows(5);
