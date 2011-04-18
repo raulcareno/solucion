@@ -91,7 +91,7 @@ public class Canton implements Serializable {
 
     @Override
     public String toString() {
-        return "persistencia.Canton[codigo=" + codigo + "]";
+        return nombre;
     }
 
 }

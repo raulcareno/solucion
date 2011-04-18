@@ -104,7 +104,7 @@ public class Sector implements Serializable {
 
     @Override
     public String toString() {
-        return "persistencia.Sector[codigo=" + codigo + "]";
+        return nombre;
     }
 
 }
