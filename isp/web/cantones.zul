@@ -1,0 +1,176 @@
+<window   border="normal"
+ >
+
+ <zscript>
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Canton as o");
+    static Canton equi = new Canton();
+    Permisos permiso = new Permisos();
+    //SimpleTreeModel stm = new SimpleTreeModel(root);
+//FUNCIONES
+void llenar(Canton equi2){
+   equi = equi2;
+    nombre.value = equi.getNombre();
+    
+
+
+    
+}
+void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+        equi = (Canton)datos.selectedItem.value;
+    }
+    nombre.readonly = estado;
+ 
+
+}
+
+
+ void guardar(){
+    if(nombre.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+        equi.setNombre(nombre.value);
+        
+        if((!equi.getCodigo().equals(0)) ){
+             adm.actualizar(equi);
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = equi.getCodigo()+"";
+                  ((Listcell)children.get(1)).label = nombre.value+ "" ;
+                  permiso.auditar("Cantones","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
+         }else{
+                equi.setCodigo(adm.getNuevaClave("Canton","codigo"));
+                adm.guardar(equi);
+                permiso.auditar("Cantones","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Canton(0));
+                    buscar("");
+    }
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Cantones",accion);
+ }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new Canton(0));
+        estado(false,false);
+        
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Canton)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             equi = (Canton)datos.selectedItem.value;
+             adm.eliminarObjeto(Canton.class, equi.getCodigo());
+             permiso.auditar("Cantones","Eliminar",""+equi.getCodigo()+" - "+equi.getNombre());
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Canton(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+   void buscar(String p){
+
+      
+        List equivaEncontrados = adm.query("Select o from Canton as o   order by o.nombre");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+   
+       
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Canton acceIt = (Canton) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Canton g){
+equi.setPerfil(g);
+}
+  </zscript>
+<groupbox mold="3d" >
+       <caption label="Agregar Cantones" />
+	
+<grid width="100%">
+<rows> 
+<row><span style="float:right"> Nombre(*):</span>
+        <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />   </row>
+ 
+
+</rows>
+</grid>
+<vbox>
+<vbox>
+<hbox>
+    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+</hbox>
+</vbox>
+
+			</vbox>
+
+ </groupbox>
+<groupbox width="100%" mold="3d" >
+
+       <caption label="Busquedas" />
+<vbox>
+   
+    <hbox width="100%">
+         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+			<listhead>
+                                <listheader label="Código"/>
+                                <listheader label="Nombre"/>
+
+			</listhead>
+			<listitem forEach="${allEvents}" value="${each}">
+                           <listcell label="${each.codigo}" />
+                           <listcell label="${each.nombre}" />
+            </listitem>
+		</listbox>
+
+
+    </hbox>
+</vbox>
+</groupbox>
+	
+
+</window>

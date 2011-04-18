@@ -99,8 +99,8 @@ import jcinform.conexion.*;
                                 <menuitem  value="/accesos.zul"  image="/images/key.png"  label="Accesos" onClick="ingresar(self)" />
                                 <menuitem  value="/auditoria.zul"  image="/images/auditoria.gif" label="Auditoria" onClick="ingresar(self)" />
                                 <menuitem  value="/empresa.zul"  image="/images/institucion.png" label="Empresas" onClick="ingresar(self)" />
-                                <menuitem image="/images/herramientas.png" label="Cantones-Sectores" onClick="ingresar(self)" />
-                                <menuitem image="/images/herramientas.png" label="Perfiles" onClick="ingresar(self)" />
+                                <menuitem  value="/cantonesysectores.zul"  image="/images/herramientas.png" label="Cantones-Sectores" onClick="ingresar(self)" />
+                                <menuitem value="/perfiles.zul" image="/images/herramientas.png" label="Perfiles" onClick="ingresar(self)" />
                                 <menuseparator />
                                 <menuitem label="Salir" image="/images/exit.gif"  onClick="salir()" />
                             </menupopup>

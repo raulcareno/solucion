@@ -36,124 +36,133 @@ void cargarVacio(){
 }
 
     </zscript>
- 
-        <groupbox mold="3d" >
-            <caption label="Agregar" />
-            <grid width="100%">
-                <rows>
-                    <row>
-                        <span style="float:right"> RUC(*):</span>
-                        <a:bind value="inobjeto.ruc"/>
-                        <textbox id="ruc" onChange="update();" width="50px" />
-                    </row>
-                    <row>
-                        <span style="float:right"> Razon Social(*):</span>
-                        <a:bind value="inobjeto.razonsocial"/>
-                        <textbox id="razonsocial" onChange="update();"  width="200px"  />
-                    </row>
-                    <row>
-                        <span style="float:right"> Representante(*):</span>
-                        <span>
-                            <a:bind value="inobjeto.representante"/>
-                            <textbox id="representante" onChange="update();"  width="200px"  />
-                          Ejm.: Juan Perez
-                        </span>
-                    </row>
-                    <row>
-                        <span style="float:right"> Dirección(*):</span>
-                        <a:bind value="inobjeto.direccion"/>
-                        <textbox id="direccion" onChange="update();"  width="200px" />
-                    </row>
-                    <row>
-                        <span style="float:right"> Telefono 1:</span>
-                        <a:bind value="inobjeto.telefono"/>
-                        <textbox id="telefono1" onChange="update();" width="200px" />
-                    </row>
-                    <row>
-                        <span style="float:right"> Teléfono 2:</span>
-                        <a:bind value="inobjeto.telefono2"/>
-                        <textbox id="telefono2" onChange="update();"/>
-                    </row>
-                  
-                    <row>
-                        <span style="float:right"> Movil(*):</span>
-                        <a:bind value="inobjeto.movil"/>
-                        <textbox id="movil" onChange="update();"/>
-                    </row>
-                    <row>
-                        <span style="float:right"> Documento Actual:</span>
-                        <a:bind value="inobjeto.documento"/>
-                        <textbox readonly="true" id="documento" onChange="update();"/>
-                    </row>
-                    <row>
-                        <span style="float:right"> Web(*):</span>
-                        <a:bind value="inobjeto.web"/>
-                        <textbox id="web" onChange="update();"/>
-                    </row>
+    <hbox>
+
+
+        <grid align="center" width="100%">
+            <rows>
                 <row>
-                        <span style="float:right"> Email(*):</span>
-                        <a:bind value="inobjeto.usuariomail"/>
-                        <textbox id="usuarioemail" onChange="update();"/>
-                    </row>
-                    <row>
-                        <span style="float:right"> Clave(*):</span>
-                        <a:bind value="inobjeto.clavemail"/>
-                        <textbox  type="password" id="clave" onChange="update();"/>
-                    </row>
-                    <row>
-                        <span  style="float:right"> Requ.Auten.(*):</span>
-                        <span>
-                            <a:bind checked="inobjeto.autorizacion"/>
-                            <checkbox  id="autorizacion" onChange="update();"/>
+                    <span style="float:right"> RUC(*):</span>
+                    <a:bind value="inobjeto.ruc"/>
+                    <textbox id="ruc" onChange="update();" width="120px" />
+                </row>
+                <row>
+                    <span style="float:right"> Razon Social(*):</span>
+                    <a:bind value="inobjeto.razonsocial"/>
+                    <textbox id="razonsocial" onChange="update();"  width="200px"  />
+                </row>
+                <row>
+                    <span style="float:right"> Representante(*):</span>
+                    <span>
+                        <a:bind value="inobjeto.representante"/>
+                        <textbox id="representante" onChange="update();"  width="200px"  />
+                          Ejm.: Juan Perez
+                    </span>
+                </row>
+                <row>
+                    <span style="float:right"> Dirección(*):</span>
+                    <a:bind value="inobjeto.direccion"/>
+                    <textbox id="direccion" onChange="update();"  width="200px" />
+                </row>
+                <row>
+                    <span style="float:right"> Telefono 1:</span>
+                    <a:bind value="inobjeto.telefono"/>
+                    <textbox id="telefono1" onChange="update();" width="200px" />
+                </row>
+                <row>
+                    <span style="float:right"> Teléfono 2:</span>
+                    <a:bind value="inobjeto.telefono2"/>
+                    <textbox id="telefono2" onChange="update();"/>
+                </row>
+                  
+                <row>
+                    <span style="float:right"> Movil(*):</span>
+                    <a:bind value="inobjeto.movil"/>
+                    <textbox id="movil" onChange="update();"/>
+                </row>
+                <row>
+                    <span style="float:right"> Documento Actual:</span>
+                    <a:bind value="inobjeto.documento"/>
+                    <textbox readonly="true" id="documento" onChange="update();"/>
+                </row>
+            </rows>
+        </grid>
+        <grid align="center" width="100%">
+            <rows>
+                <row>
+                    <span style="float:right"> Web(*):</span>
+                    <a:bind value="inobjeto.web"/>
+                    <textbox id="web" onChange="update();"/>
+                </row>
+                <row>
+                    <span style="float:right"> Email(*):</span>
+                    <a:bind value="inobjeto.usuariomail"/>
+                    <textbox id="usuarioemail" onChange="update();"/>
+                </row>
+                <row>
+                    <span style="float:right"> Clave(*):</span>
+                    <a:bind value="inobjeto.clavemail"/>
+                    <textbox  type="password" id="clave" onChange="update();"/>
+                </row>
+                <row>
+                    <span  style="float:right"> Requ.Auten.(*):</span>
+                    <span>
+                        <a:bind checked="inobjeto.autorizacion"/>
+                        <checkbox  id="autorizacion" onChange="update();"/>
                                 StartTLS(*):
-                            <a:bind   checked="inobjeto.star"/>
-                            <checkbox  id="star" onChange="update();"/>
+                        <a:bind   checked="inobjeto.star"/>
+                        <checkbox  id="star" onChange="update();"/>
 
 
-                        </span>
-                    </row>
-                    <row>
-                        <span style="float:right">SMTP: </span>
-                        <a:bind value="inobjeto.smtp"/>
-                        <textbox  id="smtp" onChange="update();" />
-                    </row>
-                    <row>
-                        <span style="float:right">Puerto: </span>
-                        <a:bind value="inobjeto.puerto"/>
-                        <textbox  id="puerto" onChange="update();" width="30px"/>
+                    </span>
+                </row>
+                <row>
+                    <span style="float:right">SMTP: </span>
+                    <a:bind value="inobjeto.smtp"/>
+                    <textbox  id="smtp" onChange="update();" />
+                </row>
+                <row>
+                    <span style="float:right">Puerto: </span>
+                    <a:bind value="inobjeto.puerto"/>
+                    <textbox  id="puerto" onChange="update();" width="30px"/>
 
-                    </row>
-                    <row>
-                        <span style="float:right">Ubicación Fotos: </span>
+                </row>
+                <row>
+                    <span style="float:right">Ubicación Fotos: </span>
                         
-                        <span>
-                            <a:bind value="inobjeto.fotos"/>
-                            <textbox  id="fotos" onChange="update();"  />
-                            <button   label="Crear" >
-                                <attribute name="onClick">
+                    <span>
+                        <a:bind value="inobjeto.fotos"/>
+                        <textbox  id="fotos" onChange="update();"  />
+                        <button   label="Crear" >
+                            <attribute name="onClick">
                                  File duir = new File(fotos.value);
                                 duir.mkdir();
-                                </attribute>
-                            </button>
-                        </span>
+                            </attribute>
+                        </button>
+                    </span>
 
-                    </row>
-                    <row>
-                        <span style="float:right">Ubicación Reportes: </span>
-                        <span>
-                            <a:bind value="inobjeto.reportes"/>
-                            <textbox  id="reportes" onChange="update();"  />
-                            <button   label="Crear" >
-                                <attribute name="onClick">
+                </row>
+                <row>
+                    <span style="float:right">Ubicación Reportes: </span>
+                    <span>
+                        <a:bind value="inobjeto.reportes"/>
+                        <textbox  id="reportes" onChange="update();"  />
+                        <button   label="Crear" >
+                            <attribute name="onClick">
                                  File duir = new File(reportes.value);
                                 duir.mkdir();
-                                </attribute>
-                            </button>
-                        </span>
-                    </row>
-                    <row>
-                        <button label="Subir Imagen" id="ima">
-                            <attribute name="onClick">{
+                            </attribute>
+                        </button>
+                    </span>
+                </row>
+
+            </rows>
+        </grid>
+        <grid>
+            <rows>
+                <row>
+        <button label="Subir Imagen" id="ima">
+            <attribute name="onClick">{
 			Object media = Fileupload.get();
 			if (media instanceof org.zkoss.image.Image) {
 				foto0.setContent(media);
@@ -161,26 +170,29 @@ void cargarVacio(){
 				Messagebox.show("Seleccione un Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
             }
 		}
-                            </attribute>
-                        </button>
-                        <image border="1" height="115px" id="foto0"/>
-                    </row>
+            </attribute>
+        </button>
+                </row>
+                <row>
+        <image border="1" height="115px" id="foto0"/>
+                </row>
                 </rows>
-            </grid>
-            <vbox>
-                <vbox>
-                    <hbox>
-                        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="false"  onClick="guardar();"/>
-                        <button  image="/images/nuevo.gif" id="agregar" disabled="true" label="Agregar" onClick="nuevo();" />
-                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                    </hbox>
-                </vbox>
+        </grid>
+        
+        
 
-            </vbox>
+    </hbox>
+    <vbox>
+        <vbox>
+            <hbox>
+                <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="false"  onClick="guardar();"/>
+                <button  image="/images/nuevo.gif" id="agregar" disabled="true" label="Agregar" onClick="nuevo();" />
+                <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+            </hbox>
+        </vbox>
 
-        </groupbox>
-     
+    </vbox>
     <zscript>
 
    List allEvents = adm.query("Select o from Empresa as o ");

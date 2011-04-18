@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+
+
+    <tabbox >
+        <tabs>
+            <tab label="Cantones" />
+            <tab  label="Sectores"/>
+
+        </tabs>
+		
+        <tabpanels>
+            <tabpanel>
+                <include src="/cantones.zul"/>
+            </tabpanel>
+            <tabpanel>
+                <include src="/sectores.zul"/>
+            </tabpanel>
+			
+        </tabpanels>
+    </tabbox>
+
+</zk>
