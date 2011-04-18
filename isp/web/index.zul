@@ -1,22 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="ISP Sistema"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
 
-<!--
-index.zul
+<zscript>
+    <![CDATA[
+import jcinform.conexion.*;
+/*
+inicio ini = new inicio();
+    Boolean configurado = ini.comprobar();
+    System.out.println("CONFIGURADO "+ configurado);
+    if(configurado == false){
+        Executions.sendRedirect("/config.zul");
+    }else{
+        Executions.sendRedirect("/login.zul");
 
-{{IS_NOTE
-	Purpose:
-		
-	Description:
-		
-	History:
-		Mon Jun 12 21:23:35     2006, Created by tomyeh
-}}IS_NOTE
-
-Copyright (C) 2006 Potix Corporation. All Rights Reserved.
-
-{{IS_RIGHT
-}}IS_RIGHT
--->
+    }
+    */
+    ]]>
+</zscript>
 <window>
+    
 	My ZK application
 </window>
+</zk>

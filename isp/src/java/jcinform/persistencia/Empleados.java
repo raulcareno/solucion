@@ -47,6 +47,12 @@ public class Empleados implements Serializable {
     private String telefono;
     @Column(name = "email")
     private String email;
+    @Column(name = "usuario")
+    private String usuario;
+    @Column(name = "clave")
+    private String clave;
+    @Column(name = "estado")
+    private Boolean estado;
     @OneToMany(mappedBy = "empleados")
     private Collection<Empleadossector> empleadossectorCollection;
     @OneToMany(mappedBy = "empleados")
@@ -144,6 +150,31 @@ public class Empleados implements Serializable {
         this.perfil = perfil;
     }
 
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    
     public Collection<Auditoria> getAuditoriaCollection() {
         return auditoriaCollection;
     }

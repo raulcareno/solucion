@@ -18,6 +18,7 @@
     <class>jcinform.persistencia.Accesos</class>
     <class>jcinform.persistencia.Auditoria</class>
     <class>jcinform.persistencia.Perfil</class>
+    <class>jcinform.persistencia.Empresa</class>
     <properties>
       <property name="toplink.jdbc.user" value="root"/>
       <property name="toplink.jdbc.password" value="jcinform@2020"/>
