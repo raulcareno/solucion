@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+      <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+    <script type="text/javascript" src="/js/masks.js"/>
+  <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+ 
+    <window>
+
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import java.util.ArrayList;
+  import jcinform.conexion.*;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+
+  Administrador adm = new Administrador();
+  List allEvents = adm.query("Select o from Proveedores as o where o.identificacion = 0");
+    static Proveedores empa = new Proveedores();
+    Permisos permiso = new Permisos();
+    List perfiles = adm.query("Select o from Global as o where o.grupo = 'PER'");
+    Object media = null;
+
+//FUNCIONES
+void cargarFoto(byte[] imageData){
+  foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+}
+void cargarVacio(){
+  foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+}
+
+//FUNCIONES
+void llenar(Proveedores empa){
+    codigoemp.value = empa.getCodigo();
+    identificacion.value = empa.getIdentificacion();
+    razonsocial.value = empa.getRazonsocial();
+    direccion.value = empa.getDireccion();
+    telefono.value = empa.getTelefono();
+    representante.value = empa.getRepresentante();
+    email.value = empa.getEmail();
+ 
+}
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            empa = (Proveedores)datos.selectedItem.value;
+        }
+
+    identificacion.readonly = estado;
+    razonsocial.readonly = estado;
+   direccion.readonly = estado;
+    telefono.readonly = estado;
+    representante.readonly = estado;
+      email.readonly = estado;
+}
+
+
+ void guardar(){
+ if(razonsocial.value =="" || identificacion.value == "" || direccion.value == ""){
+    Messagebox.show("Registre los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+    return;
+ }
+        empa.setCodigo(codigoemp.value);
+        empa.setIdentificacion(""+identificacion.value);
+        empa.setRazonsocial(razonsocial.value);
+        empa.setDireccion(direccion.value);
+        empa.setTelefono(telefono.value);
+        empa.setRepresentante(representante.value);
+        empa.setEmail(email.value);
+        
+        if((!empa.getCodigo().equals(0)) ){
+             adm.actualizar(empa);
+             try{
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = identificacion.value;
+                  ((Listcell)children.get(1)).label = razonsocial.value;
+                  ((Listcell)children.get(2)).label = direccion.value;
+                  }catch(Exception e){}
+         }else{
+
+             adm.guardar(empa);
+         }
+              Boolean a = true;
+            if(a){
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                permiso.auditar("Proveedores","Guardar"," "+razonsocial.value);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Proveedores(0));
+                    
+            }else{
+                Messagebox.show("No se pudo almacenar...X", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+            }
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Proveedores",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+          
+          guardar.disabled=false; llenar(new Proveedores(0));estado(false,false);
+//          String command = "applyTelefono('"+telefono.getUuid()+"');";
+  //        Clients.evalJavaScript(command);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Proveedores)datos.selectedItem.value);
+        modificar.disabled = false;
+        registro.setSelected(true);
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             empa = (Proveedores)datos.selectedItem.value;
+             adm.eliminarObjeto(Proveedores.class, empa.getCodigo());
+             permiso.auditar("Proveedores","Eliminar",""+razonsocial.value);
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Proveedores(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Proveedores as o where o.identificacion = '"+valor+"' ");
+            if(empleados.size()>0){
+                Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Proveedores object = (Proveedores)it.next();
+                        empa = object;
+                 }
+            llenar(empa);
+
+            }else{
+                empa = new Proveedores(0);
+
+            }
+
+        }
+ 
+    }
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o from Proveedores as o where o.razonsocial like '%"+p+"%' order by o.razonsocial");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Proveedores acceIt = (Proveedores) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getIdentificacion()+""));
+                      li.appendChild(new Listcell(acceIt.getRazonsocial()));
+                      li.appendChild(new Listcell(acceIt.getDireccion()+""));
+                      datos.appendChild(li);
+             }
+
+    }
+
+]]>
+        </zscript>
+        <tabbox width="100%">
+            <tabs>
+                <tab id="registro" label="Registro" />
+                <tab id="busqueda" label="Busquedas" />
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <grid width="100%">
+                        <rows>
+                            <row>
+                                <span style="float:right"> Identificación(*):</span>
+                               <span> <textbox maxlength="13" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="identificacion"  />
+                               <intbox id="codigoemp" style="background:transparent;border:0px;color:grey;font-size:7px"  disabled="true"  cols="2" readonly="true" /></span>
+                               
+                            </row>
+                            <row>
+                                <span style="float:right"> Razon Social(*):</span>
+                                <textbox id="razonsocial"  maxlength="60" cols="40" readonly="true"   />
+                            </row>
+                                <row>
+                                <span style="float:right"> Representante (*):</span>
+                                <textbox id="representante"  maxlength="60" cols="40" readonly="true"   />
+                            </row>
+                            <row>
+                                <span style="float:right"> Dirección(*):</span>
+                                <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
+                            </row>
+                            <row>
+                                <span style="float:right"> Teléfono:</span>
+                                <textbox id="telefono"   readonly="true"   ></textbox>
+                             
+                            </row>
+                             
+                            <row>
+                                <span style="float:right"> e-mail:</span>
+                                <textbox id="email" maxlength="100" cols="40" readonly="true"  />
+                            </row>
+
+                        </rows>
+                    </grid>
+
+                    <vbox>
+                        <hbox>
+                            <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                            <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                            <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                            <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                        </hbox>
+                    </vbox>
+
+
+                </tabpanel>
+                <tabpanel>
+                    <groupbox  width="100%" mold="3d" >
+                        <caption label="Busquedas" />
+                        <vbox>
+                            <hbox>  Razon Social:
+                                <textbox id="buscarText"  maxlength="60" cols="40" />
+                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                            </hbox>
+                            <hbox>
+                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                                    <listhead>
+                                        <listheader label="Cod."/>
+                                        <listheader label="Nombres"/>
+                                        <listheader label="Dirección"/>
+                                    </listhead>
+                                    <listitem forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.codigo}" />
+                                        <listcell label="${each.razonsocial}" />
+                                        <listcell label="${each.direccion}" />
+                                    </listitem>
+                                </listbox>
+                            </hbox>
+                        </vbox>
+                    </groupbox>
+
+
+
+                </tabpanel>
+
+            </tabpanels>
+
+
+        </tabbox>
+
+    </window>
+</zk>
