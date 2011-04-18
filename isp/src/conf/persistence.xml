@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="ispPU" transaction-type="RESOURCE_LOCAL">
+    <provider>oracle.toplink.essentials.PersistenceProvider</provider>
+    <class>jcinform.persistencia.Comisiones</class>
+    <class>jcinform.persistencia.Controlequipos</class>
+    <class>jcinform.persistencia.Empleadossector</class>
+    <class>jcinform.persistencia.Marcas</class>
+    <class>jcinform.persistencia.Contratos</class>
+    <class>jcinform.persistencia.Nodos</class>
+    <class>jcinform.persistencia.Proveedores</class>
+    <class>jcinform.persistencia.Equipos</class>
+    <class>jcinform.persistencia.Empleados</class>
+    <class>jcinform.persistencia.Plan</class>
+    <class>jcinform.persistencia.Clientes</class>
+    <class>jcinform.persistencia.Canton</class>
+    <class>jcinform.persistencia.Sector</class>
+    <class>jcinform.persistencia.Accesos</class>
+    <class>jcinform.persistencia.Auditoria</class>
+    <class>jcinform.persistencia.Perfil</class>
+    <properties>
+      <property name="toplink.jdbc.user" value="root"/>
+      <property name="toplink.jdbc.password" value="jcinform@2020"/>
+      <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/isp"/>
+      <property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+    </properties>
+  </persistence-unit>
+</persistence>
