@@ -1,25 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="ISP Sistema"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
+    <style>
+.estil{
+	height:100%;
+    background-image: url(./images/cabecera.png)   ;
+    background-color:#004669;
+    
 
-<zscript>
+
+}
+.estilo2{
+   height:100%;
+    background-color:#004669;
+}
+    </style>
+    <zscript>
     <![CDATA[
 import jcinform.conexion.*;
-/*
-inicio ini = new inicio();
-    Boolean configurado = ini.comprobar();
-    System.out.println("CONFIGURADO "+ configurado);
-    if(configurado == false){
-        Executions.sendRedirect("/config.zul");
-    }else{
-        Executions.sendRedirect("/login.zul");
-
-    }
-    */
+ 
     ]]>
-</zscript>
-<window>
-    
-	My ZK application
-</window>
+    </zscript>
+    <div height="100%" class="estilo2" >
+        <window   style="padding-left:60px;padding-right:60px;border:2px">
+            <zscript>
+                     Session a = Sessions.getCurrent();
+                    void ingresar(Menuitem item ){
+            try{
+
+
+                        if(buscar("c" + (String)item.getId())){
+                                   Tab newtb= new Tab(""+item.label);
+                                    newtb.setSelected(true);
+                                    newtb.setClosable(true);
+                                    newtb.setId("c"+item.id);
+                                    newtb.setImage(""+item.image);
+                                    newtb.setParent(tbs);
+
+                                    Tabpanel newtpl = new Tabpanel();
+                                    Iframe f = new Iframe(item.value);
+                                    f.setWidth("100%");
+                                    f.setHeight("100%");
+                                    newtpl.appendChild(f);
+                                    newtpl.setParent(tps);
+                        }
+                        }catch(Exception e){
+                        alert(""+e);
+                                Messagebox.show("VENTANA YA ABIERTA", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                        }
+            }
+
+               public Boolean buscar(String id){
+                    List tabes = tbs.getChildren();
+                    for (Iterator it = tabes.iterator(); it.hasNext();) {
+                        Tab object = (Tab) it.next();
+                        String ide = object.getId();
+
+                        if(ide.equals(id)){
+
+                            object.setSelected(true);
+                            return false;
+                        }
+                    }
+                return true;
+            }
+               void salir(){
+
+            a.removeAttribute("accesos");
+            a.removeAttribute("user");
+            a.removeAttribute("sector");
+            a.removeAttribute("empresa");
+            a.invalidate();
+            Executions.sendRedirect("login.zul");
+            }
+
+            </zscript>
+
+            <div height="55px" class="estil" >
+
+                <label  style="padding-left:10px;color:white;font-size:18px;font-weight:bold" value="${sessionScope.empresa.razonsocial}"  />
+                <separator/>
+                <label  style="padding-left:10px;color:white;font-size:9px;" value="Empleado: ${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}"  />
+                <separator height="5px" orient="vertical"/>
+                <label  style="padding-left:10px;color:white;font-size:9px;" value="Sector: ${sessionScope.sector.sector.nombre}"  />
+                <separator height="5px"  orient="vertical"/>
+                <toolbarbutton style="padding-left:10px;color:white;font-size:9px;"  onClick="salir()" label="Cerrar Sesión"/>
+
+            </div>
+
+
+            <panel style="left:10%" >
+                <panelchildren>
+
+                    <menubar id="menubar" width="100%">
+                        <menu label="Administración" >
+                            <menupopup>
+                                <menuitem  value="/accesos.zul"  image="/images/key.png"  label="Accesos" onClick="ingresar(self)" />
+                                <menuitem  value="/auditoria.zul"  image="/images/auditoria.gif" label="Auditoria" onClick="ingresar(self)" />
+                                <menuitem  value="/empresa.zul"  image="/images/institucion.png" label="Empresas" onClick="ingresar(self)" />
+                                <menuitem image="/images/herramientas.png" label="Cantones-Sectores" onClick="ingresar(self)" />
+                                <menuitem image="/images/herramientas.png" label="Perfiles" onClick="ingresar(self)" />
+                                <menuseparator />
+                                <menuitem label="Salir" image="/images/exit.gif"  onClick="salir()" />
+                            </menupopup>
+                        </menu>
+                        <menu label="Personas" >
+                            <menupopup>
+                                <menuitem image="/images/herramientas.png" label="Proveedores" onClick="ingresar()" />
+                                <menuitem image="/images/herramientas.png" label="Clientes" onClick="ingresar()" />
+                                <menuitem image="/images/herramientas.png" label="Empleados" onClick="ingresar()" />
+
+                            </menupopup>
+                        </menu>
+
+                        <menu label="Control" >
+                            <menupopup>
+                                <menuitem image="/images/herramientas.png" label="Nodos" onClick="ingresar()" />
+                                <menuitem image="/images/herramientas.png" label="Control Equipos" onClick="ingresar()" />
+                                <menuitem image="/images/herramientas.png" label="Marcas" onClick="ingresar()" />
+                                <menuitem image="/images/herramientas.png" label="Equipos" onClick="ingresar()" />
+                            </menupopup>
+                        </menu>
+                        <menu label="Cobros" >
+                            <menupopup>
+                                <menuitem image="/images/herramientas.png" label="Contratos" onClick="ingresar()" />
+                                <menuitem image="/images/herramientas.png" label="Planes" onClick="ingresar()" />
+                                <menuitem image="/images/herramientas.png" label="Reportes" onClick="ingresar()" />
+                            </menupopup>
+                        </menu>
+                    </menubar>
+                </panelchildren>
+            </panel>
+
+            <panel>
+                <panelchildren>
+                    <tabbox context="derecho" id="mytab" width="100%" height="600px">
+                        <tabs id="tbs">
+                            <tab label="Inicio" image="/images/inicio.png"  id="blanco" Closable="true" />
+                        </tabs>
+                        <tabpanels id="tps" >
+                            <tabpanel>
+                                <iframe scrolling="false" width="100%" height="100%" src="/blanco.zul" />
+                            </tabpanel>
+                        </tabpanels>
+                    </tabbox>
+                </panelchildren>
+            </panel>
+
+        </window>
+    </div>
+ 
 </zk>

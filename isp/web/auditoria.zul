@@ -1,0 +1,138 @@
+<window     border="normal" >
+
+    <zscript>
+        <![CDATA[
+        import jcinform.persistencia.*;
+        import jcinform.conexion.*;
+        import jcinform.bean.*;
+        import java.util.ArrayList;
+        import java.math.BigDecimal;
+        import java.util.Date;
+ 
+
+        Session ses = Sessions.getCurrent();
+        Administrador adm = new Administrador();
+        List allEvents = adm.query("Select o from Accesos as o where o.tipo= 0");
+        Permisos permiso = new Permisos();
+        Empleadossector periodo = (Empleadossector) ses.getAttribute("sector");
+        exportarExcel exp = new exportarExcel();
+        List empleadosEncontrados = adm.query("Select o from Empleados as o order by o.apellidos");
+        Empleados es = new Empleados(-2);
+        es.setApellidos("[TODOS LOS EMPLEADOS]");
+        es.setNombres("");
+        empleadosEncontrados.add(es);
+
+
+
+        void buscar(){
+
+        String desde2 = (desde.getValue().getYear()+1900) +"-"+(desde.getValue().getMonth()+1)+"-"+desde.getValue().getDate()+" 01:00:00";
+        String hasta2 = (hasta.getValue().getYear()+1900) +"-"+(hasta.getValue().getMonth()+1)+"-"+hasta.getValue().getDate()+" 23:59:59";
+        String usuarioQuery = "";
+
+        Empleados emp = (Empleados)empleadosl.selectedItem.value;
+        if(!emp.getCodigo().equals(-2))
+        usuarioQuery = " and o.empleados.codigo  = "+emp.getCodigo()+" ";
+        System.out.println(usuarioQuery);
+        System.out.println("Select o from Auditoria as o where o.fecha between '"+desde2+"' and '"+hasta2+"' "+ usuarioQuery +" order by o.fecha desc ");
+        List equivaEncontrados = adm.query("Select o from Auditoria as o where o.fecha between '"+desde2+"' and '"+hasta2+"' "+ usuarioQuery +" order by o.fecha desc ");
+        datos = new Listbox();
+        int a=0;
+        for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+        datos.getItems().remove(a);
+        }
+        for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+        Auditoria acceIt = (Auditoria) it.next();
+        Listitem li = new Listitem();
+        li.setValue(acceIt);
+        li.appendChild(new Listcell(acceIt.getEmpleados().getApellidos()+" "+acceIt.getEmpleados().getNombres()));
+        li.appendChild(new Listcell(acceIt.getTipo()+" "));
+        li.appendChild(new Listcell(acceIt.getTabla()+" "));
+        li.appendChild(new Listcell(acceIt.getPc()+" "));
+        li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+" "));
+        //li.appendChild(new Listcell(acceIt.getIp()+" "));
+        datos.appendChild(li);
+        }
+
+        }
+
+
+
+        public static void export_to_csv(Listbox listbox) {
+        //exp.exportar(listbox);
+        //return;
+        String s = ";\t";
+        StringBuffer sb = new StringBuffer();
+        for (Object head : listbox.getHeads()) {
+            String h = "";
+            for (Object header : ((Listhead) head).getChildren()) {
+                h += ((Listheader) header).getLabel() + s;
+            }
+            sb.append(h + "\n");
+        }
+            for (Object item : listbox.getItems()) {
+                String i = "";
+                for (Object cell : ((Listitem) item).getChildren()) {
+                    i += ((Listcell) cell).getLabel() + s;
+                }
+                sb.append(i + "\n");
+            }
+        Filedownload.save(sb.toString().getBytes(), "application/vnd.ms-excel", "auditoria.csv");
+        }
+
+
+
+
+
+]]>
+    </zscript>
+ 
+    <groupbox width="100%" mold="3d" >
+
+        <caption label="Seleccione las fechas en las cuales desea ver los movimientos" />
+        <vbox>
+            <hbox width="100%">  Desde:
+                <datebox id="desde" format="yyyy-MM-dd"  width="100px" />
+                Hasta:
+                <datebox id="hasta" format="yyyy-MM-dd" width="100px" />
+                
+                <listbox id="empleadosl" width="300px"  mold="select" >
+                    <listitem  selected="true"  forEach="${empleadosEncontrados}" value="${each}" label="${each.apellidos} ${each.nombres}" />
+
+                </listbox>
+                <button id="buscar" image="/images/auditoria.gif"  label="Buscar" onClick="buscar();"/>
+                <button label="IMPRIMIR"   image="/images/auditoria.gif"    onClick="Clients.print()"/>
+    <button label="Exportar CVS,xls"  image="/images/excel.gif"   onClick="export_to_csv(datos)"/>
+            </hbox>
+            <hbox width="100%">
+                <listbox  mold="paging"  pageSize="25"  id="datos" width="100%">
+                    <listhead>
+                        <listheader label="Usuario" sort="auto"/>
+                        <listheader label="Acción" sort="auto"/>
+                        <listheader label="Pantalla" sort="auto"/>
+                        <listheader label="Campo" sort="auto"/>
+                        <listheader label="Fecha" sort="auto"/>
+                        <!--listheader label="Máquina" sort="auto"/-->
+
+                    </listhead>
+                    <listitem forEach="${allEvents}" value="${each}">
+                        <listcell width="70px" label="${each.usuario}" />
+                        <listcell width="30px"  label="${each.tipo}" />
+                        <listcell width="30px"  label="${each.tabla}" />
+                        <listcell width="50px" label="${each.pc}" />
+                        <listcell width="30px"  label="${each.fecha}" />
+                        <!--listcell width="20px"  label="${each.ip}" /-->
+                    </listitem>
+                </listbox>
+
+
+            </hbox>
+        </vbox>
+    </groupbox>
+    
+    <zscript>
+        desde.setValue(new Date());
+        hasta.setValue(new Date());
+    </zscript>
+
+</window>

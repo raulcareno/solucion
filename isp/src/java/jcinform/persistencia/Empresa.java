@@ -16,11 +16,12 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "empresa")
-@NamedQueries({ })
+@NamedQueries({
+    @NamedQuery(name = "Empresa.findAll", query = "SELECT e FROM Empresa e")})
 public class Empresa implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,6 +46,24 @@ public class Empresa implements Serializable {
     private String email;
     @Column(name = "web")
     private String web;
+    @Column(name = "reportes")
+    private String reportes;
+    @Column(name = "fotos")
+    private String fotos;
+    @Column(name = "usuariomail")
+    private String usuariomail;
+    @Column(name = "clavemail")
+    private String clavemail;
+    @Column(name = "autorizacion")
+    private Boolean autorizacion;
+    @Column(name = "smtp")
+    private String smtp;
+    @Column(name = "star")
+    private Boolean star;
+    @Column(name = "puerto")
+    private String puerto;
+    @Column(name = "logo")
+    private String logo;
 
     public Empresa() {
     }
@@ -132,6 +151,80 @@ public class Empresa implements Serializable {
     public void setWeb(String web) {
         this.web = web;
     }
+
+    public String getReportes() {
+        return reportes;
+    }
+
+    public void setReportes(String reportes) {
+        this.reportes = reportes;
+    }
+
+    public String getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(String fotos) {
+        this.fotos = fotos;
+    }
+
+    public String getUsuariomail() {
+        return usuariomail;
+    }
+
+    public void setUsuariomail(String usuariomail) {
+        this.usuariomail = usuariomail;
+    }
+
+    public String getClavemail() {
+        return clavemail;
+    }
+
+    public void setClavemail(String clavemail) {
+        this.clavemail = clavemail;
+    }
+ 
+    public String getSmtp() {
+        return smtp;
+    }
+
+    public void setSmtp(String smtp) {
+        this.smtp = smtp;
+    }
+
+    public String getPuerto() {
+        return puerto;
+    }
+
+    public void setPuerto(String puerto) {
+        this.puerto = puerto;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public Boolean getAutorizacion() {
+        return autorizacion;
+    }
+
+    public void setAutorizacion(Boolean autorizacion) {
+        this.autorizacion = autorizacion;
+    }
+
+    public Boolean getStar() {
+        return star;
+    }
+
+    public void setStar(Boolean star) {
+        this.star = star;
+    }
+
+  
 
     @Override
     public int hashCode() {

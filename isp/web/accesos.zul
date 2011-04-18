@@ -1,0 +1,100 @@
+
+<window    title="Control de Accesos"  border="normal" >
+    <zscript>
+<![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import java.util.Iterator;
+  import java.util.UUID;
+    
+//globales
+Perfil global = new Perfil();
+Administrador adm = new Administrador();
+List perfiles = adm.query("Select o from Perfil as o ");
+Permisos permiso = new Permisos();
+
+ 
+List accesos = new ArrayList();
+int w = 0;
+ ListModel model = new SimpleListModel(accesos.toArray());
+//globales
+    void guardar(){
+ if(verificar("Agregar")){
+          accesos nso = new accesos();
+        accesos r = (accesos) datos.getRows();
+        String resultado = nso.guardar(r.getChildren(),((Perfil)perfilesCombo.selectedItem.value));
+        if(resultado.equals("ok")){
+            permiso.auditar("Accesos","Guardar",""+perfilesCombo.selectedItem.value);
+            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+             filas.addRow((Perfil)perfilesCombo.selectedItem.value);
+         }else{
+            Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         }
+        
+        }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+    }
+
+    Boolean verificar(String accion){
+            return permiso.verificarPermiso("Accesos",accion);
+    }
+
+    void busqueda(Perfil p){
+                filas.addRow(p);
+    }
+
+    void seleccionar(String tipo,Boolean estado){
+        filas.seleccionar(tipo,estado);
+    }
+
+]]>
+    </zscript>
+      
+    <groupbox mold="3d" >
+        <caption label="Seleccione un perfil" />
+        <vbox>
+
+            <hbox>  PERFILES:
+                <label style="color:blue" id="per" value="" />
+ 
+                <listbox width="250px" id="perfilesCombo"  mold="select" onSelect="filas.getChildren().clear();busqueda(self.selectedItem.value);" >
+
+                    <listitem forEach="${perfiles}" value="${each}" selected="true"  label="${each.nombre}" >
+                    </listitem>
+                </listbox>
+                <button image="/images/auditoria.gif" label="Buscar"  onClick="busqueda(perfilesCombo.selectedItem.value);"/>
+                <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
+            </hbox>
+        </vbox>
+    </groupbox>
+    <vbox>
+        <hbox>
+        </hbox>
+    </vbox>
+    <grid id="datos" >
+        <columns>
+            <column  label="Cod"/>
+            <column  label="Módulo"/>
+            <column width="105px"   >
+                <checkbox label="Ingresar" onCheck='seleccionar("ingresar",self.isChecked())' />
+            </column>
+            <column width="105px"   >
+                <checkbox label="Agregar" onCheck='seleccionar("agregar",self.isChecked())' />
+            </column>
+            <column width="105px"   >
+                <checkbox label="Modificar" onCheck='seleccionar("modificar",self.isChecked())' />
+            </column>
+            <column width="105px"   >
+                <checkbox label="Eliminar" onCheck='seleccionar("eliminar",self.isChecked())' />
+            </column>
+            <column  width="5px" label="Módulo"/>
+        </columns>
+        <rows id="filas" use="jcinform.bean.accesos">
+        </rows>
+    </grid>
+</window>

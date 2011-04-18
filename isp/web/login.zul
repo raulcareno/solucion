@@ -29,7 +29,7 @@
     <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
-        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" title="JCINFORM" width="460px" sizable="true">
+        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal"   width="460px" sizable="true">
             <zscript>
     import bean.EventDAO;
   import java.util.ArrayList;
@@ -177,8 +177,8 @@ void verificarSistema(){
                     <row visible="false" id="seleccione"  align="center" spans="2" style="background:transparent;border:0px">
                         <label style="float:center;font-size:16px;color:red" value="SELECCIONE UN SECTOR:"></label>
                     </row>
-                    <row  style="background:transparent;border:0px" id="rperiodo" visible="false" spans="2">
-                        <listbox  onOK="btnIngresar.focus()"  style="font-size:11px"   width="435px"  id="periodo" mold="select">
+                    <row align="center"  style="background:transparent;border:0px" id="rperiodo" visible="false" spans="2">
+                        <listbox  onOK="btnIngresar.focus()"  style="font-size:11px"   width="380px"  id="periodo" mold="select">
                             <listitem forEach="${perfiles}" value="${each}">
                                 <listcell  label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
                             </listitem>

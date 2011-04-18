@@ -92,12 +92,14 @@ public class Permisos {
 //        adm.queryNativo(null, Accesos.class)
         //user.getCodigoemp()
         //Window win = (Window) Executions.createComponents("/notasEstudiantes.zul", null, null);
+        Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o ");
         List listado = adm.query("Select o from Accesos as o where o.perfil.codigo = '" + user.getPerfil().getCodigo() + "'");
         Session a = Sessions.getCurrent();
 
         a.setAttribute("accesos", listado);
         a.setAttribute("user", user);
         a.setAttribute("sector", per);
+        a.setAttribute("empresa", emp);
 //        a.setAttribute("periodo",per);
         if (usuarios == null) {
             usuarios = new ArrayList();
