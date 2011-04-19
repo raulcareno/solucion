@@ -116,9 +116,9 @@ import jcinform.conexion.*;
 
                         <menu label="Control" >
                             <menupopup>
-                                <menuitem image="/images/nodos.png" label="Nodos" onClick="ingresar(self)" />
+                                <menuitem   value="/nodos.zul"  image="/images/nodos.png" label="Nodos" onClick="ingresar(self)" />
                                 <menuitem image="/images/equipos.png" label="Control Equipos" onClick="ingresar()" />
-                                <menuitem image="/images/marcas.png" label="Marcas" onClick="ingresar()" />
+                                <menuitem   value="/marcas.zul"  image="/images/marcas.png" label="Marcas" onClick="ingresar(self)" />
                                 <menuitem image="/images/herramientas.png" label="Equipos" onClick="ingresar()" />
                             </menupopup>
                         </menu>
