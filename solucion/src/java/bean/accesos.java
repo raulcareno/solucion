@@ -99,7 +99,23 @@ public class accesos extends Rows {
 
 
     }
+public void seleccionar(String tipo,Boolean seleccionar){
+    List lis = getChildren();
+    for (Iterator it = lis.iterator(); it.hasNext();) {
+        Row object = (Row) it.next();
+         List labels = object.getChildren();
+         if(tipo.equals("ingresar"))
+          ((Checkbox) labels.get(2)).setChecked(seleccionar);
+         if(tipo.equals("agregar"))
+          ((Checkbox) labels.get(3)).setChecked(seleccionar);
+         if(tipo.equals("modificar"))
+          ((Checkbox) labels.get(4)).setChecked(seleccionar);
+         if(tipo.equals("eliminar"))
+          ((Checkbox) labels.get(5)).setChecked(seleccionar);
 
+    }
+
+}
     @SuppressWarnings("static-access")
     public String guardar(List col, Global g) {
 

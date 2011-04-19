@@ -2,7 +2,7 @@
 <?page title="ZK::Hello World!"?>
 
  <window >
-            <image id="img1" src="/images/seleccione.gif"/>
+     
                 <image style="position:absolute;top:80%;left:70%" height="70px" id="img21" src="/images/about.jpg"/>
             
  </window>
