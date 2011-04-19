@@ -237,34 +237,35 @@ empa.setSector(g);
                             <row>
                                 <span style="float:right"> Identificación(*):</span>
                                 <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="identificacion"  />
-                                <span><intbox id="codigo" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" /></span>
+                                <span><intbox id="codigo" disabled="true" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" /></span>
                                 <span></span>
                             </row>
 
                             <row>
                                 <span style="float:right"> Nombres(*):</span>
                                 <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
-                                <span style="float:right"> Usuario:</span>
-                                <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
+                                
                             </row>
                             <row>
                                 <span style="float:right"> Apellidos(*):</span>
                                 <textbox id="apellidos"  maxlength="60" cols="40" readonly="true"  />
-                                <span style="float:right"> Clave:</span>
-                                <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
+                              
                             </row>
                             <row>
                                 <span style="float:right"> Dirección(*):</span>
                                 <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
-                                 
+                                 <span style="float:right"> Usuario:</span>
+                                <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
                             </row>
                             <row>
                                 <span style="float:right"> Teléfono:</span>
                                 <textbox id="telefono"   readonly="true"   >
                                        
                                 </textbox>
-                                 
-                                <textbox id="movil" maxlength="30" cols="13" visible="false"    />
+                                 <span style="float:right"> 
+                                 <textbox id="movil" maxlength="30" cols="13" visible="false"    />
+                                   Clave:</span>
+                                <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
                             </row>
                             <row>
                                 <span style="float:right"> e-mail:</span>
