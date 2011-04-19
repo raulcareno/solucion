@@ -26,6 +26,12 @@ import jcinform.conexion.*;
         <window   style="padding-left:60px;padding-right:60px;border:2px">
             <zscript>
                      Session a = Sessions.getCurrent();
+             
+            Empleados emp = a.getAttribute("user");
+            if(emp==null){
+            Executions.sendRedirect("login.zul");
+            }
+
                     void ingresar(Menuitem item ){
             try{
 
