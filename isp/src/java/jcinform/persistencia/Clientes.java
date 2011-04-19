@@ -47,6 +47,10 @@ public class Clientes implements Serializable {
     private String telefono;
     @Column(name = "email")
     private String email;
+    @Column(name = "usuario")
+    private String usuario;
+    @Column(name = "clave")
+    private String clave;
     @OneToMany(mappedBy = "clientes")
     private Collection<Clientes> clientesCollection;
     @JoinColumn(name = "sector", referencedColumnName = "codigo")
@@ -132,6 +136,22 @@ public class Clientes implements Serializable {
 
     public void setClientes(Clientes clientes) {
         this.clientes = clientes;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public Collection<Contratos> getContratosCollection() {
