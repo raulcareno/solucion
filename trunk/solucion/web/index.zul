@@ -3,13 +3,30 @@
 <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 
 <zk xmlns="http://www.zkoss.org/2005/zul">
+
+    <style>
+.estil{
+	height:100%;
+    background-image: url(./images/cabefondo.png)   ;
+    background-color:#004669;
+
+
+
+}
+.estilo2{
+   height:100%;
+    background-color:#E0E0E0;
+    
+}
+    </style>
     <style>
 div.listbox-head th{font-size: 18px}
 div.head-cell-inner{font-size: 18px}
 div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; position: relative; }
-</style> 
-    <borderlayout onCreate="verificar();cargando();cargando2();"  width="100%" style="float:center"  height="150%">
-        <zscript>
+    </style>
+    <div height="110%" class="estilo2" >
+        <window   onCreate="verificar();cargando();cargando2();"    style="padding-left:60px;padding-right:60px;border:2px">
+            <zscript>
             import jcinform.persistencia.*;
             import jcinform.procesos.Administrador;
             import bean.Permisos;
@@ -27,9 +44,9 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
             a.removeAttribute("user");
             a.invalidate();
             }
-            void ingresar(Listitem item ){
+            void ingresar(Menuitem item ){
             try{
-                       
+
                         if(buscar("c" + (String)item.getId())){
                                    Tab newtb= new Tab(""+item.label);
                                     newtb.setSelected(true);
@@ -57,9 +74,9 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                     for (Iterator it = tabes.iterator(); it.hasNext();) {
                         Tab object = (Tab) it.next();
                         String ide = object.getId();
-                        
+
                         if(ide.equals(id)){
-                          
+
                             object.setSelected(true);
                             return false;
                         }
@@ -160,202 +177,191 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
             }
 
 
- 
-        </zscript>
-        <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="56px" >
-             
-            <tablelayout width="100%" columns="3">
-                <tablechildren>
-                        
 
-                    <panel  border="0" collapsible="true">
-                        <panelchildren  style="background-color:transparent;border:0px;position:absolute; left:96%">
-                            <vbox>
+            </zscript>
+
+
+            <div height="50px" class="estil" >
+
+
+                <panel  border="0" collapsible="true">
+                    <panelchildren  style="background-color:transparent;border:0px;position:absolute; left:90%">
+                        <vbox>
                                     <!--image height="60px" id="foto0" src="images/acerca.gif"/-->
-                                <image height="45px"  id="foto0" />
-                            </vbox>
-                        </panelchildren>
-                    </panel>
-                    <panel   border="normal" collapsible="true">
-                        <panelchildren  style="border: 1px;background-color:transparent;border:0px">
-                            <vbox>
+                            <image height="45px"  id="foto0" />
+                        </vbox>
+                    </panelchildren>
+                </panel>
+                <panel   border="normal" collapsible="true">
+                    <panelchildren  style="border: 1px;background-color:transparent;border:0px">
+                        <vbox>
 
-                                <hbox>
-                                    <separator orient="vertical" />
-                                    <label value="${sessionScope.periodo.institucion.denominacion} " style="color:white;font-size:14px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
-                                    <label value=" ${sessionScope.periodo.institucion.nombre}" style="color:white;font-size:14px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
+                            <hbox>
+                                <separator orient="vertical" />
+                                <label value="${sessionScope.periodo.institucion.denominacion} " style="color:white;font-size:14px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
+                                <label value=" ${sessionScope.periodo.institucion.nombre}" style="color:white;font-size:14px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
 
-                                    <label value=" - ${sessionScope.periodo.institucion.tipo} - ${sessionScope.periodo.seccion.descripcion}" style="color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
+
 
                                         <!-- PERIODO -->
-                                    <separator orient="vertical" /> |
-                                    <separator orient="vertical" />
-                                    <listbox  style="color:white;font-size:10px;background-color:#1B62A4;" onSelect="cambio(); " width="415px"  id="periodo" mold="select">
-                                        <listitem forEach="${perfiles}" value="${each}">
-                                            <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
-                                        </listitem>
-                                    </listbox>
-                                </hbox>
+                                <separator orient="vertical" /> |
+                                <separator orient="vertical" />
+                                <listbox  style="color:white;font-size:10px;background-color:#1B62A4;" onSelect="cambio(); " width="415px"  id="periodo" mold="select">
+                                    <listitem forEach="${perfiles}" value="${each}">
+                                        <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
+                                    </listitem>
+                                </listbox>
+                            </hbox>
 
-                            </vbox>
-
-
-                            <vbox>
-                                <hbox>
-                                    <separator orient="vertical" />
-                                    <label style="color:white;font-size:9px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" value="${sessionScope.user.perfil.descripcion}:" />
-                                    <label style="color:white;font-size:9px;font-family: Arial, Helvetica, sans-serif" value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
-                                    <separator orient="vertical" /> |
-                                    <separator orient="vertical" />
-                                    <label value=" PERIODO: " style="color:white;font-size:9px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
-                                    <label  style="color:white;font-size:9px;" value="${sessionScope.periodo.descripcion}"  />
-                                    <separator orient="vertical" /> |
-                                    <separator orient="vertical" />
-                                    <toolbarbutton  image="/images/exit.gif" style="background:transparent;color:white;font-weight:bold;font-size:9px;font-family: Arial, Helvetica, sans-serif"  label=" [Cerrar Sesión]" onClick="salir()"/>
-                                    <separator orient="vertical" /> |
-                                    <separator orient="vertical" />
-                                    <toolbarbutton style="background:transparent;font-size:9px;color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" image="/images/candado.gif" label="Cambiar Clave" onClick='cambioC("/cambioClaveProfesor.zul")'/>
-
-                                    <separator orient="vertical" /> |
-                                    <separator orient="vertical" />
+                        </vbox>
 
 
-                                </hbox>
+                        <vbox>
+                            <hbox>
+                                <separator orient="vertical" />
+                                <label style="color:white;font-size:9px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" value="${sessionScope.user.perfil.descripcion}:" />
+                                <label style="color:white;font-size:9px;font-family: Arial, Helvetica, sans-serif" value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
+                                <separator orient="vertical" /> |
+                                <separator orient="vertical" />
+                                <label value=" PERIODO: " style="color:white;font-size:9px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
+                                <label  style="color:white;font-size:9px;" value="${sessionScope.periodo.descripcion}"  />
+                                <separator orient="vertical" /> |
+                                <separator orient="vertical" />
+                                <label value=" ${sessionScope.periodo.institucion.tipo} - ${sessionScope.periodo.seccion.descripcion}" style="color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
 
-                            </vbox>
-                        </panelchildren>
-                    </panel>
-                </tablechildren>
+                              <!--toolbarbutton  image="/images/exit.gif" style="background:transparent;color:white;font-weight:bold;font-size:9px;font-family: Arial, Helvetica, sans-serif"  label=" [Cerrar Sesión]" onClick="salir()"/>
+                                <separator orient="vertical" /> |
+                                <separator orient="vertical" />
+                                <toolbarbutton style="background:transparent;font-size:9px;color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" image="/images/candado.gif" label="Cambiar Clave" onClick='cambioC("/cambioClaveProfesor.zul")'/>
 
-            </tablelayout>
+                                <separator orient="vertical" /> |
+                                <separator orient="vertical" /-->
 
 
+                            </hbox>
 
-        </north>
+                        </vbox>
+                    </panelchildren>
+                </panel>
+            </div>
+       
 
-        <west title="MODULOS" size="200px" flex="true" splittable="true" collapsible="true">
+
             <div>
-                <panel width="100%" height="100%"  border="normal"  collapsible="true" >
+                <panel border="normal"  collapsible="true" >
                     <panelchildren style="padding:0px;" >
-                        <tabbox onSelect="a1.clearSelection(); a2.clearSelection(); a3.clearSelection(); a4.clearSelection(); a5.clearSelection();"  id="tb" width="100%" height="460px" mold="accordion-lite">
-                            <tabs>
-                                <tab image="/images/matricular.gif" label="Matriculación" />
-                                <tab  image="/images/barra.png" label="Notas" />
-                                <tab image="/images/herramientas.png"  label="Administración" />
-                                <tab image="/images/birrete.gif"  label="Grados" />
-                                <tab image="/images/varios.gif"  label="Varios" />
-                            </tabs>
-                            <tabpanels>
-                                <tabpanel  height="220px">
-                                    <listbox id="a1" onSelect ="ingresar(self.selectedItem)" >
-                                        <listitem  id="Cursos"  value="/cursos.zul"   >
-                                            <listcell image="/images/cursos.png" label="Cursos" style="font-size:12px" value="/cursos.zul" />
-                                        </listitem>
-                                            
-                                        <listitem/>
-                                        <listitem id="Matricular" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" /><listitem/>
-                                        <listitem id="Matricular2" label="Asignar Cursos" image="/images/asignar.png"  value="/asignarmatriculas.zul" /><listitem/>
-                                        <listitem id="Actualizacion" label="Actualizar" image="/images/actualizar.png"  value="/actualizacion.zul" /><listitem/>
-                                        <listitem id="Pendientes" label="Pendientes" image="/images/dinero.gif"   value="/pendientes.zul" /><listitem/>
-                                        <listitem id="Bloquear" label="Bloquear" image="/images/bloquear.gif"   value="/actualizacion_1.zul" /><listitem/>
-                                        <listitem id="Reportes_Estudiantes" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" /><listitem/>
-                                        <listitem id="Encuesta" label="Encuesta" image="/images/encuesta.png"   value="/encuesta.zul" /><listitem/>
-                                        </listbox>
-                                </tabpanel>
-                                <tabpanel height="220px"><!--NOTAS-->
+                        <menubar id="menubar" >
+   <!--tab label="Matriculación" />
+                                <tab label="Notas" />
+                                <tab label="Administración" />
+                                <tab label="Grados" />
+                                <tablabel="Varios" /-->
+                            <menu image="/images/matricular.gif"  label="Matriculación" >
+                                <menupopup  >
+                                    <menuitem onClick="ingresar(self)" image="/images/cursos.png"   label="Cursos"  id="Cursos"  value="/cursos.zul"   />
+                                    <menuitem onClick="ingresar(self)" id="Matricular" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Matricular2" label="Asignar Cursos" image="/images/asignar.png"  value="/asignarmatriculas.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Actualizacion" label="Actualizar" image="/images/actualizar.png"  value="/actualizacion.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Pendientes" label="Pendientes" image="/images/dinero.gif"   value="/pendientes.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Bloquear" label="Bloquear" image="/images/bloquear.gif"   value="/actualizacion_1.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Reportes_Estudiantes" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Encuesta" label="Encuesta" image="/images/encuesta.png"   value="/encuesta.zul" />
+                                </menupopup>
+                            </menu>
+                            <menu  image="/images/barra.png"  label="Notas" ><!--NOTAS-->
 
-                                    <listbox id="a2"  onSelect ="ingresar(self.selectedItem)"  >
-                                        <listitem id="Trimestres" label="Trim.Bim.Quim." image="/images/textos.png" value="/trimestres.zul" /><listitem/>
-                                        <listitem id="Aportes" image="/images/llave.gif"  label="Aportes" value="/aportes.zul"/><listitem/>
-                                        <listitem id="Distributivo" label="Distributivo"  image="/images/distributivo.png" value="/distributivo.zul" /><listitem/>
-                                        <listitem id="Registro_de_Notas" label="Notas"  image="/images/notas.png" value="/notas.zul" /><listitem/>
-                                        <listitem id="Registro_de_Disciplina" image="/images/notas.png"  label="Disciplinas" value="/disciplina.zul" /><listitem/>
-                                        <listitem id="Registro_de_Faltas" image="/images/notas.png"  label="Faltas" value="/faltas.zul" /><listitem/>
-                                        <listitem id="Reportes_Notas" label="Reportes Notas"  image="/images/resultados.png" value="/reporteNotas.zul" /><listitem/>
-                                        <listitem id="Parametros_Autoevaluacion" image="/images/textos.png"  label="Parametros Rendimiento" value="/perfil.zul" /><listitem/>
-                                        <listitem id="Registrar_Autoevaluacion" image="/images/notas.png"  label="Rendimiento" value="/registrarPerfil.zul" /><listitem/>
-                                        <listitem id="Comentarios" image="/images/comentarios.png"  label="Comentarios" value="/comentarios.zul" /><listitem/>
-                                        <listitem id="Tareas" image="/images/tarea.png"  label="Tareas" value="/tareas.zul" /><listitem/>
-                                    </listbox>
-                                </tabpanel>
-                                <tabpanel height="220px"><!--ADMINISTRACION-->
-                                    <listbox id="a3"  onSelect ="ingresar(self.selectedItem)"  >
+                                <menupopup   >
+                                    <menuitem onClick="ingresar(self)" id="Trimestres" label="Trim.Bim.Quim." image="/images/textos.png" value="/trimestres.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Aportes" image="/images/llave.gif"  label="Aportes" value="/aportes.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Distributivo" label="Distributivo"  image="/images/distributivo.png" value="/distributivo.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Registro_de_Notas" label="Notas"  image="/images/notas.png" value="/notas.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Registro_de_Disciplina" image="/images/notas.png"  label="Disciplinas" value="/disciplina.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Registro_de_Faltas" image="/images/notas.png"  label="Faltas" value="/faltas.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Reportes_Notas" label="Reportes Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Parametros_Autoevaluacion" image="/images/textos.png"  label="Parametros Rendimiento" value="/perfil.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Registrar_Autoevaluacion" image="/images/notas.png"  label="Rendimiento" value="/registrarPerfil.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Comentarios" image="/images/comentarios.png"  label="Comentarios" value="/comentarios.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Tareas" image="/images/tarea.png"  label="Tareas" value="/tareas.zul" />
+                                </menupopup>
+                            </menu>
+                            <menu image="/images/herramientas.png"  label="Administración" ><!--ADMINISTRACION-->
+                                <menupopup   >
                                                  
-                                        <listitem id="Accesos" image="/images/key.png" label="Accesos" value="/accesos.zul"/><listitem/>
-                                        <listitem id="Auditoria" image="/images/auditoria.gif" label="Auditoria" value="/auditoria.zul"/><listitem/>
-                                        <listitem id="Empleados" image="/images/pensum.png" label="Empleados" value="/empleados.zul" /><listitem/>
-                                        <listitem id="EmpleadosPeriodos" image="/images/eperiodo.png" label="Asignar Periodos" value="/empleadoPeriodo.zul" /><listitem/>
-                                        <listitem id="EmpleadosCursos" image="/images/eperiodo.png" label="Asignar Cursos" value="/cursosEmpleados.zul" /><listitem/>
-                                        <listitem id="Equivalencias" image="/images/equivalencias.png"  label="Equivalencias" value="/equivalencias.zul" /><listitem/>
-                                        <listitem id="Globales" label="Globales" image="/images/run.gif"  value="/globales.zul" /><listitem/>
-                                        <listitem id="Institucion" label="Institución" image="/images/institucion.png"  value="/institucion.zul" /><listitem/>
-                                        <listitem id="Parametros" label="Parametros" image="/images/textos.png" value="/parametros.zul" /><listitem/>
-                                        <listitem id="Periodos" label="Año Lectivo"  image="/images/periodos.png" value="/periodo.zul" /><listitem/>
-                                        <listitem id="Textos" label="Textos Reportes"  image="/images/textos.png" value="/textos.zul" /><listitem/>
-                                    </listbox>
-                                </tabpanel>
-                                <tabpanel height="220px"><!--GRADOS-->
-                                    <listbox id="a4"  onSelect ="ingresar(self.selectedItem)"  >
-                                        <listitem id="Notas_Primero_Quinto" image="/images/llave.gif"  label="Record Academico" value="/notasRecord.zul"/><listitem/>
-                                        <listitem id="Materias_de_Grado"   image="/images/distributivo.png" label="Materias de Grado" value="/materiasdeGrado.zul"/><listitem/>
-                                        <listitem id="Notas_de_Grado"  image="/images/notas.png"  label="Notas de Grado" value="/cursosIngresonotasGrado.zul"/><listitem/>
-                                        <listitem id="Calculo_Promedios" image="/images/calculo.gif"  label="Calculo Promedios" value="/cursosCalculoPromedios.zul"/><listitem/>
-                                        <listitem id="Acta_de_Grado" image="/images/acta.gif"  label="Acta de Grado" value="/materiasdeActa.zul"/><listitem/>
-                                        <listitem id="Notas_de_Acta" image="/images/notas.png"  label="Notas de Acta" value="/cursosIngresonotasActa.zul"/><listitem/>
-                                    </listbox>
-                                </tabpanel>
-                                <tabpanel height="220px"><!--VARIOS-->
-                                    <listbox id="a5"  onSelect ="ingresar(self.selectedItem)"  >
-                                        <listitem  id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correoInterno.zul"/><listitem/>
-                                        <listitem  id="Correo_Interno" image="/images/bandeja2.png"   label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/><listitem/>
-                                        <listitem id="Respaldos" image="/images/base.gif"   label="Respaldos" value="/respaldos.zul"/><listitem/>
-                                        <listitem id="Calendario" image="/images/calendar.gif"   label="Calendario" value="/calendar.zul"/><listitem/>
-                                        <listitem id="Dobe" image="/images/pensum.png"   label="Dobe" value="/dobe.zul"/><listitem/>
-                                        <listitem id="Registrar" image="/images/chat.png"  label="Chat" value="/chat/chat.zul"    /><listitem/>
-                                    </listbox>
-                                </tabpanel>
-
-                            </tabpanels>
-                        </tabbox>
+                                    <menuitem onClick="ingresar(self)" id="Accesos" image="/images/key.png" label="Accesos" value="/accesos.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Auditoria" image="/images/auditoria.gif" label="Auditoria" value="/auditoria.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Empleados" image="/images/pensum.png" label="Empleados" value="/empleados.zul" />
+                                    <menuitem onClick="ingresar(self)" id="EmpleadosPeriodos" image="/images/eperiodo.png" label="Asignar Periodos" value="/empleadoPeriodo.zul" />
+                                    <menuitem onClick="ingresar(self)" id="EmpleadosCursos" image="/images/eperiodo.png" label="Asignar Cursos" value="/cursosEmpleados.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Equivalencias" image="/images/equivalencias.png"  label="Equivalencias" value="/equivalencias.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Globales" label="Globales" image="/images/run.gif"  value="/globales.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Institucion" label="Institución" image="/images/institucion.png"  value="/institucion.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Parametros" label="Parametros" image="/images/textos.png" value="/parametros.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Periodos" label="Año Lectivo"  image="/images/periodos.png" value="/periodo.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Textos" label="Textos Reportes"  image="/images/textos.png" value="/textos.zul" />
+                                </menupopup>
+                            </menu>
+                            <menu image="/images/birrete.gif"  label="Grados" ><!--GRADOS-->
+                                <menupopup   >
+                                    <menuitem onClick="ingresar(self)" id="Notas_Primero_Quinto" image="/images/llave.gif"  label="Record Academico" value="/notasRecord.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Materias_de_Grado"   image="/images/distributivo.png" label="Materias de Grado" value="/materiasdeGrado.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Notas_de_Grado"  image="/images/notas.png"  label="Notas de Grado" value="/cursosIngresonotasGrado.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Calculo_Promedios" image="/images/calculo.gif"  label="Calculo Promedios" value="/cursosCalculoPromedios.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Acta_de_Grado" image="/images/acta.gif"  label="Acta de Grado" value="/materiasdeActa.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Notas_de_Acta" image="/images/notas.png"  label="Notas de Acta" value="/cursosIngresonotasActa.zul"/>
+                                </menupopup>
+                            </menu>
+                            <menu  image="/images/varios.gif"  label="Varios" ><!--VARIOS-->
+                                <menupopup >
+                                    <menuitem onClick="ingresar(self)"  id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correoInterno.zul"/>
+                                    <menuitem onClick="ingresar(self)"  id="Correo_Interno" image="/images/bandeja2.png"   label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Respaldos" image="/images/base.gif"   label="Respaldos" value="/respaldos.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Calendario" image="/images/calendar.gif"   label="Calendario" value="/calendar.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Dobe" image="/images/pensum.png"   label="Dobe" value="/dobe.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Registrar" image="/images/chat.png"  label="Chat" value="/chat/chat.zul"    />
+                                </menupopup>
+                            </menu>
+                            <menu   image="/images/exit.gif" label="Cerrar Sesión" onClick="salir()"/>
+                             <menu image="/images/candado.gif"  label="Cambiar Clave" onClick='cambioC("/cambioClaveProfesor.zul")'/>
+                          
+                        </menubar>
                     </panelchildren>
 
                 </panel>
                 
             </div>
-        </west>
-        <center flex="true">
+
+            <panel height="600px">
+                <panelchildren>
+
 
             <!--include style="padding:3px;" width="99%" id="xcontents" src="${requestScope.contentSrc}"/-->
-            <tabbox context="derecho" id="mytab" width="100%" height="100%">
-                <tabs id="tbs">
-                    <tab label="Inicio" image="/images/inicio.png"  id="blanco" Closable="true" />
-                </tabs>
-                <tabpanels id="tps" >
-                    <tabpanel>
-                        <iframe scrolling="false" width="100%" height="100%" src="/blanco.zul" />
-                    </tabpanel>
-                </tabpanels>
-            </tabbox>
+                    <tabbox context="derecho" id="mytab"  width="100%" height="100%">
+                        <tabs id="tbs">
+                            <tab label="Inicio" image="/images/inicio.png"  id="blanco" Closable="true" />
+                        </tabs>
+                        <tabpanels id="tps" >
+                            <tabpanel>
+                                <iframe scrolling="false" width="100%" height="100%" src="/blanco.zul" />
+                            </tabpanel>
+                        </tabpanels>
+                    </tabbox>
+                </panelchildren>
+            </panel>
+ 
+            <menupopup id="derecho">
+                <menuitem label="Cerrar Todas" onClick="borrarTodas()" />
+                <menuseparator />
 
-
-        </center>
-
-
-    </borderlayout>
-    <menupopup id="derecho">
-        <menuitem label="Cerrar Todas" onClick="borrarTodas()" />
-        <menuseparator />
-
-    </menupopup>
-    <script type="text/javascript">
+            </menupopup>
+            <script type="text/javascript">
         function refrescar() {
         location.reload(true);
         }
 
 
 
-    </script>
-    <zscript>
+            </script>
+            <zscript>
         import bean.Permisos;
 
         void borrarTodas(){
@@ -425,5 +431,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
 
 
         }
-    </zscript>
+            </zscript>
+        </window>
+    </div>
 </zk>

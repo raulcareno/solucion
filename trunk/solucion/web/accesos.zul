@@ -56,6 +56,9 @@ int w = 0;
                 filas.addRow(p,gru);
 
     }
+    void seleccionar(String tipo,Boolean estado){
+        filas.seleccionar(tipo,estado);
+    }
 
 ]]>
 </zscript>
@@ -73,15 +76,13 @@ int w = 0;
 		</listbox>
         Grupos:
 
-                <listbox width="250px" id="grupo"  onSelect="busqueda(perfilesCombo.selectedItem.value,self.selectedItem.value);"  mold="select">
+                <listbox width="250px" id="grupo"  onSelect="busqueda(perfilesCombo.selectedItem.value,grupo.selectedItem.value);"  mold="select">
                     <listitem selected="true" label="TODOS" value="TODOS"/>
                     <listitem label="MATRICULAS" value="MATRICULAS"/>
                     <listitem label="NOTAS" value="NOTAS"/>
                     <listitem label="ADMINISTRACION" value="ADMINISTRACION"/>
                     <listitem label="GRADOS" value="GRADOS"/>
                     <listitem label="VARIOS" value="VARIOS"/>
-
-
                     <listitem label="REPORTES" value="REPORTES" />
                 </listbox>
 
@@ -105,10 +106,18 @@ int w = 0;
                     <columns>
                        <column  label="Cod"/>
                         <column  label="Módulo"/>
-                        <column width="55px"  label="Ingresar(Ver)"/>
-                        <column  width="55px" label="Agregar"/>
-                        <column width="55px" label="Modificar"/>
-                        <column  width="55px" label="Eliminar"/>
+                           <column width="105px"   >
+                <checkbox label="Ingresar" onCheck='seleccionar("ingresar",self.isChecked())' />
+            </column>
+            <column width="105px"   >
+                <checkbox label="Agregar" onCheck='seleccionar("agregar",self.isChecked())' />
+            </column>
+            <column width="105px"   >
+                <checkbox label="Modificar" onCheck='seleccionar("modificar",self.isChecked())' />
+            </column>
+            <column width="105px"   >
+                <checkbox label="Eliminar" onCheck='seleccionar("eliminar",self.isChecked())' />
+            </column>
                         <column  width="55px" label="Módulo"/>
                     </columns>
                     <rows id="filas" use="bean.accesos">
