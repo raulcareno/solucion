@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -37,8 +39,7 @@ public class Nodos implements Serializable {
     private String nombre;
     @Column(name = "ip")
     private String ip;
-    @Column(name = "sector")
-    private Integer sector;
+    
     @Column(name = "usuario")
     private String usuario;
     @Column(name = "clave")
@@ -47,6 +48,10 @@ public class Nodos implements Serializable {
     private String ssid;
     @Column(name = "seguridad")
     private String seguridad;
+       @JoinColumn(name = "sector", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sector sector;
+
     @OneToMany(mappedBy = "nodos")
     private Collection<Contratos> contratosCollection;
 
@@ -81,13 +86,15 @@ public class Nodos implements Serializable {
         this.ip = ip;
     }
 
-    public Integer getSector() {
+    public Sector getSector() {
         return sector;
     }
 
-    public void setSector(Integer sector) {
+    public void setSector(Sector sector) {
         this.sector = sector;
     }
+
+ 
 
     public String getUsuario() {
         return usuario;

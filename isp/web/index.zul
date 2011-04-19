@@ -19,6 +19,7 @@
     <zscript>
     <![CDATA[
 import jcinform.conexion.*;
+import jcinform.persistencia.*;
  
     ]]>
     </zscript>
