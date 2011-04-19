@@ -51,13 +51,9 @@ public class Clientes implements Serializable {
     private String usuario;
     @Column(name = "clave")
     private String clave;
-    @OneToMany(mappedBy = "clientes")
-    private Collection<Clientes> clientesCollection;
-    @JoinColumn(name = "sector", referencedColumnName = "codigo")
+       @JoinColumn(name = "sector", referencedColumnName = "codigo")
     @ManyToOne
-    private Clientes clientes;
-    @OneToMany(mappedBy = "clientes")
-    private Collection<Contratos> contratosCollection;
+    private Sector sector;
 
     public Clientes() {
     }
@@ -121,22 +117,16 @@ public class Clientes implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+ 
 
-    public Collection<Clientes> getClientesCollection() {
-        return clientesCollection;
+    public Sector getSector() {
+        return sector;
     }
 
-    public void setClientesCollection(Collection<Clientes> clientesCollection) {
-        this.clientesCollection = clientesCollection;
+    public void setSector(Sector sector) {
+        this.sector = sector;
     }
-
-    public Clientes getClientes() {
-        return clientes;
-    }
-
-    public void setClientes(Clientes clientes) {
-        this.clientes = clientes;
-    }
+ 
 
     public String getClave() {
         return clave;
@@ -154,14 +144,7 @@ public class Clientes implements Serializable {
         this.usuario = usuario;
     }
 
-    public Collection<Contratos> getContratosCollection() {
-        return contratosCollection;
-    }
-
-    public void setContratosCollection(Collection<Contratos> contratosCollection) {
-        this.contratosCollection = contratosCollection;
-    }
-
+ 
     @Override
     public int hashCode() {
         int hash = 0;
