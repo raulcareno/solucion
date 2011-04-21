@@ -124,7 +124,7 @@ public class Equipos implements Serializable {
 
     @Override
     public String toString() {
-        return "persistencia.Equipos[codigo=" + codigo + "]";
+        return nombre;
     }
 
 }
