@@ -21,8 +21,8 @@
     List allEvents = adm.query("Select o from Controlequipos as o ");
     static Controlequipos empa = new Controlequipos();
     Permisos permiso = new Permisos();
-    List perfiles = adm.query("Select o from Equipos as o  ");
-    List proveedoresList = adm.query("Select o from Proveedores as o  ");
+    List perfiles = adm.query("Select o from Equipos as o order by o.nombre, o.modelo  ");
+    List proveedoresList = adm.query("Select o from Proveedores as o order by o.razonsocial ");
     Object media = null;
 
 //FUNCIONES
@@ -210,7 +210,7 @@ empa.setEquipos(g);
 
                             <row>
                                 <span style="float:right"> Cantidad:</span>
-                                <textbox id="cantidad"  maxlength="60" cols="40" readonly="true"   />
+                                <textbox id="cantidad"  maxlength="4" cols="4" readonly="true"   />
                                 
                             </row>
                           <row>
@@ -222,7 +222,7 @@ empa.setEquipos(g);
                                                      onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();">
                                                
                                                 <listitem forEach="${perfiles}" value="${each}">
-                                                    <listcell label="${each.nombre}" />
+                                                    <listcell label="${each.nombre} ${each.modelo} ${each.marcas}" />
 
                                                 </listitem>
                                             </listbox>
@@ -248,20 +248,18 @@ empa.setEquipos(g);
                                 </bandbox>
 
                             </row>
-                            <row>
-                                <span style="float:right"> Fecha Comp.:</span>
-                                <textbox id="fecha"   readonly="true"   >
-                                       
-                                </textbox>
-                                 
-                            </row>
-                            <row>
+                             <row>
                                 <span style="float:right"> Precio:</span>
                                 <textbox id="precio"   readonly="true"   >
                                        
                                 </textbox>
                                  
                             </row>
+                            <row>
+                                <span style="float:right"> Fecha Comp.:</span>
+                                <datebox id="fecha" onCreate="self.value = new Date()"/>
+                            </row>
+                           
                             <row>
                                 <span style="float:right"> MAC:</span>
                                 <textbox id="mac"   readonly="true"   >

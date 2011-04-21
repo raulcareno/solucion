@@ -29,7 +29,7 @@
     <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
-        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal"   width="460px" sizable="true">
+        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:24%; left:32%;"  width="460px" sizable="true">
             <zscript>
     import bean.EventDAO;
   import java.util.ArrayList;
