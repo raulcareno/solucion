@@ -18,10 +18,11 @@
   import org.zkoss.image.AImage;
   import org.zkoss.image.Image;
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Controlequipos as o where o.nombre = 0");
+    List allEvents = adm.query("Select o from Controlequipos as o ");
     static Controlequipos empa = new Controlequipos();
     Permisos permiso = new Permisos();
     List perfiles = adm.query("Select o from Equipos as o  ");
+    List proveedoresList = adm.query("Select o from Proveedores as o  ");
     Object media = null;
 
 //FUNCIONES
@@ -35,13 +36,10 @@ void cargarVacio(){
 //FUNCIONES
 void llenar(Controlequipos empa){
     codigo.value = empa.getCodigo();
-    nombre.value = empa.getNombre();
-    ip.value = empa.getIp();
-    usuario.value = empa.getUsuario();
-    clave.value = permiso.decriptar(empa.getClave());
-    ssid.value = empa.getSsid();
-    seguridad.value = empa.getSeguridad();
-    
+    cantidad.value = empa.getCantidad();
+    fecha.value = empa.getFechacompra();
+    precio.value = empa.getPrecio();
+    mac.value = empa.getMac();
     
 
 
@@ -58,9 +56,22 @@ void llenar(Controlequipos empa){
                                 break;
                             }
                    }
-
-
-                    
+  
+                }
+                
+                
+                if(empa.getProveedores()!=null){
+                  for (int i = 0; i <= prove.getItems().size(); i++) {
+                            Proveedores tr0 = ((Proveedores)((Listitem)prove.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigo();
+                            int segundo = empa.getProveedores().getCodigo();
+                            if(primero == segundo){
+                                prove.setSelectedItem((Listitem)prove.getItems().get(i));
+                                bd.value = empa.getProveedores()+"";
+                                break;
+                            }
+                   }
+  
                 }
 
 }
@@ -69,14 +80,13 @@ void estado(Boolean estado,Boolean modificar){
             empa = (Controlequipos)datos.selectedItem.value;
         }
 
-    nombre.readonly = estado;
-    ip.readonly = estado;
-    ssid.readonly = estado;
-    seguridad.readonly = estado;
-    usuario.readonly = estado;
-    clave.readonly = estado;
+    cantidad.readonly = estado;
+    precio.readonly = estado;
+    fecha.readonly = estado;
+    mac.readonly = estado;
     perf.disabled = estado;
     bd.disabled = estado;
+    bd2.disabled = estado;
 
 }
 
@@ -84,20 +94,15 @@ void estado(Boolean estado,Boolean modificar){
  void guardar(){
 
 
- if(nombre.value =="" || ip.value == "" || ssid.value == "" || perf.selectedItem == null){
+ if(cantidad.value =="" || precio.value == "" || mac.value == "" || perf.selectedItem == null  || prove.selectedItem == null ){
     Messagebox.show("Registre los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
     return;
  }
         empa.setCodigo(codigo.value);
-        empa.setNombre(nombre.value);
-        empa.setIp(ip.value);
-        empa.setSsid(ssid.value);
-        empa.setSeguridad(seguridad.value);
-        empa.setEquipos(perf.selectedItem.value);
-       empa.setUsuario(usuario.value);
-        empa.setClave(permiso.encriptar(clave.value));
- 
-
+        empa.setCantidad(cantidad.value);
+        empa.setMac(mac.value);
+        empa.setPrecio(precio.value);
+        empa.setFecha(fecha.value);
         if((!empa.getCodigo().equals(0)) ){
              adm.actualizar(empa);
          }else{
@@ -119,7 +124,7 @@ void estado(Boolean estado,Boolean modificar){
     }
 
    Boolean verificar(String accion){
-        return permiso.verificarPermiso("Controlequipos",accion);
+        return permiso.verificarPermiso("Equipos",accion);
 
     }
  void nuevo(){
@@ -162,7 +167,7 @@ void eliminar(){
 }
  
   void buscar(String p){
-        List ControlequiposEncontrados = adm.query("Select o from Controlequipos as o where o.ip like '%"+p+"%' order by o.ip");
+        List ControlequiposEncontrados = adm.query("Select o from Controlequipos as o where o.equipos.nombre like '%"+p+"%' order by o.ip");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -175,8 +180,7 @@ void eliminar(){
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getCodigo()+""));
-                      li.appendChild(new Listcell(acceIt.getIp()+" "+acceIt.getNombre()));
-                      li.appendChild(new Listcell(acceIt.getSsid()+""));
+                      li.appendChild(new Listcell(acceIt.getEquipos()+" "+acceIt.getModelo()+" "+acceIt.getEquipos().getMarcas()));
                       datos.appendChild(li);
              }
 
@@ -205,45 +209,18 @@ empa.setEquipos(g);
                             </row>
 
                             <row>
-                                <span style="float:right"> Nombre(*):</span>
-                                <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />
+                                <span style="float:right"> Cantidad:</span>
+                                <textbox id="cantidad"  maxlength="60" cols="40" readonly="true"   />
                                 
                             </row>
-                            <row>
-                                <span style="float:right"> Ip:</span>
-                                <textbox id="ip"  maxlength="60" cols="40" readonly="true"  />
-                              
-                            </row>
-                            <row>
-                                <span style="float:right"> SSID:</span>
-                                <textbox id="ssid" maxlength="100" cols="40"  readonly="true"    />
-                                 
-                            </row>
-                            <row>
-                                <span style="float:right"> Seguridad:</span>
-                                <textbox id="seguridad"   readonly="true"   >
-                                       
-                                </textbox>
-                                 
-                            </row>
-                            <row>
-                                <span style="float:right"> Usuario:</span>
-                                <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
-                            </row>
-                            <row>
-                                <span style="float:right"> Clave:</span>
-                                <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
-                            </row>
-                            <row>
+                          <row>
                                 <span style="float:right"> Equipos(*):</span>
-                                <bandbox  readonly="true"  id="bd">
+                                <bandbox  readonly="true" width="340px"  id="bd">
                                     <bandpopup>
                                         <vbox>
-                                            <listbox id="perf" width="250px"
-                                                     onSelect="bd.value=self.selectedItem.label;cargar(((Equipos)self.selectedItem.value));bd.closeDropdown();">
-                                                <listhead>
-                                                    <listheader label="Description"/>
-                                                </listhead>
+                                            <listbox id="perf" width="350px"
+                                                     onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();">
+                                               
                                                 <listitem forEach="${perfiles}" value="${each}">
                                                     <listcell label="${each.nombre}" />
 
@@ -254,6 +231,46 @@ empa.setEquipos(g);
                                 </bandbox>
 
                             </row>
+                           <row>
+                                <span style="float:right"> Proveedor:</span>
+                                <bandbox  readonly="true"  width="340px" id="bd2">
+                                    <bandpopup>
+                                        <vbox>
+                                            <listbox id="prove" width="350px"
+                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();">
+                                                <listitem forEach="${proveedoresList}" value="${each}">
+                                                    <listcell label="${each.razonsocial}" />
+
+                                                </listitem>
+                                            </listbox>
+                                        </vbox>
+                                    </bandpopup>
+                                </bandbox>
+
+                            </row>
+                            <row>
+                                <span style="float:right"> Fecha Comp.:</span>
+                                <textbox id="fecha"   readonly="true"   >
+                                       
+                                </textbox>
+                                 
+                            </row>
+                            <row>
+                                <span style="float:right"> Precio:</span>
+                                <textbox id="precio"   readonly="true"   >
+                                       
+                                </textbox>
+                                 
+                            </row>
+                            <row>
+                                <span style="float:right"> MAC:</span>
+                                <textbox id="mac"   readonly="true"   >
+                                       
+                                </textbox>
+                                 
+                            </row>
+                            
+                            
 
                       
                         </rows>

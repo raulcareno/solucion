@@ -125,16 +125,16 @@ import jcinform.persistencia.*;
                         <menu label="Control" >
                             <menupopup>
                                 <menuitem   value="/nodos.zul"  image="/images/nodos.png" label="Nodos" onClick="ingresar(self)" />
-                                <menuitem value="/controlequipos.zul" image="/images/equipos.png" label="Control Equipos" onClick="ingresar(self)" />
+                                <menuitem value="/controlequipos.zul" image="/images/equipos.png" label="Registro Equipos" onClick="ingresar(self)" />
                                 <menuitem   value="/marcas.zul"  image="/images/marcas.png" label="Marcas" onClick="ingresar(self)" />
-                                <menuitem  value="/equipos.zul"   image="/images/herramientas.png" label="Equipos" onClick="ingresar(self)" />
+                                <menuitem  value="/equipos.zul"   image="/images/equipos2.png" label="Equipos" onClick="ingresar(self)" />
                             </menupopup>
                         </menu>
                         <menu label="Cobros" >
                             <menupopup>
-                                <menuitem image="/images/herramientas.png" label="Contratos" onClick="ingresar()" />
-                                <menuitem image="/images/herramientas.png" label="Planes" onClick="ingresar()" />
-                                <menuitem image="/images/herramientas.png" label="Reportes" onClick="ingresar()" />
+                                <menuitem image="/images/contratos.png" label="Contratos" onClick="ingresar()" />
+                                <menuitem image="/images/planes.png" label="Planes" onClick="ingresar()" />
+                                <menuitem image="/images/reportes.png" label="Reportes" onClick="ingresar()" />
                             </menupopup>
                         </menu>
                     </menubar>

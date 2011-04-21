@@ -135,7 +135,7 @@ void estado(Boolean estado,Boolean modificar){
  void move(){
         llenar((Nodos)datos.selectedItem.value);
         modificar.disabled = false;
-        registro.setSelected(true);
+        //registro.setSelected(true);
   }
 void modificar(){
   if(verificar("Modificar")){
@@ -186,14 +186,7 @@ empa.setSector(g);
 }
 ]]>
         </zscript>
-        <tabbox width="100%">
-            <tabs>
-                <tab id="registro" label="Registro" />
-                <tab id="busqueda" label="Busquedas" />
-            </tabs>
-            <tabpanels>
-                <tabpanel>
-
+      
 
                     <grid width="100%">
                         <rows>
@@ -269,9 +262,7 @@ empa.setSector(g);
                     </vbox>
 
 
-                </tabpanel>
-
-                <tabpanel>
+    
 
                     <groupbox  width="100%" mold="3d" >
 
@@ -302,13 +293,7 @@ empa.setSector(g);
                     </groupbox>
 
 
-
-                </tabpanel>
-
-            </tabpanels>
-
-
-        </tabbox>
+ 
 
     </window>
 </zk>

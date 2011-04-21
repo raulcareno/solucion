@@ -118,7 +118,7 @@ void estado(Boolean estado,Boolean modificar){
  void move(){
         llenar((Equipos)datos.selectedItem.value);
         modificar.disabled = false;
-        registro.setSelected(true);
+        //registro.setSelected(true);
   }
 void modificar(){
   if(verificar("Modificar")){
@@ -158,8 +158,8 @@ void eliminar(){
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getCodigo()+""));
-                      li.appendChild(new Listcell(acceIt.getIp()+" "+acceIt.getNombre()));
-                      li.appendChild(new Listcell(acceIt.getSsid()+""));
+                      li.appendChild(new Listcell(acceIt.getNombre()));
+                      li.appendChild(new Listcell(acceIt.getModelo()+""));
                       datos.appendChild(li);
              }
 
@@ -169,13 +169,7 @@ empa.setMarcas(g);
 }
 ]]>
         </zscript>
-        <tabbox width="100%">
-            <tabs>
-                <tab id="registro" label="Registro" />
-                <tab id="busqueda" label="Busquedas" />
-            </tabs>
-            <tabpanels>
-                <tabpanel>
+ 
 
 
                     <grid width="100%">
@@ -233,9 +227,7 @@ empa.setMarcas(g);
                     </vbox>
 
 
-                </tabpanel>
-
-                <tabpanel>
+      
 
                     <groupbox  width="100%" mold="3d" >
 
@@ -265,14 +257,7 @@ empa.setMarcas(g);
                         </vbox>
                     </groupbox>
 
-
-
-                </tabpanel>
-
-            </tabpanels>
-
-
-        </tabbox>
+ 
 
     </window>
 </zk>

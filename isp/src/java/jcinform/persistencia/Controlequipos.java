@@ -38,6 +38,8 @@ public class Controlequipos implements Serializable {
     @Basic(optional = false)
     @Column(name = "codigo")
     private Integer codigo;
+    @Column(name = "cantidad")
+    private Integer cantidad;
     @Column(name = "fechacompra")
     @Temporal(TemporalType.DATE)
     private Date fechacompra;
@@ -55,12 +57,12 @@ public class Controlequipos implements Serializable {
     @JoinColumn(name = "equipos", referencedColumnName = "codigo")
     @ManyToOne
     private Equipos equipos;
-    @OneToMany(mappedBy = "controlequipos")
-    private Collection<Contratos> contratosCollection;
-    @OneToMany(mappedBy = "controlequipos1")
-    private Collection<Contratos> contratosCollection1;
-    @OneToMany(mappedBy = "controlequipos2")
-    private Collection<Contratos> contratosCollection2;
+//    @OneToMany(mappedBy = "controlequipos")
+//    private Collection<Contratos> contratosCollection;
+//    @OneToMany(mappedBy = "controlequipos1")
+//    private Collection<Contratos> contratosCollection1;
+//    @OneToMany(mappedBy = "controlequipos2")
+//    private Collection<Contratos> contratosCollection2;
 
     public Controlequipos() {
     }
@@ -133,29 +135,38 @@ public class Controlequipos implements Serializable {
         this.equipos = equipos;
     }
 
-    public Collection<Contratos> getContratosCollection() {
-        return contratosCollection;
+    public Integer getCantidad() {
+        return cantidad;
     }
 
-    public void setContratosCollection(Collection<Contratos> contratosCollection) {
-        this.contratosCollection = contratosCollection;
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
     }
+    
 
-    public Collection<Contratos> getContratosCollection1() {
-        return contratosCollection1;
-    }
-
-    public void setContratosCollection1(Collection<Contratos> contratosCollection1) {
-        this.contratosCollection1 = contratosCollection1;
-    }
-
-    public Collection<Contratos> getContratosCollection2() {
-        return contratosCollection2;
-    }
-
-    public void setContratosCollection2(Collection<Contratos> contratosCollection2) {
-        this.contratosCollection2 = contratosCollection2;
-    }
+//    public Collection<Contratos> getContratosCollection() {
+//        return contratosCollection;
+//    }
+//
+//    public void setContratosCollection(Collection<Contratos> contratosCollection) {
+//        this.contratosCollection = contratosCollection;
+//    }
+//
+//    public Collection<Contratos> getContratosCollection1() {
+//        return contratosCollection1;
+//    }
+//
+//    public void setContratosCollection1(Collection<Contratos> contratosCollection1) {
+//        this.contratosCollection1 = contratosCollection1;
+//    }
+//
+//    public Collection<Contratos> getContratosCollection2() {
+//        return contratosCollection2;
+//    }
+//
+//    public void setContratosCollection2(Collection<Contratos> contratosCollection2) {
+//        this.contratosCollection2 = contratosCollection2;
+//    }
 
     @Override
     public int hashCode() {
