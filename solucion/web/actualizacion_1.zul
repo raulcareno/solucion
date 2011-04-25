@@ -64,7 +64,7 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
     </zscript>
 
     <groupbox mold="3d" >
-        <caption label="Bloquear estudiantes para el consultar notas" />
+        <caption label="BLOQUEAR PARA MATRICULACIÓN VIA INTERNET" />
         <vbox>
             <hbox>
                  <textbox id="texto" constraint="no empty: Ingrese un Apellido antes de buscar" />

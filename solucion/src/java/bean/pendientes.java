@@ -101,11 +101,22 @@ public class pendientes extends Rows {
             cedulaText.setParent(row);
 
             radioPerdio = new Checkbox("Perdio");
+            try {
+                
+            
             radioPerdio.setChecked(vec.getPerdio());
+            } catch (Exception e) {
+                radioPerdio.setChecked(false);
+            }
             radioPerdio.setParent(row);
 
             radioSuspenso = new Checkbox("Suspenso");
-            radioSuspenso.setChecked(vec.getSuspenso());
+            try {
+            radioSuspenso.setChecked(vec.getSuspenso());    
+            } catch (Exception e) {
+                radioSuspenso.setChecked(false);
+            }
+            
             radioSuspenso.setParent(row);
 
             row.setParent(this);
