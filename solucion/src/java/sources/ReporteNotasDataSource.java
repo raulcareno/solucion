@@ -124,6 +124,8 @@ public class ReporteNotasDataSource implements JRDataSource{
            valor = nodo.getMatricula().getCurso().getPeriodo().getRegimen();
         }else if ("jornada".equals(fieldName)) {
            valor = nodo.getMatricula().getCurso().getPeriodo().getSeccion().getDescripcion();
+        }else if ("religion".equals(fieldName)) {
+           valor = nodo.getCargo1();
         }else if ("materia".equals(fieldName)) {
            valor = nodo.getMateria().getDescripcion();
      

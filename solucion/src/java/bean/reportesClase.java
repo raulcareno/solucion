@@ -508,6 +508,32 @@ public class reportesClase {
 
 
     }
+    public JRDataSource conteoReligion() {
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List<Nota> lisNotas = new ArrayList();
+        List total = adm.query("Select o.curso, count(o), o.estudiante.religion from Matriculas as o"
+                + " where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and  "
+                + " o.estado in ('Matriculado','Recibir Pase') "
+                + "group by o.estudiante.religion,o.curso  order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+        for (Iterator it = total.iterator(); it.hasNext();) {
+            Object object[] = (Object[]) it.next();
+            Nota n = new Nota();
+            Cursos cu = (Cursos) object[0];
+            Long a = (Long) object[1];
+            n.setCurso(cu);
+            n.setNota(a);
+            n.setCargo1( object[2].toString());
+            lisNotas.add(n);
+        }
+
+
+        ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotas);
+        return ds;
+
+
+    }
 
     //Promedio por curso
     public JRDataSource mejoresporcurso(Sistemacalificacion sistema) {
