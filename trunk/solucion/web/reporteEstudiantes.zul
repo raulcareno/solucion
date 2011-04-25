@@ -124,6 +124,10 @@ String query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOB
                      reportesClase noti = new reportesClase();
                      ds = noti.conteoMatriculas();
 
+                }else if(tipo.equals("LREL2")){
+                     reportesClase noti = new reportesClase();
+                     ds = noti.conteoReligion();
+
                 }else{
                       ds = new ReporteActaDataSource(detalle);
                 }
@@ -412,6 +416,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LMAT2");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"totalizados.jasper");
+            }else if(tipo.equals("LREL2")){
+                    datasource = certificados(listadoCursos,"LREL2");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"totalizadosReligion.jasper");
             }else if(tipo.equals("LCLA")){
                     datasource = certificados(listadoCursos,"LCLA");
                     parametros.put("titulo",titulo.getValue());
@@ -444,6 +452,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LCAR");
                     parametros.put("titulo", "Carné Estudiantil");
                     report.setSrc(directorioReportes+"carnetMinisterio.jasper");
+            }else if(tipo.equals("LMAT2")){
+                    datasource = certificados(listadoCursos,"LMAT2");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"totalizados.jasper");
             }else if(tipo.equals("-1")){
                 alert("No ha seleccionado ningún reporte...!");
                     return;
@@ -462,7 +474,7 @@ void campos(String valor){
      filacurso.visible=true;
      filatitulo.visible=true;
      filafechas.visible = false;
-        if(valor.equals("INS") || valor.equals("MAT") || valor.equals("RET") || valor.equals("LMAT2") ){
+        if(valor.equals("LREL2") ||valor.equals("INS") || valor.equals("MAT") || valor.equals("RET") || valor.equals("LMAT2") ){
             curs.disabled = true;
             mates.disabled = true;
             titulo.value = "Listado de Estudiantes";
@@ -577,6 +589,7 @@ void campos(String valor){
                                 <listitem  id="LTRAN" label="Estudiantes que Toman transporte" value="LTRAN"/>
                                 <listitem  id="LINT"  label="Estudiantes Internos" value="LINT"/>
                                 <listitem  id="LREL"  label="Estudiantes por Religión" value="LREL"/>
+                                <listitem  id="LREL2" label="Totalizado por Religión" value="LREL2" />
                                 <listitem  id="LINT2" label="Estudiantes con Fecha y Discapacidad(SI:NO)" value="LINT2"/>
                                 <listitem  disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                             </listbox>
@@ -723,6 +736,7 @@ void campos(String valor){
             LINT.visible = per.verificarPermisoReporte("LINT", "Ingresar");
             LINT2.visible = per.verificarPermisoReporte("LINT", "Ingresar");
             LREL.visible = per.verificarPermisoReporte("LINT", "Ingresar");
+            LREL2.visible = per.verificarPermisoReporte("LINT", "Ingresar");
 
             }
         </zscript>
