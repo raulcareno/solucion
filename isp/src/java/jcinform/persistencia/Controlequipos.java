@@ -42,7 +42,7 @@ public class Controlequipos implements Serializable {
     private Integer cantidad;
     @Column(name = "fechacompra")
     @Temporal(TemporalType.DATE)
-    private Date fechacompra;
+    private Date fechacompra =  new Date();
     @Column(name = "garantia")
     private Integer garantia;
     @Column(name = "precio")

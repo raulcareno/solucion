@@ -21,7 +21,7 @@
     List allEvents = adm.query("Select o from Controlequipos as o ");
     static Controlequipos empa = new Controlequipos();
     Permisos permiso = new Permisos();
-    List perfiles = adm.query("Select o from Equipos as o order by o.nombre, o.modelo  ");
+    List perfiles = adm.query("Select o from Equipos as o order by o.nombre, o.modelo ");
     List proveedoresList = adm.query("Select o from Proveedores as o order by o.razonsocial ");
     Object media = null;
 
@@ -102,7 +102,7 @@ void estado(Boolean estado,Boolean modificar){
         empa.setCantidad(cantidad.value);
         empa.setMac(mac.value);
         empa.setPrecio(precio.value);
-        empa.setFecha(fecha.value);
+        empa.setFechacompra(fecha.value);
         if((!empa.getCodigo().equals(0)) ){
              adm.actualizar(empa);
          }else{
@@ -188,6 +188,57 @@ void eliminar(){
 void cargar(Equipos g){
 empa.setEquipos(g);
 }
+  Listbox llenaProve(Listbox ba){
+    ba.setMold("select");
+                   for (Iterator it = proveedoresList.iterator(); it.hasNext();) {
+                      Proveedores acceIt = (Proveedores) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.setSelected(true);
+                      li.appendChild(new Listcell(acceIt.getRazonsocial()+""));
+                      ba.appendChild(li);
+             }
+    return ba;
+}
+  Listbox llenaEquipo(Listbox eq){
+            eq.setMold("select");
+                   for (Iterator it = perfiles.iterator(); it.hasNext();) {
+                      Equipos acceIt = (Equipos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.setSelected(true);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "+ acceIt.getMarcas()+" "+acceIt.getModelo()));
+                      eq.appendChild(li);
+             }
+    return eq;
+}
+llenarGrid(int numero){
+    filas.getChildren().clear();
+    noopciones.disabled = false;
+    Listbox ba = new Listbox();
+    Listbox eq = new Listbox();
+
+             
+             
+             
+            for(int i = 0; i< numero; i++){
+                    Row row = new Row();
+                    ba = llenaProve(new Listbox());
+                    eq = llenaEquipo(new Listbox());
+                            Textbox t = new Textbox("");
+                            //t.setCols(80);
+                            Doublebox dou = new Doublebox();
+                            //dou.setCols(80);
+                            row.appendChild(eq);
+                            row.appendChild(ba);
+                            row.appendChild(dou);
+                            row.appendChild(t);
+                            //noopciones.disabled = true;
+                   
+                    filas.appendChild(row);
+            }
+}
+
 ]]>
         </zscript>
         <tabbox width="100%">
@@ -210,61 +261,28 @@ empa.setEquipos(g);
 
                             <row>
                                 <span style="float:right"> Cantidad:</span>
-                                <textbox id="cantidad"  maxlength="4" cols="4" readonly="true"   />
-                                
+                               <spinner value="1"  disabled="false"  
+                                constraint="no negative,no zero" id="noopciones"
+				onChanging="if (event.value.length() > 0 &amp;&amp; Integer.parseInt(event.value) > 0) llenarGrid(Integer.parseInt(event.value));" />
                             </row>
-                          <row>
-                                <span style="float:right"> Equipos(*):</span>
-                                <bandbox  readonly="true" width="340px"  id="bd">
-                                    <bandpopup>
-                                        <vbox>
-                                            <listbox id="perf" width="350px"
-                                                     onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();">
-                                               
-                                                <listitem forEach="${perfiles}" value="${each}">
-                                                    <listcell label="${each.nombre} ${each.modelo} ${each.marcas}" />
-
-                                                </listitem>
-                                            </listbox>
-                                        </vbox>
-                                    </bandpopup>
-                                </bandbox>
-
-                            </row>
-                           <row>
-                                <span style="float:right"> Proveedor:</span>
-                                <bandbox  readonly="true"  width="340px" id="bd2">
-                                    <bandpopup>
-                                        <vbox>
-                                            <listbox id="prove" width="350px"
-                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();">
-                                                <listitem forEach="${proveedoresList}" value="${each}">
-                                                    <listcell label="${each.razonsocial}" />
-
-                                                </listitem>
-                                            </listbox>
-                                        </vbox>
-                                    </bandpopup>
-                                </bandbox>
-
-                            </row>
-                             <row>
-                                <span style="float:right"> Precio:</span>
-                                <textbox id="precio"   readonly="true"   >
-                                       
-                                </textbox>
-                                 
-                            </row>
+                            
+                             
                             <row>
                                 <span style="float:right"> Fecha Comp.:</span>
                                 <datebox id="fecha" onCreate="self.value = new Date()"/>
                             </row>
-                           
-                            <row>
-                                <span style="float:right"> MAC:</span>
-                                <textbox id="mac"   readonly="true"   >
-                                       
-                                </textbox>
+                            <row spans="2">
+                          
+                                <grid height="150px" id="opciones">
+                                    <columns sizable="true">
+                                        <column label="EQUIPO" />
+                                        <column label="PROVEEDOR" />
+                                        <column label="PRECIO" />
+                                        <column label="MAC" />
+                                    </columns>
+                                    <rows id="filas">
+                                    </rows>
+                                </grid>
                                  
                             </row>
                             
