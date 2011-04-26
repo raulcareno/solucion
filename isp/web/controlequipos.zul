@@ -92,26 +92,26 @@ void estado(Boolean estado,Boolean modificar){
 
 
  void guardar(){
-
-
- if(cantidad.value =="" || precio.value == "" || mac.value == "" || perf.selectedItem == null  || prove.selectedItem == null ){
-    Messagebox.show("Registre los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-    return;
- }
-        empa.setCodigo(codigo.value);
-        empa.setCantidad(cantidad.value);
-        empa.setMac(mac.value);
-        empa.setPrecio(precio.value);
-        empa.setFechacompra(fecha.value);
-        if((!empa.getCodigo().equals(0)) ){
-             adm.actualizar(empa);
-         }else{
-             adm.guardar(empa);
-         }
+       
+        
+            List col = opciones.getRows().getChildren();
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    Controlequipos det = new Controlequipos();
+                     det.setCodigo(adm.getNuevaClave("Controlequipos","codigo"));
+                     List labels = object.getChildren();
+                         det.setEquipos(((Listbox) labels.get(0)).getSelectedItem().getValue());
+                         det.setProveedores(((Listbox) labels.get(1)).getSelectedItem().getValue());
+                         det.setPrecio(((Doublebox) labels.get(2)).getValue());
+                         det.setMac(((Textbox) labels.get(3)).getValue());
+                         det.setAsignado(false);
+                     adm.guardar(det);
+             }
+      
               Boolean a = true;
             if(a){
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-                permiso.auditar("Controlequipos","Guardar",""+ip.value+" "+nombre.value);
+                permiso.auditar("Controlequipos","Guardar","cantidad"+cantidad.value+ ""+fecha.value);
                     guardar.disabled=true;
                     agregar.disabled=false;
                     estado(true,false);
@@ -130,7 +130,12 @@ void estado(Boolean estado,Boolean modificar){
  void nuevo(){
     if(verificar("Agregar")){
           
-          guardar.disabled=false; llenar(new Controlequipos(0));estado(false,false);
+          guardar.disabled=false; 
+          //llenar(new Controlequipos(0));estado(false,false);
+          cantidad.setDisabled(false);
+          fecha.setDisabled(false);
+          filas.getChildren().clear();
+          
           //String command = "applyTelefono('"+seguridad.getUuid()+"');";
           //Clients.evalJavaScript(command);
     }else{
@@ -154,7 +159,7 @@ void eliminar(){
         try{
              empa = (Controlequipos)datos.selectedItem.value;
              adm.eliminarObjeto(Controlequipos.class, empa.getCodigo());
-             permiso.auditar("Controlequipos","Eliminar",""+ip.value+" "+nombre.value);
+             permiso.auditar("Controlequipos","Eliminar",""+nombre.value);
             datos.removeItemAt(datos.getSelectedIndex());
             llenar(new Controlequipos(0));
                 Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -167,7 +172,7 @@ void eliminar(){
 }
  
   void buscar(String p){
-        List ControlequiposEncontrados = adm.query("Select o from Controlequipos as o where o.equipos.nombre like '%"+p+"%' order by o.ip");
+        List ControlequiposEncontrados = adm.query("Select o from Controlequipos as o where o.equipos.nombre like '%"+p+"%' order by o.equipos.nombre");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -180,7 +185,11 @@ void eliminar(){
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getCodigo()+""));
-                      li.appendChild(new Listcell(acceIt.getEquipos()+" "+acceIt.getModelo()+" "+acceIt.getEquipos().getMarcas()));
+                      li.appendChild(new Listcell(acceIt.getEquipos()+" "+acceIt.getEquipos().getModelo()+" "+acceIt.getEquipos().getMarcas()));
+                      li.appendChild(new Listcell(acceIt.getMac()));
+                      li.appendChild(new Listcell(acceIt.getPrecio()+""));
+                      li.appendChild(new Listcell(acceIt.getFechacompra().toLocaleString()+""));
+                      li.appendChild(new Listcell((acceIt.getAsignado()==true?"SI":"NO")));
                       datos.appendChild(li);
              }
 
@@ -227,7 +236,8 @@ llenarGrid(int numero){
                     eq = llenaEquipo(new Listbox());
                             Textbox t = new Textbox("");
                             //t.setCols(80);
-                            Doublebox dou = new Doublebox();
+                            Doublebox dou = new Doublebox(0);
+                            dou.setStyle("float:right;text-align:right");
                             //dou.setCols(80);
                             row.appendChild(eq);
                             row.appendChild(ba);
@@ -252,26 +262,19 @@ llenarGrid(int numero){
 
                     <grid width="100%">
                         <rows>
-                            <row>
-                                <span>
-                                    <intbox id="codigo" disabled="true" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
-                                </span>
-                                <span></span>
-                            </row>
 
                             <row>
-                                <span style="float:right"> Cantidad:</span>
-                               <spinner value="1"  disabled="false"  
-                                constraint="no negative,no zero" id="noopciones"
-				onChanging="if (event.value.length() > 0 &amp;&amp; Integer.parseInt(event.value) > 0) llenarGrid(Integer.parseInt(event.value));" />
-                            </row>
-                            
-                             
-                            <row>
-                                <span style="float:right"> Fecha Comp.:</span>
+                                <span>
+                                <span style="float:right"> No. Productos a ingresar:</span>   <intbox id="codigo" disabled="true" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
+                                </span>
+                               
+                               <spinner value="0"  disabled="false"  
+                                constraint="no negative" id="cantidad" readonly="true"
+				onChanging="if (event.value.length() > 0 &amp;&amp; Integer.parseInt(event.value) > 0) llenarGrid(Integer.parseInt(event.value));" onBlur=" if (self.value > 0 )  self.disabled = true;  else self.disabled = false;" />
+                                  <span style="float:right"> Fecha de Compra:</span>
                                 <datebox id="fecha" onCreate="self.value = new Date()"/>
                             </row>
-                            <row spans="2">
+                            <row spans="4">
                           
                                 <grid height="150px" id="opciones">
                                     <columns sizable="true">
@@ -319,13 +322,16 @@ llenarGrid(int numero){
                                     <listhead>
                                         <listheader label="Cod."/>
                                         <listheader label="Nombre"/>
-                                        <listheader label="Dirección"/>
+                                        <listheader label="MAC"/>
+                                        <listheader label="Precio"/>
+                                                                           <listheader label="Comprado"/>
+                                        <listheader label="Asignado"/>
 
                                     </listhead>
                                     <listitem forEach="${allEvents}" value="${each}">
-                                        <listcell label="${each.codigo}" />
+                                        <!--listcell label="${each.codigo}" />
                                         <listcell label="${each.ip}" />
-                                        <listcell label="${each.ssid}" />
+                                        <listcell label="${each.ssid}" /-->
                                     </listitem>
                                 </listbox>
 
