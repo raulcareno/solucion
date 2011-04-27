@@ -19,11 +19,14 @@
     <class>jcinform.persistencia.Auditoria</class>
     <class>jcinform.persistencia.Perfil</class>
     <class>jcinform.persistencia.Empresa</class>
+    <class>jcinform.persistencia.Detalle</class>
+    <class>jcinform.persistencia.Cxcobrar</class>
+    <class>jcinform.persistencia.Factura</class>
     <properties>
       <!--property name="toplink.jdbc.user" value="root"/>
       <property name="toplink.jdbc.password" value="jcinform@2020"/>
       <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/isp"/-->
-       <property name="toplink.cache.type.default" value="NONE"/>
+      <property name="toplink.cache.type.default" value="NONE"/>
       <property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
     </properties>
   </persistence-unit>

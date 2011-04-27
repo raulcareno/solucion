@@ -37,11 +37,15 @@ public class Sector implements Serializable {
     private Integer codigo;
     @Column(name = "nombre")
     private String nombre;
+    @Column(name = "nofactura")
+    private String nofactura;
+    @Column(name = "serie")
+    private String serie;
     @JoinColumn(name = "canton", referencedColumnName = "codigo")
     @ManyToOne
     private Canton canton;
-    @OneToMany(mappedBy = "sector")
-    private Collection<Empleadossector> empleadossectorCollection;
+//    @OneToMany(mappedBy = "sector")
+//    private Collection<Empleadossector> empleadossectorCollection;
 
     public Sector() {
     }
@@ -74,13 +78,23 @@ public class Sector implements Serializable {
         this.canton = canton;
     }
 
-    public Collection<Empleadossector> getEmpleadossectorCollection() {
-        return empleadossectorCollection;
+    public String getNofactura() {
+        return nofactura;
     }
 
-    public void setEmpleadossectorCollection(Collection<Empleadossector> empleadossectorCollection) {
-        this.empleadossectorCollection = empleadossectorCollection;
+    public void setNofactura(String nofactura) {
+        this.nofactura = nofactura;
     }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
+
+     
 
     @Override
     public int hashCode() {

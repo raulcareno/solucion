@@ -40,7 +40,7 @@ public class Plan implements Serializable {
     @Column(name = "tipo")
     private String tipo;
     @Column(name = "dias")
-    private Integer dias;
+    private Integer dias =0;
     @OneToMany(mappedBy = "plan")
     private Collection<Comisiones> comisionesCollection;
     @OneToMany(mappedBy = "plan")

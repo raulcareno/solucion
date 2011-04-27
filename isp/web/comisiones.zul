@@ -1,0 +1,291 @@
+
+<window   border="normal"
+ >
+
+    <zscript>    <![CDATA[
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Comisiones as o");
+    static Comisiones equi = new Comisiones();
+    Permisos permiso = new Permisos();
+    //SimpleTreeModel stm = new SimpleTreeModel(root);
+//FUNCIONES
+
+
+List Planes2 = adm.query("Select o from Plan as o ");
+List vendedores2 = adm.query("Select o from Empleados as o ");
+
+void llenar(Comisiones equi2){
+   equi = equi2;
+    porcentajes.value = equi.getPorcentaje();
+
+       if(equi2.getPlan() != null){
+             try{
+                      for (int i = 0; i <= Planes.getItems().size(); i++) {
+                                    Plan tr0 = ((Plan)((Listitem)Planes.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi2.getPlan().getCodigo();
+                                    if(primero == segundo){
+                                        Planes.setSelectedItem((Listitem)Planes.getItems().get(i));
+                                        bd1.value = equi2.getPlan().getNombre();
+                                        break;
+                                    }
+                           }
+                 }catch(Exception err){System.out.println("ERROR no tiene cursos asignados COMBO CURSOS: "+err);}
+
+
+         }
+
+         if(equi2.getEmpleados() != null){
+             try{
+                      for (int i = 0; i <= vendedores.getItems().size(); i++) {
+                                    Empleados tr0 = ((Empleados)((Listitem)vendedores.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi2.getEmpleados().getCodigo();
+                                    if(primero == segundo){
+                                        vendedores.setSelectedItem((Listitem)vendedores.getItems().get(i));
+                                        bd1.value = equi2.getEmpleados().getApellidos()+" "+equi2.getEmpleados().getNombres();
+                                        break;
+                                    }
+                           }
+                 }catch(Exception err){System.out.println("ERROR no tiene cursos asignados COMBO CURSOS: "+err);}
+
+
+         }
+    
+
+
+    
+}
+void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+        equi = (Comisiones)datos.selectedItem.value;
+    }
+    porcentaje.readonly = estado;
+ planes.disabled = estado;
+ vendedores.disabled = estado;
+
+}
+
+/*
+ void guardar(){
+    if(nombre.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+        equi.setPorcentaje(porcentaje.value);
+        equi.setPlan(Planes.selectedItem.value);
+        equi.setEmpleados(vendedores.selectedItem.value);
+        
+        if((!equi.getCodigo().equals(0)) ){
+             adm.actualizar(equi);
+                List children = datos.selectedItem.children;
+               permiso.auditar("Comisioneses","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
+         }else{
+                equi.setCodigo(adm.getNuevaClave("Comisiones","codigo"));
+                adm.guardar(equi);
+                permiso.auditar("Comisioneses","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Comisiones(0));
+                    buscar("");
+    }
+*/
+   void guardar(){
+ if(verificar("Agregar")){
+          comisiones nso = new comisiones();
+        comisiones r = (comisiones) datos.getRows();
+        String resultado = nso.guardar(r.getChildren(),((Empleados)vendedores22.selectedItem.value));
+        if(resultado.equals("ok")){
+            permiso.auditar("Comisiones","Guardar",""+vendedores22.selectedItem.value);
+            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+             filas.addRow((Empleados)vendedores22.selectedItem.value);
+         }else{
+            Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         }
+
+        }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+    }
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Comisiones",accion);
+ }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new Comisiones(0));
+        estado(false,false);
+        
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Comisiones)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             equi = (Comisiones)datos.selectedItem.value;
+             adm.eliminarObjeto(Comisiones.class, equi.getCodigo());
+             permiso.auditar("Comisioneses","Eliminar",""+equi.getCodigo()+" - "+equi.getNombre());
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Comisiones(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+   void buscar(String p){
+
+      
+        List equivaEncontrados = adm.query("Select o from Comisiones as o order by o.vendedores.nombres");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+   
+       
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Comisiones acceIt = (Comisiones) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                      li.appendChild(new Listcell(acceIt.getEmpleados()+" "));
+                      li.appendChild(new Listcell(acceIt.getPlan().getNombre()+" "));
+                      li.appendChild(new Listcell(acceIt.getPorcentaje()+" "));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Comisiones g){
+equi.setPerfil(g);
+}
+
+ void seleccionar(Double valor){
+        filas.seleccionar(valor);
+    }
+  ]]>
+    </zscript>
+    <groupbox mold="3d" >
+        <caption label="Asignar Comisiones " />
+SELECCIONE UN VENDEDOR:
+        <bandbox  width="400px" readonly="true"  id="bd1">
+            <bandpopup>
+                <vbox>
+                    <listbox rows="15" disabled="false" onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();filas.addRow((Empleados)self.selectedItem.value);"
+       id="vendedores22" width="660px"   >
+                        <listitem   forEach="${vendedores2}" value="${each}">
+                            <listcell label="${each.apellidos} ${each.nombres} " />
+                        </listitem>
+                    </listbox>
+                </vbox>
+            </bandpopup>
+        </bandbox>
+        <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
+        <grid id="datos" >
+            <columns>
+                <column width="0px" label=""/>
+                <column  label="Planes"/>
+                <column  label="Valor"/>
+                <column>
+                    <doublebox id="por" value="0" style="text-align:right" cols="5" />
+                    <button label="% TODOS" onClick='seleccionar(por.value)' />
+                </column>
+                <column  width="0px" label=""/>
+            </columns>
+            <rows id="filas" use="jcinform.bean.comisiones">
+            </rows>
+        </grid>
+    </groupbox>
+    <!--groupbox mold="3d" >
+        <caption label="Agregar Comisiones" />
+	
+        <grid width="100%">
+            <rows>
+                <row>   <span style="float:right"> Plan(*):</span>
+                                <listbox mold="select" disabled="true"  id="planes" width="660px"   >
+                                    <listitem selected="true" forEach="${Planes2}" value="${each}">
+                                        <listcell label="${each.nombre}" />
+                                    </listitem>
+                                </listbox>
+                </row>
+                <row>   <span style="float:right"> Empleados(*):</span>
+                                <listbox mold="select" disabled="true"  id="vendedores" width="660px"   >
+                                    <listitem selected="true" forEach="${vendedores2}" value="${each}">
+                                        <listcell label="${each.apellidos} ${each.nombres} " />
+                                    </listitem>
+                                </listbox>
+                </row>
+                <row>
+                    <span style="float:right"> (%) Comisión(*):</span>
+                    <doublebox id="porcentaje"  maxlength="10" cols="4" readonly="true"   />
+                </row>
+ 
+            </rows>
+        </grid>
+        <vbox>
+            <vbox>
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                </hbox>
+            </vbox>
+
+        </vbox>
+
+    </groupbox-->
+    <!--groupbox width="100%" mold="3d" >
+
+        <caption label="Busquedas" />
+        <vbox>
+   
+            <hbox width="100%">
+                <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                    <listhead>
+                        <listheader  label="Código"/>
+                        <listheader sort="auto" label="Comisiones"/>
+                        <listheader sort="auto" label="Plan"/>
+
+                    </listhead>
+                    <listitem forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.codigo}" />
+                        <listcell label="${each.nombre}" />
+                        <listcell label="${each.Plan.nombre}" />
+                    </listitem>
+                </listbox>
+
+
+            </hbox>
+        </vbox>
+    </groupbox-->
+	
+
+</window>

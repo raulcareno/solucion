@@ -2,7 +2,7 @@
 <window   border="normal"
  >
 
-    <zscript>    <![CDATA[
+    <zscript>
   import bean.EventDAO; 
   import java.util.ArrayList; 
   import jcinform.persistencia.*;
@@ -12,48 +12,27 @@
 
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Sector as o");
-    static Sector equi = new Sector();
+    List allEvents = adm.query("Select o from Plan as o");
+    static Plan equi = new Plan();
     Permisos permiso = new Permisos();
     //SimpleTreeModel stm = new SimpleTreeModel(root);
 //FUNCIONES
-
-
-List cantones2 = adm.query("Select o from Canton as o ");
-
-void llenar(Sector equi2){
-   equi = equi2;
+void llenar(Plan equi2){
+    equi = equi2;
     nombre.value = equi.getNombre();
-    nofactura.value = equi.getNofactura();
-    serie.value = equi.getSerie();
-       if(equi2.getCanton() != null){
-             try{
-                      for (int i = 0; i <= cantones.getItems().size(); i++) {
-                                    Canton tr0 = ((Canton)((Listitem)cantones.getItems().get(i)).getValue());
-                                    int primero = tr0.getCodigo();
-                                    int segundo = equi2.getCanton().getCodigo();
-                                    if(primero == segundo){
-                                        cantones.setSelectedItem((Listitem)cantones.getItems().get(i));
-                                        bd1.value = equi2.getCanton().getNombre();
-                                        break;
-                                    }
-                           }
-                 }catch(Exception err){System.out.println("ERROR no tiene cursos asignados COMBO CURSOS: "+err);}
-
-
-            }
-    
-
-
-    
+    valor.value = equi.getValor();
+    tipo.value = equi.getTipo(); //home, corporativo
+    dias.value = equi.getDias();
 }
 void estado(Boolean estado,Boolean modificar){
     if(modificar){
-        equi = (Sector)datos.selectedItem.value;
+        equi = (Plan)datos.selectedItem.value;
     }
     nombre.readonly = estado;
- nofactura.readonly = estado;
- serie.readonly = estado;
+    valor.readonly = estado;
+    tipo.disabled = estado;
+    dias.readonly = estado;
+ 
 
 }
 
@@ -64,34 +43,36 @@ void estado(Boolean estado,Boolean modificar){
             return;
     }
         equi.setNombre(nombre.value);
-        equi.setNofactura(nofactura.value);
-        equi.setSerie(serie.value);
-        equi.setCanton(cantones.selectedItem.value);
+        equi.setValor(valor.value);
+        equi.setTipo(tipo.value);
+        equi.setDias(dias.value);
         
         if((!equi.getCodigo().equals(0)) ){
              adm.actualizar(equi);
                 List children = datos.selectedItem.children;
-               permiso.auditar("Sectores","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
+                  ((Listcell)children.get(0)).label = equi.getCodigo()+"";
+                  ((Listcell)children.get(1)).label = nombre.value+ "" ;
+                  permiso.auditar("Planes","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
          }else{
-                equi.setCodigo(adm.getNuevaClave("Sector","codigo"));
+                equi.setCodigo(adm.getNuevaClave("Plan","codigo"));
                 adm.guardar(equi);
-                permiso.auditar("Sectores","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
+                permiso.auditar("Planes","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
          }
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                     guardar.disabled=true;
                     agregar.disabled=false;
                     estado(true,false);
-                    llenar(new Sector(0));
+                    llenar(new Plan(0));
                     buscar("");
     }
 
  Boolean verificar(String accion){
-        return permiso.verificarPermiso("Sectores",accion);
+        return permiso.verificarPermiso("Planes",accion);
  }
  void nuevo(){
     if(verificar("Agregar")){
        guardar.disabled=false;
-        llenar(new Sector(0));
+        llenar(new Plan(0));
         estado(false,false);
         
     }else{
@@ -99,7 +80,7 @@ void estado(Boolean estado,Boolean modificar){
     }
 }
  void move(){
-        llenar((Sector)datos.selectedItem.value);
+        llenar((Plan)datos.selectedItem.value);
         modificar.disabled = false;
   }
 void modificar(){
@@ -112,11 +93,11 @@ void modificar(){
 void eliminar(){
   if(verificar("Eliminar")){
         try{
-             equi = (Sector)datos.selectedItem.value;
-             adm.eliminarObjeto(Sector.class, equi.getCodigo());
-             permiso.auditar("Sectores","Eliminar",""+equi.getCodigo()+" - "+equi.getNombre());
+             equi = (Plan)datos.selectedItem.value;
+             adm.eliminarObjeto(Plan.class, equi.getCodigo());
+             permiso.auditar("Planes","Eliminar",""+equi.getCodigo()+" - "+equi.getNombre());
             datos.removeItemAt(datos.getSelectedIndex());
-            llenar(new Sector(0));
+            llenar(new Plan(0));
                 Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         }catch(Exception e){
             Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -128,7 +109,7 @@ void eliminar(){
    void buscar(String p){
 
       
-        List equivaEncontrados = adm.query("Select o from Sector as o order by o.nombre");
+        List equivaEncontrados = adm.query("Select o from Plan as o   order by o.nombre");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -137,54 +118,50 @@ void eliminar(){
    
        
                for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
-                      Sector acceIt = (Sector) it.next();
+                      Plan acceIt = (Plan) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getCodigo()+""));
                       li.appendChild(new Listcell(acceIt.getNombre()+" "));
-                      li.appendChild(new Listcell(acceIt.getCanton().getNombre()+" "));
+                      li.appendChild(new Listcell(acceIt.getValor()+" "));
+                      li.appendChild(new Listcell(acceIt.getTipo()+" "));
+                      li.appendChild(new Listcell(acceIt.getDias()+" "));
                       datos.appendChild(li);
              }
 
     }
-void cargar(Sector g){
+void cargar(Plan g){
 equi.setPerfil(g);
 }
-  ]]>
     </zscript>
     <groupbox mold="3d" >
-        <caption label="Agregar Sectores" />
+        <caption label="Agregar Planes" />
 	
         <grid width="100%">
             <rows>
-                <row>   <span style="float:right"> Canton(*):</span>
-                    <bandbox  width="400px" readonly="true"  id="bd1">
-                        <bandpopup>
-                            <vbox>
-                                <listbox id="cantones" width="660px" rows="10"
-                                                                                     onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
-                                    <listitem selected="true" forEach="${cantones2}" value="${each}">
-                                        <listcell label="${each.nombre}" />
-                                    </listitem>
-                                </listbox>
-                            </vbox>
-                        </bandpopup>
-                    </bandbox>
-                </row>
                 <row>
-                    <span style="float:right"> Nombre Sector(*):</span>
+                    <span style="float:right"> Nombre(*):</span>
                     <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />
                 </row>
                 <row>
-                    <span style="float:right"> No.Factura(*):</span>
-                    <textbox id="nofactura"  maxlength="10" cols="40" readonly="true"   />
+                    <span style="float:right"> Valor(*):</span>
+                    <doublebox id="valor"  maxlength="100" cols="40" readonly="true"   />
                 </row>
                 <row>
-                    <span style="float:right"> Serie Factura(*):</span>
-                    <textbox id="serie"  maxlength="6" cols="40" readonly="true"   />
-                </row>
- 
+                    <span style="float:right"> Tipo(*):</span>
+                    <!--textbox id="tipo"  maxlength="100" cols="40" readonly="true"   /-->
+                    <span>
+                        <combobox id="tipo">
+                            <comboitem label="HOME" />
+                            <comboitem label="BASICO" />
+                            <comboitem label="CORPORATIVO" />
+                            <comboitem label="PREMIUM" />
+                        </combobox>
 
+                        <span > No.Dias Plan(*):</span>
+                        <intbox id="dias"  maxlength="5" cols="4" readonly="true"   />
+                    </span>
+                </row>
             </rows>
         </grid>
         <vbox>
@@ -208,15 +185,20 @@ equi.setPerfil(g);
             <hbox width="100%">
                 <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                     <listhead>
-                        <listheader  label="Código"/>
-                        <listheader sort="auto" label="Sector"/>
-                        <listheader sort="auto" label="Canton"/>
+                        <listheader label="Código"/>
+                        <listheader label="Nombre"/>
+                        <listheader label="Valor"/>
+                        <listheader label="Tipo"/>
+                        <listheader label="No.Días"/>
 
                     </listhead>
                     <listitem forEach="${allEvents}" value="${each}">
                         <listcell label="${each.codigo}" />
                         <listcell label="${each.nombre}" />
-                        <listcell label="${each.canton.nombre}" />
+                        <listcell label="${each.valor}" />
+                        <listcell label="${each.tipo}" />
+                        <listcell label="${each.dias}" />
+
                     </listitem>
                 </listbox>
 
