@@ -983,6 +983,8 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                      coll.setFinali((promProfesor + notaInspector) / (lista.size() + 1));
                 } else if (tipo.contains("SUMATORIA")) {//PROMEDIO DE PROFESORES + PROMEDIO DE INSPECCION
                     coll.setFinali(promProfesor / lista.size() + notaInspector);
+                } else if (tipo.contains("PROMEDIADA")) {//SUMA SOLO LAS MATERIAS Y LAS DIVIDE PARA LOS QUE INGRESARON
+                    coll.setFinali((promProfesor) / lista.size());
                 } else if (tipo.contains("INGRESADA")) {
                     q = "Select " + query + "  from Notas notas "
                             + "where notas.matricula = '" + matriculas1.getCodigomat() + "' "
