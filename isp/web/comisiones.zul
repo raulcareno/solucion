@@ -19,7 +19,7 @@
 //FUNCIONES
 
 
-List Planes2 = adm.query("Select o from Plan as o ");
+//List Planes2 = adm.query("Select o from Plan as o ");
 List vendedores2 = adm.query("Select o from Empleados as o ");
 
 void llenar(Comisiones equi2){

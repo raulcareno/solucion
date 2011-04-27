@@ -1,0 +1,86 @@
+
+<window   border="normal"
+ >
+
+    <zscript>    <![CDATA[
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Sector as o");
+    Permisos permiso = new Permisos();
+    //SimpleTreeModel stm = new SimpleTreeModel(root);
+//FUNCIONES
+ 
+List vendedores2 = adm.query("Select o from Empleados as o ");
+
+   void guardar(){
+ if(verificar("Agregar")){
+        sectores nso = new sectores();
+        sectores r = (sectores) datos.getRows();
+        String resultado = nso.guardar(r.getChildren(),((Empleados)vendedores22.selectedItem.value));
+        if(resultado.equals("ok")){
+            permiso.auditar("SectoresEmpleados","Guardar",""+vendedores22.selectedItem.value);
+            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+             filas.addRow((Empleados)vendedores22.selectedItem.value);
+         }else{
+            Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         }
+
+        }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+    }
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Sectores",accion);
+ }
+  
+  
+ 
+  
+
+ void seleccionar(){
+        filas.seleccionar();
+    }
+  ]]>
+    </zscript>
+    <groupbox mold="3d" >
+        <caption label="Asignar Sectores " />
+SELECCIONE UN VENDEDOR:
+        <bandbox  width="400px" readonly="true"  id="bd1">
+            <bandpopup>
+                <vbox>
+                    <listbox rows="15" disabled="false" onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();filas.addRow((Empleados)self.selectedItem.value);"
+       id="vendedores22" width="660px"   >
+                        <listitem   forEach="${vendedores2}" value="${each}">
+                            <listcell label="${each.apellidos} ${each.nombres} " />
+                        </listitem>
+                    </listbox>
+                </vbox>
+            </bandpopup>
+        </bandbox>
+        <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
+        <grid id="datos" >
+            <columns>
+                <column width="0px" label=""/>
+                <column  sort="auto" label="Canton"/>
+                <column  label="Sector"/>
+                <column>
+                    <checkbox id="por" onCheck="seleccionar()"  label="TODOS" />
+                </column>
+                <column  width="0px" label=""/>
+            </columns>
+            <rows id="filas" use="jcinform.bean.sectores">
+            </rows>
+        </grid>
+    </groupbox>
+ 
+
+</window>

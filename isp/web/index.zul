@@ -120,6 +120,7 @@ import jcinform.persistencia.*;
                                 <menuseparator />
                                 <menuitem    value="/empleados.zul" image="/images/empleados.png" label="Empleados" onClick="ingresar(self)" />
                                 <menuitem    value="/comisiones.zul" image="/images/comision.png" label="Comisión-Empleados" onClick="ingresar(self)" />
+                                <menuitem    value="/empleadosector.zul" image="/images/sectores.png" label="Sector-Empleados" onClick="ingresar(self)" />
 
                             </menupopup>
                         </menu>
