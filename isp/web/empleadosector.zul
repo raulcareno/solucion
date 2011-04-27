@@ -39,7 +39,7 @@ List vendedores2 = adm.query("Select o from Empleados as o ");
     }
 
  Boolean verificar(String accion){
-        return permiso.verificarPermiso("Sectores",accion);
+        return permiso.verificarPermiso("EmpleadosSectores",accion);
  }
   
   
