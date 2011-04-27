@@ -33,6 +33,9 @@ public class Empleadossector implements Serializable {
     @Basic(optional = false)
     @Column(name = "codigo")
     private Integer codigo;
+
+    @Column(name = "estado")
+    private Boolean estado;
     @JoinColumn(name = "sector", referencedColumnName = "codigo")
     @ManyToOne
     private Sector sector;
@@ -70,6 +73,16 @@ public class Empleadossector implements Serializable {
     public void setEmpleados(Empleados empleados) {
         this.empleados = empleados;
     }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
+
+    
 
     @Override
     public int hashCode() {

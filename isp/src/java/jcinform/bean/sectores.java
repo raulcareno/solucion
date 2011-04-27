@@ -53,7 +53,7 @@ public class sectores extends Rows {
                  Empleadossector com = new Empleadossector();
                  com.setEmpleados(p);
                  com.setSector(sect);
-
+                com.setEstado(false);
                  empleadosectorList.add(com);
             }
 
@@ -80,11 +80,7 @@ public class sectores extends Rows {
 
             porcen = new Checkbox();//3
             porcen.setStyle("text-align:right");
-            if(vec.getCodigo() != null){
-                porcen.setChecked(true);
-            }else{
-                porcen.setChecked(false);
-            }
+            porcen.setChecked(vec.getEstado());
 
             
             porcen.setParent(row);
@@ -102,12 +98,12 @@ public class sectores extends Rows {
 
 
     }
-public void seleccionar(){
+public void seleccionar(Boolean estado){
     List lis = getChildren();
     for (Iterator it = lis.iterator(); it.hasNext();) {
         Row object = (Row) it.next();
          List labels = object.getChildren();
-          ((Checkbox) labels.get(3)).setChecked(true);
+          ((Checkbox) labels.get(3)).setChecked(estado);
     }
 
 }
@@ -128,6 +124,7 @@ public void seleccionar(){
                     codigo = null;
                 }
                 nota.setCodigo(codigo);
+                nota.setEstado( ((Checkbox) labels.get(3)).isChecked());
                 nota.setSector(new Sector(Integer.parseInt(((Label) labels.get(4)).getValue())));
                 nota.setEmpleados(g);
                 if (nota.getCodigo() != null ) {

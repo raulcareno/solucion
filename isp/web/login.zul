@@ -61,15 +61,20 @@ error.visible = false;
   if(user != null){
  //             servicionestudiantes.visible = true;
                 // cargo los periodos que tienen
- List equivaEncontrados = adm.query("Select o from Empleadossector as o where o.empleados.codigo  = '"+user.getCodigo()+"'");
+ List equivaEncontrados = adm.query("Select o from Empleadossector as o " +
+ " where o.empleados.codigo  = '"+user.getCodigo()+"' and o.estado = true ");
              if(user.getCodigo().equals(-1)){
-                  equivaEncontrados = adm.query("Select o from Empleadossector as o ");
+                  equivaEncontrados = adm.query("Select o from Empleadossector as o order by o.sector.canton, o.sector.nombre ");
              }
                 if(equivaEncontrados.size()>0){
                             Empleadossector p = new Empleadossector();
                              Sector ins = new Sector(-1);
                               ins.setNombre("[SELECCIONE UN SECTOR]");
+                              Canton can = new Canton(-1);
+                              can.setNombre("");
+                              ins.setCanton(can);
                               p.setSector(ins);
+                              
                               Empleados emp = new Empleados();
                               emp.setApellidos("[SELECCIONE UN SECTOR]");
                               p.setEmpleados(emp);
@@ -88,7 +93,7 @@ error.visible = false;
                                               Empleadossector acceIt = (Empleadossector) it.next();
                                               Listitem li = new Listitem();
                                               li.setValue(acceIt);
-                                              li.appendChild(new Listcell(acceIt.getSector().getNombre()+" "));
+                                              li.appendChild(new Listcell(acceIt.getSector().getCanton().getNombre()+" | "+acceIt.getSector().getNombre()+" "));
                                               periodo.appendChild(li);
                                      }
                                      periodo.setSelectedIndex(0);

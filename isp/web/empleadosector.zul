@@ -46,8 +46,8 @@ List vendedores2 = adm.query("Select o from Empleados as o ");
  
   
 
- void seleccionar(){
-        filas.seleccionar();
+ void seleccionar(Boolean esta){
+        filas.seleccionar(esta);
     }
   ]]>
     </zscript>
@@ -73,7 +73,7 @@ SELECCIONE UN VENDEDOR:
                 <column  sort="auto" label="Canton"/>
                 <column  label="Sector"/>
                 <column>
-                    <checkbox id="por" onCheck="seleccionar()"  label="TODOS" />
+                    <checkbox id="por" onCheck="seleccionar(self.isChecked())"  label="TODOS" />
                 </column>
                 <column  width="0px" label=""/>
             </columns>
