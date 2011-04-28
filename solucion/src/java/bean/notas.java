@@ -977,7 +977,7 @@ public class notas extends Rows {
                     //formu = "(((" + formu + ")/" + maprofes.size() + ") +" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/2";
                     //formu = "(((" + formu + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/(" + maprofes.size() + "))";
                 } else if (tipo.contains("PROMEDIADA")) {//
-                    formu = "(((" + formu + ") + (N1==null || N1==0 ?" + notaDisciplina + ":N1)" + ")/(" + (maprofes.size() + 1) + "))";
+                    formu = "(((" + formu + ") )/(" + (maprofes.size()) + "))";
                     //formu = "(((" + formu + ")/" + maprofes.size() + ") +" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/2";
                     //formu = "(((" + formu + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/(" + maprofes.size() + "))";
                 } else if (tipo.contains("SUMATORIA")) {//PROMEDIO DE PROFESORES + PROMEDIO DE INSPECCION
