@@ -40,6 +40,7 @@ public class sectores extends Rows {
                  Empleadossector com = new Empleadossector();
                  com.setEmpleados(p);
                  com.setSector(sect);
+                 com.setEstado(false);
 
                  empleadosectorList.add(com);
             }
