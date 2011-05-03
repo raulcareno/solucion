@@ -131,7 +131,7 @@ public class Plan implements Serializable {
 
     @Override
     public String toString() {
-        return "persistencia.Plan[codigo=" + codigo + "]";
+        return nombre +" "+ tipo + " "+ valor;
     }
 
 }

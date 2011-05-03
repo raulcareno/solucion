@@ -11,10 +11,13 @@
 
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Plan as o");
+    List planes = adm.query("Select o from Plan as o");
     static Plan equi = new Plan();
     Permisos permiso = new Permisos();
     //SimpleTreeModel stm = new SimpleTreeModel(root);
+    
+    
+    
 //FUNCIONES
 void llenar(Plan equi2){
     equi = equi2;
@@ -153,7 +156,7 @@ llenarCliente(Clientes clienteEn){
                     <row>
                         <span style="float:right"> Identificación: </span> 
                         <span> 
-                            <textbox id="identificacion" onOK="verificarCedula(self.value)"  />
+                            <textbox id="identificacion"  onOK="verificarCedula(self.value)"  />
                             <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
                             Digite el No. luego presione ENTER
                         </span>
@@ -219,11 +222,11 @@ llenarCliente(Clientes clienteEn){
                         <textbox id="direccion" cols="40" readonly="true"  />
                     </row>
                     
-                     </rows>
+                </rows>
             </grid>
              
-            <grid>
-            <rows>
+            <grid width="100%">
+                <rows>
                     <row spans="4">
                         <span>DATOS DEL CONTRATO</span>
                     </row>
@@ -234,7 +237,32 @@ llenarCliente(Clientes clienteEn){
                         <span style="float:right">Fecha:  </span>
                         <datebox id="fecha" onCreate="self.value = new Date()"/>
                                                
-                        </row>
+                    </row>
+                    <row>
+                        
+                       <span style="float:right"> Planes (*):</span>
+                                <bandbox  readonly="true"  id="bd">
+                                    <bandpopup>
+                                        <vbox>
+                                            <listbox id="perf" width="450px"
+                                                     onSelect="bd.value=self.selectedItem.label;cargar(((Sector)self.selectedItem.value));bd.closeDropdown();">
+                                                <listhead>
+                                                    <listheader label="Descripción"/>
+                                                    <listheader label="Tipo"/>
+                                                    <listheader label="valor"/>
+                                            
+                                                </listhead>
+                                                <listitem forEach="${planes}" value="${each}">
+                                                    <listcell label="${each.nombre}" />
+                                                    <listcell label="${each.tipo}" />
+                                                    <listcell label="${each.valor}" />
+
+                                                </listitem>
+                                            </listbox>
+                                        </vbox>
+                                    </bandpopup>
+                                </bandbox>
+                </row>
  
                 </rows>
             </grid>

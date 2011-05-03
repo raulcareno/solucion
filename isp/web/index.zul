@@ -102,7 +102,7 @@ import jcinform.persistencia.*;
                 <panelchildren>
 
                     <menubar id="menubar" width="100%">
-                        <menu label="Administración" >
+                        <menu label="Administración"  image="/images/administracion1.png"  >
                             <menupopup>
                                 <menuitem  value="/accesos.zul"  image="/images/key.png"  label="Accesos" onClick="ingresar(self)" />
                                 <menuitem  value="/auditoria.zul"  image="/images/auditoria.gif" label="Auditoria" onClick="ingresar(self)" />
@@ -113,7 +113,7 @@ import jcinform.persistencia.*;
                                 <menuitem label="Salir" image="/images/exit.gif"  onClick="salir()" />
                             </menupopup>
                         </menu>
-                        <menu label="Personas" >
+                        <menu label="Personas"   image="/images/personas.png" >
                             <menupopup>
                                 <menuitem   value="/proveedores.zul"  image="/images/proveedor.png" label="Proveedores" onClick="ingresar(self)" />
                                 <menuitem    value="/clientes.zul" image="/images/clientes.png" label="Clientes" onClick="ingresar(self)" />
@@ -125,7 +125,7 @@ import jcinform.persistencia.*;
                             </menupopup>
                         </menu>
 
-                        <menu label="Control" >
+                        <menu label="Control" image="/images/control.png" >
                             <menupopup>
                                 <menuitem   value="/nodos.zul"  image="/images/nodos.png" label="Nodos" onClick="ingresar(self)" />
                                 <menuitem value="/controlequipos.zul" image="/images/equipos.png" label="Registro Equipos" onClick="ingresar(self)" />
@@ -133,7 +133,7 @@ import jcinform.persistencia.*;
                                 <menuitem  value="/equipos.zul"   image="/images/equipos2.png" label="Equipos" onClick="ingresar(self)" />
                             </menupopup>
                         </menu>
-                        <menu label="Cobros" >
+                        <menu label="Cobros" image="/images/cobros.png" >
                             <menupopup>
                                 <menuitem image="/images/contratos.png" value="/contratos.zul"  label="Contratos" onClick="ingresar(self)" />
                                 <menuitem  value="/planes.zul"    image="/images/planes.png" label="Planes Productos" onClick="ingresar(self)" />
