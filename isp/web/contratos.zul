@@ -144,7 +144,7 @@ llenarCliente(Clientes clienteEn){
  
     }
     </zscript>
-
+<div align="center">
     <panel id="panel" framable="true" width="600px" height="400px" title="Datos del Cliente"
 	  border="normal"
 	collapsible="true"  >
@@ -341,4 +341,5 @@ llenarCliente(Clientes clienteEn){
             </vbox>
         </panelchildren>
     </panel>
+    </div>
 </window>
