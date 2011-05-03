@@ -2,13 +2,13 @@
 
 
 <zk  xmlns="http://www.zkoss.org/2005/zul">
-      <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    
+ 
+    <window onCreate="cargar()" id="crearClientes">
+  <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
     <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
     <script type="text/javascript" src="/js/masks.js"/>
   <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
- 
-    <window>
-
         <zscript>
             <![CDATA[
   import jcinform.persistencia.*;
@@ -23,7 +23,7 @@
     Permisos permiso = new Permisos();
     List perfiles = adm.query("Select o from Sector as o  ");
     Object media = null;
-
+Boolean instanciadaContratos = false;
 //FUNCIONES
 void cargarFoto(byte[] imageData){
   foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
@@ -114,9 +114,18 @@ void estado(Boolean estado,Boolean modificar){
                   ((Listcell)children.get(1)).label = apellidos.value + " " + nombres.value;
                   ((Listcell)children.get(2)).label = direccion.value;
                   }catch(Exception e){}
+                  
          }else{
 
              adm.guardar(empa);
+         }
+         try{
+         if(instanciadaContratos == true){
+            cargarCliente(empa);
+          }
+         }catch(Exception error){
+         System.out.println("error en cargar cliente hacia contratos"+error);
+         
          }
               Boolean a = true;
             if(a){
@@ -221,6 +230,19 @@ void eliminar(){
 void cargar(Sector g){
 empa.setSector(g);
 }
+
+cargarCliente(Clientes clientes){
+ iden = Path.getComponent("//contratospage/contratosventana/identificacion");
+ nomb = Path.getComponent("//contratospage/contratosventana/combo");
+ dire = Path.getComponent("//contratospage/contratosventana/direccion");
+ codi = Path.getComponent("//contratospage/contratosventana/codigocli");
+ iden.value = clientes.getIdentificacion();
+ nomb.value = clientes.getApellidos()+" "+clientes.getNombres()+" ["+clientes.getCodigo()+"]";
+ dire.value = clientes.getDireccion();
+ codi.value = clientes.getCodigo()+"";
+
+}
+
 ]]>
         </zscript>
         <tabbox width="100%">
@@ -236,7 +258,7 @@ empa.setSector(g);
                         <rows>
                             <row>
                                 <span style="float:right"> Identificación(*):</span>
-                                <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="identificacion"  />
+                                <textbox maxlength="13" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="identificacion"  />
                                 <span><intbox id="codigo" disabled="true" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" /></span>
                                 <span></span>
                             </row>
@@ -344,6 +366,15 @@ empa.setSector(g);
 
 
         </tabbox>
-
+        <zscript>
+            void cargar(){
+            try{
+                    instanciadaContratos = crearClientes.getAttribute("nuevo");
+             }catch(Exception e){
+                    instanciadaContratos = false;
+             }
+                    
+            }
+</zscript>
     </window>
 </zk>

@@ -1,0 +1,254 @@
+<?page id="contratospage"?>
+<window id="contratosventana"  border="normal" >
+
+    <zscript>
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Plan as o");
+    static Plan equi = new Plan();
+    Permisos permiso = new Permisos();
+    //SimpleTreeModel stm = new SimpleTreeModel(root);
+//FUNCIONES
+void llenar(Plan equi2){
+    equi = equi2;
+    nombre.value = equi.getNombre();
+    valor.value = equi.getValor();
+    tipo.value = equi.getTipo(); //home, corporativo
+    dias.value = equi.getDias();
+}
+void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+        equi = (Plan)datos.selectedItem.value;
+    }
+    nombre.readonly = estado;
+    valor.readonly = estado;
+    tipo.disabled = estado;
+    dias.readonly = estado;
+ 
+
+}
+
+
+ void guardar(){
+    if(nombre.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+        equi.setNombre(nombre.value);
+        equi.setValor(valor.value);
+        equi.setTipo(tipo.value);
+        equi.setDias(dias.value);
+        
+        if((!equi.getCodigo().equals(0)) ){
+             adm.actualizar(equi);
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = equi.getCodigo()+"";
+                  ((Listcell)children.get(1)).label = nombre.value+ "" ;
+                  permiso.auditar("Planes","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
+         }else{
+                equi.setCodigo(adm.getNuevaClave("Plan","codigo"));
+                adm.guardar(equi);
+                permiso.auditar("Planes","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Plan(0));
+                    buscar("");
+    }
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Planes",accion);
+ }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new Plan(0));
+        estado(false,false);
+        
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Plan)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ 
+void cargar(Plan g){
+equi.setPerfil(g);
+}
+void buscarCliente(String valor){
+     try{
+         int ini = valor.indexOf("[");
+         int fin = valor.indexOf("]");
+         valor = valor.substring(ini+1, fin);
+         Clientes clienteEn = adm.buscarClave(new Integer(valor),Clientes.class);
+         llenarCliente(clienteEn);
+     }catch(Exception ex){
+
+     }
+}
+llenarCliente(Clientes clienteEn){
+    identificacion.value = clienteEn.getIdentificacion();
+     codigocli.value = clienteEn.getCodigo()+"";
+     direccion.value  = clienteEn.getDireccion();
+     combo.value = clienteEn.getApellidos()+" "+clienteEn.getNombres() +"["+codigocli.value+"]";
+
+}
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
+            if(empleados.size()>0){
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Clientes object = (Clientes)it.next();
+                      empa = object;
+                      
+                 }
+                llenarCliente(empa);
+            }
+
+        }else{
+                if(valor.contains("999")){
+                    List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
+                     if(empleados.size()>0){
+                        for(Iterator it = empleados.iterator(); it.hasNext();) {
+                              Clientes object = (Clientes)it.next();
+                              empa = object;
+
+                         }
+                        llenarCliente(empa);
+                    }
+                }
+        
+        }
+ 
+    }
+    </zscript>
+
+    <panel id="panel" framable="true" width="600px" height="400px" title="Panel"
+	  border="normal"
+	collapsible="true"  >
+        <panelchildren>
+                
+            
+        
+            <grid width="100%">
+                <rows>
+                    <row>
+                        <span style="float:right"> Identificación: </span> 
+                        <span> 
+                            <textbox id="identificacion" onOK="verificarCedula(self.value)"  />
+                            <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
+                            Digite el No. luego presione ENTER
+                        </span>
+                    </row>
+                    <row>
+                        <span style="float:right"> Nombres(*):</span> 
+                        <span>
+                            <combobox  cols="35" id="combo" onSelect="buscarCliente(self.value)" autodrop="true" buttonVisible="false" >
+                                <attribute name="onChanging">
+               <![CDATA[
+                    
+                            String abuscar = event.value;
+                            System.out.println("*"+abuscar);
+                            List estu = new ArrayList();
+                            if (abuscar.length() > 1) {
+                                estu = adm.query("Select o from Clientes as o where o.apellidos like '%" + abuscar + "%'");
+                            }
+                            for (int i = 0; i < self.getItems().size(); i++) {
+                                self.getItems().remove(i);
+
+                            }
+                            Iterator it = self.getItems().iterator();
+                            while (it != null && it.hasNext()) {
+                                it.next();
+                                it.remove();
+                            }
+                            for (Iterator itEst = estu.iterator(); itEst.hasNext();) {
+                                Clientes estudiantes = (Clientes) itEst.next();
+                                it = null;
+                                Comboitem citem = new Comboitem(estudiantes.getApellidos() + " " + estudiantes.getNombres() + " [" + estudiantes.getCodigo() + "]");
+                                Object obj = new Integer(estudiantes.getCodigo());
+                                citem.setAttribute("id", obj);
+                                citem.setParent(combo);
+                            }
+
+
+
+                     
+                     ]]>
+                                </attribute>
+  
+                            </combobox>
+                            <button label="Agregar Nuevo" image="/images/clientes.png">
+                                <attribute name="onClick">{
+                                final Window win = (Window) Executions.createComponents("clientes.zul", null, null);
+                                win.setMaximizable(true);
+                                win.setClosable(true);
+                                win.setAttribute("nuevo", true);
+                                win.setTitle("Nuevo Cliente");
+                                win.doModal();
+                                }                            
+                                </attribute>
+                            </button> 
+                     
+                              
+                    
+                       
+                      
+                        </span>
+                    </row>
+                    <row>
+                        <span style="float:right">Dirección:  </span>
+                        <textbox id="direccion" cols="40" readonly="true"  />
+                    </row>
+                    
+                     </rows>
+            </grid>
+             
+            <grid>
+            <rows>
+                    <row spans="4">
+                        <span>DATOS DEL CONTRATO</span>
+                    </row>
+                    <row>
+                        <span style="float:right">No.Contrato:  </span>
+                        <textbox style="color:red;font-size:16px" id="numerocontrato" cols="10" />
+                        
+                        <span style="float:right">Fecha:  </span>
+                        <datebox id="fecha" onCreate="self.value = new Date()"/>
+                                               
+                        </row>
+ 
+                </rows>
+            </grid>
+            <vbox>
+                <vbox>
+                    <hbox>
+                        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    </hbox>
+                </vbox>
+
+            </vbox>
+        </panelchildren>
+    </panel>
+</window>
