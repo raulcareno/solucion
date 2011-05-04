@@ -322,6 +322,7 @@ cargarCliente(Clientes clientes){
                             <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
                             <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                             <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                            <button  image="/images/cargar.gif" id="cargar"  label="CARGAR" disabled="instanciadaContratos"  onClick="crearClientes.hide();"/>
                         </hbox>
                     </vbox>
 
@@ -335,7 +336,7 @@ cargarCliente(Clientes clientes){
                         <caption label="Busquedas" />
                         <vbox>
                             <hbox>  Apellidos:
-                                <textbox id="buscarText"  maxlength="60" cols="40" />
+                                <textbox id="buscarText"  onOK="buscar(self.value)" maxlength="60" cols="40" />
                                 <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                             </hbox>
                             <hbox>

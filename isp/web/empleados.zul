@@ -2,13 +2,13 @@
 
 
 <zk  xmlns="http://www.zkoss.org/2005/zul">
-      <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
-    <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
-    <script type="text/javascript" src="/js/masks.js"/>
-  <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+   
  
-    <window>
-
+    <window onCreate="cargar()" id="crearEmpleados">
+        <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+        <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+        <script type="text/javascript" src="/js/masks.js"/>
+        <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
         <zscript>
             <![CDATA[
   import jcinform.persistencia.*;
@@ -23,7 +23,7 @@
     Permisos permiso = new Permisos();
     List perfiles = adm.query("Select o from Perfil as o  ");
     Object media = null;
-
+Boolean instanciadaContratos = false;
 //FUNCIONES
 void cargarFoto(byte[] imageData){
   foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
@@ -121,6 +121,15 @@ void estado(Boolean estado,Boolean modificar){
 
              adm.guardar(empa);
          }
+          try{
+         if(instanciadaContratos == true){
+            cargarEmpleado(empa);
+          }
+         }catch(Exception error){
+         System.out.println("error en cargar cliente hacia contratos"+error);
+         
+         }
+         
               Boolean a = true;
             if(a){
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -135,7 +144,13 @@ void estado(Boolean estado,Boolean modificar){
             }
 
     }
+cargarEmpleado(Empleados emple){
+  nomb = Path.getComponent("//contratospage/contratosventana/combov");
+  codi = Path.getComponent("//contratospage/contratosventana/codigoemp");
+  nomb.value = emple.getApellidos()+" "+emple.getNombres()+" ["+emple.getCodigo()+"]";
+  codi.value = emple.getCodigo()+"";
 
+}
    Boolean verificar(String accion){
         return permiso.verificarPermiso("Empleados",accion);
 
@@ -240,7 +255,9 @@ empa.setPerfil(g);
                             <row>
                                 <span style="float:right"> Identificación(*):</span>
                                 <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="identificacion"  />
-                                <span><intbox id="codigo" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" /></span>
+                                <span>
+                                    <intbox id="codigo" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
+                                </span>
                                 <span></span>
                             </row>
 
@@ -347,6 +364,15 @@ empa.setPerfil(g);
 
 
         </tabbox>
-
+<zscript>
+            void cargar(){
+            try{
+                    instanciadaContratos = crearEmpleados.getAttribute("nuevo");
+             }catch(Exception e){
+                    instanciadaContratos = false;
+             }
+                    
+            }
+</zscript>
     </window>
 </zk>

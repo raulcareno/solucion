@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+    
+ 
+    <window onCreate="cargar()" id="crearEmpleados">
+  <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+    <script type="text/javascript" src="/js/masks.js"/>
+  <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.util.ArrayList;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Empleados as o where o.identificacion = 0");
+    static Empleados empa = new Empleados();
+    Permisos permiso = new Permisos();
+    List perfiles = adm.query("Select o from Sector as o  ");
+    Object media = null;
+Boolean instanciadaContratos = false;
+ 
+ 
+ 
+
+ 
+ void move(){
+    cargarCliente((Empleados)datos.selectedItem.value);
+        crearEmpleados.detach();
+  }
+ 
+  
+ 
+  void buscar(String p){
+        List EmpleadosEncontrados = adm.query("Select o from Empleados as o where o.apellidos like '"+p+"%' order by o.apellidos");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = EmpleadosEncontrados.iterator(); it.hasNext();) {
+                      Empleados acceIt = (Empleados) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getIdentificacion()+""));
+                      li.appendChild(new Listcell(acceIt.getApellidos()+" "+acceIt.getNombres()));
+                      li.appendChild(new Listcell(acceIt.getDireccion()+""));
+                      datos.appendChild(li);
+             }
+
+    }
+ 
+
+cargarCliente(Empleados clientes){
+ nomb = Path.getComponent("//contratospage/contratosventana/combov");
+ codi = Path.getComponent("//contratospage/contratosventana/codigoemp");
+ nomb.value = clientes.getApellidos()+" "+clientes.getNombres();
+  codi.value = clientes.getCodigo()+"";
+
+}
+
+]]>
+        </zscript>
+       
+
+   
+
+                    <groupbox  width="500px" mold="3d" >
+
+                        <caption label="Busquedas" />
+                        <vbox>
+                            <hbox>  Apellidos:
+                                <textbox id="buscarText"  onChanging="buscar(event.value)"  onOK="buscar(self.value)" maxlength="60" cols="40" />
+                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                            </hbox>
+                            <hbox>
+                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();" id="datos" width="100%">
+                                    <listhead>
+                                        <listheader label="Cod."/>
+                                        <listheader label="Nombres"/>
+                                        <listheader label="Dirección"/>
+
+                                    </listhead>
+                                    <listitem forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.codigo}" />
+                                        <listcell label="${each.apellidos}" />
+                                        <listcell label="${each.direccion}" />
+                                    </listitem>
+                                </listbox>
+
+
+                            </hbox>
+                        </vbox>
+                    </groupbox>
+
+ 
+        <zscript>
+            void cargar(){
+            try{
+                    instanciadaContratos = crearEmpleados.getAttribute("nuevo");
+             }catch(Exception e){
+                    instanciadaContratos = false;
+             }
+                    
+            }
+</zscript>
+    </window>
+</zk>
