@@ -53,7 +53,7 @@ public class Contratos implements Serializable {
     @Column(name = "clave")
     private String clave;
     @Column(name = "autorizado")
-    private Boolean autorizado;
+    private Boolean autorizado = false;
     @Column(name = "fechainstalacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainstalacion;
@@ -71,10 +71,10 @@ public class Contratos implements Serializable {
     private Controlequipos controlequipos;
     @JoinColumn(name = "equipos2", referencedColumnName = "codigo")
     @ManyToOne
-    private Controlequipos controlequipos1;
+    private Controlequipos controlequipos2;
     @JoinColumn(name = "equipos", referencedColumnName = "codigo")
     @ManyToOne
-    private Controlequipos controlequipos2;
+    private Controlequipos controlequipos3;
     @JoinColumn(name = "clientes", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
@@ -198,14 +198,15 @@ public class Contratos implements Serializable {
         this.controlequipos = controlequipos;
     }
 
-    public Controlequipos getControlequipos1() {
-        return controlequipos1;
+    public Controlequipos getControlequipos3() {
+        return controlequipos3;
     }
 
-    public void setControlequipos1(Controlequipos controlequipos1) {
-        this.controlequipos1 = controlequipos1;
+    public void setControlequipos3(Controlequipos controlequipos3) {
+        this.controlequipos3 = controlequipos3;
     }
 
+    
     public Controlequipos getControlequipos2() {
         return controlequipos2;
     }
