@@ -597,11 +597,9 @@ llenarCliente(Clientes clienteEn){
                             </vbox>
                         </panelchildren>
                     </panel>
-        
                 </tabpanel>
                 <tabpanel>
                     <groupbox  width="100%" mold="3d" >
-
                         <caption label="Busquedas" />
                         <vbox>
                             <hbox>  No.Contrato:
@@ -614,19 +612,14 @@ llenarCliente(Clientes clienteEn){
                             <hbox>
                                 <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();" id="datos" width="100%">
                                     <listhead>
-                                       
                                         <listheader label="Contrato"/>
                                         <listheader label="Clientes"/>
-
                                     </listhead>
                                     <listitem forEach="${allEvents}" value="${each}">
                                         <listcell label="${each.codigo}" />
                                         <listcell label="${each.apellidos}" />
-                                        
                                     </listitem>
                                 </listbox>
-
-
                             </hbox>
                         </vbox>
                     </groupbox>
@@ -635,8 +628,6 @@ llenarCliente(Clientes clienteEn){
                     <panel height="370px" style="margin-bottom:10px"
                            title="Reporte" border="normal">
                         <panelchildren>
-                             
-
                             <jasperreport id="report" />
                         </panelchildren>
                     </panel>
