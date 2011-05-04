@@ -167,7 +167,7 @@ public class Clientes implements Serializable {
 
     @Override
     public String toString() {
-        return "persistencia.Clientes[codigo=" + codigo + "]";
+        return apellidos+" "+nombres;
     }
 
 }

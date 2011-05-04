@@ -79,6 +79,9 @@ public class Contratos implements Serializable {
     @JoinColumn(name = "empleados", referencedColumnName = "codigo")
     @ManyToOne
     private Empleados empleados;
+    @JoinColumn(name = "registrador", referencedColumnName = "codigo")
+    @ManyToOne
+    private Empleados registrador;
 
     public Contratos() {
     }
@@ -190,6 +193,14 @@ public class Contratos implements Serializable {
 
     public void setEmpleados(Empleados empleados) {
         this.empleados = empleados;
+    }
+
+    public Empleados getRegistrador() {
+        return registrador;
+    }
+
+    public void setRegistrador(Empleados registrador) {
+        this.registrador = registrador;
     }
     
     

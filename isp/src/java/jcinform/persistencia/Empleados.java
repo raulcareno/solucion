@@ -205,7 +205,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "persistencia.Empleados[codigo=" + codigo + "]";
+        return apellidos+" "+nombres ;
     }
 
 }

@@ -16,16 +16,18 @@
     static Contratos equi = new Contratos();
     Permisos permiso = new Permisos();
     //SimpleTreeModel stm = new SimpleTreeModel(root);
-    
+            
+            Empleados usuarioActual = ses.getAttribute("user");
     
     
 //FUNCIONES
 void llenar(Contratos  equi2){
     equi = equi2;
+    registro.setSelected(true);
     if(equi.getClientes() != null){
-        identificacion.value = equi.getClientes().getIdentificacion();
-        codigocli.value = equi.getClientes().getCodigo();
-        direccion.value =equi.getClientes().getDireccion();
+   identificacion.value = equi.getClientes().getIdentificacion();
+        codigocli.value = equi.getClientes().getCodigo()+"";
+        direccion.value = equi.getClientes().getDireccion();
         combo.value =equi.getClientes().getApellidos()+" "+equi.getClientes().getNombres();//cliente
      }else{
      identificacion.value = "";
@@ -40,7 +42,7 @@ void llenar(Contratos  equi2){
     ip.value = equi.getIp();
     clave.value = equi.getClave();
     if(equi.getEmpleados() != null){
-        codigoemp.value = equi.getEmpleados.getCodigo()+"";
+           codigoemp.value = equi.getEmpleados().getCodigo()+"";
         combov.value =equi.getEmpleados().getApellidos()+" "+equi.getEmpleados().getNombres();
     }else{
         codigoemp.value = "";
@@ -50,29 +52,36 @@ void llenar(Contratos  equi2){
     numerocontrato.value = equi.getContrato();
     
     try{
-       codigoequi1.value = equi.getControlequipos().getCodigo();
+       codigoequi1.value = equi.getControlequipos().getCodigo()+"";
         equipo1.value = equi.getControlequipos().getEquipos().getNombre()+" "+ equi.getControlequipos().getEquipos().getModelo()+" "+ equi.getControlequipos().getEquipos().getMarcas().getNombre();
     }catch(Exception e){
+        codigoequi1.value = "";
+        equipo1.value = "";
+    
     }
     try{
-        codigoequi2.value = equi.getControlequipos2().getCodigo();
+        codigoequi2.value = equi.getControlequipos2().getCodigo()+"";
         equipo2.value = equi.getControlequipos2().getEquipos().getNombre()+" "+ equi.getControlequipos2().getEquipos().getModelo()+" "+ equi.getControlequipos2().getEquipos().getMarcas().getNombre();
     }catch(Exception e){
+    codigoequi2.value = "";
+        equipo2.value = "";
     }
     try{
-        codigoequi3.value = equi.getControlequipos3().getCodigo();
+        codigoequi3.value = equi.getControlequipos3().getCodigo()+"";
         equipo3.value = equi.getControlequipos3().getEquipos().getNombre()+" "+ equi.getControlequipos3().getEquipos().getModelo()+" "+ equi.getControlequipos3().getEquipos().getMarcas().getNombre();
     }catch(Exception e){
+    codigoequi3.value = "";
+        equipo3.value = "";
     }
        
        if(equi.getPlan() != null){
              try{
                       for (int i = 0; i <= perf.getItems().size(); i++) {
                                     Plan tr0 = ((Plan)((Listitem)perf.getItems().get(i)).getValue());
-                                    int primero = tr0.getCodigocur();
-                                    int segundo = equi.getPlan().getCodigocur();
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getPlan().getCodigo();
                                     if(primero == segundo){
-                                        perf.setSelectedItem((Listitem)curso.getItems().get(i));
+                                        perf.setSelectedItem((Listitem)perf.getItems().get(i));
                                         bd.value = equi.getPlan().getNombre()+" ";
                                         break;
                                     }
@@ -89,28 +98,31 @@ void llenar(Contratos  equi2){
         try{
                       for (int i = 0; i <= nodo.getItems().size(); i++) {
                                     Nodos tr0 = ((Nodos)((Listitem)nodo.getItems().get(i)).getValue());
-                                    int primero = tr0.getCodigocur();
-                                    int segundo = equi.getNodos().getCodigocur();
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getNodos().getCodigo();
                                     if(primero == segundo){
-                                        nodo.setSelectedItem((Listitem)curso.getItems().get(i));
+                                        nodo.setSelectedItem((Listitem)nodo.getItems().get(i));
                                         bd2.value = equi.getNodos().getNombre()+" ";
                                         break;
                                     }
                            }
-                 }catch(Exception err){System.out.println("ERROR no tiene Nodoses asignados COMBO CURSOS: "+err);}
+                 }catch(Exception err){System.out.println("ERROR no tiene Nodoses asignados COMBO nodo "+err);}
         
     }else{
        bd2.value = "";
         nodo.setSelectedItem(null);
     }
-    
-    
+    try{
+        registrado.value = equi.getRegistrador()+"";
+        registradoU.value = equi.getRegistrador().getCodigo()+"";
+     
+     }catch(Exception exa){}
     
     
 }
 void estado(Boolean estado,Boolean modificar){
     if(modificar){
-        equi = (Plan)datos.selectedItem.value;
+        equi = (Contratos)datos.selectedItem.value;
     }
     identificacion.readonly = estado;
     buscarC.disabled = estado;
@@ -149,18 +161,19 @@ void estado(Boolean estado,Boolean modificar){
     equi.setEmpleados(new Empleados(new Integer(codigoemp.value)));
     equi.setContrato(numerocontrato.value);
     
+    
     try{
-       equi.getControlequipos(new Controlequipos(new Integer(codigoequi1.value))); 
+       equi.setControlequipos(new Controlequipos(new Integer(codigoequi1.value))); 
     }catch(Exception e){
     }
     
     try{
-       equi.getControlequipos2(new Controlequipos(new Integer(codigoequi2.value))); 
+       equi.setControlequipos2(new Controlequipos(new Integer(codigoequi2.value))); 
     }catch(Exception e){
     }
     
     try{
-       equi.getControlequipos3(new Controlequipos(new Integer(codigoequi3.value))); 
+       equi.setControlequipos3(new Controlequipos(new Integer(codigoequi3.value))); 
     }catch(Exception e){
     }
     try{
@@ -173,12 +186,14 @@ void estado(Boolean estado,Boolean modificar){
     }
     
         if((!equi.getCodigo().equals(0)) ){
+            equi.setRegistrador(new Empleados(new Integer(registradoU.value)));
              adm.actualizar(equi);
-                permiso.auditar("Contratos","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
+                permiso.auditar("Contratos","Actualizar",""+equi.getContrato()+" - "+equi.getClientes());
          }else{
+                equi.setRegistrador(usuarioActual);
                 equi.setCodigo(adm.getNuevaClave("Contratos","codigo"));
                 adm.guardar(equi);
-                permiso.auditar("Contratos","Guardar",""+equi.getNumero()+" - "+equi.getClientes());
+                permiso.auditar("Contratos","Guardar",""+equi.getContrato()+" - "+equi.getClientes());
          }
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                     guardar.disabled=true;
@@ -189,7 +204,7 @@ void estado(Boolean estado,Boolean modificar){
     }
 
  Boolean verificar(String accion){
-        return permiso.verificarPermiso("Planes",accion);
+        return permiso.verificarPermiso("Contratos",accion);
  }
  void nuevo(){
     if(verificar("Agregar")){
@@ -202,20 +217,18 @@ void estado(Boolean estado,Boolean modificar){
     }
 }
  void move(){
-        llenar((Plan)datos.selectedItem.value);
+        llenar((Contratos)datos.selectedItem.value);
         modificar.disabled = false;
   }
 void modificar(){
   if(verificar("Modificar")){
-       guardar.disabled=false; estado(false,true);
+       guardar.disabled=false; 
+       estado(false,true);
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
 }
  
-void cargar(Plan g){
-equi.setPerfil(g);
-}
  
 llenarCliente(Clientes clienteEn){
     identificacion.value = clienteEn.getIdentificacion();
@@ -276,7 +289,7 @@ llenarCliente(Clientes clienteEn){
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getCodigo()+""));
-                      li.appendChild(new Listcell(acceIt.getClientes().getNombres()+" "+acceIt.getClientes().getNombres()));
+                      li.appendChild(new Listcell(acceIt.getClientes().getApellidos()+" "+acceIt.getClientes().getNombres()));
                       datos.appendChild(li);
              }
 
@@ -287,7 +300,7 @@ llenarCliente(Clientes clienteEn){
     <div align="center">
         <tabbox  width="610px"  >
             <tabs>
-                <tab label="Contratos"/>
+                <tab id="registro" label="Contratos"/>
                 <tab label="Búsqueda" />
                 <tab label="Impresión"/>
             </tabs>
@@ -319,7 +332,7 @@ llenarCliente(Clientes clienteEn){
                                             <textbox readonly="true" cols="32"   id="combo" />
                            
                               
-                                            <button label="Buscar" id="buscarC" disabled="true"  image="/images/auditoria.gif">
+                                            <button label="" id="buscarC" disabled="true"  image="/images/auditoria.gif">
                                                 <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarClientes.zul", null, null);
                                             win.setMaximizable(true);
@@ -330,7 +343,7 @@ llenarCliente(Clientes clienteEn){
                                             }                            
                                                 </attribute>
                                             </button> 
-                                            <button label="Nuevo" disabled="true" id="nuevoC" image="/images/clientes.png">
+                                            <button label="" disabled="true" id="nuevoC" image="/images/clientes.png">
                                                 <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("clientes.zul", null, null);
                                             win.setMaximizable(true);
@@ -451,7 +464,7 @@ llenarCliente(Clientes clienteEn){
                                                 <span>
                                                     <textbox  readonly="true"  cols="32"   id="equipo1" />
 
-                                                    <button label="Buscar"  id="buscarE1" disabled="true" image="/images/auditoria.gif">
+                                                    <button label=""  id="buscarE1" disabled="true" image="/images/auditoria.gif">
                                                         <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
                                             win.setMaximizable(true);
@@ -475,7 +488,7 @@ llenarCliente(Clientes clienteEn){
                                                     <textbox  readonly="true"  cols="32"   id="equipo2" />
 
                                         
-                                                    <button label="Buscar"  id="buscarE2" disabled="true" image="/images/auditoria.gif">
+                                                    <button label=""  id="buscarE2" disabled="true" image="/images/auditoria.gif">
                                                         <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
                                             win.setMaximizable(true);
@@ -499,7 +512,7 @@ llenarCliente(Clientes clienteEn){
 
                                        
                                         
-                                                    <button label="Buscar"  id="buscarE3" disabled="true"  image="/images/auditoria.gif">
+                                                    <button label=""  id="buscarE3" disabled="true"  image="/images/auditoria.gif">
                                                         <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
                                             win.setMaximizable(true);
@@ -531,7 +544,7 @@ llenarCliente(Clientes clienteEn){
                                                 <span>
                                                     <textbox  readonly="true"  cols="32"   id="combov" />
 
-                                                    <button label="Buscar"  id="buscarE" disabled="true" image="/images/auditoria.gif">
+                                                    <button label=""  id="buscarE" disabled="true" image="/images/auditoria.gif">
                                                         <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEmpleados.zul", null, null);
                                             win.setMaximizable(true);
@@ -542,7 +555,7 @@ llenarCliente(Clientes clienteEn){
                                             }                            
                                                         </attribute>
                                                     </button> 
-                                                    <button label="Nuevo" disabled="true" id="nuevoE" image="/images/empleados.png" >
+                                                    <button label="" disabled="true" id="nuevoE" image="/images/empleados.png" >
                                                         <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("empleados.zul", null, null);
                                             win.setMaximizable(true);
@@ -564,7 +577,8 @@ llenarCliente(Clientes clienteEn){
                                             </row>
                                             <row>
                                                 <span style="float:right"> Registrado por(*):</span> 
-                                                <textbox  readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
+                                                <textbox id="registrado" readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
+                                                <textbox id="registradoU"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
                                             </row>
                                         </rows>
                                     </grid>
@@ -594,21 +608,21 @@ llenarCliente(Clientes clienteEn){
                                 <textbox id="buscarTextNo"  onOK='buscar(self.value,"contrato")' maxlength="60" cols="10" />
                                 <button id="buscarno"  label="Buscar" onClick='buscar(buscarTextNo.getValue(),"contrato");'/>
                                 Cliente:
-                                <textbox id="buscarTextCliente"  onChanging='buscar(buscarTextCiente.getValue(),"otro");'  onOK='buscar(buscarTextCiente.getValue(),"otro");' maxlength="60" cols="25" />
-                                <button id="buscar"  label="Buscar" onClick='buscar(buscarTextCiente.getValue(),"otro");'/>
+                                <textbox id="buscarTextCliente"  onChanging='buscar(buscarTextCliente.getValue(),"otro");'  onOK='buscar(buscarTextCliente.getValue(),"otro");' maxlength="60" cols="25" />
+                                <button id="buscar"  label="Buscar" onClick='buscar(buscarTextCliente.getValue(),"otro");'/>
                             </hbox>
                             <hbox>
                                 <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();" id="datos" width="100%">
                                     <listhead>
                                        
-                                        <listheader label="Nombres"/>
-                                        <listheader label="MAC ADDRESS"/>
+                                        <listheader label="Contrato"/>
+                                        <listheader label="Clientes"/>
 
                                     </listhead>
                                     <listitem forEach="${allEvents}" value="${each}">
                                         <listcell label="${each.codigo}" />
                                         <listcell label="${each.apellidos}" />
-                                        <listcell label="${each.direccion}" />
+                                        
                                     </listitem>
                                 </listbox>
 
