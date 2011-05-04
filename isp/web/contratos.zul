@@ -102,7 +102,7 @@ llenarCliente(Clientes clienteEn){
     identificacion.value = clienteEn.getIdentificacion();
      codigocli.value = clienteEn.getCodigo()+"";
      direccion.value  = clienteEn.getDireccion();
-     combo.value = clienteEn.getApellidos()+" "+clienteEn.getNombres() +"["+codigocli.value+"]";
+     combo.value = clienteEn.getApellidos()+" "+clienteEn.getNombres() ;
 
 }
   void verificarCedula(String valor){
@@ -148,8 +148,9 @@ llenarCliente(Clientes clienteEn){
                             <span style="float:right"> Identificación: </span> 
                             <span> 
                                 <textbox id="identificacion"  onOK="verificarCedula(self.value)"  />
-                                <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
+                               
                             Digite el No. luego presione ENTER
+                             <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
                             </span>
                         </row>
                         <row>
@@ -285,8 +286,6 @@ llenarCliente(Clientes clienteEn){
                                     <span>
                                         <textbox  readonly="true"  cols="32"   id="equipo1" />
 
-                                        <textbox id="codigoequi1"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
-                                        
                                         <button label="Buscar" image="/images/auditoria.gif">
                                             <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
@@ -300,10 +299,57 @@ llenarCliente(Clientes clienteEn){
                                             </attribute>
                                         </button> 
                        
+                                        <textbox id="codigoequi1"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                        
                       
                                     </span>
                                 </row>
-                               
+                                 <row>
+                                    <span style="float:right"> Equipo Asignado 2:</span> 
+                                    <span>
+                                        <textbox  readonly="true"  cols="32"   id="equipo2" />
+
+                                        
+                                        <button label="Buscar" image="/images/auditoria.gif">
+                                            <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setAttribute("equipo", 2);
+                                            win.setTitle("Buscar Equipos");
+                                            win.doModal();
+                                            }                            
+                                            </attribute>
+                                        </button> 
+                       
+                                        <textbox id="codigoequi2"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                      
+                                    </span>
+                                </row>
+                                <row>
+                                    <span style="float:right"> Equipo Asignado 3:</span> 
+                                    <span>
+                                        <textbox  readonly="true"  cols="32"   id="equipo3" />
+
+                                       
+                                        
+                                        <button label="Buscar" image="/images/auditoria.gif">
+                                            <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setAttribute("equipo", 3);
+                                            win.setTitle("Buscar Equipos");
+                                            win.doModal();
+                                            }                            
+                                            </attribute>
+                                        </button> 
+                        <textbox id="codigoequi3"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                      
+                                    </span>
+                                </row>
                             </rows>
                         </grid>
                     </panelchildren>
@@ -318,8 +364,6 @@ llenarCliente(Clientes clienteEn){
                                     <span>
                                         <textbox  readonly="true"  cols="32"   id="combov" />
 
-                                        <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
-                                        
                                         <button label="Buscar" image="/images/auditoria.gif">
                                             <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEmpleados.zul", null, null);
@@ -344,6 +388,8 @@ llenarCliente(Clientes clienteEn){
                                         </button> 
                      
                               
+                                        <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                        
                     
                        
                       

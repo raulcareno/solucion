@@ -64,7 +64,18 @@ if(equipo.equals(1)){
   codiequi = Path.getComponent("//contratospage/contratosventana/codigoequi1");
   codiequi.value = cequipos.getCodigo()+"";
   equi.value = cequipos.getEquipos().getNombre()+" "+cequipos.getEquipos().getModelo()+" "+cequipos.getEquipos().getMarcas().getNombre();
+ }else if(equipo.equals(2)){
+  equi = Path.getComponent("//contratospage/contratosventana/equipo2");
+  codiequi = Path.getComponent("//contratospage/contratosventana/codigoequi2");
+  codiequi.value = cequipos.getCodigo()+"";
+  equi.value = cequipos.getEquipos().getNombre()+" "+cequipos.getEquipos().getModelo()+" "+cequipos.getEquipos().getMarcas().getNombre();
+ }else if(equipo.equals(3)){
+  equi = Path.getComponent("//contratospage/contratosventana/equipo3");
+  codiequi = Path.getComponent("//contratospage/contratosventana/codigoequi3");
+  codiequi.value = cequipos.getCodigo()+"";
+  equi.value = cequipos.getEquipos().getNombre()+" "+cequipos.getEquipos().getModelo()+" "+cequipos.getEquipos().getMarcas().getNombre();
  }
+ 
   
  
  
@@ -83,7 +94,7 @@ if(equipo.equals(1)){
 
                         <caption label="Busquedas" />
                         <vbox>
-                            <hbox>  Apellidos:
+                            <hbox>  Equipo:
                                 <textbox id="buscarText"  onChanging="buscar(event.value)"  onOK="buscar(self.value)" maxlength="60" cols="40" />
                                 <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                             </hbox>
