@@ -41,6 +41,13 @@ void llenar(Contratos  equi2){
     usuario.value = equi.getUsuario();
     ip.value = equi.getIp();
     clave.value = equi.getClave();
+       if(equi.getEstado().equals("Activo")){
+            eactivo.selected = true;
+        }else if(equi.getEstado().equals("Cancelado")){
+            ecancelado.selected = true;
+        }else if(equi.getEstado().equals("Suspendido")){
+            esuspendido.selected = true;
+        } 
     if(equi.getEmpleados() != null){
            codigoemp.value = equi.getEmpleados().getCodigo()+"";
         combov.value =equi.getEmpleados().getApellidos()+" "+equi.getEmpleados().getNombres();
@@ -160,7 +167,7 @@ void estado(Boolean estado,Boolean modificar){
     equi.setClave(clave.value);
     equi.setEmpleados(new Empleados(new Integer(codigoemp.value)));
     equi.setContrato(numerocontrato.value);
-    
+    equi.setEstado(estadoContrato.selectedItem.value);
     
     try{
        equi.setControlequipos(new Controlequipos(new Integer(codigoequi1.value))); 
@@ -435,37 +442,48 @@ llenarCliente(Clientes clienteEn){
                                                 <checkbox id="autorizado" disabled="true"  />
                                             </row>
                                             <row spans="4">
-                                                <grid>
-                                                    <rows>
-                                                        <row>
-                                                            <span style="float:right">   IP(*):</span>
-                                                            <textbox cols="15" readonly="true" id="ip" /> 
-                                                            <span style="float:right">   Usuario:</span>
-                                                            <textbox cols="15" readonly="true"   id="usuario" /> 
-                                                            <span style="float:right">   Clave:</span>
-                                                            <textbox cols="15" readonly="true"   id="clave" /> 
-                                                        </row>
-                                                    </rows>
-                                                </grid>
-                                            </row>
-                                        </rows>
-                                    </grid>
-                                </panelchildren>
-                            </panel>
-                            <panel id="equiposcontrol" framable="true" width="100%" >
-                                <panelchildren>
-                                    <grid>
-                                        <rows>
-                                            <row spans="2">
+                                                
+	    			
+                                                <radiogroup id="estadoContrato" >
+                                                    <radio id="eactivo" value="Activo" label="ACTIVO"/>
+                                                    <radio id="ecancelado"  value="Cancelado"  label="CANCELADO"/>
+                                                    <radio  id="esuspendido" value="Suspendido"  label="SUSPENDIDO"/>
+                                         
+                                                </radiogroup>
+                                            
+                                        </row>
+                                        <row spans="4">
+                                            <grid>
+                                                <rows>
+                                                    <row>
+                                                        <span style="float:right">   IP(*):</span>
+                                                        <textbox cols="15" readonly="true" id="ip" /> 
+                                                        <span style="float:right">   Usuario:</span>
+                                                        <textbox cols="15" readonly="true"   id="usuario" /> 
+                                                        <span style="float:right">   Clave:</span>
+                                                        <textbox cols="15" readonly="true"   id="clave" /> 
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </panelchildren>
+                        </panel>
+                        <panel id="equiposcontrol" framable="true" width="100%" >
+                            <panelchildren>
+                                <grid>
+                                    <rows>
+                                        <row spans="2">
                                    EQUIPOS OCUPADOS
-                                            </row>
-                                            <row>
-                                                <span style="float:right"> Equipo Asignado 1:</span> 
-                                                <span>
-                                                    <textbox  readonly="true"  cols="32"   id="equipo1" />
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Equipo Asignado 1:</span> 
+                                            <span>
+                                                <textbox  readonly="true"  cols="32"   id="equipo1" />
 
-                                                    <button label=""  id="buscarE1" disabled="true" image="/images/auditoria.gif">
-                                                        <attribute name="onClick">{
+                                                <button label=""  id="buscarE1" disabled="true" image="/images/auditoria.gif">
+                                                    <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -474,22 +492,22 @@ llenarCliente(Clientes clienteEn){
                                             win.setTitle("Buscar Equipos");
                                             win.doModal();
                                             }                            
-                                                        </attribute>
-                                                    </button> 
+                                                    </attribute>
+                                                </button> 
                        
-                                                    <textbox id="codigoequi1"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                                <textbox id="codigoequi1"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
                                         
                       
-                                                </span>
-                                            </row>
-                                            <row>
-                                                <span style="float:right"> Equipo Asignado 2:</span> 
-                                                <span>
-                                                    <textbox  readonly="true"  cols="32"   id="equipo2" />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Equipo Asignado 2:</span> 
+                                            <span>
+                                                <textbox  readonly="true"  cols="32"   id="equipo2" />
 
                                         
-                                                    <button label=""  id="buscarE2" disabled="true" image="/images/auditoria.gif">
-                                                        <attribute name="onClick">{
+                                                <button label=""  id="buscarE2" disabled="true" image="/images/auditoria.gif">
+                                                    <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -498,22 +516,22 @@ llenarCliente(Clientes clienteEn){
                                             win.setTitle("Buscar Equipos");
                                             win.doModal();
                                             }                            
-                                                        </attribute>
-                                                    </button> 
+                                                    </attribute>
+                                                </button> 
                        
-                                                    <textbox id="codigoequi2"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                                <textbox id="codigoequi2"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
                       
-                                                </span>
-                                            </row>
-                                            <row>
-                                                <span style="float:right"> Equipo Asignado 3:</span> 
-                                                <span>
-                                                    <textbox  readonly="true"  cols="32"   id="equipo3" />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Equipo Asignado 3:</span> 
+                                            <span>
+                                                <textbox  readonly="true"  cols="32"   id="equipo3" />
 
                                        
                                         
-                                                    <button label=""  id="buscarE3" disabled="true"  image="/images/auditoria.gif">
-                                                        <attribute name="onClick">{
+                                                <button label=""  id="buscarE3" disabled="true"  image="/images/auditoria.gif">
+                                                    <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -522,30 +540,30 @@ llenarCliente(Clientes clienteEn){
                                             win.setTitle("Buscar Equipos");
                                             win.doModal();
                                             }                            
-                                                        </attribute>
-                                                    </button> 
-                                                    <textbox id="codigoequi3"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                                    </attribute>
+                                                </button> 
+                                                <textbox id="codigoequi3"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
                       
-                                                </span>
-                                            </row>
-                                        </rows>
-                                    </grid>
-                                </panelchildren>
-                            </panel>
-                            <panel id="daws" framable="true" width="100%" >
-                                <panelchildren>
-                                    <grid>
-                                        <rows>
-                                            <row spans="2">
+                                            </span>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </panelchildren>
+                        </panel>
+                        <panel id="daws" framable="true" width="100%" >
+                            <panelchildren>
+                                <grid>
+                                    <rows>
+                                        <row spans="2">
                                     DATOS DEL VENDEDOR
-                                            </row>
-                                            <row>
-                                                <span style="float:right"> Vendido por(*):</span> 
-                                                <span>
-                                                    <textbox  readonly="true"  cols="32"   id="combov" />
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Vendido por(*):</span> 
+                                            <span>
+                                                <textbox  readonly="true"  cols="32"   id="combov" />
 
-                                                    <button label=""  id="buscarE" disabled="true" image="/images/auditoria.gif">
-                                                        <attribute name="onClick">{
+                                                <button label=""  id="buscarE" disabled="true" image="/images/auditoria.gif">
+                                                    <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEmpleados.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -553,10 +571,10 @@ llenarCliente(Clientes clienteEn){
                                             win.setTitle("Buscar Empleados");
                                             win.doModal();
                                             }                            
-                                                        </attribute>
-                                                    </button> 
-                                                    <button label="" disabled="true" id="nuevoE" image="/images/empleados.png" >
-                                                        <attribute name="onClick">{
+                                                    </attribute>
+                                                </button> 
+                                                <button label="" disabled="true" id="nuevoE" image="/images/empleados.png" >
+                                                    <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("empleados.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -564,78 +582,78 @@ llenarCliente(Clientes clienteEn){
                                             win.setTitle("Nuevo Empleado");
                                             win.doModal();
                                             }                            
-                                                        </attribute>
-                                                    </button> 
+                                                    </attribute>
+                                                </button> 
                      
                               
-                                                    <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                                <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
                                         
                     
                        
                       
-                                                </span>
-                                            </row>
-                                            <row>
-                                                <span style="float:right"> Registrado por(*):</span> 
-                                                <textbox id="registrado" readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
-                                                <textbox id="registradoU"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
-                                            </row>
-                                        </rows>
-                                    </grid>
-                                </panelchildren>
-                            </panel>
-                            <vbox>
-                                <vbox>
-                                    <hbox>
-                                        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                                    </hbox>
-                                </vbox>
-
-                            </vbox>
-                        </panelchildren>
-                    </panel>
-                </tabpanel>
-                <tabpanel>
-                    <groupbox  width="100%" mold="3d" >
-                        <caption label="Busquedas" />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Registrado por(*):</span> 
+                                            <textbox id="registrado" readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
+                                            <textbox id="registradoU"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </panelchildren>
+                        </panel>
                         <vbox>
-                            <hbox>  No.Contrato:
-                                <textbox id="buscarTextNo"  onOK='buscar(self.value,"contrato")' maxlength="60" cols="10" />
-                                <button id="buscarno"  label="Buscar" onClick='buscar(buscarTextNo.getValue(),"contrato");'/>
-                                Cliente:
-                                <textbox id="buscarTextCliente"  onChanging='buscar(buscarTextCliente.getValue(),"otro");'  onOK='buscar(buscarTextCliente.getValue(),"otro");' maxlength="60" cols="25" />
-                                <button id="buscar"  label="Buscar" onClick='buscar(buscarTextCliente.getValue(),"otro");'/>
-                            </hbox>
-                            <hbox>
-                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();" id="datos" width="100%">
-                                    <listhead>
-                                        <listheader label="Contrato"/>
-                                        <listheader label="Clientes"/>
-                                    </listhead>
-                                    <listitem forEach="${allEvents}" value="${each}">
-                                        <listcell label="${each.codigo}" />
-                                        <listcell label="${each.apellidos}" />
-                                    </listitem>
-                                </listbox>
-                            </hbox>
+                            <vbox>
+                                <hbox>
+                                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                                </hbox>
+                            </vbox>
+
                         </vbox>
-                    </groupbox>
-                </tabpanel>  
-                <tabpanel>
-                    <panel height="370px" style="margin-bottom:10px"
+                    </panelchildren>
+                </panel>
+            </tabpanel>
+            <tabpanel>
+                <groupbox  width="100%" mold="3d" >
+                    <caption label="Busquedas" />
+                    <vbox>
+                        <hbox>  No.Contrato:
+                            <textbox id="buscarTextNo"  onOK='buscar(self.value,"contrato")' maxlength="60" cols="10" />
+                            <button id="buscarno"  label="Buscar" onClick='buscar(buscarTextNo.getValue(),"contrato");'/>
+                                Cliente:
+                            <textbox id="buscarTextCliente"  onChanging='buscar(buscarTextCliente.getValue(),"otro");'  onOK='buscar(buscarTextCliente.getValue(),"otro");' maxlength="60" cols="25" />
+                            <button id="buscar"  label="Buscar" onClick='buscar(buscarTextCliente.getValue(),"otro");'/>
+                        </hbox>
+                        <hbox>
+                            <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();" id="datos" width="100%">
+                                <listhead>
+                                    <listheader label="Contrato"/>
+                                    <listheader label="Clientes"/>
+                                </listhead>
+                                <listitem forEach="${allEvents}" value="${each}">
+                                    <listcell label="${each.codigo}" />
+                                    <listcell label="${each.apellidos}" />
+                                </listitem>
+                            </listbox>
+                        </hbox>
+                    </vbox>
+                </groupbox>
+            </tabpanel>  
+            <tabpanel>
+                <panel height="370px" style="margin-bottom:10px"
                            title="Reporte" border="normal">
-                        <panelchildren>
-                            <jasperreport id="report" />
-                        </panelchildren>
-                    </panel>
+                    <panelchildren>
+                        <jasperreport id="report" />
+                    </panelchildren>
+                </panel>
                 
-                </tabpanel>
-            </tabpanels>
+            </tabpanel>
+        </tabpanels>
             
             
-        </tabbox>
-    </div>
+    </tabbox>
+</div>
 </window>

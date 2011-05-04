@@ -41,10 +41,10 @@ public class Plan implements Serializable {
     private String tipo;
     @Column(name = "dias")
     private Integer dias =0;
-    @OneToMany(mappedBy = "plan")
-    private Collection<Comisiones> comisionesCollection;
-    @OneToMany(mappedBy = "plan")
-    private Collection<Contratos> contratosCollection;
+//    @OneToMany(mappedBy = "plan")
+//    private Collection<Comisiones> comisionesCollection;
+//    @OneToMany(mappedBy = "plan")
+//    private Collection<Contratos> contratosCollection;
 
     public Plan() {
     }
@@ -93,21 +93,21 @@ public class Plan implements Serializable {
         this.dias = dias;
     }
 
-    public Collection<Comisiones> getComisionesCollection() {
-        return comisionesCollection;
-    }
-
-    public void setComisionesCollection(Collection<Comisiones> comisionesCollection) {
-        this.comisionesCollection = comisionesCollection;
-    }
-
-    public Collection<Contratos> getContratosCollection() {
-        return contratosCollection;
-    }
-
-    public void setContratosCollection(Collection<Contratos> contratosCollection) {
-        this.contratosCollection = contratosCollection;
-    }
+//    public Collection<Comisiones> getComisionesCollection() {
+//        return comisionesCollection;
+//    }
+//
+//    public void setComisionesCollection(Collection<Comisiones> comisionesCollection) {
+//        this.comisionesCollection = comisionesCollection;
+//    }
+//
+//    public Collection<Contratos> getContratosCollection() {
+//        return contratosCollection;
+//    }
+//
+//    public void setContratosCollection(Collection<Contratos> contratosCollection) {
+//        this.contratosCollection = contratosCollection;
+//    }
 
     @Override
     public int hashCode() {

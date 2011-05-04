@@ -51,9 +51,9 @@ public class Nodos implements Serializable {
        @JoinColumn(name = "sector", referencedColumnName = "codigo")
     @ManyToOne
     private Sector sector;
-
-    @OneToMany(mappedBy = "nodos")
-    private Collection<Contratos> contratosCollection;
+//
+//    @OneToMany(mappedBy = "nodos")
+//    private Collection<Contratos> contratosCollection;
 
     public Nodos() {
     }
@@ -128,13 +128,13 @@ public class Nodos implements Serializable {
         this.seguridad = seguridad;
     }
 
-    public Collection<Contratos> getContratosCollection() {
-        return contratosCollection;
-    }
-
-    public void setContratosCollection(Collection<Contratos> contratosCollection) {
-        this.contratosCollection = contratosCollection;
-    }
+//    public Collection<Contratos> getContratosCollection() {
+//        return contratosCollection;
+//    }
+//
+//    public void setContratosCollection(Collection<Contratos> contratosCollection) {
+//        this.contratosCollection = contratosCollection;
+//    }
 
     @Override
     public int hashCode() {

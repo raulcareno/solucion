@@ -8,6 +8,10 @@
 	<parameter name="telefono" class="java.lang.String"/>
 	<parameter name="ruc" class="java.lang.String"/>
 	<parameter name="cliente" class="java.lang.String"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="ruc" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -39,10 +43,22 @@
 		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="145" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[cliente]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="104" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="104"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cliente}+"Comparecen a la celebración de este contrato, por una parte Dra. Gladys Amanda Báez Pavón Rectora y como tal representante legal del CENTRO EDUCATIVO PARTICULAR "MARQUÉS DE SELVA ALEGRE" CON RUC 1703541647; quien en adelante y para efectos de este contrato se le denominará “El comprador”;y por otra parte el  Ingeniero GEOVANNY FRANCISCO JADÁN ORTEGA, en calidad de Gerente General y como tal representante legal de “JCINFORM” Soluciones Informáticas por sus propios derechos, a quien en lo posterior se le denominará “El Vendedor”, siendo legalmente capaces para contratar, en forma libre y voluntaria convienen en suscribir el presente contrato al tenor de las siguientes cláusulas:"]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch"/>

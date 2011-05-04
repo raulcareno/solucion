@@ -38,6 +38,8 @@ public class Contratos implements Serializable {
     private Integer codigo;
     @Column(name = "contrato")
     private String contrato;
+    @Column(name = "estado")
+    private String estado ="";
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha= new Date();
@@ -104,6 +106,14 @@ public class Contratos implements Serializable {
 
     public void setContrato(String contrato) {
         this.contrato = contrato;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Date getFecha() {

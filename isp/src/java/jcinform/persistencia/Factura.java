@@ -71,8 +71,8 @@ public class Factura implements Serializable {
     private String nocheque;
     @Column(name = "tarjeta")
     private Double tarjeta;
-    @OneToMany(mappedBy = "factura")
-    private Collection<Cxcobrar> cxcobrarCollection;
+//    @OneToMany(mappedBy = "factura")
+//    private Collection<Cxcobrar> cxcobrarCollection;
     @OneToMany(mappedBy = "factura")
     private Collection<Detalle> detalleCollection;
 
@@ -187,13 +187,13 @@ public class Factura implements Serializable {
         this.tarjeta = tarjeta;
     }
 
-    public Collection<Cxcobrar> getCxcobrarCollection() {
-        return cxcobrarCollection;
-    }
-
-    public void setCxcobrarCollection(Collection<Cxcobrar> cxcobrarCollection) {
-        this.cxcobrarCollection = cxcobrarCollection;
-    }
+//    public Collection<Cxcobrar> getCxcobrarCollection() {
+//        return cxcobrarCollection;
+//    }
+//
+//    public void setCxcobrarCollection(Collection<Cxcobrar> cxcobrarCollection) {
+//        this.cxcobrarCollection = cxcobrarCollection;
+//    }
 
     public Collection<Detalle> getDetalleCollection() {
         return detalleCollection;

@@ -35,8 +35,8 @@ public class Canton implements Serializable {
     private Integer codigo;
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(mappedBy = "canton")
-    private Collection<Sector> sectorCollection;
+//    @OneToMany(mappedBy = "canton")
+//    private Collection<Sector> sectorCollection;
 
     public Canton() {
     }
@@ -61,13 +61,13 @@ public class Canton implements Serializable {
         this.nombre = nombre;
     }
 
-    public Collection<Sector> getSectorCollection() {
-        return sectorCollection;
-    }
-
-    public void setSectorCollection(Collection<Sector> sectorCollection) {
-        this.sectorCollection = sectorCollection;
-    }
+//    public Collection<Sector> getSectorCollection() {
+//        return sectorCollection;
+//    }
+//
+//    public void setSectorCollection(Collection<Sector> sectorCollection) {
+//        this.sectorCollection = sectorCollection;
+//    }
 
     @Override
     public int hashCode() {

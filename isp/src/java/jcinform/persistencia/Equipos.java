@@ -44,8 +44,8 @@ public class Equipos implements Serializable {
     @JoinColumn(name = "marcas", referencedColumnName = "codigo")
     @ManyToOne
     private Marcas marcas;
-    @OneToMany(mappedBy = "equipos")
-    private Collection<Controlequipos> controlequiposCollection;
+//    @OneToMany(mappedBy = "equipos")
+//    private Collection<Controlequipos> controlequiposCollection;
 
     public Equipos() {
     }
@@ -94,13 +94,13 @@ public class Equipos implements Serializable {
         this.marcas = marcas;
     }
 
-    public Collection<Controlequipos> getControlequiposCollection() {
-        return controlequiposCollection;
-    }
-
-    public void setControlequiposCollection(Collection<Controlequipos> controlequiposCollection) {
-        this.controlequiposCollection = controlequiposCollection;
-    }
+//    public Collection<Controlequipos> getControlequiposCollection() {
+//        return controlequiposCollection;
+//    }
+//
+//    public void setControlequiposCollection(Collection<Controlequipos> controlequiposCollection) {
+//        this.controlequiposCollection = controlequiposCollection;
+//    }
 
     @Override
     public int hashCode() {

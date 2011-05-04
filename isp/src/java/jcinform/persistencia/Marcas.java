@@ -35,8 +35,8 @@ public class Marcas implements Serializable {
     private Integer codigo;
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(mappedBy = "marcas")
-    private Collection<Equipos> equiposCollection;
+//    @OneToMany(mappedBy = "marcas")
+//    private Collection<Equipos> equiposCollection;
 
     public Marcas() {
     }
@@ -60,14 +60,14 @@ public class Marcas implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    public Collection<Equipos> getEquiposCollection() {
-        return equiposCollection;
-    }
-
-    public void setEquiposCollection(Collection<Equipos> equiposCollection) {
-        this.equiposCollection = equiposCollection;
-    }
+//
+//    public Collection<Equipos> getEquiposCollection() {
+//        return equiposCollection;
+//    }
+//
+//    public void setEquiposCollection(Collection<Equipos> equiposCollection) {
+//        this.equiposCollection = equiposCollection;
+//    }
 
     @Override
     public int hashCode() {

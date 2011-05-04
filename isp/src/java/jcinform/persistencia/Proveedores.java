@@ -45,8 +45,8 @@ public class Proveedores implements Serializable {
     private String telefono;
     @Column(name = "email")
     private String email;
-    @OneToMany(mappedBy = "proveedores")
-    private Collection<Controlequipos> controlequiposCollection;
+//    @OneToMany(mappedBy = "proveedores")
+//    private Collection<Controlequipos> controlequiposCollection;
 
     public Proveedores() {
     }
@@ -110,14 +110,14 @@ public class Proveedores implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public Collection<Controlequipos> getControlequiposCollection() {
-        return controlequiposCollection;
-    }
-
-    public void setControlequiposCollection(Collection<Controlequipos> controlequiposCollection) {
-        this.controlequiposCollection = controlequiposCollection;
-    }
+//
+//    public Collection<Controlequipos> getControlequiposCollection() {
+//        return controlequiposCollection;
+//    }
+//
+//    public void setControlequiposCollection(Collection<Controlequipos> controlequiposCollection) {
+//        this.controlequiposCollection = controlequiposCollection;
+//    }
 
     @Override
     public int hashCode() {
