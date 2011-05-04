@@ -135,32 +135,32 @@ void estado(Boolean estado,Boolean modificar){
 
 
  void guardar(){
-    if(nombre.value.equals("")){
+    /*if(nombre.value.equals("")){
             Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             return;
-    }
-        equi.setClientes(new Clientes(codigocli.value));
+    }*/
+        equi.setClientes(new Clientes(new Integer(codigocli.value)));
     equi.setFecha(fecha.value);
     equi.setFechainstalacion(fechainstalacion.value);
     equi.setAutorizado(autorizado.isChecked());
     equi.setUsuario(usuario.value);
     equi.setIp(ip.value);
     equi.setClave(clave.value);
-    equi.setEmpleados(new Empleados(codigoemp.value));
+    equi.setEmpleados(new Empleados(new Integer(codigoemp.value)));
     equi.setContrato(numerocontrato.value);
     
     try{
-       equi.getControlequipos(new Controlequipos(codigoequi1.value); 
+       equi.getControlequipos(new Controlequipos(new Integer(codigoequi1.value))); 
     }catch(Exception e){
     }
     
     try{
-       equi.getControlequipos2(new Controlequipos(codigoequi2.value)); 
+       equi.getControlequipos2(new Controlequipos(new Integer(codigoequi2.value))); 
     }catch(Exception e){
     }
     
     try{
-       equi.getControlequipos3(new Controlequipos(codigoequi3.value)); 
+       equi.getControlequipos3(new Controlequipos(new Integer(codigoequi3.value))); 
     }catch(Exception e){
     }
     try{

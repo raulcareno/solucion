@@ -40,9 +40,7 @@ public class Contratos implements Serializable {
     private String contrato;
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
-    private Date fecha;
-    @Column(name = "empleados")
-    private Integer empleados;
+    private Date fecha= new Date();
     @Column(name = "fechapago")
     @Temporal(TemporalType.DATE)
     private Date fechapago;
@@ -56,7 +54,7 @@ public class Contratos implements Serializable {
     private Boolean autorizado = false;
     @Column(name = "fechainstalacion")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechainstalacion;
+    private Date fechainstalacion= new Date();
     @Column(name = "fechafinal")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
@@ -78,6 +76,9 @@ public class Contratos implements Serializable {
     @JoinColumn(name = "clientes", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
+    @JoinColumn(name = "empleados", referencedColumnName = "codigo")
+    @ManyToOne
+    private Empleados empleados;
 
     public Contratos() {
     }
@@ -110,14 +111,7 @@ public class Contratos implements Serializable {
         this.fecha = fecha;
     }
 
-    public Integer getEmpleados() {
-        return empleados;
-    }
-
-    public void setEmpleados(Integer empleados) {
-        this.empleados = empleados;
-    }
-
+   
     public Date getFechapago() {
         return fechapago;
     }
@@ -189,6 +183,16 @@ public class Contratos implements Serializable {
     public void setNodos(Nodos nodos) {
         this.nodos = nodos;
     }
+
+    public Empleados getEmpleados() {
+        return empleados;
+    }
+
+    public void setEmpleados(Empleados empleados) {
+        this.empleados = empleados;
+    }
+    
+    
 
     public Controlequipos getControlequipos() {
         return controlequipos;
