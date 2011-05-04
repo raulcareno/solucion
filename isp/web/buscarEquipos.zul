@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+    
+ 
+    <window onCreate="cargar()" id="crearControlequipos">
+  <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+    <script type="text/javascript" src="/js/masks.js"/>
+  <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.util.ArrayList;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Controlequipos as o where o.identificacion = 0");
+    static Controlequipos empa = new Controlequipos();
+    Permisos permiso = new Permisos();
+    List perfiles = adm.query("Select o from Sector as o  ");
+    Object media = null;
+Boolean instanciadaContratos = false;
+Integer equipo = 0;
+ 
+ 
+ 
+
+ 
+ void move(){
+    cargarCliente((Controlequipos)datos.selectedItem.value);
+        crearControlequipos.detach();
+  }
+ 
+  
+ 
+  void buscar(String p){
+        List ControlequiposEncontrados = adm.query("Select o from Controlequipos as o where o.equipos.nombre like '"+p+"%' order by o.equipos.nombre");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
+                      Controlequipos acceIt = (Controlequipos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getEquipos().getNombre()+" "+acceIt.getEquipos().getModelo()+" "+acceIt.getEquipos().getMarcas().getNombre()));
+                      li.appendChild(new Listcell(acceIt.getMac()));
+                      datos.appendChild(li);
+             }
+
+    }
+ 
+
+cargarCliente(Controlequipos cequipos){
+if(equipo.equals(1)){
+  equi = Path.getComponent("//contratospage/contratosventana/equipo1");
+  codiequi = Path.getComponent("//contratospage/contratosventana/codigoequi1");
+  codiequi.value = cequipos.getCodigo()+"";
+  equi.value = cequipos.getEquipos().getNombre()+" "+cequipos.getEquipos().getModelo()+" "+cequipos.getEquipos().getMarcas().getNombre();
+ }
+  
+ 
+ 
+ 
+ 
+
+}
+
+]]>
+        </zscript>
+       
+
+   
+
+                    <groupbox  width="500px" mold="3d" >
+
+                        <caption label="Busquedas" />
+                        <vbox>
+                            <hbox>  Apellidos:
+                                <textbox id="buscarText"  onChanging="buscar(event.value)"  onOK="buscar(self.value)" maxlength="60" cols="40" />
+                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                            </hbox>
+                            <hbox>
+                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();" id="datos" width="100%">
+                                    <listhead>
+                                       
+                                        <listheader label="Nombres"/>
+                                        <listheader label="MAC ADDRESS"/>
+
+                                    </listhead>
+                                    <listitem forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.codigo}" />
+                                        <listcell label="${each.apellidos}" />
+                                        <listcell label="${each.direccion}" />
+                                    </listitem>
+                                </listbox>
+
+
+                            </hbox>
+                        </vbox>
+                    </groupbox>
+
+ 
+        <zscript>
+            void cargar(){
+            try{
+                    instanciadaContratos = crearControlequipos.getAttribute("nuevo");
+                    equipo = crearControlequipos.getAttribute("equipo");
+             }catch(Exception e){
+                    instanciadaContratos = false;
+                    equipo  =0;
+             }
+                    
+            }
+</zscript>
+    </window>
+</zk>

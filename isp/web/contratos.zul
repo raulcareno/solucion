@@ -135,7 +135,7 @@ llenarCliente(Clientes clienteEn){
     }
     </zscript>
     <div align="center">
-        <panel id="panel" framable="true" width="600px" height="400px" title="Datos del Cliente"
+        <panel id="panel" framable="true" width="600px" height="100%" title="Datos del Cliente"
 	  border="normal"
 	collapsible="true"  >
             <panelchildren>
@@ -155,7 +155,7 @@ llenarCliente(Clientes clienteEn){
                         <row>
                             <span style="float:right"> Nombres(*):</span> 
                             <span>     
-                            <textbox readonly="true" id="combo" />
+                                <textbox readonly="true" cols="32"   id="combo" />
                            
                               
                                 <button label="Buscar" image="/images/auditoria.gif">
@@ -169,7 +169,7 @@ llenarCliente(Clientes clienteEn){
                                             }                            
                                     </attribute>
                                 </button> 
-                       <button label="Nuevo" image="/images/clientes.png">
+                                <button label="Nuevo" image="/images/clientes.png">
                                     <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("clientes.zul", null, null);
                                             win.setMaximizable(true);
@@ -275,7 +275,40 @@ llenarCliente(Clientes clienteEn){
                         </grid>
                     </panelchildren>
                 </panel>
-                <panel id="daws" framable="true" width="100%"   title="Datos del Vendedor" 	  border="normal" collapsible="true"  >
+                <panel id="equiposcontrol" framable="true" width="100%"   title="Equipos Ocupados" 	  border="normal" collapsible="true"  >
+                    <panelchildren>
+                        <grid>
+                            <rows>
+                              
+                                <row>
+                                    <span style="float:right"> Equipo Asignado 1:</span> 
+                                    <span>
+                                        <textbox  readonly="true"  cols="32"   id="equipo1" />
+
+                                        <textbox id="codigoequi1"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                        
+                                        <button label="Buscar" image="/images/auditoria.gif">
+                                            <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setAttribute("equipo", 1);
+                                            win.setTitle("Buscar Equipos");
+                                            win.doModal();
+                                            }                            
+                                            </attribute>
+                                        </button> 
+                       
+                      
+                                    </span>
+                                </row>
+                               
+                            </rows>
+                        </grid>
+                    </panelchildren>
+                </panel>
+                    <panel id="daws" framable="true" width="100%"   title="Datos del Vendedor" 	  border="normal" collapsible="true"  >
                     <panelchildren>
                         <grid>
                             <rows>
@@ -283,12 +316,12 @@ llenarCliente(Clientes clienteEn){
                                 <row>
                                     <span style="float:right"> Vendido por(*):</span> 
                                     <span>
-                                        <textbox  readonly="true"  id="combov" />
+                                        <textbox  readonly="true"  cols="32"   id="combov" />
 
                                         <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
                                         
-                                    <button label="Buscar" image="/images/auditoria.gif">
-                                    <attribute name="onClick">{
+                                        <button label="Buscar" image="/images/auditoria.gif">
+                                            <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEmpleados.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -296,8 +329,8 @@ llenarCliente(Clientes clienteEn){
                                             win.setTitle("Buscar Empleados");
                                             win.doModal();
                                             }                            
-                                    </attribute>
-                                </button> 
+                                            </attribute>
+                                        </button> 
                                         <button label="Nuevo"  image="/images/empleados.png" >
                                             <attribute name="onClick">{
                                 final Window win = (Window) Executions.createComponents("empleados.zul", null, null);
@@ -315,6 +348,10 @@ llenarCliente(Clientes clienteEn){
                        
                       
                                     </span>
+                                </row>
+                                <row>
+                                    <span style="float:right"> Registrado por(*):</span> 
+                                    <textbox  readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
                                 </row>
                             </rows>
                         </grid>
