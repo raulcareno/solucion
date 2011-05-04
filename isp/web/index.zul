@@ -93,7 +93,7 @@ import jcinform.persistencia.*;
                 <separator height="5px" orient="vertical"/>
                 <label  style="padding-left:10px;color:white;font-size:9px;" value="Sector: ${sessionScope.sector.sector.nombre}"  />
                 <separator height="5px"  orient="vertical"/>
-                <toolbarbutton style="padding-left:10px;color:white;font-size:9px;"  onClick="salir()" label="Cerrar Sesión"/>
+                <!--toolbarbutton style="padding-left:10px;color:white;font-size:9px;"  onClick="salir()" label="Cerrar Sesión"/-->
 
             </div>
 
