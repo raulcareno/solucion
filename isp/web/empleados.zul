@@ -121,14 +121,7 @@ void estado(Boolean estado,Boolean modificar){
 
              adm.guardar(empa);
          }
-          try{
-         if(instanciadaContratos == true){
-            cargarEmpleado(empa);
-          }
-         }catch(Exception error){
-         System.out.println("error en cargar cliente hacia contratos"+error);
-         
-         }
+      
          
               Boolean a = true;
             if(a){
@@ -141,7 +134,15 @@ void estado(Boolean estado,Boolean modificar){
                     
             }else{
                 Messagebox.show("No se pudo almacenar...X", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-            }
+            }    try{
+         if(instanciadaContratos == true){
+            cargarEmpleado(empa);
+            crearEmpleados.detach();
+          }
+         }catch(Exception error){
+         System.out.println("error en cargar cliente hacia contratos"+error);
+         
+         }
 
     }
 cargarEmpleado(Empleados emple){

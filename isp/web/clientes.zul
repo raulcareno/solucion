@@ -119,14 +119,7 @@ void estado(Boolean estado,Boolean modificar){
 
              adm.guardar(empa);
          }
-         try{
-         if(instanciadaContratos == true){
-            cargarCliente(empa);
-          }
-         }catch(Exception error){
-         System.out.println("error en cargar cliente hacia contratos"+error);
-         
-         }
+        
               Boolean a = true;
             if(a){
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -139,6 +132,15 @@ void estado(Boolean estado,Boolean modificar){
             }else{
                 Messagebox.show("No se pudo almacenar...X", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
             }
+             try{
+         if(instanciadaContratos == true){
+            cargarCliente(empa);
+            crearClientes.detach();   
+          }
+         }catch(Exception error){
+         System.out.println("error en cargar cliente hacia contratos"+error);
+         
+         }
 
     }
 
@@ -322,7 +324,6 @@ cargarCliente(Clientes clientes){
                             <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
                             <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                             <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                            <button  image="/images/cargar.gif" id="cargar"  label="CARGAR" disabled="instanciadaContratos"  onClick="crearClientes.hide();"/>
                         </hbox>
                     </vbox>
 
