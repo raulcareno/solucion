@@ -1,0 +1,659 @@
+<?page id="contratospage"?>
+<window id="contratosventana"  border="normal" >
+
+    <zscript>   <![CDATA[
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    List planes = adm.query("Select o from Plan as o");
+    List nodos = adm.query("Select o from Nodos as o");
+    static Contratos equi = new Contratos();
+    Permisos permiso = new Permisos();
+    //SimpleTreeModel stm = new SimpleTreeModel(root);
+            
+            Empleados usuarioActual = ses.getAttribute("user");
+    
+    
+//FUNCIONES
+void llenar(Contratos  equi2){
+    equi = equi2;
+    registro.setSelected(true);
+    if(equi.getClientes() != null){
+   identificacion.value = equi.getClientes().getIdentificacion();
+        codigocli.value = equi.getClientes().getCodigo()+"";
+        direccion.value = equi.getClientes().getDireccion();
+        combo.value =equi.getClientes().getApellidos()+" "+equi.getClientes().getNombres();//cliente
+     }else{
+     identificacion.value = "";
+        codigocli.value = "";
+        direccion.value ="";
+        combo.value ="";//cliente
+     }
+    fecha.value = equi.getFecha();
+    fechainstalacion.value = equi.getFechainstalacion();
+    autorizado.checked = equi.getAutorizado();
+    usuario.value = equi.getUsuario();
+    ip.value = equi.getIp();
+    clave.value = equi.getClave();
+       if(equi.getEstado().equals("Activo")){
+            eactivo.selected = true;
+        }else if(equi.getEstado().equals("Cancelado")){
+            ecancelado.selected = true;
+        }else if(equi.getEstado().equals("Suspendido")){
+            esuspendido.selected = true;
+        } 
+    if(equi.getEmpleados() != null){
+           codigoemp.value = equi.getEmpleados().getCodigo()+"";
+        combov.value =equi.getEmpleados().getApellidos()+" "+equi.getEmpleados().getNombres();
+    }else{
+        codigoemp.value = "";
+        combov.value ="";
+    }
+    
+    numerocontrato.value = equi.getContrato();
+    
+    try{
+       codigoequi1.value = equi.getControlequipos().getCodigo()+"";
+        equipo1.value = equi.getControlequipos().getEquipos().getNombre()+" "+ equi.getControlequipos().getEquipos().getModelo()+" "+ equi.getControlequipos().getEquipos().getMarcas().getNombre();
+    }catch(Exception e){
+        codigoequi1.value = "";
+        equipo1.value = "";
+    
+    }
+    try{
+        codigoequi2.value = equi.getControlequipos2().getCodigo()+"";
+        equipo2.value = equi.getControlequipos2().getEquipos().getNombre()+" "+ equi.getControlequipos2().getEquipos().getModelo()+" "+ equi.getControlequipos2().getEquipos().getMarcas().getNombre();
+    }catch(Exception e){
+    codigoequi2.value = "";
+        equipo2.value = "";
+    }
+    try{
+        codigoequi3.value = equi.getControlequipos3().getCodigo()+"";
+        equipo3.value = equi.getControlequipos3().getEquipos().getNombre()+" "+ equi.getControlequipos3().getEquipos().getModelo()+" "+ equi.getControlequipos3().getEquipos().getMarcas().getNombre();
+    }catch(Exception e){
+    codigoequi3.value = "";
+        equipo3.value = "";
+    }
+       
+       if(equi.getPlan() != null){
+             try{
+                      for (int i = 0; i <= perf.getItems().size(); i++) {
+                                    Plan tr0 = ((Plan)((Listitem)perf.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getPlan().getCodigo();
+                                    if(primero == segundo){
+                                        perf.setSelectedItem((Listitem)perf.getItems().get(i));
+                                        bd.value = equi.getPlan().getNombre()+" ";
+                                        break;
+                                    }
+                           }
+                 }catch(Exception err){System.out.println("ERROR no tiene planes asignados COMBO CURSOS: "+err);}
+
+
+      } else{
+               bd2.value = "";
+                nodo.setSelectedItem(null);
+    }
+    if(equi.getNodos() != null){
+ 
+        try{
+                      for (int i = 0; i <= nodo.getItems().size(); i++) {
+                                    Nodos tr0 = ((Nodos)((Listitem)nodo.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getNodos().getCodigo();
+                                    if(primero == segundo){
+                                        nodo.setSelectedItem((Listitem)nodo.getItems().get(i));
+                                        bd2.value = equi.getNodos().getNombre()+" ";
+                                        break;
+                                    }
+                           }
+                 }catch(Exception err){System.out.println("ERROR no tiene Nodoses asignados COMBO nodo "+err);}
+        
+    }else{
+       bd2.value = "";
+        nodo.setSelectedItem(null);
+    }
+    try{
+        registrado.value = equi.getRegistrador()+"";
+        registradoU.value = equi.getRegistrador().getCodigo()+"";
+     
+     }catch(Exception exa){}
+    
+    
+}
+void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+        equi = (Contratos)datos.selectedItem.value;
+    }
+    identificacion.readonly = estado;
+    buscarC.disabled = estado;
+    buscarE1.disabled = estado;
+    buscarE2.disabled = estado;
+    buscarE3.disabled = estado;
+    buscarE.disabled = estado;
+    fecha.disabled = estado;
+    fechainstalacion.disabled = estado;
+    autorizado.disabled = estado;
+    usuario.readonly = estado;
+    ip.readonly = estado;
+    clave.readonly = estado;
+    bd.disabled = estado;
+    bd2.disabled = estado;
+    numerocontrato.readonly = estado;
+    nuevoC.disabled = estado;
+    nuevoE.disabled = estado;
+     identificacion.focus();
+
+}
+
+
+ void guardar(){
+    /*if(nombre.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }*/
+        equi.setClientes(new Clientes(new Integer(codigocli.value)));
+    equi.setFecha(fecha.value);
+    equi.setFechainstalacion(fechainstalacion.value);
+    equi.setAutorizado(autorizado.isChecked());
+    equi.setUsuario(usuario.value);
+    equi.setIp(ip.value);
+    equi.setClave(clave.value);
+    equi.setEmpleados(new Empleados(new Integer(codigoemp.value)));
+    equi.setContrato(numerocontrato.value);
+    equi.setEstado(estadoContrato.selectedItem.value);
+    
+    try{
+       equi.setControlequipos(new Controlequipos(new Integer(codigoequi1.value))); 
+    }catch(Exception e){
+    }
+    
+    try{
+       equi.setControlequipos2(new Controlequipos(new Integer(codigoequi2.value))); 
+    }catch(Exception e){
+    }
+    
+    try{
+       equi.setControlequipos3(new Controlequipos(new Integer(codigoequi3.value))); 
+    }catch(Exception e){
+    }
+    try{
+        equi.setPlan(perf.getSelectedItem().getValue());
+        }catch(Exception e){
+    }
+    try{
+        equi.setNodos(nodo.getSelectedItem().getValue());
+    }catch(Exception e){
+    }
+    
+        if((!equi.getCodigo().equals(0)) ){
+            equi.setRegistrador(new Empleados(new Integer(registradoU.value)));
+             adm.actualizar(equi);
+                permiso.auditar("Contratos","Actualizar",""+equi.getContrato()+" - "+equi.getClientes());
+         }else{
+                equi.setRegistrador(usuarioActual);
+                equi.setCodigo(adm.getNuevaClave("Contratos","codigo"));
+                adm.guardar(equi);
+                permiso.auditar("Contratos","Guardar",""+equi.getContrato()+" - "+equi.getClientes());
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Contratos(0));
+                  
+    }
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Contratos",accion);
+ }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new Contratos(0));
+        estado(false,false);
+        
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Contratos)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; 
+       estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ 
+ 
+llenarCliente(Clientes clienteEn){
+    identificacion.value = clienteEn.getIdentificacion();
+     codigocli.value = clienteEn.getCodigo()+"";
+     direccion.value  = clienteEn.getDireccion();
+     combo.value = clienteEn.getApellidos()+" "+clienteEn.getNombres() ;
+
+}
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
+            if(empleados.size()>0){
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Clientes object = (Clientes)it.next();
+                      empa = object;
+                      
+                 }
+                llenarCliente(empa);
+                numerocontrato.focus();
+            }
+
+        }else{
+                if(valor.contains("999")){
+                    List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
+                     if(empleados.size()>0){
+                        for(Iterator it = empleados.iterator(); it.hasNext();) {
+                              Clientes object = (Clientes)it.next();
+                              empa = object;
+
+                         }
+                        llenarCliente(empa);
+                         numerocontrato.focus();
+                    }
+                }
+        
+        }
+ 
+    }
+    
+    
+     
+  void buscar(String p,String tipo){
+        List ControlequiposEncontrados = null;
+        if(tipo.equals("contrato")){
+            ControlequiposEncontrados  = adm.query("Select o from Contratos as o where o.contrato like '"+p+"%'");
+        }else{
+            ControlequiposEncontrados  = adm.query("Select o from Contratos as o where o.clientes.apellidos like '"+p+"%' order by o.clientes.apellidos");
+        }
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
+                      Contratos acceIt = (Contratos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                      li.appendChild(new Listcell(acceIt.getClientes().getApellidos()+" "+acceIt.getClientes().getNombres()));
+                      datos.appendChild(li);
+             }
+
+    }
+    
+  ]]>
+    </zscript>
+    <div align="center">
+        <tabbox  width="610px"  >
+            <tabs>
+                <tab id="registro" label="Contratos"/>
+                <tab label="Búsqueda" />
+                <tab label="Impresión"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+       
+                    <panel id="panel" framable="true" width="600px" height="100%" >
+                        <panelchildren>
+                
+            
+        
+                            <grid width="100%">
+                                <rows>
+                                    <row spans="2">
+                            DATOS DEL CLIENTE
+                                    </row>
+                                    <row>
+                                        <span style="float:right"> Identificación: </span> 
+                                        <span> 
+                                            <textbox id="identificacion"  readonly="true"  onOK="verificarCedula(self.value)"  />
+                               
+                            Digite el No. luego presione ENTER
+                                            <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
+                                        </span>
+                                    </row>
+                                    <row>
+                                        <span style="float:right"> Nombres:</span> 
+                                        <span>     
+                                            <textbox readonly="true" cols="32"   id="combo" />
+                           
+                              
+                                            <button label="" id="buscarC" disabled="true"  image="/images/auditoria.gif">
+                                                <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("buscarClientes.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setTitle("Buscar Clientes");
+                                            win.doModal();
+                                            }                            
+                                                </attribute>
+                                            </button> 
+                                            <button label="" disabled="true" id="nuevoC" image="/images/clientes.png">
+                                                <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("clientes.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setTitle("Nuevo Cliente");
+                                            win.doModal();
+                                            }                            
+                                                </attribute>
+                                            </button> 
+                              
+                    
+                       
+                      
+                                        </span>
+                                    </row>
+                                    <row>
+                                        <span style="float:right">Dirección:  </span>
+                                        <textbox id="direccion" cols="40" readonly="true"  />
+                                    </row>
+                    
+                                </rows>
+                            </grid>
+            
+                            <panel id="da" framable="true" width="100%"  >
+                                <panelchildren>
+                                    <grid width="100%">
+                                        <rows>
+                                            <row spans="2">
+                            DATOS DEL CONTRATO
+                                            </row>
+                                            <row>
+                                                <span style="float:right">No.Contrato:  </span>
+                                                <textbox style="color:red;font-size:16px"  readonly="true" id="numerocontrato" cols="16" />
+                                                <span style="float:right">Fecha:  </span>
+                                                <datebox id="fecha" disabled="true" onCreate="self.value = new Date()"/>
+                                            </row>
+                                            <row>
+                                                <span style="float:right"> Planes (*):</span>
+                                                <bandbox disabled="true" readonly="true"  id="bd">
+                                                    <bandpopup>
+                                                        <vbox>
+                                                            <listbox id="perf" width="450px"
+                                                     onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();">
+                                                                <listhead>
+                                                                    <listheader label="Descripción"/>
+                                                                    <listheader label="Tipo"/>
+                                                                    <listheader label="valor"/>
+                                            
+                                                                </listhead>
+                                                                <listitem forEach="${planes}" value="${each}">
+                                                                    <listcell label="${each.nombre}" />
+                                                                    <listcell label="${each.tipo}" />
+                                                                    <listcell label="${each.valor}" />
+
+                                                                </listitem>
+                                                            </listbox>
+                                                        </vbox>
+                                                    </bandpopup>
+                                                </bandbox>
+                                                <span style="float:right"> Fecha Instalación (*):</span>
+                                                <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = new Date()"/>
+                                 
+                                            </row>
+                  
+                                            <row>   
+                                                <span style="float:right"> Anidado a Nodo(*):</span>
+                                                <bandbox  disabled="true"  readonly="true"  id="bd2">
+                                                    <bandpopup>
+                                                        <vbox>
+                                                            <listbox id="nodo" width="450px"
+                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();">
+                                                                <listhead>
+                                                                    <listheader label="Nombre"/>
+                                                                    <listheader label="Sector"/>
+                                                                    <listheader label="Ip"/>
+                                            
+                                                                </listhead>
+                                                                <listitem forEach="${nodos}" value="${each}">
+                                                                    <listcell label="${each.nombre}" />
+                                                                    <listcell label="${each.sector}" />
+                                                                    <listcell label="${each.ip}" />
+                                                                </listitem>
+                                                            </listbox>
+                                                        </vbox>
+                                                    </bandpopup>
+                                                </bandbox>
+                                                <span style="float:right"> Autorizado a Instalación(*):</span>
+                                                <checkbox id="autorizado" disabled="true"  />
+                                            </row>
+                                            <row spans="4">
+                                                
+	    			
+                                                <radiogroup id="estadoContrato" >
+                                                    <radio id="eactivo" value="Activo" label="ACTIVO"/>
+                                                    <radio id="ecancelado"  value="Cancelado"  label="CANCELADO"/>
+                                                    <radio  id="esuspendido" value="Suspendido"  label="SUSPENDIDO"/>
+                                         
+                                                </radiogroup>
+                                            
+                                        </row>
+                                        <row spans="4">
+                                            <grid>
+                                                <rows>
+                                                    <row>
+                                                        <span style="float:right">   IP(*):</span>
+                                                        <textbox cols="15" readonly="true" id="ip" /> 
+                                                        <span style="float:right">   Usuario:</span>
+                                                        <textbox cols="15" readonly="true"   id="usuario" /> 
+                                                        <span style="float:right">   Clave:</span>
+                                                        <textbox cols="15" readonly="true"   id="clave" /> 
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </panelchildren>
+                        </panel>
+                        <panel id="equiposcontrol" framable="true" width="100%" >
+                            <panelchildren>
+                                <grid>
+                                    <rows>
+                                        <row spans="2">
+                                   EQUIPOS OCUPADOS
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Equipo Asignado 1:</span> 
+                                            <span>
+                                                <textbox  readonly="true"  cols="32"   id="equipo1" />
+
+                                                <button label=""  id="buscarE1" disabled="true" image="/images/auditoria.gif">
+                                                    <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setAttribute("equipo", 1);
+                                            win.setTitle("Buscar Equipos");
+                                            win.doModal();
+                                            }                            
+                                                    </attribute>
+                                                </button> 
+                       
+                                                <textbox id="codigoequi1"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                        
+                      
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Equipo Asignado 2:</span> 
+                                            <span>
+                                                <textbox  readonly="true"  cols="32"   id="equipo2" />
+
+                                        
+                                                <button label=""  id="buscarE2" disabled="true" image="/images/auditoria.gif">
+                                                    <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setAttribute("equipo", 2);
+                                            win.setTitle("Buscar Equipos");
+                                            win.doModal();
+                                            }                            
+                                                    </attribute>
+                                                </button> 
+                       
+                                                <textbox id="codigoequi2"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                      
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Equipo Asignado 3:</span> 
+                                            <span>
+                                                <textbox  readonly="true"  cols="32"   id="equipo3" />
+
+                                       
+                                        
+                                                <button label=""  id="buscarE3" disabled="true"  image="/images/auditoria.gif">
+                                                    <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setAttribute("equipo", 3);
+                                            win.setTitle("Buscar Equipos");
+                                            win.doModal();
+                                            }                            
+                                                    </attribute>
+                                                </button> 
+                                                <textbox id="codigoequi3"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                      
+                                            </span>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </panelchildren>
+                        </panel>
+                        <panel id="daws" framable="true" width="100%" >
+                            <panelchildren>
+                                <grid>
+                                    <rows>
+                                        <row spans="2">
+                                    DATOS DEL VENDEDOR
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Vendido por(*):</span> 
+                                            <span>
+                                                <textbox  readonly="true"  cols="32"   id="combov" />
+
+                                                <button label=""  id="buscarE" disabled="true" image="/images/auditoria.gif">
+                                                    <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("buscarEmpleados.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setTitle("Buscar Empleados");
+                                            win.doModal();
+                                            }                            
+                                                    </attribute>
+                                                </button> 
+                                                <button label="" disabled="true" id="nuevoE" image="/images/empleados.png" >
+                                                    <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("empleados.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setTitle("Nuevo Empleado");
+                                            win.doModal();
+                                            }                            
+                                                    </attribute>
+                                                </button> 
+                     
+                              
+                                                <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                        
+                    
+                       
+                      
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Registrado por(*):</span> 
+                                            <textbox id="registrado" readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
+                                            <textbox id="registradoU"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </panelchildren>
+                        </panel>
+                        <vbox>
+                            <vbox>
+                                <hbox>
+                                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                                </hbox>
+                            </vbox>
+
+                        </vbox>
+                    </panelchildren>
+                </panel>
+            </tabpanel>
+            <tabpanel>
+                <groupbox  width="100%" mold="3d" >
+                    <caption label="Busquedas" />
+                    <vbox>
+                        <hbox>  No.Contrato:
+                            <textbox id="buscarTextNo"  onOK='buscar(self.value,"contrato")' maxlength="60" cols="10" />
+                            <button id="buscarno"  label="Buscar" onClick='buscar(buscarTextNo.getValue(),"contrato");'/>
+                                Cliente:
+                            <textbox id="buscarTextCliente"  onChanging='buscar(buscarTextCliente.getValue(),"otro");'  onOK='buscar(buscarTextCliente.getValue(),"otro");' maxlength="60" cols="25" />
+                            <button id="buscar"  label="Buscar" onClick='buscar(buscarTextCliente.getValue(),"otro");'/>
+                        </hbox>
+                        <hbox>
+                            <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();" id="datos" width="100%">
+                                <listhead>
+                                    <listheader label="Contrato"/>
+                                    <listheader label="Clientes"/>
+                                </listhead>
+                                <listitem forEach="${allEvents}" value="${each}">
+                                    <listcell label="${each.codigo}" />
+                                    <listcell label="${each.apellidos}" />
+                                </listitem>
+                            </listbox>
+                        </hbox>
+                    </vbox>
+                </groupbox>
+            </tabpanel>  
+            <tabpanel>
+                <panel height="370px" style="margin-bottom:10px"
+                           title="Reporte" border="normal">
+                    <panelchildren>
+                        <jasperreport id="report" />
+                    </panelchildren>
+                </panel>
+                
+            </tabpanel>
+        </tabpanels>
+            
+            
+    </tabbox>
+</div>
+</window>

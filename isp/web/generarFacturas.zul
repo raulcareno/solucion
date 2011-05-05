@@ -1,0 +1,58 @@
+<window   border="normal" >
+
+    <zscript>
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Canton as o");
+    static Canton equi = new Canton();
+    Permisos permiso = new Permisos();
+    //SimpleTreeModel stm = new SimpleTreeModel(root);
+ 
+
+ void generar(){
+   
+    }
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Cantones",accion);
+ }
+
+    </zscript>
+ 
+    <groupbox width="100%" mold="3d" >
+
+        <caption label="Busquedas" />
+        <vbox>
+   
+            <hbox width="100%">
+                <listbox multiple="true" checkmark="true"  id="datos" width="320px">
+                    <listhead>
+                        <listheader label="Código"/>
+                        <listheader label="Nombre"/>
+
+                    </listhead>
+                    <listitem forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.nombre}" />
+                    </listitem>
+                </listbox>
+                
+            </hbox>
+            
+                <vbox>
+                    <hbox>
+                        
+                        <datebox id="fecha" onCreate="self.value = new Date()"/>
+                        <button image="/images/guardar.gif" id="guardar" label="Generar Facturas para Clientes"   onClick="guardar();"/>
+                    </hbox>
+                </vbox>
+        </vbox>
+    </groupbox>
+
+</window>
