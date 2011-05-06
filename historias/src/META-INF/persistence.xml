@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="historiasPU" transaction-type="RESOURCE_LOCAL">
+    <provider>oracle.toplink.essentials.PersistenceProvider</provider>
+    <class>persistencia.Global</class>
+    <class>persistencia.Empleados</class>
+    <class>persistencia.Pacientes</class>
+    <class>persistencia.Accesos</class>
+    <class>persistencia.Servicios</class>
+    <class>persistencia.Dientes</class>
+    <class>persistencia.Cobros</class>
+    <class>persistencia.Dientesestado</class>
+    <class>persistencia.Estados</class> 
+    <class>persistencia.Historias</class>
+    <properties>
+       <property name="toplink.cache.type.default" value="NONE"/>
+      <property name="toplink.jdbc.user" value="root"/>
+      <property name="toplink.jdbc.password" value="jcinform@2020"/>
+      <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/clinicas"/>
+      <property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+    </properties>
+  </persistence-unit>
+</persistence>
