@@ -22,6 +22,11 @@
     <class>jcinform.persistencia.Detalle</class>
     <class>jcinform.persistencia.Cxcobrar</class>
     <class>jcinform.persistencia.Factura</class>
+
+
+
+    <class>jcinform.persistencia.Radios</class>
+
     <properties>
       <!--property name="toplink.jdbc.user" value="root"/>
       <property name="toplink.jdbc.password" value="jcinform@2020"/>

@@ -6,6 +6,7 @@
 package jcinform.persistencia;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -21,29 +22,53 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "cxcobrar")
 @NamedQueries({
     @NamedQuery(name = "Cxcobrar.findAll", query = "SELECT c FROM Cxcobrar c"),
     @NamedQuery(name = "Cxcobrar.findByCodigo", query = "SELECT c FROM Cxcobrar c WHERE c.codigo = :codigo"),
+    @NamedQuery(name = "Cxcobrar.findByDebe", query = "SELECT c FROM Cxcobrar c WHERE c.debe = :debe"),
+    @NamedQuery(name = "Cxcobrar.findByHaber", query = "SELECT c FROM Cxcobrar c WHERE c.haber = :haber"),
     @NamedQuery(name = "Cxcobrar.findByTotal", query = "SELECT c FROM Cxcobrar c WHERE c.total = :total"),
     @NamedQuery(name = "Cxcobrar.findByFecha", query = "SELECT c FROM Cxcobrar c WHERE c.fecha = :fecha"),
-    @NamedQuery(name = "Cxcobrar.findByTipo", query = "SELECT c FROM Cxcobrar c WHERE c.tipo = :tipo")})
+    @NamedQuery(name = "Cxcobrar.findByTipo", query = "SELECT c FROM Cxcobrar c WHERE c.tipo = :tipo"),
+    @NamedQuery(name = "Cxcobrar.findByEfectivo", query = "SELECT c FROM Cxcobrar c WHERE c.efectivo = :efectivo"),
+    @NamedQuery(name = "Cxcobrar.findByCheque", query = "SELECT c FROM Cxcobrar c WHERE c.cheque = :cheque"),
+    @NamedQuery(name = "Cxcobrar.findByDebito", query = "SELECT c FROM Cxcobrar c WHERE c.debito = :debito"),
+    @NamedQuery(name = "Cxcobrar.findByTarjeta", query = "SELECT c FROM Cxcobrar c WHERE c.tarjeta = :tarjeta"),
+    @NamedQuery(name = "Cxcobrar.findByNocheque", query = "SELECT c FROM Cxcobrar c WHERE c.nocheque = :nocheque"),
+    @NamedQuery(name = "Cxcobrar.findByNotarjeta", query = "SELECT c FROM Cxcobrar c WHERE c.notarjeta = :notarjeta")})
 public class Cxcobrar implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "codigo")
     private String codigo;
+    @Column(name = "debe")
+    private BigDecimal debe;
+    @Column(name = "haber")
+    private BigDecimal haber;
     @Column(name = "total")
-    private Double total;
+    private BigDecimal total;
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @Column(name = "tipo")
     private String tipo;
+    @Column(name = "efectivo")
+    private Double efectivo;
+    @Column(name = "cheque")
+    private BigDecimal cheque;
+    @Column(name = "debito")
+    private BigDecimal debito;
+    @Column(name = "tarjeta")
+    private BigDecimal tarjeta;
+    @Column(name = "nocheque")
+    private BigDecimal nocheque;
+    @Column(name = "notarjeta")
+    private BigDecimal notarjeta;
     @JoinColumn(name = "factura", referencedColumnName = "codigo")
     @ManyToOne
     private Factura factura;
@@ -63,11 +88,27 @@ public class Cxcobrar implements Serializable {
         this.codigo = codigo;
     }
 
-    public Double getTotal() {
+    public BigDecimal getDebe() {
+        return debe;
+    }
+
+    public void setDebe(BigDecimal debe) {
+        this.debe = debe;
+    }
+
+    public BigDecimal getHaber() {
+        return haber;
+    }
+
+    public void setHaber(BigDecimal haber) {
+        this.haber = haber;
+    }
+
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
@@ -85,6 +126,54 @@ public class Cxcobrar implements Serializable {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public Double getEfectivo() {
+        return efectivo;
+    }
+
+    public void setEfectivo(Double efectivo) {
+        this.efectivo = efectivo;
+    }
+
+    public BigDecimal getCheque() {
+        return cheque;
+    }
+
+    public void setCheque(BigDecimal cheque) {
+        this.cheque = cheque;
+    }
+
+    public BigDecimal getDebito() {
+        return debito;
+    }
+
+    public void setDebito(BigDecimal debito) {
+        this.debito = debito;
+    }
+
+    public BigDecimal getTarjeta() {
+        return tarjeta;
+    }
+
+    public void setTarjeta(BigDecimal tarjeta) {
+        this.tarjeta = tarjeta;
+    }
+
+    public BigDecimal getNocheque() {
+        return nocheque;
+    }
+
+    public void setNocheque(BigDecimal nocheque) {
+        this.nocheque = nocheque;
+    }
+
+    public BigDecimal getNotarjeta() {
+        return notarjeta;
+    }
+
+    public void setNotarjeta(BigDecimal notarjeta) {
+        this.notarjeta = notarjeta;
     }
 
     public Factura getFactura() {

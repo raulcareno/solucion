@@ -1,0 +1,229 @@
+
+<window   border="normal"
+ >
+
+    <zscript>    <![CDATA[
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Radios as o");
+    static Radios equi = new Radios();
+    Permisos permiso = new Permisos();
+    //SimpleTreeModel stm = new SimpleTreeModel(root);
+//FUNCIONES
+
+
+List cantones2 = adm.query("Select o from Nodos as o ");
+
+void llenar(Radios equi2){
+   equi = equi2;
+    nombre.value = equi.getNombre();
+    nofactura.value = equi.getNofactura();
+    serie.value = equi.getSerie();
+       if(equi2.getNodos() != null){
+             try{
+                      for (int i = 0; i <= cantones.getItems().size(); i++) {
+                                    Nodos tr0 = ((Nodos)((Listitem)cantones.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi2.getNodos().getCodigo();
+                                    if(primero == segundo){
+                                        cantones.setSelectedItem((Listitem)cantones.getItems().get(i));
+                                        bd1.value = equi2.getNodos().getNombre();
+                                        break;
+                                    }
+                           }
+                 }catch(Exception err){System.out.println("ERROR no tiene cursos asignados COMBO CURSOS: "+err);}
+
+
+            }
+    
+
+
+    
+}
+void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+        equi = (Radios)datos.selectedItem.value;
+    }
+    nombre.readonly = estado;
+ nofactura.readonly = estado;
+ serie.readonly = estado;
+
+}
+
+
+ void guardar(){
+    if(nombre.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+        equi.setNombre(nombre.value);
+        equi.setNofactura(nofactura.value);
+        equi.setSerie(serie.value);
+        equi.setNodos(cantones.selectedItem.value);
+        
+        if((!equi.getCodigo().equals(0)) ){
+             adm.actualizar(equi);
+                List children = datos.selectedItem.children;
+               permiso.auditar("Radioses","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
+         }else{
+                equi.setCodigo(adm.getNuevaClave("Radios","codigo"));
+                adm.guardar(equi);
+                permiso.auditar("Radioses","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Radios(0));
+                    buscar("");
+    }
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Radioses",accion);
+ }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new Radios(0));
+        estado(false,false);
+        
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Radios)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             equi = (Radios)datos.selectedItem.value;
+             adm.eliminarObjeto(Radios.class, equi.getCodigo());
+             permiso.auditar("Radioses","Eliminar",""+equi.getCodigo()+" - "+equi.getNombre());
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Radios(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+   void buscar(String p){
+
+      
+        List equivaEncontrados = adm.query("Select o from Radios as o order by o.nombre");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+   
+       
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Radios acceIt = (Radios) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      li.appendChild(new Listcell(acceIt.getNodos().getNombre()+" "));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Radios g){
+equi.setPerfil(g);
+}
+  ]]>
+    </zscript>
+    <groupbox mold="3d" >
+        <caption label="Agregar Radioses" />
+	
+        <grid width="100%">
+            <rows>
+                <row>   <span style="float:right"> Nodos(*):</span>
+                    <bandbox  width="400px" readonly="true"  id="bd1">
+                        <bandpopup>
+                            <vbox>
+                                <listbox id="cantones" width="660px" rows="10"
+                                                                                     onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
+                                    <listitem selected="true" forEach="${cantones2}" value="${each}">
+                                        <listcell label="${each.nombre}" />
+                                    </listitem>
+                                </listbox>
+                            </vbox>
+                        </bandpopup>
+                    </bandbox>
+                </row>
+                <row>
+                    <span style="float:right"> Nombre Radios(*):</span>
+                    <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> No.Factura(*):</span>
+                    <textbox id="nofactura"  maxlength="10" cols="40" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Serie Factura(*):</span>
+                    <textbox id="serie"  maxlength="6" cols="40" readonly="true"   />
+                </row>
+ 
+
+            </rows>
+        </grid>
+        <vbox>
+            <vbox>
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                </hbox>
+            </vbox>
+
+        </vbox>
+
+    </groupbox>
+    <groupbox width="100%" mold="3d" >
+
+        <caption label="Busquedas" />
+        <vbox>
+   
+            <hbox width="100%">
+                <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                    <listhead>
+                        <listheader  label="Código"/>
+                        <listheader sort="auto" label="Radios"/>
+                        <listheader sort="auto" label="Nodos"/>
+
+                    </listhead>
+                    <listitem forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.codigo}" />
+                        <listcell label="${each.nombre}" />
+                        <listcell label="${each.canton.nombre}" />
+                    </listitem>
+                </listbox>
+
+
+            </hbox>
+        </vbox>
+    </groupbox>
+	
+
+</window>

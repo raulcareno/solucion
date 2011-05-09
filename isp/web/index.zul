@@ -126,6 +126,7 @@
                         <menu label="Control" image="/images/control.png" >
                             <menupopup>
                                 <menuitem   value="/nodos.zul"  image="/images/nodos.png" label="Nodos" onClick="ingresar(self)" />
+                                <menuitem   value="/radios.zul"  image="/images/nodos.png" label="Nodos" onClick="ingresar(self)" />
                                 <menuitem value="/controlequipos.zul" image="/images/equipos.png" label="Registro Equipos" onClick="ingresar(self)" />
                                 <menuitem   value="/marcas.zul"  image="/images/marcas.png" label="Marcas" onClick="ingresar(self)" />
                                 <menuitem  value="/equipos.zul"   image="/images/equipos2.png" label="Equipos" onClick="ingresar(self)" />

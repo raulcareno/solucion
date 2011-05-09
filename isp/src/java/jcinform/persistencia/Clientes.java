@@ -51,6 +51,8 @@ public class Clientes implements Serializable {
     private String usuario;
     @Column(name = "clave")
     private String clave;
+        @Column(name = "formapago")
+    private String formapago;
        @JoinColumn(name = "sector", referencedColumnName = "codigo")
     @ManyToOne
     private Sector sector;
@@ -142,6 +144,14 @@ public class Clientes implements Serializable {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public String getFormapago() {
+        return formapago;
+    }
+
+    public void setFormapago(String formapago) {
+        this.formapago = formapago;
     }
 
  

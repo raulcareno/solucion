@@ -6,12 +6,15 @@
 package jcinform.persistencia;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -21,25 +24,11 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "factura")
-@NamedQueries({
-    @NamedQuery(name = "Factura.findAll", query = "SELECT f FROM Factura f"),
-    @NamedQuery(name = "Factura.findByCodigo", query = "SELECT f FROM Factura f WHERE f.codigo = :codigo"),
-    @NamedQuery(name = "Factura.findByNumero", query = "SELECT f FROM Factura f WHERE f.numero = :numero"),
-    @NamedQuery(name = "Factura.findByFecha", query = "SELECT f FROM Factura f WHERE f.fecha = :fecha"),
-    @NamedQuery(name = "Factura.findByTotal", query = "SELECT f FROM Factura f WHERE f.total = :total"),
-    @NamedQuery(name = "Factura.findByEstado", query = "SELECT f FROM Factura f WHERE f.estado = :estado"),
-    @NamedQuery(name = "Factura.findByObservacion", query = "SELECT f FROM Factura f WHERE f.observacion = :observacion"),
-    @NamedQuery(name = "Factura.findByEfectivo", query = "SELECT f FROM Factura f WHERE f.efectivo = :efectivo"),
-    @NamedQuery(name = "Factura.findByDeposito", query = "SELECT f FROM Factura f WHERE f.deposito = :deposito"),
-    @NamedQuery(name = "Factura.findByCheque", query = "SELECT f FROM Factura f WHERE f.cheque = :cheque"),
-    @NamedQuery(name = "Factura.findByBanco", query = "SELECT f FROM Factura f WHERE f.banco = :banco"),
-    @NamedQuery(name = "Factura.findByNocuenta", query = "SELECT f FROM Factura f WHERE f.nocuenta = :nocuenta"),
-    @NamedQuery(name = "Factura.findByNocheque", query = "SELECT f FROM Factura f WHERE f.nocheque = :nocheque"),
-    @NamedQuery(name = "Factura.findByTarjeta", query = "SELECT f FROM Factura f WHERE f.tarjeta = :tarjeta")})
+@NamedQueries({ })
 public class Factura implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,17 +41,17 @@ public class Factura implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @Column(name = "total")
-    private Double total;
+    private BigDecimal total;
     @Column(name = "estado")
     private Boolean estado;
     @Column(name = "observacion")
     private String observacion;
     @Column(name = "efectivo")
-    private Double efectivo;
+    private BigDecimal efectivo;
     @Column(name = "deposito")
-    private Double deposito;
+    private BigDecimal deposito;
     @Column(name = "cheque")
-    private Double cheque;
+    private BigDecimal cheque;
     @Column(name = "banco")
     private String banco;
     @Column(name = "nocuenta")
@@ -70,11 +59,15 @@ public class Factura implements Serializable {
     @Column(name = "nocheque")
     private String nocheque;
     @Column(name = "tarjeta")
-    private Double tarjeta;
-//    @OneToMany(mappedBy = "factura")
-//    private Collection<Cxcobrar> cxcobrarCollection;
+    private BigDecimal tarjeta;
+    @JoinColumn(name = "sector", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sector sector2;
+    @JoinColumn(name = "clientes", referencedColumnName = "codigo")
+    @ManyToOne
+    private Clientes clientes;
     @OneToMany(mappedBy = "factura")
-    private Collection<Detalle> detalleCollection;
+    private Collection<Cxcobrar> cxcobrarCollection;
 
     public Factura() {
     }
@@ -107,11 +100,11 @@ public class Factura implements Serializable {
         this.fecha = fecha;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
@@ -131,27 +124,27 @@ public class Factura implements Serializable {
         this.observacion = observacion;
     }
 
-    public Double getEfectivo() {
+    public BigDecimal getEfectivo() {
         return efectivo;
     }
 
-    public void setEfectivo(Double efectivo) {
+    public void setEfectivo(BigDecimal efectivo) {
         this.efectivo = efectivo;
     }
 
-    public Double getDeposito() {
+    public BigDecimal getDeposito() {
         return deposito;
     }
 
-    public void setDeposito(Double deposito) {
+    public void setDeposito(BigDecimal deposito) {
         this.deposito = deposito;
     }
 
-    public Double getCheque() {
+    public BigDecimal getCheque() {
         return cheque;
     }
 
-    public void setCheque(Double cheque) {
+    public void setCheque(BigDecimal cheque) {
         this.cheque = cheque;
     }
 
@@ -179,29 +172,31 @@ public class Factura implements Serializable {
         this.nocheque = nocheque;
     }
 
-    public Double getTarjeta() {
+    public BigDecimal getTarjeta() {
         return tarjeta;
     }
 
-    public void setTarjeta(Double tarjeta) {
+    public void setTarjeta(BigDecimal tarjeta) {
         this.tarjeta = tarjeta;
     }
 
-//    public Collection<Cxcobrar> getCxcobrarCollection() {
-//        return cxcobrarCollection;
-//    }
-//
-//    public void setCxcobrarCollection(Collection<Cxcobrar> cxcobrarCollection) {
-//        this.cxcobrarCollection = cxcobrarCollection;
-//    }
-
-    public Collection<Detalle> getDetalleCollection() {
-        return detalleCollection;
+    public Sector getSector() {
+        return sector2;
     }
 
-    public void setDetalleCollection(Collection<Detalle> detalleCollection) {
-        this.detalleCollection = detalleCollection;
+    public void setSector(Sector sector2) {
+        this.sector2 = sector2;
     }
+
+    public Clientes getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(Clientes clientes) {
+        this.clientes = clientes;
+    }
+
+  
 
     @Override
     public int hashCode() {
