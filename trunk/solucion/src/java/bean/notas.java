@@ -1038,7 +1038,6 @@ public class notas extends Rows {
                     inter.eval("int tamanio1 =  " + vector1 + ".size(); " +//OJOSSS
                             "int tamanio2 = ((Vector)" + vector1 + ".get(0)).size(); " +//OJOSSS
                             "Vector calculado = new Vector(); ");
-
                     String hola = ":::::::::::::::::::::::::::::::::.:";
                     inter.eval("System.out.print(tamanio1);");
                     inter.eval("System.out.print(tamanio2);");
@@ -1067,9 +1066,7 @@ public class notas extends Rows {
                     }
 //                    System.out.println("-------------" + aconvertir);
 //                    System.out.println("-------------" + formula);
-
                     try {
-
                         Object obtenido = inter.eval("calculado.get(0);");
 //                        N3+N4+N6+N7+N8+N12+N14+N15+N16+N18+N19+N20+N36+N32+N17)/15+(N1==NULL || N1==0 ?5.0:N1))
 //                        System.out.println("N1:          " + obtenido);

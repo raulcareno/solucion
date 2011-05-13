@@ -2,7 +2,7 @@
 <?page   id="loginjx" title="Administrador Educativo" ?>
 <?link rel="shortcut icon" type="image/icono" href="/images/icono.jpg"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-      <style>
+    <style>
 .MyGridRowHeight tr.z-row td.z-row-inner
 {
       background: white;
@@ -259,6 +259,19 @@ void estado(Boolean estado){
     otros.readonly = estado;
     tipo.readonly= estado;
     institucion.readonly= estado;
+    
+    lenguaje1t.readonly= estado;
+    lenguaje2t.readonly= estado;
+    
+    naturales1t.readonly= estado;
+    naturales2t.readonly= estado;
+    
+    sociales1t.readonly= estado;
+    sociales2t.readonly= estado;
+    
+    matematicas1t.readonly= estado;
+    matematicas2t.readonly= estado;
+    
 cedular.readonly= estado;
     nombresr.readonly = estado;
     apellidosr.readonly = estado;
@@ -333,14 +346,26 @@ String cpa = cpa.getValue();
         estudent.setMail(mail.value);
         estudent.setInstanterior(institucion.value);
         estudent.setAprovechamiento((aprovechamiento.value).doubleValue());
-        estudent.setAprovechamiento5((aprovechamiento5.value).doubleValue());
-        estudent.setAprovechamiento6((aprovechamiento6.value).doubleValue());
+        //estudent.setAprovechamiento5((aprovechamiento5.value).doubleValue());
+        //estudent.setAprovechamiento6((aprovechamiento6.value).doubleValue());
         estudent.setDiscplina((disciplina.value).doubleValue());
-        estudent.setDisciplina5((disciplina5.value).doubleValue());
-        estudent.setDisciplina6((disciplina6.value).doubleValue());
+        //estudent.setDisciplina5((disciplina5.value).doubleValue());
+        //estudent.setDisciplina6((disciplina6.value).doubleValue());
         estudent.setFechamatricula(new Date());
         estudent.setHermano(hermano.checked);
         estudent.setCursohermano(hermanos.value);
+        estudent.setLenguaje1t((lenguaje1t.value).doubleValue());
+        estudent.setLenguaje2t((lenguaje2t.value).doubleValue());
+        
+        estudent.setMatematicas1t((matematicas1t.value).doubleValue());
+        estudent.setMatematicas2t((matematicas2t.value).doubleValue());
+        
+        estudent.setNaturales1t((naturales1t.value).doubleValue());
+        estudent.setNaturales2t((naturales2t.value).doubleValue());
+        
+        estudent.setSociales1t((sociales1t.value).doubleValue());
+        estudent.setSociales2t((sociales2t.value).doubleValue());
+         
 
 
 
@@ -672,9 +697,9 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                         <row align="left"    spans="2" style="background:#E4EDF6;border:0px;color:blue" >
                             <span style="font-size:15px">
     
-                                <div style="color:black;font-size:15px">Recuerde que la información proporcionada debe ser REAL, en caso de salir favorecido, su información será verificada y  de no cumplir con los requisitos se ANULARÁ su inscripción y matrícula, también se ANULARÁ  a quienes se hayan inscrito más de una vez. </div>
+                                <div style="color:black;font-size:15px">Recuerde que la información proporcionada debe ser REAL, en caso de salir favorecido, su información será verificada y  de no cumplir con los requisitos se ANULARÁ  su inscripción, también se ANULARÁ  a quienes se hayan inscrito más de una vez. </div>
                                 <separator/>
-                                <div style="color:black;font-size:15px">Usted tendrá un máximo de 30 minutos para completar la información despues de este tiempo se cerrará la sesión y tendrá que volver a ingresar para registrar sus datos, el tiempo empieza cuando Ud. selecciona el periodo.</div>
+                                <div style="color:black;font-size:15px">Usted tendrá un máximo de 30 minutos para completar la información después de este tiempo se cerrará la sesión y tendrá que volver a ingresar para registrar sus datos, el tiempo empieza cuando Ud. selecciona el periodo.</div>
                                 <div align="center" style="color:red;font-size:15px">CAMPOS CON (*) SON OBLIGATORIOS</div>
                                 <div align="center" style="color:red;font-size:15px"> Haz click sobre
                                     <image src="/images/information.png" height="16px" width="16px"  /> para recibir ayuda
@@ -693,10 +718,10 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
             </window>
             <html>
                     &lt;a name=&quot;ancla&quot; id=&quot;ancla&quot;&gt;&lt;/a&gt;
-                      </html>
+            </html>
             <panel  style="border-color:blue" id="panel" visible="false" width="100%" height="1200px"  >
                 <panelchildren>
-                <grid  sclass="MyGridRowHeight"  id="seleccionGrid" >
+                    <grid  sclass="MyGridRowHeight"  id="seleccionGrid" >
                         <rows>
                             <row align="left"  spans="2" style="background:#6699CC;border:0px;color:blue" >
                                 <span>
@@ -710,8 +735,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
 
                             </row>
-                            </rows>
-                            </grid>
+                        </rows>
+                    </grid>
                        
                     <grid sclass="MyGridRowHeight"  id="datosGrid" visible="false">
                         <rows>
@@ -789,7 +814,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     <label  style="font-size:11px" value="2do.Nombre" />
                                     <textbox id="nombres1" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="10" readonly="true"   />
 
-                                   <image src="/images/information.png" height="16px" width="16px" tooltip="nombrest" popup="nombrest" style="cursor: pointer" />
+                                    <image src="/images/information.png" height="16px" width="16px" tooltip="nombrest" popup="nombrest" style="cursor: pointer" />
                                     <popup id="nombrest" width="300px">
                                         <html>
                                         Ejemplo: "JUAN DARIO"
@@ -798,7 +823,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                              <row align="left"     style="background:#E4EDF6;border:0px" >
+                            <row align="left"     style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="1er.Apellido(*)" id="t3"/>
                                 </span>
@@ -870,7 +895,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </combobox>
 
                                     <label  style="font-size:11px" value="Fecha Nacimiento(*):" id="t7"/>
-                                    <span><datebox id="nacido" format="dd/MM/yyyy" onFocus="changeStyle(t7)" onBlur="changeStyle(t7) "  constraint="no empty: Seleccione una fecha, no podra completar su inscripcion si no ingresa este campo"    readonly="true"  />
+                                    <span>
+                                        <datebox id="nacido" format="dd/MM/yyyy" onFocus="changeStyle(t7)" onBlur="changeStyle(t7) "  constraint="no empty: Seleccione una fecha, no podra completar su inscripcion si no ingresa este campo"    readonly="true"  />
                                     Ejm.(27/01/2011)
                                     </span>
                                 </span>
@@ -892,7 +918,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                             <row align="left"   style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
-                                    <label  style="font-size:11px" value="Instituto Anterior:" id="t11"/>
+                                    <label  style="font-size:11px" value="Institución/Escuela Anterior:" id="t11"/>
                                 </span>
                                 <span>
                                     <textbox id="institucion"  onBlur="changeStyle(t11) " onFocus="changeStyle(t11)" readonly="true"  maxlength="100" cols="50"/>
@@ -906,7 +932,53 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </popup>
                                 </span>
                             </row>
+       <row align="left"   style="background:#E4EDF6;border:0px" >
 
+                                <span style="float:right;font-size:11px">
+                                    <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
+                                </span>
+                                <span>
+
+                                    <checkbox id="discapacidad" label="SI" onCheck="tdiscapacidad.readonly = self.checked? false: true" />
+                                    <image src="/images/information.png" height="16px" width="16px" tooltip="discapacidadt" popup="discapacidadt" style="cursor: pointer" />
+                                    <popup id="discapacidadt" width="300px">
+                                        <html>
+                                        Describa si tiene algún tipo de discapacidad Ejem. Visual, Auditiva...
+                                        </html>
+                                    </popup>
+                                    <label style="font-size:11px"  value="Describa su Discapacidad" id="t160"/>
+                                    <textbox  onFocus="changeStyle(t16)"   onBlur="changeStyle(t160) " id="tdiscapacidad" maxlength="100" cols="30" rows="1"  readonly="true"  />
+                                    
+                                </span>
+                            </row>
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
+
+                                <span style="float:right;font-size:11px">
+                                    <label  style="font-size:11px" value="¿Tiene hermanos en la institución?" id="tc16"/>
+                                </span>
+                                <span>
+                                    <checkbox id="hermano" label="SI" onCheck="hermanos.readonly = self.checked? false: true" />
+                                    <image src="/images/information.png" height="16px" width="16px" tooltip="thermnano" popup="thermnano" style="cursor: pointer" />
+                                    <popup id="thermnano" width="300px">
+                                        <html>
+                                        Escriba el nombre de su hermano/a que estudia actualmente en su institución (ojo)parentezco hermano
+                                        </html>
+                                    </popup>
+                                    <label style="font-size:11px"  value="Apellidos y Nombres de su Hermano" id="th160"/>
+                                    <textbox  onFocus="changeStyle(t16)"   onBlur="changeStyle(t160) " id="hermanos" maxlength="100" cols="30" rows="1"  readonly="true"  />
+
+                                </span>
+                            </row>
+                            
+                               <row align="left"   style="background:#E4EDF6;border:0px" >
+
+                                <span style="float:right;font-size:11px">
+                                    <label  style="font-size:11px" value="¿Fué abanderado del pabellon nacional?" id="tc56566"/>
+                                </span>
+                                <span>
+                                    <checkbox id="abanderado" label="SI"  />
+                                </span>
+                            </row>
                             <row align="left"   style="background:#E4EDF6;border:0px" >
                                 <label value=""/>
                                 <span>
@@ -920,7 +992,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
-                                    <label style="font-size:11px"  value="Séptimo:" id="tA"/>
+                                    <label style="font-size:11px"  value="Promedios:" id="tA"/>
                                 </span>
                                 <span>
                                     <div style="color:blue">
@@ -930,7 +1002,74 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                         
                                 </span>
                             </row>
+                            
                             <row align="left"   style="background:#E4EDF6;border:0px" >
+                                <span style="float:right;font-size:11px"> <label value="Promedios del : "/></span>
+                                <span>
+                                    <label style="font-size:11px"  value="1 Trim."/>
+                                    <separator bar="true" orient="vertical"/>
+                                    <label  style="font-size:11px" value="2 Trim."/>
+                                    <separator bar="true" orient="vertical"/>
+                                    <label  style="font-size:11px" value="(Deje en cero si es de prebasica)"/>
+                                </span>
+                            </row>
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
+
+                                <span style="float:right;font-size:11px">
+                                    <label style="font-size:11px"  value="Lenguaje y Comunicación: " id="tLC"/>
+                                </span>
+                                <span>
+                                    <div style="color:blue">
+                                        <decimalbox cols="5" id="lenguaje1t" readonly="true" value="0"   onBlur="changeStyle(tLC) " onFocus="changeStyle(tLC)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="lenguaje2t" readonly="true" value="0"   onBlur="changeStyle(tLC) " onFocus="changeStyle(tLC)"  constraint="no negative" />
+                                    </div>
+                                        
+                                </span>
+                            </row>
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
+
+                                <span style="float:right;font-size:11px">
+                                    <label style="font-size:11px"  value="Matemáticas: " id="tMat"/>
+                                </span>
+                                <span>
+                                    <div style="color:blue">
+                                        <decimalbox cols="5" id="matematicas1t" readonly="true" value="0"   onBlur="changeStyle(tMat) " onFocus="changeStyle(tMat)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="matematicas2t" readonly="true" value="0"   onBlur="changeStyle(tMat) " onFocus="changeStyle(tMat)"  constraint="no negative" />
+                                    </div>
+                                        
+                                </span>
+                            </row>
+                            
+                            
+                              <row align="left"   style="background:#E4EDF6;border:0px" >
+
+                                <span style="float:right;font-size:11px">
+                                    <label style="font-size:11px"  value="Ciencias Naturales: " id="tNat"/>
+                                </span>
+                                <span>
+                                    <div style="color:blue">
+                                        <decimalbox cols="5" id="naturales1t" readonly="true" value="0"   onBlur="changeStyle(tNat) " onFocus="changeStyle(tNat)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="naturales2t" readonly="true" value="0"   onBlur="changeStyle(tNat) " onFocus="changeStyle(tNat)"  constraint="no negative" />
+                                    </div>
+                                        
+                                </span>
+                            </row>
+                            
+                            
+                                    <row align="left"   style="background:#E4EDF6;border:0px" >
+
+                                <span style="float:right;font-size:11px">
+                                    <label style="font-size:11px"  value="Ciencias Sociales: " id="tSoc"/>
+                                </span>
+                                <span>
+                                    <div style="color:blue">
+                                        <decimalbox cols="5" id="sociales1t" readonly="true" value="0"   onBlur="changeStyle(tSoc) " onFocus="changeStyle(tSoc)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="sociales2t" readonly="true" value="0"   onBlur="changeStyle(tSoc) " onFocus="changeStyle(tSoc)"  constraint="no negative" />
+                                    </div>
+                                        
+                                </span>
+                            </row>
+                            <!--row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="Sexto:" id="tA016"/>
@@ -953,44 +1092,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                         <decimalbox cols="5" id="disciplina5" readonly="true"  value="0"  onBlur="changeStyle(tA015) " onFocus="changeStyle(tA015)"  constraint="no negative" />
                                     </div>
                                 </span>
-                            </row>
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
-
-                                <span style="float:right;font-size:11px">
-                                    <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
-                                </span>
-                                <span>
-
-                                    <checkbox id="discapacidad" label="SI" onCheck="tdiscapacidad.readonly = self.checked? false: true" />
-                                    <image src="/images/information.png" height="16px" width="16px" tooltip="discapacidadt" popup="discapacidadt" style="cursor: pointer" />
-                                    <popup id="discapacidadt" width="300px">
-                                        <html>
-                                        Describa si tiene algún tipo de discapacidad Ejem. Visual, Auditiva...
-                                        </html>
-                                    </popup>
-                                     <label style="font-size:11px"  value="Describa su Discapacidad" id="t160"/>
-                                     <textbox  onFocus="changeStyle(t16)"   onBlur="changeStyle(t160) " id="tdiscapacidad" maxlength="100" cols="30" rows="1"  readonly="true"  />
-                                    
-                                </span>
-                            </row>
-                             <row align="left"   style="background:#E4EDF6;border:0px" >
-
-                                <span style="float:right;font-size:11px">
-                                    <label  style="font-size:11px" value="¿Tiene hermanos en la institución?" id="tc16"/>
-                                </span>
-                                <span>
-                                    <checkbox id="hermano" label="SI" onCheck="hermanos.readonly = self.checked? false: true" />
-                                    <image src="/images/information.png" height="16px" width="16px" tooltip="thermnano" popup="thermnano" style="cursor: pointer" />
-                                    <popup id="thermnano" width="300px">
-                                        <html>
-                                        Escriba el nombre de su hermano/a que estudia actualmente en su institución (ojo)parentezco hermano
-                                        </html>
-                                    </popup>
-                                    <label style="font-size:11px"  value="Describa su Discapacidad" id="th160"/>
-                                    <textbox  onFocus="changeStyle(t16)"   onBlur="changeStyle(t160) " id="hermanos" maxlength="100" cols="30" rows="1"  readonly="true"  />
-
-                                </span>
-                            </row>
+                            </row-->
+                     
                             <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
@@ -1009,12 +1112,12 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
 <!-- ************************************* DATOS PADRE  ************************************************ -->
 
-                            <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
+                            <row align="left"  spans="2" style="background:#FCFDFE;border:0px;left:30px;" >
                                 <span style="color:blue">DATOS DEL PADRE</span>
 
                             </row>
 
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label style="font-size:11px"  value="Identificación:" id="t1p"/>
                                 </span>
@@ -1031,7 +1134,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                                 </span>
                             </row>
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label style="font-size:11px"  value="Nombres:" id="t2p"/>
                                 </span>
@@ -1047,7 +1150,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </popup>
                                 </span>
                             </row>
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px"  value="Dirección:" id="t4p"/>
@@ -1064,7 +1167,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="Profesión:" id="t4pr"/>
@@ -1080,7 +1183,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                                 </span>
                             </row>
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label style="font-size:11px"  value="Lug.Trabajo:" id="t4pl"/>
@@ -1102,7 +1205,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row align="left"  style="background:#E4EDF6;border:0px" >
+                            <row align="left"  style="background:#FCFDFE;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="Email:" id="t5p"/>
@@ -1138,7 +1241,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                             <row align="left"   style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
-                                    <label style="font-size:11px"  value="Identificación(*):" id="t1m"/>
+                                    <label style="font-size:11px"  value="Identificación:" id="t1m"/>
                                 </span>
 
                                 <span>
@@ -1249,12 +1352,15 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             </row>
                          
 
-                            <row align="left"    style="background:#E4EDF6;border:0px;left:30px;" >
+                            <row align="left"    style="background:#FCFDFE;border:0px;left:30px;" >
                                 <span style="color:blue">DATOS DEL REPRESENTANTE</span>
-                                 <span><button label="CLICK para COPIAR datos del PADRE" onClick="copiarp()" /> <button label="CLICK para COPIAR datos de la MADRE"  onClick="copiarm()" /></span>
+                                <span>
+                                    <button image="/images/copiar.png" label="COPIAR DATOS DEL PADRE" onClick="copiarp()" /> 
+                                    <button  image="/images/copiar.png" label="COPIAR DATOS DE LA MADRE"  onClick="copiarm()" />
+                                </span>
                             </row>
 
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label style="font-size:11px" value="Identificación(*):" id="t1r"/>
                                 </span>
@@ -1271,7 +1377,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                                 </span>
                             </row>
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label style="font-size:11px"  value="Nombres(*):" id="t2r"/>
                                 </span>
@@ -1287,7 +1393,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </popup>
                                 </span>
                             </row>
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label style="font-size:11px"  value="Dirección(*):" id="t4r"/>
@@ -1304,7 +1410,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label style="font-size:11px"  value="Email:" id="t5r"/>
