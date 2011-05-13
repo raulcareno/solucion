@@ -2,31 +2,33 @@
 <persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
   <persistence-unit name="ispPU" transaction-type="RESOURCE_LOCAL">
     <provider>oracle.toplink.essentials.PersistenceProvider</provider>
-    <class>jcinform.persistencia.Comisiones</class>
-    <class>jcinform.persistencia.Controlequipos</class>
-    <class>jcinform.persistencia.Empleadossector</class>
-    <class>jcinform.persistencia.Marcas</class>
-    <class>jcinform.persistencia.Contratos</class>
-    <class>jcinform.persistencia.Nodos</class>
-    <class>jcinform.persistencia.Proveedores</class>
-    <class>jcinform.persistencia.Equipos</class>
-    <class>jcinform.persistencia.Empleados</class>
-    <class>jcinform.persistencia.Plan</class>
-    <class>jcinform.persistencia.Clientes</class>
-    <class>jcinform.persistencia.Canton</class>
-    <class>jcinform.persistencia.Sector</class>
     <class>jcinform.persistencia.Accesos</class>
     <class>jcinform.persistencia.Auditoria</class>
-    <class>jcinform.persistencia.Perfil</class>
-    <class>jcinform.persistencia.Empresa</class>
-    <class>jcinform.persistencia.Detalle</class>
+    <class>jcinform.persistencia.Cabeceracompra</class>
+    <class>jcinform.persistencia.Canton</class>
+    <class>jcinform.persistencia.Clientes</class>
+    <class>jcinform.persistencia.Comisiones</class>
+    <class>jcinform.persistencia.Contratos</class>
+    <class>jcinform.persistencia.Contratosplanes</class>
     <class>jcinform.persistencia.Cxcobrar</class>
+    <class>jcinform.persistencia.Detalle</class>
+    <class>jcinform.persistencia.Detallecompra</class>
+    <class>jcinform.persistencia.Empleados</class>
+    <class>jcinform.persistencia.Empleadossucursal</class>
+    <class>jcinform.persistencia.Empresa</class>
+    <class>jcinform.persistencia.Equipos</class>
     <class>jcinform.persistencia.Factura</class>
-
-
-
+    <class>jcinform.persistencia.Marcas</class>
+    <class>jcinform.persistencia.Nodos</class>
+    <class>jcinform.persistencia.Perfil</class>
+    <class>jcinform.persistencia.Plan</class>
+    <class>jcinform.persistencia.Proveedores</class>
     <class>jcinform.persistencia.Radios</class>
-
+    <class>jcinform.persistencia.Sector</class>
+    <class>jcinform.persistencia.Series</class>
+    <class>jcinform.persistencia.Soporte</class>
+    <class>jcinform.persistencia.Sucursal</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <!--property name="toplink.jdbc.user" value="root"/>
       <property name="toplink.jdbc.password" value="jcinform@2020"/>

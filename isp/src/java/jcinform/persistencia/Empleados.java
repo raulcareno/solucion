@@ -22,7 +22,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "empleados")
@@ -53,15 +53,23 @@ public class Empleados implements Serializable {
     private String clave;
     @Column(name = "estado")
     private Boolean estado;
-    @OneToMany(mappedBy = "empleados")
-    private Collection<Empleadossector> empleadossectorCollection;
+    @Column(name = "tipo")
+    private String tipo;
     @OneToMany(mappedBy = "empleados")
     private Collection<Comisiones> comisionesCollection;
+    @OneToMany(mappedBy = "empleados")
+    private Collection<Empleadossucursal> empleadossucursalCollection;
     @JoinColumn(name = "perfil", referencedColumnName = "codigo")
     @ManyToOne
     private Perfil perfil;
     @OneToMany(mappedBy = "empleados")
     private Collection<Auditoria> auditoriaCollection;
+    @OneToMany(mappedBy = "empleados")
+    private Collection<Contratos> contratosCollection;
+    @OneToMany(mappedBy = "empleados1")
+    private Collection<Contratos> contratosCollection1;
+    @OneToMany(mappedBy = "empleados2")
+    private Collection<Contratos> contratosCollection2;
 
     public Empleados() {
     }
@@ -126,28 +134,12 @@ public class Empleados implements Serializable {
         this.email = email;
     }
 
-    public Collection<Empleadossector> getEmpleadossectorCollection() {
-        return empleadossectorCollection;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setEmpleadossectorCollection(Collection<Empleadossector> empleadossectorCollection) {
-        this.empleadossectorCollection = empleadossectorCollection;
-    }
-
-    public Collection<Comisiones> getComisionesCollection() {
-        return comisionesCollection;
-    }
-
-    public void setComisionesCollection(Collection<Comisiones> comisionesCollection) {
-        this.comisionesCollection = comisionesCollection;
-    }
-
-    public Perfil getPerfil() {
-        return perfil;
-    }
-
-    public void setPerfil(Perfil perfil) {
-        this.perfil = perfil;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getClave() {
@@ -166,21 +158,68 @@ public class Empleados implements Serializable {
         this.estado = estado;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    
+    public Collection<Comisiones> getComisionesCollection() {
+        return comisionesCollection;
+    }
+
+    public void setComisionesCollection(Collection<Comisiones> comisionesCollection) {
+        this.comisionesCollection = comisionesCollection;
+    }
+
+    public Collection<Empleadossucursal> getEmpleadossucursalCollection() {
+        return empleadossucursalCollection;
+    }
+
+    public void setEmpleadossucursalCollection(Collection<Empleadossucursal> empleadossucursalCollection) {
+        this.empleadossucursalCollection = empleadossucursalCollection;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
+
     public Collection<Auditoria> getAuditoriaCollection() {
         return auditoriaCollection;
     }
 
     public void setAuditoriaCollection(Collection<Auditoria> auditoriaCollection) {
         this.auditoriaCollection = auditoriaCollection;
+    }
+
+    public Collection<Contratos> getContratosCollection() {
+        return contratosCollection;
+    }
+
+    public void setContratosCollection(Collection<Contratos> contratosCollection) {
+        this.contratosCollection = contratosCollection;
+    }
+
+    public Collection<Contratos> getContratosCollection1() {
+        return contratosCollection1;
+    }
+
+    public void setContratosCollection1(Collection<Contratos> contratosCollection1) {
+        this.contratosCollection1 = contratosCollection1;
+    }
+
+    public Collection<Contratos> getContratosCollection2() {
+        return contratosCollection2;
+    }
+
+    public void setContratosCollection2(Collection<Contratos> contratosCollection2) {
+        this.contratosCollection2 = contratosCollection2;
     }
 
     @Override
@@ -205,7 +244,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return apellidos+" "+nombres ;
+        return "jcinform.persistencia.Empleados[codigo=" + codigo + "]";
     }
 
 }

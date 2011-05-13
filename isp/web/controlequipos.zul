@@ -18,8 +18,8 @@
   import org.zkoss.image.AImage;
   import org.zkoss.image.Image;
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Controlequipos as o ");
-    static Controlequipos empa = new Controlequipos();
+ //  List allEvents = adm.query("Select o from Controlequipos as o ");
+    //static Controlequipos empa = new Controlequipos();
     Permisos permiso = new Permisos();
     List perfiles = adm.query("Select o from Equipos as o order by o.nombre, o.modelo ");
     List proveedoresList = adm.query("Select o from Proveedores as o order by o.razonsocial ");
@@ -34,6 +34,7 @@ void cargarVacio(){
 }
 
 //FUNCIONES
+/*
 void llenar(Controlequipos empa){
     codigo.value = empa.getCodigo();
     cantidad.value = empa.getCantidad();
@@ -75,6 +76,7 @@ void llenar(Controlequipos empa){
                 }
 
 }
+*/
 void estado(Boolean estado,Boolean modificar){
         if(modificar){
             empa = (Controlequipos)datos.selectedItem.value;
@@ -328,7 +330,7 @@ llenarGrid(int numero){
                                         <listheader label="Asignado"/>
 
                                     </listhead>
-                                    <listitem forEach="${allEvents}" value="${each}">
+                                    <listitem forEach="${allEvents2}" value="${each}">
                                         <!--listcell label="${each.codigo}" />
                                         <listcell label="${each.ip}" />
                                         <listcell label="${each.ssid}" /-->

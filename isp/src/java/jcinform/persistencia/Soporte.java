@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,10 +27,10 @@ import javax.persistence.TemporalType;
  * @author Familia Jadan Cahueñ
  */
 @Entity
-@Table(name = "auditoria")
+@Table(name = "soporte")
 @NamedQueries({
-    @NamedQuery(name = "Auditoria.findAll", query = "SELECT a FROM Auditoria a")})
-public class Auditoria implements Serializable {
+    @NamedQuery(name = "Soporte.findAll", query = "SELECT s FROM Soporte s")})
+public class Soporte implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,22 +40,23 @@ public class Auditoria implements Serializable {
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-    @Column(name = "tipo")
-    private String tipo;
-    @Column(name = "ip")
-    private String ip;
-    @Column(name = "pc")
-    private String pc;
-    @Column(name = "tabla")
-    private String tabla;
-    @JoinColumn(name = "empleado", referencedColumnName = "codigo")
+    @Lob
+    @Column(name = "observacion")
+    private String observacion;
+    @Lob
+    @Column(name = "observacion2")
+    private String observacion2;
+    @Lob
+    @Column(name = "observacion3")
+    private String observacion3;
+    @JoinColumn(name = "clientes", referencedColumnName = "codigo")
     @ManyToOne
-    private Empleados empleados;
+    private Clientes clientes;
 
-    public Auditoria() {
+    public Soporte() {
     }
 
-    public Auditoria(Integer codigo) {
+    public Soporte(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -74,44 +76,36 @@ public class Auditoria implements Serializable {
         this.fecha = fecha;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getObservacion() {
+        return observacion;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 
-    public String getIp() {
-        return ip;
+    public String getObservacion2() {
+        return observacion2;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setObservacion2(String observacion2) {
+        this.observacion2 = observacion2;
     }
 
-    public String getPc() {
-        return pc;
+    public String getObservacion3() {
+        return observacion3;
     }
 
-    public void setPc(String pc) {
-        this.pc = pc;
+    public void setObservacion3(String observacion3) {
+        this.observacion3 = observacion3;
     }
 
-    public String getTabla() {
-        return tabla;
+    public Clientes getClientes() {
+        return clientes;
     }
 
-    public void setTabla(String tabla) {
-        this.tabla = tabla;
-    }
-
-    public Empleados getEmpleados() {
-        return empleados;
-    }
-
-    public void setEmpleados(Empleados empleados) {
-        this.empleados = empleados;
+    public void setClientes(Clientes clientes) {
+        this.clientes = clientes;
     }
 
     @Override
@@ -124,10 +118,10 @@ public class Auditoria implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Auditoria)) {
+        if (!(object instanceof Soporte)) {
             return false;
         }
-        Auditoria other = (Auditoria) object;
+        Soporte other = (Soporte) object;
         if ((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo))) {
             return false;
         }
@@ -136,7 +130,7 @@ public class Auditoria implements Serializable {
 
     @Override
     public String toString() {
-        return "jcinform.persistencia.Auditoria[codigo=" + codigo + "]";
+        return "jcinform.persistencia.Soporte[codigo=" + codigo + "]";
     }
 
 }

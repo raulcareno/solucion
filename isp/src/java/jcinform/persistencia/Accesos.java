@@ -20,7 +20,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "accesos")
@@ -142,7 +142,7 @@ public class Accesos implements Serializable {
 
     @Override
     public String toString() {
-        return "persistencia.Accesos[codigoacc=" + codigoacc + "]";
+        return "jcinform.persistencia.Accesos[codigoacc=" + codigoacc + "]";
     }
 
 }

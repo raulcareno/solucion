@@ -27,19 +27,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "cxcobrar")
 @NamedQueries({
-    @NamedQuery(name = "Cxcobrar.findAll", query = "SELECT c FROM Cxcobrar c"),
-    @NamedQuery(name = "Cxcobrar.findByCodigo", query = "SELECT c FROM Cxcobrar c WHERE c.codigo = :codigo"),
-    @NamedQuery(name = "Cxcobrar.findByDebe", query = "SELECT c FROM Cxcobrar c WHERE c.debe = :debe"),
-    @NamedQuery(name = "Cxcobrar.findByHaber", query = "SELECT c FROM Cxcobrar c WHERE c.haber = :haber"),
-    @NamedQuery(name = "Cxcobrar.findByTotal", query = "SELECT c FROM Cxcobrar c WHERE c.total = :total"),
-    @NamedQuery(name = "Cxcobrar.findByFecha", query = "SELECT c FROM Cxcobrar c WHERE c.fecha = :fecha"),
-    @NamedQuery(name = "Cxcobrar.findByTipo", query = "SELECT c FROM Cxcobrar c WHERE c.tipo = :tipo"),
-    @NamedQuery(name = "Cxcobrar.findByEfectivo", query = "SELECT c FROM Cxcobrar c WHERE c.efectivo = :efectivo"),
-    @NamedQuery(name = "Cxcobrar.findByCheque", query = "SELECT c FROM Cxcobrar c WHERE c.cheque = :cheque"),
-    @NamedQuery(name = "Cxcobrar.findByDebito", query = "SELECT c FROM Cxcobrar c WHERE c.debito = :debito"),
-    @NamedQuery(name = "Cxcobrar.findByTarjeta", query = "SELECT c FROM Cxcobrar c WHERE c.tarjeta = :tarjeta"),
-    @NamedQuery(name = "Cxcobrar.findByNocheque", query = "SELECT c FROM Cxcobrar c WHERE c.nocheque = :nocheque"),
-    @NamedQuery(name = "Cxcobrar.findByNotarjeta", query = "SELECT c FROM Cxcobrar c WHERE c.notarjeta = :notarjeta")})
+    @NamedQuery(name = "Cxcobrar.findAll", query = "SELECT c FROM Cxcobrar c")})
 public class Cxcobrar implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

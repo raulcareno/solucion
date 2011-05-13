@@ -22,7 +22,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "nodos")
@@ -39,7 +39,6 @@ public class Nodos implements Serializable {
     private String nombre;
     @Column(name = "ip")
     private String ip;
-    
     @Column(name = "usuario")
     private String usuario;
     @Column(name = "clave")
@@ -48,12 +47,13 @@ public class Nodos implements Serializable {
     private String ssid;
     @Column(name = "seguridad")
     private String seguridad;
-       @JoinColumn(name = "sector", referencedColumnName = "codigo")
+    @OneToMany(mappedBy = "nodos")
+    private Collection<Radios> radiosCollection;
+    @JoinColumn(name = "sector", referencedColumnName = "codigo")
     @ManyToOne
     private Sector sector;
-//
-//    @OneToMany(mappedBy = "nodos")
-//    private Collection<Contratos> contratosCollection;
+    @OneToMany(mappedBy = "nodos")
+    private Collection<Contratos> contratosCollection;
 
     public Nodos() {
     }
@@ -85,16 +85,6 @@ public class Nodos implements Serializable {
     public void setIp(String ip) {
         this.ip = ip;
     }
-
-    public Sector getSector() {
-        return sector;
-    }
-
-    public void setSector(Sector sector) {
-        this.sector = sector;
-    }
-
- 
 
     public String getUsuario() {
         return usuario;
@@ -128,13 +118,29 @@ public class Nodos implements Serializable {
         this.seguridad = seguridad;
     }
 
-//    public Collection<Contratos> getContratosCollection() {
-//        return contratosCollection;
-//    }
-//
-//    public void setContratosCollection(Collection<Contratos> contratosCollection) {
-//        this.contratosCollection = contratosCollection;
-//    }
+    public Collection<Radios> getRadiosCollection() {
+        return radiosCollection;
+    }
+
+    public void setRadiosCollection(Collection<Radios> radiosCollection) {
+        this.radiosCollection = radiosCollection;
+    }
+
+    public Sector getSector() {
+        return sector;
+    }
+
+    public void setSector(Sector sector) {
+        this.sector = sector;
+    }
+
+    public Collection<Contratos> getContratosCollection() {
+        return contratosCollection;
+    }
+
+    public void setContratosCollection(Collection<Contratos> contratosCollection) {
+        this.contratosCollection = contratosCollection;
+    }
 
     @Override
     public int hashCode() {
@@ -158,7 +164,7 @@ public class Nodos implements Serializable {
 
     @Override
     public String toString() {
-        return "persistencia.Nodos[codigo=" + codigo + "]";
+        return "jcinform.persistencia.Nodos[codigo=" + codigo + "]";
     }
 
 }

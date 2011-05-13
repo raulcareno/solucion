@@ -20,7 +20,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "comisiones")
@@ -35,12 +35,12 @@ public class Comisiones implements Serializable {
     private Integer codigo;
     @Column(name = "porcentaje")
     private Double porcentaje;
-    @JoinColumn(name = "plan", referencedColumnName = "codigo")
-    @ManyToOne
-    private Plan plan;
     @JoinColumn(name = "vendedores", referencedColumnName = "codigo")
     @ManyToOne
     private Empleados empleados;
+    @JoinColumn(name = "plan", referencedColumnName = "codigo")
+    @ManyToOne
+    private Plan plan;
 
     public Comisiones() {
     }
@@ -65,20 +65,20 @@ public class Comisiones implements Serializable {
         this.porcentaje = porcentaje;
     }
 
-    public Plan getPlan() {
-        return plan;
-    }
-
-    public void setPlan(Plan plan) {
-        this.plan = plan;
-    }
-
     public Empleados getEmpleados() {
         return empleados;
     }
 
     public void setEmpleados(Empleados empleados) {
         this.empleados = empleados;
+    }
+
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
     }
 
     @Override
@@ -103,7 +103,7 @@ public class Comisiones implements Serializable {
 
     @Override
     public String toString() {
-        return "persistencia.Comisiones[codigo=" + codigo + "]";
+        return "jcinform.persistencia.Comisiones[codigo=" + codigo + "]";
     }
 
 }

@@ -25,35 +25,35 @@ public class sectores extends Rows {
     public void addRow(Empleados p) {
          String complemento = "";
           Administrador adm = new Administrador();
-        String query = "SELECT o FROM Empleadossector as o WHERE o.empleados.codigo  =  '" + p.getCodigo() + "'  ";
+        String query = "SELECT o FROM Empleadossucursal as o WHERE o.empleados.codigo  =  '" + p.getCodigo() + "'  ";
         List empleadosectorList = adm.query(query);
         Checkbox  porcen = null;
-        Label nombreSector = null;
+        Label nombreSucursal = null;
 
         getChildren().clear();
         Row row = new Row();
         if(empleadosectorList.size()<=0){
-              query = "SELECT o FROM Sector as o  ";
+              query = "SELECT o FROM Sucursal as o  ";
               List planesList = adm.query(query);
               for (Iterator it = planesList.iterator(); it.hasNext();) {
-                 Sector sect = (Sector)it.next();
-                 Empleadossector com = new Empleadossector();
+                 Sucursal sect = (Sucursal)it.next();
+                 Empleadossucursal com = new Empleadossucursal();
                  com.setEmpleados(p);
-                 com.setSector(sect);
+                 com.setSucursal(sect);
                  com.setEstado(false);
 
                  empleadosectorList.add(com);
             }
         }else{
-            query = "SELECT o FROM Sector as o  "
-                    + "where o.codigo not in (SELECT m.sector.codigo FROM Empleadossector as m "
+            query = "SELECT o FROM Sucursal as o  "
+                    + "where o.codigo not in (SELECT m.sucursal.codigo FROM Empleadossucursal as m "
                     + "WHERE m.empleados.codigo  =  '" + p.getCodigo() + "'  ) ";
               List planesList = adm.query(query);
               for (Iterator it = planesList.iterator(); it.hasNext();) {
-                 Sector sect = (Sector)it.next();
-                 Empleadossector com = new Empleadossector();
+                 Sucursal sect = (Sucursal)it.next();
+                 Empleadossucursal com = new Empleadossucursal();
                  com.setEmpleados(p);
-                 com.setSector(sect);
+                 com.setSucursal(sect);
                 com.setEstado(false);
                  empleadosectorList.add(com);
             }
@@ -62,21 +62,21 @@ public class sectores extends Rows {
 
 
         for (Iterator itna = empleadosectorList.iterator(); itna.hasNext();) {
-            Empleadossector vec = (Empleadossector) itna.next();
+            Empleadossucursal vec = (Empleadossucursal) itna.next();
             row = new Row();
 
-            nombreSector = new Label(); //0
-            nombreSector.setStyle("font-size:1px;color:white");
-            nombreSector.setValue("" + vec.getCodigo());
-            nombreSector.setParent(row);
+            nombreSucursal = new Label(); //0
+            nombreSucursal.setStyle("font-size:1px;color:white");
+            nombreSucursal.setValue("" + vec.getCodigo());
+            nombreSucursal.setParent(row);
 
-            nombreSector = new Label();//1
-            nombreSector.setValue(vec.getSector().getCanton().getNombre()+"  ");
-            nombreSector.setParent(row);
+            nombreSucursal = new Label();//1
+            nombreSucursal.setValue(vec.getSucursal().getDescripcion()+"  ");
+            nombreSucursal.setParent(row);
 
-            nombreSector = new Label();//2
-            nombreSector.setValue("  " + vec.getSector().getNombre());
-            nombreSector.setParent(row);
+            nombreSucursal = new Label();//2
+            nombreSucursal.setValue("  " + vec.getSucursal().getDescripcion());
+            nombreSucursal.setParent(row);
 
 
             porcen = new Checkbox();//3
@@ -86,10 +86,10 @@ public class sectores extends Rows {
             
             porcen.setParent(row);
 
-            nombreSector = new Label();//4
-            nombreSector.setStyle("font-size:1px;color:white");
-            nombreSector.setValue("" + vec.getSector().getCodigo());
-            nombreSector.setParent(row);
+            nombreSucursal = new Label();//4
+            nombreSucursal.setStyle("font-size:1px;color:white");
+            nombreSucursal.setValue("" + vec.getSucursal().getCodigo());
+            nombreSucursal.setParent(row);
 
             row.setParent(this);
 
@@ -115,7 +115,7 @@ public void seleccionar(Boolean estado){
         for (int i = 0; i < col.size(); i++) {
             try {
                 Row object = (Row) col.get(i);
-                Empleadossector nota = new Empleadossector();
+                Empleadossucursal nota = new Empleadossucursal();
                 List labels = object.getChildren();
                 String valorCodigo = ((Label) labels.get(0)).getValue();
                 Integer codigo = null;
@@ -126,7 +126,7 @@ public void seleccionar(Boolean estado){
                 }
                 nota.setCodigo(codigo);
                 nota.setEstado( ((Checkbox) labels.get(3)).isChecked());
-                nota.setSector(new Sector(Integer.parseInt(((Label) labels.get(4)).getValue())));
+                nota.setSucursal(new Sucursal(Integer.parseInt(((Label) labels.get(4)).getValue())));
                 nota.setEmpleados(g);
                 if (nota.getCodigo() != null ) {
                     nota.setEmpleados(g);
@@ -134,7 +134,7 @@ public void seleccionar(Boolean estado){
                     
                 } else {
                     nota.setEmpleados(g);
-                    nota.setCodigo(adm.getNuevaClave("Empleadossector", "codigo"));
+                    nota.setCodigo(adm.getNuevaClave("Empleadossucursal", "codigo"));
                     adm.guardar(nota);
                     //return "ok";
                 }

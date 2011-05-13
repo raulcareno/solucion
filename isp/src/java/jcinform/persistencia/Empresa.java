@@ -6,12 +6,14 @@
 package jcinform.persistencia;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -58,12 +60,14 @@ public class Empresa implements Serializable {
     private Boolean autorizacion;
     @Column(name = "smtp")
     private String smtp;
-    @Column(name = "star")
-    private Boolean star;
     @Column(name = "puerto")
     private String puerto;
     @Column(name = "logo")
     private String logo;
+    @Column(name = "star")
+    private Boolean star;
+    @OneToMany(mappedBy = "empresa")
+    private Collection<Sucursal> sucursalCollection;
 
     public Empresa() {
     }
@@ -183,7 +187,15 @@ public class Empresa implements Serializable {
     public void setClavemail(String clavemail) {
         this.clavemail = clavemail;
     }
- 
+
+    public Boolean getAutorizacion() {
+        return autorizacion;
+    }
+
+    public void setAutorizacion(Boolean autorizacion) {
+        this.autorizacion = autorizacion;
+    }
+
     public String getSmtp() {
         return smtp;
     }
@@ -208,14 +220,6 @@ public class Empresa implements Serializable {
         this.logo = logo;
     }
 
-    public Boolean getAutorizacion() {
-        return autorizacion;
-    }
-
-    public void setAutorizacion(Boolean autorizacion) {
-        this.autorizacion = autorizacion;
-    }
-
     public Boolean getStar() {
         return star;
     }
@@ -224,7 +228,13 @@ public class Empresa implements Serializable {
         this.star = star;
     }
 
-  
+    public Collection<Sucursal> getSucursalCollection() {
+        return sucursalCollection;
+    }
+
+    public void setSucursalCollection(Collection<Sucursal> sucursalCollection) {
+        this.sucursalCollection = sucursalCollection;
+    }
 
     @Override
     public int hashCode() {

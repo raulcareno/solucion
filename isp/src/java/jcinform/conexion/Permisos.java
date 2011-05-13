@@ -87,7 +87,7 @@ public class Permisos {
         //VERIFICAR
     }
 
-    public void llenar(Empleados user, Empleadossector per) {
+    public void llenar(Empleados user, Empleadossucursal per) {
         Administrador adm = new Administrador();
 //        adm.queryNativo(null, Accesos.class)
         //user.getCodigoemp()

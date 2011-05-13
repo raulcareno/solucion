@@ -29,7 +29,7 @@
     <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
-        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:24%; left:32%;"  width="460px" sizable="true">
+        <window onLoad="usuario.focus();" title="." mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:27%; left:32%;"  width="460px" sizable="true">
             <zscript>
     import bean.EventDAO;
   import java.util.ArrayList;
@@ -61,22 +61,19 @@ error.visible = false;
   if(user != null){
  //             servicionestudiantes.visible = true;
                 // cargo los periodos que tienen
- List equivaEncontrados = adm.query("Select o from Empleadossector as o " +
+ List equivaEncontrados = adm.query("Select o from Empleadossucursal as o " +
  " where o.empleados.codigo  = '"+user.getCodigo()+"' and o.estado = true ");
              if(user.getCodigo().equals(-1)){
-                  equivaEncontrados = adm.query("Select o from Empleadossector as o order by o.sector.canton, o.sector.nombre ");
+                  equivaEncontrados = adm.query("Select o from Empleadossucursal as o order by o.sucursal.descripcion ");
              }
                 if(equivaEncontrados.size()>0){
-                            Empleadossector p = new Empleadossector();
-                             Sector ins = new Sector(-1);
-                              ins.setNombre("[SELECCIONE UN SECTOR]");
-                              Canton can = new Canton(-1);
-                              can.setNombre("");
-                              ins.setCanton(can);
-                              p.setSector(ins);
+                            Empleadossucursal p = new Empleadossucursal();
+                              Sucursal ins = new Sucursal(-1);
+                              ins.setDescripcion("[SELECCIONE UN SUCURSAL");
+                              p.setSucursal(ins);
                               
                               Empleados emp = new Empleados();
-                              emp.setApellidos("[SELECCIONE UN SECTOR]");
+                              emp.setApellidos("[SELECCIONE UN SUCURSAL]");
                               p.setEmpleados(emp);
                               equivaEncontrados.add(0,p);
                                 verificar.visible = false;
@@ -90,10 +87,10 @@ error.visible = false;
                                             periodo.getItems().remove(a);
                                         }
                                        for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
-                                              Empleadossector acceIt = (Empleadossector) it.next();
+                                              Empleadossucursal acceIt = (Empleadossucursal) it.next();
                                               Listitem li = new Listitem();
                                               li.setValue(acceIt);
-                                              li.appendChild(new Listcell(acceIt.getSector().getCanton().getNombre()+" | "+acceIt.getSector().getNombre()+" "));
+                                              li.appendChild(new Listcell(acceIt.getSucursal().getDescripcion()+" "));
                                               periodo.appendChild(li);
                                      }
                                      periodo.setSelectedIndex(0);
@@ -122,11 +119,11 @@ error.visible = false;
 
 void ingresoSistemas(){
     if(periodo.getSelectedItem()==null){
-        Messagebox.show("Seleccione un Sector...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        Messagebox.show("Seleccione un Sucursal...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         return;
     }
-    if(((Empleadossector)periodo.getSelectedItem().getValue()).getCodigo().equals(-1)){
-        Messagebox.show("Seleccione un Sector...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    if(((Empleadossucursal)periodo.getSelectedItem().getValue()).getCodigo().equals(-1)){
+        Messagebox.show("Seleccione un Sucursal...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         return;
     }
 
@@ -135,7 +132,7 @@ void ingresoSistemas(){
      
             Empleados user = adm.ingresoSistema(usuario.value, clave.value);
             if(user != null){
-                    Empleadossector perio = (Empleadossector)periodo.selectedItem.value;
+                    Empleadossucursal perio = (Empleadossucursal)periodo.selectedItem.value;
                     permisos.llenar(user,perio);
                     Executions.sendRedirect("index.zul");
 

@@ -22,7 +22,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "equipos")
@@ -39,13 +39,29 @@ public class Equipos implements Serializable {
     private String nombre;
     @Column(name = "modelo")
     private String modelo;
+    @Column(name = "tipo")
+    private String tipo;
     @Column(name = "caracteristica")
     private String caracteristica;
+    @Column(name = "costo")
+    private Double costo;
+    @Column(name = "pvp1")
+    private Double pvp1;
+    @Column(name = "pvp2")
+    private Double pvp2;
+    @Column(name = "pvp3")
+    private Double pvp3;
+    @Column(name = "pvp4")
+    private Double pvp4;
+    @Column(name = "bien")
+    private Boolean bien;
+    @OneToMany(mappedBy = "equipos")
+    private Collection<Detallecompra> detallecompraCollection;
     @JoinColumn(name = "marcas", referencedColumnName = "codigo")
     @ManyToOne
     private Marcas marcas;
-//    @OneToMany(mappedBy = "equipos")
-//    private Collection<Controlequipos> controlequiposCollection;
+    @OneToMany(mappedBy = "equipos")
+    private Collection<Detalle> detalleCollection;
 
     public Equipos() {
     }
@@ -78,12 +94,76 @@ public class Equipos implements Serializable {
         this.modelo = modelo;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
     public String getCaracteristica() {
         return caracteristica;
     }
 
     public void setCaracteristica(String caracteristica) {
         this.caracteristica = caracteristica;
+    }
+
+    public Double getCosto() {
+        return costo;
+    }
+
+    public void setCosto(Double costo) {
+        this.costo = costo;
+    }
+
+    public Double getPvp1() {
+        return pvp1;
+    }
+
+    public void setPvp1(Double pvp1) {
+        this.pvp1 = pvp1;
+    }
+
+    public Double getPvp2() {
+        return pvp2;
+    }
+
+    public void setPvp2(Double pvp2) {
+        this.pvp2 = pvp2;
+    }
+
+    public Double getPvp3() {
+        return pvp3;
+    }
+
+    public void setPvp3(Double pvp3) {
+        this.pvp3 = pvp3;
+    }
+
+    public Double getPvp4() {
+        return pvp4;
+    }
+
+    public void setPvp4(Double pvp4) {
+        this.pvp4 = pvp4;
+    }
+
+    public Boolean getBien() {
+        return bien;
+    }
+
+    public void setBien(Boolean bien) {
+        this.bien = bien;
+    }
+
+    public Collection<Detallecompra> getDetallecompraCollection() {
+        return detallecompraCollection;
+    }
+
+    public void setDetallecompraCollection(Collection<Detallecompra> detallecompraCollection) {
+        this.detallecompraCollection = detallecompraCollection;
     }
 
     public Marcas getMarcas() {
@@ -94,13 +174,13 @@ public class Equipos implements Serializable {
         this.marcas = marcas;
     }
 
-//    public Collection<Controlequipos> getControlequiposCollection() {
-//        return controlequiposCollection;
-//    }
-//
-//    public void setControlequiposCollection(Collection<Controlequipos> controlequiposCollection) {
-//        this.controlequiposCollection = controlequiposCollection;
-//    }
+    public Collection<Detalle> getDetalleCollection() {
+        return detalleCollection;
+    }
+
+    public void setDetalleCollection(Collection<Detalle> detalleCollection) {
+        this.detalleCollection = detalleCollection;
+    }
 
     @Override
     public int hashCode() {
@@ -124,7 +204,7 @@ public class Equipos implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "jcinform.persistencia.Equipos[codigo=" + codigo + "]";
     }
 
 }

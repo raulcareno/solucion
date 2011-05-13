@@ -83,13 +83,15 @@
 
             </zscript>
 
-            <div height="55px" class="estil" >
+            <div height="35px" class="estil" >
 
-                <label  style="padding-left:10px;color:white;font-size:18px;font-weight:bold" value="${sessionScope.empresa.razonsocial}"  />
-                <separator/>
-                <label  style="padding-left:10px;color:white;font-size:9px;" value="Empleado: ${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}"  />
+                <label  style="padding-left:10px;color:white;font-size:17px;font-weight:bold" value="${sessionScope.empresa.razonsocial}"  />
+                <separator orient="vertical"/>
+                <label  style="padding-left:10px;color:white;font-size:17px;font-weight:bold" value="...::::..."  />
+                <separator orient="vertical"/>
+                <label  style="padding-left:10px;color:white;font-size:9px;" value="USUARIO: ${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}"  />
                 <separator height="5px" orient="vertical"/>
-                <label  style="padding-left:10px;color:white;font-size:9px;" value="Sector: ${sessionScope.sector.sector.nombre}"  />
+                <label  style="padding-left:10px;color:white;font-size:9px;" value="SUCURSAL: ${sessionScope.sector.sucursal.descripcion}"  />
                 <separator height="5px"  orient="vertical"/>
                 <!--toolbarbutton style="padding-left:10px;color:white;font-size:9px;"  onClick="salir()" label="Cerrar Sesión"/-->
 
@@ -108,6 +110,9 @@
                                 <menuitem  value="/cantonesysectores.zul"  image="/images/cantones.png" label="Cantones-Sectores" onClick="ingresar(self)" />
                                 <menuitem value="/perfiles.zul" image="/images/perfiles.png" label="Perfiles" onClick="ingresar(self)" />
                                 <menuseparator />
+                                <menuitem   value="/nodos.zul"  image="/images/nodos.png" label="Nodos" onClick="ingresar(self)" />
+                                <menuitem   value="/radios.zul"  image="/images/radio.png" label="Radios" onClick="ingresar(self)" />
+                                <menuseparator />
                                 <menuitem label="Salir" image="/images/exit.gif"  onClick="salir()" />
                             </menupopup>
                         </menu>
@@ -118,16 +123,16 @@
                                 <menuseparator />
                                 <menuitem    value="/empleados.zul" image="/images/empleados.png" label="Empleados" onClick="ingresar(self)" />
                                 <menuitem    value="/comisiones.zul" image="/images/comision.png" label="Comisión-Empleados" onClick="ingresar(self)" />
-                                <menuitem    value="/empleadosector.zul" image="/images/sectores.png" label="Sector-Empleados" onClick="ingresar(self)" />
+                                <menuitem    value="/empleadosector.zul" image="/images/sectores.png" label="Sucursal-Empleados" onClick="ingresar(self)" />
 
                             </menupopup>
                         </menu>
 
                         <menu label="Control" image="/images/control.png" >
                             <menupopup>
-                                <menuitem   value="/nodos.zul"  image="/images/nodos.png" label="Nodos" onClick="ingresar(self)" />
-                                <menuitem   value="/radios.zul"  image="/images/nodos.png" label="Nodos" onClick="ingresar(self)" />
-                                <menuitem value="/controlequipos.zul" image="/images/equipos.png" label="Registro Equipos" onClick="ingresar(self)" />
+                                
+                                <menuitem value="/controlequipos.zul" image="/images/equipos.png" label="Registro Compra" onClick="ingresar(self)" />
+                                <menuseparator />
                                 <menuitem   value="/marcas.zul"  image="/images/marcas.png" label="Marcas" onClick="ingresar(self)" />
                                 <menuitem  value="/equipos.zul"   image="/images/equipos2.png" label="Equipos" onClick="ingresar(self)" />
                             </menupopup>

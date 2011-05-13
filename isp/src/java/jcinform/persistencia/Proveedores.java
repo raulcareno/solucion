@@ -20,7 +20,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "proveedores")
@@ -45,8 +45,8 @@ public class Proveedores implements Serializable {
     private String telefono;
     @Column(name = "email")
     private String email;
-//    @OneToMany(mappedBy = "proveedores")
-//    private Collection<Controlequipos> controlequiposCollection;
+    @OneToMany(mappedBy = "proveedores")
+    private Collection<Cabeceracompra> cabeceracompraCollection;
 
     public Proveedores() {
     }
@@ -110,14 +110,14 @@ public class Proveedores implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-//
-//    public Collection<Controlequipos> getControlequiposCollection() {
-//        return controlequiposCollection;
-//    }
-//
-//    public void setControlequiposCollection(Collection<Controlequipos> controlequiposCollection) {
-//        this.controlequiposCollection = controlequiposCollection;
-//    }
+
+    public Collection<Cabeceracompra> getCabeceracompraCollection() {
+        return cabeceracompraCollection;
+    }
+
+    public void setCabeceracompraCollection(Collection<Cabeceracompra> cabeceracompraCollection) {
+        this.cabeceracompraCollection = cabeceracompraCollection;
+    }
 
     @Override
     public int hashCode() {
@@ -141,7 +141,7 @@ public class Proveedores implements Serializable {
 
     @Override
     public String toString() {
-        return "persistencia.Proveedores[codigo=" + codigo + "]";
+        return "jcinform.persistencia.Proveedores[codigo=" + codigo + "]";
     }
 
 }

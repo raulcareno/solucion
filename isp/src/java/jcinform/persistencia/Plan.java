@@ -20,7 +20,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "plan")
@@ -37,14 +37,26 @@ public class Plan implements Serializable {
     private String nombre;
     @Column(name = "valor")
     private Double valor;
+    @Column(name = "pvp1")
+    private Double pvp1;
+    @Column(name = "pvp2")
+    private Double pvp2;
+    @Column(name = "pvp3")
+    private Double pvp3;
+    @Column(name = "pvp4")
+    private Double pvp4;
     @Column(name = "tipo")
     private String tipo;
     @Column(name = "dias")
-    private Integer dias =0;
-//    @OneToMany(mappedBy = "plan")
-//    private Collection<Comisiones> comisionesCollection;
-//    @OneToMany(mappedBy = "plan")
-//    private Collection<Contratos> contratosCollection;
+    private Integer dias;
+    @Column(name = "bien")
+    private Boolean bien;
+    @OneToMany(mappedBy = "plan")
+    private Collection<Comisiones> comisionesCollection;
+    @OneToMany(mappedBy = "plan")
+    private Collection<Detalle> detalleCollection;
+    @OneToMany(mappedBy = "plan")
+    private Collection<Contratos> contratosCollection;
 
     public Plan() {
     }
@@ -77,6 +89,38 @@ public class Plan implements Serializable {
         this.valor = valor;
     }
 
+    public Double getPvp1() {
+        return pvp1;
+    }
+
+    public void setPvp1(Double pvp1) {
+        this.pvp1 = pvp1;
+    }
+
+    public Double getPvp2() {
+        return pvp2;
+    }
+
+    public void setPvp2(Double pvp2) {
+        this.pvp2 = pvp2;
+    }
+
+    public Double getPvp3() {
+        return pvp3;
+    }
+
+    public void setPvp3(Double pvp3) {
+        this.pvp3 = pvp3;
+    }
+
+    public Double getPvp4() {
+        return pvp4;
+    }
+
+    public void setPvp4(Double pvp4) {
+        this.pvp4 = pvp4;
+    }
+
     public String getTipo() {
         return tipo;
     }
@@ -93,21 +137,37 @@ public class Plan implements Serializable {
         this.dias = dias;
     }
 
-//    public Collection<Comisiones> getComisionesCollection() {
-//        return comisionesCollection;
-//    }
-//
-//    public void setComisionesCollection(Collection<Comisiones> comisionesCollection) {
-//        this.comisionesCollection = comisionesCollection;
-//    }
-//
-//    public Collection<Contratos> getContratosCollection() {
-//        return contratosCollection;
-//    }
-//
-//    public void setContratosCollection(Collection<Contratos> contratosCollection) {
-//        this.contratosCollection = contratosCollection;
-//    }
+    public Boolean getBien() {
+        return bien;
+    }
+
+    public void setBien(Boolean bien) {
+        this.bien = bien;
+    }
+
+    public Collection<Comisiones> getComisionesCollection() {
+        return comisionesCollection;
+    }
+
+    public void setComisionesCollection(Collection<Comisiones> comisionesCollection) {
+        this.comisionesCollection = comisionesCollection;
+    }
+
+    public Collection<Detalle> getDetalleCollection() {
+        return detalleCollection;
+    }
+
+    public void setDetalleCollection(Collection<Detalle> detalleCollection) {
+        this.detalleCollection = detalleCollection;
+    }
+
+    public Collection<Contratos> getContratosCollection() {
+        return contratosCollection;
+    }
+
+    public void setContratosCollection(Collection<Contratos> contratosCollection) {
+        this.contratosCollection = contratosCollection;
+    }
 
     @Override
     public int hashCode() {
@@ -131,7 +191,7 @@ public class Plan implements Serializable {
 
     @Override
     public String toString() {
-        return nombre +" "+ tipo + " "+ valor;
+        return "jcinform.persistencia.Plan[codigo=" + codigo + "]";
     }
 
 }

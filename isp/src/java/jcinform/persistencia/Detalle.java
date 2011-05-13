@@ -6,6 +6,7 @@
 package jcinform.persistencia;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,22 +19,12 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "detalle")
 @NamedQueries({
-    @NamedQuery(name = "Detalle.findAll", query = "SELECT d FROM Detalle d"),
-    @NamedQuery(name = "Detalle.findByCodigo", query = "SELECT d FROM Detalle d WHERE d.codigo = :codigo"),
-    @NamedQuery(name = "Detalle.findByMes", query = "SELECT d FROM Detalle d WHERE d.mes = :mes"),
-    @NamedQuery(name = "Detalle.findByCantidad", query = "SELECT d FROM Detalle d WHERE d.cantidad = :cantidad"),
-    @NamedQuery(name = "Detalle.findByPrecio", query = "SELECT d FROM Detalle d WHERE d.precio = :precio"),
-    @NamedQuery(name = "Detalle.findByDescuento", query = "SELECT d FROM Detalle d WHERE d.descuento = :descuento"),
-    @NamedQuery(name = "Detalle.findByBeca", query = "SELECT d FROM Detalle d WHERE d.beca = :beca"),
-    @NamedQuery(name = "Detalle.findByTotal", query = "SELECT d FROM Detalle d WHERE d.total = :total"),
-    @NamedQuery(name = "Detalle.findByDescripcion", query = "SELECT d FROM Detalle d WHERE d.descripcion = :descripcion"),
-    @NamedQuery(name = "Detalle.findByAnio", query = "SELECT d FROM Detalle d WHERE d.anio = :anio"),
-    @NamedQuery(name = "Detalle.findByAsignado", query = "SELECT d FROM Detalle d WHERE d.asignado = :asignado")})
+    @NamedQuery(name = "Detalle.findAll", query = "SELECT d FROM Detalle d")})
 public class Detalle implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,22 +36,28 @@ public class Detalle implements Serializable {
     @Column(name = "cantidad")
     private Integer cantidad;
     @Column(name = "precio")
-    private Double precio;
+    private BigDecimal precio;
     @Column(name = "descuento")
-    private Double descuento;
+    private BigDecimal descuento;
     @Column(name = "beca")
-    private Double beca;
+    private BigDecimal beca;
     @Column(name = "total")
-    private Double total;
+    private BigDecimal total;
     @Column(name = "descripcion")
     private String descripcion;
     @Column(name = "anio")
     private Integer anio;
     @Column(name = "asignado")
     private Integer asignado;
+    @JoinColumn(name = "plan", referencedColumnName = "codigo")
+    @ManyToOne
+    private Plan plan;
     @JoinColumn(name = "factura", referencedColumnName = "codigo")
     @ManyToOne
     private Factura factura;
+    @JoinColumn(name = "equipos", referencedColumnName = "codigo")
+    @ManyToOne
+    private Equipos equipos;
 
     public Detalle() {
     }
@@ -93,35 +90,35 @@ public class Detalle implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public Double getPrecio() {
+    public BigDecimal getPrecio() {
         return precio;
     }
 
-    public void setPrecio(Double precio) {
+    public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
 
-    public Double getDescuento() {
+    public BigDecimal getDescuento() {
         return descuento;
     }
 
-    public void setDescuento(Double descuento) {
+    public void setDescuento(BigDecimal descuento) {
         this.descuento = descuento;
     }
 
-    public Double getBeca() {
+    public BigDecimal getBeca() {
         return beca;
     }
 
-    public void setBeca(Double beca) {
+    public void setBeca(BigDecimal beca) {
         this.beca = beca;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
@@ -149,12 +146,28 @@ public class Detalle implements Serializable {
         this.asignado = asignado;
     }
 
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
+    }
+
     public Factura getFactura() {
         return factura;
     }
 
     public void setFactura(Factura factura) {
         this.factura = factura;
+    }
+
+    public Equipos getEquipos() {
+        return equipos;
+    }
+
+    public void setEquipos(Equipos equipos) {
+        this.equipos = equipos;
     }
 
     @Override

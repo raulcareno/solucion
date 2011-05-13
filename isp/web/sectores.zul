@@ -24,8 +24,6 @@ List cantones2 = adm.query("Select o from Canton as o ");
 void llenar(Sector equi2){
    equi = equi2;
     nombre.value = equi.getNombre();
-    nofactura.value = equi.getNofactura();
-    serie.value = equi.getSerie();
        if(equi2.getCanton() != null){
              try{
                       for (int i = 0; i <= cantones.getItems().size(); i++) {
@@ -52,8 +50,7 @@ void estado(Boolean estado,Boolean modificar){
         equi = (Sector)datos.selectedItem.value;
     }
     nombre.readonly = estado;
- nofactura.readonly = estado;
- serie.readonly = estado;
+ 
 
 }
 
@@ -64,8 +61,6 @@ void estado(Boolean estado,Boolean modificar){
             return;
     }
         equi.setNombre(nombre.value);
-        equi.setNofactura(nofactura.value);
-        equi.setSerie(serie.value);
         equi.setCanton(cantones.selectedItem.value);
         
         if((!equi.getCodigo().equals(0)) ){
@@ -175,14 +170,7 @@ equi.setPerfil(g);
                     <span style="float:right"> Nombre Sector(*):</span>
                     <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />
                 </row>
-                <row>
-                    <span style="float:right"> No.Factura(*):</span>
-                    <textbox id="nofactura"  maxlength="10" cols="40" readonly="true"   />
-                </row>
-                <row>
-                    <span style="float:right"> Serie Factura(*):</span>
-                    <textbox id="serie"  maxlength="6" cols="40" readonly="true"   />
-                </row>
+          
  
 
             </rows>

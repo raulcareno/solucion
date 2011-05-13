@@ -28,7 +28,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "factura")
-@NamedQueries({ })
+@NamedQueries({
+    @NamedQuery(name = "Factura.findAll", query = "SELECT f FROM Factura f")})
 public class Factura implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -62,10 +63,15 @@ public class Factura implements Serializable {
     private BigDecimal tarjeta;
     @JoinColumn(name = "sector", referencedColumnName = "codigo")
     @ManyToOne
-    private Sector sector2;
+    private Sector sector;
     @JoinColumn(name = "clientes", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
+    @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sucursal sucursal;
+    @OneToMany(mappedBy = "factura")
+    private Collection<Detalle> detalleCollection;
     @OneToMany(mappedBy = "factura")
     private Collection<Cxcobrar> cxcobrarCollection;
 
@@ -181,11 +187,11 @@ public class Factura implements Serializable {
     }
 
     public Sector getSector() {
-        return sector2;
+        return sector;
     }
 
-    public void setSector(Sector sector2) {
-        this.sector2 = sector2;
+    public void setSector(Sector sector) {
+        this.sector = sector;
     }
 
     public Clientes getClientes() {
@@ -196,7 +202,29 @@ public class Factura implements Serializable {
         this.clientes = clientes;
     }
 
-  
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    public Collection<Detalle> getDetalleCollection() {
+        return detalleCollection;
+    }
+
+    public void setDetalleCollection(Collection<Detalle> detalleCollection) {
+        this.detalleCollection = detalleCollection;
+    }
+
+    public Collection<Cxcobrar> getCxcobrarCollection() {
+        return cxcobrarCollection;
+    }
+
+    public void setCxcobrarCollection(Collection<Cxcobrar> cxcobrarCollection) {
+        this.cxcobrarCollection = cxcobrarCollection;
+    }
 
     @Override
     public int hashCode() {

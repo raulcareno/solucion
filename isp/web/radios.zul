@@ -24,8 +24,6 @@ List cantones2 = adm.query("Select o from Nodos as o ");
 void llenar(Radios equi2){
    equi = equi2;
     nombre.value = equi.getNombre();
-    nofactura.value = equi.getNofactura();
-    serie.value = equi.getSerie();
        if(equi2.getNodos() != null){
              try{
                       for (int i = 0; i <= cantones.getItems().size(); i++) {
@@ -52,8 +50,7 @@ void estado(Boolean estado,Boolean modificar){
         equi = (Radios)datos.selectedItem.value;
     }
     nombre.readonly = estado;
- nofactura.readonly = estado;
- serie.readonly = estado;
+ 
 
 }
 
@@ -64,8 +61,7 @@ void estado(Boolean estado,Boolean modificar){
             return;
     }
         equi.setNombre(nombre.value);
-        equi.setNofactura(nofactura.value);
-        equi.setSerie(serie.value);
+        
         equi.setNodos(cantones.selectedItem.value);
         
         if((!equi.getCodigo().equals(0)) ){
@@ -86,7 +82,7 @@ void estado(Boolean estado,Boolean modificar){
     }
 
  Boolean verificar(String accion){
-        return permiso.verificarPermiso("Radioses",accion);
+        return permiso.verificarPermiso("Radios",accion);
  }
  void nuevo(){
     if(verificar("Agregar")){
@@ -163,7 +159,7 @@ equi.setPerfil(g);
                             <vbox>
                                 <listbox id="cantones" width="660px" rows="10"
                                                                                      onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
-                                    <listitem selected="true" forEach="${cantones2}" value="${each}">
+                                    <listitem   forEach="${cantones2}" value="${each}">
                                         <listcell label="${each.nombre}" />
                                     </listitem>
                                 </listbox>
@@ -175,14 +171,7 @@ equi.setPerfil(g);
                     <span style="float:right"> Nombre Radios(*):</span>
                     <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />
                 </row>
-                <row>
-                    <span style="float:right"> No.Factura(*):</span>
-                    <textbox id="nofactura"  maxlength="10" cols="40" readonly="true"   />
-                </row>
-                <row>
-                    <span style="float:right"> Serie Factura(*):</span>
-                    <textbox id="serie"  maxlength="6" cols="40" readonly="true"   />
-                </row>
+               
  
 
             </rows>
@@ -216,7 +205,7 @@ equi.setPerfil(g);
                     <listitem forEach="${allEvents}" value="${each}">
                         <listcell label="${each.codigo}" />
                         <listcell label="${each.nombre}" />
-                        <listcell label="${each.canton.nombre}" />
+                        <listcell label="${each.nodos.nombre}" />
                     </listitem>
                 </listbox>
 

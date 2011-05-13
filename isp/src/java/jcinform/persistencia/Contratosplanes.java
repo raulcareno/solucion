@@ -12,8 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,26 +21,23 @@ import javax.persistence.Table;
  * @author Familia Jadan Cahueñ
  */
 @Entity
-@Table(name = "radios")
+@Table(name = "contratosplanes")
 @NamedQueries({
-    @NamedQuery(name = "Radios.findAll", query = "SELECT r FROM Radios r")})
-public class Radios implements Serializable {
+    @NamedQuery(name = "Contratosplanes.findAll", query = "SELECT c FROM Contratosplanes c")})
+public class Contratosplanes implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "codigo")
     private Integer codigo;
-    @Column(name = "nombre")
-    private String nombre;
-    @JoinColumn(name = "nodos", referencedColumnName = "codigo")
-    @ManyToOne
-    private Nodos nodos;
+    @Column(name = "plan")
+    private Integer plan;
 
-    public Radios() {
+    public Contratosplanes() {
     }
 
-    public Radios(Integer codigo) {
+    public Contratosplanes(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -54,20 +49,12 @@ public class Radios implements Serializable {
         this.codigo = codigo;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Integer getPlan() {
+        return plan;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Nodos getNodos() {
-        return nodos;
-    }
-
-    public void setNodos(Nodos nodos) {
-        this.nodos = nodos;
+    public void setPlan(Integer plan) {
+        this.plan = plan;
     }
 
     @Override
@@ -80,10 +67,10 @@ public class Radios implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Radios)) {
+        if (!(object instanceof Contratosplanes)) {
             return false;
         }
-        Radios other = (Radios) object;
+        Contratosplanes other = (Contratosplanes) object;
         if ((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo))) {
             return false;
         }
@@ -92,7 +79,7 @@ public class Radios implements Serializable {
 
     @Override
     public String toString() {
-        return "jcinform.persistencia.Radios[codigo=" + codigo + "]";
+        return "jcinform.persistencia.Contratosplanes[codigo=" + codigo + "]";
     }
 
 }

@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "contratos")
@@ -36,13 +36,21 @@ public class Contratos implements Serializable {
     @Basic(optional = false)
     @Column(name = "codigo")
     private Integer codigo;
+    @Column(name = "estado")
+    private String estado;
     @Column(name = "contrato")
     private String contrato;
-    @Column(name = "estado")
-    private String estado ="";
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
-    private Date fecha= new Date();
+    private Date fecha;
+    @Column(name = "formapago")
+    private Integer formapago;
+    @Column(name = "nocuenta")
+    private String nocuenta;
+    @Column(name = "tipocuenta")
+    private String tipocuenta;
+    @Column(name = "diapago")
+    private Integer diapago;
     @Column(name = "fechapago")
     @Temporal(TemporalType.DATE)
     private Date fechapago;
@@ -53,37 +61,43 @@ public class Contratos implements Serializable {
     @Column(name = "clave")
     private String clave;
     @Column(name = "autorizado")
-    private Boolean autorizado = false;
+    private Boolean autorizado;
     @Column(name = "fechainstalacion")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechainstalacion= new Date();
+    private Date fechainstalacion;
     @Column(name = "fechafinal")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
+    @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sucursal sucursal;
+    @JoinColumn(name = "registrador", referencedColumnName = "codigo")
+    @ManyToOne
+    private Empleados empleados;
     @JoinColumn(name = "plan", referencedColumnName = "codigo")
     @ManyToOne
     private Plan plan;
     @JoinColumn(name = "nodos", referencedColumnName = "codigo")
     @ManyToOne
     private Nodos nodos;
+    @JoinColumn(name = "instalador", referencedColumnName = "codigo")
+    @ManyToOne
+    private Empleados empleados1;
     @JoinColumn(name = "equipos3", referencedColumnName = "codigo")
     @ManyToOne
-    private Controlequipos controlequipos;
+    private Detallecompra detallecompra;
     @JoinColumn(name = "equipos2", referencedColumnName = "codigo")
     @ManyToOne
-    private Controlequipos controlequipos2;
-    @JoinColumn(name = "equipos", referencedColumnName = "codigo")
-    @ManyToOne
-    private Controlequipos controlequipos3;
+    private Detallecompra detallecompra1;
     @JoinColumn(name = "clientes", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
     @JoinColumn(name = "empleados", referencedColumnName = "codigo")
     @ManyToOne
-    private Empleados empleados;
-    @JoinColumn(name = "registrador", referencedColumnName = "codigo")
+    private Empleados empleados2;
+    @JoinColumn(name = "equipos1", referencedColumnName = "codigo")
     @ManyToOne
-    private Empleados registrador;
+    private Detallecompra detallecompra2;
 
     public Contratos() {
     }
@@ -100,20 +114,20 @@ public class Contratos implements Serializable {
         this.codigo = codigo;
     }
 
-    public String getContrato() {
-        return contrato;
-    }
-
-    public void setContrato(String contrato) {
-        this.contrato = contrato;
-    }
-
     public String getEstado() {
         return estado;
     }
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(String contrato) {
+        this.contrato = contrato;
     }
 
     public Date getFecha() {
@@ -124,7 +138,38 @@ public class Contratos implements Serializable {
         this.fecha = fecha;
     }
 
-   
+    public Integer getFormapago() {
+        return formapago;
+    }
+
+    public void setFormapago(Integer formapago) {
+        this.formapago = formapago;
+    }
+
+    public String getNocuenta() {
+        return nocuenta;
+    }
+
+    public void setNocuenta(String nocuenta) {
+        this.nocuenta = nocuenta;
+    }
+
+    public String getTipocuenta() {
+        return tipocuenta;
+    }
+
+    public void setTipocuenta(String tipocuenta) {
+        this.tipocuenta = tipocuenta;
+    }
+
+    public Integer getDiapago() {
+        return diapago;
+    }
+
+    public void setDiapago(Integer diapago) {
+        this.diapago = diapago;
+    }
+
     public Date getFechapago() {
         return fechapago;
     }
@@ -181,6 +226,22 @@ public class Contratos implements Serializable {
         this.fechafinal = fechafinal;
     }
 
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    public Empleados getEmpleados() {
+        return empleados;
+    }
+
+    public void setEmpleados(Empleados empleados) {
+        this.empleados = empleados;
+    }
+
     public Plan getPlan() {
         return plan;
     }
@@ -197,47 +258,28 @@ public class Contratos implements Serializable {
         this.nodos = nodos;
     }
 
-    public Empleados getEmpleados() {
-        return empleados;
+    public Empleados getEmpleados1() {
+        return empleados1;
     }
 
-    public void setEmpleados(Empleados empleados) {
-        this.empleados = empleados;
+    public void setEmpleados1(Empleados empleados1) {
+        this.empleados1 = empleados1;
     }
 
-    public Empleados getRegistrador() {
-        return registrador;
+    public Detallecompra getDetallecompra() {
+        return detallecompra;
     }
 
-    public void setRegistrador(Empleados registrador) {
-        this.registrador = registrador;
-    }
-    
-    
-
-    public Controlequipos getControlequipos() {
-        return controlequipos;
+    public void setDetallecompra(Detallecompra detallecompra) {
+        this.detallecompra = detallecompra;
     }
 
-    public void setControlequipos(Controlequipos controlequipos) {
-        this.controlequipos = controlequipos;
+    public Detallecompra getDetallecompra1() {
+        return detallecompra1;
     }
 
-    public Controlequipos getControlequipos3() {
-        return controlequipos3;
-    }
-
-    public void setControlequipos3(Controlequipos controlequipos3) {
-        this.controlequipos3 = controlequipos3;
-    }
-
-    
-    public Controlequipos getControlequipos2() {
-        return controlequipos2;
-    }
-
-    public void setControlequipos2(Controlequipos controlequipos2) {
-        this.controlequipos2 = controlequipos2;
+    public void setDetallecompra1(Detallecompra detallecompra1) {
+        this.detallecompra1 = detallecompra1;
     }
 
     public Clientes getClientes() {
@@ -246,6 +288,22 @@ public class Contratos implements Serializable {
 
     public void setClientes(Clientes clientes) {
         this.clientes = clientes;
+    }
+
+    public Empleados getEmpleados2() {
+        return empleados2;
+    }
+
+    public void setEmpleados2(Empleados empleados2) {
+        this.empleados2 = empleados2;
+    }
+
+    public Detallecompra getDetallecompra2() {
+        return detallecompra2;
+    }
+
+    public void setDetallecompra2(Detallecompra detallecompra2) {
+        this.detallecompra2 = detallecompra2;
     }
 
     @Override
@@ -270,7 +328,7 @@ public class Contratos implements Serializable {
 
     @Override
     public String toString() {
-        return "persistencia.Contratos[codigo=" + codigo + "]";
+        return "jcinform.persistencia.Contratos[codigo=" + codigo + "]";
     }
 
 }

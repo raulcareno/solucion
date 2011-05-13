@@ -22,7 +22,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "sector")
@@ -37,15 +37,15 @@ public class Sector implements Serializable {
     private Integer codigo;
     @Column(name = "nombre")
     private String nombre;
-    @Column(name = "nofactura")
-    private String nofactura;
-    @Column(name = "serie")
-    private String serie;
     @JoinColumn(name = "canton", referencedColumnName = "codigo")
     @ManyToOne
     private Canton canton;
-//    @OneToMany(mappedBy = "sector")
-//    private Collection<Empleadossector> empleadossectorCollection;
+    @OneToMany(mappedBy = "sector")
+    private Collection<Factura> facturaCollection;
+    @OneToMany(mappedBy = "sector")
+    private Collection<Clientes> clientesCollection;
+    @OneToMany(mappedBy = "sector")
+    private Collection<Nodos> nodosCollection;
 
     public Sector() {
     }
@@ -78,23 +78,29 @@ public class Sector implements Serializable {
         this.canton = canton;
     }
 
-    public String getNofactura() {
-        return nofactura;
+    public Collection<Factura> getFacturaCollection() {
+        return facturaCollection;
     }
 
-    public void setNofactura(String nofactura) {
-        this.nofactura = nofactura;
+    public void setFacturaCollection(Collection<Factura> facturaCollection) {
+        this.facturaCollection = facturaCollection;
     }
 
-    public String getSerie() {
-        return serie;
+    public Collection<Clientes> getClientesCollection() {
+        return clientesCollection;
     }
 
-    public void setSerie(String serie) {
-        this.serie = serie;
+    public void setClientesCollection(Collection<Clientes> clientesCollection) {
+        this.clientesCollection = clientesCollection;
     }
 
-     
+    public Collection<Nodos> getNodosCollection() {
+        return nodosCollection;
+    }
+
+    public void setNodosCollection(Collection<Nodos> nodosCollection) {
+        this.nodosCollection = nodosCollection;
+    }
 
     @Override
     public int hashCode() {
@@ -118,7 +124,7 @@ public class Sector implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "jcinform.persistencia.Sector[codigo=" + codigo + "]";
     }
 
 }

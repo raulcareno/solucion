@@ -20,7 +20,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Geovanny Jadan
+ * @author Familia Jadan Cahueñ
  */
 @Entity
 @Table(name = "perfil")
@@ -35,10 +35,10 @@ public class Perfil implements Serializable {
     private Integer codigo;
     @Column(name = "nombre")
     private String nombre;
-//    @OneToMany(mappedBy = "perfil")
-//    private Collection<Accesos> accesosCollection;
-//    @OneToMany(mappedBy = "perfil")
-//    private Collection<Empleados> empleadosCollection;
+    @OneToMany(mappedBy = "perfil")
+    private Collection<Accesos> accesosCollection;
+    @OneToMany(mappedBy = "perfil")
+    private Collection<Empleados> empleadosCollection;
 
     public Perfil() {
     }
@@ -63,21 +63,21 @@ public class Perfil implements Serializable {
         this.nombre = nombre;
     }
 
-//    public Collection<Accesos> getAccesosCollection() {
-//        return accesosCollection;
-//    }
-//
-//    public void setAccesosCollection(Collection<Accesos> accesosCollection) {
-//        this.accesosCollection = accesosCollection;
-//    }
-//
-//    public Collection<Empleados> getEmpleadosCollection() {
-//        return empleadosCollection;
-//    }
-//
-//    public void setEmpleadosCollection(Collection<Empleados> empleadosCollection) {
-//        this.empleadosCollection = empleadosCollection;
-//    }
+    public Collection<Accesos> getAccesosCollection() {
+        return accesosCollection;
+    }
+
+    public void setAccesosCollection(Collection<Accesos> accesosCollection) {
+        this.accesosCollection = accesosCollection;
+    }
+
+    public Collection<Empleados> getEmpleadosCollection() {
+        return empleadosCollection;
+    }
+
+    public void setEmpleadosCollection(Collection<Empleados> empleadosCollection) {
+        this.empleadosCollection = empleadosCollection;
+    }
 
     @Override
     public int hashCode() {

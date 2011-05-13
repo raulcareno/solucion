@@ -23,26 +23,29 @@ import javax.persistence.Table;
  * @author Familia Jadan Cahueñ
  */
 @Entity
-@Table(name = "radios")
+@Table(name = "empleadossucursal")
 @NamedQueries({
-    @NamedQuery(name = "Radios.findAll", query = "SELECT r FROM Radios r")})
-public class Radios implements Serializable {
+    @NamedQuery(name = "Empleadossucursal.findAll", query = "SELECT e FROM Empleadossucursal e")})
+public class Empleadossucursal implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "codigo")
     private Integer codigo;
-    @Column(name = "nombre")
-    private String nombre;
-    @JoinColumn(name = "nodos", referencedColumnName = "codigo")
+    @Column(name = "estado")
+    private Boolean estado;
+    @JoinColumn(name = "empleados", referencedColumnName = "codigo")
     @ManyToOne
-    private Nodos nodos;
+    private Empleados empleados;
+    @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sucursal sucursal;
 
-    public Radios() {
+    public Empleadossucursal() {
     }
 
-    public Radios(Integer codigo) {
+    public Empleadossucursal(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -54,20 +57,28 @@ public class Radios implements Serializable {
         this.codigo = codigo;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Boolean getEstado() {
+        return estado;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
     }
 
-    public Nodos getNodos() {
-        return nodos;
+    public Empleados getEmpleados() {
+        return empleados;
     }
 
-    public void setNodos(Nodos nodos) {
-        this.nodos = nodos;
+    public void setEmpleados(Empleados empleados) {
+        this.empleados = empleados;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     @Override
@@ -80,10 +91,10 @@ public class Radios implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Radios)) {
+        if (!(object instanceof Empleadossucursal)) {
             return false;
         }
-        Radios other = (Radios) object;
+        Empleadossucursal other = (Empleadossucursal) object;
         if ((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo))) {
             return false;
         }
@@ -92,7 +103,7 @@ public class Radios implements Serializable {
 
     @Override
     public String toString() {
-        return "jcinform.persistencia.Radios[codigo=" + codigo + "]";
+        return "jcinform.persistencia.Empleadossucursal[codigo=" + codigo + "]";
     }
 
 }
