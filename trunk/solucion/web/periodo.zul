@@ -1,6 +1,7 @@
+
 <window   id="ventana"   border="normal"
     xmlns:a="http://www.zkoss.org/2005/zk/annotation">
- <zscript>
+    <zscript>
      <![CDATA[
   import jcinform.persistencia.Global;
   import bean.EventDAO; 
@@ -21,156 +22,163 @@
    List periodosListadod = adm.query("Select o from Periodo as o order by o.descripcion");
    
 ]]>
-  </zscript>
-   <tabbox width="100%">
-            <tabs>
-                <tab id="registro" label="CREAR AÑOS LECTIVOS" />
-                <tab id="representante" label="COPIAR AÑOS PARAMETROS" />
-            </tabs>
-            <tabpanels>
-                <tabpanel>
+    </zscript>
+    <tabbox width="100%">
+        <tabs>
+            <tab id="registro" label="CREAR AÑOS LECTIVOS" />
+            <tab id="representante" label="COPIAR AÑOS PARAMETROS" />
+            <tab id="inscripciones" label="HABILITAR DÍAS PARA INSCRIPCIONES" />
+        </tabs>
+        <tabpanels>
+            <tabpanel>
 
-<groupbox mold="3d" >
-       <caption label="Agregar" />
-<grid width="100%">
-<rows> 
-    <row visible="false">
-        <span style="float:right"> Código(*):</span>
-       <textbox id="codigo"  readonly="true" value="@{inobjeto.codigoper}" onChange="update();"/>
-    </row>
-    <row>
-        <span style="float:right"> Año Lectivo(*):</span>
-       <span>
-       <textbox id="descripcion" value="@{inobjeto.descripcion}"  onChange="update();"/>
+                <groupbox mold="3d" >
+                    <caption label="Agregar" />
+                    <grid width="100%">
+                        <rows> 
+                            <row visible="false">
+                                <span style="float:right"> Código(*):</span>
+                                <textbox id="codigo"  readonly="true" value="@{inobjeto.codigoper}" onChange="update();"/>
+                            </row>
+                            <row>
+                                <span style="float:right"> Año Lectivo(*):</span>
+                                <span>
+                                    <textbox id="descripcion" value="@{inobjeto.descripcion}"  onChange="update();"/>
     
         Estado(*): 
-		<checkbox id="estado"    checked="@{inobjeto.estado}" onCheck="update();" />
-        </span>
-    </row>
-     <row>
-        <span style="float:right"> Institucion(*):</span>
+                                    <checkbox id="estado"    checked="@{inobjeto.estado}" onCheck="update();" />
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right"> Institucion(*):</span>
  
-     <listbox id="listadoi"  width="420px" mold="select">
-                 <listitem  selected="true" forEach="${instObjetos}" value="${each}"  label="${each.denominacion} ${each.nombre} - ${each.tipo}" />
-       </listbox>
- </row>
- <row>
+                                <listbox id="listadoi"  width="420px" mold="select">
+                                    <listitem  selected="true" forEach="${instObjetos}" value="${each}"  label="${each.denominacion} ${each.nombre} - ${each.tipo}" />
+                                </listbox>
+                            </row>
+                            <row>
 
-        <span style="float:right"> Jornada:</span>
-		<span>
-        <listbox id="seccionesL" mold="select" >
-			<listitem selected="true"  forEach="${secciones}" value="${each}">
-                  <listcell label="${each.descripcion}" />
-            </listitem>
-		</listbox>
+                                <span style="float:right"> Jornada:</span>
+                                <span>
+                                    <listbox id="seccionesL" mold="select" >
+                                        <listitem selected="true"  forEach="${secciones}" value="${each}">
+                                            <listcell label="${each.descripcion}" />
+                                        </listitem>
+                                    </listbox>
 
         Regimen:
-		 <textbox id="regimen" value="@{inobjeto.regimen}"  onChange="update();"/>
-         </span>
- </row>
- <row>
+                                    <textbox id="regimen" value="@{inobjeto.regimen}"  onChange="update();"/>
+                                </span>
+                            </row>
+                            <row>
 
-        <span style="float:right"> Habilitar Inscripciones:</span>
-		<span>
-        <checkbox id="web" checked="@{inobjeto.web}" onCheck="update();" disabled="true"  />
+                                <span style="float:right"> Habilitar Inscripciones:</span>
+                                <span>
+                                    <checkbox id="web" checked="@{inobjeto.web}" onCheck="update();" disabled="true"  />
 
         Desde:
-        <datebox id="desde"  value="@{inobjeto.fechai}" format="dd/MM/yyyy"  onChange="update();"  readonly="true"  />
+                                    <datebox id="desde"  value="@{inobjeto.fechai}" format="dd/MM/yyyy"  onChange="update();"  readonly="true"  />
         Hasta:
-		 <datebox id="hasta"  value="@{inobjeto.fechaf}"  format="dd/MM/yyyy"   onChange="update();"  readonly="true"  />
-         </span>
- </row>
+                                    <datebox id="hasta"  value="@{inobjeto.fechaf}"  format="dd/MM/yyyy"   onChange="update();"  readonly="true"  />
+                                </span>
+                            </row>
  
-</rows>
-</grid>
-<vbox>
-    <vbox>
-    <hbox>
-        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-    </hbox>
-    </vbox>
-</vbox>
+                        </rows>
+                    </grid>
+                    <vbox>
+                        <vbox>
+                            <hbox>
+                                <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                                <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                                <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                                <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                            </hbox>
+                        </vbox>
+                    </vbox>
 
- </groupbox>
+                </groupbox>
  
-<groupbox mold="3d" >
+                <groupbox mold="3d" >
 
-       <caption label="Busquedas a" />
-<vbox>
-    <hbox>  Periodos:  <textbox id="buscarText"  maxlength="60" cols="40" />  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
-    <hbox width="100%">
-         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-			<listhead>
-                <listheader label="Cod."/>
-                <listheader label="Nombres"/>
-                <listheader label="Estado"/>
-			</listhead>
-			<listitem forEach="${allEvents}" value="${each}">
-               <listcell label="${each.codigoper}" />
-               <listcell label="${each.descripcion}" />
-               <listcell label="${each.institucion}" />
-               <listcell label="${each.estado}" />
-            </listitem>
-		</listbox>
-    </hbox>
-</vbox>
-</groupbox>
-</tabpanel>
-<tabpanel>
+                    <caption label="Busquedas a" />
+                    <vbox>
+                        <hbox>  Periodos:  
+                            <textbox id="buscarText"  maxlength="60" cols="40" />  
+                            <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> 
+                        </hbox>
+                        <hbox width="100%">
+                            <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                                <listhead>
+                                    <listheader label="Cod."/>
+                                    <listheader label="Nombres"/>
+                                    <listheader label="Estado"/>
+                                </listhead>
+                                <listitem forEach="${allEvents}" value="${each}">
+                                    <listcell label="${each.codigoper}" />
+                                    <listcell label="${each.descripcion}" />
+                                    <listcell label="${each.institucion}" />
+                                    <listcell label="${each.estado}" />
+                                </listitem>
+                            </listbox>
+                        </hbox>
+                    </vbox>
+                </groupbox>
+            </tabpanel>
+            <tabpanel>
 
-<groupbox width="100%"  mold="3d">
-<caption label="Copiar parametros a nuevo periodo" />
-<grid>
-    <rows>
-        <row>
+                <groupbox width="100%"  mold="3d">
+                    <caption label="Copiar parametros a nuevo periodo" />
+                    <grid>
+                        <rows>
+                            <row>
             Desde:
-            <listbox id="periodosListado" mold="select" >
-            <listitem  label="[Seleccione]" value="-1"/>
-			<listitem forEach="${periodosListadod}" value="${each}">
-                <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
-            </listitem>
-		</listbox>
-        </row>
+                                <listbox id="periodosListado" mold="select" >
+                                    <listitem  label="[Seleccione]" value="-1"/>
+                                    <listitem forEach="${periodosListadod}" value="${each}">
+                                        <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
+                                    </listitem>
+                                </listbox>
+                            </row>
        
-        <row>
+                            <row>
             Hasta:
-            <listbox id="periodosListado2" mold="select" >
-            <listitem  label="[Seleccione]" value="-1"/>
-			<listitem forEach="${periodosListadod}" value="${each}">
-                <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
-            </listitem>
-		</listbox>
-        </row>
-         <row spans="2" style="background:#99CCFF">
-        <span>
+                                <listbox id="periodosListado2" mold="select" >
+                                    <listitem  label="[Seleccione]" value="-1"/>
+                                    <listitem forEach="${periodosListadod}" value="${each}">
+                                        <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
+                                    </listitem>
+                                </listbox>
+                            </row>
+                            <row spans="2" style="background:#99CCFF">
+                                <span>
             SE COPIARÁ:
-            <checkbox checked="true" id="ccursos" label="Cursos" />
-            <checkbox checked="true"  id="cequivalencias" label="Equivalencias" />
-            <checkbox checked="true"  id="cparametros" label="Parámetros" />
-            <checkbox checked="true"  id="ctextos" label="Textos" />
-            <checkbox checked="true"  id="caportes" label="Trimestres y Aportes" />
-            <checkbox checked="true"  id="cactas" label="Parametros de Actas de Grado" />
-        </span>
-        </row>
-        <row spans="2">
-                <button image="/images/guardar.gif" id="copiar" label="Copiar Parametros" onClick="copiando()"  />
-        </row>
-    </rows>
-    </grid>
-<listbox id="resultados" >
+                                    <checkbox checked="true" id="ccursos" label="Cursos" />
+                                    <checkbox checked="true"  id="cequivalencias" label="Equivalencias" />
+                                    <checkbox checked="true"  id="cparametros" label="Parámetros" />
+                                    <checkbox checked="true"  id="ctextos" label="Textos" />
+                                    <checkbox checked="true"  id="caportes" label="Trimestres y Aportes" />
+                                    <checkbox checked="true"  id="cactas" label="Parametros de Actas de Grado" />
+                                </span>
+                            </row>
+                            <row spans="2">
+                                <button image="/images/guardar.gif" id="copiar" label="Copiar Parametros" onClick="copiando()"  />
+                            </row>
+                        </rows>
+                    </grid>
+                    <listbox id="resultados" >
     
-</listbox>
+                    </listbox>
 
     
 
-</groupbox>
-</tabpanel>
- </tabpanels>
-   </tabbox>
-<zscript>
+                </groupbox>
+            </tabpanel>
+            <tabpanel>
+                <include src="/letras.zul"/>
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
+    <zscript>
     <![CDATA[
     AnnotateDataBinder binder = new AnnotateDataBinder(ventana);
     binder.bindBean("inobjeto", inobjeto);
@@ -467,5 +475,5 @@ Messagebox.show("Copia realizada con Éxito...!", "Administrador Educativo", Mes
 }
 
   ]]>
-</zscript>
+    </zscript>
 </window>

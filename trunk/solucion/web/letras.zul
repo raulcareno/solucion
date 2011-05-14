@@ -1,0 +1,241 @@
+
+<window onCreate='buscar("")'  title="Habilitación de Letras para Inscripciones"  border="normal">
+
+    <groupbox mold="3d" >
+        <caption label="Agregar" />
+	
+        <grid width="100%">
+            <rows> 
+ 
+
+                <row>
+                    <span style="float:right"> Letras(*):</span>
+                    <span>
+                        <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   /> 
+                        <button label="TODO EL ABECEDARIO" onClick="todo()"/> Separe con " ; " Ejm. A; B; C;
+                    </span>
+                </row>
+                <row   >
+                    <span style="float:right"> Desde(*):</span>
+                    <datebox id="desde" width="120px" format="dd/MM/yyyy HH:mm"/>
+                </row>
+                <row   >
+                    <span style="float:right"> Desde(*):</span>
+
+                    <datebox id="hasta" width="120px"  format="dd/MM/yyyy HH:mm"/>
+                </row>
+
+            </rows>
+        </grid>
+        <vbox>
+            <vbox>
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();vc.visible=true;" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                </hbox>
+            </vbox>
+
+        </vbox>
+
+    </groupbox>
+    <groupbox onMouseOver='buscar("")' width="100%" mold="3d" >
+
+        <caption label="Busquedas" />
+        <vbox>
+                
+            <hbox width="100%">
+                <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="800px">
+                    <listhead>
+                        <listheader label="Código"/>
+                        <listheader label="Nombre"/>
+                        <listheader label="Desde"/>
+                        <listheader label="Hasta"/>
+
+                    </listhead>
+                    <listitem forEach="${allEvents2}" value="${each}">
+                        <listcell label="${each.codigo}" />
+                        <listcell label="${each.letras}" />
+                        <listcell label="${each.desde}" />
+                        <listcell label="${each.hasta}" />
+                    </listitem>
+                </listbox>
+
+
+            </hbox>
+        </vbox>
+    </groupbox>
+    <popup  id="msg" width="300px">
+        <vbox>
+			PARA QUE...:
+            <toolbarbutton label="Se ingresa manualmente la disciplina [INGRESADA]"/>
+            <toolbarbutton label="Sumatoria de el Ingreso de disciplina de todos los profesor(igual al 50%) y la disciplina del inspector el (50%) [MITAD]"/>
+            <toolbarbutton label="Sumatoria de el Ingreso de disciplina de todos los profesores más la disciplina del inspector sacamos el promedio [PROMEDIO]"/>
+            <toolbarbutton label="Promedio del ingreso de profesores más el promedio ingresado por el inspector [SUMATORIA]"/>
+
+        </vbox>
+    </popup>
+
+    <zscript>
+  import jcinform.persistencia.Letras;
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.Letras;
+  import jcinform.persistencia.Periodo;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+
+ Session ses = Sessions.getCurrent();
+ Administrador adm = new Administrador();
+ List allEvents = adm.query("Select o from Letras as o  ");
+ static Letras equi = new Letras();
+ Permisos permiso = new Permisos();
+ Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+ //FUNCIONES
+ void habil(){
+String p = grupo.getValue();
+            try{
+
+             vc.visible=false;
+             vn.visible=false;
+             vl.visible=false;
+             vf.visible=false;
+
+                if(p.equals("Caracter")){
+                    vc.visible=true;
+                }else if(p.equals("Numerico")){
+                    vn.visible=true;
+                }else if(p.equals("Logico")){
+                    vl.visible=true;
+                }else if(p.equals("Fecha")){
+                    vf.visible=true;
+                }
+            }catch(Exception e){}
+ }
+
+ void llenar(Letras equi2){
+            equi = equi2;
+            nombre.value = equi.getLetras();
+            desde.value = equi.getDesde();
+            hasta.value = equi.getHasta();
+            String p = "Caracter";
+ 
+}
+void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+        equi = (Letras)datos.selectedItem.value;
+    }
+    nombre.readonly = estado;
+    grupo.disabled = estado;
+    valn.readonly = estado;
+    vall.disabled = estado;
+    valf.disabled = estado;
+    valc.readonly = estado;
+
+}
+
+
+ void guardar(){
+    if(nombre.value.equals("") || desde.value.equals("") || hasta.value.equals("") ){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+    
+        equi.setLetras(nombre.value);
+        equi.setDesde(desde.value);
+        equi.setHasta(hasta.value);
+    
+        if((!equi.getCodigo().equals(0)) ){
+             adm.actualizar(equi);
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = equi.getCodigo()+"";
+                  ((Listcell)children.get(1)).label = nombre.value+ "" ;
+         }else{
+                equi.setCodigo(adm.getNuevaClave("Letras","codigo"));
+                adm.guardar(equi);
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Letras(0));
+                    buscar("");
+  
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Periodos",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new Letras(0));
+        estado(false,false);
+        
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Letras)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             equi = (Letras)datos.selectedItem.value;
+             adm.eliminarObjeto(Letras.class, equi.getCodigo());
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Letras(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+   void buscar(String p){
+     
+      List equivaEncontrados = adm.query("Select o from Letras as o " +
+        " where o.letras like '%"+p+"%' ");
+        datos = new Listbox();
+        int a=0;
+            for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+             }
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Letras acceIt = (Letras) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                      li.appendChild(new Listcell(acceIt.getLetras()+" "));
+                      li.appendChild(new Listcell(acceIt.getDesde().toLocaleString()+" "));
+                      li.appendChild(new Listcell(acceIt.getHasta().toLocaleString()+" "));
+                  
+
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Letras g){
+ 
+}
+void todo(){
+
+        nombre.value ="A;B;C;CH;D;E;F;G;H;I;J;K;L;M;N;Ñ;O;P;Q;R;S;T;U;V;W;X;Y;Z";
+    }
+    </zscript>
+</window>
