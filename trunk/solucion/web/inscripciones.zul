@@ -87,7 +87,7 @@ import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
 import bean.email;
-
+int contador = 0;
 Boolean guardando = false;
     Administrador adm = new Administrador();
      secuencial sec = new secuencial();
@@ -776,6 +776,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                         <attribute name="onTimer">
                                             <![CDATA[
                                       Date fechaFinal = new Date();
+                                      
                                         String minutos = fechaFinal.getMinutes()+"";
                                         if(minutos.length()<2)
                                                 minutos = "0"+minutos;
@@ -792,8 +793,10 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                             if(Resta.length()<2)
                                                 Resta="0"+Resta;
                                             now2.setValue(" Ud. lleva: "+Resta+" minutos ");
-                                            if((resta % 2) == 0)
+                                            
+                                            if(contador < 6)
                                                 letras.visible = !letras.visible;
+                                             contador++;
                                             if(Resta.equals("30")){
                                                 Executions.sendRedirect("inscripciones.zul");
                                             }
