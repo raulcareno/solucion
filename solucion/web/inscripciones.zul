@@ -80,6 +80,8 @@ import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
+import bean.verificarLetras;
+
 
 import java.util.Date;
 import org.joda.time.DateMidnight;
@@ -99,6 +101,17 @@ java.util.Date fecha = new java.util.Date();
 String fechaString = (fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+(fecha.getDate());
 
  List periodosListadod = adm.queryNativo("Select o.* from Periodo as o where o.web = true and '"+fechaString+"' between o.fechai and o.fechaf order by o.descripcion",Periodo.class);
+ String letrasparaHoy ="";
+ try{
+
+        List letrasHoy = adm.queryNativo("SELECT letras FROM letras WHERE NOW() BETWEEN desde AND hasta ");
+        letrasparaHoy = "HOY SOLO APELLIDOS QUE EMPIEZAN CON: "+letrasHoy.get(0);
+
+ }catch(Exception err1){
+        letrasparaHoy = "  No se puede matricular el día de hoy, no existen, cierre y vuelva a intentar en otro día, o verifique su horario";
+        //Executions.sendRedirect("/inscripciones.zul");
+        
+ }
 if(periodosListadod.size()<= 0)
     Executions.sendRedirect("592981728937491234.zul");
  //Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -663,6 +676,8 @@ void seleccionPeriodo(){
             timer.start();
             estado(false);
             datosGrid.visible= true;
+            seleccion.visible = false;
+            cedula.focus();
         }
         }catch(Exception e){
 
@@ -687,6 +702,11 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
   ]]>
             </zscript>
+
+
+
+            
+
             <window mode="modal" width="50%" id="informacion" >
                 
 
@@ -713,7 +733,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                         </row>
                         <row align="center"    spans="2" style="background:#E4EDF6;border:0px;color:blue" >
                             <span style="font-size:11px">
-                                <button onClick="panel.visible=true;informacion.detach()" orient="vertical" image="/images/ok.gif" height="50px" label="He Leído y Estoy de acuerdo con las condiciones" />
+                                <button onClick="panel.visible=true;periodosListado.focus();informacion.detach();" orient="vertical" image="/images/ok.gif" height="50px" label="He Leído y Estoy de acuerdo con las condiciones" />
                             </span>
                         </row>
                     </rows>
@@ -741,7 +761,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             </row>
                         </rows>
                     </grid>
-                       
+                       <image onClick="periodosListado.focus()" id="seleccion" style="position:absolute; top:5%;right:10%" src="/images/seleccioneborrar.png" />
                     <grid sclass="MyGridRowHeight"  id="datosGrid" visible="false">
                         <rows>
                             
@@ -772,6 +792,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                             if(Resta.length()<2)
                                                 Resta="0"+Resta;
                                             now2.setValue(" Ud. lleva: "+Resta+" minutos ");
+                                            if((resta % 2) == 0)
+                                                letras.visible = !letras.visible;
                                             if(Resta.equals("30")){
                                                 Executions.sendRedirect("inscripciones.zul");
                                             }
@@ -783,6 +805,14 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                           
                             <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
                                 <separator bar="true"/>
+                            </row>
+                            <row align="center"  spans="2" style="background:red;border:0px;left:30px;" >
+                                <span>
+                                    <label style="color:WHITE;font-size:14px;font-weight:bold;">.</label>
+                                    <label id="letras" style="color:WHITE;font-size:14px;font-weight:bold;" value="${letrasparaHoy}" > </label>
+                                    <label style="color:WHITE;font-size:14px;font-weight:bold;"> </label>
+                                </span>
+
                             </row>
                             <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
                                 <span style="color:blue">DATOS DEL ESTUDIANTE</span>
@@ -814,9 +844,9 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     <label  style="font-size:11px" value="1er.Nombre(*)" id="t2"/>
                                 </span>
                                 <span>
-                                    <textbox id="nombres" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="10" readonly="true"   />
+                                    <textbox id="nombres" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2); self.getValue();"   maxlength="60" cols="10" readonly="true"   />
                                     <label  style="font-size:11px" value="2do.Nombre" />
-                                    <textbox id="nombres1" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2);apellidos.getValue(); self.getValue();generarClave(false);"   maxlength="60" cols="10" readonly="true"   />
+                                    <textbox id="nombres1" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2); self.getValue();"   maxlength="60" cols="10" readonly="true"   />
 
                                     <image src="/images/information.png" height="16px" width="16px" tooltip="nombrest" popup="nombrest" style="cursor: pointer" />
                                     <popup id="nombrest" width="300px">
@@ -832,9 +862,9 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     <label  style="font-size:11px" value="1er.Apellido(*)" id="t3"/>
                                 </span>
                                 <span>
-                                    <textbox id="apellidos"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3);nombres.getValue(); self.getValue();generarClave(false);"  maxlength="60" cols="10" readonly="true"  />
+                                    <textbox id="apellidos"  onFocus="changeStyle(t3)"   constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3); self.getValue(); verificaLetra();"  maxlength="60" cols="10" readonly="true"  />
                                     <label  style="font-size:11px" value="2do.Apellido:" />
-                                    <textbox id="apellidos1"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3);nombres.getValue(); self.getValue();generarClave(false);  "  maxlength="60" cols="10" readonly="true"  />
+                                    <textbox id="apellidos1"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3); self.getValue(); "  maxlength="60" cols="10" readonly="true"  />
                                     <image src="/images/information.png" height="16px" width="16px" tooltip="apellidost" popup="nombrest" style="cursor: pointer" />
                                     <popup id="apellidost" width="300px">
                                         <html>
@@ -860,7 +890,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
                             
-                             <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label   style="font-size:11px" value="Parroquia(*):" id="tpa4"/>
@@ -954,7 +984,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </popup>
                                 </span>
                             </row>
-       <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
@@ -992,7 +1022,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
                             
-                               <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="¿Fué abanderado del pabellon nacional?" id="tc56566"/>
@@ -1026,7 +1056,9 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             </row>
                             
                             <row align="left"   style="background:#E4EDF6;border:0px" >
-                                <span style="float:right;font-size:11px"> <label value="Promedios del : "/></span>
+                                <span style="float:right;font-size:11px">
+                                    <label value="Promedios del : "/>
+                                </span>
                                 <span>
                                     <label style="font-size:11px"  value="1 Trim."/>
                                     <separator bar="true" orient="vertical"/>
@@ -1063,7 +1095,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             </row>
                             
                             
-                              <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label style="font-size:11px"  value="Ciencias Naturales: " id="tNat"/>
@@ -1078,7 +1110,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             </row>
                             
                             
-                                    <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label style="font-size:11px"  value="Ciencias Sociales: " id="tSoc"/>
@@ -1377,7 +1409,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             <row align="left"    style="background:#FCFDFE;border:0px;left:30px;" >
                                 <span style="color:blue">DATOS DEL REPRESENTANTE</span>
                                 <span>
-                                    <button image="/images/copiar.png" label="COPIAR DATOS DEL PADRE" onClick="copiarp()" /> 
+                                    <button image="/images/copiar.png" label="COPIAR DATOS DEL PADRE" onClick="copiarp()" />
                                     <button  image="/images/copiar.png" label="COPIAR DATOS DE LA MADRE"  onClick="copiarm()" />
                                 </span>
                             </row>
@@ -1487,7 +1519,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             <row align="left"  style="background:#E4EDF6;border:0px" >
                                 <span></span>
                                 <span>
-                                    <button image="/images/guardar.gif" id="guardar" disabled="false" label="INSCRIBIR" width="190px"  height="40px"     onClick="nombres.getValue();apellidos.getValue();direccion.getValue();mail.getValue();genero.getValue();nacido.getValue();cpaingresado.getValue();aprovechamiento.getValue();self.disabled = true; guardar();"/>
+                                    <button image="/images/guardar.gif" id="guardar" disabled="false" label="INSCRIBIR" width="190px"  height="40px"     onClick="verificarCampos()"/>
                                     
                                     <button image="/images/imprimir.gif" id="imprimir" disabled="true" label="IMPRIMIR" width="190px"  height="40px"  onClick="imprision();"/>
 
@@ -1498,6 +1530,36 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                         </rows>
                     </grid>
+                    <zscript>
+                        verificarCampos(){
+                                
+                                nombres.focus(); nombres.getValue();
+                                apellidos.focus(); apellidos.getValue();
+                                verificaLetra();
+                                direccion.focus(); direccion.getValue();
+                                mail.focus(); mail.getValue();
+                                aprovechamiento.focus(); aprovechamiento.getValue();
+                                genero.focus(); genero.getValue();
+                                nacido.focus(); nacido.getValue();
+                                cedular.focus(); cedular.getValue();;
+                                nombresr.focus(); nombresr.getValue();;
+                                apellidosr.focus(); apellidosr.getValue();;
+                                direccionr.focus(); direccionr.getValue();;
+                                cpaingresado.focus(); cpaingresado.getValue();
+                                self.disabled = true;
+
+                                generarClave(false);
+                                guardar();
+                        }
+                        void verificaLetra(){
+                        verificarLetras ver = new verificarLetras();
+                        String paso = ver.verifica(apellidos.value,adm);
+                                 if(paso.contains("ERROR")){
+                                    Messagebox.show(""+paso, "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                                    Executions.sendRedirect("/inscripciones.zul");
+                                 }
+                        }
+                    </zscript>
 
 <!--html>
                 &lt;a href=&quot;#ancla&quot;&gt;enlace&lt;/a&gt;
