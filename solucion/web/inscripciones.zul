@@ -106,6 +106,7 @@ String fechaString = (fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+(fecha.
 
         List letrasHoy = adm.queryNativo("SELECT letras FROM letras WHERE NOW() BETWEEN desde AND hasta ");
         letrasparaHoy = "HOY SOLO APELLIDOS QUE EMPIEZAN CON: "+letrasHoy.get(0);
+        letrasparaHoy = letrasparaHoy.replace(";"," , ");
 
  }catch(Exception err1){
         letrasparaHoy = "  No se puede matricular el día de hoy, no existen, cierre y vuelva a intentar en otro día, o verifique su horario";
@@ -750,9 +751,9 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             <row align="left"  spans="2" style="background:#6699CC;border:0px;color:blue" >
                                 <span>
                                     <listbox id="periodosListado" mold="select" style="font-size:15px"  onSelect="seleccionPeriodo();" >
-                                        <listitem  label="[SELECCIONE UN PERIODO PARA CONTINUAR]" value="-1"/>
+                                        <listitem  label="* S E L E C C I O N E  *  E L  *  P E R I O D O  *  P A R A  *  C O N T I N U A R *  " value="-1"/>
                                         <listitem forEach="${periodosListadod}" value="${each}">
-                                            <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
+                                            <listcell   label="**${each.institucion.tipo}** [${each.seccion}]  ${each.descripcion} ${each.institucion} " />
                                         </listitem>
                                     </listbox>
                                     <image src="/images/selec.png" />
@@ -762,7 +763,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                         </rows>
                     </grid>
                        <image onClick="periodosListado.focus()" id="seleccion" style="position:absolute; top:5%;right:10%" src="/images/seleccioneborrar.png" />
-                    <grid sclass="MyGridRowHeight"  id="datosGrid" visible="false">
+                       <grid sclass="MyGridRowHeight"  id="datosGrid" visible="false">
                         <rows>
                             
                             <row align="left"    spans="2" style="background:#6699CC;border:0px;color:blue" >
@@ -794,7 +795,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                                 Resta="0"+Resta;
                                             now2.setValue(" Ud. lleva: "+Resta+" minutos ");
                                             
-                                            if(contador < 6)
+                                            if(contador <= 7)
                                                 letras.visible = !letras.visible;
                                              contador++;
                                             if(Resta.equals("30")){
@@ -811,20 +812,20 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             </row>
                             <row align="center"  spans="2" style="background:red;border:0px;left:30px;" >
                                 <span>
-                                    <label style="color:WHITE;font-size:14px;font-weight:bold;">.</label>
+                                    <label style="color:WHITE;font-size:14px;font-weight:bold;">...::: </label>
                                     <label id="letras" style="color:WHITE;font-size:14px;font-weight:bold;" value="${letrasparaHoy}" > </label>
-                                    <label style="color:WHITE;font-size:14px;font-weight:bold;"> </label>
+                                    <label style="color:WHITE;font-size:14px;font-weight:bold;"> :::...  </label>
                                 </span>
 
                             </row>
-                            <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
+                            <row align="left"  spans="2" style="background:#FCFDFE;border:0px;left:30px;" >
                                 <span style="color:blue">DATOS DEL ESTUDIANTE</span>
 
                             </row>
                         
-                            <row align="left"     style="background:#E4EDF6;border:0px" >
+                            <row align="left"     style="background:#FCFDFE;border:0px" >
                                 <span style="float:right">
-                                    <label  style="font-size:11px" value="Identificación:" id="t1"/>
+                                    <label  style="font-size:11px" value="Identificación  C.I/Pass:" id="t1"/>
                                 </span>
 
                                 <span>
@@ -842,7 +843,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                
                                 </span>
                             </row>
-                            <row align="left"     style="background:#E4EDF6;border:0px" >
+                            <row align="left"     style="background:#FCFDFE;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="1er.Nombre(*)" id="t2"/>
                                 </span>
@@ -860,7 +861,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row align="left"     style="background:#E4EDF6;border:0px" >
+                            <row align="left"     style="background:#FCFDFE;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="1er.Apellido(*)" id="t3"/>
                                 </span>
@@ -876,7 +877,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </popup>
                                 </span>
                             </row>
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label   style="font-size:11px" value="Dirección(*):" id="t4"/>
@@ -893,7 +894,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
                             
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label   style="font-size:11px" value="Parroquia(*):" id="tpa4"/>
@@ -911,7 +912,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label   style="font-size:11px" value="Email(*):" id="t5"/>
@@ -938,7 +939,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
 
 
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label style="font-size:11px"  value="Género(*):" id="t6"/>
@@ -957,7 +958,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row align="left"   visible="false" style="background:#E4EDF6;border:0px" >
+                            <row align="left"   visible="false" style="background:#FCFDFE;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="Usuario:" id="t8"/>
                                 </span>
@@ -971,7 +972,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 </span>
                             </row>
 
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="Institución/Escuela Anterior:" id="t11"/>
                                 </span>
@@ -987,7 +988,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     </popup>
                                 </span>
                             </row>
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
@@ -1006,7 +1007,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     
                                 </span>
                             </row>
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row align="left"   style="background:#FCFDFE;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="¿Tiene hermanos en la institución?" id="tc16"/>
@@ -1024,7 +1025,9 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                                 </span>
                             </row>
-                            
+                                 <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
+                                <separator bar="true"/>
+                            </row>
                             <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
@@ -1047,7 +1050,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                             <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
-                                    <label style="font-size:11px"  value="Promedios:" id="tA"/>
+                                    <label style="font-size:11px"  value="Promedios de 7mo. Básica:" id="tA"/>
                                 </span>
                                 <span>
                                     <div style="color:blue">
@@ -1176,7 +1179,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                             <row align="left"   style="background:#FCFDFE;border:0px" >
                                 <span style="float:right;font-size:11px">
-                                    <label style="font-size:11px"  value="Identificación:" id="t1p"/>
+                                    <label style="font-size:11px"  value="Identificación C.I/Pass:" id="t1p"/>
                                 </span>
 
                                 <span>
@@ -1298,7 +1301,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                             <row align="left"   style="background:#E4EDF6;border:0px" >
                                 <span style="float:right;font-size:11px">
-                                    <label style="font-size:11px"  value="Identificación:" id="t1m"/>
+                                    <label style="font-size:11px"  value="Identificación  C.I/Pass:" id="t1m"/>
                                 </span>
 
                                 <span>
@@ -1419,7 +1422,7 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
                             <row align="left"   style="background:#FCFDFE;border:0px" >
                                 <span style="float:right;font-size:11px">
-                                    <label style="font-size:11px" value="Identificación(*):" id="t1r"/>
+                                    <label style="font-size:11px" value="Identificación  C.I/PAS(*):" id="t1r"/>
                                 </span>
 
                                 <span>
