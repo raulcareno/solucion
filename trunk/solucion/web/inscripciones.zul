@@ -324,7 +324,7 @@ cedular.readonly= estado;
 }
 
 
- void guardar(){
+ void guardar(Integer califica){
  try{
  if(guardando)
     return;
@@ -422,6 +422,7 @@ String cpa = cpa.getValue();
         estudent.setPeriodo(periodo.getCodigoper());
         estudent.setDiscapacidad(discapacidad.checked);
         estudent.setTdiscapacidad(tdiscapacidad.value);
+        estudent.setCalificacion(califica);
         
         adm.guardar(estudent);
 
@@ -1555,7 +1556,8 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                 self.disabled = true;
 
                                 generarClave(false);
-                                guardar();
+                                
+                           calificando.doModal();
                         }
                         void verificaLetra(){
                         verificarLetras ver = new verificarLetras();
@@ -1577,9 +1579,33 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
  
  
-	   
+	 <window id="calificando" visible="false"  style="top:10%;left:20%"  title="CALIFIQUE PARA CONTINUAR" >
+        <panel  width="250px"  framable="true" border="normal" height="240px"  >
+            <toolbar>
+                <span>
+                    <label style="font-weight:bold; size:14px" value="¿SU INSCRIPCIÓN MEDIANTE INTERNET A USTED LE PARECIÓ?"/>
+                     
+                </span>
+            </toolbar>
+            <panelchildren>
+                <vbox>
+                    <radiogroup orient="vertical" Id="calificacion">
+                        <radio value="5" selected="true" image="/images/mb.png" label="Excelente"/>
+                        <radio value="4"  image="/images/b.png" label="Muy Bueno"/>
+                        <radio value="3"  image="/images/r.png" label="Bueno"/>
+                        <radio value="2"  image="/images/m.png" label="Regular"/>
+                        <radio value="1"  image="/images/mm.png" label="Malo"/>
+                    </radiogroup>
+                </vbox>
+            </panelchildren>
+            <toolbar  align="center" >
+                <button label="CONTINUAR Y GUARDAR"   style="font-weight:bold; size:14px"  onClick="guardar(new Integer(calificacion.selectedItem.value));calificando.detach()" image="/images/guardar.gif"  />
+            </toolbar>
+        </panel>
+    
+    </window>   
         
         </window>
-    
+   
     </div>
 </zk>
