@@ -75,8 +75,14 @@ public class verificarLetras {
 
         for (Iterator<Letras> it = letr.iterator(); it.hasNext();) {
             Letras letras = it.next();
-            if (letras.getLetras().contains(letraComprobar)) {
-                return letras;
+            if(letraComprobar.length()>1){
+                if (letras.getLetras().contains(letraComprobar)) {
+                    return letras;
+                }
+            }else{
+                if (letras.getLetras().contains(letraComprobar) && !letras.getLetras().contains("CH")) {
+                    return letras;
+                }
             }
         }
         return null;
