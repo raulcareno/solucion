@@ -80,7 +80,7 @@ public class verificarLetras {
                     return letras;
                 }
             }else{
-                if (letras.getLetras().contains(letraComprobar) && !letras.getLetras().contains("CH")) {
+                if (letras.getLetras().contains(letraComprobar) && !letras.getLetras().equals("CH")) {
                     return letras;
                 }
             }
