@@ -69,6 +69,104 @@ void buscar2(Cursos cur){
       return ds;
 }
 
+ public JRDataSource calificacioninscritos(){
+ 
+
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+      String query = "SELECT calificacion, COUNT(calificacion) FROM inscripciones WHERE periodo = ("+periodo.getCodigoper() +") GROUP BY calificacion  order by calificacion";
+      List hoy = adm.queryNativo(query);
+
+   Integer excelente = 0;  Integer muybueno = 0;
+               Integer bueno = 0;  Integer regular = 0;
+               Integer malo = 0; 
+               ArrayList detalle = new ArrayList();
+               
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+               Vector vec = (Vector) it.next();
+                 Object val1 = vec.get(0);
+                 Object val2 = vec.get(1);
+               General gen = new General();         
+                    if(val1 instanceof Integer){
+                                 Integer dato = val1;
+                                 if(dato.equals(1)){
+                                    malo = 1;
+                                    gen.setOrden(5);
+                                    gen.setValor1("Malo");
+                                    gen.setValor2(new Long(val2));
+                                 }else if(dato.equals(2)){
+                                    regular = 1;
+                                    gen.setOrden(4);
+                                    gen.setValor1("Regular");
+                                    gen.setValor2(new Long(val2));
+                                 }else if(dato.equals(3)){
+                                    bueno = 1;
+                                    gen.setOrden(3);
+                                    gen.setValor1("Bueno");
+                                    gen.setValor2(new Long(val2));
+                                 }else if(dato.equals(4)){
+                                    muybueno = 1;
+                                    gen.setOrden(2);
+                                    gen.setValor1("Muy Bueno");
+                                    gen.setValor2(new Long(val2));
+                                 }else if(dato.equals(5)){
+                                    excelente = 1;
+                                    gen.setOrden(1);
+                                    gen.setValor1("Excelente");
+                                    gen.setValor2(new Long(val2));
+                                 }
+                       }
+                         detalle.add(gen);
+                        System.out.println(gen.getValor1()+ " =  "+gen.getValor2());
+                 
+                
+      }
+      
+    General gen = new General(); 
+      if(excelente.equals(0)){
+        gen.setOrden(1);
+          gen.setValor1("Excelente");
+          gen.setValor2(new Long(0));
+          detalle.add(gen);
+      }
+    System.out.println(gen.getValor1()+ " =  "+gen.getValor2());
+      if(muybueno.equals(0)){
+      gen.setOrden(2);
+          gen.setValor1("Muy Bueno");
+          gen.setValor2(new Long(0));
+          detalle.add(gen);
+      }
+    System.out.println(gen.getValor1()+ " =  "+gen.getValor2());      
+      if(bueno.equals(0)){
+      gen.setOrden(3);
+          gen.setValor1("Bueno");
+          gen.setValor2(new Long(0));
+          detalle.add(gen);
+      }
+         System.out.println(gen.getValor1()+ " =  "+gen.getValor2()); 
+      if(regular.equals(0)){
+      gen.setOrden(4);
+          gen.setValor1("Regular");
+          gen.setValor2(new Long(0));
+          detalle.add(gen);
+      } 
+         System.out.println(gen.getValor1()+ " =  "+gen.getValor2()); 
+      if(malo.equals(0)){
+      gen.setOrden(5);
+          gen.setValor1("Malo");
+          gen.setValor2(new Long(0));
+          detalle.add(gen);
+      }
+      
+    System.out.println(gen.getValor1()+ " =  "+gen.getValor2());           
+     Collections.sort(detalle);
+     
+     ReporteGeneralDataSource ds = new ReporteGeneralDataSource(detalle);
+      return ds;
+}
+
  public JRDataSource inscritos2(ArrayList listadodeCursos, String tipo){
   String curso =  "";
 
@@ -434,6 +532,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = inscritos2(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"estudiantes.jasper");
+            }else if(tipo.equals("INS3")){
+                    datasource = calificacioninscritos();
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"calificacion.jasper");
             }else if(tipo.equals("MAT")){
                     datasource = inscritos(listadoCursos,"Matriculado");
                     parametros.put("titulo", titulo.getValue());
@@ -596,6 +698,7 @@ void campos(String valor){
                                 <listitem  id="LMIN" label="Folio y No. Matricula" value="LMIN"/>
                                 <listitem  id="INS" label="Inscritos" value="INS" />
                                 <listitem  id="INS2" label="Inscritos por Internet" value="INS2" />
+                                <listitem  id="INS3" label="Calificacion de Inscritos por Internet" value="INS3" />
                                 <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
                                 <listitem  id="LMAT" label="Matriculados" value="LMAT" />
                                 <listitem  id="LMATF" label="Matriculados por Fechas" value="LMATF" />
@@ -633,10 +736,13 @@ void campos(String valor){
                                 <listitem  disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                             </listbox>
                         </row>
-                    <row  id="filafechas" visible="false" style="background:transparent;border:0px" >
+                        <row  id="filafechas" visible="false" style="background:transparent;border:0px" >
                             <span style="float:right"> Desde:</span>
                             <!-- onSelect="buscar2(((Cursos)self.selectedItem.value));" -->
-                             <span><datebox format="dd/MM/yyyy" id="desde"/> Hasta:<datebox  format="dd/MM/yyyy" id="hasta"/></span>
+                            <span>
+                                <datebox format="dd/MM/yyyy" id="desde"/> Hasta:
+                                <datebox  format="dd/MM/yyyy" id="hasta"/>
+                            </span>
                         </row>
                         <row  id="filacurso" visible="false" style="background:transparent;border:0px" >
                             <span style="float:right"> Curso:</span>
@@ -668,21 +774,29 @@ void campos(String valor){
                                         <bandpopup>
                                             <vbox>
                                                 <listbox width="90px" id="format"  onSelect="bd.value=self.selectedItem.label; ejecutar.image = self.selectedItem.image;  bd.close();showReport();">
-                                                    <listitem  value="pdf" selected="true"><listcell  image="/images/pdf.png" label="PDF" />
+                                                    <listitem  value="pdf" selected="true">
+                                                        <listcell  image="/images/pdf.png" label="PDF" />
                                                     </listitem>
-                                                    <listitem value="rtf"><listcell  image="/images/word.gif" label="Word" />
+                                                    <listitem value="rtf">
+                                                        <listcell  image="/images/word.gif" label="Word" />
                                                     </listitem>
-                                                    <listitem value="xls"><listcell  image="/images/excel.gif"  label="Excel" />
+                                                    <listitem value="xls">
+                                                        <listcell  image="/images/excel.gif"  label="Excel" />
                                                     </listitem>
-                                                    <listitem value="jxl"><listcell  image="/images/excel.gif" label="JXL" />
+                                                    <listitem value="jxl">
+                                                        <listcell  image="/images/excel.gif" label="JXL" />
                                                     </listitem>
-                                                    <listitem value="csv"><listcell  image="/images/csv.gif" label="CSV" />
+                                                    <listitem value="csv">
+                                                        <listcell  image="/images/csv.gif" label="CSV" />
                                                     </listitem>
-                                                    <listitem value="odt"><listcell  image="/images/open.png" label="OpenOfic" />
+                                                    <listitem value="odt">
+                                                        <listcell  image="/images/open.png" label="OpenOfic" />
                                                     </listitem>
-                                                    <listitem value="xml"><listcell  image="/images/xml.gif" label="XML" />
+                                                    <listitem value="xml">
+                                                        <listcell  image="/images/xml.gif" label="XML" />
                                                     </listitem>
-                                                    <listitem value="html"><listcell  image="/images/html.gif" label="HTML" />
+                                                    <listitem value="html">
+                                                        <listcell  image="/images/html.gif" label="HTML" />
                                                     </listitem>
                                                 </listbox>
                                             </vbox>
@@ -747,6 +861,7 @@ void campos(String valor){
             AM.visible = per.verificarPermisoReporte("AM", "Ingresar");
             INS.visible = per.verificarPermisoReporte("INS", "Ingresar");
             INS2.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            INS3.visible = per.verificarPermisoReporte("INS", "Ingresar");
             MAT.visible = per.verificarPermisoReporte("MAT", "Ingresar");
             RET.visible = per.verificarPermisoReporte("RET", "Ingresar");
             LMAT.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
