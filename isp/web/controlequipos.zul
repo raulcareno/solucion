@@ -226,28 +226,46 @@ empa.setEquipos(g);
 llenarGrid(int numero){
     filas.getChildren().clear();
     noopciones.disabled = false;
-    Listbox ba = new Listbox();
     Listbox eq = new Listbox();
 
              
-             
+               
              
             for(int i = 0; i< numero; i++){
                     Row row = new Row();
-                    ba = llenaProve(new Listbox());
                     eq = llenaEquipo(new Listbox());
-                            Textbox t = new Textbox("");
-                            //t.setCols(80);
+                            Intbox t = new Intbox(1);
                             Doublebox dou = new Doublebox(0);
                             dou.setStyle("float:right;text-align:right");
                             //dou.setCols(80);
                             row.appendChild(eq);
-                            row.appendChild(ba);
                             row.appendChild(dou);
+                            t.addEventListener("onBlur", new EventListener() {
+                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
+                                    try {
+                                        Integer valor = ((Intbox) event.getTarget()).getValue();
+                                   
+                                        llenarGridMac(valor);
+                                    } catch (Exception e) {
+                                           
+                                    }
+                                }
+                            });
                             row.appendChild(t);
                             //noopciones.disabled = true;
                    
                     filas.appendChild(row);
+            }
+}
+
+llenarGridMac(int numero){
+ 
+    filas2.getChildren().clear();
+            for(int i = 0; i< numero; i++){
+                    Row row = new Row();
+                             Textbox t = new Textbox("");
+                            row.appendChild(t);
+                    filas2.appendChild(row);
             }
 }
 
@@ -264,12 +282,10 @@ llenarGrid(int numero){
 
                     <grid width="100%">
                         <rows>
-
                             <row>
                                 <span>
                                 <span style="float:right"> No. Productos a ingresar:</span>   <intbox id="codigo" disabled="true" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
                                 </span>
-                               
                                <spinner value="0"  disabled="false"  
                                 constraint="no negative" id="cantidad" readonly="true"
 				onChanging="if (event.value.length() > 0 &amp;&amp; Integer.parseInt(event.value) > 0) llenarGrid(Integer.parseInt(event.value));" onBlur=" if (self.value > 0 )  self.disabled = true;  else self.disabled = false;" />
@@ -281,11 +297,11 @@ llenarGrid(int numero){
                                 <grid height="150px" id="opciones">
                                     <columns sizable="true">
                                         <column label="EQUIPO" />
-                                        <column label="PROVEEDOR" />
                                         <column label="PRECIO" />
                                         <column label="MAC" />
                                     </columns>
                                     <rows id="filas">
+                                     
                                     </rows>
                                 </grid>
                                  
