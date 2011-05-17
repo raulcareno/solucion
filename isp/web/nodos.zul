@@ -41,10 +41,6 @@ void llenar(Nodos empa){
     clave.value = permiso.decriptar(empa.getClave());
     ssid.value = empa.getSsid();
     seguridad.value = empa.getSeguridad();
-    
-    
-
-
 
  
                 if(empa.getSector()!=null){
@@ -82,19 +78,17 @@ void estado(Boolean estado,Boolean modificar){
 
 
  void guardar(){
-
-
- if(nombre.value =="" || ip.value == "" || ssid.value == "" || perf.selectedItem == null){
-    Messagebox.show("Registre los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-    return;
- }
+         if(nombre.value =="" || ip.value == "" || perf.selectedItem == null){
+            Messagebox.show("Registre los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+            return;
+         }
         empa.setCodigo(codigo.value);
         empa.setNombre(nombre.value);
         empa.setIp(ip.value);
         empa.setSsid(ssid.value);
         empa.setSeguridad(seguridad.value);
         empa.setSector(perf.selectedItem.value);
-       empa.setUsuario(usuario.value);
+        empa.setUsuario(usuario.value);
         empa.setClave(permiso.encriptar(clave.value));
  
 
@@ -196,6 +190,26 @@ empa.setSector(g);
                                 </span>
                                 <span></span>
                             </row>
+                                                        <row>
+                                <span style="float:right"> Sector(*):</span>
+                                <bandbox  readonly="true"  id="bd">
+                                    <bandpopup>
+                                        <vbox>
+                                            <listbox id="perf" width="250px"
+                                                     onSelect="bd.value=self.selectedItem.label;cargar(((Sector)self.selectedItem.value));bd.closeDropdown();">
+                                                <listhead>
+                                                    <listheader label="Description"/>
+                                                </listhead>
+                                                <listitem forEach="${perfiles}" value="${each}">
+                                                    <listcell label="${each.nombre}" />
+
+                                                </listitem>
+                                            </listbox>
+                                        </vbox>
+                                    </bandpopup>
+                                </bandbox>
+
+                            </row>
 
                             <row>
                                 <span style="float:right"> Nombre(*):</span>
@@ -203,7 +217,7 @@ empa.setSector(g);
                                 
                             </row>
                             <row>
-                                <span style="float:right"> Ip:</span>
+                                <span style="float:right"> Ip(*):</span>
                                 <textbox id="ip"  maxlength="60" cols="40" readonly="true"  />
                               
                             </row>
@@ -227,26 +241,7 @@ empa.setSector(g);
                                 <span style="float:right"> Clave:</span>
                                 <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
                             </row>
-                            <row>
-                                <span style="float:right"> Sector(*):</span>
-                                <bandbox  readonly="true"  id="bd">
-                                    <bandpopup>
-                                        <vbox>
-                                            <listbox id="perf" width="250px"
-                                                     onSelect="bd.value=self.selectedItem.label;cargar(((Sector)self.selectedItem.value));bd.closeDropdown();">
-                                                <listhead>
-                                                    <listheader label="Description"/>
-                                                </listhead>
-                                                <listitem forEach="${perfiles}" value="${each}">
-                                                    <listcell label="${each.nombre}" />
 
-                                                </listitem>
-                                            </listbox>
-                                        </vbox>
-                                    </bandpopup>
-                                </bandbox>
-
-                            </row>
 
                       
                         </rows>
