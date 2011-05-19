@@ -7,7 +7,7 @@
     <SALE1>19</SALE1>
     <SALE2>20</SALE2>
     <ENTRADA1>COM3</ENTRADA1>
-    <ENTRADA2/>
+    <ENTRADA2>COM1</ENTRADA2>
     <ENTRADA3/>
     <ENTRADA4/>
     <ENTRADA5/>
@@ -28,7 +28,7 @@
     <PUERTA6/>
     <PUERTA7/>
     <ACTIVA1>true</ACTIVA1>
-    <ACTIVA2>false</ACTIVA2>
+    <ACTIVA2>true</ACTIVA2>
     <ACTIVA3>false</ACTIVA3>
     <ACTIVA4>false</ACTIVA4>
     <ACTIVA5>false</ACTIVA5>

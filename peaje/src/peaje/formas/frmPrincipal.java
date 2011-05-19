@@ -28,6 +28,8 @@ import hibernate.cargar.RelojModeloUtil;
 import hibernate.cargar.RelojVisual;
 import hibernate.cargar.UsuarioActivo;
 import hibernate.cargar.WorkingDirectory;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -56,6 +58,7 @@ import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JFileChooser;
 import javax.swing.ListModel;
+import javax.swing.table.TableCellRenderer;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -309,6 +312,56 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel22 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         descripcionTarjeta = new javax.swing.JTextArea();
+        frmLote = new javax.swing.JInternalFrame();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tablaCambios = new javax.swing.JTable(){
+            public Component prepareRenderer(TableCellRenderer renderer, int
+                row, int column){
+                Component returnComp = super.prepareRenderer(renderer, row,
+                    column);
+                returnComp.setForeground(Color.BLACK);
+                returnComp.setBackground(Color.WHITE);
+                try{
+                    String tipo= getValueAt(row,0).toString();
+                    if(tipo.contains("false")){
+                        returnComp.setForeground(Color.WHITE);
+                        returnComp.setBackground(Color.GRAY);
+                    }else{
+                        returnComp.setForeground(Color.BLACK);
+                        returnComp.setBackground(Color.WHITE);
+                    }
+                }catch(Exception e){}
+                return returnComp;
+            }
+        };
+        diasHabiles1 = new javax.swing.JPanel();
+        lunes1 = new javax.swing.JCheckBox();
+        martes1 = new javax.swing.JCheckBox();
+        miercoles1 = new javax.swing.JCheckBox();
+        jueves1 = new javax.swing.JCheckBox();
+        viernes1 = new javax.swing.JCheckBox();
+        sabado1 = new javax.swing.JCheckBox();
+        domingo1 = new javax.swing.JCheckBox();
+        todos1 = new javax.swing.JCheckBox();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        horaDesde1 = new javax.swing.JSpinner();
+        horaHasta1 = new javax.swing.JSpinner();
+        panelHoras1 = new javax.swing.JPanel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        fechaDesde1 = new com.toedter.calendar.JDateChooser();
+        fechaHasta1 = new com.toedter.calendar.JDateChooser();
+        nombreBuscar = new javax.swing.JFormattedTextField();
+        jLabel31 = new javax.swing.JLabel();
+        btnGuardarCambios = new javax.swing.JButton();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        activa1 = new javax.swing.JCheckBox();
+        jLabel35 = new javax.swing.JLabel();
+        jButton10 = new javax.swing.JButton();
+        jLabel36 = new javax.swing.JLabel();
         frmClientes1 = new javax.swing.JInternalFrame();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -327,6 +380,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jScrollPane4 = new javax.swing.JScrollPane();
         tarifas = new javax.swing.JList();
         txtValor = new javax.swing.JTextField();
+        btnLote = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -673,7 +727,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         } catch (java.beans.PropertyVetoException e1) {
             e1.printStackTrace();
         }
-        frmIngresarSistema.setVisible(true);
         frmIngresarSistema.getContentPane().setLayout(null);
 
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 1, true));
@@ -781,7 +834,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmIngresarSistema.getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 380, 40);
 
-        frmIngresarSistema.setBounds(170, 160, 390, 220);
+        frmIngresarSistema.setBounds(380, 170, 390, 220);
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         formaTarjetas1.setTitle("Registro y Modificación de Tarjetas");
@@ -1028,6 +1081,297 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         formaTarjetas1.setBounds(80, 0, 380, 380);
         contenedor.add(formaTarjetas1, javax.swing.JLayeredPane.MODAL_LAYER);
 
+        frmLote.setMaximizable(true);
+        frmLote.setTitle("Cambiar horarios por lote");
+        frmLote.setVisible(true);
+
+        tablaCambios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ESTADO", "CLIENTE", "TARJETA", "APLICO EL CAMBIO"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(tablaCambios);
+        tablaCambios.getColumnModel().getColumn(0).setResizable(false);
+        tablaCambios.getColumnModel().getColumn(0).setPreferredWidth(5);
+        tablaCambios.getColumnModel().getColumn(1).setResizable(false);
+        tablaCambios.getColumnModel().getColumn(1).setPreferredWidth(250);
+        tablaCambios.getColumnModel().getColumn(2).setResizable(false);
+        tablaCambios.getColumnModel().getColumn(3).setResizable(false);
+        tablaCambios.getColumnModel().getColumn(3).setPreferredWidth(10);
+
+        diasHabiles1.setBorder(javax.swing.BorderFactory.createTitledBorder("Días Habiles"));
+        diasHabiles1.setLayout(null);
+
+        lunes1.setText("Lunes");
+        lunes1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lunes1ActionPerformed(evt);
+            }
+        });
+        lunes1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                lunes1KeyPressed(evt);
+            }
+        });
+        diasHabiles1.add(lunes1);
+        lunes1.setBounds(80, 20, 55, 23);
+
+        martes1.setText("Martes");
+        martes1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                martes1KeyPressed(evt);
+            }
+        });
+        diasHabiles1.add(martes1);
+        martes1.setBounds(150, 20, 60, 23);
+
+        miercoles1.setText("Miércoles");
+        miercoles1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                miercoles1KeyPressed(evt);
+            }
+        });
+        diasHabiles1.add(miercoles1);
+        miercoles1.setBounds(220, 20, 70, 23);
+
+        jueves1.setText("Jueves");
+        jueves1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jueves1ActionPerformed(evt);
+            }
+        });
+        jueves1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jueves1KeyPressed(evt);
+            }
+        });
+        diasHabiles1.add(jueves1);
+        jueves1.setBounds(300, 20, 60, 23);
+
+        viernes1.setText("Viernes");
+        viernes1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                viernes1KeyPressed(evt);
+            }
+        });
+        diasHabiles1.add(viernes1);
+        viernes1.setBounds(360, 20, 62, 23);
+
+        sabado1.setText("Sábado");
+        sabado1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                sabado1KeyPressed(evt);
+            }
+        });
+        diasHabiles1.add(sabado1);
+        sabado1.setBounds(430, 20, 63, 23);
+
+        domingo1.setText("Domingo");
+        domingo1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                domingo1KeyPressed(evt);
+            }
+        });
+        diasHabiles1.add(domingo1);
+        domingo1.setBounds(490, 20, 70, 23);
+
+        todos1.setText("Todos");
+        todos1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                todos1ActionPerformed(evt);
+            }
+        });
+        todos1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                todos1KeyPressed(evt);
+            }
+        });
+        diasHabiles1.add(todos1);
+        todos1.setBounds(10, 20, 55, 23);
+
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Horas de ingreso"));
+        jPanel10.setLayout(null);
+
+        jLabel27.setText("Hasta: ");
+        jPanel10.add(jLabel27);
+        jLabel27.setBounds(140, 20, 40, 14);
+
+        jLabel28.setText("Desde:");
+        jPanel10.add(jLabel28);
+        jLabel28.setBounds(10, 20, 50, 14);
+
+        horaDesde1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaDesde1KeyPressed(evt);
+            }
+        });
+        jPanel10.add(horaDesde1);
+        horaDesde1.setBounds(50, 20, 80, 20);
+
+        horaHasta1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaHasta1KeyPressed(evt);
+            }
+        });
+        jPanel10.add(horaHasta1);
+        horaHasta1.setBounds(180, 20, 80, 20);
+
+        panelHoras1.setBorder(javax.swing.BorderFactory.createTitledBorder("Fechas de Validez"));
+        panelHoras1.setLayout(null);
+
+        jLabel29.setText("Hasta: ");
+        panelHoras1.add(jLabel29);
+        jLabel29.setBounds(160, 20, 40, 14);
+
+        jLabel30.setText("Desde:");
+        panelHoras1.add(jLabel30);
+        jLabel30.setBounds(10, 20, 40, 14);
+
+        fechaDesde1.setDateFormatString("dd/MMM/yyyy");
+        panelHoras1.add(fechaDesde1);
+        fechaDesde1.setBounds(50, 20, 95, 20);
+
+        fechaHasta1.setDateFormatString("dd/MMM/yyyy");
+        panelHoras1.add(fechaHasta1);
+        fechaHasta1.setBounds(200, 20, 95, 20);
+
+        nombreBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombreBuscarKeyPressed(evt);
+            }
+        });
+
+        jLabel31.setText("Buscar Clientes: ");
+
+        btnGuardarCambios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
+        btnGuardarCambios.setText("GUARDAR CAMBIOS");
+        btnGuardarCambios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarCambiosActionPerformed(evt);
+            }
+        });
+
+        jLabel33.setForeground(new java.awt.Color(0, 51, 255));
+        jLabel33.setText("Se aplicará el horario y fechas a todos los que estén en la lista ");
+
+        jLabel34.setText("Habilitar Tarjetas");
+
+        activa1.setSelected(true);
+
+        jLabel35.setForeground(new java.awt.Color(0, 51, 255));
+        jLabel35.setText("y con el VISTO en APLICO CAMBIO");
+
+        jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
+        jButton10.setText("Salir");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+
+        jLabel36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
+        jLabel36.setText("Presione Enter");
+
+        javax.swing.GroupLayout frmLoteLayout = new javax.swing.GroupLayout(frmLote.getContentPane());
+        frmLote.getContentPane().setLayout(frmLoteLayout);
+        frmLoteLayout.setHorizontalGroup(
+            frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frmLoteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frmLoteLayout.createSequentialGroup()
+                        .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                        .addGap(4, 4, 4))
+                    .addGroup(frmLoteLayout.createSequentialGroup()
+                        .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(frmLoteLayout.createSequentialGroup()
+                                .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(nombreBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel36))
+                            .addGroup(frmLoteLayout.createSequentialGroup()
+                                .addComponent(jLabel34)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(activa1)))
+                        .addGap(20, 20, 20)))
+                .addGap(23, 23, 23))
+            .addGroup(frmLoteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                .addGap(35, 35, 35))
+            .addGroup(frmLoteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                .addGap(35, 35, 35))
+            .addGroup(frmLoteLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(btnGuardarCambios)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel35))
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+        frmLoteLayout.setVerticalGroup(
+            frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frmLoteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel31)
+                    .addComponent(nombreBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel36))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel34)
+                    .addComponent(activa1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(diasHabiles1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(frmLoteLayout.createSequentialGroup()
+                        .addComponent(jLabel33)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addComponent(jLabel35))
+                    .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(btnGuardarCambios, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45))
+        );
+
+        frmLote.setBounds(20, 10, 650, 540);
+        contenedor.add(frmLote, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         frmClientes1.setTitle("Registro y Modifación de Clientes");
         frmClientes1.setAutoscrolls(true);
         frmClientes1.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
@@ -1119,7 +1463,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.String.class, java.util.Date.class, java.util.Date.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
@@ -1163,7 +1507,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         jPanel4.add(btnNuevaTarjeta);
-        btnNuevaTarjeta.setBounds(70, 150, 170, 30);
+        btnNuevaTarjeta.setBounds(10, 150, 170, 30);
 
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel15.setText("Teléfono:");
@@ -1205,6 +1549,20 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel4.add(txtValor);
         txtValor.setBounds(310, 120, 50, 20);
 
+        btnLote.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/todo.gif"))); // NOI18N
+        btnLote.setMnemonic('B');
+        btnLote.setText("Modificar Lote");
+        btnLote.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnLote.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnLote.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoteActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnLote);
+        btnLote.setBounds(180, 150, 160, 30);
+
         frmClientes1.getContentPane().add(jPanel4);
         jPanel4.setBounds(10, 50, 400, 280);
 
@@ -1223,7 +1581,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         jPanel5.add(btnBuscar);
-        btnBuscar.setBounds(50, 10, 60, 50);
+        btnBuscar.setBounds(80, 10, 60, 50);
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
         btnAgregar.setMnemonic('N');
@@ -1237,7 +1595,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         jPanel5.add(btnAgregar);
-        btnAgregar.setBounds(110, 10, 60, 50);
+        btnAgregar.setBounds(140, 10, 60, 50);
 
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
         btnModificar.setMnemonic('M');
@@ -1251,7 +1609,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         jPanel5.add(btnModificar);
-        btnModificar.setBounds(170, 10, 60, 50);
+        btnModificar.setBounds(200, 10, 60, 50);
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
         btnEliminar.setMnemonic('E');
@@ -1265,7 +1623,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         jPanel5.add(btnEliminar);
-        btnEliminar.setBounds(230, 10, 60, 50);
+        btnEliminar.setBounds(260, 10, 60, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
@@ -1284,10 +1642,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         jPanel5.add(btnSalir);
-        btnSalir.setBounds(290, 10, 60, 50);
+        btnSalir.setBounds(320, 10, 60, 50);
 
         frmClientes1.getContentPane().add(jPanel5);
-        jPanel5.setBounds(40, 340, 370, 70);
+        jPanel5.setBounds(20, 340, 390, 70);
 
         jPanel6.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel6.setOpaque(false);
@@ -1490,7 +1848,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.setBounds(20, 40, 400, 130);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
             usuarioLogeado.setForeground(new java.awt.Color(0, 153, 204));
             usuarioLogeado.setText("...");
             usuarioLogeado.setBorderPainted(false);
@@ -2023,7 +2381,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     }
 
-    public void cargarEmpresa(EmpresaPuertosStatic emp){
+    public void cargarEmpresa(EmpresaPuertosStatic emp) {
 
         empresaObj.setPuerto(emp.getPuerto());
         empresaObj.setBarras(emp.getBarras());
@@ -2064,7 +2422,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setPuerto6(emp.getPuerto6());
         empresaObj.setPuerto7(emp.getPuerto7());
 
-        
+
     }
 
     public void verificarUsuario() {
@@ -2101,18 +2459,17 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     } else {
 
                         if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")) {
+                        } else {
+                            clave.setEditable(true);
+                            usuariot.setEditable(true);
+                            usuariot.setText("");
+                            clave.setText("");
+                            JOptionPane.showMessageDialog(this, "No puede ingresar en éste horario", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                            usuariot.requestFocusInWindow();
+                            return;
 
-                        }else{
-                         clave.setEditable(true);
-                        usuariot.setEditable(true);
-                        usuariot.setText("");
-                        clave.setText("");
-                        JOptionPane.showMessageDialog(this, "No puede ingresar en éste horario", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                        usuariot.requestFocusInWindow();
-                        return;
-                            
                         }
-                        
+
                     }
                 } catch (Exception e) {
                     clave.setEditable(true);
@@ -2124,14 +2481,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     System.out.println("NO SE HAN CARGADO LAS FECHAS " + e);
                     if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")) {
                         //  PASA A LOS SIGUIENTES PROCESOS Y NO TOMA EN CUENTA LAS FECHAS YA QUE SOY ADMINISTRADOR
-                          File fichero = new File(ubicacionDirectorio + "config.xml");
+                        File fichero = new File(ubicacionDirectorio + "config.xml");
                         if (fichero.exists()) {
                             fichero.delete();
                             System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
                             XMLEmpresa pXml = new XMLEmpresa();
                             pXml.inicio();
                             pXml.leerXML();
-                        }else{
+                        } else {
                             JOptionPane.showMessageDialog(this, "CONFIGURE LOS PUERTOS DE LA EMPRESA Y VUELVA A REINICIAR LA APLICACIÓN");
                         }
 
@@ -2256,16 +2613,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     pXml.inicio();
                     EmpresaPuertosStatic amp = pXml.leerXML();
                     cargarEmpresa(amp);
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(this, "Configurar PUERTOS en modulo EMPRESA y reinicie la aplicación");
                 }
                 iniciarPuertos();
                 contenedor.requestFocus();
                 auditar("", "", "Ingreso al Sistema");
 
-              
 
-               
+
+
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -3287,6 +3644,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 btnModificar.setMnemonic('C');
                 btnBuscar.setEnabled(false);
 
+
             } else if (grabar == true) {
                 if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty() || txtValor.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
@@ -4252,6 +4610,193 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         frmRespaldarBase.setVisible(false);
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void btnLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoteActionPerformed
+        // TODO add your handling code here:
+        if (permisos.getModificar()) {
+            SpinnerDateModel sm = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner = new JSpinner(sm);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm");
+            horaDesde1.setModel(sm);
+            horaDesde1.setEditor(de);
+
+            SpinnerDateModel sm2 = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner2 = new JSpinner(sm2);
+            JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm");
+
+            horaHasta1.setEditor(de2);
+            horaHasta1.setModel(sm2);
+            fechaDesde1.setDate(new Date());
+            fechaHasta1.setDate(new Date());
+            frmLote.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+        }
+
+
+    }//GEN-LAST:event_btnLoteActionPerformed
+
+    private void lunes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lunes1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lunes1ActionPerformed
+
+    private void lunes1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lunes1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lunes1KeyPressed
+
+    private void martes1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_martes1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_martes1KeyPressed
+
+    private void miercoles1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_miercoles1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_miercoles1KeyPressed
+
+    private void jueves1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jueves1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jueves1ActionPerformed
+
+    private void jueves1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jueves1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jueves1KeyPressed
+
+    private void viernes1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_viernes1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_viernes1KeyPressed
+
+    private void sabado1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sabado1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sabado1KeyPressed
+
+    private void domingo1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_domingo1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_domingo1KeyPressed
+
+    private void todos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todos1ActionPerformed
+        // TODO add your handling code here:
+        lunes1.setSelected(todos1.isSelected());
+        martes1.setSelected(todos1.isSelected());
+        miercoles1.setSelected(todos1.isSelected());
+        jueves1.setSelected(todos1.isSelected());
+        viernes1.setSelected(todos1.isSelected());
+        sabado1.setSelected(todos1.isSelected());
+        domingo1.setSelected(todos1.isSelected());
+    }//GEN-LAST:event_todos1ActionPerformed
+
+    private void todos1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_todos1KeyPressed
+        // TODO add your handling code here:
+        lunes1.setSelected(todos1.isSelected());
+        martes1.setSelected(todos1.isSelected());
+        miercoles1.setSelected(todos1.isSelected());
+        jueves1.setSelected(todos1.isSelected());
+        viernes1.setSelected(todos1.isSelected());
+        sabado1.setSelected(todos1.isSelected());
+        domingo1.setSelected(todos1.isSelected());
+    }//GEN-LAST:event_todos1KeyPressed
+
+    private void horaDesde1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaDesde1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_horaDesde1KeyPressed
+
+    private void horaHasta1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaHasta1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_horaHasta1KeyPressed
+
+    private void nombreBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreBuscarKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            Thread cargar = new Thread() {
+
+                public void run() {
+                    procesando.setVisible(true);
+
+                    try {
+
+                        List<Tarjetas> usuarios = adm.query("Select o from Tarjetas as o "
+                                + "where o.clientes.nombres like '%" + nombreBuscar.getText().trim() + "%' order by o.clientes.nombres  ");
+                        Object[] obj = new Object[5];
+                        DefaultTableModel dtm = (DefaultTableModel) tablaCambios.getModel();
+                        dtm.getDataVector().removeAllElements();
+                        for (Iterator<Tarjetas> it = usuarios.iterator(); it.hasNext();) {
+                            Tarjetas glbusuario = it.next();
+                            obj[0] = glbusuario.getHabilitada();
+                            obj[1] = glbusuario.getClientes().getNombres();
+                            obj[2] = glbusuario.getTarjeta();
+                            obj[3] = glbusuario.getHabilitada();
+
+
+                            dtm.addRow(obj);
+                        }
+                        tablaCambios.setModel(dtm);
+                        if (tablaCambios.getRowCount() > 0) {
+                            tablaCambios.requestFocusInWindow();
+                        } else {
+                            codigoBuscar.requestFocusInWindow();
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    procesando.setVisible(false);
+                }
+            };
+            cargar.start();
+
+        } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            frmLote.dispose();
+        }
+    }//GEN-LAST:event_nombreBuscarKeyPressed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+        nombreBuscar.setText("");
+        DefaultTableModel dtm = (DefaultTableModel) tablaCambios.getModel();
+        dtm.getDataVector().removeAllElements();
+        frmLote.setVisible(false);
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void btnGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambiosActionPerformed
+        // TODO add your handling code here:
+        int filas = tablaCambios.getRowCount();
+        for (int i = 0; i < filas; i++) {
+            String tarjeta = (String) tablaCambios.getValueAt(i, 2);
+            Boolean guardo = (Boolean) tablaCambios.getValueAt(i, 3);
+            if (guardo) {
+                try {
+                    Tarjetas tarActu = (Tarjetas) adm.buscarClave(tarjeta, Tarjetas.class);
+                    Date fechaDes = fechaDesde1.getDate();
+                    fechaDes.setHours(0);
+                    fechaDes.setMinutes(01);
+                    fechaDes.setSeconds(01);
+                    tarActu.setDesde(fechaDes);
+                    Date fechaHas = fechaHasta1.getDate();
+                    fechaHas.setHours(23);
+                    fechaHas.setMinutes(59);
+                    fechaHas.setSeconds(59);
+                    tarActu.setHasta(fechaHas);
+                    tarActu.setDomingo(domingo1.isSelected());
+                    tarActu.setLunes(lunes1.isSelected());
+                    tarActu.setMartes(martes1.isSelected());
+                    tarActu.setMiercoles(miercoles1.isSelected());
+                    tarActu.setJueves(jueves1.isSelected());
+                    tarActu.setViernes(viernes1.isSelected());
+                    tarActu.setSabado(sabado1.isSelected());
+                    tarActu.setHorainicio((Date) horaDesde1.getValue());
+                    tarActu.setHorafin((Date) horaHasta1.getValue());
+                    tarActu.setHabilitada(activa1.isSelected());
+                    System.out.println("CORRECTO"+tarActu.getClientes().getNombres());
+                    adm.actualizar(tarActu);
+                    
+                }catch (Exception ex){
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    
+                }
+
+
+            }
+
+        }
+    }//GEN-LAST:event_btnGuardarCambiosActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
         Thread cargar = new Thread() {
@@ -4352,6 +4897,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox activa;
+    private javax.swing.JCheckBox activa1;
     private javax.swing.JToolBar barraHerramients;
     private javax.swing.JButton barrera1;
     private javax.swing.JButton barrera2;
@@ -4372,8 +4918,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JButton btnCobrar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEmpresa;
+    private javax.swing.JButton btnGuardarCambios;
     private javax.swing.JButton btnGuardarTarjeta;
     private javax.swing.JButton btnIngresar;
+    private javax.swing.JButton btnLote;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNuevaTarjeta;
     private javax.swing.JButton btnReconfigurar;
@@ -4399,21 +4947,29 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private org.jdesktop.swingx.JXTaskPane contenedor3;
     private javax.swing.JTextArea descripcionTarjeta;
     private javax.swing.JPanel diasHabiles;
+    private javax.swing.JPanel diasHabiles1;
     private javax.swing.JFormattedTextField direccion;
     private javax.swing.JLabel disponibles;
     private javax.swing.JCheckBox domingo;
+    private javax.swing.JCheckBox domingo1;
     private javax.swing.JLabel errores;
     private com.toedter.calendar.JDateChooser fechaDesde;
+    private com.toedter.calendar.JDateChooser fechaDesde1;
     private com.toedter.calendar.JDateChooser fechaHasta;
+    private com.toedter.calendar.JDateChooser fechaHasta1;
     private javax.swing.JInternalFrame formaTarjetas1;
     private javax.swing.JInternalFrame frmClientes1;
     private javax.swing.JInternalFrame frmIngresarSistema;
+    private javax.swing.JInternalFrame frmLote;
     private javax.swing.JInternalFrame frmRespaldarBase;
     private javax.swing.JSpinner horaDesde;
+    private javax.swing.JSpinner horaDesde1;
     private javax.swing.JSpinner horaHasta;
+    private javax.swing.JSpinner horaHasta1;
     private javax.swing.JLabel ingre;
     private javax.swing.JSpinner ingresos;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -4440,8 +4996,17 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -4449,6 +5014,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -4461,6 +5027,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
@@ -4470,34 +5037,44 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JToolBar jToolBar3;
     private org.jdesktop.swingx.JXTaskPaneContainer jXTaskPaneContainer1;
     private javax.swing.JCheckBox jueves;
+    private javax.swing.JCheckBox jueves1;
     private javax.swing.JCheckBox lunes;
+    private javax.swing.JCheckBox lunes1;
     private javax.swing.JCheckBox martes;
+    private javax.swing.JCheckBox martes1;
     private javax.swing.JCheckBox miercoles;
+    private javax.swing.JCheckBox miercoles1;
     public javax.swing.JFormattedTextField noTarjeta;
     private javax.swing.JTextField nombreArchivo;
+    private javax.swing.JFormattedTextField nombreBuscar;
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JLabel ocupados;
     private javax.swing.JPanel panelHoras;
+    private javax.swing.JPanel panelHoras1;
     private javax.swing.JPanel panelIngreso;
     private javax.swing.JFormattedTextField placa;
     private javax.swing.JFormattedTextField placa1;
     public javax.swing.JButton procesando;
     private javax.swing.JCheckBox sabado;
+    private javax.swing.JCheckBox sabado1;
     private javax.swing.JLabel salid;
     private javax.swing.JSpinner spConsumo;
     private javax.swing.JSpinner spIngreso;
     private javax.swing.JSpinner spSalida;
+    private javax.swing.JTable tablaCambios;
     private javax.swing.JList tarifas;
     private javax.swing.JTable tarjetas;
     public javax.swing.JFormattedTextField tarjetatxt;
     private javax.swing.JFormattedTextField telefono;
     private javax.swing.JCheckBox todos;
+    private javax.swing.JCheckBox todos1;
     private javax.swing.JLabel totales;
     private javax.swing.JTextField txtValor;
     private javax.swing.JTextField ubicacionArchivo;
     private javax.swing.JButton usuarioLogeado;
     private javax.swing.JFormattedTextField usuariot;
     private javax.swing.JCheckBox viernes;
+    private javax.swing.JCheckBox viernes1;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     public static Accesos permisos;
