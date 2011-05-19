@@ -1083,7 +1083,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         frmLote.setMaximizable(true);
         frmLote.setTitle("Cambiar horarios por lote");
-        frmLote.setVisible(true);
 
         tablaCambios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
