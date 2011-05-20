@@ -35,6 +35,7 @@ public class ClienteFrame extends javax.swing.JFrame {
         initComponents();
 this.setVisible(true);
         servidorChat = "127.0.0.1";
+        servidorChat = "192.168.10.2";
 //         Cliente aplicacion;
 //        if (args.length == 0) {
 //            aplicacion = new Cliente("127.0.0.1");

@@ -727,6 +727,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         } catch (java.beans.PropertyVetoException e1) {
             e1.printStackTrace();
         }
+        frmIngresarSistema.setVisible(true);
         frmIngresarSistema.getContentPane().setLayout(null);
 
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 1, true));
@@ -834,7 +835,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmIngresarSistema.getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 380, 40);
 
-        frmIngresarSistema.setBounds(380, 170, 390, 220);
+        frmIngresarSistema.setBounds(80, 170, 390, 220);
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         formaTarjetas1.setTitle("Registro y Modificación de Tarjetas");
@@ -2169,114 +2170,122 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             CommPortIdentifier portId;
             Enumeration portList = CommPortIdentifier.getPortIdentifiers();
             LeerTarjeta reader;
-
+String puertoYaAbiertos = "";
             puertoListo = new ArrayList();
             while (portList.hasMoreElements()) {
-                portId = (CommPortIdentifier) portList.nextElement();
-                if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                try {
+                    portId = (CommPortIdentifier) portList.nextElement();
+                    if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
 
-                    //(0) //PUERTO DE LA TARJETA INTERFAZ PC - BARRERA
-                    if (portId.getName().equals(empresaObj.getPuerto())) {
-                        reader = new LeerTarjeta(portId, this);
-                        puertoListo.add(reader);
-                        System.out.println("ABIERTO: " + empresaObj.getPuerto());
-                    }
-                    //(1)    //PUERTO DE LETRERO LEDS
-                    if (portId.getName().equals(empresaObj.getLed())) {
-                        reader = new LeerTarjeta(portId, this);
-                        puertoListo.add(reader);
-                        System.out.println("ABIERTO: " + empresaObj.getLed());
-                    }
-                    //(2)  //PUERTO DE CODIGO DE BARRAS
-                    if (portId.getName().equals(empresaObj.getBarras())) {
-                        reader = new LeerTarjeta(portId, this);
-                        puertoListo.add(reader);
-                        System.out.println("ABIERTO: " + empresaObj.getBarras());
-                    }
-                    //(3)  //PUERTO DE CODIGO DE BARRAS 2
-                    if (portId.getName().equals(empresaObj.getBarras2())) {
-                        reader = new LeerTarjeta(portId, this);
-                        puertoListo.add(reader);
-                        System.out.println("ABIERTO: " + empresaObj.getBarras2());
-                    }
-                    if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getPuerto1());
-//                        read.add(reader);
-                    }
-                    if (portId.getName().equals(empresaObj.getPuerto2()) && empresaObj.getActiva2()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getPuerto2());
-//                        read.add(reader);
-                    }
-                    if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getPuerto3());
-//                        read.add(reader);
-                    }
-                    if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getPuerto4());
-//                        read.add(reader);
-                    }
-                    if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getPuerto5());
-//                        read.add(reader);
-                    }
-                    if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getPuerto6());
-//                        read.add(reader);
-                    }
-                    if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getPuerto7());
-//                        read.add(reader);
-                    }
+                        //(0) //PUERTO DE LA TARJETA INTERFAZ PC - BARRERA
+//                         puertoYaAbiertos = puertoYaAbiertos+"; "+portId.getName();
+                        System.out.println("" + portId.getName() + " " + empresaObj.getPuerto());
+                        if (portId.getName().equals(empresaObj.getPuerto())) {
+                            reader = new LeerTarjeta(portId, this);
+                            puertoListo.add(reader);
 
-                    if (portId.getName().equals(empresaObj.getSalida1()) && empresaObj.getActiva1()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getSalida1());
+                            System.out.println("ABIERTO: " + empresaObj.getPuerto());
+                        }
+                        //(1)    //PUERTO DE LETRERO LEDS
+                        if (portId.getName().equals(empresaObj.getLed())) {
+                            reader = new LeerTarjeta(portId, this);
+                            puertoListo.add(reader);
+                            System.out.println("ABIERTO: " + empresaObj.getLed());
+                        }
+                        //(2)  //PUERTO DE CODIGO DE BARRAS
+                        if (portId.getName().equals(empresaObj.getBarras())) {
+                            reader = new LeerTarjeta(portId, this);
+                            puertoListo.add(reader);
+                            System.out.println("ABIERTO: " + empresaObj.getBarras());
+                        }
+                        //(3)  //PUERTO DE CODIGO DE BARRAS 2
+                        if (portId.getName().equals(empresaObj.getBarras2())) {
+                            reader = new LeerTarjeta(portId, this);
+                            puertoListo.add(reader);
+                            System.out.println("ABIERTO: " + empresaObj.getBarras2());
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getPuerto1());
 //                        read.add(reader);
-                    }
-                    if (portId.getName().equals(empresaObj.getSalida2()) && empresaObj.getActiva2()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getSalida2());
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto2()) && empresaObj.getActiva2()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getPuerto2());
 //                        read.add(reader);
-                    }
-                    if (portId.getName().equals(empresaObj.getSalida3()) && empresaObj.getActiva3()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getSalida3());
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getPuerto3());
 //                        read.add(reader);
-                    }
-                    if (portId.getName().equals(empresaObj.getSalida4()) && empresaObj.getActiva4()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getSalida4());
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getPuerto4());
 //                        read.add(reader);
-                    }
-                    if (portId.getName().equals(empresaObj.getSalida5()) && empresaObj.getActiva5()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getSalida5());
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getPuerto5());
 //                        read.add(reader);
-                    }
-                    if (portId.getName().equals(empresaObj.getSalida6()) && empresaObj.getActiva6()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getSalida6());
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getPuerto6());
 //                        read.add(reader);
-                    }
-                    if (portId.getName().equals(empresaObj.getSalida7()) && empresaObj.getActiva7()) {
-                        reader = new LeerTarjeta(portId, this);
-                        System.out.println("ABIERTO: " + empresaObj.getSalida7());
+                        }
+                        if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getPuerto7());
 //                        read.add(reader);
-                    }
+                        }
+
+                        if (portId.getName().equals(empresaObj.getSalida1()) && empresaObj.getActiva1()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getSalida1());
+//                        read.add(reader);
+                        }
+                        if (portId.getName().equals(empresaObj.getSalida2()) && empresaObj.getActiva2()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getSalida2());
+//                        read.add(reader);
+                        }
+                        if (portId.getName().equals(empresaObj.getSalida3()) && empresaObj.getActiva3()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getSalida3());
+//                        read.add(reader);
+                        }
+                        if (portId.getName().equals(empresaObj.getSalida4()) && empresaObj.getActiva4()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getSalida4());
+//                        read.add(reader);
+                        }
+                        if (portId.getName().equals(empresaObj.getSalida5()) && empresaObj.getActiva5()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getSalida5());
+//                        read.add(reader);
+                        }
+                        if (portId.getName().equals(empresaObj.getSalida6()) && empresaObj.getActiva6()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getSalida6());
+//                        read.add(reader);
+                        }
+                        if (portId.getName().equals(empresaObj.getSalida7()) && empresaObj.getActiva7()) {
+                            reader = new LeerTarjeta(portId, this);
+                            System.out.println("ABIERTO: " + empresaObj.getSalida7());
+//                        read.add(reader);
+                        }
 //                        else if (portId.getName().equals("COM10")) {
 //                            reader = new LeerTarjeta(portId, this);
 //                            read.add(reader);
 //                        }
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             portList = null;
+            System.out.println("LISTA DE PUERTOS PRINCIPALES: "+puertoListo);
         } catch (Exception ex) {
             Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2532,6 +2541,21 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 usuarioLogeado.setText("Usuario: " + usuarioActual.getNombres());
                 List<Empresa> emp = adm.listar("Select o from Empresa as o ");
                 this.empresaObj = emp.get(0);
+                if (ubicacionDirectorio.contains("build")) {
+                    ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                }
+
+                File fichero = new File(ubicacionDirectorio + "config.xml");
+                if (fichero.exists()) {
+                    //System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
+                    XMLEmpresa pXml = new XMLEmpresa();
+                    pXml.inicio();
+                    EmpresaPuertosStatic amp = pXml.leerXML();
+                    cargarEmpresa(amp);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Configurar PUERTOS en modulo EMPRESA y reinicie la aplicación");
+                }
+
                 noDisponibles();
                 disponibles.setEnabled(true);
                 ocupados.setEnabled(true);
@@ -2601,20 +2625,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         btnAuditoria.setEnabled(false);
                     }
                 }
-                if (ubicacionDirectorio.contains("build")) {
-                    ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
-                }
 
-                File fichero = new File(ubicacionDirectorio + "config.xml");
-                if (fichero.exists()) {
-                    //System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
-                    XMLEmpresa pXml = new XMLEmpresa();
-                    pXml.inicio();
-                    EmpresaPuertosStatic amp = pXml.leerXML();
-                    cargarEmpresa(amp);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Configurar PUERTOS en modulo EMPRESA y reinicie la aplicación");
-                }
                 iniciarPuertos();
                 contenedor.requestFocus();
                 auditar("", "", "Ingreso al Sistema");
@@ -4170,6 +4181,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 try {
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("3".getBytes());
+                    try {
+                        Thread.sleep(2000);
+                    } catch (Exception e) {
+                    }
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera1.setEnabled(true);
                 } catch (IOException ex) {
@@ -4191,8 +4206,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 try {
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("2".getBytes());
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                    }
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                    barrera1.setEnabled(true);
+                    
                 } catch (IOException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -4213,6 +4232,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("1".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                    }
                     barrera1.setEnabled(true);
                 } catch (IOException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -4783,12 +4806,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     tarActu.setHorainicio((Date) horaDesde1.getValue());
                     tarActu.setHorafin((Date) horaHasta1.getValue());
                     tarActu.setHabilitada(activa1.isSelected());
-                    System.out.println("CORRECTO"+tarActu.getClientes().getNombres());
+                    System.out.println("CORRECTO" + tarActu.getClientes().getNombres());
                     adm.actualizar(tarActu);
-                    
-                }catch (Exception ex){
+
+                } catch (Exception ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                    
+
                 }
 
 
@@ -4838,7 +4861,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //            String fec = "fecha" + fechaActual.getDate() + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getYear() + 1900) + "_" + fechaActual.getHours() + "-" + fechaActual.getMinutes() + "-" + fechaActual.getSeconds() + "";
             File duir = new File(direc);
             duir.mkdir();
-            Runtime.getRuntime().exec("cmd /c mysqldump -h " + ip + " --op -u " + usuario + " -p" + clave + " academico > " + direc + "\\" + nombreArchivo.getText() + ".sql");
+            Runtime.getRuntime().exec("cmd /c mysqldump -h " + ip + " --op -u " + usuario + " -p" + clave + " peaje > " + direc + "\\" + nombreArchivo.getText() + ".sql");
 //            respaldo.value = direc + "\\academico" + fec + ".sql ";
             JOptionPane.showMessageDialog(this, "Respaldo realizado con Éxito ...! ");
         } catch (Exception e) {
@@ -4858,7 +4881,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             File duir = new File(direc);
             duir.mkdir();
             String ubicacion = direc + "/" + nombreArchivo.getText() + ".sql";
-            String cnd = "mysqldump -h" + ip + " -u" + usuario + " -p" + clave + " -B academico " + " -r" + ubicacion;
+            String cnd = "mysqldump -h" + ip + " -u" + usuario + " -p" + clave + " -B peaje " + " -r" + ubicacion;
             StringTokenizer st = new StringTokenizer(cnd);
             String[] coma = new String[st.countTokens() + 1];
             int i = 0;

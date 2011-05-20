@@ -103,7 +103,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                             System.out.println("" + e);
                         }
                         try {
-                            Thread.sleep(1000);  // Me aseguro que es transmitido correctamente antes de cerrar
+                            Thread.sleep(2000);  // Me aseguro que es transmitido correctamente antes de cerrar
                         } catch (Exception e) {
                         } //ESPERO UN POCO
                         serialPort.close();

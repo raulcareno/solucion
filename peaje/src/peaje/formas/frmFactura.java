@@ -1088,7 +1088,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     } catch (Exception e) {
                         dia = 0;
                     }
-                    imprimir(facActual.getCodigo(), emp, dia, false, cli);
+                    //imprimir(facActual.getCodigo(), emp, dia, false, cli);
                     adm.actualizar(emp);
 //                Thread cargar = new Thread() {
 //

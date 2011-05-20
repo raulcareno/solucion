@@ -18,7 +18,7 @@ static String separador = File.separatorChar+"";
 
   public static void main(String[] args) {
         try {
-//            abrir("COM4","1");
+            abrir("COM5","1");
 //            abrir("COM4","2");
 //            abrir("COM4","3");
 //            abrir("COM4","4");
