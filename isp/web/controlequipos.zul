@@ -1,15 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-
-<zk  xmlns="http://www.zkoss.org/2005/zul">
+<?page id="controlequipospage"?>
+<window id="controlventana">
     <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
     <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
     <script type="text/javascript" src="/js/masks.js"/>
     <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
- 
-    <window>
-
-        <zscript>
+    <zscript>
             <![CDATA[
   import jcinform.persistencia.*;
   import jcinform.conexion.*;
@@ -224,12 +219,13 @@ empa.setEquipos(g);
     return eq;
 }
 llenarGrid(int numero){
-    filas.getChildren().clear();
+
+    
     noopciones.disabled = false;
     Listbox eq = new Listbox();
 
-             
-               
+    if(filas.getChildren().size()<=0)
+        filas.getChildren().clear();           
              
             for(int i = 0; i< numero; i++){
                     Row row = new Row();
@@ -238,20 +234,11 @@ llenarGrid(int numero){
                             Doublebox dou = new Doublebox(0);
                             dou.setStyle("float:right;text-align:right");
                             //dou.setCols(80);
+                            row.appendChild(t);
                             row.appendChild(eq);
                             row.appendChild(dou);
-                            t.addEventListener("onBlur", new EventListener() {
-                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
-                                    try {
-                                        Integer valor = ((Intbox) event.getTarget()).getValue();
-                                   
-                                        llenarGridMac(valor);
-                                    } catch (Exception e) {
-                                           
-                                    }
-                                }
-                            });
-                            row.appendChild(t);
+                         
+                            
                             //noopciones.disabled = true;
                    
                     filas.appendChild(row);
@@ -270,102 +257,173 @@ llenarGridMac(int numero){
 }
 
 ]]>
-        </zscript>
-        <tabbox width="100%">
-            <tabs>
-                <tab id="registro" label="Registro" />
-                <tab id="busqueda" label="Busquedas" />
-            </tabs>
-            <tabpanels>
-                <tabpanel>
+    </zscript>
+    <tabbox width="100%">
+        <tabs>
+            <tab id="registro" label="Registro" />
+            <tab id="busqueda" label="Busquedas" />
+        </tabs>
+        <tabpanels>
+            <tabpanel>
 
 
-                    <grid width="100%">
-                        <rows>
-                            <row>
-                                <span>
-                                <span style="float:right"> No. Productos a ingresar:</span>   <intbox id="codigo" disabled="true" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
-                                </span>
-                               <spinner value="0"  disabled="false"  
-                                constraint="no negative" id="cantidad" readonly="true"
-				onChanging="if (event.value.length() > 0 &amp;&amp; Integer.parseInt(event.value) > 0) llenarGrid(Integer.parseInt(event.value));" onBlur=" if (self.value > 0 )  self.disabled = true;  else self.disabled = false;" />
-                                  <span style="float:right"> Fecha de Compra:</span>
-                                <datebox id="fecha" onCreate="self.value = new Date()"/>
-                            </row>
-                            <row spans="4">
-                          
-                                <grid height="150px" id="opciones">
-                                    <columns sizable="true">
-                                        <column label="EQUIPO" />
-                                        <column label="PRECIO" />
-                                        <column label="MAC" />
-                                    </columns>
-                                    <rows id="filas">
-                                     
-                                    </rows>
-                                </grid>
+                <grid width="100%">
+                    <rows>
+                        <row>
+                            <span>
+                                <span style="float:right"> No. Filas a ingresar:</span>   
+                                <intbox id="codigo" disabled="true" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
+                            </span>
+                            <span>
+                                <intbox value="10"   constraint="no negative" id="cantidad" /> 
+                                
+                                
+                                <button label="Añadir Filas" onClick="llenarGrid(cantidad.value);"/>
+                            </span>
                                  
-                            </row>
+                        </row>
+                        <row>
+                            <span style="float:right"> Fecha de Compra:</span>
+                            <datebox id="fecha" onCreate="self.value = new Date()"/>
+                        </row>
+                        <row>
+                            <span style="float:right"> Proveedor:</span> 
+                            <span>
+                                <textbox readonly="true"  cols="1" id="proveedores" />
+                                <textbox readonly="true" cols="39" id="idproveedores" />
+                                <button label=""  id="buscarE3" disabled="false"  image="/images/auditoria.gif">
+                                    <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("buscarProveedores.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setAttribute("equipo", 3);
+                                            win.setTitle("Buscar");
+                                            win.doModal();
+                                            }                            
+                                    </attribute>
+                                </button> 
+                            </span>
+                        </row>
+                        <row>
+                            <span style="float:right"> Factura:</span> 
+                            <textbox id="factura"/>
+                        </row>
+                        <row spans="4">
+                            <grid  width="98%" id="anadir">
+                                <columns sizable="true">
+                                    <column label="CANTIDAD" />
+                                    <column label="EQUIPO" />
+                                    <column label="V.U." />
+                                    <column label=" " />
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <textbox cols="2" value="1"/>
+                                        <span>
+                                            <intbox cols="1" id="idproducto" readonly="true" />
+                                            <textbox value="producto" readonly="true"/>
+                                            <button label=""  id="buscarPro" disabled="false"  image="/images/auditoria.gif">
+                                                <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("buscarProductos.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setAttribute("equipo", 3);
+                                            win.setTitle("Buscar");
+                                            win.doModal();
+                                            }                            
+                                                </attribute>
+                                            </button> 
+                                       
+                                        </span>
+                                        <doublebox cols="3" id="vu"  />
+                                        <button label="Anadir" />
+                                       
+                                    </row>
+                                    
+                                    <row>
+                                      
+                                    </row>
+                                     
+                                </rows>
+                            </grid>
+                                
+                        </row>
+                        <row spans="4">
+                          
+                            <grid height="280px"  width="98%" id="opciones">
+                                <columns sizable="true">
+                                    <column label="CANTIDAD" />
+                                    <column label="EQUIPO" />
+                                    <column label="V.U." />
+                                </columns>
+                                <rows id="filas">
+                                     
+                                </rows>
+                            </grid>
+                                 
+                        </row>
                             
                             
 
                       
-                        </rows>
-                    </grid>
+                    </rows>
+                </grid>
 
+                <vbox>
+                    <hbox>
+                        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    </hbox>
+                </vbox>
+
+
+            </tabpanel>
+
+            <tabpanel>
+
+                <groupbox  width="100%" mold="3d" >
+
+                    <caption label="Busquedas" />
                     <vbox>
-                        <hbox>
-                            <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                            <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                            <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                            <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                        <hbox>  Ip:
+                            <textbox id="buscarText"  maxlength="60" cols="40" />
+                            <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                         </hbox>
-                    </vbox>
+                        <hbox>
+                            <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                                <listhead>
+                                    <listheader label="Cod."/>
+                                    <listheader label="Nombre"/>
+                                    <listheader label="MAC"/>
+                                    <listheader label="Precio"/>
+                                    <listheader label="Comprado"/>
+                                    <listheader label="Asignado"/>
 
-
-                </tabpanel>
-
-                <tabpanel>
-
-                    <groupbox  width="100%" mold="3d" >
-
-                        <caption label="Busquedas" />
-                        <vbox>
-                            <hbox>  Ip:
-                                <textbox id="buscarText"  maxlength="60" cols="40" />
-                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
-                            </hbox>
-                            <hbox>
-                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-                                    <listhead>
-                                        <listheader label="Cod."/>
-                                        <listheader label="Nombre"/>
-                                        <listheader label="MAC"/>
-                                        <listheader label="Precio"/>
-                                                                           <listheader label="Comprado"/>
-                                        <listheader label="Asignado"/>
-
-                                    </listhead>
-                                    <listitem forEach="${allEvents2}" value="${each}">
+                                </listhead>
+                                <listitem forEach="${allEvents2}" value="${each}">
                                         <!--listcell label="${each.codigo}" />
                                         <listcell label="${each.ip}" />
                                         <listcell label="${each.ssid}" /-->
-                                    </listitem>
-                                </listbox>
+                                </listitem>
+                            </listbox>
 
 
-                            </hbox>
-                        </vbox>
-                    </groupbox>
+                        </hbox>
+                    </vbox>
+                </groupbox>
 
 
 
-                </tabpanel>
+            </tabpanel>
 
-            </tabpanels>
+        </tabpanels>
 
 
-        </tabbox>
+    </tabbox>
 
-    </window>
-</zk>
+</window>
+ 

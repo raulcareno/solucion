@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+    
+ 
+    <window onCreate="cargar()" id="crearProveedores">
+  <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+    <script type="text/javascript" src="/js/masks.js"/>
+  <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.util.ArrayList;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Proveedores as o where o.razonsocial = 0");
+    static Proveedores empa = new Proveedores();
+    Permisos permiso = new Permisos();
+    List perfiles = adm.query("Select o from Sector as o  ");
+    Object media = null;
+Boolean instanciadaContratos = false;
+ 
+ 
+ 
+
+ 
+ void move(){
+    cargarCliente((Proveedores)datos.selectedItem.value);
+        crearProveedores.detach();
+  }
+ 
+  
+ 
+  void buscar(String p){
+        List ProveedoresEncontrados = adm.query("Select o from Proveedores as o where o.razonsocial like '"+p+"%' order by o.razonsocial");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+               for (Iterator it = ProveedoresEncontrados.iterator(); it.hasNext();) {
+                      Proveedores acceIt = (Proveedores) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getRazonsocial()));
+                      datos.appendChild(li);
+             }
+
+    }
+ 
+
+cargarCliente(Proveedores clientes){
+ ide = Path.getComponent("//controlequipospage/controlventana/proveedores");
+ nombe = Path.getComponent("//controlequipospage/controlventana/idproveedores");
+ 
+ ide.value = clientes.getCodigo()+"";
+ nombe.value = clientes.getRazonsocial()+"";
+
+}
+
+]]>
+        </zscript>
+       
+
+   
+
+                    <groupbox  width="500px" mold="3d" >
+
+                        <caption label="Busquedas" />
+                        <vbox>
+                            <hbox>  Apellidos:
+                                <textbox id="buscarText"  onChanging="buscar(event.value)"  onOK="buscar(self.value)" maxlength="60" cols="40" />
+                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                            </hbox>
+                            <hbox>
+                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();" id="datos" width="100%">
+                                    <listhead>
+                                        <listheader label="Razon Social"/>
+                                        
+                                    </listhead>
+                                    <listitem forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.razonsocial}" />
+                                    </listitem>
+                                </listbox>
+
+
+                            </hbox>
+                        </vbox>
+                    </groupbox>
+
+ 
+        <zscript>
+            void cargar(){
+            
+                    instanciadaContratos = false;
+            
+                    
+            }
+</zscript>
+    </window>
+</zk>
