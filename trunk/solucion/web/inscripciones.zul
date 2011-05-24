@@ -701,6 +701,17 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
 
 }
 
+void validar(Textbox texto){
+
+    if(!bean.validarPalabras.validar(texto.value)){
+//        texto.value = "";
+        
+        alert("Nombre/Apellidos NO están correctos\n evite colocar (* , ; . / ( )  & $ % o letras repetidas como CC, KK, MM, NN )...!");
+        texto.focus();
+    }
+
+}
+
 
   ]]>
             </zscript>
@@ -849,9 +860,9 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     <label  style="font-size:11px" value="1er.Nombre(*)" id="t2"/>
                                 </span>
                                 <span>
-                                    <textbox id="nombres" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2); self.getValue();"   maxlength="60" cols="10" readonly="true"   />
+                                    <textbox id="nombres" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2); self.getValue(); validar(self);"   maxlength="60" cols="10" readonly="true"   />
                                     <label  style="font-size:11px" value="2do.Nombre" />
-                                    <textbox id="nombres1" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2); self.getValue();"   maxlength="60" cols="10" readonly="true"   />
+                                    <textbox id="nombres1" constraint="no empty: Ingrese un nombre, no podra completar su inscripcion si no ingresa este campo"  onFocus="changeStyle(t2)"  onBlur="changeStyle(t2); self.getValue(); validar(self);"   maxlength="60" cols="10" readonly="true"   />
 
                                     <image src="/images/information.png" height="16px" width="16px" tooltip="nombrest" popup="nombrest" style="cursor: pointer" />
                                     <popup id="nombrest" width="300px">
@@ -867,9 +878,9 @@ Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.valu
                                     <label  style="font-size:11px" value="1er.Apellido(*)" id="t3"/>
                                 </span>
                                 <span>
-                                    <textbox id="apellidos"  onFocus="changeStyle(t3)"   constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3); self.getValue(); verificaLetra();"  maxlength="60" cols="10" readonly="true"  />
+                                    <textbox id="apellidos"  onFocus="changeStyle(t3)"   constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3); self.getValue(); verificaLetra();  validar(self);"  maxlength="60" cols="10" readonly="true"  />
                                     <label  style="font-size:11px" value="2do.Apellido:" />
-                                    <textbox id="apellidos1"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3); self.getValue(); "  maxlength="60" cols="10" readonly="true"  />
+                                    <textbox id="apellidos1"  onFocus="changeStyle(t3)"  constraint="no empty: Ingrese un apellido, no podra completar su inscripcion si no ingresa este campo"  onBlur="changeStyle(t3); self.getValue();  validar(self);"  maxlength="60" cols="10" readonly="true"  />
                                     <image src="/images/information.png" height="16px" width="16px" tooltip="apellidost" popup="nombrest" style="cursor: pointer" />
                                     <popup id="apellidost" width="300px">
                                         <html>
