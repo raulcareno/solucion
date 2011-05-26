@@ -218,33 +218,73 @@ empa.setEquipos(g);
              }
     return eq;
 }
-llenarGrid(int numero){
-
-    
-    noopciones.disabled = false;
-    Listbox eq = new Listbox();
-
-    if(filas.getChildren().size()<=0)
-        filas.getChildren().clear();           
-             
-            for(int i = 0; i< numero; i++){
+llenarGrid(){
+  if(cantidad.value == 0 || cantidad.value == null || cantidad.value == ""
+  || idproducto.value == null || idproducto.value == "" 
+  || vu.value == "" || vu.value == 0 || vu.value == null){
+  
+  alert("LLENE TODOS LOS CAMPOS");
+    return;
+  
+  }
+                            try
+                    {
                     Row row = new Row();
-                    eq = llenaEquipo(new Listbox());
-                            Intbox t = new Intbox(1);
-                            Doublebox dou = new Doublebox(0);
+                           Doublebox dou = new Doublebox(0);
                             dou.setStyle("float:right;text-align:right");
-                            //dou.setCols(80);
-                            row.appendChild(t);
-                            row.appendChild(eq);
+                            dou.setValue(vu.value);
+                            Intbox intb = new Intbox(cantidad.value);
+                            intb.setCols(3);
+                             intb.setStyle("float:right;text-align:right");
+                            Label prod = new Label(productod.value);
+                            row.appendChild(intb);
+                            row.appendChild(prod);
                             row.appendChild(dou);
-                         
                             
-                            //noopciones.disabled = true;
-                   
-                    filas.appendChild(row);
-            }
-}
+                            Button aButton = null;
+                            aButton = new Button("quitar");
+                            aButton.setImage("/images/quitar.gif");
+                            aButton.setHeight("5px");
+                            aButton.setId("id"+idproducto.value);
+                            aButton.addEventListener("onClick", new EventListener() {
+                                public void onEvent(Event event) throws Exception {
+                                      //  int valor0 = Messagebox.show("PRECAUCIÓN: Si quita este elemento se eliminará de todos los Cursos y de todos los profesores, Desea Continuar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                        quitarFila(aButton.getId());
+                                         
+                      
+                                }
+                            });
 
+                            row.appendChild(aButton);
+                            row.setValue(new Equipos(idproducto.value)); 
+                         
+                    filas.appendChild(row);
+
+                    }catch(Exception e){
+                        alert("YA SE HA AGREGADO ESTE PRODUCTO");
+                    }
+                        
+                        vu.value=null;
+                        cantidad.value= null;
+                        productod.value=null;
+                        idproducto.value = null;
+                        cantidad.focus();
+        
+}
+ public void quitarFila(String codigoBuscar){
+                 Rows filas2 =opciones.getRows();
+                List listadoProductos = filas2.getChildren();
+                    for (int i = 0; i <= listadoProductos.size()-1; i++) {
+                       Row object = (Row) listadoProductos.get(i);
+                       Equipos nuevo = ((Equipos)object.getValue());
+                       String codigoA = "id"+nuevo.getCodigo();
+                       if(codigoA.equals(codigoBuscar)){
+                            opciones.getRows().removeChild(object);
+                            break;
+                       }
+                    }
+
+}
 llenarGridMac(int numero){
  
     filas2.getChildren().clear();
@@ -269,19 +309,7 @@ llenarGridMac(int numero){
 
                 <grid width="100%">
                     <rows>
-                        <row>
-                            <span>
-                                <span style="float:right"> No. Filas a ingresar:</span>   
-                                <intbox id="codigo" disabled="true" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
-                            </span>
-                            <span>
-                                <intbox value="10"   constraint="no negative" id="cantidad" /> 
-                                
-                                
-                                <button label="Añadir Filas" onClick="llenarGrid(cantidad.value);"/>
-                            </span>
-                                 
-                        </row>
+                    
                         <row>
                             <span style="float:right"> Fecha de Compra:</span>
                             <datebox id="fecha" onCreate="self.value = new Date()"/>
@@ -289,8 +317,10 @@ llenarGridMac(int numero){
                         <row>
                             <span style="float:right"> Proveedor:</span> 
                             <span>
+                                
+                                <textbox  readonly="true"   cols="39" id="idproveedores" />
                                 <textbox readonly="true"  cols="1" id="proveedores" />
-                                <textbox readonly="true" cols="39" id="idproveedores" />
+                                
                                 <button label=""  id="buscarE3" disabled="false"  image="/images/auditoria.gif">
                                     <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarProveedores.zul", null, null);
@@ -312,17 +342,20 @@ llenarGridMac(int numero){
                         <row spans="4">
                             <grid  width="98%" id="anadir">
                                 <columns sizable="true">
-                                    <column label="CANTIDAD" />
+                                   
+                                     <column label="CANTIDAD" width="80px" />
+                             
                                     <column label="EQUIPO" />
-                                    <column label="V.U." />
-                                    <column label=" " />
+                                    <column label="V.U."  width="30px" />
+                                    <column label="OPCION" width="30px"  />
                                 </columns>
                                 <rows>
                                     <row>
-                                        <textbox cols="2" value="1"/>
-                                        <span>
-                                            <intbox cols="1" id="idproducto" readonly="true" />
-                                            <textbox value="producto" readonly="true"/>
+                                        <intbox onOK="buscarPro.focus()" style="float:right;text-align:right" cols="2" id="cantidad" value="1"/>
+                                       <span>
+                                            <intbox cols="1" visible="false"  id="idproducto" readonly="true" />
+                                             <textbox value="" onFocus="vu.focus()" id="productod" cols="50"  readonly="true" />
+                                            
                                             <button label=""  id="buscarPro" disabled="false"  image="/images/auditoria.gif">
                                                 <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarProductos.zul", null, null);
@@ -337,8 +370,10 @@ llenarGridMac(int numero){
                                             </button> 
                                        
                                         </span>
-                                        <doublebox cols="3" id="vu"  />
-                                        <button label="Anadir" />
+                                        <doublebox onOK="add.focus()"  style="float:right;text-align:right" id="vu"  />
+                                        <span>
+                                            <button  id="add"  label="Añadir Filas" image="/images/add2.png" onClick="llenarGrid();"/>
+                                        </span>
                                        
                                     </row>
                                     
@@ -354,9 +389,10 @@ llenarGridMac(int numero){
                           
                             <grid height="280px"  width="98%" id="opciones">
                                 <columns sizable="true">
-                                    <column label="CANTIDAD" />
+                                    <column label="CANTIDAD" width="80px" />
                                     <column label="EQUIPO" />
-                                    <column label="V.U." />
+                                    <column label="V.U."  width="30px" />
+                                    <column label="OPCION" width="30px"  />
                                 </columns>
                                 <rows id="filas">
                                      
@@ -370,6 +406,25 @@ llenarGridMac(int numero){
                       
                     </rows>
                 </grid>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 <vbox>
                     <hbox>

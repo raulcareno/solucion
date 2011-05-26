@@ -13,12 +13,15 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import org.zkoss.zul.Textbox;
 
 public class accesos extends Rows {
 //ArrayList listad = new ArrayList();
 
     public accesos() {
-      
+Textbox a;
+//a.setC
+    
     }
 
     public void addRow(Perfil p) {
