@@ -54,14 +54,12 @@ Boolean instanciadaContratos = false;
     }
  
 
-cargarCliente(Proveedores clientes){
- ide = Path.getComponent("//controlequipospage/controlventana/proveedores");
- nombe = Path.getComponent("//controlequipospage/controlventana/idproveedores");
- 
- ide.value = clientes.getCodigo()+"";
- nombe.value = clientes.getRazonsocial()+"";
-
-}
+        cargarCliente(Proveedores clientes){
+            ide = Path.getComponent("//controlequipospage/controlventana/idproveedores");
+            nombe = Path.getComponent("//controlequipospage/controlventana/proveedores");
+            ide.value = clientes.getCodigo();
+            nombe.value = clientes.getRazonsocial()+"";
+        }
 
 ]]>
         </zscript>
@@ -70,10 +68,9 @@ cargarCliente(Proveedores clientes){
    
 
                     <groupbox  width="500px" mold="3d" >
-
-                        <caption label="Busquedas" />
+ 
                         <vbox>
-                            <hbox>  Apellidos:
+                            <hbox>  Razon Social:
                                 <textbox id="buscarText"  onChanging="buscar(event.value)"  onOK="buscar(self.value)" maxlength="60" cols="40" />
                                 <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                             </hbox>
