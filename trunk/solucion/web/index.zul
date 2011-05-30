@@ -279,6 +279,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                     <menuitem onClick="ingresar(self)" id="Matricular2" label="Asignar Cursos" image="/images/asignar.png"  value="/asignarmatriculas.zul" />
                                     <menuitem onClick="ingresar(self)" id="Actualizacion" label="Actualizar" image="/images/actualizar.png"  value="/actualizacion.zul" />
                                     <menuitem onClick="ingresar(self)" id="Pendientes" label="Pendientes(Bloquear Notas)" image="/images/dinero.gif"   value="/pendientes.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Inscripciones" label="Inscripciones Internet"     value="/inscripcionesModificar.zul" />
                                     <menuitem onClick="ingresar(self)" id="Bloquear" label="Bloquear Matricula" image="/images/bloquear.gif"   value="/actualizacion_1.zul" />
                                     <menuitem onClick="ingresar(self)" id="Reportes_Estudiantes" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
                                     <menuitem onClick="ingresar(self)" id="Encuesta" label="Encuesta" image="/images/encuesta.png"   value="/encuesta.zul" />
