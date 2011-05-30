@@ -45,7 +45,7 @@
                                 <span>
                                     <textbox id="descripcion" value="@{inobjeto.descripcion}"  onChange="update();"/>
     
-        Estado(*): 
+        Año Lectivo Activo(*): 
                                     <checkbox id="estado"    checked="@{inobjeto.estado}" onCheck="update();" />
                                 </span>
                             </row>
