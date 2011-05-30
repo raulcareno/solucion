@@ -479,7 +479,7 @@ void copiarm(){
  void nuevo(){
     if(verificar("Agregar")){
        try{
-        guardar.disabled=false;
+        //guardar.disabled=false;
         llenar(new Estudiantes(0));
         estado(false,false);
         llenarConsumidor();
@@ -494,7 +494,7 @@ void copiarm(){
 
 void modificar(){
     if(verificar("Modificar")){
-       guardar.disabled=false;
+       //guardar.disabled=false;
         estado(false,false);
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -518,14 +518,14 @@ void modificar(){
                  }
                 llenar(inscrip);
                 estado(true);
-                guardar.disabled=true;
+                //guardar.disabled=true;
                 imprimir.disabled=false;
                 
             }else{
 
                 estado(false);
                 cedula.readonly = true;
-                guardar.disabled=false;
+                //guardar.disabled=false;
 
             }
 
@@ -1382,7 +1382,7 @@ void buscarEstudiante(String valor){
                             <row align="left"  style="background:#E4EDF6;border:0px" >
                                 <span></span>
                                 <span>
-                                    <button image="/images/guardar.gif" id="guardar" disabled="false" label="GUARDAR CAMBIOS" width="190px"  height="40px"     onClick="verificarCampos()"/>
+                                    <button image="/images/guardar.gif" id="guardar"   label="GUARDAR CAMBIOS" width="190px"  height="40px"     onClick="verificarCampos()"/>
                                     
                                     <button image="/images/imprimir.gif" id="imprimir" disabled="false" label="IMPRIMIR" width="190px"  height="40px" visible="true"  onClick='Executions.sendRedirect("/592981728937491235.zul?AASL2KSO348934934="+codigo.value+"");'/>
 
@@ -1409,7 +1409,7 @@ void buscarEstudiante(String valor){
                                 nombresr.focus(); nombresr.getValue();;
                                 apellidosr.focus(); apellidosr.getValue();;
                                 direccionr.focus(); direccionr.getValue();;
-                                self.disabled = true;
+                                //self.disabled = true;
                                 generarClave(false);
                             guardar(califica.value);
 
