@@ -200,6 +200,48 @@ void buscar2(Cursos cur){
       ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
       return ds;
 }
+public JRDataSource inscritos4(ArrayList listadodeCursos, String tipo){
+  String curso =  "";
+
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+        String query = "SELECT mat.* FROM Inscripciones AS mat " +
+                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' ORDER BY mat.abanderado DESC,mat.discapacidad DESC, mat.aprovechamiento DESC";
+                System.out.println(query);
+      List hoy = adm.queryNativo(query,Inscripciones.class);
+      int i=1;
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+            Inscripciones elem = (Inscripciones) it.next();
+            Matriculas matri = new Matriculas();
+            Estudiantes est = new Estudiantes();
+            Cursos cur = new Cursos();
+            Global gl = new Global();
+            gl.setDescripcion("");
+            cur.setEspecialidad(gl);
+            cur.setParalelo(gl);
+            matri.setCurso(cur);
+            est.setApellido(elem.getApellido());
+            est.setNombre(elem.getNombre());
+            est.setFechanacimiento(elem.getFechanacimiento());
+            est.setDiscapacidad(elem.getDiscapacidad());
+            est.setTipodiscapacidad(elem.getTdiscapacidad());
+            est.setHermanos((elem.getHermano().toString().equals("true")?1:0));  //si tiene heramos es entero
+            est.setEconomia(elem.getAbanderado()); //si es abanderado 
+            est.setDireccion(elem.getParroquia()); //si es sector 
+            est.setIngpadre(elem.getAprovechamiento());
+            est.setCodigoest(i);
+            i++;
+            matri.setEstudiante(est);
+            matri.setFechamat(elem.getFechamatricula());
+            
+          
+            detalle.add(matri);
+      }
+      ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
+      return ds;
+}
 public JRDataSource certificados(ArrayList listadodeCursos,String tipo){
     String curso =  "";
     for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
@@ -532,6 +574,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = inscritos2(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"estudiantes.jasper");
+            }else if(tipo.equals("INS4")){
+                    datasource = inscritos4(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes2.jasper");
             }else if(tipo.equals("INS3")){
                     datasource = calificacioninscritos();
                     parametros.put("titulo", titulo.getValue());
@@ -699,6 +745,7 @@ void campos(String valor){
                                 <listitem  id="INS" label="Inscritos" value="INS" />
                                 <listitem  id="INS2" label="Inscritos por Internet" value="INS2" />
                                 <listitem  id="INS3" label="Calificacion de Inscritos por Internet" value="INS3" />
+                                <listitem  id="INS4" label="Listado de Pre-aprobados" value="INS4" />
                                 <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
                                 <listitem  id="LMAT" label="Matriculados" value="LMAT" />
                                 <listitem  id="LMATF" label="Matriculados por Fechas" value="LMATF" />

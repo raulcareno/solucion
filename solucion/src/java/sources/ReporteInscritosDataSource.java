@@ -52,6 +52,8 @@ public class ReporteInscritosDataSource implements JRDataSource{
                     ""+nodo.getCurso().getParalelo().getDescripcion();
         }else if ("nombres".equals(fieldName)) {
             valor = nodo.getEstudiante().getApellido()+" "+ nodo.getEstudiante().getNombre();
+        }else if ("no".equals(fieldName)) {
+            valor = nodo.getEstudiante().getCodigoest();
         }else if ("observacion".equals(fieldName)) {
                 valor = nodo.getObservacion();
            
@@ -59,7 +61,17 @@ public class ReporteInscritosDataSource implements JRDataSource{
            valor = nodo.getFechamat();
         }else if ("nacimiento".equals(fieldName)) {
            valor = nodo.getEstudiante().getFechanacimiento();
-        }else if ("sello".equals(fieldName)) {
+        }else if ("discapacidad".equals(fieldName)) {
+           valor = nodo.getEstudiante().getDiscapacidad();
+        }else if ("tdiscapacidad".equals(fieldName)) {
+           valor = nodo.getEstudiante().getTipodiscapacidad();
+        }else if ("abanderado".equals(fieldName)) {
+           valor = nodo.getEstudiante().getEconomia();
+        }else if ("hermanos".equals(fieldName)) {
+           valor = nodo.getEstudiante().getHermanos();
+        }else if ("aprovechamiento".equals(fieldName)) {
+           valor = nodo.getEstudiante().getIngpadre();
+        } else if ("sello".equals(fieldName)) {
             try{//sello del colegio
                 byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getEscudo();
                 if(bImage!=null){
@@ -90,7 +102,7 @@ public class ReporteInscritosDataSource implements JRDataSource{
                 }else{
                 }
             }catch(Exception ex){
-                System.out.println("Error en foto:"+ex);
+                //System.out.println("Error en foto:"+ex);
             }
         } else if ("direccion".equals(fieldName)) {
            valor = nodo.getEstudiante().getDireccion();
