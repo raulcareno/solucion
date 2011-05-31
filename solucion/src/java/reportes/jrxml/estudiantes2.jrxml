@@ -285,7 +285,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{abanderado}.equals(new Boolean(true))?"SI":"NO")]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{abanderado}.equals(new Boolean(true))?"SI":"")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="322" y="0" width="43" height="18"/>
@@ -297,7 +297,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{discapacidad}.equals(new Boolean(true))?"SI":"NO")]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{discapacidad}.equals(new Boolean(true))?"SI":"")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="365" y="0" width="43" height="18"/>
@@ -309,7 +309,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{hermanos}.equals(new Integer(1))?"SI":"NO")]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{hermanos}.equals(new Integer(1))?"SI":"")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField" x="408" y="0" width="126" height="18"/>
