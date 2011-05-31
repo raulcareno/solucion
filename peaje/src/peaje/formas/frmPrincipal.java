@@ -95,6 +95,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     public static ArrayList puertoListo;
     static WorkingDirectory w = new WorkingDirectory();
     String ubicacionDirectorio = w.get() + separador;
+    CamaraWeb ver = new CamaraWeb();
 
     public void habilitarBotones(Boolean estado) {
         btnAuditoria.setEnabled(estado);
@@ -414,6 +415,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         placa = new javax.swing.JFormattedTextField();
         errores = new javax.swing.JLabel();
         usuarioLogeado = new javax.swing.JButton();
+        camaraVista = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -1861,6 +1865,29 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             usuarioLogeado.setBounds(10, 10, 420, 30);
             contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+            camaraVista.setText("webCam");
+            camaraVista.setBorder(new javax.swing.border.MatteBorder(null));
+            camaraVista.setBounds(20, 240, 170, 140);
+            contenedor.add(camaraVista, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+            jButton7.setText("Iniciar Camara");
+            jButton7.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton7ActionPerformed(evt);
+                }
+            });
+            jButton7.setBounds(10, 190, 110, 23);
+            contenedor.add(jButton7, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+            jButton11.setText("Fotografiar");
+            jButton11.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton11ActionPerformed(evt);
+                }
+            });
+            jButton11.setBounds(420, 150, 87, 23);
+            contenedor.add(jButton11, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
 
@@ -4819,6 +4846,20 @@ String puertoYaAbiertos = "";
 
         }
     }//GEN-LAST:event_btnGuardarCambiosActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+          this.camaraVista.setLayout(null);
+          this.camaraVista.add(ver.VerCamara(0, 0, new Double(camaraVista.getSize().getWidth()).intValue(), new Double(camaraVista.getSize().getHeight()).intValue()));
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+         int resultado = ver.Fotografiar("f://fotosjava", false, "foto"+new Date().getTime());
+        if(resultado==0){
+           JOptionPane.showMessageDialog(null,"Error en la Fotografia");
+        }
+    }//GEN-LAST:event_jButton11ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
         Thread cargar = new Thread() {
@@ -4958,6 +4999,7 @@ String puertoYaAbiertos = "";
     private javax.swing.JButton btnUsuarios;
     private javax.swing.JDialog buscarClientes;
     private javax.swing.JTable busquedaTabla;
+    private javax.swing.JLabel camaraVista;
     private javax.swing.JPasswordField clave;
     private javax.swing.JFormattedTextField cliente;
     private javax.swing.JFormattedTextField codigo;
@@ -4992,11 +5034,13 @@ String puertoYaAbiertos = "";
     private javax.swing.JSpinner ingresos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
