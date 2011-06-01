@@ -637,7 +637,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnNuevoCliente.setBounds(40, 100, 230, 30);
 
         jPanel5.add(jPanel2);
-        jPanel2.setBounds(320, 10, 280, 160);
+        jPanel2.setBounds(310, 10, 290, 160);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -659,7 +659,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(160, 50, 60, 50);
+        btnAgregar.setBounds(160, 130, 60, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
@@ -678,7 +678,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnSalir);
-        btnSalir.setBounds(220, 50, 60, 50);
+        btnSalir.setBounds(220, 130, 60, 50);
 
         total.setBorder(null);
         total.setEditable(false);
@@ -688,17 +688,17 @@ public class frmFactura extends javax.swing.JInternalFrame {
         total.setCaretColor(new java.awt.Color(0, 204, 0));
         total.setFont(new java.awt.Font("Tahoma", 1, 36));
         jPanel4.add(total);
-        total.setBounds(20, 50, 130, 50);
+        total.setBounds(130, 60, 150, 50);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
         jLabel2.setLabelFor(total);
         jLabel2.setText("A PAGAR:");
         jPanel4.add(jLabel2);
-        jLabel2.setBounds(30, 10, 120, 30);
+        jLabel2.setBounds(10, 70, 120, 30);
 
         jPanel5.add(jPanel4);
-        jPanel4.setBounds(320, 170, 290, 190);
+        jPanel4.setBounds(310, 170, 300, 190);
 
         jLabel1.setText("NOTA: Para reimprimir el comprobante de pago, en caso de error en la impresora, digite nuevamente el No. de Ticket");
         jPanel5.add(jLabel1);
