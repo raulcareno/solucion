@@ -31,7 +31,7 @@ public class EmpresaPuertosStatic {
      */
     public   EmpresaPuertosStatic() {
     }
-     
+        public Boolean webcam;
         public String impticket;
         public String impfactura;
         public String impresora;
@@ -86,6 +86,16 @@ public class EmpresaPuertosStatic {
         public String puerta13;
         public String puerta14;
 
+    public Boolean getWebcam() {
+        return webcam;
+    }
+
+    public void setWebcam(Boolean webcam) {
+        this.webcam = webcam;
+    }
+
+        
+        
         public String getLed() {
             return led;
         }

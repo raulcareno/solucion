@@ -309,6 +309,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
         graciasalida = new javax.swing.JFormattedTextField();
         jLabel28 = new javax.swing.JLabel();
+        chkWebcam = new javax.swing.JCheckBox();
+        jLabel29 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -800,6 +802,19 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel2.add(jLabel28);
         jLabel28.setBounds(180, 190, 120, 20);
 
+        chkWebcam.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        chkWebcam.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.webcam}"), chkWebcam, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        jPanel2.add(chkWebcam);
+        chkWebcam.setBounds(120, 220, 21, 21);
+
+        jLabel29.setText("Trabaja con WebCam:");
+        jPanel2.add(jLabel29);
+        jLabel29.setBounds(0, 220, 120, 14);
+
         jTabbedPane1.addTab("DATOS DE LA EMPRESA", new javax.swing.ImageIcon(getClass().getResource("/images/empresa.png")), jPanel2); // NOI18N
 
         jPanel5.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -810,7 +825,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.setLayout(null);
 
         cmbEntrada1.setEditable(true);
-        cmbEntrada1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        cmbEntrada1.setFont(new java.awt.Font("Tahoma", 0, 10));
         cmbEntrada1.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puerto1}"), cmbEntrada1, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
@@ -1045,7 +1060,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         cmbSalida1.setBounds(230, 150, 60, 19);
 
         cmbSalida3.setEditable(true);
-        cmbSalida3.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        cmbSalida3.setFont(new java.awt.Font("Tahoma", 0, 10));
         cmbSalida3.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida3}"), cmbSalida3, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
@@ -1060,7 +1075,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         cmbSalida3.setBounds(230, 190, 60, 19);
 
         cmbSalida2.setEditable(true);
-        cmbSalida2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        cmbSalida2.setFont(new java.awt.Font("Tahoma", 0, 10));
         cmbSalida2.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.salida2}"), cmbSalida2, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
@@ -1292,6 +1307,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setBarras2((String)cmbPortBarras2.getSelectedItem());
                     empresaObj.setSale((String)cmbPuertaSale.getSelectedItem());
                     empresaObj.setSale2((String)cmbPuertaSale2.getSelectedItem());
+                    empresaObj.setWebcam(chkWebcam.isSelected());
 
                     XMLEmpresa xm = new XMLEmpresa();
                     xm.inicio();
@@ -1791,6 +1807,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JCheckBox chkActivo2;
     private javax.swing.JCheckBox chkActivo3;
     private javax.swing.JCheckBox chkActivo4;
+    private javax.swing.JCheckBox chkWebcam;
     private javax.swing.JComboBox cmbEntrada1;
     private javax.swing.JComboBox cmbEntrada2;
     private javax.swing.JComboBox cmbEntrada3;
@@ -1842,6 +1859,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;

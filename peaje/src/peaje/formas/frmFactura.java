@@ -6,7 +6,6 @@ import java.awt.Container;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,14 +34,17 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.Minutes;
-import org.joda.time.Seconds;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+import javax.swing.ImageIcon;
 import sources.FacturaDetalleSource;
 
 import sources.FacturaSource;
@@ -69,13 +71,15 @@ public class frmFactura extends javax.swing.JInternalFrame {
     List<Tarifas> tarifario;
     String separador = File.separatorChar + "";
     Boolean guardando = false;
+    WorkingDirectory w = new WorkingDirectory();
+    String ubicacionDirectorio = w.get() + separador;
 
     /** Creates new form frmProfesores */
     public frmFactura(java.awt.Frame parent, boolean modal, Administrador adm1) {
 //        super(parent, modal);
         llenarCombo();
         initComponents();
-        this.setSize(615, 508);
+        this.setSize(652, 587);
         empresaObj = new Empresa();
         adm = adm1;
         val = new validaciones();
@@ -94,7 +98,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             adm = adm1;
             llenarCombo();
             initComponents();
-            this.setSize(615, 508);
+            this.setSize(652, 587);
             empresaObj = lo.empresaObj;
             val = new validaciones();
             principal = lo;
@@ -242,6 +246,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         total = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel12 = new javax.swing.JPanel();
+        miBotonImagen = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
@@ -274,6 +280,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
 
         formaBusqueda.setLocationByPlatform(true);
         formaBusqueda.getContentPane().setLayout(null);
@@ -371,7 +378,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel10.setBounds(10, 20, 290, 13);
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 650, 40);
+        jPanel3.setBounds(0, 0, 640, 40);
 
         jPanel5.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -519,7 +526,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel5.setBounds(150, 30, 140, 20);
 
         jPanel5.add(jPanel1);
-        jPanel1.setBounds(20, 20, 290, 160);
+        jPanel1.setBounds(10, 10, 290, 160);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel2.setLayout(null);
@@ -631,7 +638,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnNuevoCliente.setBounds(40, 100, 230, 30);
 
         jPanel5.add(jPanel2);
-        jPanel2.setBounds(320, 20, 280, 160);
+        jPanel2.setBounds(320, 10, 280, 160);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -653,7 +660,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(440, 10, 60, 50);
+        btnAgregar.setBounds(160, 50, 60, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
@@ -672,7 +679,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnSalir);
-        btnSalir.setBounds(500, 10, 60, 50);
+        btnSalir.setBounds(220, 50, 60, 50);
 
         total.setBorder(null);
         total.setEditable(false);
@@ -680,23 +687,33 @@ public class frmFactura extends javax.swing.JInternalFrame {
         total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         total.setText("0.0");
         total.setCaretColor(new java.awt.Color(0, 204, 0));
-        total.setFont(new java.awt.Font("Tahoma", 1, 36));
+        total.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jPanel4.add(total);
-        total.setBounds(140, 10, 140, 50);
+        total.setBounds(20, 50, 130, 50);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
         jLabel2.setLabelFor(total);
         jLabel2.setText("A PAGAR:");
         jPanel4.add(jLabel2);
-        jLabel2.setBounds(10, 20, 130, 30);
+        jLabel2.setBounds(30, 10, 120, 30);
 
         jPanel5.add(jPanel4);
-        jPanel4.setBounds(20, 190, 580, 70);
+        jPanel4.setBounds(320, 170, 290, 190);
 
         jLabel1.setText("NOTA: Para reimprimir el comprobante de pago, en caso de error en la impresora, digite nuevamente el No. de Ticket");
         jPanel5.add(jLabel1);
-        jLabel1.setBounds(20, 270, 570, 14);
+        jLabel1.setBounds(20, 370, 570, 14);
+
+        jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel12.setLayout(new java.awt.BorderLayout());
+
+        miBotonImagen.setBackground(new java.awt.Color(204, 204, 255));
+        miBotonImagen.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(153, 204, 255)));
+        jPanel12.add(miBotonImagen, java.awt.BorderLayout.CENTER);
+
+        jPanel5.add(jPanel12);
+        jPanel12.setBounds(10, 170, 290, 190);
 
         jTabbedPane1.addTab("TICKETS", jPanel5);
 
@@ -1005,8 +1022,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("VENTA DE TARJETAS", jPanel6);
 
+        jPanel11.setLayout(null);
+        jTabbedPane1.addTab("Foto", jPanel11);
+
         getContentPane().add(jTabbedPane1);
-        jTabbedPane1.setBounds(10, 50, 640, 320);
+        jTabbedPane1.setBounds(10, 42, 620, 420);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1132,8 +1152,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
 //                    viewer.show();
         try {
-            WorkingDirectory w = new WorkingDirectory();
-            String ubicacionDirectorio = w.get() + separador;
+
             if (ubicacionDirectorio.contains("build")) {
                 ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }
@@ -1327,6 +1346,20 @@ public class frmFactura extends javax.swing.JInternalFrame {
             formaBusqueda.dispose();
         }
 }//GEN-LAST:event_busquedaTablaKeyPressed
+    private Image getImage(byte[] bytes, boolean isThumbnail) throws IOException {
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+        Iterator readers = ImageIO.getImageReadersByFormatName("jpeg");
+        ImageReader reader = (ImageReader) readers.next();
+        Object source = bis; // File or InputStream
+        ImageInputStream iis = ImageIO.createImageInputStream(source);
+        reader.setInput(iis, true);
+        ImageReadParam param = reader.getDefaultReadParam();
+        if (isThumbnail) {
+            param.setSourceSubsampling(4, 4, 0, 0);
+        }
+        return reader.read(0, param);
+
+    }
 
     void llenarFactura(Factura fac) {
         dias.setVisible(false);
@@ -1352,7 +1385,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            noTicket.setText("");
+                    noTicket.setText("");
             noTicket.requestFocusInWindow();
             return;
         }
@@ -1395,10 +1428,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
         act.setMinutes(valorMinutos);
         tiempo.setDate(act);
         placa.setText(fac.getPlaca());
-       BigDecimal aCobrar = new BigDecimal(0);
+        BigDecimal aCobrar = new BigDecimal(0);
         for (int a = 0; a < horas; a++) {
             aCobrar = aCobrar.add(buscar(60));
-       }
+        }
         try {
             int noDias = 0;
             noDias = (horas / 24);
@@ -1443,11 +1476,27 @@ public class frmFactura extends javax.swing.JInternalFrame {
             return 0.0;
         }
     }
-
+void cargarFoto(Integer codigoFactura){
+        try {
+            miBotonImagen.setIcon(null);
+                if (ubicacionDirectorio.contains("build")) {
+                    ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                }
+                String ubiv = ubicacionDirectorio + separador + "fotos" + separador + codigoFactura+".jpg";
+                Image image = Toolkit.getDefaultToolkit().getImage(ubiv);
+                //Icon icon = new ImageIcon(image);
+                ImageIcon tmpIconAux = new ImageIcon(image);
+                ImageIcon tmpIcon = new ImageIcon(tmpIconAux.getImage().getScaledInstance(240, -1, Image.SCALE_DEFAULT));
+                miBotonImagen.setIcon(tmpIcon);
+            } catch (Exception e) {
+                System.out.println("NO SE CARGO LA FOTO...");
+            }
+    
+}
     @SuppressWarnings("static-access")
     private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
         // TODO add your handling code here:
-        System.out.println(""+evt.getKeyChar());
+        System.out.println("" + evt.getKeyChar());
         if (evt.getKeyCode() == evt.VK_ENTER) {
             try {
                 ingreso.setDate(null);
@@ -1458,6 +1507,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + noTicket.getText() + "' ");
                 if (fac != null) {
                     llenarFactura(fac);
+                    try{
+                    cargarFoto(fac.getCodigo());
+                    }catch(Exception es){
+                        System.out.println("NO SE CARGO FOTO");
+                    }
+                            
                     btnAgregar.requestFocusInWindow();
                 } else {
                     ingreso.setDate(null);
@@ -1643,6 +1698,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
             this.panelencontrados1.setVisible(false);
             Factura fac = (Factura) this.encontrados1.getSelectedValue();
             llenarFactura(fac);
+            try {
+                cargarFoto(fac.getCodigo());
+            } catch (Exception e) {
+                System.out.println("NO SE CARGO FOTO....!");
+            }
+            
             noTicket.setText(fac.getTicket());
             btnAgregar.requestFocusInWindow();
         } else if (evt.getKeyCode() == evt.VK_UP && encontrados1.getSelectedIndex() == 0) {
@@ -2018,6 +2079,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnSalir1KeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
@@ -2073,6 +2135,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -2087,6 +2151,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel miBotonImagen;
     public javax.swing.JFormattedTextField noTicket;
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField nombres1;

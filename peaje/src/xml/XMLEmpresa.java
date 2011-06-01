@@ -98,6 +98,7 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String PUERTA5 = "PUERTA5";
     private static final String PUERTA6 = "PUERTA6";
     private static final String PUERTA7 = "PUERTA7";
+    private static final String WEBCAM = "WEBCAM";
 
 
     // Variables
@@ -247,6 +248,9 @@ public static UsuarioActivo user = new UsuarioActivo();
         item = xmlDoc.createElement(ACTIVA7);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getActiva7()+""));
         personal.appendChild(item);
+        item = xmlDoc.createElement(WEBCAM);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getWebcam()+""));
+        personal.appendChild(item);
         
     }
 
@@ -355,6 +359,7 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setSalida5(emp.getSalida5());
         beanEmpleado.setSalida6(emp.getSalida6());
         beanEmpleado.setSalida7(emp.getSalida7());
+        beanEmpleado.setWebcam(emp.getWebcam());
 
         beanEmpleado.setActiva1(emp.getActiva1());
         beanEmpleado.setActiva2(emp.getActiva2());
@@ -672,6 +677,12 @@ public static UsuarioActivo user = new UsuarioActivo();
                     Element ACTIVA7outElement = (Element) ACTIVA7outList.item(0);
                     NodeList ACTIVA7outAgeList = ACTIVA7outElement.getChildNodes();
                     user.setActiva7(new Boolean(((Node) ACTIVA7outAgeList.item(0)).getNodeValue().trim()));
+                    
+                    NodeList WEBCAMoutList = firstPersonElement.getElementsByTagName("WEBCAM");
+                    Element WEBCAMoutElement = (Element) WEBCAMoutList.item(0);
+                    NodeList WEBCAMoutAgeList = WEBCAMoutElement.getChildNodes();
+                    user.setWebcam(new Boolean(((Node) WEBCAMoutAgeList.item(0)).getNodeValue().trim()));
+                    
   } catch (Exception parserConfigurationException) {
                         System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }

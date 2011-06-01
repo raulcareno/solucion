@@ -58,7 +58,8 @@ public class frmTicket extends javax.swing.JInternalFrame {
     private String out;
     String separador = File.separatorChar + "";
     Boolean guardando = false;
-
+    WorkingDirectory w = new WorkingDirectory();
+    String ubicacionDirectorio = w.get() + separador;
     /** Creates new form frmProfesores */
     public frmTicket(java.awt.Frame parent, boolean modal, Administrador adm1) {
 //        super(parent, modal);
@@ -366,6 +367,13 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     principal.auditar("Ticket", "No." + fac.getTicket(), "GUARDAR");
                     principal.contenedor.requestFocus();
                     guardando = false;
+                    if(empresaObj.getWebcam()){
+                         if (ubicacionDirectorio.contains("build")) {
+                            ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                        }
+                        
+                        fotografiar(""+fac.getCodigo(), ubicacionDirectorio+"\\fotos");
+                    }
                     principal = null;
                     empresaObj = null;
                     System.gc();
@@ -386,6 +394,12 @@ public class frmTicket extends javax.swing.JInternalFrame {
 
         }
     }
+public void fotografiar(String nombre,String direccion){
+      int resultado = principal.ver.Fotografiar(direccion, false, nombre);
+        if (resultado == 0) {
+            JOptionPane.showMessageDialog(null, "Error en la Fotografia");
+        }
+}
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
@@ -407,8 +421,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
 
 //                    viewer.show();
         try {
-            WorkingDirectory w = new WorkingDirectory();
-            String ubicacionDirectorio = w.get() + separador;
+            
             if (ubicacionDirectorio.contains("build")) {
                 ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }

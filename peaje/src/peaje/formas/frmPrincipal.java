@@ -70,6 +70,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import sources.FacturaDetalleSource;
 import sources.FacturaSource;
 import xml.XMLEmpresa;
+import peaje.utilerias.*;
 
 /**
  *
@@ -95,7 +96,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     public static ArrayList puertoListo;
     static WorkingDirectory w = new WorkingDirectory();
     String ubicacionDirectorio = w.get() + separador;
-    CamaraWeb ver = new CamaraWeb();
+    public CamaraWeb ver = new CamaraWeb();
 
     public void habilitarBotones(Boolean estado) {
         btnAuditoria.setEnabled(estado);
@@ -418,6 +419,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         camaraVista = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
+        jLabel37 = new javax.swing.JLabel();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -839,7 +841,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmIngresarSistema.getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 380, 40);
 
-        frmIngresarSistema.setBounds(80, 170, 390, 220);
+        frmIngresarSistema.setBounds(230, 170, 390, 220);
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         formaTarjetas1.setTitle("Registro y Modificación de Tarjetas");
@@ -1849,10 +1851,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(errores);
             errores.setBounds(20, 100, 360, 20);
 
-            panelIngreso.setBounds(20, 40, 400, 130);
+            panelIngreso.setBounds(10, 250, 400, 130);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
+            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             usuarioLogeado.setForeground(new java.awt.Color(0, 153, 204));
             usuarioLogeado.setText("...");
             usuarioLogeado.setBorderPainted(false);
@@ -1863,31 +1865,37 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     usuarioLogeadoKeyPressed(evt);
                 }
             });
-            usuarioLogeado.setBounds(10, 10, 420, 30);
+            usuarioLogeado.setBounds(10, 3, 420, 30);
             contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            camaraVista.setText("webCam");
             camaraVista.setBorder(new javax.swing.border.MatteBorder(null));
-            camaraVista.setBounds(20, 240, 170, 140);
+            camaraVista.setBounds(30, 36, 240, 170);
             contenedor.add(camaraVista, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jButton7.setText("Iniciar Camara");
+            jButton7.setEnabled(false);
+            jButton7.setMargin(new java.awt.Insets(1, 1, 1, 1));
             jButton7.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jButton7ActionPerformed(evt);
                 }
             });
-            jButton7.setBounds(10, 190, 110, 23);
+            jButton7.setBounds(10, 220, 90, 21);
             contenedor.add(jButton7, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jButton11.setText("Fotografiar");
+            jButton11.setEnabled(false);
             jButton11.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jButton11ActionPerformed(evt);
                 }
             });
-            jButton11.setBounds(420, 150, 87, 23);
+            jButton11.setBounds(200, 220, 87, 23);
             contenedor.add(jButton11, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+            jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tv.png"))); // NOI18N
+            jLabel37.setBounds(10, 15, 280, 230);
+            contenedor.add(jLabel37, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
 
@@ -2197,7 +2205,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             CommPortIdentifier portId;
             Enumeration portList = CommPortIdentifier.getPortIdentifiers();
             LeerTarjeta reader;
-String puertoYaAbiertos = "";
+            String puertoYaAbiertos = "";
             puertoListo = new ArrayList();
             while (portList.hasMoreElements()) {
                 try {
@@ -2312,7 +2320,7 @@ String puertoYaAbiertos = "";
                 }
             }
             portList = null;
-            System.out.println("LISTA DE PUERTOS PRINCIPALES: "+puertoListo);
+            System.out.println("LISTA DE PUERTOS PRINCIPALES: " + puertoListo);
         } catch (Exception ex) {
             Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2456,8 +2464,20 @@ String puertoYaAbiertos = "";
         empresaObj.setPuerto5(emp.getPuerto5());
         empresaObj.setPuerto6(emp.getPuerto6());
         empresaObj.setPuerto7(emp.getPuerto7());
+        empresaObj.setWebcam(emp.getWebcam());
 
 
+    }
+
+    void iniciarCamar() {
+        try {
+
+
+            this.camaraVista.setLayout(null);
+            this.camaraVista.add(ver.VerCamara(0, 0, new Double(camaraVista.getSize().getWidth()).intValue(), new Double(camaraVista.getSize().getHeight()).intValue()));
+        } catch (Exception e) {
+            System.out.println("NO SE PUEDE INICIAR CAMARA.....!");
+        }
     }
 
     public void verificarUsuario() {
@@ -2614,6 +2634,9 @@ String puertoYaAbiertos = "";
                 }
                 if (empresaObj.getActiva7()) {
                     barrera7.setEnabled(true);
+                }
+                if (empresaObj.getWebcam()) {
+                    iniciarCamar();
                 }
                 in = UsuarioActivo.getIn();
                 out = UsuarioActivo.getOut();
@@ -3446,8 +3469,8 @@ String puertoYaAbiertos = "";
                 return;
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
-            usu.setSize(669, 411);
-            usu.setLocation(100, 120);
+            usu.setSize(669, 507);
+            usu.setLocation(80, 10);
             contenedor.add(usu);
 
             usu.show();
@@ -4238,7 +4261,7 @@ String puertoYaAbiertos = "";
                     } catch (Exception e) {
                     }
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                    
+
                 } catch (IOException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -4849,15 +4872,15 @@ String puertoYaAbiertos = "";
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-          this.camaraVista.setLayout(null);
-          this.camaraVista.add(ver.VerCamara(0, 0, new Double(camaraVista.getSize().getWidth()).intValue(), new Double(camaraVista.getSize().getHeight()).intValue()));
+        this.camaraVista.setLayout(null);
+        this.camaraVista.add(ver.VerCamara(0, 0, new Double(camaraVista.getSize().getWidth()).intValue(), new Double(camaraVista.getSize().getHeight()).intValue()));
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
-         int resultado = ver.Fotografiar("f://fotosjava", false, "foto"+new Date().getTime());
-        if(resultado==0){
-           JOptionPane.showMessageDialog(null,"Error en la Fotografia");
+        int resultado = ver.Fotografiar("f://fotosjava", false, "foto" + new Date().getTime());
+        if (resultado == 0) {
+            JOptionPane.showMessageDialog(null, "Error en la Fotografia");
         }
     }//GEN-LAST:event_jButton11ActionPerformed
     public void verPanel() {
@@ -5073,6 +5096,7 @@ String puertoYaAbiertos = "";
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

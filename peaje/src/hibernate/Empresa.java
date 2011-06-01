@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -676,6 +677,17 @@ public class Empresa implements Serializable {
         this.puerta14 = puerta14;
     }
 
+    @Transient
+    public Boolean webcam;
+
+    public Boolean getWebcam() {
+        return webcam;
+    }
+
+    public void setWebcam(Boolean webcam) {
+        this.webcam = webcam;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
