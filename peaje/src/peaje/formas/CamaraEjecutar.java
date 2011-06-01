@@ -6,7 +6,7 @@ package peaje.formas;
 
 /**
  *
- * @author Familia Jadan Cahueñ
+ * @author Geovanny Jadan
  */
 public class CamaraEjecutar {
     
