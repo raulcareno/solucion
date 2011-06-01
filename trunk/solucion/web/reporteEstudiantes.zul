@@ -285,6 +285,17 @@ String query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOB
                                      + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
                                      System.out.println("FECHAS"+query);
                      }
+                     if(tipo.equals("LINSF")){
+                     String desde2 = (desde.getValue().getYear()+1900) +"-"+ (desde.getValue().getMonth()+1)+"-"+ (desde.getValue().getDate());
+                     String hasta2 = (hasta.getValue().getYear()+1900) +"-"+ (hasta.getValue().getMonth()+1)+"-"+ (hasta.getValue().getDate());
+                            query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                    + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                    + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                    + " AND c.codigocur IN ("+curso+") "
+                                     + " AND o.estado IN ('Inscrito') AND o.fechamat between '"+desde2+"' and '"+hasta2+"'  "
+                                     + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                     System.out.println("FECHAS"+query);
+                     }
 
             List hoy = adm.queryNativo(query,Matriculas.class);
                     for (Iterator it = hoy.iterator(); it.hasNext();) {
@@ -598,6 +609,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LMATF");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"estudiantes.jasper");
+            }else if(tipo.equals("LINSF")){
+                    datasource = certificados(listadoCursos,"LINSF");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
             }else if(tipo.equals("LMAT2")){
                     datasource = certificados(listadoCursos,"LMAT2");
                     parametros.put("titulo", titulo.getValue());
@@ -667,6 +682,14 @@ void campos(String valor){
          // filacurso.visible = false;
         }
           if(valor.equals("LMATF") ){
+            curs.disabled = true;
+            mates.disabled = true;
+            titulo.value = "Listado de Estudiantes";
+          filafechas.visible = true;
+          desde.value = new Date();
+          hasta.value = new Date();
+        }
+        if(valor.equals("LINSF") ){
             curs.disabled = true;
             mates.disabled = true;
             titulo.value = "Listado de Estudiantes";
@@ -749,6 +772,7 @@ void campos(String valor){
                                 <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
                                 <listitem  id="LMAT" label="Matriculados" value="LMAT" />
                                 <listitem  id="LMATF" label="Matriculados por Fechas" value="LMATF" />
+                                <listitem  id="LINSF" label="Inscritos por Fechas" value="LINSF" />
                                 <listitem id="RET"  label="Retirados" value="RET" />
                                 <listitem  id="LREP2" label="Libro de Matriculas" value="LREP2"/>
                                 <listitem  id="LPAS" label="Pases Recibidos" value="LPAS"/>
