@@ -25,7 +25,7 @@ public class generaClaves {
         
 //        int val = Messagebox.show("¿Seguro de eliminar, puede causar la pérdida de notas, si ya tiene registrado?", "Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
         // TODO code application logic here
-        String tipo = "REP";
+        String tipo = "EST";
         Administrador adm = new Administrador();
         Permisos c = new Permisos();
 
@@ -41,14 +41,17 @@ public class generaClaves {
             }
         } else if (tipo.contains("EST")) {
             try {
-                List<Estudiantes> emp = adm.query("Select o from Estudiantes as o where  o.usuario is null  or o.usuario = ''  ");
+                //List<Estudiantes> emp = adm.query("Select o from Estudiantes as o where  o.usuario is null  or o.usuario = ''  ");
+                List<Estudiantes> emp = adm.query("Select o from Estudiantes as o ");
 
 
                 String user = "";
                 String caracter = "JCINFORM";
                 caracter += "JCQWERTYUIOPASDFGHJKLZXCVBNM";
+                String caracterNumeros = "012345678901234567890123456789012345678901234567890123456789";
+                //caracterNumeros += "0123456789";
 //                String numericos = "012345678901234567890123456789";
-                int numero_caracteres = 10;
+                int numero_caracteres = 4;
                 int total = caracter.length();
                 int contando = 1;
                 for (Iterator<Estudiantes> it = emp.iterator(); it.hasNext();) {
@@ -57,7 +60,7 @@ public class generaClaves {
                     String clave2 = "";
 
                     for (int a = 0; a < numero_caracteres; a++) {
-                        clave2 += caracter.charAt(((Double) (total * Math.random())).intValue());
+                        clave2 += caracterNumeros.charAt(((Double) (total * Math.random())).intValue());
                     }
 
                     String clave = clave2.toUpperCase();
@@ -65,7 +68,7 @@ public class generaClaves {
                     caracter = "" + estudiantes.getApellido().trim().replace(" ", "").toUpperCase();
                     caracter += "JC" + estudiantes.getNombre().trim().replace(" ", "").toUpperCase();
                     caracter = caracter.replace("Ñ", "").replace("Á", "").replace("É", "").replace("Í", "").replace("Ó", "").replace("Ú", "").replace("-", "");
-                    numero_caracteres = 6;
+                    numero_caracteres = 5;
                     total = caracter.length();
                     user = "";
                     for (int a = 0; a < numero_caracteres; a++) {

@@ -123,20 +123,22 @@ System.out.println("NUMERO DE CURSOS: "+cursos);
         }
     }
         String user ="";
-        String caracter="JCINFORM";
+        String caracter="";
         caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
-        int numero_caracteres=10;
+        String caracterNumeros="09876543210987654321098765432109876543210987654321";
+        int numero_caracteres=5;
         int total=caracter.length();
         String  clave2="";
         for(int a=0;a<numero_caracteres;a++){
-            clave2+=caracter.charAt(((Double)(total*Math.random())).intValue());
+            clave2+=caracterNumeros.charAt(((Double)(total*Math.random())).intValue());
         }
 
             clave.value = clave2.toUpperCase();
              caracter=""+apellidos.value.trim().replace(" ","");
             caracter+="JC"+nombres.value.trim().replace(" ","");
-            numero_caracteres=6;
+            numero_caracteres=5;
             total=caracter.length();
+            caracter = caracter.replace("Ñ", "").replace("Á", "").replace("É", "").replace("Í", "").replace("Ó", "").replace("Ú", "").replace("-", "");
             user ="";
             for(int a=0;a<numero_caracteres;a++){
                 user+=caracter.charAt(((Double)(total*Math.random())).intValue());
@@ -155,13 +157,14 @@ System.out.println("NUMERO DE CURSOS: "+cursos);
         }
     }
         String user ="";
-        String caracter="JCINFORM";
+        String caracter="";
+        String caracterNumeros="0987654321098765432109876543210987654321";
         caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
-        int numero_caracteres=10;
+        int numero_caracteres=5;
         int total=caracter.length();
         String  clave2="";
         for(int a=0;a<numero_caracteres;a++){
-            clave2+=caracter.charAt(((Double)(total*Math.random())).intValue());
+            clave2+=caracterNumeros.charAt(((Double)(total*Math.random())).intValue());
         }
 
             claver.value = clave2.toUpperCase();
@@ -170,6 +173,7 @@ System.out.println("NUMERO DE CURSOS: "+cursos);
             numero_caracteres=6;
             total=caracter.length();
             user ="";
+            caracter = caracter.replace("Ñ", "").replace("Á", "").replace("É", "").replace("Í", "").replace("Ó", "").replace("Ú", "").replace("-", "");
             for(int a=0;a<numero_caracteres;a++){
                 user+=caracter.charAt(((Double)(total*Math.random())).intValue());
             }
@@ -701,6 +705,10 @@ void estado(Boolean estado,Boolean modificar){
         }else{
             matricula.setExtension(null);
         }
+        if(folio.value == "" || folio.value == null ){
+                        matricula.setFolio(matricula.getNumero());
+                        folio.value = matricula.getNumero();
+                    }
                 adm.actualizar(matricula);
 
          }else{
@@ -991,6 +999,16 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
                     parametros.put("titulo", "Acta de Matricula");
                     report.setSrc(directorioReportes+"clavePersonal.jasper");
+
+            } else if(tipo.equals("CAR")){
+                    datasource = certificados(new Matriculas(codigomat.value),tipo);
+                    parametros.put("titulo", "Carnet ");
+                    report.setSrc(directorioReportes+"carnetIndividual.jasper");
+
+            } else if(tipo.equals("CARM")){
+                    datasource = certificados(new Matriculas(codigomat.value),tipo);
+                    parametros.put("titulo", "Carnet ");
+                    report.setSrc(directorioReportes+"carnetMinisterioIndividual.jasper");
 
             }
             if(!tipo.equals("-1")){
@@ -1671,6 +1689,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <button  image="/images/imprimir.gif" id="certificado"  label="Certificado" disabled="true"  onClick='showReport("CM")' />
                 <button  image="/images/imprimir.gif" id="certificado2"  label="Certificado2" disabled="true"  onClick='showReport("CM2")'/>
                 <button  image="/images/imprimir.gif" id="claveprint"  label="Clave" disabled="true"  onClick='showReport("CL")' />
+                <button  image="/images/imprimir.gif" id="carnetprint"  label="Carnét" disabled="false"  onClick='showReport("CAR")' />
+                <button  image="/images/imprimir.gif" id="carnetprintm"  label="Carnét M." disabled="false"  onClick='showReport("CARM")' />
                 <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar(Matricula)" disabled="true"  onClick="eliminar();"/>
             </hbox>
         </vbox>
