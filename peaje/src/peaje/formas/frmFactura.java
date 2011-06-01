@@ -280,7 +280,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
 
         formaBusqueda.setLocationByPlatform(true);
         formaBusqueda.getContentPane().setLayout(null);
@@ -687,11 +686,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
         total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         total.setText("0.0");
         total.setCaretColor(new java.awt.Color(0, 204, 0));
-        total.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        total.setFont(new java.awt.Font("Tahoma", 1, 36));
         jPanel4.add(total);
         total.setBounds(20, 50, 130, 50);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24));
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
         jLabel2.setLabelFor(total);
         jLabel2.setText("A PAGAR:");
@@ -1021,9 +1020,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel27.setBounds(300, 170, 310, 14);
 
         jTabbedPane1.addTab("VENTA DE TARJETAS", jPanel6);
-
-        jPanel11.setLayout(null);
-        jTabbedPane1.addTab("Foto", jPanel11);
 
         getContentPane().add(jTabbedPane1);
         jTabbedPane1.setBounds(10, 42, 620, 420);
@@ -2135,7 +2131,6 @@ void cargarFoto(Integer codigoFactura){
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
