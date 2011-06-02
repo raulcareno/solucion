@@ -106,6 +106,8 @@ void estado(Boolean estado,Boolean modificar){
        cabeCompra.setFactura(factura.value);
        cabeCompra.setProveedores(new Proveedores(idproveedores.value));
        cabeCompra.setFecha(fecha.value);
+       cabeCompra.setCantidad(0);
+       cabeCompra.setTotal(0d);
         adm.guardar(cabeCompra);
             List col = opciones.getRows().getChildren();
              for (int i = 0; i < col.size(); i++) {
@@ -117,17 +119,19 @@ void estado(Boolean estado,Boolean modificar){
                          det.setEquipos((Equipos)object.getValue());
                          det.setCantidad(((Intbox) labels.get(0)).getValue());
                          det.setCosto(((Doublebox) labels.get(2)).getValue());
+                         cabeCompra.setCantidad(cabeCompra.getCantidad()+det.getCantidad());
+                         cabeCompra.setTotal(cabeCompra.getTotal()+det.getCosto());
                      adm.guardar(det);
              }
-      
+      adm.actualizar(cabeCompra);
               Boolean a = true;
             if(a){
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-                permiso.auditar("Cabeceracompra","Guardar","cantidad"+cantidad.value+ ""+fecha.value);
+                permiso.auditar("Cabeceracompra","Guardar",factura.value+" cantidad"+cantidad.value+ ""+fecha.value);
                     guardar.disabled=true;
                     agregar.disabled=false;
                     estado(true,false);
-                    llenar(new Cabeceracompra(0));
+                   // llenar(new Cabeceracompra(0));
                     
             }else{
                 Messagebox.show("No se pudo almacenar...X", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
