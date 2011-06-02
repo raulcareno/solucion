@@ -1,0 +1,264 @@
+ 
+<window  id="ventanapreaprobados"  border="normal"  xmlns:a="http://www.zkoss.org/2005/zk/annotation">
+
+    <zscript>
+            <![CDATA[   
+  import jcinform.persistencia.*;
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;   
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+     
+ 
+     
+      Administrador adm = new Administrador();
+    Permisos permiso = new Permisos();
+    //FUNCIONES
+      Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+public void buscar(Integer desde, Integer hasta){
+  String curso =  "";
+
+      ArrayList detalle = new ArrayList();
+        String query = "SELECT mat.* FROM Inscripciones AS mat " +
+                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' ORDER BY mat.abanderado DESC,mat.discapacidad DESC, mat.aprovechamiento DESC limit  "+desde+" , "+hasta+"    ";
+                System.out.println(query);
+      List hoy = adm.queryNativo(query,Inscripciones.class);
+filas.getChildren().clear();
+int i=desde;
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+            Inscripciones elem = (Inscripciones) it.next();
+            Matriculas matri = new Matriculas();
+            Estudiantes est = new Estudiantes();
+            Cursos cur = new Cursos();
+            Global gl = new Global();
+            gl.setDescripcion("");
+            cur.setEspecialidad(gl);
+            cur.setParalelo(gl);
+            matri.setCurso(cur);
+            Row row = new Row();
+            i++;
+
+            Checkbox aButton =  new Checkbox();
+            aButton.setChecked(elem.getPreaprobado());
+            row.appendChild(aButton);
+           
+            Label cod = new Label(i+"");
+            row.appendChild(cod);
+            cod = new Label(elem.getApellido()+" "+elem.getNombre());
+            row.appendChild(cod);
+            
+            
+            cod = new Label(elem.getAprovechamiento()+"");
+            row.appendChild(cod);
+            
+            cod = new Label((elem.getAbanderado().equals(true)?"SI":"")+"");
+            row.appendChild(cod);
+            
+            cod = new Label((elem.getDiscapacidad().equals(true)?"SI":"")+"");
+            row.appendChild(cod);
+
+            cod = new Label((elem.getHermano().toString().equals("true")?"SI":"")+"");
+            row.appendChild(cod);
+            
+            cod = new Label(elem.getParroquia()+"");
+            row.appendChild(cod);
+            
+            
+            
+            row.setValue(new Inscripciones(elem.getCodigoest()+"")); 
+            filas.appendChild(row);
+                        
+      }
+  
+}
+void guardar(){
+        List col = opciones.getRows().getChildren();
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    
+                     List labels = object.getChildren();
+                     
+                         Inscripciones ins = (Inscripciones)object.getValue();
+                          ins = adm.buscarClave(ins.getCodigoest(),Inscripciones.class);
+                          ins.setPreaprobado(((Checkbox) labels.get(0)).isChecked());
+                     adm.actualizar(ins);
+             }
+      }
+      
+      void todos(Boolean todos){
+        List col = opciones.getRows().getChildren();
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    
+                     List labels = object.getChildren();
+                      ((Checkbox) labels.get(0)).setChecked(todos);
+             }
+      }
+
+      public JRDataSource inscritos4(){
+  String curso =  "";
+
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+        String query = "SELECT mat.* FROM Inscripciones AS mat " +
+                "WHERE mat.periodo = '"+periodo.getCodigoper()+"'  and mat.preaprobado = true " 
+                + " ORDER BY mat.abanderado DESC,mat.discapacidad DESC, mat.aprovechamiento DESC   limit  "+desde.value+" , "+hasta.value+"     ";
+                System.out.println(query);
+      List hoy = adm.queryNativo(query,Inscripciones.class);
+      int i=1;
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+            Inscripciones elem = (Inscripciones) it.next();
+            Matriculas matri = new Matriculas();
+            Estudiantes est = new Estudiantes();
+            Cursos cur = new Cursos();
+            Global gl = new Global();
+            gl.setDescripcion("");
+            cur.setEspecialidad(gl);
+            cur.setParalelo(gl);
+            matri.setCurso(cur);
+            est.setApellido(elem.getApellido());
+            est.setNombre(elem.getNombre());
+            est.setFechanacimiento(elem.getFechanacimiento());
+            est.setDiscapacidad(elem.getDiscapacidad());
+            est.setTipodiscapacidad(elem.getTdiscapacidad());
+            est.setHermanos((elem.getHermano().toString().equals("true")?1:0));  //si tiene heramos es entero
+            est.setEconomia(elem.getAbanderado()); //si es abanderado 
+            est.setDireccion(elem.getParroquia()); //si es sector 
+            est.setIngpadre(elem.getAprovechamiento());
+            est.setCodigoest(i);
+            i++;
+            matri.setEstudiante(est);
+            matri.setFechamat(elem.getFechamatricula());
+            
+          
+            detalle.add(matri);
+      }
+      ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
+      return ds;
+}
+      
+      void imprimir() {
+ 
+ 
+             ver.visible = false;
+            reportese.visible = true;
+            cerrar.setVisible(true);
+
+            Institucion insts = periodo.getInstitucion();
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            parametros.put("secretaria", insts.getSecretaria());
+            parametros.put("rectora", insts.getRector());
+            parametros.put("jornada", periodo.getSeccion().getDescripcion() );
+            parametros.put("regimen", periodo.getRegimen());
+             parametros.put("direccion", insts.getDireccion());
+            parametros.put("telefono",insts.getTelefono());
+
+            JRDataSource datasource = null;
+            String directorioReportes = insts.getReportes();
+                    datasource = inscritos4();
+                    parametros.put("titulo", "ESTUDIANTES PRE-APROBADOS");
+                    report.setSrc(directorioReportes+"estudiantes2.jasper");
+                 report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+             
+ }
+
+
+      
+      
+]]>
+
+    </zscript>
+    <hbox id="ver">
+        <groupbox width="100%" mold="3d" >
+
+            <caption label="Busquedas" />
+            Límites: Desde
+            <intbox id="desde" value="0" />
+            Hasta
+            <intbox id="hasta" value="100" />
+            <button label="Buscar en Rango" onClick="buscar(desde.value,hasta.value)"/>
+            <button image="/images/guardar.gif" label="GUARDAR CAMBIOS" onClick="guardar()"/>
+            IMPRIMIR SOLO PREAPROBADOS EN EL RANGO  <button image="/images/imprimir.gif" onClick="imprimir()" label="Imprimir"/>
+                 <zscript>
+                    public void aumentar(){
+                    String tamanio = report.height.replace("px","").replace("%","");
+                       Integer t = new Integer(tamanio);
+                       report.height = (t+100)+"px";
+                    }
+                    public void reducir(){
+                    String tamanio = report.height.replace("px","").replace("%","");
+                       Integer t = new Integer(tamanio);
+                       report.height = (t-100)+"px";
+                    }
+
+                </zscript>
+            <vbox>
+                <hbox width="100%">
+                           <grid height="100%"  width="100%" id="opciones">
+                                <columns sizable="true">
+                                    <column  width="10px">
+                                          <checkbox id="todos" onCheck="todos(self.checked)"  /> 
+                                          PRE-APROB
+                                    </column>
+                                    <column label="No" width="10px" />
+                                    <column label="Nombres" width="300px" />
+                                    <column label="Aprovech." width="30px"  />
+                                    <column label="Abande." width="30px"  />
+                                    <column label="Disc." width="30px"  />
+                                    <column label="Herm." width="30px"  />
+                                    <column label="Parroquia"  width="200px" />
+                                    
+                                </columns>
+                                <rows id="filas">
+                                     
+                                </rows>
+                            </grid>
+                     
+
+
+                </hbox>
+            </vbox>
+
+
+        </groupbox>
+    </hbox>
+    
+                    <grid id="reportese" visible="false" width="100%" height="100%">
+                    <rows>
+                        <row   spans="2">
+                            <span>
+                                <button  image="/images/eliminar.gif" id="cerrar" label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
+
+                                <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
+                                <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
+                            </span>
+                        </row>
+
+                        <row   spans="2">
+                            
+                            <jasperreport width="100%" height="500px" id="report" />
+                            
+
+                        </row>
+
+                    </rows>
+                </grid>
+    <zscript>
+     
+
+//FUNCIONES
+   
+    </zscript>
+</window>

@@ -100,7 +100,7 @@ Boolean guardando = false;
 java.util.Date fecha = new java.util.Date();
 String fechaString = (fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+(fecha.getDate());
 
- List periodosListadod = adm.queryNativo("Select o.* from Periodo as o where o.web = true and '"+fechaString+"' between o.fechai and o.fechaf order by o.descripcion",Periodo.class);
+ //List periodosListadod = adm.queryNativo("Select o.* from Periodo as o where o.web = true and '"+fechaString+"' between o.fechai and o.fechaf order by o.descripcion",Periodo.class);
  String letrasparaHoy ="";
  try{
 
@@ -113,8 +113,8 @@ String fechaString = (fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+(fecha.
         //Executions.sendRedirect("/inscripciones.zul");
         
  }
-if(periodosListadod.size()<= 0)
-    Executions.sendRedirect("592981728937491234.zul");
+//if(periodosListadod.size()<= 0)
+    //Executions.sendRedirect("592981728937491234.zul");
  //Periodo periodo = (Periodo) ses.getAttribute("periodo");
  Permisos permiso = new Permisos();
    // List cursos = adm.query("Select o from Cursos as o "
