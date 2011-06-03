@@ -217,8 +217,8 @@
 						<seriesColor seriesOrder="0" color="#EDFF9F"/>
 						<seriesColor seriesOrder="1" color="#FFA928"/>
 						<seriesColor seriesOrder="2" color="#00B8BF"/>
-						<seriesColor seriesOrder="3" color="#9999FF"/>
-						<seriesColor seriesOrder="4" color="#8DD5E7"/>
+						<seriesColor seriesOrder="3" color="#8DD5E7"/>
+						<seriesColor seriesOrder="4" color="#66CCFF"/>
 					</plot>
 					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
 				</pie3DPlot>
