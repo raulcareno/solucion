@@ -212,8 +212,14 @@
 					<keyExpression><![CDATA[$F{valor1}]]></keyExpression>
 					<valueExpression><![CDATA[$F{valor2}]]></valueExpression>
 				</pieDataset>
-				<pie3DPlot>
-					<plot/>
+				<pie3DPlot isCircular="false">
+					<plot>
+						<seriesColor seriesOrder="0" color="#EDFF9F"/>
+						<seriesColor seriesOrder="1" color="#FFA928"/>
+						<seriesColor seriesOrder="2" color="#00B8BF"/>
+						<seriesColor seriesOrder="3" color="#9999FF"/>
+						<seriesColor seriesOrder="4" color="#8DD5E7"/>
+					</plot>
 					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
 				</pie3DPlot>
 			</pie3DChart>
