@@ -375,7 +375,7 @@ llenarCliente(Clientes clienteEn){
                                 </rows>
                             </grid>
             
-                            <panel id="da" framable="true" width="100%"  >
+                            <panel id="da"  width="100%"  >
                                 <panelchildren>
                                     <grid width="100%">
                                         <rows>
@@ -442,15 +442,15 @@ llenarCliente(Clientes clienteEn){
                                                 <checkbox id="autorizado" disabled="true"  />
                                             </row>
                                             <row spans="4">
-                                                
-	    			
+                                                <span>
+	    			ESTADO DEL SERVICIO: 
                                                 <radiogroup id="estadoContrato" >
                                                     <radio id="eactivo" value="Activo" label="ACTIVO"/>
                                                     <radio id="ecancelado"  value="Cancelado"  label="CANCELADO"/>
                                                     <radio  id="esuspendido" value="Suspendido"  label="SUSPENDIDO"/>
                                          
                                                 </radiogroup>
-                                            
+                                            </span>
                                         </row>
                                         <row spans="4">
                                             <grid>
@@ -470,7 +470,7 @@ llenarCliente(Clientes clienteEn){
                                 </grid>
                             </panelchildren>
                         </panel>
-                        <panel id="equiposcontrol" framable="true" width="100%" >
+                        <panel id="equiposcontrol"  width="100%" >
                             <panelchildren>
                                 <grid>
                                     <rows>
@@ -550,7 +550,7 @@ llenarCliente(Clientes clienteEn){
                                 </grid>
                             </panelchildren>
                         </panel>
-                        <panel id="daws" framable="true" width="100%" >
+                        <panel id="daws"   width="100%" >
                             <panelchildren>
                                 <grid>
                                     <rows>

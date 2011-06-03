@@ -188,24 +188,23 @@ void eliminar(){
 }
  
   void buscar(String p){
-        List CabeceracompraEncontrados = adm.query("Select o from Cabeceracompra as o where o.equipos.nombre like '%"+p+"%' order by o.equipos.nombre");
+        List CabeceracompraEncontrados = adm.queryNativo("Select o.* from Cabeceracompra as o " 
+        +" where o.factura like '"+ p +"%' order by o.factura",Cabeceracompra.class);
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
                     datos.getItems().remove(a);
                 }
-
-
                for (Iterator it = CabeceracompraEncontrados.iterator(); it.hasNext();) {
                       Cabeceracompra acceIt = (Cabeceracompra) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getCodigo()+""));
-                      li.appendChild(new Listcell(acceIt.getEquipos()+" "+acceIt.getEquipos().getModelo()+" "+acceIt.getEquipos().getMarcas()));
-                      li.appendChild(new Listcell(acceIt.getMac()));
-                      li.appendChild(new Listcell(acceIt.getPrecio()+""));
-                      li.appendChild(new Listcell(acceIt.getFechacompra().toLocaleString()+""));
-                      li.appendChild(new Listcell((acceIt.getAsignado()==true?"SI":"NO")));
+                      li.appendChild(new Listcell(acceIt.getProveedores().getRazonsocial()+""));
+                      li.appendChild(new Listcell(acceIt.getCantidad()+""));
+                      li.appendChild(new Listcell(acceIt.getTotal()+""));
+                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
+                       
                       datos.appendChild(li);
              }
 
