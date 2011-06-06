@@ -665,7 +665,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         barraHerramients.add(barrera5);
 
-        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera6.setForeground(new java.awt.Color(204, 102, 0));
         barrera6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera6.setText("F6");
@@ -682,7 +682,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         barraHerramients.add(barrera6);
 
-        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera7.setForeground(new java.awt.Color(204, 102, 0));
         barrera7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera7.setText("F7");
@@ -1867,7 +1867,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             camaraVista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             camaraVista.setText("WEB CAM");
-            camaraVista.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+            camaraVista.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 204), 2, true));
+            camaraVista.addKeyListener(new java.awt.event.KeyAdapter() {
+                public void keyPressed(java.awt.event.KeyEvent evt) {
+                    camaraVistaKeyPressed(evt);
+                }
+            });
             camaraVista.setBounds(20, 26, 610, 440);
             contenedor.add(camaraVista, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -2447,8 +2452,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
 
 
-            this.camaraVista.setLayout(null);
-            this.camaraVista.add(ver.VerCamara(0, 0, new Double(camaraVista.getSize().getWidth()).intValue(), new Double(camaraVista.getSize().getHeight()).intValue()));
+//            this.camaraVista.setLayout(null);
+            this.camaraVista.add(ver.VerCamara(2, 2, new Double(camaraVista.getSize().getWidth()).intValue()-4, new Double(camaraVista.getSize().getHeight()).intValue()-4));
         } catch (Exception e) {
             System.out.println("NO SE PUEDE INICIAR CAMARA.....!");
         }
@@ -4843,6 +4848,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         }
     }//GEN-LAST:event_btnGuardarCambiosActionPerformed
+
+    private void camaraVistaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_camaraVistaKeyPressed
+        // TODO add your handling code here:
+         tecla(evt.getKeyCode());
+    }//GEN-LAST:event_camaraVistaKeyPressed
     public void verPanel() {
         panelIngreso.setVisible(true);
         Thread cargar = new Thread() {

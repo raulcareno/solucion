@@ -2520,10 +2520,15 @@
                 <Property name="text" type="java.lang.String" value="WEB CAM"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder roundedCorners="true" thickness="3"/>
+                    <LineBorder roundedCorners="true" thickness="2">
+                      <Color PropertyName="color" blue="cc" green="99" red="0" type="rgb"/>
+                    </LineBorder>
                   </Border>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="camaraVistaKeyPressed"/>
+              </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
                   <JLayeredPaneConstraints x="20" y="26" width="610" height="440" layer="0" position="-1"/>
