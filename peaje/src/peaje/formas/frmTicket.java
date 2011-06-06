@@ -355,6 +355,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     imprimir(fac.getCodigo(), emp);
 
                     try {
+                        Thread.sleep(2000);
                         LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
                         ta.outputSream.write(UsuarioActivo.getIn().getBytes());
                     } catch (Exception ex) {

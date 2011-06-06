@@ -417,9 +417,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         errores = new javax.swing.JLabel();
         usuarioLogeado = new javax.swing.JButton();
         camaraVista = new javax.swing.JLabel();
-        jButton7 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jLabel37 = new javax.swing.JLabel();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -1851,7 +1848,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(errores);
             errores.setBounds(20, 100, 360, 20);
 
-            panelIngreso.setBounds(10, 250, 400, 130);
+            panelIngreso.setBounds(20, 480, 400, 130);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -1868,34 +1865,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             usuarioLogeado.setBounds(10, 3, 420, 30);
             contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            camaraVista.setBorder(new javax.swing.border.MatteBorder(null));
-            camaraVista.setBounds(30, 36, 240, 170);
+            camaraVista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            camaraVista.setText("WEB CAM");
+            camaraVista.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+            camaraVista.setBounds(20, 26, 610, 440);
             contenedor.add(camaraVista, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-            jButton7.setText("Iniciar Camara");
-            jButton7.setEnabled(false);
-            jButton7.setMargin(new java.awt.Insets(1, 1, 1, 1));
-            jButton7.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jButton7ActionPerformed(evt);
-                }
-            });
-            jButton7.setBounds(10, 220, 90, 21);
-            contenedor.add(jButton7, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-            jButton11.setText("Fotografiar");
-            jButton11.setEnabled(false);
-            jButton11.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jButton11ActionPerformed(evt);
-                }
-            });
-            jButton11.setBounds(200, 220, 87, 23);
-            contenedor.add(jButton11, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-            jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tv.png"))); // NOI18N
-            jLabel37.setBounds(10, 15, 280, 230);
-            contenedor.add(jLabel37, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
 
@@ -4869,20 +4843,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         }
     }//GEN-LAST:event_btnGuardarCambiosActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-        this.camaraVista.setLayout(null);
-        this.camaraVista.add(ver.VerCamara(0, 0, new Double(camaraVista.getSize().getWidth()).intValue(), new Double(camaraVista.getSize().getHeight()).intValue()));
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
-        int resultado = ver.Fotografiar("f://fotosjava", false, "foto" + new Date().getTime());
-        if (resultado == 0) {
-            JOptionPane.showMessageDialog(null, "Error en la Fotografia");
-        }
-    }//GEN-LAST:event_jButton11ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
         Thread cargar = new Thread() {
@@ -5057,13 +5017,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JSpinner ingresos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
@@ -5096,7 +5054,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
