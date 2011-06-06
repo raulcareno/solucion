@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<window id="camaraFotos" onCreate="llenar()" title="Capturar Foto de Web-Cam" style="width:260px" border="normal"> 
+    <flash id="camara" src="camara001.swf" width="265"  /> 
+    <zscript>
+    import fotos.takePicture;
+    byte[] datosIm  = null;
+    takePicture t = new takePicture();
+        void llenar(){
+            datosIm = t.procesar();
+            if(datosIm != null){
+                foto0.visible = true;
+                foto0.setContent(new org.zkoss.image.AImage("fotito", datosIm));
+                camara.visible = false;
+                btomar.visible = true;
+                bcorrecto.visible = true;
+            }else{
+                foto0.visible = false;
+                camara.visible = true;
+                btomar.visible = false;
+                bcorrecto.visible = false;
+            }
+            
+        
+        }
+        
+        void megusta(){
+                try{
+                    fot = Path.getComponent("//matriculapage/principales/foto0");
+                    alert("fot"+fot);
+                    fot.setContent(foto0.getContent());
+                    alert("cargo");
+                }catch(Exception erro){
+                alert(""+erro);
+                }
+        }
+        
+        
+    </zscript>
+    <vbox>
+    <image border="1" width="153px" id="foto0"/>
+    <button label="Capturar otra fotografía" id="btomar" width="153px"  onClick="self.visible = false; foto0.visible=false; camara.visible = true;datosIm = null;"/>
+    <button label="Me gusta " id="bcorrecto" width="153px"  onClick="megusta(); camaraFotos.detach()"/>
+    </vbox>
+</window> 

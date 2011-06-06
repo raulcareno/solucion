@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
-<zk xmlns="http://www.zkoss.org/2005/zul">
-    <style>
+<?page id="matriculapage"?>
+ 
+
+    <window id="principales" onCreate="llenar()" >
+            <style>
 .MyGridRowHeight tr.z-row td.z-row-inner  
 {
       background: white;
@@ -20,7 +23,6 @@
     //overflow: hidden;
 }
     </style>
-    <window id="principales" >
         <zscript>
             <![CDATA[
   import jcinform.persistencia.Global;
@@ -51,7 +53,7 @@ import jcinform.procesos.Administrador;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
-
+Boolean cargandoFoto = false;
 Boolean guardando = false;
     Administrador adm = new Administrador();
     List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
@@ -341,24 +343,26 @@ void llenarMatricula(Matriculas matri){
 
 
             }
-        FileInputStream fin = null;
-        if(matri.getExtension()!= null){
-            try {
+            if(cargandoFoto == false){
+                FileInputStream fin = null;
+                if(matri.getExtension()!= null){
+                    try {
 
-                java.io.File f = new java.io.File(periodo.getInstitucion().getFotos()+matri.getCodigomat()+"."+matri.getExtension());
-                fin = new FileInputStream(f);
-                byte[] buffer = new byte[(int) f.length()];
-                fin.read(buffer);
-                fin.close();
-                foto0.setContent(new org.zkoss.image.AImage("fotito", buffer));
+                        java.io.File f = new java.io.File(periodo.getInstitucion().getFotos()+matri.getCodigomat()+"."+matri.getExtension());
+                        fin = new FileInputStream(f);
+                        byte[] buffer = new byte[(int) f.length()];
+                        fin.read(buffer);
+                        fin.close();
+                        foto0.setContent(new org.zkoss.image.AImage("fotito", buffer));
 
-            } catch (FileNotFoundException ex) {
-            cargarVacio();
-                Logger.getLogger("ERROR EN MATRICULAS: ").log(Level.SEVERE, null, ex);
-            }
-   }else{
-        cargarVacio();
-   }
+                    } catch (FileNotFoundException ex) {
+                    cargarVacio();
+                        Logger.getLogger("ERROR EN MATRICULAS: ").log(Level.SEVERE, null, ex);
+                    }
+           }else{
+                cargarVacio();
+           }
+        } 
 }
 
 void copiarpr(){
@@ -744,7 +748,7 @@ void estado(Boolean estado,Boolean modificar){
 
 
 //TERMINA AREA DE MATRICULA
-
+        cargandoFoto = false;
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         guardar.disabled=true;
         agregar.disabled=false;
@@ -841,7 +845,7 @@ void eliminar(){
     }
 }
 void buscarEstudiante(String valor){
-
+//cargandoFoto = false;
 int ini = valor.indexOf("[");
 int fin = valor.indexOf("]");
 valor = valor.substring(ini+1, fin);
@@ -1031,6 +1035,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                 <tab id="busqueda" label="Busquedas" />
                 <tab id="reportes" label="Impresión" />
+         
             </tabs>
             <tabpanels>
                 <tabpanel>
@@ -1180,8 +1185,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                         <row>
                                                                             <span style="float:right">
                                                                                 
-                                                                                    <label value="No.Matri.(*)" style="font-weight: bold;"/>
-                                                                                </span>
+                                                                                <label value="No.Matri.(*)" style="font-weight: bold;"/>
+                                                                            </span>
                                                                             <span>
                                                                                 
                                                                                 <intbox maxlength="10"   cols="5"  id="numero"  />
@@ -1294,6 +1299,17 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                             }
                                                                                     </attribute>
                                                                                 </button>
+                                                                                <button label="Tomar Foto" disabled="false" id="nuevoE" image="/images/subir.png" >
+                                                                                    <attribute name="onClick">{
+                                                                                        final Window win = (Window) Executions.createComponents("tomarFoto.zul", null, null);
+                                                                                        win.setMaximizable(true);
+                                                                                        win.setClosable(true);
+                                                                                        win.setAttribute("nuevo", true);
+                                                                                        win.setTitle("Tomar Fotografía");
+                                                                                        win.doModal();
+                                                                                        }                            
+                                                                                    </attribute>
+                                                                                </button> 
 
                                                                             </span>
                                                                         </row>
@@ -1683,7 +1699,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         <vbox>
             <hbox>
                 <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick='combo.value="";nuevo();'  />
+                <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick='cargandoFoto = false;combo.value="";nuevo();'  />
                 <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true" onClick="modificar()"/>
                 <button  image="/images/imprimir.gif" id="acta"  label="Acta" disabled="true"  onClick='showReport("AM")'/>
                 <button  image="/images/imprimir.gif" id="certificado"  label="Certificado" disabled="true"  onClick='showReport("CM")' />
@@ -1694,6 +1710,41 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar(Matricula)" disabled="true"  onClick="eliminar();"/>
             </hbox>
         </vbox>
+        
+    
+            <zscript>
+    import fotos.takePicture;
+    byte[] datosIm  = null;
+    takePicture t = new takePicture();
+    
+        void llenar(){
+            datosIm = t.procesar();
+            if(datosIm != null){
+                foto0.visible = true;
+                foto0.setContent(new org.zkoss.image.AImage("fotito", datosIm));
+                camara.visible = false;
+                btomar.visible = true;
+                bcorrecto.visible = true;
+                cargandoFoto = true;
+                combo.value="";nuevo();
+            }else{
+                foto0.visible = false;
+                camara.visible = true;
+                btomar.visible = false;
+                bcorrecto.visible = false;
+                cargandoFoto = false;
+            }
+            
+        
+        }
+        
+        void megusta(){
+              
+        }
+        
+        
+    </zscript>
+        
+        
     </window>
-     
-</zk>
+  
