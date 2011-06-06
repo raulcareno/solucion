@@ -59,6 +59,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                     Iframe f = new Iframe(item.value);
                                     f.setWidth("100%");
                                     f.setHeight("100%");
+                                    f.setStyle("background-color:transparent");
                                     newtpl.appendChild(f);
                                     newtpl.setParent(tps);
                         }
