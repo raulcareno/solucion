@@ -63,9 +63,13 @@ cargarCliente(Clientes clientes){
  nomb = Path.getComponent("//contratospage/contratosventana/combo");
  dire = Path.getComponent("//contratospage/contratosventana/direccion");
  codi = Path.getComponent("//contratospage/contratosventana/codigocli");
+direi = Path.getComponent("//contratospage/contratosventana/direccioni");
+ teli = Path.getComponent("//contratospage/contratosventana/telefonoi");
  iden.value = clientes.getIdentificacion();
  nomb.value = clientes.getApellidos()+" "+clientes.getNombres();
  dire.value = clientes.getDireccion();
+ direi.value = dire.value;
+ teli.value = clientes.getTelefono();
  codi.value = clientes.getCodigo()+"";
 
 }

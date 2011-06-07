@@ -35,7 +35,8 @@
     Permisos permiso = new Permisos();
     //SimpleTreeModel stm = new SimpleTreeModel(root);
             
-            Empleados usuarioActual = ses.getAttribute("user");
+    Empleados usuarioActual = ses.getAttribute("user");
+   Empresa empresa = ses.getAttribute("empresa");
     
     
 //FUNCIONES
@@ -58,6 +59,9 @@ void llenar(Contratos  equi2){
     autorizado.checked = equi.getAutorizado();
     usuario.value = equi.getUsuario();
     ip.value = equi.getIp();
+    nocuenta.value = equi.getNocuenta();
+    tipocuenta.value  = equi.getTipocuenta();
+    diapago.value  = equi.getDiapago();
     clave.value = equi.getClave();
        if(equi.getEstado().equals("Activo")){
             eactivo.selected = true;
@@ -156,6 +160,12 @@ void estado(Boolean estado,Boolean modificar){
     buscarE3.disabled = estado;
     buscarE.disabled = estado;
     fecha.disabled = estado;
+    nocuenta.readonly = estado;
+    tipocuenta.disabled = estado;
+    diapago.disabled = estado;
+    direccioni.readonly = estado;
+    referenciai.readonly = estado;
+    telefonoi.readonly = estado;
     fechainstalacion.disabled = estado;
     autorizado.disabled = estado;
     usuario.readonly = estado;
@@ -273,7 +283,15 @@ llenarCliente(Clientes clienteEn){
                  }
                 llenarCliente(empa);
                 numerocontrato.focus();
-            }
+            }else{
+                    Window win = (Window) Executions.createComponents("clientes.zul", null, null);
+                    win.setMaximizable(true);
+                    win.setClosable(true);
+                    win.setAttribute("nuevo", true);
+                    win.setAttribute("cedula", valor);
+                    win.setTitle("Nuevo Cliente");
+                    win.doModal();
+                }
 
         }else{
                 if(valor.contains("999")){
@@ -319,7 +337,127 @@ llenarCliente(Clientes clienteEn){
              }
 
     }
-    
+      
+                nuevos(Soporte sop){
+                            codigos.value = sop.getCodigo();
+                            try{
+                                
+                                atendida.value = sop.getEmpleados().getCodigo();
+                                atendidanombre.value = sop.getEmpleados().getApellidos()+" "+sop.getEmpleados().getNombres();
+                            }catch(Exception e){
+                                atendida.value =  usuarioActual.getCodigo();
+                                atendidanombre.value = usuarioActual.getApellidos()+" "+usuarioActual.getNombres();
+                            }
+                            
+                                fechasoporte.value = sop.getFecha();
+                            if(sop.getFecha() == null)
+                                fechasoporte.value = new Date();
+                            observacion.value = sop.getObservacion();
+                            generar.checked  = sop.getGenerada();
+                            noorden.value = sop.getNoorden();
+              }
+          habilitar(Boolean estado){
+                            fechasoporte.readonly = estado;
+                            observacion.readonly = estado;
+                            generar.disabled  = estado;
+            }
+                        
+                void guardars(){
+ 
+                                Soporte sop = new Soporte();
+                                sop.setCodigo(codigos.value);
+                                sop.setEmpleados(new Empleados(atendida.value));
+                                sop.setFecha(fechasoporte.value);
+                                sop.setObservacion(observacion.value);
+                                sop.setGenerada(generar.checked);
+                                sop.setClientes(new Clientes(new Integer(codigocli.value)));
+                                sop.setNoorden(noorden.value);
+
+                                if(sop.getGenerada() && sop.getNoorden() == null){ 
+                                    Integer valor = adm.getNuevaClave("Soporte","noorden");
+                                    sop.setNoorden(valor);
+                                }
+                                if((!sop.getCodigo().equals(0)) ){
+                                     sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
+                                     adm.actualizar(sop);
+                                        permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
+                                 }else{
+                                        sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
+                                        sop.setCodigo(adm.getNuevaClave("Soporte","codigo"));
+                                        adm.guardar(sop);
+                                        permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
+                                 }
+                                        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                             
+                                       
+                                              if(sop.getGenerada()){  //GENERAR ORDEN DE COMPRA
+                                         
+                                                   Map parameters = new HashMap();
+                                                   System.out.println("00000");
+                                             
+                                                    parameters.put("ruc", empresa.getRuc());
+                                                    System.out.println("0000-1");
+                                                    parameters.put("empresa", empresa.getRazonsocial());
+                                                    System.out.println("00001");
+                                                    parameters.put("direccion", empresa.getDireccion());
+                                                    parameters.put("observacion", observacion.value);
+                                                    parameters.put("telefono", empresa.getTelefono());
+                                                    parameters.put("cliente", combo.value);
+                                                    parameters.put("noorden", sop.getNoorden());
+                                                    System.out.println("00002");
+                                                    parameters.put("telefono1", telefonoi.value);
+                                                    parameters.put("direccion1", direccioni.value);
+                                                    System.out.println("00003");
+                                                    reportelocal.setSrc("/jcinform/bean/reportes/jrxml/orden.jasper");
+                                                    reportelocal.setParameters(parameters);
+                                                    reportelocal.setDatasource(null);
+                                                    reportelocal.setType("pdf");
+ System.out.println("000041");
+                                                    final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
+                                                    win.setMaximizable(true);
+                                                    win.setClosable(true);
+                                                    win.setAttribute("reporte",reportelocal);
+                                                    win.setTitle("Reporte");
+                                                    win.doModal();
+                                              }
+                                            guardars.disabled=true;
+                                            agregars.disabled=false;
+                                            nuevos(new Soporte(0));
+                                            habilitar(true);
+                                            buscarSoportes();
+                                      
+                  
+                    }
+                     
+                    
+                      void buscarSoportes(){
+                    try{
+                            List ControlequiposEncontrados = adm.query("Select o from Soporte  as o where o.clientes.codigo = '"+codigocli.value+"' order by o.fecha desc ");
+                        
+                        soporte = new Listbox();
+                        int a=0;
+                            for (Iterator it =soporte.getItems().iterator(); it.hasNext();) {
+                                    soporte.getItems().remove(a);
+                                }
+
+
+                               for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
+                                      Soporte  acceIt = (Soporte) it.next();
+                                      Listitem li = new Listitem();
+                                      li.setValue(acceIt);
+                                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
+                                      li.appendChild(new Listcell(acceIt.getObservacion()+""));
+                                      li.appendChild(new Listcell((acceIt.getGenerada()==true?"SI":"NO")));
+                                      li.appendChild(new Listcell(acceIt.getEmpleados().getApellidos()+" "+acceIt.getEmpleados().getNombres()));
+                                      soporte.appendChild(li);
+                             }
+
+                    }catch(Exception e){
+                            Messagebox.show("Seleccione primero un CLIENTE  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            registro.setSelected(true);
+}
+                    }
+                
   ]]>
     </zscript>
     <div>
@@ -742,116 +880,7 @@ llenarCliente(Clientes clienteEn){
                     </groupbox>
                 </tabpanel>  
                 <tabpanel>
-                    <zscript>
-                nuevos(Soporte sop){
-                            codigos.value = sop.getCodigo();
-                            try{
-                                
-                                atendida.value = sop.getEmpleados().getCodigo();
-                                atendidanombre.value = sop.getEmpleados().getApellidos()+" "+sop.getEmpleados().getNombres();
-                            }catch(Exception e){
-                                atendida.value =  usuarioActual.getCodigo();
-                                atendidanombre.value = usuarioActual.getApellidos()+" "+usuarioActual.getNombres();
-                            }
-                            
-                                fechasoporte.value = sop.getFecha();
-                            if(sop.getFecha() == null)
-                                fechasoporte.value = new Date();
-                            observacion.value = sop.getObservacion();
-                            generar.checked  = sop.getGenerada();
-              }
-          habilitar(Boolean estado){
-                            fechasoporte.readonly = estado;
-                            observacion.readonly = estado;
-                            generar.disabled  = estado;
-            }
-                        
-                void guardars(){
- 
-                                Soporte sop = new Soporte();
-                                sop.setCodigo(codigos.value);
-                                sop.setEmpleados(new Empleados(atendida.value));
-                                sop.setFecha(fechasoporte.value);
-                                sop.setObservacion(observacion.value);
-                                sop.setGenerada(generar.checked);
-                                sop.setClientes(new Clientes(new Integer(codigocli.value)));
-
-
-                                if((!sop.getCodigo().equals(0)) ){
-                                     sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
-                                     adm.actualizar(sop);
-                                        permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
-                                 }else{
-                                        sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
-                                        sop.setCodigo(adm.getNuevaClave("Soporte","codigo"));
-                                        adm.guardar(sop);
-                                        permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
-                                 }
-                                        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-                                          
-                                              if(sop.getGenerada()){
-                                                   Map parameters = new HashMap();
-                                                    parameters.put("ruc", "132156165165");
-                                                    parameters.put("empresa", "MI EMPRESA");
-                                                    parameters.put("direccion", "Direccion");
-                                                    parameters.put("observacion", observacion.value);
-                                                    parameters.put("cliente", combo.value);
-                                                    parameters.put("telefono1", telefonoi.value);
-                                                    parameters.put("direccion1", direccioni.value);
-                                                    reportelocal.setSrc("/jcinform/bean/reportes/jrxml/orden.jasper");
-                                                    reportelocal.setParameters(parameters);
-                                                    reportelocal.setDatasource(null);
-                                                    reportelocal.setType("pdf");
-
-                                                    final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
-                                                    win.setMaximizable(true);
-                                                    win.setClosable(true);
-                                                    win.setAttribute("reporte",reportelocal);
-                                                    win.setTitle("Reporte");
-                                                    win.doModal();
-                                              }
-                    guardars.disabled=true;
-                                            agregars.disabled=false;
-                                            nuevos(new Soporte(0));
-                                            habilitar(true);
-                                            buscarSoportes();
-                                      
-                  
-                    }
-                     
-                    
-                      void buscarSoportes(){
-
-try{
-
-
-        List ControlequiposEncontrados = adm.query("Select o from Soporte  as o where o.clientes.codigo = '"+codigocli.value+"'");
-                        
-                        soporte = new Listbox();
-                        int a=0;
-                            for (Iterator it =soporte.getItems().iterator(); it.hasNext();) {
-                                    soporte.getItems().remove(a);
-                                }
-
-
-                               for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
-                                      Soporte  acceIt = (Soporte) it.next();
-                                      Listitem li = new Listitem();
-                                      li.setValue(acceIt);
-                                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
-                                      li.appendChild(new Listcell(acceIt.getObservacion()+""));
-                                      li.appendChild(new Listcell((acceIt.getGenerada()==true?"SI":"NO")));
-                                      li.appendChild(new Listcell(acceIt.getEmpleados().getApellidos()+" "+acceIt.getEmpleados().getNombres()));
-                                      soporte.appendChild(li);
-                             }
-
-                    }catch(Exception e){
-        Messagebox.show("Seleccione primero un CLIENTE  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-        registro.setSelected(true);
-}
-                    }
-                    
-                    </zscript>
+             
                     <grid>
                         <rows>
                             <row visible = "true">
@@ -873,6 +902,10 @@ try{
                             <row>
                                 <span style="float:right"> Generar Orden: </span>
                                 <checkbox id="generar" disabled="true"   />
+                            </row>
+                            <row>
+                                <span style="float:right"> No. Orden: </span>
+                                <intbox id="noorden" readonly="true"   />
                             </row>
                         </rows>
                     </grid>

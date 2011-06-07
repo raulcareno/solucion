@@ -365,6 +365,7 @@ public class Contratos implements Serializable {
     public void setEquipos2(Equipos equipos2) {
         this.equipos2 = equipos2;
     }
+    
 
     @Override
     public int hashCode() {

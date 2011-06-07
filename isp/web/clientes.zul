@@ -152,8 +152,8 @@ void estado(Boolean estado,Boolean modificar){
     if(verificar("Agregar")){
           
           guardar.disabled=false; llenar(new Clientes(0));estado(false,false);
-          String command = "applyTelefono('"+telefono.getUuid()+"');applyCelular('"+movil.getUuid()+"');";
-          Clients.evalJavaScript(command);
+          //String command = "applyTelefono('"+telefono.getUuid()+"');applyCelular('"+movil.getUuid()+"');";
+          //Clients.evalJavaScript(command);
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
@@ -234,14 +234,19 @@ empa.setSector(g);
 }
 
 cargarCliente(Clientes clientes){
- iden = Path.getComponent("//contratospage/contratosventana/identificacion");
- nomb = Path.getComponent("//contratospage/contratosventana/combo");
- dire = Path.getComponent("//contratospage/contratosventana/direccion");
- codi = Path.getComponent("//contratospage/contratosventana/codigocli");
- iden.value = clientes.getIdentificacion();
- nomb.value = clientes.getApellidos()+" "+clientes.getNombres()+" ["+clientes.getCodigo()+"]";
- dire.value = clientes.getDireccion();
- codi.value = clientes.getCodigo()+"";
+         iden = Path.getComponent("//contratospage/contratosventana/identificacion");
+         nomb = Path.getComponent("//contratospage/contratosventana/combo");
+         dire = Path.getComponent("//contratospage/contratosventana/direccion");
+         direi = Path.getComponent("//contratospage/contratosventana/direccioni");
+         teli = Path.getComponent("//contratospage/contratosventana/telefonoi");
+         codi = Path.getComponent("//contratospage/contratosventana/codigocli");
+         iden.value = clientes.getIdentificacion();
+         nomb.value = clientes.getApellidos()+" "+clientes.getNombres()+" ["+clientes.getCodigo()+"]";
+         dire.value = clientes.getDireccion();
+         direi.value = dire.value;
+     
+         teli.value = clientes.getTelefono();
+         codi.value = clientes.getCodigo()+"";
 
 }
 
@@ -372,6 +377,9 @@ cargarCliente(Clientes clientes){
             void cargar(){
             try{
                     instanciadaContratos = crearClientes.getAttribute("nuevo");
+                    nuevo();
+                    identificacion.value  = crearClientes.getAttribute("cedula");
+                    identificacion.focus(); 
              }catch(Exception e){
                     instanciadaContratos = false;
              }

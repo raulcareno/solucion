@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?page id="reporteVisualizar"?>
-<window onCreate="llenar()"  id="reporteVisualizar">
+<window onCreate="llenar()" height="400px" width="400px"  id="reporteVisualizar">
     <jasperreport id="reporte" />
     <zscript>
         void llenar(){

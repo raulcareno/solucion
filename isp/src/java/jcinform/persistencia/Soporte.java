@@ -51,7 +51,8 @@ public class Soporte implements Serializable {
     private String observacion3;
     @Column(name = "generada")
     private Boolean generada = false;
-    
+        @Column(name = "noorden")
+    private Integer noorden;
     @JoinColumn(name = "clientes", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
@@ -129,6 +130,14 @@ public class Soporte implements Serializable {
 
     public void setGenerada(Boolean generada) {
         this.generada = generada;
+    }
+
+    public Integer getNoorden() {
+        return noorden;
+    }
+
+    public void setNoorden(Integer noorden) {
+        this.noorden = noorden;
     }
 
     @Override
