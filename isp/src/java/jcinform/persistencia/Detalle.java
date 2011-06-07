@@ -52,12 +52,12 @@ public class Detalle implements Serializable {
     @JoinColumn(name = "plan", referencedColumnName = "codigo")
     @ManyToOne
     private Plan plan;
-    @JoinColumn(name = "factura", referencedColumnName = "codigo")
-    @ManyToOne
-    private Factura factura;
     @JoinColumn(name = "equipos", referencedColumnName = "codigo")
     @ManyToOne
     private Equipos equipos;
+    @JoinColumn(name = "factura", referencedColumnName = "codigo")
+    @ManyToOne
+    private Factura factura;
 
     public Detalle() {
     }
@@ -154,20 +154,20 @@ public class Detalle implements Serializable {
         this.plan = plan;
     }
 
-    public Factura getFactura() {
-        return factura;
-    }
-
-    public void setFactura(Factura factura) {
-        this.factura = factura;
-    }
-
     public Equipos getEquipos() {
         return equipos;
     }
 
     public void setEquipos(Equipos equipos) {
         this.equipos = equipos;
+    }
+
+    public Factura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
     }
 
     @Override

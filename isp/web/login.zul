@@ -14,7 +14,7 @@
   <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
     <style>
 .estil{
-	height:100%;
+	height:99%;
     background-image: url(./images/fondo.jpg)   ;
     background-color:#004669;
      background-repeat: no-repeat; 
@@ -29,7 +29,7 @@
     <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
-        <window onLoad="usuario.focus();" title="." mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:27%; left:32%;"  width="460px" sizable="true">
+        <window onLoad="usuario.focus();" title="Ingreso al Sistema" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="position:absolute; top:27%; left:32%;"  width="460px" sizable="true">
             <zscript>
     import bean.EventDAO;
   import java.util.ArrayList;

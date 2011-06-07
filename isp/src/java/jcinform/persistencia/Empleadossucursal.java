@@ -35,12 +35,12 @@ public class Empleadossucursal implements Serializable {
     private Integer codigo;
     @Column(name = "estado")
     private Boolean estado;
-    @JoinColumn(name = "empleados", referencedColumnName = "codigo")
-    @ManyToOne
-    private Empleados empleados;
     @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
     @ManyToOne
     private Sucursal sucursal;
+    @JoinColumn(name = "empleados", referencedColumnName = "codigo")
+    @ManyToOne
+    private Empleados empleados;
 
     public Empleadossucursal() {
     }
@@ -65,20 +65,20 @@ public class Empleadossucursal implements Serializable {
         this.estado = estado;
     }
 
-    public Empleados getEmpleados() {
-        return empleados;
-    }
-
-    public void setEmpleados(Empleados empleados) {
-        this.empleados = empleados;
-    }
-
     public Sucursal getSucursal() {
         return sucursal;
     }
 
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
+    }
+
+    public Empleados getEmpleados() {
+        return empleados;
+    }
+
+    public void setEmpleados(Empleados empleados) {
+        this.empleados = empleados;
     }
 
     @Override

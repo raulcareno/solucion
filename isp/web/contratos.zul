@@ -1,6 +1,24 @@
 <?page id="contratospage"?>
 <window id="contratosventana"  border="normal" >
-
+    <style>
+.MyGridRowHeight tr.z-row td.z-row-inner  
+{
+      background: white;
+      border-top: none;
+      border-left: 1px solid white;
+      border-right: 1px solid #CCC;
+      border-bottom: 1px solid #DDD;
+ 
+}
+/*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+  background: #F8F8F8;
+} */
+.MyGridRowHeight td.z-row-inner
+{
+    padding: 0px;
+    //overflow: hidden;
+}
+    </style>
     <zscript>   <![CDATA[
   import bean.EventDAO; 
   import java.util.ArrayList; 
@@ -48,9 +66,9 @@ void llenar(Contratos  equi2){
         }else if(equi.getEstado().equals("Suspendido")){
             esuspendido.selected = true;
         } 
-    if(equi.getEmpleados() != null){
-           codigoemp.value = equi.getEmpleados().getCodigo()+"";
-        combov.value =equi.getEmpleados().getApellidos()+" "+equi.getEmpleados().getNombres();
+    if(equi.getEmpleados2() != null){
+        codigoemp.value = equi.getEmpleados2().getCodigo()+""; //EMPLEADOS
+        combov.value =equi.getEmpleados2().getApellidos()+" "+equi.getEmpleados2().getNombres();//EMPLEADOS
     }else{
         codigoemp.value = "";
         combov.value ="";
@@ -59,23 +77,23 @@ void llenar(Contratos  equi2){
     numerocontrato.value = equi.getContrato();
     
     try{
-       codigoequi1.value = equi.getControlequipos().getCodigo()+"";
-        equipo1.value = equi.getControlequipos().getEquipos().getNombre()+" "+ equi.getControlequipos().getEquipos().getModelo()+" "+ equi.getControlequipos().getEquipos().getMarcas().getNombre();
+       codigoequi1.value = equi.getEquipos().getCodigo()+"";
+        equipo1.value = equi.getEquipos().getEquipos().getNombre()+" "+ equi.getEquipos().getEquipos().getModelo()+" "+ equi.getEquipos().getEquipos().getMarcas().getNombre();
     }catch(Exception e){
         codigoequi1.value = "";
         equipo1.value = "";
     
     }
     try{
-        codigoequi2.value = equi.getControlequipos2().getCodigo()+"";
-        equipo2.value = equi.getControlequipos2().getEquipos().getNombre()+" "+ equi.getControlequipos2().getEquipos().getModelo()+" "+ equi.getControlequipos2().getEquipos().getMarcas().getNombre();
+        codigoequi2.value = equi.getEquipos2().getCodigo()+"";
+        equipo2.value = equi.getEquipos2().getEquipos().getNombre()+" "+ equi.getEquipos2().getEquipos().getModelo()+" "+ equi.getEquipos2().getEquipos().getMarcas().getNombre();
     }catch(Exception e){
     codigoequi2.value = "";
         equipo2.value = "";
     }
     try{
-        codigoequi3.value = equi.getControlequipos3().getCodigo()+"";
-        equipo3.value = equi.getControlequipos3().getEquipos().getNombre()+" "+ equi.getControlequipos3().getEquipos().getModelo()+" "+ equi.getControlequipos3().getEquipos().getMarcas().getNombre();
+        codigoequi3.value = equi.getEquipos1().getCodigo()+"";
+        equipo3.value = equi.getEquipos1().getEquipos().getNombre()+" "+ equi.getEquipos1().getEquipos().getModelo()+" "+ equi.getEquipos1().getEquipos().getMarcas().getNombre();
     }catch(Exception e){
     codigoequi3.value = "";
         equipo3.value = "";
@@ -120,8 +138,8 @@ void llenar(Contratos  equi2){
         nodo.setSelectedItem(null);
     }
     try{
-        registrado.value = equi.getRegistrador()+"";
-        registradoU.value = equi.getRegistrador().getCodigo()+"";
+        registrado.value = equi.getEmpleados()+"";//REGISTRADOR
+        registradoU.value = equi.getEmpleados().getCodigo()+"";//REGISTRADOR
      
      }catch(Exception exa){}
     
@@ -131,8 +149,8 @@ void estado(Boolean estado,Boolean modificar){
     if(modificar){
         equi = (Contratos)datos.selectedItem.value;
     }
-    identificacion.readonly = estado;
-    buscarC.disabled = estado;
+    //identificacion.readonly = estado;
+    //buscarC.disabled = estado;
     buscarE1.disabled = estado;
     buscarE2.disabled = estado;
     buscarE3.disabled = estado;
@@ -193,11 +211,11 @@ void estado(Boolean estado,Boolean modificar){
     }
     
         if((!equi.getCodigo().equals(0)) ){
-            equi.setRegistrador(new Empleados(new Integer(registradoU.value)));
+            equi.setEmpleados(new Empleados(new Integer(registradoU.value)));//REGISTRADOR
              adm.actualizar(equi);
                 permiso.auditar("Contratos","Actualizar",""+equi.getContrato()+" - "+equi.getClientes());
          }else{
-                equi.setRegistrador(usuarioActual);
+                equi.setEmpleados(usuarioActual);//REGISTRADOR
                 equi.setCodigo(adm.getNuevaClave("Contratos","codigo"));
                 adm.guardar(equi);
                 permiso.auditar("Contratos","Guardar",""+equi.getContrato()+" - "+equi.getClientes());
@@ -304,30 +322,31 @@ llenarCliente(Clientes clienteEn){
     
   ]]>
     </zscript>
-    <div align="center">
-        <tabbox  width="610px"  >
-            <tabs>
+    <div>
+        <tabbox width="100%"  >
+            <tabs  >
                 <tab id="registro" label="Contratos"/>
-                <tab label="Búsqueda" />
-                <tab label="Impresión"/>
+                <tab label="Facturación" />
+                <tab onSelect="buscarSoportes()" label="Historia Técnica" />
+                <tab label="Impresión" />
             </tabs>
             <tabpanels>
                 <tabpanel>
        
-                    <panel id="panel" framable="true" width="600px" height="100%" >
+                    <panel id="panel" framable="true"  title="DATOS DEL CLIENTE" width="650px" height="100%" >
                         <panelchildren>
                 
             
         
-                            <grid width="100%">
+                            <grid  sclass="MyGridRowHeight" width="100%">
                                 <rows>
                                     <row spans="2">
-                            DATOS DEL CLIENTE
+                            
                                     </row>
                                     <row>
                                         <span style="float:right"> Identificación: </span> 
                                         <span> 
-                                            <textbox id="identificacion"  readonly="true"  onOK="verificarCedula(self.value)"  />
+                                            <textbox id="identificacion"  readonly="false"  onOK="verificarCedula(self.value)"  />
                                
                             Digite el No. luego presione ENTER
                                             <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
@@ -339,7 +358,7 @@ llenarCliente(Clientes clienteEn){
                                             <textbox readonly="true" cols="32"   id="combo" />
                            
                               
-                                            <button label="" id="buscarC" disabled="true"  image="/images/auditoria.gif">
+                                            <button label="" id="buscarC" disabled="false"  image="/images/auditoria.gif">
                                                 <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarClientes.zul", null, null);
                                             win.setMaximizable(true);
@@ -374,116 +393,147 @@ llenarCliente(Clientes clienteEn){
                     
                                 </rows>
                             </grid>
-            
-                            <panel id="da"  width="100%"  >
+             
+                            <panel id="equiposcontrol"  width="100%" >
                                 <panelchildren>
-                                    <grid width="100%">
-                                        <rows>
-                                            <row spans="2">
-                            DATOS DEL CONTRATO
-                                            </row>
-                                            <row>
-                                                <span style="float:right">No.Contrato:  </span>
-                                                <textbox style="color:red;font-size:16px"  readonly="true" id="numerocontrato" cols="16" />
-                                                <span style="float:right">Fecha:  </span>
-                                                <datebox id="fecha" disabled="true" onCreate="self.value = new Date()"/>
-                                            </row>
-                                            <row>
-                                                <span style="float:right"> Planes (*):</span>
-                                                <bandbox disabled="true" readonly="true"  id="bd">
-                                                    <bandpopup>
-                                                        <vbox>
-                                                            <listbox id="perf" width="450px"
+                                    <tabbox id="tb2"  >
+                                        <tabs  >
+                                            <tab label="DATOS CONTRATO"/>
+                                            <tab label="EQUIPOS OCUPADOS"/>
+                                            <tab label="DATOS DEL VENDEDOR"/>
+                                            <tab label="OTROS"/>
+                                        </tabs>
+                                        <tabpanels>
+                                            <tabpanel>
+                                                
+                                                <grid  sclass="MyGridRowHeight" width="100%">
+                                                    <rows>
+                                          
+                                                        <row>
+                                                            <span style="float:right">No.Contrato:  </span>
+                                                            <textbox style="color:red;font-size:16px"  readonly="true" id="numerocontrato" cols="16" />
+                                                            <span style="float:right">Fecha:  </span>
+                                                            <datebox id="fecha" disabled="true" onCreate="self.value = new Date()"/>
+                                                        </row>
+                                                        <row>
+                                                            <span style="float:right"> Planes (*):</span>
+                                                            <bandbox disabled="true" readonly="true"  id="bd">
+                                                                <bandpopup>
+                                                                    <vbox>
+                                                                        <listbox id="perf" width="450px"
                                                      onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();">
-                                                                <listhead>
-                                                                    <listheader label="Descripción"/>
-                                                                    <listheader label="Tipo"/>
-                                                                    <listheader label="valor"/>
+                                                                            <listhead>
+                                                                                <listheader label="Descripción"/>
+                                                                                <listheader label="Tipo"/>
+                                                                                <listheader label="valor"/>
                                             
-                                                                </listhead>
-                                                                <listitem forEach="${planes}" value="${each}">
-                                                                    <listcell label="${each.nombre}" />
-                                                                    <listcell label="${each.tipo}" />
-                                                                    <listcell label="${each.valor}" />
+                                                                            </listhead>
+                                                                            <listitem forEach="${planes}" value="${each}">
+                                                                                <listcell label="${each.nombre}" />
+                                                                                <listcell label="${each.tipo}" />
+                                                                                <listcell label="${each.valor}" />
 
-                                                                </listitem>
-                                                            </listbox>
-                                                        </vbox>
-                                                    </bandpopup>
-                                                </bandbox>
-                                                <span style="float:right"> Fecha Instalación (*):</span>
-                                                <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = new Date()"/>
+                                                                            </listitem>
+                                                                        </listbox>
+                                                                    </vbox>
+                                                                </bandpopup>
+                                                            </bandbox>
+                                                            <span style="float:right"> Instalación (*):</span>
+                                                            <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = new Date()"/>
                                  
-                                            </row>
-                  
-                                            <row>   
-                                                <span style="float:right"> Anidado a Nodo(*):</span>
-                                                <bandbox  disabled="true"  readonly="true"  id="bd2">
-                                                    <bandpopup>
-                                                        <vbox>
-                                                            <listbox id="nodo" width="450px"
-                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();">
-                                                                <listhead>
-                                                                    <listheader label="Nombre"/>
-                                                                    <listheader label="Sector"/>
-                                                                    <listheader label="Ip"/>
-                                            
-                                                                </listhead>
-                                                                <listitem forEach="${nodos}" value="${each}">
-                                                                    <listcell label="${each.nombre}" />
-                                                                    <listcell label="${each.sector}" />
-                                                                    <listcell label="${each.ip}" />
-                                                                </listitem>
-                                                            </listbox>
-                                                        </vbox>
-                                                    </bandpopup>
-                                                </bandbox>
-                                                <span style="float:right"> Autorizado a Instalación(*):</span>
-                                                <checkbox id="autorizado" disabled="true"  />
-                                            </row>
-                                            <row spans="4">
-                                                <span>
-	    			ESTADO DEL SERVICIO: 
-                                                <radiogroup id="estadoContrato" >
-                                                    <radio id="eactivo" value="Activo" label="ACTIVO"/>
-                                                    <radio id="ecancelado"  value="Cancelado"  label="CANCELADO"/>
-                                                    <radio  id="esuspendido" value="Suspendido"  label="SUSPENDIDO"/>
+                                                        </row>
+                                                        <row>
+                                                            <span style="float:right">Dirección:  </span>
+                                                            <textbox id="direccioni" cols="40" readonly="true"  />
+                                                            <span style="float:right">Teléfono:  </span>
+                                                            <textbox id="telefonoi" readonly="true"  />
+                                                        </row>
+                                                        <row >
+                                                            <span style="float:right">Referencia:  
+                                                              
+                                                            </span>
+                                                            <textbox id="referenciai" cols="40" readonly="true"  />
+                                                        </row>
+                                                        <row>
+                                                        </row>
+                                                        <row spans="4">
+                                      
+                                                            <span>  Forma Pago: 
+                                                                <radiogroup Id="formapago" onCheck="">
+                                                                    <radio value="1" label="Efectivo"/>
+                                                                    <radio value="2" label="Débito"/>
+                                                                </radiogroup>
+                                        
+                                                                <separator bar="true" orient="vertical"/>
+                                                                <span style="">No.Cuenta:  </span>
+                                                                <span>
+                                                                    <textbox id="nocuenta" cols="10"  readonly="true"  />
+                                                                    <combobox width="29px" id="tipocuenta">
+                                                                        <comboitem label="AHO"/>
+                                                                        <comboitem label="COR"/>
+                                                                    </combobox> 
+                                                                </span>
+                                                                <span style="">Día Pago:  </span>
+                                                                <combobox width="17px"  id="diapago">
+                                                                    <comboitem label="1"/>
+                                                                    <comboitem label="2"/>
+                                                                    <comboitem label="3"/>
+                                                                    <comboitem label="4"/> 
+                                                                    <comboitem label="4"/>
+                                                                    <comboitem label="6"/> 
+                                                                    <comboitem label="7"/>
+                                                                    <comboitem label="8"/> 
+                                                                    <comboitem label="9"/>
+                                                                    <comboitem label="10"/> 
+                                                                    <comboitem label="11"/>
+                                                                    <comboitem label="12"/> 
+                                                                    <comboitem label="13"/>
+                                                                    <comboitem label="14"/> 
+                                                                    <comboitem label="15"/>
+                                                                    <comboitem label="16"/> 
+                                                                    <comboitem label="17"/>
+                                                                    <comboitem label="18"/> 
+                                                                    <comboitem label="19"/>
+                                                                    <comboitem label="20"/> 
+                                                                    <comboitem label="23"/>
+                                                                    <comboitem label="22"/> 
+                                                                    <comboitem label="25"/>
+                                                                    <comboitem label="24"/> 
+                                                                    <comboitem label="27"/>
+                                                                    <comboitem label="26"/> 
+                                                                    <comboitem label="29"/>
+                                                                    <comboitem label="28"/>
+                                                                    <comboitem label="30"/>
+                                                                </combobox> 
+                                                            </span>
+                                                        </row>
+                                                       
+                                                      
+                                                        <row spans="4" style="background:yellow">
+                                                            <span>
+	    			Estado: 
+                                                                <radiogroup id="estadoContrato" >
+                                                                    <radio id="eactivo" value="Activo" label="ACTIVO"/>
+                                                                    <radio id="esuspendido"  value="Cancelado"  label="CORTADO"/>
+                                                                    <radio  id="ecancelado" value="Suspendido"  label="TERMINADO"/>
                                          
-                                                </radiogroup>
-                                            </span>
-                                        </row>
-                                        <row spans="4">
-                                            <grid>
-                                                <rows>
-                                                    <row>
-                                                        <span style="float:right">   IP(*):</span>
-                                                        <textbox cols="15" readonly="true" id="ip" /> 
-                                                        <span style="float:right">   Usuario:</span>
-                                                        <textbox cols="15" readonly="true"   id="usuario" /> 
-                                                        <span style="float:right">   Clave:</span>
-                                                        <textbox cols="15" readonly="true"   id="clave" /> 
-                                                    </row>
-                                                </rows>
-                                            </grid>
-                                        </row>
-                                    </rows>
-                                </grid>
-                            </panelchildren>
-                        </panel>
-                        <panel id="equiposcontrol"  width="100%" >
-                            <panelchildren>
-                                <grid>
-                                    <rows>
-                                        <row spans="2">
-                                   EQUIPOS OCUPADOS
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Equipo Asignado 1:</span> 
-                                            <span>
-                                                <textbox  readonly="true"  cols="32"   id="equipo1" />
+                                                                </radiogroup>
+                                                            </span>
+                                                        </row>
+                                                    
+                                                    </rows>
+                                                </grid>
+                                            </tabpanel>
+                                            <tabpanel>
+                                                <grid  sclass="MyGridRowHeight">
+                                                    <rows>
+                                                        <row>
+                                                            <span style="float:right"> Equipo Asignado 1:</span> 
+                                                            <span>
+                                                                <textbox  readonly="true"  cols="32"   id="equipo1" />
 
-                                                <button label=""  id="buscarE1" disabled="true" image="/images/auditoria.gif">
-                                                    <attribute name="onClick">{
+                                                                <button label=""  id="buscarE1" disabled="true" image="/images/auditoria.gif">
+                                                                    <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -492,22 +542,23 @@ llenarCliente(Clientes clienteEn){
                                             win.setTitle("Buscar Equipos");
                                             win.doModal();
                                             }                            
-                                                    </attribute>
-                                                </button> 
+                                                                    </attribute>
+                                                                </button> 
                        
-                                                <textbox id="codigoequi1"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
-                                        
+                                                                <textbox id="codigoequi1"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                        Serie: 
+                                                                <textbox id="serie1" cols="10"  readonly="true"  />
                       
-                                            </span>
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Equipo Asignado 2:</span> 
-                                            <span>
-                                                <textbox  readonly="true"  cols="32"   id="equipo2" />
+                                                            </span>
+                                                        </row>
+                                                        <row>
+                                                            <span style="float:right"> Equipo Asignado 2:</span> 
+                                                            <span>
+                                                                <textbox  readonly="true"  cols="32"   id="equipo2" />
 
                                         
-                                                <button label=""  id="buscarE2" disabled="true" image="/images/auditoria.gif">
-                                                    <attribute name="onClick">{
+                                                                <button label=""  id="buscarE2" disabled="true" image="/images/auditoria.gif">
+                                                                    <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -516,22 +567,23 @@ llenarCliente(Clientes clienteEn){
                                             win.setTitle("Buscar Equipos");
                                             win.doModal();
                                             }                            
-                                                    </attribute>
-                                                </button> 
+                                                                    </attribute>
+                                                                </button> 
                        
-                                                <textbox id="codigoequi2"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
-                      
-                                            </span>
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Equipo Asignado 3:</span> 
-                                            <span>
-                                                <textbox  readonly="true"  cols="32"   id="equipo3" />
+                                                                <textbox id="codigoequi2"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                      Serie: 
+                                                                <textbox id="serie2"  cols="10"  readonly="true"  />
+                                                            </span>
+                                                        </row>
+                                                        <row>
+                                                            <span style="float:right"> Equipo Asignado 3:</span> 
+                                                            <span>
+                                                                <textbox  readonly="true"  cols="32"   id="equipo3" />
 
                                        
                                         
-                                                <button label=""  id="buscarE3" disabled="true"  image="/images/auditoria.gif">
-                                                    <attribute name="onClick">{
+                                                                <button label=""  id="buscarE3" disabled="true"  image="/images/auditoria.gif">
+                                                                    <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -540,30 +592,74 @@ llenarCliente(Clientes clienteEn){
                                             win.setTitle("Buscar Equipos");
                                             win.doModal();
                                             }                            
-                                                    </attribute>
-                                                </button> 
-                                                <textbox id="codigoequi3"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
-                      
-                                            </span>
-                                        </row>
-                                    </rows>
-                                </grid>
-                            </panelchildren>
-                        </panel>
-                        <panel id="daws"   width="100%" >
-                            <panelchildren>
-                                <grid>
-                                    <rows>
-                                        <row spans="2">
-                                    DATOS DEL VENDEDOR
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Vendido por(*):</span> 
-                                            <span>
-                                                <textbox  readonly="true"  cols="32"   id="combov" />
+                                                                    </attribute>
+                                                                </button> 
+                                                                <textbox id="codigoequi3"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                        
+                                                        Serie: 
+                                                                <textbox id="serie3" cols="10"   readonly="true"  />
+                                        
+                         
+                                                            </span>
+                                                        </row>
+                                                        <row>   
+                                                            <span style="float:right"> Anidado a Nodo(*):</span>
+                                                            <bandbox  disabled="true"  readonly="true"  id="bd2">
+                                                                <bandpopup>
+                                                                    <vbox>
+                                                                        <listbox id="nodo" width="450px"
+                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();">
+                                                                            <listhead>
+                                                                                <listheader label="Nombre"/>
+                                                                                <listheader label="Sector"/>
+                                                                                <listheader label="Ip"/>
+                                            
+                                                                            </listhead>
+                                                                            <listitem forEach="${nodos}" value="${each}">
+                                                                                <listcell label="${each.nombre}" />
+                                                                                <listcell label="${each.sector}" />
+                                                                                <listcell label="${each.ip}" />
+                                                                            </listitem>
+                                                                        </listbox>
+                                                                    </vbox>
+                                                                </bandpopup>
+                                                            </bandbox>
+                                                          
+                                                        </row>
+                                                        <row>
+                                                            <span style="float:right"> Autorizado a Inst(*):</span>
+                                                            <checkbox id="autorizado" disabled="true"  />    
+                                                        </row>
+                                                        <row spans="2">
+                                                            <grid>
+                                                                <rows>
+                                                                    <row>
+                                                                        <span style="float:right">   IP(*):</span>
+                                                                        <textbox cols="15" readonly="true" id="ip" /> 
+                                                                        <span style="float:right">   Usuario:</span>
+                                                                        <textbox cols="15" readonly="true"   id="usuario" /> 
+                                                                        <span style="float:right">   Clave:</span>
+                                                                        <textbox cols="15" readonly="true"   id="clave" /> 
+                                                                    </row>
+                                                                </rows>
+                                                            </grid>
+                                                        </row>
+                                                    </rows>
+                                                </grid>    
+                                                        
+                                            </tabpanel>
+                                            <tabpanel>
+                                                            
+                                                <grid  sclass="MyGridRowHeight">
+                                                    <rows>
+                                  
+                                                        <row>
+                                                            <span style="float:right"> Vendido por(*):</span> 
+                                                            <span>
+                                                                <textbox  readonly="true"  cols="32"   id="combov" />
 
-                                                <button label=""  id="buscarE" disabled="true" image="/images/auditoria.gif">
-                                                    <attribute name="onClick">{
+                                                                <button label=""  id="buscarE" disabled="true" image="/images/auditoria.gif">
+                                                                    <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEmpleados.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -571,10 +667,10 @@ llenarCliente(Clientes clienteEn){
                                             win.setTitle("Buscar Empleados");
                                             win.doModal();
                                             }                            
-                                                    </attribute>
-                                                </button> 
-                                                <button label="" disabled="true" id="nuevoE" image="/images/empleados.png" >
-                                                    <attribute name="onClick">{
+                                                                    </attribute>
+                                                                </button> 
+                                                                <button label="" disabled="true" id="nuevoE" image="/images/empleados.png" >
+                                                                    <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("empleados.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -582,78 +678,234 @@ llenarCliente(Clientes clienteEn){
                                             win.setTitle("Nuevo Empleado");
                                             win.doModal();
                                             }                            
-                                                    </attribute>
-                                                </button> 
+                                                                    </attribute>
+                                                                </button> 
                      
                               
-                                                <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                                                <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
                                         
                     
                        
                       
-                                            </span>
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Registrado por(*):</span> 
-                                            <textbox id="registrado" readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
-                                            <textbox id="registradoU"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
-                                        </row>
-                                    </rows>
-                                </grid>
-                            </panelchildren>
-                        </panel>
-                        <vbox>
-                            <vbox>
-                                <hbox>
-                                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                                </hbox>
-                            </vbox>
+                                                            </span>
+                                                        </row>
+                                                        <row>
+                                                            <span style="float:right"> Registrado por(*):</span> 
+                                                            <textbox id="registrado" readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
+                                                            <textbox id="registradoU"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                                        </row>
+                                                    </rows>
+                                                </grid>
+                                            </tabpanel>
+                                            <tabpanel>This is panel C</tabpanel>
 
-                        </vbox>
-                    </panelchildren>
-                </panel>
-            </tabpanel>
-            <tabpanel>
-                <groupbox  width="100%" mold="3d" >
-                    <caption label="Busquedas" />
-                    <vbox>
-                        <hbox>  No.Contrato:
-                            <textbox id="buscarTextNo"  onOK='buscar(self.value,"contrato")' maxlength="60" cols="10" />
-                            <button id="buscarno"  label="Buscar" onClick='buscar(buscarTextNo.getValue(),"contrato");'/>
+                                        </tabpanels>
+                                    </tabbox>
+                          
+                                     
+                              
+                                </panelchildren>
+                            </panel>
+                       
+                          
+                        </panelchildren>
+                    </panel>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                </tabpanel>
+                <tabpanel>
+                    <groupbox  width="100%" mold="3d" >
+                        <caption label="Busquedas" />
+                        <vbox>
+                            <hbox>  No.Contrato:
+                                <textbox id="buscarTextNo"  onOK='buscar(self.value,"contrato")' maxlength="60" cols="10" />
+                                <button id="buscarno"  label="Buscar" onClick='buscar(buscarTextNo.getValue(),"contrato");'/>
                                 Cliente:
-                            <textbox id="buscarTextCliente"  onChanging='buscar(buscarTextCliente.getValue(),"otro");'  onOK='buscar(buscarTextCliente.getValue(),"otro");' maxlength="60" cols="25" />
-                            <button id="buscar"  label="Buscar" onClick='buscar(buscarTextCliente.getValue(),"otro");'/>
-                        </hbox>
-                        <hbox>
-                            <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();" id="datos" width="100%">
-                                <listhead>
-                                    <listheader label="Contrato"/>
-                                    <listheader label="Clientes"/>
-                                </listhead>
-                                <listitem forEach="${allEvents}" value="${each}">
-                                    <listcell label="${each.codigo}" />
-                                    <listcell label="${each.apellidos}" />
-                                </listitem>
-                            </listbox>
-                        </hbox>
-                    </vbox>
-                </groupbox>
-            </tabpanel>  
-            <tabpanel>
-                <panel height="370px" style="margin-bottom:10px"
+                                <textbox id="buscarTextCliente"  onChanging='buscar(buscarTextCliente.getValue(),"otro");'  onOK='buscar(buscarTextCliente.getValue(),"otro");' maxlength="60" cols="25" />
+                                <button id="buscar"  label="Buscar" onClick='buscar(buscarTextCliente.getValue(),"otro");'/>
+                            </hbox>
+                            <hbox>
+                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();" id="datos" width="100%">
+                                    <listhead>
+                                        <listheader label="Contrato"/>
+                                        <listheader label="Clientes"/>
+                                    </listhead>
+                                    <listitem forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.codigo}" />
+                                        <listcell label="${each.apellidos}" />
+                                    </listitem>
+                                </listbox>
+                            </hbox>
+                        </vbox>
+                    </groupbox>
+                </tabpanel>  
+                <tabpanel>
+                    <zscript>
+                nuevos(Soporte sop){
+                            codigos.value = sop.getCodigo();
+                            try{
+                                
+                                atendida.value = sop.getEmpleados().getCodigo();
+                                atendidanombre.value = sop.getEmpleados().getApellidos()+" "+sop.getEmpleados().getNombres();
+                            }catch(Exception e){
+                                atendida.value =  usuarioActual.getCodigo();
+                                atendidanombre.value = usuarioActual.getApellidos()+" "+usuarioActual.getNombres();
+                            }
+                            
+                                fechasoporte.value = sop.getFecha();
+                            if(sop.getFecha() == null)
+                                fechasoporte.value = new Date();
+                            observacion.value = sop.getObservacion();
+                            generar.checked  = sop.getGenerada();
+              }
+          habilitar(Boolean estado){
+                            fechasoporte.readonly = estado;
+                            observacion.readonly = estado;
+                            generar.disabled  = estado;
+            }
+                        
+                void guardars(){
+ 
+                                Soporte sop = new Soporte();
+                                sop.setCodigo(codigos.value);
+                                sop.setEmpleados(new Empleados(atendida.value));
+                                sop.setFecha(fechasoporte.value);
+                                sop.setObservacion(observacion.value);
+                                sop.setGenerada(generar.checked);
+                                sop.setClientes(new Clientes(new Integer(codigocli.value)));
+
+
+                                if((!sop.getCodigo().equals(0)) ){
+                                     sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
+                                     adm.actualizar(sop);
+                                        permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
+                                 }else{
+                                        sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
+                                        sop.setCodigo(adm.getNuevaClave("Soporte","codigo"));
+                                        adm.guardar(sop);
+                                        permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
+                                 }
+                                        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                                          
+                                              if(sop.getGenerada()){
+                                                   Map parameters = new HashMap();
+                                                    parameters.put("ruc", "132156165165");
+                                                    parameters.put("empresa", "MI EMPRESA");
+                                                    parameters.put("direccion", "Direccion");
+                                                    parameters.put("observacion", observacion.value);
+                                                    parameters.put("cliente", combo.value);
+                                                    parameters.put("telefono1", telefonoi.value);
+                                                    parameters.put("direccion1", direccioni.value);
+                                                    reportelocal.setSrc("/jcinform/bean/reportes/jrxml/orden.jasper");
+                                                    reportelocal.setParameters(parameters);
+                                                    reportelocal.setDatasource(null);
+                                                    reportelocal.setType("pdf");
+
+                                                    final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
+                                                    win.setMaximizable(true);
+                                                    win.setClosable(true);
+                                                    win.setAttribute("reporte",reportelocal);
+                                                    win.setTitle("Reporte");
+                                                    win.doModal();
+                                              }
+                    guardars.disabled=true;
+                                            agregars.disabled=false;
+                                            nuevos(new Soporte(0));
+                                            habilitar(true);
+                                            buscarSoportes();
+                                      
+                  
+                    }
+                     
+                    
+                      void buscarSoportes(){
+
+try{
+
+
+        List ControlequiposEncontrados = adm.query("Select o from Soporte  as o where o.clientes.codigo = '"+codigocli.value+"'");
+                        
+                        soporte = new Listbox();
+                        int a=0;
+                            for (Iterator it =soporte.getItems().iterator(); it.hasNext();) {
+                                    soporte.getItems().remove(a);
+                                }
+
+
+                               for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
+                                      Soporte  acceIt = (Soporte) it.next();
+                                      Listitem li = new Listitem();
+                                      li.setValue(acceIt);
+                                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
+                                      li.appendChild(new Listcell(acceIt.getObservacion()+""));
+                                      li.appendChild(new Listcell((acceIt.getGenerada()==true?"SI":"NO")));
+                                      li.appendChild(new Listcell(acceIt.getEmpleados().getApellidos()+" "+acceIt.getEmpleados().getNombres()));
+                                      soporte.appendChild(li);
+                             }
+
+                    }catch(Exception e){
+        Messagebox.show("Seleccione primero un CLIENTE  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        registro.setSelected(true);
+}
+                    }
+                    
+                    </zscript>
+                    <grid>
+                        <rows>
+                            <row visible = "true">
+                                <intbox id="codigos" readonly="true" />    
+                                <intbox id="atendida" readonly="true" />    
+                            </row>
+                            <row>
+                                <span style="float:right">Atendido por:  </span>
+                                <textbox id="atendidanombre" cols="50" readonly="true" />        
+                            </row>
+                            <row> 
+                                <span style="float:right">Fecha:  </span>
+                                <datebox readonly="true" onCreate="self.value = new Date()" id="fechasoporte"/> 
+                            </row>
+                            <row>
+                                <span style="float:right"> Observación: </span>
+                                <textbox readonly="true" cols="60" rows="3" id="observacion"/> 
+                            </row>
+                            <row>
+                                <span style="float:right"> Generar Orden: </span>
+                                <checkbox id="generar" disabled="true"   />
+                            </row>
+                        </rows>
+                    </grid>
+                    <button image="/images/guardar.gif" id="guardars" label="Guardar"  disabled="true"  onClick="guardars();modificars.disabled = true;"/>
+                    <button  image="/images/nuevo.gif" id="agregars" label="Agregar" onClick="nuevos(new Soporte(0)); habilitar(false); observacion.focus();guardars.disabled = false;modificars.disabled = true" />
+                    <button  image="/images/editar.gif" id="modificars"  label="Modificar" disabled="true"  onClick="habilitar(false); observacion.focus();guardars.disabled = false;"/>
+                    <listbox mold="paging" rows="10" pageSize="10"  onSelect="nuevos(soporte.selectedItem.value);modificars.disabled = false" id="soporte" width="100%">
+                        <listhead>
+                            <listheader label="Fecha"/>
+                            <listheader label="Observación"/>
+                            <listheader label="Orden Generada"/>
+                            <listheader label="Atendida"/>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.fecha}" />
+                            <listcell label="${each.observacion}" />
+                            <listcell label="${each.generada}" />
+                            <listcell label="${each.empleados}" />
+                        </listitem>
+                    </listbox>
+                </tabpanel>
+                <tabpanel>
+                    <panel height="370px" style="margin-bottom:10px"
                            title="Reporte" border="normal">
-                    <panelchildren>
-                        <jasperreport id="report" />
-                    </panelchildren>
-                </panel>
+                        <panelchildren>
+                            <jasperreport id="reportelocal" />
+                        </panelchildren>
+                    </panel>
                 
-            </tabpanel>
-        </tabpanels>
+                </tabpanel>
+            </tabpanels>
             
             
-    </tabbox>
-</div>
+        </tabbox>
+    </div>
 </window>

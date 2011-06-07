@@ -37,9 +37,15 @@ public class Contratos implements Serializable {
     @Column(name = "codigo")
     private Integer codigo;
     @Column(name = "estado")
-    private String estado;
+    private String estado="Activo";
     @Column(name = "contrato")
     private String contrato;
+    @Column(name = "direccion")
+    private String direccion;
+    @Column(name = "referencia")
+    private String referencia;
+    @Column(name = "telefono")
+    private String telefono;
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
@@ -61,13 +67,19 @@ public class Contratos implements Serializable {
     @Column(name = "clave")
     private String clave;
     @Column(name = "autorizado")
-    private Boolean autorizado;
+    private Boolean autorizado=false;
     @Column(name = "fechainstalacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainstalacion;
     @Column(name = "fechafinal")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
+    @Column(name = "serie1")
+    private String serie1;
+    @Column(name = "serie2")
+    private String serie2;
+    @Column(name = "serie3")
+    private String serie3;
     @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
     @ManyToOne
     private Sucursal sucursal;
@@ -83,21 +95,21 @@ public class Contratos implements Serializable {
     @JoinColumn(name = "instalador", referencedColumnName = "codigo")
     @ManyToOne
     private Empleados empleados1;
-    @JoinColumn(name = "equipos3", referencedColumnName = "codigo")
-    @ManyToOne
-    private Detallecompra detallecompra;
     @JoinColumn(name = "equipos2", referencedColumnName = "codigo")
     @ManyToOne
-    private Detallecompra detallecompra1;
+    private Equipos equipos;
+    @JoinColumn(name = "equipos1", referencedColumnName = "codigo")
+    @ManyToOne
+    private Equipos equipos1;
     @JoinColumn(name = "clientes", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
     @JoinColumn(name = "empleados", referencedColumnName = "codigo")
     @ManyToOne
     private Empleados empleados2;
-    @JoinColumn(name = "equipos1", referencedColumnName = "codigo")
+    @JoinColumn(name = "equipos3", referencedColumnName = "codigo")
     @ManyToOne
-    private Detallecompra detallecompra2;
+    private Equipos equipos2;
 
     public Contratos() {
     }
@@ -128,6 +140,30 @@ public class Contratos implements Serializable {
 
     public void setContrato(String contrato) {
         this.contrato = contrato;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public Date getFecha() {
@@ -226,6 +262,30 @@ public class Contratos implements Serializable {
         this.fechafinal = fechafinal;
     }
 
+    public String getSerie1() {
+        return serie1;
+    }
+
+    public void setSerie1(String serie1) {
+        this.serie1 = serie1;
+    }
+
+    public String getSerie2() {
+        return serie2;
+    }
+
+    public void setSerie2(String serie2) {
+        this.serie2 = serie2;
+    }
+
+    public String getSerie3() {
+        return serie3;
+    }
+
+    public void setSerie3(String serie3) {
+        this.serie3 = serie3;
+    }
+
     public Sucursal getSucursal() {
         return sucursal;
     }
@@ -266,20 +326,20 @@ public class Contratos implements Serializable {
         this.empleados1 = empleados1;
     }
 
-    public Detallecompra getDetallecompra() {
-        return detallecompra;
+    public Equipos getEquipos() {
+        return equipos;
     }
 
-    public void setDetallecompra(Detallecompra detallecompra) {
-        this.detallecompra = detallecompra;
+    public void setEquipos(Equipos equipos) {
+        this.equipos = equipos;
     }
 
-    public Detallecompra getDetallecompra1() {
-        return detallecompra1;
+    public Equipos getEquipos1() {
+        return equipos1;
     }
 
-    public void setDetallecompra1(Detallecompra detallecompra1) {
-        this.detallecompra1 = detallecompra1;
+    public void setEquipos1(Equipos equipos1) {
+        this.equipos1 = equipos1;
     }
 
     public Clientes getClientes() {
@@ -298,12 +358,12 @@ public class Contratos implements Serializable {
         this.empleados2 = empleados2;
     }
 
-    public Detallecompra getDetallecompra2() {
-        return detallecompra2;
+    public Equipos getEquipos2() {
+        return equipos2;
     }
 
-    public void setDetallecompra2(Detallecompra detallecompra2) {
-        this.detallecompra2 = detallecompra2;
+    public void setEquipos2(Equipos equipos2) {
+        this.equipos2 = equipos2;
     }
 
     @Override

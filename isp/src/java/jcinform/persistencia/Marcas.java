@@ -91,7 +91,7 @@ public class Marcas implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "jcinform.persistencia.Marcas[codigo=" + codigo + "]";
     }
 
 }

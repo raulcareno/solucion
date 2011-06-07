@@ -49,9 +49,16 @@ public class Soporte implements Serializable {
     @Lob
     @Column(name = "observacion3")
     private String observacion3;
+    @Column(name = "generada")
+    private Boolean generada = false;
+    
     @JoinColumn(name = "clientes", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
+    
+    @JoinColumn(name = "empleados", referencedColumnName = "codigo")
+    @ManyToOne
+    private Empleados empleados;
 
     public Soporte() {
     }
@@ -106,6 +113,22 @@ public class Soporte implements Serializable {
 
     public void setClientes(Clientes clientes) {
         this.clientes = clientes;
+    }
+
+    public Empleados getEmpleados() {
+        return empleados;
+    }
+
+    public void setEmpleados(Empleados empleados) {
+        this.empleados = empleados;
+    }
+
+    public Boolean getGenerada() {
+        return generada;
+    }
+
+    public void setGenerada(Boolean generada) {
+        this.generada = generada;
     }
 
     @Override

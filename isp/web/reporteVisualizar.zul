@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page id="reporteVisualizar"?>
+<window onCreate="llenar()"  id="reporteVisualizar">
+    <jasperreport id="reporte" />
+    <zscript>
+        void llenar(){
+        System.out.println("ingreso");
+            Jasperreport reporteL = reporteVisualizar.getAttribute("reporte");
+            reporte.setType(reporteL.getType());
+            reporte.setSrc(reporteL.getSrc());
+            reporte.setParameters(reporteL.getParameters());
+            reporte.setDatasource(null);
+            System.out.println("datos"+reporteL.getType());
+         }
+    </zscript>
+</window>

@@ -114,6 +114,7 @@ void estado(Boolean estado,Boolean modificar){
                     Row object = (Row) col.get(i);
                     Detallecompra det = new Detallecompra();
                      det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                     det.setCabeceracompra(cabeCompra);
                      List labels = object.getChildren();
                      
                          det.setEquipos((Equipos)object.getValue());

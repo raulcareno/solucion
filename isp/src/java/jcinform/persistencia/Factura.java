@@ -61,15 +61,15 @@ public class Factura implements Serializable {
     private String nocheque;
     @Column(name = "tarjeta")
     private BigDecimal tarjeta;
+    @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sucursal sucursal;
     @JoinColumn(name = "sector", referencedColumnName = "codigo")
     @ManyToOne
     private Sector sector;
     @JoinColumn(name = "clientes", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
-    @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
-    @ManyToOne
-    private Sucursal sucursal;
     @OneToMany(mappedBy = "factura")
     private Collection<Detalle> detalleCollection;
     @OneToMany(mappedBy = "factura")
@@ -186,6 +186,14 @@ public class Factura implements Serializable {
         this.tarjeta = tarjeta;
     }
 
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
     public Sector getSector() {
         return sector;
     }
@@ -200,14 +208,6 @@ public class Factura implements Serializable {
 
     public void setClientes(Clientes clientes) {
         this.clientes = clientes;
-    }
-
-    public Sucursal getSucursal() {
-        return sucursal;
-    }
-
-    public void setSucursal(Sucursal sucursal) {
-        this.sucursal = sucursal;
     }
 
     public Collection<Detalle> getDetalleCollection() {

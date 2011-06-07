@@ -53,18 +53,15 @@ public class Detallecompra implements Serializable {
     private String estado;
     @OneToMany(mappedBy = "detallecompra")
     private Collection<Series> seriesCollection;
-    @JoinColumn(name = "equipos", referencedColumnName = "codigo")
-    @ManyToOne
-    private Equipos equipos;
     @JoinColumn(name = "compra", referencedColumnName = "codigo")
     @ManyToOne
     private Cabeceracompra cabeceracompra;
-    @OneToMany(mappedBy = "detallecompra")
-    private Collection<Contratos> contratosCollection;
-    @OneToMany(mappedBy = "detallecompra1")
-    private Collection<Contratos> contratosCollection1;
-    @OneToMany(mappedBy = "detallecompra2")
-    private Collection<Contratos> contratosCollection2;
+    @JoinColumn(name = "equipos", referencedColumnName = "codigo")
+    @ManyToOne
+    private Equipos equipos;
+    @JoinColumn(name = "contrato", referencedColumnName = "codigo")
+    @ManyToOne
+    private Contratos contratos;
 
     public Detallecompra() {
     }
@@ -153,14 +150,6 @@ public class Detallecompra implements Serializable {
         this.seriesCollection = seriesCollection;
     }
 
-    public Equipos getEquipos() {
-        return equipos;
-    }
-
-    public void setEquipos(Equipos equipos) {
-        this.equipos = equipos;
-    }
-
     public Cabeceracompra getCabeceracompra() {
         return cabeceracompra;
     }
@@ -169,28 +158,20 @@ public class Detallecompra implements Serializable {
         this.cabeceracompra = cabeceracompra;
     }
 
-    public Collection<Contratos> getContratosCollection() {
-        return contratosCollection;
+    public Equipos getEquipos() {
+        return equipos;
     }
 
-    public void setContratosCollection(Collection<Contratos> contratosCollection) {
-        this.contratosCollection = contratosCollection;
+    public void setEquipos(Equipos equipos) {
+        this.equipos = equipos;
     }
 
-    public Collection<Contratos> getContratosCollection1() {
-        return contratosCollection1;
+    public Contratos getContratos() {
+        return contratos;
     }
 
-    public void setContratosCollection1(Collection<Contratos> contratosCollection1) {
-        this.contratosCollection1 = contratosCollection1;
-    }
-
-    public Collection<Contratos> getContratosCollection2() {
-        return contratosCollection2;
-    }
-
-    public void setContratosCollection2(Collection<Contratos> contratosCollection2) {
-        this.contratosCollection2 = contratosCollection2;
+    public void setContratos(Contratos contratos) {
+        this.contratos = contratos;
     }
 
     @Override

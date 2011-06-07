@@ -55,12 +55,12 @@ public class Cabeceracompra implements Serializable {
     private Double total;
     @OneToMany(mappedBy = "cabeceracompra")
     private Collection<Detallecompra> detallecompraCollection;
-    @JoinColumn(name = "proveedores", referencedColumnName = "codigo")
-    @ManyToOne
-    private Proveedores proveedores;
     @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
     @ManyToOne
     private Sucursal sucursal;
+    @JoinColumn(name = "proveedores", referencedColumnName = "codigo")
+    @ManyToOne
+    private Proveedores proveedores;
 
     public Cabeceracompra() {
     }
@@ -141,20 +141,20 @@ public class Cabeceracompra implements Serializable {
         this.detallecompraCollection = detallecompraCollection;
     }
 
-    public Proveedores getProveedores() {
-        return proveedores;
-    }
-
-    public void setProveedores(Proveedores proveedores) {
-        this.proveedores = proveedores;
-    }
-
     public Sucursal getSucursal() {
         return sucursal;
     }
 
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
+    }
+
+    public Proveedores getProveedores() {
+        return proveedores;
+    }
+
+    public void setProveedores(Proveedores proveedores) {
+        this.proveedores = proveedores;
     }
 
     @Override
