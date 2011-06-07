@@ -73,12 +73,12 @@
             }
                void salir(){
 
-            a.removeAttribute("accesos");
-            a.removeAttribute("user");
-            a.removeAttribute("sector");
-            a.removeAttribute("empresa");
-            a.invalidate();
-            Executions.sendRedirect("login.zul");
+                    a.removeAttribute("accesos");
+                    a.removeAttribute("user");
+                    a.removeAttribute("sector");
+                    a.removeAttribute("empresa");
+                    a.invalidate();
+                    Executions.sendRedirect("login.zul");
             }
 
             </zscript>
