@@ -86,6 +86,8 @@ public class EmpresaPuertos {
     public String puerta13;
     public String puerta14;
     public Boolean webcam;
+    public Boolean seabrefac;
+    public Boolean seabretic;
 
     public String getLed() {
         return led;
@@ -518,4 +520,22 @@ public class EmpresaPuertos {
     public void setWebcam(Boolean webcam) {
         this.webcam = webcam;
     }
+
+    public Boolean getSeabrefac() {
+        return seabrefac;
+    }
+
+    public void setSeabrefac(Boolean seabrefac) {
+        this.seabrefac = seabrefac;
+    }
+
+    public Boolean getSeabretic() {
+        return seabretic;
+    }
+
+    public void setSeabretic(Boolean seabretic) {
+        this.seabretic = seabretic;
+    }
+    
+    
 }

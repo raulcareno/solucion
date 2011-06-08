@@ -43,7 +43,8 @@ class CamaraWeb {
                 componente = video;
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error de Comunicacion con la WebCam " + e);
+            System.out.println("error en la comunicacion con la webcam REVISE VFW: "+e);
+            //JOptionPane.showMessageDialog(null, "Error de Comunicacion con la WebCam " + e);
         }
     }
 

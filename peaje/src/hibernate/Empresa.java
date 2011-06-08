@@ -687,6 +687,28 @@ public class Empresa implements Serializable {
     public void setWebcam(Boolean webcam) {
         this.webcam = webcam;
     }
+    @Transient
+    public Boolean seabretic;
+    @Transient
+    public Boolean seabrefac;
+
+    public Boolean getSeabrefac() {
+        return seabrefac;
+    }
+
+    public void setSeabrefac(Boolean seabrefac) {
+        this.seabrefac = seabrefac;
+    }
+
+    public Boolean getSeabretic() {
+        return seabretic;
+    }
+
+    public void setSeabretic(Boolean seabretic) {
+        this.seabretic = seabretic;
+    }
+    
+    
     
     @Override
     public int hashCode() {

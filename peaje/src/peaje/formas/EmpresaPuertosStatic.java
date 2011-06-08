@@ -32,6 +32,8 @@ public class EmpresaPuertosStatic {
     public   EmpresaPuertosStatic() {
     }
         public Boolean webcam;
+        public Boolean seabretic;
+        public Boolean seabrefac;
         public String impticket;
         public String impfactura;
         public String impresora;
@@ -519,5 +521,23 @@ public class EmpresaPuertosStatic {
         public void setPuerta14(String puerta14) {
             this.puerta14 = puerta14;
         }
+
+    public Boolean getSeabrefac() {
+        return seabrefac;
+    }
+
+    public void setSeabrefac(Boolean seabrefac) {
+        this.seabrefac = seabrefac;
+    }
+
+    public Boolean getSeabretic() {
+        return seabretic;
+    }
+
+    public void setSeabretic(Boolean seabretic) {
+        this.seabretic = seabretic;
+    }
+        
+        
     }
  

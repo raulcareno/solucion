@@ -353,6 +353,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     emp.setDocumentoticket((numero + 1) + "");
                     adm.actualizar(emp);
                     imprimir(fac.getCodigo(), emp);
+if(empresaObj.getSeabretic()){
 
                     try {
                         Thread.sleep(2000);
@@ -362,7 +363,9 @@ public class frmTicket extends javax.swing.JInternalFrame {
                         Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     System.out.println("ABRIO PUERTA: " + principal.in);
-
+}else{
+                    System.out.println("NO ABRE BARRERA POR DESHABILITACION DEN FRMEMPRESA " );
+}
                     principal.noDisponibles();
                     //                btnAgregar.setEnabled(true);
                     principal.auditar("Ticket", "No." + fac.getTicket(), "GUARDAR");

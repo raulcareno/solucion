@@ -40,28 +40,28 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private frmPrincipal principal;
 
     /** Creates new form frmProfesores */
-    public frmEmpresa(java.awt.Frame parent, boolean modal, Administrador adm1) {
-//        super(parent, modal);
-        adm = adm1;
-        llenarCombo();
-        initComponents();
-        this.setSize(615, 508);
-        empresaObj = new Empresa();
-
-        val = new validaciones();
-
-            try {
-
-               Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                this.empresaObj = emp;
-                bindingGroup.unbind();
-                bindingGroup.bind();
-               
-            } catch (Exception ex) {
-                Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-    }
+//    public frmEmpresa(java.awt.Frame parent, boolean modal, Administrador adm1) {
+////        super(parent, modal);
+//        adm = adm1;
+//        llenarCombo();
+//        initComponents();
+//        this.setSize(615, 508);
+//        empresaObj = new Empresa();
+//
+//        val = new validaciones();
+//
+//            try {
+//
+//               Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+//                this.empresaObj = emp;
+//                bindingGroup.unbind();
+//                bindingGroup.bind();
+//               
+//            } catch (Exception ex) {
+//                Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//
+//    }
 
     public frmEmpresa(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
 //        super(parent, modal);
@@ -311,6 +311,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel28 = new javax.swing.JLabel();
         chkWebcam = new javax.swing.JCheckBox();
         jLabel29 = new javax.swing.JLabel();
+        seabrefactura = new javax.swing.JCheckBox();
+        seabreticket = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -573,7 +575,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         btnSalir.setBounds(290, 10, 60, 50);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(10, 340, 410, 70);
+        jPanel4.setBounds(20, 360, 410, 70);
 
         jPanel2.setLayout(null);
 
@@ -815,6 +817,19 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel2.add(jLabel29);
         jLabel29.setBounds(0, 220, 120, 14);
 
+        seabrefactura.setText("Se abre barrera al cobrar");
+        seabrefactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                seabrefacturaActionPerformed(evt);
+            }
+        });
+        jPanel2.add(seabrefactura);
+        seabrefactura.setBounds(240, 240, 160, 23);
+
+        seabreticket.setText("Se abre barrera al imprimir Ticket");
+        jPanel2.add(seabreticket);
+        seabreticket.setBounds(50, 240, 190, 23);
+
         jTabbedPane1.addTab("DATOS DE LA EMPRESA", new javax.swing.ImageIcon(getClass().getResource("/images/empresa.png")), jPanel2); // NOI18N
 
         jPanel5.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -958,7 +973,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.add(cmbPuerta4);
         cmbPuerta4.setBounds(130, 210, 37, 20);
 
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel21.setText("Puerta");
         jPanel5.add(jLabel21);
         jLabel21.setBounds(130, 130, 50, 20);
@@ -1253,7 +1268,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jTabbedPane1.addTab("PUERTAS Y LECTORAS", new javax.swing.ImageIcon(getClass().getResource("/images/admin.gif")), jPanel5); // NOI18N
 
         getContentPane().add(jTabbedPane1);
-        jTabbedPane1.setBounds(10, 50, 410, 280);
+        jTabbedPane1.setBounds(10, 50, 410, 300);
 
         bindingGroup.bind();
 
@@ -1308,6 +1323,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setSale((String)cmbPuertaSale.getSelectedItem());
                     empresaObj.setSale2((String)cmbPuertaSale2.getSelectedItem());
                     empresaObj.setWebcam(chkWebcam.isSelected());
+                    empresaObj.setSeabretic(seabreticket.isSelected());
+                    empresaObj.setSeabrefac(seabrefactura.isSelected());
 
                     XMLEmpresa xm = new XMLEmpresa();
                     xm.inicio();
@@ -1796,6 +1813,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_cmbPortBarras2KeyPressed
 
+    private void seabrefacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seabrefacturaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_seabrefacturaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
@@ -1885,6 +1906,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField parqueaderos;
     private javax.swing.JFormattedTextField razonsocial;
+    private javax.swing.JCheckBox seabrefactura;
+    private javax.swing.JCheckBox seabreticket;
     private javax.swing.JFormattedTextField telefono;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables

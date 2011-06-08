@@ -99,6 +99,8 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String PUERTA6 = "PUERTA6";
     private static final String PUERTA7 = "PUERTA7";
     private static final String WEBCAM = "WEBCAM";
+    private static final String SEABRETIC = "SEABRETIC";
+    private static final String SEABREFAC = "SEABREFAC";
 
 
     // Variables
@@ -251,6 +253,13 @@ public static UsuarioActivo user = new UsuarioActivo();
         item = xmlDoc.createElement(WEBCAM);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getWebcam()+""));
         personal.appendChild(item);
+        item = xmlDoc.createElement(SEABREFAC);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getSeabrefac()+""));
+        personal.appendChild(item);
+        item = xmlDoc.createElement(SEABRETIC);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getSeabretic()+""));
+        personal.appendChild(item);
+        
         
     }
 
@@ -385,6 +394,8 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setPuerta5(emp.getPuerta5());
         beanEmpleado.setPuerta6(emp.getPuerta6());
         beanEmpleado.setPuerta7(emp.getPuerta7());
+        beanEmpleado.setSeabretic(emp.getSeabretic());
+        beanEmpleado.setSeabrefac(emp.getSeabrefac());
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
         //obtenemos el documento XML en cadena de texto
@@ -682,6 +693,16 @@ public static UsuarioActivo user = new UsuarioActivo();
                     Element WEBCAMoutElement = (Element) WEBCAMoutList.item(0);
                     NodeList WEBCAMoutAgeList = WEBCAMoutElement.getChildNodes();
                     user.setWebcam(new Boolean(((Node) WEBCAMoutAgeList.item(0)).getNodeValue().trim()));
+                    
+                    NodeList SEABRETICoutList = firstPersonElement.getElementsByTagName("SEABRETIC");
+                    Element SEABRETICoutElement = (Element) SEABRETICoutList.item(0);
+                    NodeList SEABRETICoutAgeList = SEABRETICoutElement.getChildNodes();
+                    user.setWebcam(new Boolean(((Node) SEABRETICoutAgeList.item(0)).getNodeValue().trim()));
+                    
+                    NodeList SEABREFACoutList = firstPersonElement.getElementsByTagName("SEABREFAC");
+                    Element SEABREFACoutElement = (Element) SEABREFACoutList.item(0);
+                    NodeList SEABREFACoutAgeList = SEABREFACoutElement.getChildNodes();
+                    user.setWebcam(new Boolean(((Node) SEABREFACoutAgeList.item(0)).getNodeValue().trim()));
                     
   } catch (Exception parserConfigurationException) {
                         System.out.println("ERROR LECTURA"+parserConfigurationException);

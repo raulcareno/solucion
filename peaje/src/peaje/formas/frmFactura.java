@@ -1106,14 +1106,17 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     }
                     imprimir(facActual.getCodigo(), emp, dia, false, cli);
                     adm.actualizar(emp);
-//                Thread cargar = new Thread() {
-//
-//                    public void run() {
-//                        AbrirPuerta.abrir(empresaObj.getPuerto(), frmPrincipal.out);
-//                        System.out.println("SALIO PUERTA: " + frmPrincipal.out);
-//
-//                    }
-//                };
+                    if(empresaObj.getSeabretic()){
+                                Thread cargar = new Thread() {
+                                    public void run() {
+                                        AbrirPuerta.abrir(empresaObj.getPuerto(), frmPrincipal.out);
+                                        System.out.println("SALIO PUERTA: " + frmPrincipal.out);
+
+                                    }
+                                };
+                    
+                    }
+
 //                cargar.start();
                     principal.noDisponibles();
                     ingreso.setDate(null);
