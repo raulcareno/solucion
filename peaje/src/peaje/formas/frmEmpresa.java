@@ -773,7 +773,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel2.add(iva);
         iva.setBounds(270, 110, 59, 20);
 
-        jLabel16.setText("Tiempo que se Pasa(gracia): ");
+        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel16.setText("Gracia por Hora: ");
         jPanel2.add(jLabel16);
         jLabel16.setBounds(0, 190, 120, 20);
 

@@ -103,7 +103,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             val = new validaciones();
             principal = lo;
 
-            tarifario = adm.query("Select o from Tarifas as o order by o.codigo ");
+            tarifario = adm.query("Select o from Tarifas as o where o.hasta > 0 order by o.codigo ");
             dias.setVisible(false);
             dias1.setVisible(false);
             dias2.setVisible(false);
@@ -1126,15 +1126,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     }
                     imprimir(facActual.getCodigo(), emp, dia, false, cli);
                     adm.actualizar(emp);
-                    if(empresaObj.getSeabretic()){
-                                Thread cargar = new Thread() {
-                                    public void run() {
-                                        AbrirPuerta.abrir(empresaObj.getPuerto(), frmPrincipal.out);
-                                        System.out.println("SALIO PUERTA: " + frmPrincipal.out);
+                    if (empresaObj.getSeabretic()) {
+                        Thread cargar = new Thread() {
 
-                                    }
-                                };
-                    
+                            public void run() {
+                                AbrirPuerta.abrir(empresaObj.getPuerto(), frmPrincipal.out);
+                                System.out.println("SALIO PUERTA: " + frmPrincipal.out);
+
+                            }
+                        };
+
                     }
 
 //                cargar.start();
@@ -1380,6 +1381,102 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
     }
 
+//    void llenarFactura(Factura fac) {
+//        dias.setVisible(false);
+//        dias1.setVisible(false);
+//        dias2.setVisible(false);
+//        if (fac.getFechafin() != null) {
+//
+////                        int valor = JOptionPane.showConfirmDialog(this, ,"JCINFORM",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "opcion 1", "opcion 2", "opcion 3" },"opcion 1" );
+//            int seleccion = JOptionPane.showOptionDialog(this, "TICKET YA FACTURADO \n ¿Desea volver a imprimir la factura?",
+//                    "JCINFORM",
+//                    JOptionPane.YES_NO_CANCEL_OPTION,
+//                    JOptionPane.QUESTION_MESSAGE,
+//                    null, // null para icono por defecto.
+//                    new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
+//                    "NO");
+//            System.out.println("" + seleccion);
+//
+//            if (0 == seleccion) {
+//                try {
+//                    Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+//                    imprimir(fac.getCodigo(), emp, 0, false, new Clientes());
+//                } catch (Exception ex) {
+//                    Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//                    noTicket.setText("");
+//            noTicket.requestFocusInWindow();
+//            return;
+//        }
+//        ingreso.setDate(fac.getFechaini());
+//        salida.setDate(new Date());
+//
+//
+//
+//        Date act = new Date();
+//        dias.setVisible(true);
+//        dias1.setVisible(true);
+//        dias2.setVisible(true);
+//
+//        Long minutos0 = diferenciaFechas(fac.getFechaini(), new Date());
+//        Integer minutos = minutos0.intValue();
+//
+//        Integer horas = minutos / 60;
+//        if (minutos.intValue() < 0) {
+//            minutos = minutos * -1;
+//        }
+//        if (horas.intValue() < 0) {
+//            horas = horas * -1;
+////            horas += 24;
+//            dias.setVisible(true);
+//            dias1.setVisible(true);
+//            dias2.setVisible(true);
+//        }
+//        if (minutos.intValue() < 0) {
+//            horas = 0;
+//            minutos = 0;
+//            dias.setVisible(true);
+//            dias1.setVisible(true);
+//            dias2.setVisible(true);
+//        }
+//        Float min = minutos / 60f;
+//        int indice = min.toString().indexOf(".");
+//        Float valorf = new Float("0" + min.toString().substring(indice));
+//        int valorMinutos = java.lang.Math.round((valorf * 60));
+//        act.setHours(horas);
+//        act.setMinutes(valorMinutos);
+//        tiempo.setDate(act);
+//        placa.setText(fac.getPlaca());
+//        BigDecimal aCobrar = new BigDecimal(0);
+//        for (int a = 0; a < horas; a++) {
+//            aCobrar = aCobrar.add(buscar(60));
+//        }
+//        try {
+//            int noDias = 0;
+//            noDias = (horas / 24);
+//            dias1.setText(noDias + "");
+//        } catch (Exception e) {
+//            dias1.setText("0");
+//        }
+//        if (horas.intValue() > 0) {
+//            if (valorMinutos > 0) {
+//                if (valorMinutos > empresaObj.getGracia().intValue()) {
+//                    aCobrar = aCobrar.add(buscar(valorMinutos));
+//                }
+//            } else {
+//            }
+//        } else {
+//            if (valorMinutos > 0) {
+//                aCobrar = aCobrar.add(buscar(valorMinutos));
+//            } else {
+//                aCobrar = aCobrar.add(buscar(1));
+//            }
+//
+//        }
+//        total.setText(aCobrar.setScale(2, RoundingMode.UP) + "");
+//        codigo.setText(fac.getCodigo() + "");
+//    }
     void llenarFactura(Factura fac) {
         dias.setVisible(false);
         dias1.setVisible(false);
@@ -1404,7 +1501,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-                    noTicket.setText("");
+            noTicket.setText("");
             noTicket.requestFocusInWindow();
             return;
         }
@@ -1439,6 +1536,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
             dias1.setVisible(true);
             dias2.setVisible(true);
         }
+        BigDecimal aCobrar = new BigDecimal(0);
+        aCobrar = aCobrar.add(buscar(minutos));
+        
         Float min = minutos / 60f;
         int indice = min.toString().indexOf(".");
         Float valorf = new Float("0" + min.toString().substring(indice));
@@ -1447,10 +1547,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
         act.setMinutes(valorMinutos);
         tiempo.setDate(act);
         placa.setText(fac.getPlaca());
-        BigDecimal aCobrar = new BigDecimal(0);
-        for (int a = 0; a < horas; a++) {
-            aCobrar = aCobrar.add(buscar(60));
+        if(valorMinutos <= empresaObj.getGracia().intValue()){
+            BigDecimal descuento = buscar(valorMinutos);
+            aCobrar = aCobrar.subtract(descuento);
         }
+//        for (int a = 0; a < horas; a++) {
+//            aCobrar = aCobrar.add(buscar(60));
+//        }
         try {
             int noDias = 0;
             noDias = (horas / 24);
@@ -1458,25 +1561,48 @@ public class frmFactura extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             dias1.setText("0");
         }
-        if (horas.intValue() > 0) {
-            if (valorMinutos > 0) {
-                if (valorMinutos > empresaObj.getGracia().intValue()) {
-                    aCobrar = aCobrar.add(buscar(valorMinutos));
-                }
-            } else {
-            }
-        } else {
-            if (valorMinutos > 0) {
-                aCobrar = aCobrar.add(buscar(valorMinutos));
-            } else {
-                aCobrar = aCobrar.add(buscar(1));
-            }
-
-        }
+     
+//        if (horas.intValue() > 0) {
+//            if (valorMinutos > 0) {
+//                if (valorMinutos > empresaObj.getGracia().intValue()) {
+//                    aCobrar = aCobrar.add(buscar(valorMinutos));
+//                }
+//            } else {
+//            }
+//        } else {
+//            if (valorMinutos > 0) {
+//                aCobrar = aCobrar.add(buscar(valorMinutos));
+//            } else {
+//                aCobrar = aCobrar.add(buscar(1));
+//            }
+//
+//        }
         total.setText(aCobrar.setScale(2, RoundingMode.UP) + "");
         codigo.setText(fac.getCodigo() + "");
     }
+ public BigDecimal buscar(Integer minutos) {
+     BigDecimal valorRegresa= new BigDecimal(0);
+     int ultimo = 0;
+     BigDecimal valorUltimo= new BigDecimal(0);
+        for (Iterator<Tarifas> it = tarifario.iterator(); it.hasNext();) {
+            Tarifas tarifas = it.next();
+            int desde = tarifas.getDesde();
+            int hasta = tarifas.getHasta();
+            if (minutos >= desde && minutos <= hasta) {
+                valorRegresa = tarifas.getValor();
+                return valorRegresa;
+            }
+            ultimo = hasta;
+            valorUltimo =tarifas.getValor();
+         
+        }
+         valorRegresa = valorRegresa.add(valorUltimo);
+         minutos = minutos - ultimo;
+         valorRegresa = valorRegresa.add(buscar(minutos));
+        return valorRegresa;
 
+
+    }
     public long diferenciaFechas(Date fechai, Date fechaf) {
         fechaf = new Date();
         java.util.GregorianCalendar date1 = new java.util.GregorianCalendar(fechai.getYear(), fechai.getMonth(), fechai.getDate(), fechai.getHours(), fechai.getMinutes(), fechai.getSeconds());
@@ -1495,23 +1621,25 @@ public class frmFactura extends javax.swing.JInternalFrame {
             return 0.0;
         }
     }
-void cargarFoto(Integer codigoFactura){
+
+    void cargarFoto(Integer codigoFactura) {
         try {
             miBotonImagen.setIcon(null);
-                if (ubicacionDirectorio.contains("build")) {
-                    ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
-                }
-                String ubiv = ubicacionDirectorio + separador + "fotos" + separador + codigoFactura+".jpg";
-                Image image = Toolkit.getDefaultToolkit().getImage(ubiv);
-                //Icon icon = new ImageIcon(image);
-                ImageIcon tmpIconAux = new ImageIcon(image);
-                ImageIcon tmpIcon = new ImageIcon(tmpIconAux.getImage().getScaledInstance(240, -1, Image.SCALE_DEFAULT));
-                miBotonImagen.setIcon(tmpIcon);
-            } catch (Exception e) {
-                System.out.println("NO SE CARGO LA FOTO...");
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }
-    
-}
+            String ubiv = ubicacionDirectorio + separador + "fotos" + separador + codigoFactura + ".jpg";
+            Image image = Toolkit.getDefaultToolkit().getImage(ubiv);
+            //Icon icon = new ImageIcon(image);
+            ImageIcon tmpIconAux = new ImageIcon(image);
+            ImageIcon tmpIcon = new ImageIcon(tmpIconAux.getImage().getScaledInstance(240, -1, Image.SCALE_DEFAULT));
+            miBotonImagen.setIcon(tmpIcon);
+        } catch (Exception e) {
+            System.out.println("NO SE CARGO LA FOTO...");
+        }
+
+    }
+
     @SuppressWarnings("static-access")
     private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
         // TODO add your handling code here:
@@ -1526,12 +1654,12 @@ void cargarFoto(Integer codigoFactura){
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + new Integer(noTicket.getText()) + "' ");
                 if (fac != null) {
                     llenarFactura(fac);
-                    try{
-                    cargarFoto(fac.getCodigo());
-                    }catch(Exception es){
+                    try {
+                        cargarFoto(fac.getCodigo());
+                    } catch (Exception es) {
                         System.out.println("NO SE CARGO FOTO");
                     }
-                            
+
                     btnAgregar.requestFocusInWindow();
                 } else {
                     ingreso.setDate(null);
@@ -1567,21 +1695,7 @@ void cargarFoto(Integer codigoFactura){
         }
     }//GEN-LAST:event_noTicketKeyPressed
 
-    public BigDecimal buscar(Integer minutos) {
-        for (Iterator<Tarifas> it = tarifario.iterator(); it.hasNext();) {
-            Tarifas tarifas = it.next();
-            int desde = tarifas.getDesde();
-            int hasta = tarifas.getHasta();
-            int valo = minutos;
-            if (valo >= desde && valo <= hasta) {
-                return tarifas.getValor();
-            }
-
-        }
-        return new BigDecimal(0);
-
-
-    }
+   
 
     public void llenarCliente(Clientes nCliente) {
         cliente.setText("" + nCliente.getCodigo());
@@ -1722,7 +1836,7 @@ void cargarFoto(Integer codigoFactura){
             } catch (Exception e) {
                 System.out.println("NO SE CARGO FOTO....!");
             }
-            
+
             noTicket.setText(fac.getTicket());
             btnAgregar.requestFocusInWindow();
         } else if (evt.getKeyCode() == evt.VK_UP && encontrados1.getSelectedIndex() == 0) {
@@ -2101,13 +2215,13 @@ void cargarFoto(Integer codigoFactura){
 
     private void btnMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultaActionPerformed
         // TODO add your handling code here:
-               if (guardando == false) {
+        if (guardando == false) {
             guardando = true;
 
             if (principal.permisos.getAgregar()) {
                 try {
-                   
-                     
+
+
                     Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
                     Factura facActual = new Factura();
                     Clientes nuevoCl = (Clientes) adm.buscarClave(new Integer(1), Clientes.class);
@@ -2125,9 +2239,9 @@ void cargarFoto(Integer codigoFactura){
                     facActual.setSubtotal(new BigDecimal(subtotalv));
                     facActual.setIva(new BigDecimal(ivav1));
                     facActual.setPlaca("PAGO MULTA");
-                     facActual.setTiempo(new Date());
-                     facActual.setTicket("000000000");
-                   
+                    facActual.setTiempo(new Date());
+                    facActual.setTicket("000000000");
+
                     adm.guardar(facActual);
                     Integer numero = new Integer(emp.getDocumentofac());
                     emp.setDocumentofac((numero + 1) + "");
@@ -2139,15 +2253,16 @@ void cargarFoto(Integer codigoFactura){
                     }
                     imprimir(facActual.getCodigo(), emp, dia, false, nuevoCl);
                     adm.actualizar(emp);
-                    if(empresaObj.getSeabretic()){
-                                Thread cargar = new Thread() {
-                                    public void run() {
-                                        AbrirPuerta.abrir(empresaObj.getPuerto(), frmPrincipal.out);
-                                        System.out.println("SALIO PUERTA: " + frmPrincipal.out);
+                    if (empresaObj.getSeabretic()) {
+                        Thread cargar = new Thread() {
 
-                                    }
-                                };
-                    
+                            public void run() {
+                                AbrirPuerta.abrir(empresaObj.getPuerto(), frmPrincipal.out);
+                                System.out.println("SALIO PUERTA: " + frmPrincipal.out);
+
+                            }
+                        };
+
                     }
 
                     principal.noDisponibles();
@@ -2181,7 +2296,6 @@ void cargarFoto(Integer codigoFactura){
     private void btnMultaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnMultaKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMultaKeyPressed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
