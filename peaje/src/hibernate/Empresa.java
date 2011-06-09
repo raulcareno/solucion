@@ -691,6 +691,8 @@ public class Empresa implements Serializable {
     public Boolean seabretic;
     @Transient
     public Boolean seabrefac;
+    @Transient
+    public Double multa;
 
     public Boolean getSeabrefac() {
         return seabrefac;
@@ -707,6 +709,15 @@ public class Empresa implements Serializable {
     public void setSeabretic(Boolean seabretic) {
         this.seabretic = seabretic;
     }
+
+    public Double getMulta() {
+        return multa;
+    }
+
+    public void setMulta(Double multa) {
+        this.multa = multa;
+    }
+    
     
     
     

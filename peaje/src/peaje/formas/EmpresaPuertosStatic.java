@@ -87,6 +87,15 @@ public class EmpresaPuertosStatic {
         public String puerta12;
         public String puerta13;
         public String puerta14;
+        public Double multa;
+
+    public Double getMulta() {
+        return multa;
+    }
+
+    public void setMulta(Double multa) {
+        this.multa = multa;
+    }
 
     public Boolean getWebcam() {
         return webcam;

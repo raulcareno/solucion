@@ -2457,6 +2457,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setWebcam(emp.getWebcam());
         empresaObj.setSeabretic(emp.getSeabretic());
         empresaObj.setSeabrefac(emp.getSeabrefac());
+        empresaObj.setMulta(emp.getMulta());
 
 
     }

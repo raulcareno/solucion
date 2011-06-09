@@ -245,7 +245,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnSalir = new javax.swing.JButton();
         total = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnMulta = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         miBotonImagen = new javax.swing.JLabel();
@@ -698,9 +698,24 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel4.add(jLabel2);
         jLabel2.setBounds(10, 70, 120, 30);
 
-        jButton1.setText("Multa");
-        jPanel4.add(jButton1);
-        jButton1.setBounds(80, 130, 59, 50);
+        btnMulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/perdida.png"))); // NOI18N
+        btnMulta.setMnemonic('G');
+        btnMulta.setText("Multa por Pérdida");
+        btnMulta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnMulta.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnMulta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnMulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMultaActionPerformed(evt);
+            }
+        });
+        btnMulta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnMultaKeyPressed(evt);
+            }
+        });
+        jPanel4.add(btnMulta);
+        btnMulta.setBounds(60, 130, 100, 50);
 
         jPanel5.add(jPanel4);
         jPanel4.setBounds(310, 170, 300, 190);
@@ -2084,10 +2099,94 @@ void cargarFoto(Integer codigoFactura){
         principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnSalir1KeyPressed
 
+    private void btnMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultaActionPerformed
+        // TODO add your handling code here:
+               if (guardando == false) {
+            guardando = true;
+
+            if (principal.permisos.getAgregar()) {
+                try {
+                   
+                     
+                    Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                    Factura facActual = new Factura();
+                    Clientes nuevoCl = (Clientes) adm.buscarClave(new Integer(1), Clientes.class);
+                    facActual.setClientes(nuevoCl);
+                    Date fecSalida = new Date();
+                    facActual.setFechaini(fecSalida);
+                    facActual.setFecha(fecSalida);
+                    facActual.setFechafin(fecSalida);
+                    facActual.setNumero(emp.getDocumentofac());
+                    Double ivav = ((empresaObj.getIva() + 100) / 100);
+                    Double totalv = empresaObj.getMulta();
+                    Double subtotalv = totalv / ivav;
+                    Double ivav1 = subtotalv * (empresaObj.getIva() / 100);
+                    facActual.setTotal(new BigDecimal(totalv));
+                    facActual.setSubtotal(new BigDecimal(subtotalv));
+                    facActual.setIva(new BigDecimal(ivav1));
+                    facActual.setPlaca("PAGO MULTA");
+                     facActual.setTiempo(new Date());
+                     facActual.setTicket("000000000");
+                   
+                    adm.guardar(facActual);
+                    Integer numero = new Integer(emp.getDocumentofac());
+                    emp.setDocumentofac((numero + 1) + "");
+                    int dia = 0;
+                    try {
+                        dia = new Integer(dias1.getText());
+                    } catch (Exception e) {
+                        dia = 0;
+                    }
+                    imprimir(facActual.getCodigo(), emp, dia, false, nuevoCl);
+                    adm.actualizar(emp);
+                    if(empresaObj.getSeabretic()){
+                                Thread cargar = new Thread() {
+                                    public void run() {
+                                        AbrirPuerta.abrir(empresaObj.getPuerto(), frmPrincipal.out);
+                                        System.out.println("SALIO PUERTA: " + frmPrincipal.out);
+
+                                    }
+                                };
+                    
+                    }
+
+                    principal.noDisponibles();
+                    ingreso.setDate(null);
+                    salida.setDate(null);
+                    placa.setText(null);
+                    tiempo.setDate(null);
+                    noTicket.setText("");
+                    codigo.setText("");
+                    principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
+                    principal.contenedor.requestFocus();
+                    this.setVisible(false);
+                    principal = null;
+                    empresaObj = null;
+                    System.gc();
+
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                    Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+                    return;
+                }
+                //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito");
+            } else {
+                JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+            }
+            guardando = false;
+        }
+    }//GEN-LAST:event_btnMultaActionPerformed
+
+    private void btnMultaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnMultaKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMultaKeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
     private javax.swing.JButton btnAnadirProducto;
+    private javax.swing.JButton btnMulta;
     private javax.swing.JButton btnNuevoCliente;
     private javax.swing.JButton btnNuevoCliente1;
     private javax.swing.JButton btnSalir;
@@ -2110,7 +2209,6 @@ void cargarFoto(Integer codigoFactura){
     private javax.swing.JFormattedTextField identificacion;
     private javax.swing.JFormattedTextField identificacion1;
     private com.toedter.calendar.JDateChooser ingreso;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

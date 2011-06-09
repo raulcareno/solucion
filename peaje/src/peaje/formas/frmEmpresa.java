@@ -208,7 +208,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         razonsocial.setEditable(estado);
         telefono.setEditable(estado);
         graciasalida.setEditable(estado);
-        graciasalida.setEditable(estado);
+        graciaentrada.setEditable(estado);
         
         parqueaderos.setEditable(estado);
         iva.setEditable(estado);
@@ -237,6 +237,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         chkActivo2.setEnabled(estado);
         chkActivo3.setEnabled(estado);
         chkActivo4.setEnabled(estado);
+        multa.setEditable(estado);
 
 
 
@@ -313,9 +314,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         graciasalida = new javax.swing.JFormattedTextField();
         jLabel28 = new javax.swing.JLabel();
         chkWebcam = new javax.swing.JCheckBox();
-        jLabel29 = new javax.swing.JLabel();
         seabrefactura = new javax.swing.JCheckBox();
         seabreticket = new javax.swing.JCheckBox();
+        multa = new javax.swing.JFormattedTextField();
+        jLabel29 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -497,7 +499,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel4.add(btnBuscar);
-        btnBuscar.setBounds(50, 10, 60, 50);
+        btnBuscar.setBounds(100, 10, 60, 50);
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
         btnAgregar.setMnemonic('N');
@@ -517,7 +519,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(110, 10, 60, 50);
+        btnAgregar.setBounds(160, 10, 60, 50);
 
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
         btnModificar.setMnemonic('M');
@@ -536,7 +538,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel4.add(btnModificar);
-        btnModificar.setBounds(170, 10, 60, 50);
+        btnModificar.setBounds(220, 10, 60, 50);
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
         btnEliminar.setMnemonic('E');
@@ -556,7 +558,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel4.add(btnEliminar);
-        btnEliminar.setBounds(230, 10, 60, 50);
+        btnEliminar.setBounds(280, 10, 60, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
@@ -575,10 +577,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel4.add(btnSalir);
-        btnSalir.setBounds(290, 10, 60, 50);
+        btnSalir.setBounds(340, 10, 60, 50);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(20, 360, 410, 70);
+        jPanel4.setBounds(10, 360, 410, 70);
 
         jPanel2.setLayout(null);
 
@@ -809,6 +811,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel2.add(jLabel28);
         jLabel28.setBounds(180, 190, 120, 20);
 
+        chkWebcam.setText("Trabaja con WebCam:");
         chkWebcam.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         chkWebcam.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
@@ -816,13 +819,9 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         bindingGroup.addBinding(binding);
 
         jPanel2.add(chkWebcam);
-        chkWebcam.setBounds(120, 220, 21, 21);
+        chkWebcam.setBounds(40, 220, 140, 23);
 
-        jLabel29.setText("Trabaja con WebCam:");
-        jPanel2.add(jLabel29);
-        jLabel29.setBounds(0, 220, 120, 14);
-
-        seabrefactura.setText("Se abre barrera al cobrar");
+        seabrefactura.setText("Abrir barrera al cobrar");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.seabrefac}"), seabrefactura, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         bindingGroup.addBinding(binding);
@@ -833,15 +832,30 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(seabrefactura);
-        seabrefactura.setBounds(240, 240, 160, 23);
+        seabrefactura.setBounds(210, 240, 180, 23);
 
-        seabreticket.setText("Se abre barrera al imprimir Ticket");
+        seabreticket.setText("Abrir barrera al imprimir Ticket");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.seabretic}"), seabreticket, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         bindingGroup.addBinding(binding);
 
         jPanel2.add(seabreticket);
-        seabreticket.setBounds(50, 240, 190, 23);
+        seabreticket.setBounds(210, 220, 190, 23);
+
+        multa.setEditable(false);
+        multa.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        multa.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        multa.setText("5");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.multa}"), multa, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        jPanel2.add(multa);
+        multa.setBounds(120, 245, 60, 17);
+
+        jLabel29.setText("Multa por pérdida: ");
+        jPanel2.add(jLabel29);
+        jLabel29.setBounds(10, 240, 100, 20);
 
         jTabbedPane1.addTab("DATOS DE LA EMPRESA", new javax.swing.ImageIcon(getClass().getResource("/images/empresa.png")), jPanel2); // NOI18N
 
@@ -1281,7 +1295,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jTabbedPane1.addTab("PUERTAS Y LECTORAS", new javax.swing.ImageIcon(getClass().getResource("/images/admin.gif")), jPanel5); // NOI18N
 
         getContentPane().add(jTabbedPane1);
-        jTabbedPane1.setBounds(10, 50, 410, 300);
+        jTabbedPane1.setBounds(10, 50, 410, 310);
 
         bindingGroup.bind();
 
@@ -1338,6 +1352,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setWebcam(chkWebcam.isSelected());
                     empresaObj.setSeabretic(seabreticket.isSelected());
                     empresaObj.setSeabrefac(seabrefactura.isSelected());
+                    empresaObj.setMulta(new Double(multa.getText()));
 
                     XMLEmpresa xm = new XMLEmpresa();
                     xm.inicio();
@@ -1916,6 +1931,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JFormattedTextField multa;
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField parqueaderos;
     private javax.swing.JFormattedTextField razonsocial;

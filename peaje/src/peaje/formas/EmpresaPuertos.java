@@ -88,6 +88,7 @@ public class EmpresaPuertos {
     public Boolean webcam;
     public Boolean seabrefac;
     public Boolean seabretic;
+    public Double multa;
 
     public String getLed() {
         return led;
@@ -535,6 +536,14 @@ public class EmpresaPuertos {
 
     public void setSeabretic(Boolean seabretic) {
         this.seabretic = seabretic;
+    }
+
+    public Double getMulta() {
+        return multa;
+    }
+
+    public void setMulta(Double multa) {
+        this.multa = multa;
     }
     
     

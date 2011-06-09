@@ -101,6 +101,7 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String WEBCAM = "WEBCAM";
     private static final String SEABRETIC = "SEABRETIC";
     private static final String SEABREFAC = "SEABREFAC";
+    private static final String MULTA = "MULTA";
 
 
     // Variables
@@ -259,6 +260,9 @@ public static UsuarioActivo user = new UsuarioActivo();
         item = xmlDoc.createElement(SEABRETIC);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getSeabretic()+""));
         personal.appendChild(item);
+        item = xmlDoc.createElement(MULTA);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getMulta()+""));
+        personal.appendChild(item);
         
         
     }
@@ -396,6 +400,7 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setPuerta7(emp.getPuerta7());
         beanEmpleado.setSeabretic(emp.getSeabretic());
         beanEmpleado.setSeabrefac(emp.getSeabrefac());
+        beanEmpleado.setMulta(emp.getMulta());
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
         //obtenemos el documento XML en cadena de texto
@@ -703,6 +708,11 @@ public static UsuarioActivo user = new UsuarioActivo();
                     Element SEABREFACoutElement = (Element) SEABREFACoutList.item(0);
                     NodeList SEABREFACoutAgeList = SEABREFACoutElement.getChildNodes();
                     user.setSeabrefac(new Boolean(((Node) SEABREFACoutAgeList.item(0)).getNodeValue().trim()));
+                    
+                    NodeList MULTAoutList = firstPersonElement.getElementsByTagName("MULTA");
+                    Element MULTAoutElement = (Element) MULTAoutList.item(0);
+                    NodeList MULTAoutAgeList = MULTAoutElement.getChildNodes();
+                    user.setMulta(new Double(((Node) MULTAoutAgeList.item(0)).getNodeValue().trim()));
                     
   } catch (Exception parserConfigurationException) {
                         System.out.println("ERROR LECTURA"+parserConfigurationException);
