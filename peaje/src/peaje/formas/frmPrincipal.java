@@ -4989,8 +4989,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     private void usuarioLogeadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioLogeadoActionPerformed
         // TODO add your handling code here:
-        panelCambiar.setVisible(true);
-        claveActual.requestFocusInWindow();
+        if(panelCambiar.isVisible()){
+            panelCambiar.setVisible(false);
+        }else{
+            panelCambiar.setVisible(true);
+            claveActual.requestFocusInWindow();
+        }
         
     }//GEN-LAST:event_usuarioLogeadoActionPerformed
 
