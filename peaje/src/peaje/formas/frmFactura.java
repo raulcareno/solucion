@@ -245,6 +245,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnSalir = new javax.swing.JButton();
         total = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         miBotonImagen = new javax.swing.JLabel();
@@ -690,12 +691,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel4.add(total);
         total.setBounds(130, 60, 150, 50);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24));
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
         jLabel2.setLabelFor(total);
         jLabel2.setText("A PAGAR:");
         jPanel4.add(jLabel2);
         jLabel2.setBounds(10, 70, 120, 30);
+
+        jButton1.setText("Multa");
+        jPanel4.add(jButton1);
+        jButton1.setBounds(80, 130, 59, 50);
 
         jPanel5.add(jPanel4);
         jPanel4.setBounds(310, 170, 300, 190);
@@ -2105,6 +2110,7 @@ void cargarFoto(Integer codigoFactura){
     private javax.swing.JFormattedTextField identificacion;
     private javax.swing.JFormattedTextField identificacion1;
     private com.toedter.calendar.JDateChooser ingreso;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
