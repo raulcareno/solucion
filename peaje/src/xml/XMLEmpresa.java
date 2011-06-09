@@ -697,12 +697,12 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList SEABRETICoutList = firstPersonElement.getElementsByTagName("SEABRETIC");
                     Element SEABRETICoutElement = (Element) SEABRETICoutList.item(0);
                     NodeList SEABRETICoutAgeList = SEABRETICoutElement.getChildNodes();
-                    user.setWebcam(new Boolean(((Node) SEABRETICoutAgeList.item(0)).getNodeValue().trim()));
+                    user.setSeabretic(new Boolean(((Node) SEABRETICoutAgeList.item(0)).getNodeValue().trim()));
                     
                     NodeList SEABREFACoutList = firstPersonElement.getElementsByTagName("SEABREFAC");
                     Element SEABREFACoutElement = (Element) SEABREFACoutList.item(0);
                     NodeList SEABREFACoutAgeList = SEABREFACoutElement.getChildNodes();
-                    user.setWebcam(new Boolean(((Node) SEABREFACoutAgeList.item(0)).getNodeValue().trim()));
+                    user.setSeabrefac(new Boolean(((Node) SEABREFACoutAgeList.item(0)).getNodeValue().trim()));
                     
   } catch (Exception parserConfigurationException) {
                         System.out.println("ERROR LECTURA"+parserConfigurationException);

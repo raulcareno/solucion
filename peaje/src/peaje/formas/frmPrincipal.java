@@ -417,6 +417,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         errores = new javax.swing.JLabel();
         usuarioLogeado = new javax.swing.JButton();
         camaraVista = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        jLabel38 = new javax.swing.JLabel();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -665,7 +667,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         barraHerramients.add(barrera5);
 
-        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11));
         barrera6.setForeground(new java.awt.Color(204, 102, 0));
         barrera6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera6.setText("F6");
@@ -682,7 +684,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         barraHerramients.add(barrera6);
 
-        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11));
         barrera7.setForeground(new java.awt.Color(204, 102, 0));
         barrera7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera7.setText("F7");
@@ -838,7 +840,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmIngresarSistema.getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 380, 40);
 
-        frmIngresarSistema.setBounds(230, 170, 390, 220);
+        frmIngresarSistema.setBounds(180, 170, 390, 220);
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         formaTarjetas1.setTitle("Registro y Modificación de Tarjetas");
@@ -1304,9 +1306,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addContainerGap()
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frmLoteLayout.createSequentialGroup()
-                        .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                        .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                         .addGap(4, 4, 4))
                     .addGroup(frmLoteLayout.createSequentialGroup()
                         .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1324,11 +1326,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGap(23, 23, 23))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
                 .addGap(35, 35, 35))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
                 .addGap(35, 35, 35))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
@@ -1339,7 +1341,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel35))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         frmLoteLayout.setVerticalGroup(
             frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1744,7 +1746,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             frmRespaldarBase.setBounds(50, 120, 520, 210);
             contenedor.add(frmRespaldarBase, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            panelIngreso.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
+            panelIngreso.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
             panelIngreso.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     panelIngresoKeyPressed(evt);
@@ -1848,10 +1850,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(errores);
             errores.setBounds(20, 100, 360, 20);
 
-            panelIngreso.setBounds(20, 480, 400, 130);
+            panelIngreso.setBounds(20, 480, 420, 130);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
             usuarioLogeado.setForeground(new java.awt.Color(0, 153, 204));
             usuarioLogeado.setText("...");
             usuarioLogeado.setBorderPainted(false);
@@ -1866,7 +1868,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             camaraVista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            camaraVista.setText("WEB CAM");
             camaraVista.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 204), 2, true));
             camaraVista.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1875,6 +1876,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             camaraVista.setBounds(20, 26, 610, 440);
             contenedor.add(camaraVista, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+            jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.JPG"))); // NOI18N
+            jLabel37.setBounds(460, 470, 160, 45);
+            contenedor.add(jLabel37, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+            jLabel38.setForeground(new java.awt.Color(0, 51, 204));
+            jLabel38.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel38.setText("www.tekatronic.tk");
+            jLabel38.setBounds(480, 520, 130, 14);
+            contenedor.add(jLabel38, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
 
@@ -2141,10 +2152,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel32)
                         .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                         .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                        .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                        .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
+                        .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
                     .addContainerGap())
             );
             jXTaskPaneContainer1Layout.setVerticalGroup(
@@ -2455,7 +2466,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
 //            this.camaraVista.setLayout(null);
-            this.camaraVista.add(ver.VerCamara(2, 2, new Double(camaraVista.getSize().getWidth()).intValue()-4, new Double(camaraVista.getSize().getHeight()).intValue()-4));
+            this.camaraVista.add(ver.VerCamara(2, 2, new Double(camaraVista.getSize().getWidth()).intValue() - 4, new Double(camaraVista.getSize().getHeight()).intValue() - 4));
         } catch (Exception e) {
             System.out.println("NO SE PUEDE INICIAR CAMARA.....!");
         }
@@ -2494,7 +2505,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     if (estado && estado2) {
                     } else {
 
-                        if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")) {
+                        if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("jcinform@2020")) {
                         } else {
                             clave.setEditable(true);
                             usuariot.setEditable(true);
@@ -2939,21 +2950,46 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         if (puertoViene.length() > 10) {
             puertoViene = puertoViene.substring(0, 10);
         }
+        if (noticket.length() > 10) {
+            noticket = noticket.substring(0, 10);
+        }
         try {
             try {
-//                    verPanel();
+                verPanel();
                 errores.setText("");
                 //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
-                List<Factura> facturas = adm.query("Select o from Factura as o where o.ticket = '" + noticket + "' "
-                        + "and o.fechafin is not null  ");
-                Factura fac = new Factura();
-                if (facturas.size() > 0) {
-                    errores.setText("EL CLIENTE HA PAGADO PERO FALTA VALIDAR SI NO SE HA PASADO EL TIEMPO LÍMITE");
-                    abrirPuerta(puertoViene);
-                } else {
-                    errores.setText("CLIENTE QUIERE SALIR SIN PAGAR)");
-                }
-                noDisponibles();
+                List<Factura> facturas = adm.query("Select o from Factura as o where o.ticket = '" + new Integer(noticket) + "' "
+                        + "  ");
+                    if (facturas.size() > 0) {
+        
+                        try {
+                            Date fechaFin = facturas.get(0).getFechafin();
+                             if(fechaFin == null){
+                                    errores.setText("TICKET No: " + new Integer(noticket) + " QUIERE SALIR SIN PAGAR)");
+                             }else{
+                                 Long minutos0 = diferenciaFechas(fechaFin, new Date());
+                                Integer minutos = minutos0.intValue();
+                                if(minutos > empresaObj.getSalida()){
+                                        errores.setText("TIEMPO DE GRACIA EXCEDIDO CON "+minutos+" min...!");
+                                }else{
+                                    errores.setText("SALIDA OK ...!");
+                                        abrirPuerta(puertoViene);
+                                }
+                                
+                               
+                             }
+                        } catch (Exception e) {
+                        }
+
+                        
+                    }else {
+
+                    }
+
+                     
+                    noDisponibles();
+
+
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -4853,7 +4889,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     private void camaraVistaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_camaraVistaKeyPressed
         // TODO add your handling code here:
-         tecla(evt.getKeyCode());
+        tecla(evt.getKeyCode());
     }//GEN-LAST:event_camaraVistaKeyPressed
     public void verPanel() {
         panelIngreso.setVisible(true);
@@ -4862,7 +4898,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             public void run() {
                 try {
 
-                    sleep(30000);
+                    sleep(40000);
                     panelIngreso.setVisible(false);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -5066,6 +5102,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

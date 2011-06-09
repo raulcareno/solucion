@@ -1503,7 +1503,7 @@ void cargarFoto(Integer codigoFactura){
                 placa.setText(null);
                 tiempo.setDate(null);
 
-                Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + noTicket.getText() + "' ");
+                Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + new Integer(noTicket.getText()) + "' ");
                 if (fac != null) {
                     llenarFactura(fac);
                     try{

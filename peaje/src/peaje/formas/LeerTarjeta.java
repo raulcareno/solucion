@@ -176,6 +176,8 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //    if(tarjeta.length()>10){
 //        tarjeta = "";
 //    }
+//        tarjeta = "";
+        System.out.println(""+tarjeta);
         switch (event.getEventType()) {
             case SerialPortEvent.BI:
             case SerialPortEvent.OE:
@@ -203,13 +205,15 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         if (tarjeta.length() >= 10) {
 
             //System.out.println("" + tarjeta);
-            if("AEIOUAEIOU".equals(tarjeta)){
+            if ("AEIOUAEIOU".equals(tarjeta)) {
                 imprimir();
+                   tarjeta = "";
                 return;
             }
+            //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
             if (puertoId.getName().equals(princip.empresaObj.getBarras())) {
-                princip.buscarTarjetaValidarSalida(puertoId.getName(),tarjeta);//ENVIO EL NUMERO DE TICKET
-
+                princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
+                tarjeta = "";
                 return;
             }
             princip.tarjetatxt.setText("");
@@ -219,7 +223,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             //peaje.formas.SimpleWrite.llamar("COM3");
 
             return;
-        }
+        } 
 
 
     }
@@ -231,8 +235,11 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             if (ubicacionDirectorio.contains("build")) {
                 ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }
-            Empresa emp = princip.empresaObj;
+//            Empresa emp = princip.empresaObj;
             JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes" + separador + "ticket2.jasper");
+            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+
+
 
             Factura fac = new Factura();
             fac.setPlaca("CLIENTE LECTORA");
@@ -241,6 +248,9 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             fac.setTicket(emp.getDocumentoticket());
 //                noTicket.setText(emp.getDocumentoticket());
             adm.guardar(fac);
+            Integer numero = new Integer(emp.getDocumentoticket());
+            emp.setDocumentoticket((numero + 1) + "");
+            adm.actualizar(emp);
 //            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
             ArrayList detalle = new ArrayList();
             detalle.add(fac);
@@ -264,7 +274,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             }
             job.setPrintService(services[selectedService]);
             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
-            MediaSizeName mediaSizeName = MediaSize.findMedia(4, 4, MediaPrintableArea.INCH);
+            MediaSizeName mediaSizeName = MediaSize.findMedia(4, 3.2f, MediaPrintableArea.INCH);
             printRequestAttributeSet.add(mediaSizeName);
             printRequestAttributeSet.add(new Copies(1));
             JRPrintServiceExporter exporter;
