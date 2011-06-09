@@ -39,7 +39,7 @@ public class Contratos implements Serializable {
     @Column(name = "estado")
     private String estado="Activo";
     @Column(name = "contrato")
-    private String contrato;
+    private Integer contrato;
     @Column(name = "direccion")
     private String direccion;
     @Column(name = "referencia")
@@ -134,11 +134,11 @@ public class Contratos implements Serializable {
         this.estado = estado;
     }
 
-    public String getContrato() {
+    public Integer getContrato() {
         return contrato;
     }
 
-    public void setContrato(String contrato) {
+    public void setContrato(Integer contrato) {
         this.contrato = contrato;
     }
 

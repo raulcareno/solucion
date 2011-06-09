@@ -44,12 +44,12 @@ void llenar(Contratos  equi2){
     equi = equi2;
     registro.setSelected(true);
     if(equi.getClientes() != null){
-   identificacion.value = equi.getClientes().getIdentificacion();
-        codigocli.value = equi.getClientes().getCodigo()+"";
-        direccion.value = equi.getClientes().getDireccion();
-        combo.value =equi.getClientes().getApellidos()+" "+equi.getClientes().getNombres();//cliente
+            identificacion.value = equi.getClientes().getIdentificacion();
+            codigocli.value = equi.getClientes().getCodigo()+"";
+            direccion.value = equi.getClientes().getDireccion();
+            combo.value =equi.getClientes().getApellidos()+" "+equi.getClientes().getNombres();//cliente
      }else{
-     identificacion.value = "";
+        identificacion.value = "";
         codigocli.value = "";
         direccion.value ="";
         combo.value ="";//cliente
@@ -102,7 +102,7 @@ void llenar(Contratos  equi2){
     codigoequi3.value = "";
         equipo3.value = "";
     }
-       
+      
        if(equi.getPlan() != null){
              try{
                       for (int i = 0; i <= perf.getItems().size(); i++) {
@@ -145,7 +145,10 @@ void llenar(Contratos  equi2){
         registrado.value = equi.getEmpleados()+"";//REGISTRADOR
         registradoU.value = equi.getEmpleados().getCodigo()+"";//REGISTRADOR
      
-     }catch(Exception exa){}
+     }catch(Exception exa){
+     registrado.value = usuarioActual.getApellidos()+" "+usuarioActual.getNombres();
+     registradoU.value = usuarioActual.getCodigo()+"";
+     }  
     
     
 }
@@ -182,33 +185,55 @@ void estado(Boolean estado,Boolean modificar){
 
 
  void guardar(){
-    /*if(nombre.value.equals("")){
+ 
+    if(codigocli.value == null || diapago.value == ""){
             Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             return;
-    }*/
-        equi.setClientes(new Clientes(new Integer(codigocli.value)));
+    }
+ 
+    equi.setClientes(new Clientes(new Integer(codigocli.value)));
     equi.setFecha(fecha.value);
     equi.setFechainstalacion(fechainstalacion.value);
     equi.setAutorizado(autorizado.isChecked());
     equi.setUsuario(usuario.value);
     equi.setIp(ip.value);
     equi.setClave(clave.value);
-    equi.setEmpleados(new Empleados(new Integer(codigoemp.value)));
     equi.setContrato(numerocontrato.value);
     equi.setEstado(estadoContrato.selectedItem.value);
     
+     if(equi.getContrato()==null){
+            Integer valor = adm.getNuevaClave("Contratos","contrato");
+            equi.setContrato(valor);
+    }
+    
+    equi.setDireccion(direccioni.value);
+    equi.setReferencia(referenciai.value);
+    equi.setTelefono(telefonoi.value);
+    alert("1");
+    equi.setFormapago(new Integer(formapago.selectedItem.value)); //integer
+    alert("2");
+    equi.setNocuenta(nocuenta.value); //varchar
+    alert("3");
+    equi.setTipocuenta(tipocuenta.value); //varchar 
+    alert("4");
+    equi.setDiapago(new Integer(diapago.value));//integer
+    alert("5");
+    equi.setSerie1(serie1.value);
+    equi.setSerie1(serie2.value);
+    equi.setSerie2(serie3.value);
+   alert("6");
     try{
-       equi.setControlequipos(new Controlequipos(new Integer(codigoequi1.value))); 
+       equi.setControlequipos1(new Controlequipos(new Integer(codigoequi1.value))); 
     }catch(Exception e){
     }
     
     try{
-       equi.setControlequipos2(new Controlequipos(new Integer(codigoequi2.value))); 
+       equi.setControlequipos(new Controlequipos(new Integer(codigoequi2.value))); 
     }catch(Exception e){
     }
     
     try{
-       equi.setControlequipos3(new Controlequipos(new Integer(codigoequi3.value))); 
+       equi.setControlequipos(new Controlequipos(new Integer(codigoequi3.value))); 
     }catch(Exception e){
     }
     try{
@@ -549,7 +574,7 @@ llenarCliente(Clientes clienteEn){
                                           
                                                         <row>
                                                             <span style="float:right">No.Contrato:  </span>
-                                                            <textbox style="color:red;font-size:16px"  readonly="true" id="numerocontrato" cols="16" />
+                                                            <intbox style="color:red;font-size:16px"  readonly="true" id="numerocontrato" cols="16" />
                                                             <span style="float:right">Fecha:  </span>
                                                             <datebox id="fecha" disabled="true" onCreate="self.value = new Date()"/>
                                                         </row>
@@ -596,9 +621,9 @@ llenarCliente(Clientes clienteEn){
                                                         </row>
                                                         <row spans="4">
                                       
-                                                            <span>  Forma Pago: 
+                                                            <span>  Forma Pago(*): 
                                                                 <radiogroup Id="formapago" onCheck="">
-                                                                    <radio value="1" label="Efectivo"/>
+                                                                    <radio value="1" selected="true"  label="Efectivo"/>
                                                                     <radio value="2" label="Débito"/>
                                                                 </radiogroup>
                                         
@@ -611,13 +636,13 @@ llenarCliente(Clientes clienteEn){
                                                                         <comboitem label="COR"/>
                                                                     </combobox> 
                                                                 </span>
-                                                                <span style="">Día Pago:  </span>
+                                                                <span style="">Día Pago(*):  </span>
                                                                 <combobox width="17px"  id="diapago">
                                                                     <comboitem label="1"/>
                                                                     <comboitem label="2"/>
                                                                     <comboitem label="3"/>
                                                                     <comboitem label="4"/> 
-                                                                    <comboitem label="4"/>
+                                                                    <comboitem label="5"/>
                                                                     <comboitem label="6"/> 
                                                                     <comboitem label="7"/>
                                                                     <comboitem label="8"/> 
@@ -651,7 +676,7 @@ llenarCliente(Clientes clienteEn){
                                                             <span>
 	    			Estado: 
                                                                 <radiogroup id="estadoContrato" >
-                                                                    <radio id="eactivo" value="Activo" label="ACTIVO"/>
+                                                                    <radio id="eactivo" selected="true" value="Activo" label="ACTIVO"/>
                                                                     <radio id="esuspendido"  value="Cancelado"  label="CORTADO"/>
                                                                     <radio  id="ecancelado" value="Suspendido"  label="TERMINADO"/>
                                          
