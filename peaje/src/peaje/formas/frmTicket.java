@@ -345,7 +345,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     fac.setPlaca(placa.getText().replace("_", "").toUpperCase());
                     fac.setFechaini(new Date());
                     fac.setFecha(new Date());
-                    fac.setTicket(emp.getDocumentoticket());
+                    fac.setTicket(emp.getDocumentoticket()+1);
                     noTicket.setText(emp.getDocumentoticket());
                     adm.guardar(fac);
                     codigo.setText(fac.getCodigo() + "");
