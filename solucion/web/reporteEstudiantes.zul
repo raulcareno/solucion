@@ -274,6 +274,14 @@ String query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOB
                                      + " AND o.estado IN ('Matriculado') "
                                      + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
                      }
+                     if(tipo.equals("LMATYR")){
+                        query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                    + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                    + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                    + " AND c.codigocur IN ("+curso+") "
+                                     + " AND o.estado IN ('Matriculado','Retirado') "
+                                     + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                     }
                      if(tipo.equals("LMATF")){
                      String desde2 = (desde.getValue().getYear()+1900) +"-"+ (desde.getValue().getMonth()+1)+"-"+ (desde.getValue().getDate());
                      String hasta2 = (hasta.getValue().getYear()+1900) +"-"+ (hasta.getValue().getMonth()+1)+"-"+ (hasta.getValue().getDate());
@@ -601,8 +609,12 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = inscritos(listadoCursos,"Retirado");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"estudiantes.jasper");
-            }else if(tipo.equals("LMAT")){
+            }else if(tipo.equals("LMAT") ){
                     datasource = certificados(listadoCursos,"LMAT");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
+            }else if(tipo.equals("LMATYR") ){
+                    datasource = certificados(listadoCursos,"LMATYR");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"estudiantes.jasper");
             }else if(tipo.equals("LMATF")){
@@ -707,7 +719,7 @@ void campos(String valor){
             titulo.value = "Listado de Matriculados";
         if(valor.equals("RET"))
             titulo.value = "Listado de Retirados";
-        if(valor.equals("LMAT") || valor.equals("LMAT2"))
+        if(valor.equals("LMAT") || valor.equals("LMAT2") || valor.equals("LMATYR"))
             titulo.value = "Listado de Matriculados por Curso";
     
 
@@ -771,6 +783,7 @@ void campos(String valor){
                                 <listitem  id="INS4" label="Listado de Pre-aprobados" value="INS4" />
                                 <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
                                 <listitem  id="LMAT" label="Matriculados" value="LMAT" />
+                                <listitem  id="LMATYR" label="Matriculados con Retirados" value="LMATYR" />
                                 <listitem  id="LMATF" label="Matriculados por Fechas" value="LMATF" />
                                 <listitem  id="LINSF" label="Inscritos por Fechas" value="LINSF" />
                                 <listitem id="RET"  label="Retirados" value="RET" />
@@ -936,6 +949,7 @@ void campos(String valor){
             MAT.visible = per.verificarPermisoReporte("MAT", "Ingresar");
             RET.visible = per.verificarPermisoReporte("RET", "Ingresar");
             LMAT.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
+            LMATYR.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
             LMAT2.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
             LMATF.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
             LCAR.visible = per.verificarPermisoReporte("LCAR", "Ingresar");
