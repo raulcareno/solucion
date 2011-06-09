@@ -6,6 +6,7 @@
 
 package peaje.formas;
 
+import hibernate.Empresa;
 import java.awt.Container;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -23,10 +24,11 @@ public class acerca  extends javax.swing.JInternalFrame  {
         initComponents();
         this.setSize(458, 205);
     }
-  public acerca(java.awt.Frame parent, boolean modal) {
+  public acerca(java.awt.Frame parent, boolean modal,Empresa emp) {
 //          super(parent,modal);
         //this.desktopContenedor = lo.contenedor;
         initComponents();
+//        derecho.setText(emp.getRazon());
         this.setSize(464, 220);
     }
     /** This method is called from within the constructor to
@@ -38,6 +40,8 @@ public class acerca  extends javax.swing.JInternalFrame  {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lavel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         javax.swing.JLabel imageLabel = new javax.swing.JLabel();
@@ -46,14 +50,18 @@ public class acerca  extends javax.swing.JInternalFrame  {
         javax.swing.JLabel appTitleLabel = new javax.swing.JLabel();
         javax.swing.JLabel versionLabel = new javax.swing.JLabel();
         javax.swing.JLabel appVersionLabel = new javax.swing.JLabel();
-        javax.swing.JLabel appVendorLabel = new javax.swing.JLabel();
         javax.swing.JLabel appHomepageLabel = new javax.swing.JLabel();
         javax.swing.JLabel homepageLabel = new javax.swing.JLabel();
-        javax.swing.JLabel vendorLabel = new javax.swing.JLabel();
         javax.swing.JLabel appHomepageLabel1 = new javax.swing.JLabel();
         javax.swing.JLabel appHomepageLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         javax.swing.JLabel homepageLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        todos = new javax.swing.JTextPane();
+
+        lavel2.setText("Una licencia de uso para:");
+
+        jLabel4.setText("JCINFORM Soluciones Informáticas");
 
         setTitle("Acerca de ...");
         getContentPane().setLayout(null);
@@ -82,7 +90,7 @@ public class acerca  extends javax.swing.JInternalFrame  {
 
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
         getContentPane().add(imageLabel);
-        imageLabel.setBounds(10, 10, 190, 90);
+        imageLabel.setBounds(10, 10, 180, 90);
 
         jButton1.setText("Aceptar");
         jButton1.setSelected(true);
@@ -92,7 +100,7 @@ public class acerca  extends javax.swing.JInternalFrame  {
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(40, 130, 120, 40);
+        jButton1.setBounds(60, 110, 100, 30);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(null);
@@ -101,42 +109,33 @@ public class acerca  extends javax.swing.JInternalFrame  {
         appTitleLabel.setForeground(new java.awt.Color(0, 51, 153));
         appTitleLabel.setText("Sistema de Parqueadero");
         jPanel1.add(appTitleLabel);
-        appTitleLabel.setBounds(30, 10, 190, 19);
+        appTitleLabel.setBounds(30, 0, 190, 19);
 
         versionLabel.setFont(versionLabel.getFont().deriveFont(versionLabel.getFont().getStyle() | java.awt.Font.BOLD));
         versionLabel.setText("Version:");
         jPanel1.add(versionLabel);
-        versionLabel.setBounds(10, 40, 70, 14);
+        versionLabel.setBounds(10, 20, 70, 14);
 
         appVersionLabel.setText("1.0");
         jPanel1.add(appVersionLabel);
-        appVersionLabel.setBounds(80, 40, 70, 14);
-
-        appVendorLabel.setText("JCINFORM");
-        jPanel1.add(appVendorLabel);
-        appVendorLabel.setBounds(80, 60, 107, 14);
+        appVersionLabel.setBounds(80, 20, 70, 14);
 
         appHomepageLabel.setText("Ing. Geovanny Jadán Ortega");
         jPanel1.add(appHomepageLabel);
-        appHomepageLabel.setBounds(80, 100, 141, 14);
+        appHomepageLabel.setBounds(80, 60, 141, 14);
 
         homepageLabel.setFont(homepageLabel.getFont().deriveFont(homepageLabel.getFont().getStyle() | java.awt.Font.BOLD));
         homepageLabel.setText("Ventas:");
         jPanel1.add(homepageLabel);
-        homepageLabel.setBounds(10, 100, 70, 14);
-
-        vendorLabel.setFont(vendorLabel.getFont().deriveFont(vendorLabel.getFont().getStyle() | java.awt.Font.BOLD));
-        vendorLabel.setText("Proveedor:");
-        jPanel1.add(vendorLabel);
-        vendorLabel.setBounds(10, 60, 70, 14);
+        homepageLabel.setBounds(10, 60, 70, 14);
 
         appHomepageLabel1.setText("080-162 211");
         jPanel1.add(appHomepageLabel1);
-        appHomepageLabel1.setBounds(80, 140, 143, 14);
+        appHomepageLabel1.setBounds(80, 100, 143, 14);
 
         appHomepageLabel3.setText("jcinform@gmail.com");
         jPanel1.add(appHomepageLabel3);
-        appHomepageLabel3.setBounds(80, 120, 143, 14);
+        appHomepageLabel3.setBounds(80, 80, 143, 14);
 
         jButton2.setForeground(new java.awt.Color(0, 0, 255));
         jButton2.setText("http://www.jcinform.com");
@@ -152,15 +151,28 @@ public class acerca  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel1.add(jButton2);
-        jButton2.setBounds(80, 80, 140, 14);
+        jButton2.setBounds(80, 40, 140, 14);
 
         homepageLabel1.setFont(homepageLabel1.getFont().deriveFont(homepageLabel1.getFont().getStyle() | java.awt.Font.BOLD));
         homepageLabel1.setText("Web:");
         jPanel1.add(homepageLabel1);
-        homepageLabel1.setBounds(10, 80, 70, 14);
+        homepageLabel1.setBounds(10, 40, 70, 14);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(210, 10, 230, 160);
+        jPanel1.setBounds(210, 10, 230, 120);
+
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jScrollPane1.setEnabled(false);
+
+        todos.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        todos.setEditable(false);
+        todos.setText("Todos los derechos reservados a JCINFORM Soluciones Informáticas. Prohibida la reproducción total o parcial de éste software.");
+        todos.setSelectedTextColor(new java.awt.Color(51, 51, 51));
+        todos.setSelectionColor(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setViewportView(todos);
+
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(10, 145, 430, 40);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -192,8 +204,12 @@ void abrirurl(){
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lavel2;
+    private javax.swing.JTextPane todos;
     // End of variables declaration//GEN-END:variables
 
 }
