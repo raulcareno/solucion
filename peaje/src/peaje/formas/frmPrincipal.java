@@ -200,6 +200,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
             this.setIconImage(im);
             panelIngreso.setVisible(false);
+            panelCambiar.setVisible(false);
             habilitarBotones(false);
             if (comprobar()) {
                 mostrar = true;
@@ -417,6 +418,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         errores = new javax.swing.JLabel();
         imAviso = new javax.swing.JLabel();
         usuarioLogeado = new javax.swing.JButton();
+        panelCambiar = new javax.swing.JPanel();
+        guardarCambioClave = new javax.swing.JButton();
+        jLabel39 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
+        jLabel41 = new javax.swing.JLabel();
+        claveActual = new javax.swing.JPasswordField();
+        nuevaClave = new javax.swing.JPasswordField();
+        repiteClave = new javax.swing.JPasswordField();
+        jButton7 = new javax.swing.JButton();
         camaraVista = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
@@ -1858,28 +1868,87 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.setBounds(20, 480, 460, 130);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
+            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             usuarioLogeado.setForeground(new java.awt.Color(0, 153, 204));
+            usuarioLogeado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editPerfil.png"))); // NOI18N
             usuarioLogeado.setText("...");
             usuarioLogeado.setBorderPainted(false);
             usuarioLogeado.setContentAreaFilled(false);
             usuarioLogeado.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            usuarioLogeado.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    usuarioLogeadoActionPerformed(evt);
+                }
+            });
             usuarioLogeado.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     usuarioLogeadoKeyPressed(evt);
                 }
             });
-            usuarioLogeado.setBounds(10, 3, 420, 30);
+            usuarioLogeado.setBounds(10, 3, 270, 30);
             contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+            panelCambiar.setBackground(new java.awt.Color(227, 240, 254));
+            panelCambiar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)));
+            panelCambiar.setLayout(null);
+
+            guardarCambioClave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/filesave.gif"))); // NOI18N
+            guardarCambioClave.setText("Cambiar");
+            guardarCambioClave.setMargin(new java.awt.Insets(1, 1, 1, 1));
+            guardarCambioClave.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    guardarCambioClaveActionPerformed(evt);
+                }
+            });
+            panelCambiar.add(guardarCambioClave);
+            guardarCambioClave.setBounds(30, 100, 90, 33);
+
+            jLabel39.setText("Clave Actual:");
+            panelCambiar.add(jLabel39);
+            jLabel39.setBounds(30, 10, 64, 14);
+
+            jLabel40.setText("Nueva Clave:");
+            panelCambiar.add(jLabel40);
+            jLabel40.setBounds(30, 40, 65, 14);
+
+            jLabel41.setText("Repite Clave:");
+            panelCambiar.add(jLabel41);
+            jLabel41.setBounds(30, 70, 65, 14);
+
+            claveActual.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    claveActualActionPerformed(evt);
+                }
+            });
+            panelCambiar.add(claveActual);
+            claveActual.setBounds(110, 10, 110, 20);
+            panelCambiar.add(nuevaClave);
+            nuevaClave.setBounds(111, 41, 110, 20);
+            panelCambiar.add(repiteClave);
+            repiteClave.setBounds(111, 67, 110, 20);
+
+            jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
+            jButton7.setText("Cerrar");
+            jButton7.setMargin(new java.awt.Insets(1, 1, 1, 1));
+            jButton7.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton7ActionPerformed(evt);
+                }
+            });
+            panelCambiar.add(jButton7);
+            jButton7.setBounds(140, 100, 90, 35);
+
+            panelCambiar.setBounds(10, 30, 270, 150);
+            contenedor.add(panelCambiar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
             camaraVista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            camaraVista.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 204), 2, true));
+            camaraVista.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 204), 1, true));
             camaraVista.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     camaraVistaKeyPressed(evt);
                 }
             });
-            camaraVista.setBounds(20, 26, 630, 440);
+            camaraVista.setBounds(10, 30, 630, 440);
             contenedor.add(camaraVista, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.JPG"))); // NOI18N
@@ -2512,11 +2581,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     } else {
 
                         if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")) {
+                               usuarioActual = usu;
                         } else {
                             clave.setEditable(true);
                             usuariot.setEditable(true);
                             usuariot.setText("");
                             clave.setText("");
+                            
                             JOptionPane.showMessageDialog(this, "No puede ingresar en éste horario", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                             usuariot.requestFocusInWindow();
                             return;
@@ -2583,7 +2654,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 clave.setText("");
                 frmIngresarSistema.setVisible(false);
                 usuarioActual = usu;
-                usuarioLogeado.setText("Usuario: " + usuarioActual.getNombres());
+                usuarioLogeado.setText("" + usuarioActual.getNombres());
                 List<Empresa> emp = adm.listar("Select o from Empresa as o ");
                 this.empresaObj = emp.get(0);
                 if (ubicacionDirectorio.contains("build")) {
@@ -4915,6 +4986,56 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         tecla(evt.getKeyCode());
     }//GEN-LAST:event_camaraVistaKeyPressed
+
+    private void usuarioLogeadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioLogeadoActionPerformed
+        // TODO add your handling code here:
+        panelCambiar.setVisible(true);
+        claveActual.requestFocusInWindow();
+        
+    }//GEN-LAST:event_usuarioLogeadoActionPerformed
+
+    private void claveActualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claveActualActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_claveActualActionPerformed
+
+    private void guardarCambioClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarCambioClaveActionPerformed
+        // TODO add your handling code here:
+        
+         String clave = cl.desencriptar(usuarioActual.getClave());
+         String claveComprar =claveActual.getText().trim();
+         if(clave.equals(claveComprar)){
+                if(nuevaClave.getText().equals(repiteClave.getText())){
+                try {
+                    usuarioActual.setClave(cl.encriptar(nuevaClave.getText().trim()));
+                    adm.actualizar(usuarioActual);
+                    panelCambiar.setVisible(false);
+                    claveActual.setText("");
+                    repiteClave.setText("");
+                    nuevaClave.setText("");
+                    
+                } catch (Exception ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                }else{
+                    JOptionPane.showMessageDialog(this, "No coinciden las claves nueva y repeticion...!");
+          
+                    
+                }
+         }else{
+          JOptionPane.showMessageDialog(this, "La clave actual no coincide con su clave personal \n talvez Ud. no sea el propietario de ésta cuenta.");
+          claveActual.setText("");
+         }
+        
+    }//GEN-LAST:event_guardarCambioClaveActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        panelCambiar.setVisible(false);
+         claveActual.setText("");
+                    repiteClave.setText("");
+                    nuevaClave.setText("");
+                    
+    }//GEN-LAST:event_jButton7ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -5056,6 +5177,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JTable busquedaTabla;
     private javax.swing.JLabel camaraVista;
     private javax.swing.JPasswordField clave;
+    private javax.swing.JPasswordField claveActual;
     private javax.swing.JFormattedTextField cliente;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
@@ -5081,6 +5203,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JInternalFrame frmIngresarSistema;
     private javax.swing.JInternalFrame frmLote;
     private javax.swing.JInternalFrame frmRespaldarBase;
+    private javax.swing.JButton guardarCambioClave;
     private javax.swing.JSpinner horaDesde;
     private javax.swing.JSpinner horaDesde1;
     private javax.swing.JSpinner horaHasta;
@@ -5095,6 +5218,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
@@ -5129,7 +5253,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -5170,13 +5297,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JTextField nombreArchivo;
     private javax.swing.JFormattedTextField nombreBuscar;
     private javax.swing.JFormattedTextField nombres;
+    private javax.swing.JPasswordField nuevaClave;
     private javax.swing.JLabel ocupados;
+    private javax.swing.JPanel panelCambiar;
     private javax.swing.JPanel panelHoras;
     private javax.swing.JPanel panelHoras1;
     private javax.swing.JPanel panelIngreso;
     private javax.swing.JFormattedTextField placa;
     private javax.swing.JFormattedTextField placa1;
     public javax.swing.JButton procesando;
+    private javax.swing.JPasswordField repiteClave;
     private javax.swing.JCheckBox sabado;
     private javax.swing.JCheckBox sabado1;
     private javax.swing.JLabel salid;
