@@ -34,7 +34,7 @@
     <ACTIVA5>false</ACTIVA5>
     <ACTIVA6>false</ACTIVA6>
     <ACTIVA7>false</ACTIVA7>
-    <WEBCAM>false</WEBCAM>
+    <WEBCAM>true</WEBCAM>
     <SEABREFAC>false</SEABREFAC>
-    <SEABRETIC>true</SEABRETIC>
+    <SEABRETIC>false</SEABRETIC>
 </JCINFORMEMPRESA>

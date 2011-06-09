@@ -724,7 +724,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel16">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tiempo Gracia Entrada: "/>
+                <Property name="text" type="java.lang.String" value="Tiempo que se Pasa(gracia): "/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -732,16 +732,17 @@
                 </Constraint>
               </Constraints>
             </Component>
-            <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField1">
+            <Component class="javax.swing.JFormattedTextField" name="graciaentrada">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" value="0"/>
               </Properties>
               <BindingProperties>
-                <BindingProperty name="value" source="Form" sourcePath="${usuarioObj.gracia}" target="jFormattedTextField1" targetPath="value" updateStrategy="0" immediately="false"/>
+                <BindingProperty name="value" source="Form" sourcePath="${usuarioObj.gracia}" target="graciaentrada" targetPath="value" updateStrategy="0" immediately="false"/>
               </BindingProperties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jFormattedTextField1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="graciaentradaActionPerformed"/>
               </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -751,6 +752,7 @@
             </Component>
             <Component class="javax.swing.JFormattedTextField" name="graciasalida">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" value="0"/>
               </Properties>
@@ -804,6 +806,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Se abre barrera al cobrar"/>
               </Properties>
+              <BindingProperties>
+                <BindingProperty name="selected" source="Form" sourcePath="${usuarioObj.seabrefac}" target="seabrefactura" targetPath="selected" updateStrategy="0" immediately="false"/>
+              </BindingProperties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="seabrefacturaActionPerformed"/>
               </Events>
@@ -817,6 +822,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Se abre barrera al imprimir Ticket"/>
               </Properties>
+              <BindingProperties>
+                <BindingProperty name="selected" source="Form" sourcePath="${usuarioObj.seabretic}" target="seabreticket" targetPath="selected" updateStrategy="0" immediately="false"/>
+              </BindingProperties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                   <AbsoluteConstraints x="50" y="240" width="190" height="-1"/>

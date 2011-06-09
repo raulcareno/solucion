@@ -207,6 +207,9 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         direccion.setEditable(estado);
         razonsocial.setEditable(estado);
         telefono.setEditable(estado);
+        graciasalida.setEditable(estado);
+        graciasalida.setEditable(estado);
+        
         parqueaderos.setEditable(estado);
         iva.setEditable(estado);
         cmbFactura.setEnabled(estado);
@@ -306,7 +309,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel20 = new javax.swing.JLabel();
         iva = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        graciaentrada = new javax.swing.JFormattedTextField();
         graciasalida = new javax.swing.JFormattedTextField();
         jLabel28 = new javax.swing.JLabel();
         chkWebcam = new javax.swing.JCheckBox();
@@ -768,24 +771,26 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel2.add(iva);
         iva.setBounds(270, 110, 59, 20);
 
-        jLabel16.setText("Tiempo Gracia Entrada: ");
+        jLabel16.setText("Tiempo que se Pasa(gracia): ");
         jPanel2.add(jLabel16);
         jLabel16.setBounds(0, 190, 120, 20);
 
-        jFormattedTextField1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jFormattedTextField1.setText("0");
+        graciaentrada.setEditable(false);
+        graciaentrada.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        graciaentrada.setText("0");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.gracia}"), jFormattedTextField1, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.gracia}"), graciaentrada, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
-        jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
+        graciaentrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFormattedTextField1ActionPerformed(evt);
+                graciaentradaActionPerformed(evt);
             }
         });
-        jPanel2.add(jFormattedTextField1);
-        jFormattedTextField1.setBounds(120, 190, 60, 20);
+        jPanel2.add(graciaentrada);
+        graciaentrada.setBounds(120, 190, 60, 20);
 
+        graciasalida.setEditable(false);
         graciasalida.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         graciasalida.setText("0");
 
@@ -818,6 +823,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel29.setBounds(0, 220, 120, 14);
 
         seabrefactura.setText("Se abre barrera al cobrar");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.seabrefac}"), seabrefactura, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
         seabrefactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 seabrefacturaActionPerformed(evt);
@@ -827,6 +836,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         seabrefactura.setBounds(240, 240, 160, 23);
 
         seabreticket.setText("Se abre barrera al imprimir Ticket");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.seabretic}"), seabreticket, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
         jPanel2.add(seabreticket);
         seabreticket.setBounds(50, 240, 190, 23);
 
@@ -973,7 +986,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel5.add(cmbPuerta4);
         cmbPuerta4.setBounds(130, 210, 37, 20);
 
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel21.setText("Puerta");
         jPanel5.add(jLabel21);
         jLabel21.setBounds(130, 130, 50, 20);
@@ -1775,9 +1788,9 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
          principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_formKeyPressed
 
-    private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
+    private void graciaentradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graciaentradaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextField1ActionPerformed
+    }//GEN-LAST:event_graciaentradaActionPerformed
 
     private void cmbPuertoLedKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPuertoLedKeyPressed
         // TODO add your handling code here:
@@ -1855,10 +1868,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JFormattedTextField direccion;
     private javax.swing.JDialog formaEmpresa;
+    private javax.swing.JFormattedTextField graciaentrada;
     private javax.swing.JFormattedTextField graciasalida;
     private javax.swing.JTextField iva;
     private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

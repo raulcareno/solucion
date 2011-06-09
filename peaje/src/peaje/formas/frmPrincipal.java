@@ -2505,7 +2505,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     if (estado && estado2) {
                     } else {
 
-                        if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("jcinform@2020")) {
+                        if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")) {
                         } else {
                             clave.setEditable(true);
                             usuariot.setEditable(true);
