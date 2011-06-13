@@ -268,7 +268,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             /* Scan found services to see if anyone suits our needs */
             for (int i = 0; i < services.length; i++) {
                 String nombre = services[i].getName();
-                if (nombre.contains(emp.getImpticket())) {
+                if (nombre.contains(emp.getImpresora())) {
                     selectedService = i;
                 }
             }

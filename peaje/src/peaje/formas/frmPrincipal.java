@@ -315,6 +315,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel22 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         descripcionTarjeta = new javax.swing.JTextArea();
+        btnEliminar1 = new javax.swing.JButton();
         frmLote = new javax.swing.JInternalFrame();
         jScrollPane5 = new javax.swing.JScrollPane();
         tablaCambios = new javax.swing.JTable(){
@@ -1095,6 +1096,25 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         formaTarjetas1.getContentPane().add(jScrollPane2);
         jScrollPane2.setBounds(90, 50, 240, 40);
 
+        btnEliminar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
+        btnEliminar1.setMnemonic('E');
+        btnEliminar1.setText("Eliminar");
+        btnEliminar1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEliminar1.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnEliminar1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminar1ActionPerformed(evt);
+            }
+        });
+        btnEliminar1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnEliminar1KeyPressed(evt);
+            }
+        });
+        formaTarjetas1.getContentPane().add(btnEliminar1);
+        btnEliminar1.setBounds(170, 290, 60, 50);
+
         formaTarjetas1.setBounds(80, 0, 380, 380);
         contenedor.add(formaTarjetas1, javax.swing.JLayeredPane.MODAL_LAYER);
 
@@ -1823,7 +1843,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(ingre);
             ingre.setBounds(230, 20, 60, 20);
 
-            spSalida.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+            spSalida.setFont(new java.awt.Font("Tahoma", 0, 14));
             spSalida.setBorder(null);
             spSalida.setEnabled(false);
             spSalida.setFocusable(false);
@@ -1836,14 +1856,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(salid);
             salid.setBounds(230, 40, 60, 20);
 
-            spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+            spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
             spConsumo.setBorder(null);
             spConsumo.setEnabled(false);
             spConsumo.setFocusable(false);
             panelIngreso.add(spConsumo);
             spConsumo.setBounds(290, 60, 90, 20);
 
-            cons.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+            cons.setFont(new java.awt.Font("Tahoma", 1, 11));
             cons.setForeground(new java.awt.Color(153, 153, 153));
             cons.setText("CONSUMO:");
             panelIngreso.add(cons);
@@ -1855,7 +1875,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(placa);
             placa.setBounds(20, 70, 180, 20);
 
-            errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+            errores.setFont(new java.awt.Font("Tahoma", 1, 12));
             errores.setForeground(new java.awt.Color(255, 0, 0));
             errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             panelIngreso.add(errores);
@@ -1868,7 +1888,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.setBounds(20, 480, 460, 130);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
             usuarioLogeado.setForeground(new java.awt.Color(0, 153, 204));
             usuarioLogeado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editPerfil.png"))); // NOI18N
             usuarioLogeado.setText("...");
@@ -1952,13 +1972,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             contenedor.add(camaraVista, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.JPG"))); // NOI18N
-            jLabel37.setBounds(490, 470, 160, 45);
+            jLabel37.setBounds(490, 470, -1, -1);
             contenedor.add(jLabel37, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jLabel38.setForeground(new java.awt.Color(0, 51, 204));
             jLabel38.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jLabel38.setText("www.tekatronic.tk");
-            jLabel38.setBounds(500, 510, 130, 14);
+            jLabel38.setBounds(500, 510, 130, -1);
             contenedor.add(jLabel38, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
@@ -2581,13 +2601,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     } else {
 
                         if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")) {
-                               usuarioActual = usu;
+                            usuarioActual = usu;
                         } else {
                             clave.setEditable(true);
                             usuariot.setEditable(true);
                             usuariot.setText("");
                             clave.setText("");
-                            
+
                             JOptionPane.showMessageDialog(this, "No puede ingresar en éste horario", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                             usuariot.requestFocusInWindow();
                             return;
@@ -3052,37 +3072,36 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
                 List<Factura> facturas = adm.query("Select o from Factura as o where o.ticket = '" + new Integer(noticket) + "' "
                         + "  ");
-                    if (facturas.size() > 0) {
-        
-                        try {
-                            Date fechaFin = facturas.get(0).getFechafin();
-                             if(fechaFin == null){
-                                    errores.setText("TICKET No: " + new Integer(noticket) + " QUIERE SALIR SIN PAGAR)");
-                                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
-                             }else{
-                                 Long minutos0 = diferenciaFechas(fechaFin, new Date());
-                                Integer minutos = minutos0.intValue();
-                                if(minutos > empresaObj.getSalida()){
-                                        errores.setText("TIEMPO DE GRACIA EXCEDIDO CON "+minutos+" min...!");
-                                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
-                                }else{
-                                    errores.setText("SALIDA OK ...!");
-                                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                                        abrirPuerta(puertoViene);
-                                }
-                                
-                               
-                             }
-                        } catch (Exception e) {
+                if (facturas.size() > 0) {
+
+                    try {
+                        Date fechaFin = facturas.get(0).getFechafin();
+                        if (fechaFin == null) {
+                            errores.setText("TICKET No: " + new Integer(noticket) + " QUIERE SALIR SIN PAGAR)");
+                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
+                        } else {
+                            Long minutos0 = diferenciaFechas(fechaFin, new Date());
+                            Integer minutos = minutos0.intValue();
+                            if (minutos > empresaObj.getSalida()) {
+                                errores.setText("TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!");
+                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
+                            } else {
+                                errores.setText("SALIDA OK ...!");
+                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+                                abrirPuerta(puertoViene);
+                            }
+
+
                         }
-
-                        
-                    }else {
-
+                    } catch (Exception e) {
                     }
 
-                     
-                    noDisponibles();
+
+                } else {
+                }
+
+
+                noDisponibles();
 
 
             } catch (Exception ex) {
@@ -3628,7 +3647,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            acerca usu = new acerca(this, true,empresaObj);
+            acerca usu = new acerca(this, true, empresaObj);
             usu.setSize(458, 239);
             usu.setLocation(260, 220);
             usu.show();
@@ -4157,7 +4176,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     private void btnAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcercaActionPerformed
         // TODO add your handling code here:
-        acerca ac = new acerca(this, true,empresaObj);
+        acerca ac = new acerca(this, true, empresaObj);
         ac.setLocation(240, 100);
         contenedor.add(ac);
         ac.show();
@@ -4989,13 +5008,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     private void usuarioLogeadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioLogeadoActionPerformed
         // TODO add your handling code here:
-        if(panelCambiar.isVisible()){
+        if (panelCambiar.isVisible()) {
             panelCambiar.setVisible(false);
-        }else{
+        } else {
             panelCambiar.setVisible(true);
             claveActual.requestFocusInWindow();
         }
-        
+
     }//GEN-LAST:event_usuarioLogeadoActionPerformed
 
     private void claveActualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claveActualActionPerformed
@@ -5004,11 +5023,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     private void guardarCambioClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarCambioClaveActionPerformed
         // TODO add your handling code here:
-        
-         String clave = cl.desencriptar(usuarioActual.getClave());
-         String claveComprar =claveActual.getText().trim();
-         if(clave.equals(claveComprar)){
-                if(nuevaClave.getText().equals(repiteClave.getText())){
+
+        String clave = cl.desencriptar(usuarioActual.getClave());
+        String claveComprar = claveActual.getText().trim();
+        if (clave.equals(claveComprar)) {
+            if (nuevaClave.getText().equals(repiteClave.getText())) {
                 try {
                     usuarioActual.setClave(cl.encriptar(nuevaClave.getText().trim()));
                     adm.actualizar(usuarioActual);
@@ -5016,30 +5035,64 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     claveActual.setText("");
                     repiteClave.setText("");
                     nuevaClave.setText("");
-                    
+
                 } catch (Exception ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                }else{
-                    JOptionPane.showMessageDialog(this, "No coinciden las claves nueva y repeticion...!");
-          
-                    
-                }
-         }else{
-          JOptionPane.showMessageDialog(this, "La clave actual no coincide con su clave personal \n talvez Ud. no sea el propietario de ésta cuenta.");
-          claveActual.setText("");
-         }
-        
+            } else {
+                JOptionPane.showMessageDialog(this, "No coinciden las claves nueva y repeticion...!");
+
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "La clave actual no coincide con su clave personal \n talvez Ud. no sea el propietario de ésta cuenta.");
+            claveActual.setText("");
+        }
+
     }//GEN-LAST:event_guardarCambioClaveActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
         panelCambiar.setVisible(false);
-         claveActual.setText("");
-                    repiteClave.setText("");
-                    nuevaClave.setText("");
-                    
+        claveActual.setText("");
+        repiteClave.setText("");
+        nuevaClave.setText("");
+
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void btnEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar1ActionPerformed
+        if (permisos.getEliminar()) {        // TODO add your handling code here:
+            try {
+                adm.eliminarObjeto(Tarjetas.class, noTarjeta.getText());
+                llenarTabla(clienteObj.getCodigo());
+                formaTarjetas1.setVisible(false);
+                auditar("Tarjetas", "" + noTarjeta.getText(), "ELIMINAR TARJETA");
+            } catch (Exception ex) {
+                int valor = JOptionPane.showConfirmDialog(this, "No se puede eliminar la tarjeta debido a que ya tiene movimientos(ya ha sido usada) \n"
+                        + " ¿Desea Eliminar los movimientos para poder borrar la tarjeta? ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                if (valor == 0) {
+                    try {
+                        adm.ejecutaSql("Delete from Factura where tarjetas.tarjeta = '" + noTarjeta.getText().trim() + "'");
+                        adm.eliminarObjeto(Tarjetas.class, noTarjeta.getText());
+                        llenarTabla(clienteObj.getCodigo());
+                        formaTarjetas1.setVisible(false);
+                        auditar("Tarjetas", "" + noTarjeta.getText(), "ELIMINAR TARJETA");
+                    } catch (Exception ex1) {
+                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+                }
+                //Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+        }
+}//GEN-LAST:event_btnEliminar1ActionPerformed
+
+    private void btnEliminar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEliminar1KeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+}//GEN-LAST:event_btnEliminar1KeyPressed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -5160,6 +5213,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JButton btnClientes;
     private javax.swing.JButton btnCobrar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnEliminar1;
     private javax.swing.JButton btnEmpresa;
     private javax.swing.JButton btnGuardarCambios;
     private javax.swing.JButton btnGuardarTarjeta;

@@ -665,6 +665,13 @@ try {
                 adm.eliminarObjeto(Usuarios.class, usuarioObj.getCodigo());
                 this.limpiar();
             } catch (Exception ex) {
+//                System.out.println("1::::::::::: "+ex.getLocalizedMessage());
+//                System.out.println("2::::::::::: "+ex.getMessage());
+//                System.out.println("3::::::::::: "+ex.getCause().getCause());
+//                System.out.println("4::::::::::: "+ex.getStackTrace());
+                JOptionPane.showMessageDialog(this, "No se puede eliminar el registro este USUARIO  "
+                        + "\n  contiene datos en auditoría, por procesos "
+                        + "que haya realizado: \n"+ex.getCause().getMessage(),"JCINFORM",JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
             }
 
