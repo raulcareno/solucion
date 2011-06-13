@@ -2763,6 +2763,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     if (accesos.getPantalla().equals("Auditoria") && !accesos.getIngresar()) {
                         btnAuditoria.setEnabled(false);
                     }
+                    if (accesos.getPantalla().equals("AbrirBarreras") && !accesos.getIngresar()) {
+                            barrera1.setEnabled(false);
+                            barrera2.setEnabled(false);
+                            barrera3.setEnabled(false);
+                            barrera4.setEnabled(false);
+                            barrera5.setEnabled(false);
+                            barrera6.setEnabled(false);
+                            barrera7.setEnabled(false);
+                    }
                 }
 
                 iniciarPuertos();
@@ -4550,6 +4559,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 }//GEN-LAST:event_usuariotActionPerformed
     public void tecla(int teclaPresionada) {
         int WIDTH = 1;
+//        sdfasd;
         KeyEvent evt = new KeyEvent(this, WIDTH, WIDTH, WIDTH, WIDTH);
         if (teclaPresionada == evt.VK_F1) {
             barrera1.doClick();
