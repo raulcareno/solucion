@@ -2764,13 +2764,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         btnAuditoria.setEnabled(false);
                     }
                     if (accesos.getPantalla().equals("AbrirBarreras") && !accesos.getIngresar()) {
-                            barrera1.setEnabled(false);
-                            barrera2.setEnabled(false);
-                            barrera3.setEnabled(false);
-                            barrera4.setEnabled(false);
-                            barrera5.setEnabled(false);
-                            barrera6.setEnabled(false);
-                            barrera7.setEnabled(false);
+                        barrera1.setEnabled(false);
+                        barrera2.setEnabled(false);
+                        barrera3.setEnabled(false);
+                        barrera4.setEnabled(false);
+                        barrera5.setEnabled(false);
+                        barrera6.setEnabled(false);
+                        barrera7.setEnabled(false);
                     }
                 }
 
@@ -4239,22 +4239,26 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 int seleccion = JOptionPane.showOptionDialog(this, "SE BORRARÁ LA CONFIGURACIÓN ACTUAL DEL SISTEMA \n ¿SEGURO QUE DESEA CONTINUAR?",
                         "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
                         new Object[]{"SI", "NO", "Cancelar"}, "NO");// null para YES, NO y CANCEL
-                System.out.println("" + seleccion);
                 if (0 == seleccion) {
-                    WorkingDirectory w = new WorkingDirectory();
-                    String ubicacionDirectorio = w.get() + separador;
-                    if (ubicacionDirectorio.contains("build")) {
-                        ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
-                    }
+                     seleccion = JOptionPane.showOptionDialog(this, "¿ESTÁ UD. SEGURO QUE DESEA CONTINUAR SE BORRARÁ LA CONFIGURACIÓN? \n NO PODRÁ USAR EL SISTEMA, HASTA QUE VUELVA A CONFIGURARLO",
+                            "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
+                            new Object[]{"SI", "NO", "Cancelar"}, "NO");// null para YES, NO y CANCEL
+                    if (0 == seleccion) {
+                        WorkingDirectory w = new WorkingDirectory();
+                        String ubicacionDirectorio = w.get() + separador;
+                        if (ubicacionDirectorio.contains("build")) {
+                            ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                        }
 
-                    File fichero = new File(ubicacionDirectorio + "KDJFASD5F4AS5D2.xml");
-                    if (fichero.exists()) {
-                        fichero.delete();
-                        System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
-                    }
-                    this.dispose();
+                        File fichero = new File(ubicacionDirectorio + "KDJFASD5F4AS5D2.xml");
+                        if (fichero.exists()) {
+                            fichero.delete();
+                            System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
+                        }
+                        this.dispose();
 
-                    new frmConfiguracion().show();
+                        new frmConfiguracion().show();
+                    }
                 }
 
             } else {

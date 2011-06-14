@@ -678,7 +678,7 @@ public class Empresa implements Serializable {
     }
 
     @Transient
-    public Boolean webcam;
+    public Boolean webcam = false;
 
     public Boolean getWebcam() {
         return webcam;
@@ -688,9 +688,9 @@ public class Empresa implements Serializable {
         this.webcam = webcam;
     }
     @Transient
-    public Boolean seabretic;
+    public Boolean seabretic = false;
     @Transient
-    public Boolean seabrefac;
+    public Boolean seabrefac = false;
     @Transient
     public Double multa;
 

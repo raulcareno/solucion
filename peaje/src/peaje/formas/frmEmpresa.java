@@ -1353,7 +1353,13 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setWebcam(chkWebcam.isSelected());
                     empresaObj.setSeabretic(seabreticket.isSelected());
                     empresaObj.setSeabrefac(seabrefactura.isSelected());
-                    empresaObj.setMulta(new Double(multa.getText()));
+                    try {
+                        empresaObj.setMulta(new Double(multa.getText()));
+                    } catch (Exception e) {
+                        empresaObj.setMulta(0.0);
+                        multa.setText("0");
+                    }
+                    
 
                     XMLEmpresa xm = new XMLEmpresa();
                     xm.inicio();
