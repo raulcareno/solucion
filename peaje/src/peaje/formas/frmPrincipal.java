@@ -432,6 +432,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         labelPartner = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
+        jLabel42 = new javax.swing.JLabel();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -827,7 +828,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Acceso al Sistema");
         jPanel3.add(jLabel8);
@@ -1973,20 +1974,24 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             contenedor.add(camaraVista, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             labelPartner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.JPG"))); // NOI18N
-            labelPartner.setBounds(490, 500, 170, 70);
+            labelPartner.setBounds(510, 500, 170, 70);
             contenedor.add(labelPartner, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jLabel38.setForeground(new java.awt.Color(0, 51, 204));
             jLabel38.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jLabel38.setText("www.tekatronic.com.ec");
-            jLabel38.setBounds(490, 580, 140, 14);
+            jLabel38.setBounds(510, 580, 140, 14);
             contenedor.add(jLabel38, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             jLabel37.setForeground(new java.awt.Color(102, 102, 102));
             jLabel37.setText("PARTNERS");
-            jLabel37.setBounds(500, 480, 80, 15);
+            jLabel37.setBounds(490, 480, 170, 20);
             contenedor.add(jLabel37, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+            jLabel42.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+            jLabel42.setBounds(490, 500, 190, 110);
+            contenedor.add(jLabel42, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
 
@@ -5336,6 +5341,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
