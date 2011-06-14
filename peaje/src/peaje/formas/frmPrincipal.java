@@ -1779,7 +1779,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             frmRespaldarBase.setBounds(50, 120, 520, 210);
             contenedor.add(frmRespaldarBase, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            panelIngreso.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Último Ingreso", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+            panelIngreso.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
             panelIngreso.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     panelIngresoKeyPressed(evt);
@@ -1970,7 +1970,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     camaraVistaKeyPressed(evt);
                 }
             });
-            camaraVista.setBounds(10, 30, 630, 440);
+            camaraVista.setBounds(10, 30, 670, 440);
             contenedor.add(camaraVista, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             labelPartner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.JPG"))); // NOI18N
@@ -1986,11 +1986,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             jLabel37.setForeground(new java.awt.Color(102, 102, 102));
             jLabel37.setText("PARTNERS");
-            jLabel37.setBounds(490, 480, 170, 20);
+            jLabel37.setBounds(500, 480, 160, 20);
             contenedor.add(jLabel37, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jLabel42.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-            jLabel42.setBounds(490, 500, 190, 110);
+            jLabel42.setBounds(490, 480, 190, 130);
             contenedor.add(jLabel42, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
