@@ -18,8 +18,11 @@ import net.sf.jasperreports.view.JRViewer;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
 import hibernate.*;
+import hibernate.cargar.WorkingDirectory;
 import java.awt.BorderLayout;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -45,7 +48,10 @@ public class frmManual extends javax.swing.JInternalFrame {
     private String claveActual;
     private validaciones val;
     private frmPrincipal principal;
-
+String separador = File.separatorChar + "";
+  
+    WorkingDirectory w = new WorkingDirectory();
+    String ubicacionDirectorio = w.get() + separador;
     /** Creates new form frmProfesores */
     public frmManual(Container contendor, Administrador adm1) {
         this.desktopContenedor = contendor;
@@ -64,7 +70,10 @@ public class frmManual extends javax.swing.JInternalFrame {
         hasta1.setHours(23);
         hasta1.setMinutes(59);
         hasta1.setSeconds(59);
-
+  if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
+            ubicacionDirectorio = ubicacionDirectorio+"manualpeaje"+separador;
 
     }
 //
@@ -333,148 +342,47 @@ public class frmManual extends javax.swing.JInternalFrame {
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
 
-        Thread cargar = new Thread() {
-            public void run() {
-                NativeInterface.open();
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-
-                        JFrame frame = new JFrame("MANUAL DE CLIENTES");
-                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/CLIENTES.swf"), BorderLayout.CENTER);
-                        frame.setSize(800, 600);
-                        frame.setLocationByPlatform(true);
-                        frame.setVisible(true);
-                        Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
-                        frame.setIconImage(im);
-                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
-
-                        mipanel.add(frame);
-
-                    }
-                });
-                NativeInterface.runEventPump();
-
-            }
-        };
-        cargar.start();
+    
+                   
+                        abrirurl(ubicacionDirectorio+"CLIENTES.htm");
+                        
+ 
 
         //<property name="toplink.cache.type.default" value="NONE"/>
     }//GEN-LAST:event_btnClientesActionPerformed
-
+ void abrirurl(String pagina){
+     try {
+            // TODO add your handling code here:
+            Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+pagina);
+        } catch (IOException ex) {
+            Logger.getLogger(acerca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void btnTarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTarifasActionPerformed
         // TODO add your handling code here:
-            Thread cargar = new Thread() {
-            public void run() {
-                NativeInterface.open();
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-
-                        JFrame frame = new JFrame("MANUAL DE TARIFARIO");
-                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TARIFAS.swf"), BorderLayout.CENTER);
-                        frame.setSize(800, 600);
-                        frame.setLocationByPlatform(true);
-                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
-                          Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
-                        frame.setIconImage(im);
-                        frame.setVisible(true);
-
-//                        mipanel.add(frame);
-
-                    }
-                });
-                NativeInterface.runEventPump();
-
-            }
-        };
-        cargar.start();
+           
+                        abrirurl(ubicacionDirectorio+"TARIFAS.htm");
+                       
 }//GEN-LAST:event_btnTarifasActionPerformed
 
     private void btnAccesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccesosActionPerformed
         // TODO add your handling code here:
-         Thread cargar = new Thread() {
-            public void run() {
-                NativeInterface.open();
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-
-                        JFrame frame = new JFrame("MANUAL DE AUDITORIA");
-                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/AUDITORIA.swf"), BorderLayout.CENTER);
-                        frame.setSize(800, 600);
-                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
-                          Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
-                        frame.setIconImage(im);
-                        frame.setLocationByPlatform(true);
-                        frame.setVisible(true);
-
-//                        mipanel.add(frame);
-
-                    }
-                });
-                NativeInterface.runEventPump();
-
-            }
-        };
-        cargar.start();
+         
+                        abrirurl(ubicacionDirectorio+"AUDITORIA.htm");
+                        
 }//GEN-LAST:event_btnAccesosActionPerformed
 
     private void btnReconfigurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReconfigurarActionPerformed
-          Thread cargar = new Thread() {
-            public void run() {
-                NativeInterface.open();
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-
-                        JFrame frame = new JFrame("MANUAL DE RECONFIGURACION DEL SISTEMA");
-                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/RECONFIGURAR.swf"), BorderLayout.CENTER);
-                        frame.setSize(800, 600);
-                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
-                          Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
-                        frame.setIconImage(im);
-                        frame.setLocationByPlatform(true);
-                        frame.setVisible(true);
-
-//                        mipanel.add(frame);
-
-                    }
-                });
-                NativeInterface.runEventPump();
-
-            }
-        };
-        cargar.start();
+          
+                        abrirurl(ubicacionDirectorio+"RECONFIGURAR.htm");
+                        
     }//GEN-LAST:event_btnReconfigurarActionPerformed
 
     private void btnTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTicketActionPerformed
         // TODO add your handling code here:
-           Thread cargar = new Thread() {
-            public void run() {
-                NativeInterface.open();
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-
-                        JFrame frame = new JFrame("MANUAL DE TICKETS Y FACTURACIÓN");
-                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/TICKET_COBRAR.swf"), BorderLayout.CENTER);
-                        frame.setSize(800, 600);
-                        frame.setLocationByPlatform(true);
-                         Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
-                        frame.setIconImage(im);
-                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
-                        frame.setVisible(true);
-
-//                        mipanel.add(frame);
-
-                    }
-                });
-                NativeInterface.runEventPump();
-
-            }
-        };
-        cargar.start();
+          
+                        abrirurl(ubicacionDirectorio+"TICKET_COBRAR.htm");
+                     
     }//GEN-LAST:event_btnTicketActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -487,89 +395,23 @@ public class frmManual extends javax.swing.JInternalFrame {
 
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
         // TODO add your handling code here:
-            Thread cargar = new Thread() {
-            public void run() {
-                NativeInterface.open();
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-
-                        JFrame frame = new JFrame("MANUAL DE OPERADORES");
-                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/OPERADORES.swf"), BorderLayout.CENTER);
-                        frame.setSize(800, 600);
-                        frame.setLocationByPlatform(true);
-                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
-                          Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
-                        frame.setIconImage(im);
-                        frame.setVisible(true);
-
-//                        mipanel.add(frame);
-
-                    }
-                });
-                NativeInterface.runEventPump();
-
-            }
-        };
-        cargar.start();
+            
+                        abrirurl(ubicacionDirectorio+"OPERADORES.htm");
+                        
     }//GEN-LAST:event_btnUsuariosActionPerformed
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
         // TODO add your handling code here:
-            Thread cargar = new Thread() {
-            public void run() {
-                NativeInterface.open();
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-
-                        JFrame frame = new JFrame("MANUAL DE REPORTES");
-                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/REPORTES.swf"), BorderLayout.CENTER);
-                        frame.setSize(800, 600);
-                        frame.setLocationByPlatform(true);
-                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
-                          Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
-                        frame.setIconImage(im);
-                        frame.setVisible(true);
-
-//                        mipanel.add(frame);
-
-                    }
-                });
-                NativeInterface.runEventPump();
-
-            }
-        };
-        cargar.start();
+            
+                        abrirurl(ubicacionDirectorio+"REPORTES.htm");
+                        
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpresaActionPerformed
         // TODO add your handling code here:
-            Thread cargar = new Thread() {
-            public void run() {
-                NativeInterface.open();
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-
-                        JFrame frame = new JFrame("MANUAL DE DATOS DE LA EMPRESA");
-                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.getContentPane().add(new SimpleFlashExample("/manualpeaje/EMPRESA.swf"), BorderLayout.CENTER);
-                        frame.setSize(800, 600);
-                        frame.setLocationByPlatform(true);
-                         frame.setExtendedState(frame.MAXIMIZED_BOTH);
-                          Image im = new ImageIcon(getClass().getResource("/images/help.gif")).getImage();
-                        frame.setIconImage(im);
-                        frame.setVisible(true);
-
-//                        mipanel.add(frame);
-
-                    }
-                });
-                NativeInterface.runEventPump();
-
-            }
-        };
-        cargar.start();
+            
+                        abrirurl(ubicacionDirectorio+"EMPRESA.htm");
+                         
     }//GEN-LAST:event_btnEmpresaActionPerformed
 
     public void tickets(String dirreporte, String query, String titulo) {
