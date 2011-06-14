@@ -429,8 +429,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         repiteClave = new javax.swing.JPasswordField();
         jButton7 = new javax.swing.JButton();
         camaraVista = new javax.swing.JLabel();
-        jLabel37 = new javax.swing.JLabel();
+        labelPartner = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -766,7 +767,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel2.add(usuariot);
         usuariot.setBounds(140, 20, 110, 19);
 
-        clave.setFont(new java.awt.Font("Tahoma", 0, 14));
+        clave.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         clave.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         clave.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
         clave.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -1971,15 +1972,21 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             camaraVista.setBounds(10, 30, 630, 440);
             contenedor.add(camaraVista, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.JPG"))); // NOI18N
-            jLabel37.setBounds(490, 470, -1, -1);
-            contenedor.add(jLabel37, javax.swing.JLayeredPane.DEFAULT_LAYER);
+            labelPartner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.JPG"))); // NOI18N
+            labelPartner.setBounds(490, 500, 170, 70);
+            contenedor.add(labelPartner, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jLabel38.setForeground(new java.awt.Color(0, 51, 204));
             jLabel38.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabel38.setText("www.tekatronic.tk");
-            jLabel38.setBounds(500, 510, 130, -1);
+            jLabel38.setText("www.tekatronic.com.ec");
+            jLabel38.setBounds(490, 580, 140, 14);
             contenedor.add(jLabel38, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+            jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+            jLabel37.setForeground(new java.awt.Color(102, 102, 102));
+            jLabel37.setText("PARTNERS");
+            jLabel37.setBounds(500, 480, 80, 15);
+            contenedor.add(jLabel37, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
 
@@ -5359,6 +5366,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private org.jdesktop.swingx.JXTaskPaneContainer jXTaskPaneContainer1;
     private javax.swing.JCheckBox jueves;
     private javax.swing.JCheckBox jueves1;
+    private javax.swing.JLabel labelPartner;
     private javax.swing.JCheckBox lunes;
     private javax.swing.JCheckBox lunes1;
     private javax.swing.JCheckBox martes;
