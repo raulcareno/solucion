@@ -206,7 +206,11 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
             //System.out.println("" + tarjeta);
             if ("AEIOUAEIOU".equals(tarjeta)) {
-                imprimir();
+                imprimir("");
+                   tarjeta = "";
+                return;
+            }if ("AEIOUAEIOU2".equals(tarjeta)) {
+                imprimir("2");
                    tarjeta = "";
                 return;
             }
@@ -228,7 +232,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
     }
 
-    public void imprimir() {
+    public void imprimir(String impresoraLlega) {
         try {
             WorkingDirectory w = new WorkingDirectory();
             String ubicacionDirectorio = w.get() + separador;
@@ -266,9 +270,10 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
             int selectedService = 0;
             /* Scan found services to see if anyone suits our needs */
+            String impre = emp.getImpresora()+impresoraLlega;
             for (int i = 0; i < services.length; i++) {
                 String nombre = services[i].getName();
-                if (nombre.contains(emp.getImpresora())) {
+                if (nombre.contains(impre)) {
                     selectedService = i;
                 }
             }
