@@ -44,7 +44,7 @@ public class ReportePromocionDataSource implements JRDataSource {
         irParaProximoAlumno = (valorAtual != null);
         return irParaProximoAlumno;
     }
-   public Equivalencias devolverNombre(List<Equivalencias> equiva, Integer codigo) {
+   public Equivalencias devolverNombre(List<Equivalencias> equiva, Double codigo) {
 
         for (Iterator<Equivalencias> it = equiva.iterator(); it.hasNext();) {
             Equivalencias equivalencias = it.next();
@@ -99,7 +99,7 @@ public class ReportePromocionDataSource implements JRDataSource {
                     }
                     
                     if((nodo.getMateria()+"").contains("APROVECHAMIENTO")){
-                         valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ, parte_entera_numero.intValue()).getNombre();
+                         valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();
                     }else{
                         valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena;
                     }
@@ -152,11 +152,10 @@ public class ReportePromocionDataSource implements JRDataSource {
                 String parte_entera_cadena = cadena.substring(0, cadena.lastIndexOf("."));
                 Double parte_entera_numero = Double.valueOf(parte_entera_cadena);
                 parte_decimal_cadena = parte_decimal_cadena.replace(".", ",");
-                if (parte_decimal_cadena.length() < 3) {
+                if(parte_decimal_cadena.length() < 3){
                     parte_decimal_cadena = parte_decimal_cadena + "0";
                 }
-                    
-                valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ, parte_entera_numero.intValue()).getNombre();
+                valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ, (Double) nodo.getDisciplina()).getNombre();
             } else if ("curso".equals(fieldName)) {
                 valor = nodo.getMatricula().getCurso().getDescripcion();
             } else if ("letrasAprovechamiento".equals(fieldName)) {
