@@ -1887,7 +1887,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(imAviso);
             imAviso.setBounds(382, 20, 70, 70);
 
-            panelIngreso.setBounds(20, 480, 460, 130);
+            panelIngreso.setBounds(10, 480, 470, 130);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
