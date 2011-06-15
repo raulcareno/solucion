@@ -244,7 +244,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "jcinform.persistencia.Empleados[codigo=" + codigo + "]";
+        return getApellidos()+" "+getNombres();
     }
 
 }

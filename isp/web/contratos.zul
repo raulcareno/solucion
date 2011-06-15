@@ -61,13 +61,23 @@ void llenar(Contratos  equi2){
     ip.value = equi.getIp();
     nocuenta.value = equi.getNocuenta();
     tipocuenta.value  = equi.getTipocuenta();
-    diapago.value  = equi.getDiapago();
+    try{
+        if(equi.getDiapago() == null){
+            diapago.value  = "1";
+        }else{
+            diapago.value  = equi.getDiapago()+"";
+        }
+    }catch(Exception ex){
+         diapago.value  = equi.getDiapago()+"";
+    }
+    
+    
     clave.value = equi.getClave();
        if(equi.getEstado().equals("Activo")){
             eactivo.selected = true;
-        }else if(equi.getEstado().equals("Cancelado")){
-            ecancelado.selected = true;
         }else if(equi.getEstado().equals("Suspendido")){
+            eterminado.selected = true;
+        }else if(equi.getEstado().equals("Terminado")){
             esuspendido.selected = true;
         } 
     if(equi.getEmpleados2() != null){
@@ -153,11 +163,8 @@ void llenar(Contratos  equi2){
     
 }
 void estado(Boolean estado,Boolean modificar){
-    if(modificar){
-        equi = (Contratos)datos.selectedItem.value;
-    }
-    //identificacion.readonly = estado;
-    //buscarC.disabled = estado;
+    
+   
     buscarE1.disabled = estado;
     buscarE2.disabled = estado;
     buscarE3.disabled = estado;
@@ -209,19 +216,13 @@ void estado(Boolean estado,Boolean modificar){
     equi.setDireccion(direccioni.value);
     equi.setReferencia(referenciai.value);
     equi.setTelefono(telefonoi.value);
-    alert("1");
     equi.setFormapago(new Integer(formapago.selectedItem.value)); //integer
-    alert("2");
     equi.setNocuenta(nocuenta.value); //varchar
-    alert("3");
     equi.setTipocuenta(tipocuenta.value); //varchar 
-    alert("4");
     equi.setDiapago(new Integer(diapago.value));//integer
-    alert("5");
     equi.setSerie1(serie1.value);
     equi.setSerie1(serie2.value);
     equi.setSerie2(serie3.value);
-   alert("6");
     try{
        equi.setControlequipos1(new Controlequipos(new Integer(codigoequi1.value))); 
     }catch(Exception e){
@@ -294,6 +295,8 @@ llenarCliente(Clientes clienteEn){
     identificacion.value = clienteEn.getIdentificacion();
      codigocli.value = clienteEn.getCodigo()+"";
      direccion.value  = clienteEn.getDireccion();
+     direccioni.value  = clienteEn.getDireccion();
+     direccioni.value  = clienteEn.getTelefono();
      combo.value = clienteEn.getApellidos()+" "+clienteEn.getNombres() ;
 
 }
@@ -306,6 +309,42 @@ llenarCliente(Clientes clienteEn){
                       empa = object;
                       
                  }
+                  contratosCliente = new Listbox();
+        int a=0;
+            for (Iterator it = contratosCliente.getItems().iterator(); it.hasNext();) {
+                   contratosCliente.getItems().remove(a);
+                }
+                List  ControlequiposEncontrados = adm.query("Select o from Contratos as o where o.clientes.codigo = '"+empa.getCodigo()+"' ");
+                                for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
+                                      Contratos  acceIt = (Contratos) it.next();
+                                      Listitem li = new Listitem();
+                                      li.setValue(acceIt);
+                                      Listcell contratoCelda = new Listcell(acceIt.getContrato()+"");
+                                      Listcell planCelda = new Listcell(acceIt.getPlan().getNombre()+" "+acceIt.getPlan().getTipo()+" "+acceIt.getPlan().getValor());
+                                      Listcell fechaCelda = new Listcell(acceIt.getFecha().toLocaleString().substring(0,11)+"");
+                                      Listcell estadoCelda = new Listcell(acceIt.getEstado()+"");
+                                      String estilo = "background:#00E673";
+                                      if(acceIt.getEstado().contains("Activo")){
+                                        estilo = "background:#00E673";
+                                      }
+                                      if(acceIt.getEstado().contains("Suspendido")){
+                                        estilo  = "background:#FFFF6F";
+                                      }
+                                      if(acceIt.getEstado().contains("Terminado")){
+                                        estilo = "background:#FF7575";   
+                                      }
+                                      contratoCelda.setStyle(estilo);
+                                      planCelda.setStyle(estilo);
+                                      fechaCelda.setStyle(estilo);
+                                      estadoCelda.setStyle(estilo);
+                                      li.appendChild(contratoCelda);
+                                      li.appendChild(planCelda);
+                                      li.appendChild(fechaCelda);
+                                      li.appendChild(estadoCelda);
+                                        contratosCliente.appendChild(li);
+                             }
+                             if(ControlequiposEncontrados.size()>0)
+                                contratosPanel.visible = true;
                 llenarCliente(empa);
                 numerocontrato.focus();
             }else{
@@ -677,8 +716,8 @@ llenarCliente(Clientes clienteEn){
 	    			Estado: 
                                                                 <radiogroup id="estadoContrato" >
                                                                     <radio id="eactivo" selected="true" value="Activo" label="ACTIVO"/>
-                                                                    <radio id="esuspendido"  value="Cancelado"  label="CORTADO"/>
-                                                                    <radio  id="ecancelado" value="Suspendido"  label="TERMINADO"/>
+                                                                    <radio id="esuspendido"  value="Suspendido"  label="CORTADO"/>
+                                                                    <radio  id="eterminado" value="Terminado"  label="TERMINADO"/>
                                          
                                                                 </radiogroup>
                                                             </span>
@@ -965,5 +1004,21 @@ llenarCliente(Clientes clienteEn){
             
             
         </tabbox>
+        <panel framable="true" visible="false" id="contratosPanel" title="CONTRATOS CON ÉSTE CLIENTE" style="position:absolute; top:5%; left:5%" width="600px">
+            <panelchildren>
+             <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;" id="contratosCliente" width="100%">
+                        <listhead>
+                            <listheader label="Contra."/>
+                            <listheader label="Plan"/>
+                            <listheader label="Fecha"/>
+                            <listheader label="Estado"/>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.fecha}" />
+                        </listitem>
+                    </listbox>
+                    <button label="CERRAR" onClick="contratosPanel.visible = false"/>
+                    </panelchildren>
+        </panel>
     </div>
 </window>

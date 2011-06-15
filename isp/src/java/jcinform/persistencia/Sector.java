@@ -124,7 +124,7 @@ public class Sector implements Serializable {
 
     @Override
     public String toString() {
-        return "jcinform.persistencia.Sector[codigo=" + codigo + "]";
+        return getNombre();
     }
 
 }
