@@ -143,7 +143,7 @@ void guardar(){
       return ds;
 }
       
-      void imprimir() {
+      void imprimir(String tipoReporte) {
  
  
              ver.visible = false;
@@ -170,7 +170,7 @@ void guardar(){
                     report.setSrc(directorioReportes+"estudiantes2.jasper");
                  report.setParameters(parametros);
                 report.setDatasource(datasource);
-                report.setType("pdf");
+                report.setType(tipoReporte);
              
  }
 
@@ -190,7 +190,8 @@ void guardar(){
             <intbox id="hasta" value="100" />
             <button label="Buscar en Rango" onClick="buscar(desde.value,hasta.value)"/>
             <button image="/images/guardar.gif" label="GUARDAR CAMBIOS" onClick="guardar()"/>
-            IMPRIMIR SOLO PREAPROBADOS EN EL RANGO  <button image="/images/imprimir.gif" onClick="imprimir()" label="Imprimir"/>
+            SOLO PREAPR.RANGO  <button image="/images/pdf.png" onClick='imprimir("pdf")' label="Imprimir"/>
+                                <button image="/images/excel.gif" onClick='imprimir("xls")' label="Imprimir"/>
                  <zscript>
                     public void aumentar(){
                     String tamanio = report.height.replace("px","").replace("%","");
