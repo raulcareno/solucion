@@ -387,8 +387,13 @@ void recalcular(){
 
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"libreta.jasper");
-                    //String pat = report.getSrc().replace("libreta.jasper","");
-                    //System.out.println("EL PATH: "+pat);
+                    parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
+                    parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
+                   
+            }else if(tipo.equals("LIBF")){
+
+                    datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"libretaSupletorios.jasper");
                     parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
                     parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
                    
@@ -466,7 +471,7 @@ void campos(String valor){
                 titulo.value= "Cuadro de Notas por Materia Disciplina";
             materiasCombo.setSelectedIndex(-1);
             curs.setSelectedIndex(0);
-        }else if(valor.equals("LIB") || valor.equals("LIB2") || valor.equals("LIB3")){
+        }else if(valor.equals("LIBF") || valor.equals("LIB") || valor.equals("LIB2") || valor.equals("LIB3")){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
             sistemasCombo.disabled = false;
@@ -529,8 +534,9 @@ void campos(String valor){
                                     <listitem id="NMAT" label="Cuadro de Notas por Materia" value="NMAT" />
                                     <listitem id="NMATD"  label="Cuadro de Notas por Materia Disciplina" value="NMATD" />
                                     <listitem  id="LIB" label="Libreta de Calificaciones" value="LIB" />
-                                    <listitem  id="LIB2" label="Libreta de Calificaciones(2)" value="LIB2" />
-                                    <listitem  id="LIB3" label="Libreta de Calificaciones(3)" value="LIB3" />
+                                    <listitem  id="LIBF" label="Libreta de Calificaciones(Final Supletorios)" value="LIBF" />
+                                    <listitem  id="LIB2" label="Libreta de Calificaciones(Pequeño)" value="LIB2" />
+                                    <listitem  id="LIB3" label="Libreta de Calificaciones(Con Aprobación o No)" value="LIB3" />
                                     <listitem id="CCAL"  label="Cuadro de Calificaciones" value="CCAL" />
                                     <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
                                     <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
@@ -715,6 +721,7 @@ void cargando(){
         LIB.visible = per.verificarPermisoReporte("LIB", "Ingresar");
         LIB2.visible = per.verificarPermisoReporte("LIB", "Ingresar");
         LIB3.visible = per.verificarPermisoReporte("LIB", "Ingresar");
+        LIBF.visible = per.verificarPermisoReporte("LIB", "Ingresar");
 		CCAL.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
         CCAL2.visible = per.verificarPermisoReporte("CCAL2", "Ingresar");
         CCAL3.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
