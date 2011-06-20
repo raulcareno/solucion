@@ -83,7 +83,7 @@ bd2.value = "";
                       MateriaProfesor estudent = (MateriaProfesor) it.next();
                         Listitem item = new Listitem();
                         item.setValue(estudent);
-                        item.appendChild(new Listcell(estudent.getMateria()+""));
+                        item.appendChild(new Listcell(estudent.getMateria()+" - [Disciplina]"));
                         mates.appendChild(item);
              }
 
