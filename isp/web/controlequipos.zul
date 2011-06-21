@@ -34,6 +34,7 @@ void llenar(Cabeceracompra empa){
     codigo.value = empa.getCodigo();
     factura.value = empa.getFactura();
     fecha.value = empa.getFecha();
+    series.value = empa.getSeries();
     idproveedores.value = empa.getProveedores().getCodigo();
     proveedores.value = empa.getProveedores().getRazonsocial();
 
@@ -92,6 +93,7 @@ void estado(Boolean estado,Boolean modificar){
     cantidad.readonly = estado;
     precio.readonly = estado;
     fecha.readonly = estado;
+    series.readonly = estado;
     mac.readonly = estado;
     perf.disabled = estado;
     bd.disabled = estado;
@@ -108,6 +110,7 @@ void estado(Boolean estado,Boolean modificar){
        cabeCompra.setFecha(fecha.value);
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
+       cabeCompra.setSeries(series.value);
         adm.guardar(cabeCompra);
             List col = opciones.getRows().getChildren();
              for (int i = 0; i < col.size(); i++) {
@@ -356,6 +359,13 @@ llenarGridMac(int numero){
                             <intbox id="factura"/>
                             </span>
                         </row>
+                        <row  >
+                            <span style="float:right">  Series:</span> 
+                             <span> <textbox id="series" cols="80" rows = "2" />
+                             separar con ; ejem.: 0012545155; 0542545845; 54158444;
+                             </span> 
+                        </row>
+                       
                         <row spans="4">
                             <grid  width="98%" id="anadir">
                                 <columns sizable="true">

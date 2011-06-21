@@ -1,3 +1,4 @@
+
 <window   border="normal" >
 
     <zscript>
@@ -10,14 +11,20 @@
 
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Canton as o");
-    static Canton equi = new Canton();
+    List allEvents = adm.query("Select o from Sucursal as o");
+    static Sucursal equi = new Sucursal();
     Permisos permiso = new Permisos();
-    //SimpleTreeModel stm = new SimpleTreeModel(root);
+ 
  
 
- void generar(){
-   
+    void generar(){
+        generarFacturas gen = new generarFacturas();
+          for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                 Listitem object = (Listitem)it.next();
+                 Sucursal emp = object.getValue();
+                    gen.empezarGenerar(fecha.value,numero.value,emp);            
+                }
+        
     }
 
  Boolean verificar(String accion){
@@ -25,34 +32,33 @@
  }
 
     </zscript>
- 
-    <groupbox width="100%" mold="3d" >
-
-        <caption label="Busquedas" />
-        <vbox>
-   
-            <hbox width="100%">
-                <listbox multiple="true" checkmark="true"  id="datos" width="320px">
+    <grid width="400px">
+        <rows>
+            <row>
+                            Fecha Emisión: 
+                <datebox id="fecha" onCreate="self.value = new Date()"/>
+            </row>    
+            <row>    
+                            Empezar Generación en Factura No.: 
+                <intbox id="numero" value="1"/>
+            </row>    
+            <row spans="2">
+                <listbox multiple="true" checkmark="true"  id="datos" width="99%">
                     <listhead>
                         <listheader label="Código"/>
                         <listheader label="Nombre"/>
 
                     </listhead>
                     <listitem forEach="${allEvents}" value="${each}">
-                        <listcell label="${each.nombre}" />
+                        <listcell label="${each.descripcion}" />
                     </listitem>
-                </listbox>
-                
-            </hbox>
-            
-                <vbox>
-                    <hbox>
-                        
-                        <datebox id="fecha" onCreate="self.value = new Date()"/>
-                        <button image="/images/guardar.gif" id="guardar" label="Generar Facturas para Clientes"   onClick="guardar();"/>
-                    </hbox>
-                </vbox>
-        </vbox>
-    </groupbox>
+                </listbox>    
+            </row>
+            <row spans="2">
+                <button label="EMPEZAR GENERACIÓN FACTURAS" onClick="generar()"/>
+            </row>
+        </rows>    
+    </grid>
+  
 
 </window>

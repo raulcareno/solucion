@@ -24,6 +24,13 @@ List cantones2 = adm.query("Select o from Nodos as o ");
 void llenar(Radios equi2){
    equi = equi2;
     nombre.value = equi.getNombre();
+        ip.value = equi.getIp();
+        ssid.value = equi.getSsid();
+        seguridad.value = equi.getSeguridad();
+        usuario.value = equi.getUsuario();
+       clave.value =  permiso.decriptar(equi.getClave());
+         
+    
        if(equi2.getNodos() != null){
              try{
                       for (int i = 0; i <= cantones.getItems().size(); i++) {
@@ -50,8 +57,11 @@ void estado(Boolean estado,Boolean modificar){
         equi = (Radios)datos.selectedItem.value;
     }
     nombre.readonly = estado;
- 
-
+   ip.readonly = estado;
+    ssid.readonly = estado;
+    seguridad.readonly = estado;
+    usuario.readonly = estado;
+    clave.readonly = estado;
 }
 
 
@@ -61,7 +71,11 @@ void estado(Boolean estado,Boolean modificar){
             return;
     }
         equi.setNombre(nombre.value);
-        
+        equi.setIp(ip.value);
+        equi.setSsid(ssid.value);
+        equi.setSeguridad(seguridad.value);
+        equi.setUsuario(usuario.value);
+        equi.setClave(permiso.encriptar(clave.value));
         equi.setNodos(cantones.selectedItem.value);
         
         if((!equi.getCodigo().equals(0)) ){
@@ -138,7 +152,7 @@ void eliminar(){
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getCodigo()+""));
                       li.appendChild(new Listcell(acceIt.getNombre()+" "));
-                      li.appendChild(new Listcell(acceIt.getNodos().getNombre()+" "));
+                      li.appendChild(new Listcell(acceIt.getIp()+" "));
                       datos.appendChild(li);
              }
 
@@ -171,10 +185,30 @@ equi.setPerfil(g);
                     <span style="float:right"> Nombre Radios(*):</span>
                     <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />
                 </row>
-               
- 
-
-            </rows>
+                       <row>
+                                <span style="float:right"> Ip(*):</span>
+                                <textbox id="ip"  maxlength="60" cols="40" readonly="true"  />
+                              
+                            </row>
+                            <row>
+                                <span style="float:right"> SSID:</span>
+                                <textbox id="ssid" maxlength="100" cols="40"  readonly="true"    />
+                                 
+                            </row>
+                            <row>
+                                <span style="float:right"> Seguridad:</span>
+                                <textbox id="seguridad"   readonly="true"></textbox>
+                                
+                            </row>
+                            <row>
+                                <span style="float:right"> Usuario:</span>
+                                <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
+                            </row>
+                            <row>
+                                <span style="float:right"> Clave:</span>
+                                <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
+                            </row>
+             </rows>
         </grid>
         <vbox>
             <vbox>
@@ -198,14 +232,14 @@ equi.setPerfil(g);
                 <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                     <listhead>
                         <listheader  label="Código"/>
-                        <listheader sort="auto" label="Radios"/>
-                        <listheader sort="auto" label="Nodos"/>
+                        <listheader sort="auto" label="Nombre"/>
+                        <listheader sort="auto" label="IP"/>
 
                     </listhead>
                     <listitem forEach="${allEvents}" value="${each}">
                         <listcell label="${each.codigo}" />
                         <listcell label="${each.nombre}" />
-                        <listcell label="${each.nodos.nombre}" />
+                        <listcell label="${each.ip}" />
                     </listitem>
                 </listbox>
 

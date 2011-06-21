@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package jcinform.persistencia;
 
 import java.io.Serializable;
@@ -29,6 +28,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Nodos.findAll", query = "SELECT n FROM Nodos n")})
 public class Nodos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,16 +37,12 @@ public class Nodos implements Serializable {
     private Integer codigo;
     @Column(name = "nombre")
     private String nombre;
-    @Column(name = "ip")
-    private String ip;
-    @Column(name = "usuario")
-    private String usuario;
-    @Column(name = "clave")
-    private String clave;
-    @Column(name = "ssid")
-    private String ssid;
-    @Column(name = "seguridad")
-    private String seguridad;
+    @Column(name = "direccion")
+    private String direccion;
+    @Column(name = "torre")
+    private String torre;
+    @Column(name = "observaciones")
+    private String observaciones;
     @OneToMany(mappedBy = "nodos")
     private Collection<Radios> radiosCollection;
     @JoinColumn(name = "sector", referencedColumnName = "codigo")
@@ -78,44 +74,28 @@ public class Nodos implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getIp() {
-        return ip;
+    public String getDireccion() {
+        return direccion;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getObservaciones() {
+        return observaciones;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
     }
 
-    public String getClave() {
-        return clave;
+    public String getTorre() {
+        return torre;
     }
 
-    public void setClave(String clave) {
-        this.clave = clave;
-    }
-
-    public String getSsid() {
-        return ssid;
-    }
-
-    public void setSsid(String ssid) {
-        this.ssid = ssid;
-    }
-
-    public String getSeguridad() {
-        return seguridad;
-    }
-
-    public void setSeguridad(String seguridad) {
-        this.seguridad = seguridad;
+    public void setTorre(String torre) {
+        this.torre = torre;
     }
 
     public Collection<Radios> getRadiosCollection() {
@@ -166,5 +146,4 @@ public class Nodos implements Serializable {
     public String toString() {
         return "jcinform.persistencia.Nodos[codigo=" + codigo + "]";
     }
-
 }

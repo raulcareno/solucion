@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package jcinform.persistencia;
 
 import java.io.Serializable;
@@ -27,6 +26,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Radios.findAll", query = "SELECT r FROM Radios r")})
 public class Radios implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,18 @@ public class Radios implements Serializable {
     private Integer codigo;
     @Column(name = "nombre")
     private String nombre;
+    @Column(name = "ip")
+    private String ip;
+    @Column(name = "usuario")
+    private String usuario;
+    @Column(name = "clave")
+    private String clave;
+    @Column(name = "ssid")
+    private String ssid;
+    @Column(name = "seguridad")
+    private String seguridad;
+    @Column(name = "observaciones")
+    private String observaciones;
     @JoinColumn(name = "nodos", referencedColumnName = "codigo")
     @ManyToOne
     private Nodos nodos;
@@ -70,6 +82,54 @@ public class Radios implements Serializable {
         this.nodos = nodos;
     }
 
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public String getSeguridad() {
+        return seguridad;
+    }
+
+    public void setSeguridad(String seguridad) {
+        this.seguridad = seguridad;
+    }
+
+    public String getSsid() {
+        return ssid;
+    }
+
+    public void setSsid(String ssid) {
+        this.ssid = ssid;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -94,5 +154,4 @@ public class Radios implements Serializable {
     public String toString() {
         return "jcinform.persistencia.Radios[codigo=" + codigo + "]";
     }
-
 }

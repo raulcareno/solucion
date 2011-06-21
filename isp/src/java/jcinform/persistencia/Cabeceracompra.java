@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package jcinform.persistencia;
 
 import java.io.Serializable;
@@ -32,6 +31,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Cabeceracompra.findAll", query = "SELECT c FROM Cabeceracompra c")})
 public class Cabeceracompra implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +40,8 @@ public class Cabeceracompra implements Serializable {
     private Integer codigo;
     @Column(name = "factura")
     private Integer factura;
+    @Column(name = "series")
+    private String series;
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
@@ -91,6 +93,14 @@ public class Cabeceracompra implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public String getSeries() {
+        return series;
+    }
+
+    public void setSeries(String series) {
+        this.series = series;
     }
 
     public Integer getCantidad() {
@@ -181,5 +191,4 @@ public class Cabeceracompra implements Serializable {
     public String toString() {
         return "jcinform.persistencia.Cabeceracompra[codigo=" + codigo + "]";
     }
-
 }

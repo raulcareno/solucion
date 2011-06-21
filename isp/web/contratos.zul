@@ -30,14 +30,14 @@
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
     List planes = adm.query("Select o from Plan as o");
-    List nodos = adm.query("Select o from Nodos as o");
+    List nodos = adm.query("Select o from Radios as o");
     static Contratos equi = new Contratos();
     Permisos permiso = new Permisos();
     //SimpleTreeModel stm = new SimpleTreeModel(root);
             
     Empleados usuarioActual = ses.getAttribute("user");
    Empresa empresa = ses.getAttribute("empresa");
-    
+    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
     
 //FUNCIONES
 void llenar(Contratos  equi2){
@@ -187,6 +187,9 @@ void estado(Boolean estado,Boolean modificar){
     nuevoC.disabled = estado;
     nuevoE.disabled = estado;
      identificacion.focus();
+     serie1.readonly = estado;
+     serie2.readonly = estado;
+     serie3.readonly = estado;
 
 }
 
@@ -207,6 +210,7 @@ void estado(Boolean estado,Boolean modificar){
     equi.setClave(clave.value);
     equi.setContrato(numerocontrato.value);
     equi.setEstado(estadoContrato.selectedItem.value);
+    equi.setSucursal(sucursalEmp.getSucursal());
     
      if(equi.getContrato()==null){
             Integer valor = adm.getNuevaClave("Contratos","contrato");
@@ -814,12 +818,14 @@ llenarCliente(Clientes clienteEn){
                                                                             <listhead>
                                                                                 <listheader label="Nombre"/>
                                                                                 <listheader label="Sector"/>
+                                                                                <listheader label="Radio"/>
                                                                                 <listheader label="Ip"/>
                                             
                                                                             </listhead>
                                                                             <listitem forEach="${nodos}" value="${each}">
                                                                                 <listcell label="${each.nombre}" />
-                                                                                <listcell label="${each.sector}" />
+                                                                                <listcell label="${each.nodos.sector}" />
+                                                                                <listcell label="${each.nombre}" />
                                                                                 <listcell label="${each.ip}" />
                                                                             </listitem>
                                                                         </listbox>
@@ -947,7 +953,7 @@ llenarCliente(Clientes clienteEn){
              
                     <grid>
                         <rows>
-                            <row visible = "true">
+                            <row visible = "false">
                                 <intbox id="codigos" readonly="true" />    
                                 <intbox id="atendida" readonly="true" />    
                             </row>
