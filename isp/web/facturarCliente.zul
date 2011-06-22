@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+    <window onCreate="cargar()" width="400px" id="facturarCliente">
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.util.ArrayList;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+  java.math.BigDecimal;
+    Administrador adm = new Administrador();
+    Permisos permiso = new Permisos();
+ 
+        cargarCliente(Proveedores clientes){
+            ide = Path.getComponent("//controlequipospage/controlventana/idproveedores");
+            nombe = Path.getComponent("//controlequipospage/controlventana/proveedores");
+            ide.value = clientes.getCodigo();
+            nombe.value = clientes.getRazonsocial()+"";
+        }
+
+]]>
+        </zscript>
+       
+
+        <grid>
+            <rows>
+                <row> <span  style="float:right">CLIENTE: </span>
+                    <label id="cliente" /> 
+                </row>
+                <row><span  style="float:right">FECHA: </span>
+                    <label id="fecha" /> 
+                </row>
+                <row><span  style="float:right">DIRECCIÓN:  </span>
+                    <label id="direccion" />
+                </row>
+                <row><span  style="float:right">TELEFONO:  </span>
+                    <label id="telefono" />
+                </row>
+                <row><span  style="float:right">Valor Mora:</span> <decimalbox readonly="true" id="valor" />
+                </row>
+                   <row><span  style="float:right">Valor a Pagar:</span> <decimalbox id="apagar" />
+                </row>
+                <row align="center" spans="2">
+                    <button label="Guardar Pago" />
+                </row>
+                           
+                           
+                           
+            </rows>
+                  
+
+        </grid>
+        <zscript>
+            void cargar(){
+            
+            try{
+                    String factura = facturarCliente.getAttribute("codigoFactura");
+                    java.math.BigDecimal valoraPagar = facturarCliente.getAttribute("valoraPagar");
+                    System.out.println("codigoFactura: "+factura+" " + valoraPagar);
+                    Factura facEnc = adm.buscarClave(factura,Factura.class);
+                    cliente.value = facEnc.getClientes().getApellidos() +" "+facEnc.getClientes().getNombres();
+                    direccion.value = facEnc.getClientes().getDireccion();
+                    telefono.value = facEnc.getClientes().getTelefono();
+                    fecha.value = (new Date()).toLocaleString();
+                    valor.value = valoraPagar;
+                    apagar.value = valoraPagar;
+             }catch(Exception e){
+                     System.out.println("ERROR EN FACTURA"+e);
+             }
+            
+                    
+            }
+        </zscript>
+    </window>
+</zk>

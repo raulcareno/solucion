@@ -44,6 +44,8 @@ public class generarFacturas {
                     fac.setNumero(numero+"");
                     fac.setEfectivo(new BigDecimal(object.getPlan().getValor()));
                     fac.setEstado(true);
+                    fac.setClientes(object.getClientes());
+                    fac.setFecha(fecha);
                     fac.setSucursal(suc);
                     fac.setTotal(new BigDecimal(object.getPlan().getValor()));
                     adm.guardar(fac);

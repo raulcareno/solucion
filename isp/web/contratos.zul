@@ -26,7 +26,7 @@
   import jcinform.conexion.*;
   import jcinform.bean.*;
   import java.math.BigDecimal;
-
+import java.text.SimpleDateFormat;
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
     List planes = adm.query("Select o from Plan as o");
@@ -523,8 +523,88 @@ llenarCliente(Clientes clienteEn){
                     }catch(Exception e){
                             Messagebox.show("Seleccione primero un CLIENTE  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             registro.setSelected(true);
-}
-                    }
+                        }
+                 }
+                 
+
+  void facturasPendientes(){
+  /*
+    SimpleDateFormat d1 = new SimpleDateFormat("dd - MMMM");
+                 Date d = cita.getFecha();
+                 correo.setContenido("SE HA CONFIRMADO LA CITA EN LA HORA Y FECHA ESTABLECIDA, SE LE RECOMIENDA ESTAR 10 MIN, ANTES PARA UNA MEJOR ATENCIÓNCITA: <b> "+ d1.format(d) + " </b> A LAS <b>"+ cita.getHorario().getHora().getDesde().getHours()+":"+cita.getHorario().getHora().getDesde().getMinutes()+ " HORAS </b> <p> POR FAVOR RECONFIRMAR ESTA CITA </p> <p> GRACIAS POR SU COMPRENSIÓN </> " );
+  */
+  
+  
+                try{
+                List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.fecha, p.nombre, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo FROM plan p, detalle de, cxcobrar cx, factura  fa "   +
+                        " WHERE p.codigo = de.plan AND  de.factura = fa.codigo AND fa.clientes  =  "+codigocli.value+"   AND cx.factura = fa.codigo GROUP BY fa.codigo  HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0"); 
+                
+                facturasDatos = new Listbox();
+                int a=0;
+               for (Iterator it = facturasDatos.getItems().iterator(); it.hasNext();) {
+                    facturasDatos.getItems().remove(a);
+                }
+
+                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                            Vector vec = (Vector) itna.next();
+                            Listitem li = new Listitem();
+                            
+                            for (int j = 0; j < vec.size(); j++) {
+                                Object dos = vec.get(j);
+                                    if(dos instanceof Integer){
+                                        li.setValue(dos);
+                                        li.appendChild(new Listcell(dos+""));
+                                    }else if(dos instanceof Date){
+                                     SimpleDateFormat d1 = new SimpleDateFormat("dd - MMMM - yyyy");
+                                     Date d = (Date)dos;
+                                      
+                                      li.appendChild(new Listcell(d1.format(d)+""));
+                                    }else{
+                                        li.appendChild(new Listcell(dos+""));
+                                    }
+                            }
+                            Button aButton = null;
+                            aButton = new Button("Facturar");
+                            aButton.setImage("/images/dinero.gif");
+                            aButton.setId(""+vec.get(0));
+                            aButton.setAttribute("valor",vec.get(4));
+                            aButton.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                             
+                                final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
+                                win.setMaximizable(true);
+                                win.setClosable(true);
+                                win.setAttribute("codigoFactura", aButton.getId());
+                                win.setAttribute("valoraPagar", aButton.getAttribute("valor"));
+                                win.setTitle("Facturar Clientes");
+                                win.doModal();
+                             
+                               
+                              }
+                                });
+                              Listcell celda = new Listcell();
+                              celda.appendChild(aButton);
+                              li.appendChild(celda);
+                            
+                            facturasDatos.appendChild(li);
+                }
+               /* for (Iterator it = facEncontradas.iterator(); it.hasNext();) {
+                      Object
+                      Factura acceIt = (Factura) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNumero()+""));
+                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()));
+                      li.appendChild(new Listcell(acceIt.getTotal()+""));
+                      
+                      facturasDatos.appendChild(li);
+             } */
+                   }catch(Exception e){
+                            Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            registro.setSelected(true);
+                        }
+                
+                } 
                 
   ]]>
     </zscript>
@@ -532,7 +612,7 @@ llenarCliente(Clientes clienteEn){
         <tabbox width="100%"  >
             <tabs  >
                 <tab id="registro" label="Contratos"/>
-                <tab label="Facturación" />
+                <tab label="Facturas Pendientes"  onSelect="facturasPendientes()"/>
                 <tab onSelect="buscarSoportes()" label="Historia Técnica" />
                 <tab label="Impresión" />
             </tabs>
@@ -924,6 +1004,20 @@ llenarCliente(Clientes clienteEn){
                     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
                 </tabpanel>
                 <tabpanel>
+                  <listbox mold="paging" rows="10" pageSize="10"   id="facturasDatos" width="100%">
+                        <listhead>
+                            <listheader label="Factura"/>
+                            <listheader label="Fecha Pago"/>
+                            <listheader label="Servicio"/>
+                            <listheader label="Total"/>
+                            <listheader label="Saldo"/>
+                            <listheader label="Opcion"/>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                        </listitem>
+                    </listbox>    
+                </tabpanel>
+                <!--tabpanel>
                     <groupbox  width="100%" mold="3d" >
                         <caption label="Busquedas" />
                         <vbox>
@@ -948,7 +1042,7 @@ llenarCliente(Clientes clienteEn){
                             </hbox>
                         </vbox>
                     </groupbox>
-                </tabpanel>  
+                </tabpanel-->  
                 <tabpanel>
              
                     <grid>
