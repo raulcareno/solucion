@@ -20,6 +20,7 @@
 }
     </style>
     <zscript>   <![CDATA[
+    
   import bean.EventDAO; 
   import java.util.ArrayList; 
   import jcinform.persistencia.*;
@@ -28,6 +29,7 @@
   import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
   Session ses = Sessions.getCurrent();
+  //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
     Administrador adm = new Administrador();
     List planes = adm.query("Select o from Plan as o");
     List nodos = adm.query("Select o from Radios as o");
@@ -480,7 +482,7 @@ llenarCliente(Clientes clienteEn){
                                                     reportelocal.setParameters(parameters);
                                                     reportelocal.setDatasource(null);
                                                     reportelocal.setType("pdf");
- System.out.println("000041");
+                                                     System.out.println("000041");
                                                     final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
                                                     win.setMaximizable(true);
                                                     win.setClosable(true);
@@ -570,7 +572,7 @@ llenarCliente(Clientes clienteEn){
                             aButton.setAttribute("valor",vec.get(4));
                             aButton.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
-                             
+                                registro.setSelected(true);
                                 final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
                                 win.setMaximizable(true);
                                 win.setClosable(true);
@@ -604,15 +606,20 @@ llenarCliente(Clientes clienteEn){
                             registro.setSelected(true);
                         }
                 
-                } 
+                }
+                
+                
+                
                 
   ]]>
     </zscript>
     <div>
+        <!--button id="facturas" onClick="facturasPendientes()" /-->
+
         <tabbox width="100%"  >
             <tabs  >
                 <tab id="registro" label="Contratos"/>
-                <tab label="Facturas Pendientes"  onSelect="facturasPendientes()"/>
+                <tab label="Facturas Pendientes" id="facturas" onSelect="facturasPendientes()"/>
                 <tab onSelect="buscarSoportes()" label="Historia Técnica" />
                 <tab label="Impresión" />
             </tabs>

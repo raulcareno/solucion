@@ -35,7 +35,7 @@ public class Factura implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "codigo")
-    private String codigo;
+    private Integer codigo;
     @Column(name = "numero")
     private String numero;
     @Column(name = "fecha")
@@ -78,15 +78,15 @@ public class Factura implements Serializable {
     public Factura() {
     }
 
-    public Factura(String codigo) {
+    public Factura(Integer codigo) {
         this.codigo = codigo;
     }
 
-    public String getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 

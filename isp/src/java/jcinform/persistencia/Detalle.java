@@ -30,7 +30,7 @@ public class Detalle implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "codigo")
-    private String codigo;
+    private Integer codigo;
     @Column(name = "mes")
     private Integer mes;
     @Column(name = "cantidad")
@@ -62,15 +62,15 @@ public class Detalle implements Serializable {
     public Detalle() {
     }
 
-    public Detalle(String codigo) {
+    public Detalle(Integer codigo) {
         this.codigo = codigo;
     }
 
-    public String getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 

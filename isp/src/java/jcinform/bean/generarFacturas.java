@@ -4,6 +4,7 @@
  */
 package jcinform.bean;
 
+ 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Calendar;
@@ -16,6 +17,7 @@ import jcinform.persistencia.Cxcobrar;
 import jcinform.persistencia.Detalle;
 import jcinform.persistencia.Factura;
 import jcinform.persistencia.Sucursal;
+import org.zkoss.zul.Button;
 
 /**
  *
@@ -28,6 +30,8 @@ public class generarFacturas {
 
     public String empezarGenerar(Date fecha, Integer numero, Sucursal suc) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
+        Button b = new Button();
+       
         Administrador adm = new Administrador();
         Date fecha2 = fecha;
         fecha2.setDate(1);
@@ -40,7 +44,7 @@ public class generarFacturas {
                 + "and  o.estado in ('Activo','Terminado')  and o.sucursal = '"+suc.getCodigo()+"' order by o.codigo ", Contratos.class);
                 for (Iterator it = facturasHechas.iterator(); it.hasNext();) {
                     Contratos object = (Contratos) it.next();
-                    Factura fac = new Factura(""+adm.getNuevaClave("Factura", "codigo"));
+                    Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
                     fac.setNumero(numero+"");
                     fac.setEfectivo(new BigDecimal(object.getPlan().getValor()));
                     fac.setEstado(true);
@@ -49,7 +53,7 @@ public class generarFacturas {
                     fac.setSucursal(suc);
                     fac.setTotal(new BigDecimal(object.getPlan().getValor()));
                     adm.guardar(fac);
-                    Detalle det = new Detalle(""+adm.getNuevaClave("Detalle", "codigo"));
+                    Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
                     det.setTotal(new BigDecimal(object.getPlan().getValor()));
                     det.setPlan(object.getPlan());
                     det.setCantidad(1);
@@ -58,15 +62,16 @@ public class generarFacturas {
                     det.setDescripcion("generada");
                     det.setFactura(fac);
                     adm.guardar(det);
-                    Cxcobrar cuenta = new Cxcobrar(""+adm.getNuevaClave("Cxcobrar", "codigo"));
+                    Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
                     cuenta.setDebe(fac.getTotal());
                     cuenta.setHaber(BigDecimal.ZERO);
                     cuenta.setDebito(BigDecimal.ZERO);
                     cuenta.setCheque(BigDecimal.ZERO);
-                    cuenta.setEfectivo(0.0);
+                    cuenta.setEfectivo(BigDecimal.ZERO);
                     cuenta.setFactura(fac);
                     cuenta.setFecha(fecha);
-                    cuenta.setNotarjeta(BigDecimal.ZERO);
+                    cuenta.setNotarjeta("");
+                    cuenta.setNocheque("");
                     cuenta.setTotal(fac.getTotal());
                     adm.guardar(cuenta);
                             

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk  xmlns="http://www.zkoss.org/2005/zul">
-    <window onCreate="cargar()" width="400px" id="facturarCliente">
+    <window  onCreate="cargar()" width="400px" id="facturarCliente">
         <zscript>
             <![CDATA[
   import jcinform.persistencia.*;
@@ -9,16 +9,105 @@
   import java.util.ArrayList;
   import org.zkoss.image.AImage;
   import org.zkoss.image.Image;
-  java.math.BigDecimal;
+  import java.util.HashMap;
+import java.util.Map;
+    import java.math.BigDecimal;
     Administrador adm = new Administrador();
     Permisos permiso = new Permisos();
- 
-        cargarCliente(Proveedores clientes){
-            ide = Path.getComponent("//controlequipospage/controlventana/idproveedores");
-            nombe = Path.getComponent("//controlequipospage/controlventana/proveedores");
-            ide.value = clientes.getCodigo();
-            nombe.value = clientes.getRazonsocial()+"";
+       Session ses = Sessions.getCurrent();
+       
+           Empleados usuarioActual = ses.getAttribute("user");
+   Empresa empresa = ses.getAttribute("empresa");
+    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+       ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
+        cargarCliente(){
+            boton = Path.getComponent("//controlequipospage/controlventana/facturas");
+            boton.doClick();
         }
+        
+        void guardar(){
+        BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue());
+        if(total.compareTo(new BigDecimal(0)) == 0 ){
+            Messagebox.show("Valor a pagar está en Cero  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            efectivo.focus();
+            return;
+        }
+            Cxcobrar cobrar = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+            cobrar.setFactura(new Factura(codigofac.value));
+            cobrar.setDebe(new BigDecimal(0));
+            cobrar.setHaber(totalCobros.value);
+            cobrar.setFecha(new Date());
+            cobrar.setTipo("P");
+            cobrar.setEfectivo(efectivo.value);
+            cobrar.setCheque(cheque.value);
+            cobrar.setDebito(deposito.value);
+            cobrar.setTarjeta(tarjeta.value);
+            cobrar.setNocheque(nocheque.value);
+            cobrar.setNotarjeta(notarjeta.value);
+            adm.guardar(cobrar);
+            try{
+               Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
+                    
+                    Map parameters = new HashMap();
+                    parameters.put("ruc", empresa.getRuc());
+                    System.out.println("0000-1");
+                    parameters.put("empresa", empresa.getRazonsocial());
+                    parameters.put("direccion", empresa.getDireccion());
+                  /*  parameters.put("observacion", observacion.value);
+                    parameters.put("telefono", empresa.getTelefono());
+                    parameters.put("cliente", combo.value);
+                    parameters.put("noorden", sop.getNoorden());
+  
+                    parameters.put("telefono1", telefonoi.value);
+                    parameters.put("direccion1", direccioni.value);*/
+
+                    reportelocal.setSrc("/jcinform/bean/reportes/jrxml/orden.jasper");
+                    reportelocal.setParameters(parameters);
+                    reportelocal.setDatasource(null);
+                    reportelocal.setType("pdf");
+
+                    final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
+                    win.setMaximizable(true);
+                    win.setClosable(true);
+                    win.setAttribute("reporte",reportelocal);
+                    win.setTitle("Reporte");
+                    win.doModal();
+                
+                facturarCliente.detach();
+            }catch(Exception  ex){
+                System.out.println("EXXX: "+ex);
+            }
+            
+           
+               
+            
+        }
+        
+       public void sumarcobros(String tipo){
+                BigDecimal  totalFinal = valor.getValue();
+                BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue());
+            //    Double antesTotal = new Double(totalCobros.getValue());
+                if(total.compareTo(totalFinal)==1){ //>
+                    if(tipo.equals("efe")){
+                        BigDecimal cobros =  totalCobros.getValue() ;
+                        efectivo.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
+                    }else if(tipo.equals("dep")){
+                        BigDecimal cobros = (totalCobros.getValue());
+                         //deposito.setValue(""+(redondear((totalFinal -cobros),2)<0?0:redondear((totalFinal -cobros),2)));
+                         deposito.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
+                    }else if(tipo.equals("che")){
+                        BigDecimal cobros = (totalCobros.getValue());
+                        //cheque.setValue(""+(redondear((totalFinal -cobros),2)<0?0:redondear((totalFinal -cobros),2)));
+                        cheque.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
+                    }else if(tipo.equals("tar")){
+                        BigDecimal cobros = (totalCobros.getValue());
+                        //cheque.setValue(""+(redondear((totalFinal -cobros),2)<0?0:redondear((totalFinal -cobros),2)));
+                        tarjeta.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
+                    }
+                }
+                 total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue());
+                totalCobros.setValue(total);
+}
 
 ]]>
         </zscript>
@@ -26,24 +115,77 @@
 
         <grid>
             <rows>
-                <row> <span  style="float:right">CLIENTE: </span>
-                    <label id="cliente" /> 
+                <row> 
+                    <span  style="float:right">
+                        <label style="font-weight:bold" value="CLIENTE: " /> 
+                    </span>
+                    <span> 
+                        <label id="cliente" />  
+                        <intbox readonly="true" id="codigocli" /> 
+                        <intbox readonly="true" id="codigofac" /> 
+                    </span>
                 </row>
-                <row><span  style="float:right">FECHA: </span>
+                <row>
+                    <span  style="float:right">
+                        <label style="font-weight:bold" value="FECHA: " /> 
+                    </span>
                     <label id="fecha" /> 
                 </row>
-                <row><span  style="float:right">DIRECCIÓN:  </span>
-                    <label id="direccion" />
+                <row>
+                    <span  style="float:right;"> 
+                        <label style="font-weight:bold" value="DIRECCIÓN: " />
+                    </span>
+                    <span>
+                        <label id="direccion" /> 
+                        <label style="font-weight:bold" value="TELEFONO:" />
+                        <label id="telefono" /> 
+                    </span>
                 </row>
-                <row><span  style="float:right">TELEFONO:  </span>
-                    <label id="telefono" />
-                </row>
-                <row><span  style="float:right">Valor Mora:</span> <decimalbox readonly="true" id="valor" />
-                </row>
-                   <row><span  style="float:right">Valor a Pagar:</span> <decimalbox id="apagar" />
+                <row>
+                    <span  style="float:right">
+                        <label style="font-weight:bold" value="VALOR MORA: " />
+                    </span> 
+                    <span>
+                    <decimalbox readonly="true" cols="7" format="##0.00"  id="valor" />
+                    <label style="font-weight:bold" value="A COBRAR: " />
+                    <decimalbox readonly="true" cols="7" format="##0.00"  id="totalCobros" />
+                    </span>
                 </row>
                 <row align="center" spans="2">
-                    <button label="Guardar Pago" />
+                    <label style="font-weight:bold" value="FORMA DE PAGO" />
+                </row>
+                <row>
+                    <span  style="float:right">Efectivo:</span> 
+                    <decimalbox onOK="deposito.focus()" onBlur='sumarcobros("efe")' format="##0.00" cols="7" id="efectivo" />
+                </row>
+                <row>
+                    <span  style="float:right">Depósito:</span> 
+                    <span>
+                        <decimalbox cols="7"   onBlur='sumarcobros("dep")'  format="##0.00"  onOK="nocuenta.focus()" id="deposito" />
+                      No.Depósito:
+                        <textbox id="nocuenta"  onOK="cheque.focus()"  />
+                    </span>
+                </row>
+                <row>
+                    <span  style="float:right">Cheque:</span> 
+                    <span>
+                        <decimalbox  onBlur='sumarcobros("che")'   format="##0.00"  onOK="nocheque.focus()"  cols="7" id="cheque" />
+                     No.Cheque: 
+                        <textbox id="nocheque"  onOK="tarjeta.focus()"  />
+                    </span>
+                </row>
+                <row>
+                    <span  style="float:right">Tarjeta:</span> 
+                    <span>
+                        <decimalbox   onBlur='sumarcobros("tar")' onOK="notarjeta.focus()"  format="##0.00"   cols="7" id="tarjeta" />
+                     No.Tarjeta: 
+                        <textbox id="notarjeta"  onOK="btnguardar.focus()"  />
+                    </span>
+                </row>
+                <row>
+                </row>
+                <row align="center" spans="2">
+                    <button label="Guardar Pago" onClick="guardar()" id="btnguardar" />
                 </row>
                            
                            
@@ -52,6 +194,7 @@
                   
 
         </grid>
+           <jasperreport id="reportelocal" />
         <zscript>
             void cargar(){
             
@@ -59,15 +202,23 @@
                     String factura = facturarCliente.getAttribute("codigoFactura");
                     java.math.BigDecimal valoraPagar = facturarCliente.getAttribute("valoraPagar");
                     System.out.println("codigoFactura: "+factura+" " + valoraPagar);
-                    Factura facEnc = adm.buscarClave(factura,Factura.class);
+                    Factura facEnc = adm.buscarClave(new Integer(factura),Factura.class);
                     cliente.value = facEnc.getClientes().getApellidos() +" "+facEnc.getClientes().getNombres();
+                    codigocli.value = facEnc.getClientes().getCodigo();
+                    codigofac.value = new Integer(facEnc.getCodigo());
                     direccion.value = facEnc.getClientes().getDireccion();
-                    telefono.value = facEnc.getClientes().getTelefono();
+                    telefono.value  = facEnc.getClientes().getTelefono();
                     fecha.value = (new Date()).toLocaleString();
                     valor.value = valoraPagar;
-                    apagar.value = valoraPagar;
+                    totalCobros.value = valoraPagar;
+                    efectivo.value = valoraPagar;
+                    cheque.value = BigDecimal.ZERO;
+                    tarjeta.value = BigDecimal.ZERO;
+                    deposito.value = BigDecimal.ZERO;
+                    
+                    
              }catch(Exception e){
-                     System.out.println("ERROR EN FACTURA"+e);
+                     System.out.println("ERROR EN FACTURA "+e);
              }
             
                     

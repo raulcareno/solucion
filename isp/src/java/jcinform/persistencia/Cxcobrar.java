@@ -33,7 +33,7 @@ public class Cxcobrar implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "codigo")
-    private String codigo;
+    private Integer codigo;
     @Column(name = "debe")
     private BigDecimal debe;
     @Column(name = "haber")
@@ -46,7 +46,7 @@ public class Cxcobrar implements Serializable {
     @Column(name = "tipo")
     private String tipo;
     @Column(name = "efectivo")
-    private Double efectivo;
+    private BigDecimal efectivo;
     @Column(name = "cheque")
     private BigDecimal cheque;
     @Column(name = "debito")
@@ -54,9 +54,11 @@ public class Cxcobrar implements Serializable {
     @Column(name = "tarjeta")
     private BigDecimal tarjeta;
     @Column(name = "nocheque")
-    private BigDecimal nocheque;
+    private String nocheque;
     @Column(name = "notarjeta")
-    private BigDecimal notarjeta;
+    private String notarjeta;
+    @Column(name = "nocuenta")
+    private String nocuenta;
     @JoinColumn(name = "factura", referencedColumnName = "codigo")
     @ManyToOne
     private Factura factura;
@@ -64,15 +66,15 @@ public class Cxcobrar implements Serializable {
     public Cxcobrar() {
     }
 
-    public Cxcobrar(String codigo) {
+    public Cxcobrar(Integer codigo) {
         this.codigo = codigo;
     }
 
-    public String getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -116,12 +118,20 @@ public class Cxcobrar implements Serializable {
         this.tipo = tipo;
     }
 
-    public Double getEfectivo() {
+    public BigDecimal getEfectivo() {
         return efectivo;
     }
 
-    public void setEfectivo(Double efectivo) {
+    public void setEfectivo(BigDecimal efectivo) {
         this.efectivo = efectivo;
+    }
+
+    public String getNocuenta() {
+        return nocuenta;
+    }
+
+    public void setNocuenta(String nocuenta) {
+        this.nocuenta = nocuenta;
     }
 
     public BigDecimal getCheque() {
@@ -148,19 +158,19 @@ public class Cxcobrar implements Serializable {
         this.tarjeta = tarjeta;
     }
 
-    public BigDecimal getNocheque() {
+    public String getNocheque() {
         return nocheque;
     }
 
-    public void setNocheque(BigDecimal nocheque) {
+    public void setNocheque(String nocheque) {
         this.nocheque = nocheque;
     }
 
-    public BigDecimal getNotarjeta() {
+    public String getNotarjeta() {
         return notarjeta;
     }
 
-    public void setNotarjeta(BigDecimal notarjeta) {
+    public void setNotarjeta(String notarjeta) {
         this.notarjeta = notarjeta;
     }
 
