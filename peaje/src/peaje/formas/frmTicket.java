@@ -345,13 +345,13 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     fac.setPlaca(placa.getText().replace("_", "").toUpperCase());
                     fac.setFechaini(new Date());
                     fac.setFecha(new Date());
-                    fac.setTicket(""+(new Integer(emp.getDocumentoticket())+1));
-                    noTicket.setText(emp.getDocumentoticket());
-                    adm.guardar(fac);
+                    Integer numero = new Integer(emp.getDocumentoticket())+1;
+                    fac.setTicket(""+(numero));
+                    emp.setDocumentoticket(""+numero);
+                    adm.actualizar(emp);//GUARDO EMPRESA
+                    noTicket.setText(numero+"");
+                    adm.guardar(fac);//GUARDO FACTURA
                     codigo.setText(fac.getCodigo() + "");
-                    Integer numero = new Integer(emp.getDocumentoticket());
-                    emp.setDocumentoticket((numero + 1) + "");
-                    adm.actualizar(emp);
                     imprimir(fac.getCodigo(), emp);
 if(empresaObj.getSeabretic()){
 

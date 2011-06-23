@@ -32,6 +32,7 @@ import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.GeneraXMLPersonal;
+import javax.swing.JOptionPane;
 import sources.FacturaSource;
 
 public class LeerTarjeta implements Runnable, SerialPortEventListener {
@@ -177,7 +178,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //        tarjeta = "";
 //    }
 //        tarjeta = "";
-        System.out.println(""+tarjeta);
+        System.out.println("" + tarjeta);
         switch (event.getEventType()) {
             case SerialPortEvent.BI:
             case SerialPortEvent.OE:
@@ -207,11 +208,12 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             //System.out.println("" + tarjeta);
             if ("AEIOUAEIOU".equals(tarjeta)) {
                 imprimir("");
-                   tarjeta = "";
+                tarjeta = "";
                 return;
-            }if ("AEIOUAEIOU2".equals(tarjeta)) {
+            }
+            if ("AEIOUAEIOU2".equals(tarjeta)) {
                 imprimir("2");
-                   tarjeta = "";
+                tarjeta = "";
                 return;
             }
             //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
@@ -227,7 +229,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             //peaje.formas.SimpleWrite.llamar("COM3");
 
             return;
-        } 
+        }
 
 
     }
@@ -249,12 +251,13 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             fac.setPlaca("CLIENTE LECTORA");
             fac.setFechaini(new Date());
             fac.setFecha(new Date());
-            fac.setTicket(emp.getDocumentoticket());
-//                noTicket.setText(emp.getDocumentoticket());
-            adm.guardar(fac);
-            Integer numero = new Integer(emp.getDocumentoticket());
-            emp.setDocumentoticket((numero + 1) + "");
-            adm.actualizar(emp);
+            Integer numero = new Integer(emp.getDocumentoticket())+1;
+            fac.setTicket("" + numero);
+            emp.setDocumentoticket((numero) + "");
+            adm.actualizar(emp);//GUARDO EMPRESA
+            adm.guardar(fac); // GUARDO FACTURA
+            
+            
 //            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
             ArrayList detalle = new ArrayList();
             detalle.add(fac);
@@ -270,7 +273,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
             int selectedService = 0;
             /* Scan found services to see if anyone suits our needs */
-            String impre = emp.getImpresora()+impresoraLlega;
+            String impre = emp.getImpresora() + impresoraLlega;
             for (int i = 0; i < services.length; i++) {
                 String nombre = services[i].getName();
                 if (nombre.contains(impre)) {
@@ -292,7 +295,16 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
             exporter.exportReport();
-
+            if (princip.empresaObj.getWebcam()) {
+                if (ubicacionDirectorio.contains("build")) {
+                    ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                }
+                int resultado = princip.ver.Fotografiar( ubicacionDirectorio + "\\fotos", false, fac.getCodigo()+"");
+                if (resultado == 0) {
+                    JOptionPane.showMessageDialog(null, "Error en la Fotografia");
+                }
+              
+            }
 
 
 //            JasperViewer viewer = new JasperViewer(masterPrint, false); //PARA VER EL REPORTE ANTES DE IMPRIMIR

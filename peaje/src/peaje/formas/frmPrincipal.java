@@ -768,7 +768,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel2.add(usuariot);
         usuariot.setBounds(140, 20, 110, 19);
 
-        clave.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        clave.setFont(new java.awt.Font("Tahoma", 0, 14));
         clave.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         clave.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
         clave.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -828,7 +828,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Acceso al Sistema");
         jPanel3.add(jLabel8);
@@ -1339,9 +1339,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addContainerGap()
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frmLoteLayout.createSequentialGroup()
-                        .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                        .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                         .addGap(4, 4, 4))
                     .addGroup(frmLoteLayout.createSequentialGroup()
                         .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1359,11 +1359,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGap(23, 23, 23))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
                 .addGap(35, 35, 35))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
                 .addGap(35, 35, 35))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
@@ -1374,7 +1374,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel35))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         frmLoteLayout.setVerticalGroup(
             frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1731,7 +1731,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmRespaldarBase.getContentPane().add(btnRespaldoLinux);
         btnRespaldoLinux.setBounds(190, 120, 153, 40);
 
-        ubicacionArchivo.setText("C:\\");
+        ubicacionArchivo.setText("C:\\RESPALDOS\\");
             frmRespaldarBase.getContentPane().add(ubicacionArchivo);
             ubicacionArchivo.setBounds(140, 50, 205, 20);
 
@@ -1983,7 +1983,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jLabel38.setBounds(510, 580, 140, 14);
             contenedor.add(jLabel38, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+            jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12));
             jLabel37.setForeground(new java.awt.Color(102, 102, 102));
             jLabel37.setText("PARTNERS");
             jLabel37.setBounds(500, 480, 160, 20);
@@ -3847,6 +3847,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 grabar = true;
                 modificar = false;
                 habilitar(true);
+                btnNuevaTarjeta.setEnabled(false);
                 limpiar();
                 clienteObj = new Clientes();
                 bindingGroup.unbind();
@@ -3994,6 +3995,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private void btnGuardarTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarTarjetaActionPerformed
         // TODO add your handling code here:
         try {
+            if(noTarjeta.getText().isEmpty()){
+                JOptionPane.showMessageDialog(this, "PASE LA TARJETA POR LA LECTORA");
+            return;
+            }
             tarjeta.setTarjeta(noTarjeta.getText());
             tarjeta.setClientes(clienteObj);
             Date fechaDes = fechaDesde.getDate();
