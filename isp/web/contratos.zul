@@ -91,30 +91,6 @@ void llenar(Contratos  equi2){
     }
     
     numerocontrato.value = equi.getContrato();
-    
-    try{
-       codigoequi1.value = equi.getEquipos().getCodigo()+"";
-        equipo1.value = equi.getEquipos().getEquipos().getNombre()+" "+ equi.getEquipos().getEquipos().getModelo()+" "+ equi.getEquipos().getEquipos().getMarcas().getNombre();
-    }catch(Exception e){
-        codigoequi1.value = "";
-        equipo1.value = "";
-    
-    }
-    try{
-        codigoequi2.value = equi.getEquipos2().getCodigo()+"";
-        equipo2.value = equi.getEquipos2().getEquipos().getNombre()+" "+ equi.getEquipos2().getEquipos().getModelo()+" "+ equi.getEquipos2().getEquipos().getMarcas().getNombre();
-    }catch(Exception e){
-    codigoequi2.value = "";
-        equipo2.value = "";
-    }
-    try{
-        codigoequi3.value = equi.getEquipos1().getCodigo()+"";
-        equipo3.value = equi.getEquipos1().getEquipos().getNombre()+" "+ equi.getEquipos1().getEquipos().getModelo()+" "+ equi.getEquipos1().getEquipos().getMarcas().getNombre();
-    }catch(Exception e){
-    codigoequi3.value = "";
-        equipo3.value = "";
-    }
-      
        if(equi.getPlan() != null){
              try{
                       for (int i = 0; i <= perf.getItems().size(); i++) {
@@ -134,20 +110,20 @@ void llenar(Contratos  equi2){
                bd2.value = "";
                 nodo.setSelectedItem(null);
     }
-    if(equi.getNodos() != null){
+    if(equi.getRadios() != null){
  
         try{
                       for (int i = 0; i <= nodo.getItems().size(); i++) {
-                                    Nodos tr0 = ((Nodos)((Listitem)nodo.getItems().get(i)).getValue());
+                                    Radios tr0 = ((Radios)((Listitem)nodo.getItems().get(i)).getValue());
                                     int primero = tr0.getCodigo();
-                                    int segundo = equi.getNodos().getCodigo();
+                                    int segundo = equi.getRadios().getCodigo();
                                     if(primero == segundo){
                                         nodo.setSelectedItem((Listitem)nodo.getItems().get(i));
-                                        bd2.value = equi.getNodos().getNombre()+" ";
+                                        bd2.value = equi.getRadios().getNombre()+" ";
                                         break;
                                     }
                            }
-                 }catch(Exception err){System.out.println("ERROR no tiene Nodoses asignados COMBO nodo "+err);}
+                 }catch(Exception err){System.out.println("ERROR no tiene Radios asignados COMBO nodo "+err);}
         
     }else{
        bd2.value = "";
@@ -189,9 +165,7 @@ void estado(Boolean estado,Boolean modificar){
     nuevoC.disabled = estado;
     nuevoE.disabled = estado;
      identificacion.focus();
-     serie1.readonly = estado;
-     serie2.readonly = estado;
-     serie3.readonly = estado;
+
 
 }
 
@@ -226,29 +200,16 @@ void estado(Boolean estado,Boolean modificar){
     equi.setNocuenta(nocuenta.value); //varchar
     equi.setTipocuenta(tipocuenta.value); //varchar 
     equi.setDiapago(new Integer(diapago.value));//integer
-    equi.setSerie1(serie1.value);
-    equi.setSerie1(serie2.value);
-    equi.setSerie2(serie3.value);
-    try{
-       equi.setControlequipos1(new Controlequipos(new Integer(codigoequi1.value))); 
-    }catch(Exception e){
-    }
+  
+   
     
-    try{
-       equi.setControlequipos(new Controlequipos(new Integer(codigoequi2.value))); 
-    }catch(Exception e){
-    }
-    
-    try{
-       equi.setControlequipos(new Controlequipos(new Integer(codigoequi3.value))); 
-    }catch(Exception e){
-    }
+   
     try{
         equi.setPlan(perf.getSelectedItem().getValue());
         }catch(Exception e){
     }
     try{
-        equi.setNodos(nodo.getSelectedItem().getValue());
+        equi.setRadios(nodo.getSelectedItem().getValue());
     }catch(Exception e){
     }
     
@@ -692,9 +653,7 @@ llenarCliente(Clientes clienteEn){
                                     <tabbox id="tb2"  >
                                         <tabs  >
                                             <tab label="DATOS CONTRATO"/>
-                                            <tab label="EQUIPOS OCUPADOS"/>
-                                            <tab label="DATOS DEL VENDEDOR"/>
-                                            <tab label="OTROS"/>
+                                            <tab label="OTROS DATOS"/>
                                         </tabs>
                                         <tabpanels>
                                             <tabpanel>
@@ -820,82 +779,7 @@ llenarCliente(Clientes clienteEn){
                                             <tabpanel>
                                                 <grid  sclass="MyGridRowHeight">
                                                     <rows>
-                                                        <row>
-                                                            <span style="float:right"> Equipo Asignado 1:</span> 
-                                                            <span>
-                                                                <textbox  readonly="true"  cols="32"   id="equipo1" />
-
-                                                                <button label=""  id="buscarE1" disabled="true" image="/images/auditoria.gif">
-                                                                    <attribute name="onClick">{
-                                            final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
-                                            win.setMaximizable(true);
-                                            win.setClosable(true);
-                                            win.setAttribute("nuevo", true);
-                                            win.setAttribute("equipo", 1);
-                                            win.setTitle("Buscar Equipos");
-                                            win.doModal();
-                                            }                            
-                                                                    </attribute>
-                                                                </button> 
-                       
-                                                                <textbox id="codigoequi1"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
-                                        Serie: 
-                                                                <textbox id="serie1" cols="10"  readonly="true"  />
-                      
-                                                            </span>
-                                                        </row>
-                                                        <row>
-                                                            <span style="float:right"> Equipo Asignado 2:</span> 
-                                                            <span>
-                                                                <textbox  readonly="true"  cols="32"   id="equipo2" />
-
-                                        
-                                                                <button label=""  id="buscarE2" disabled="true" image="/images/auditoria.gif">
-                                                                    <attribute name="onClick">{
-                                            final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
-                                            win.setMaximizable(true);
-                                            win.setClosable(true);
-                                            win.setAttribute("nuevo", true);
-                                            win.setAttribute("equipo", 2);
-                                            win.setTitle("Buscar Equipos");
-                                            win.doModal();
-                                            }                            
-                                                                    </attribute>
-                                                                </button> 
-                       
-                                                                <textbox id="codigoequi2"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
-                      Serie: 
-                                                                <textbox id="serie2"  cols="10"  readonly="true"  />
-                                                            </span>
-                                                        </row>
-                                                        <row>
-                                                            <span style="float:right"> Equipo Asignado 3:</span> 
-                                                            <span>
-                                                                <textbox  readonly="true"  cols="32"   id="equipo3" />
-
-                                       
-                                        
-                                                                <button label=""  id="buscarE3" disabled="true"  image="/images/auditoria.gif">
-                                                                    <attribute name="onClick">{
-                                            final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
-                                            win.setMaximizable(true);
-                                            win.setClosable(true);
-                                            win.setAttribute("nuevo", true);
-                                            win.setAttribute("equipo", 3);
-                                            win.setTitle("Buscar Equipos");
-                                            win.doModal();
-                                            }                            
-                                                                    </attribute>
-                                                                </button> 
-                                                                <textbox id="codigoequi3"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
-                        
-                                                        Serie: 
-                                                                <textbox id="serie3" cols="10"   readonly="true"  />
-                                        
-                         
-                                                            </span>
-                                                        </row>
-                                                        <row>   
+                                                                                             <row>   
                                                             <span style="float:right"> Anidado a Nodo(*):</span>
                                                             <bandbox  disabled="true"  readonly="true"  id="bd2">
                                                                 <bandpopup>
@@ -912,7 +796,7 @@ llenarCliente(Clientes clienteEn){
                                                                             <listitem forEach="${nodos}" value="${each}">
                                                                                 <listcell label="${each.nombre}" />
                                                                                 <listcell label="${each.nodos.sector}" />
-                                                                                <listcell label="${each.nombre}" />
+                                                                                <listcell label="${each.nodos.nombre}" />
                                                                                 <listcell label="${each.ip}" />
                                                                             </listitem>
                                                                         </listbox>
@@ -939,15 +823,6 @@ llenarCliente(Clientes clienteEn){
                                                                 </rows>
                                                             </grid>
                                                         </row>
-                                                    </rows>
-                                                </grid>    
-                                                        
-                                            </tabpanel>
-                                            <tabpanel>
-                                                            
-                                                <grid  sclass="MyGridRowHeight">
-                                                    <rows>
-                                  
                                                         <row>
                                                             <span style="float:right"> Vendido por(*):</span> 
                                                             <span>
@@ -990,9 +865,11 @@ llenarCliente(Clientes clienteEn){
                                                             <textbox id="registradoU"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
                                                         </row>
                                                     </rows>
-                                                </grid>
+                                                </grid>    
+                                                        
                                             </tabpanel>
-                                            <tabpanel>This is panel C</tabpanel>
+                                           
+                                          
 
                                         </tabpanels>
                                     </tabbox>
@@ -1011,7 +888,7 @@ llenarCliente(Clientes clienteEn){
                     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
                 </tabpanel>
                 <tabpanel>
-                  <listbox mold="paging" rows="10" pageSize="10"   id="facturasDatos" width="100%">
+                    <listbox mold="paging" rows="10" pageSize="10"   id="facturasDatos" width="100%">
                         <listhead>
                             <listheader label="Factura"/>
                             <listheader label="Fecha Pago"/>
@@ -1113,19 +990,19 @@ llenarCliente(Clientes clienteEn){
         </tabbox>
         <panel framable="true" visible="false" id="contratosPanel" title="CONTRATOS CON ÉSTE CLIENTE" style="position:absolute; top:5%; left:5%" width="600px">
             <panelchildren>
-             <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;" id="contratosCliente" width="100%">
-                        <listhead>
-                            <listheader label="Contra."/>
-                            <listheader label="Plan"/>
-                            <listheader label="Fecha"/>
-                            <listheader label="Estado"/>
-                        </listhead>
-                        <listitem forEach="${allEvents}" value="${each}">
-                            <listcell label="${each.fecha}" />
-                        </listitem>
-                    </listbox>
-                    <button label="CERRAR" onClick="contratosPanel.visible = false"/>
-                    </panelchildren>
+                <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;" id="contratosCliente" width="100%">
+                    <listhead>
+                        <listheader label="Contra."/>
+                        <listheader label="Plan"/>
+                        <listheader label="Fecha"/>
+                        <listheader label="Estado"/>
+                    </listhead>
+                    <listitem forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.fecha}" />
+                    </listitem>
+                </listbox>
+                <button label="CERRAR" onClick="contratosPanel.visible = false"/>
+            </panelchildren>
         </panel>
     </div>
 </window>

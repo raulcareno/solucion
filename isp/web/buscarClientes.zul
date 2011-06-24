@@ -71,6 +71,10 @@ direi = Path.getComponent("//contratospage/contratosventana/direccioni");
  direi.value = dire.value;
  teli.value = clientes.getTelefono();
  codi.value = clientes.getCodigo()+"";
+ try{
+ iden.focus();
+ nomb.focus();
+ }catch(Exception err){}
 
 }
 

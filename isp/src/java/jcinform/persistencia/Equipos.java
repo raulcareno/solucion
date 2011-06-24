@@ -26,8 +26,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "equipos")
-@NamedQueries({
-    @NamedQuery(name = "Equipos.findAll", query = "SELECT e FROM Equipos e")})
+@NamedQueries({})
 public class Equipos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -60,14 +59,14 @@ public class Equipos implements Serializable {
     @JoinColumn(name = "marcas", referencedColumnName = "codigo")
     @ManyToOne
     private Marcas marcas;
-    @OneToMany(mappedBy = "equipos")
-    private Collection<Detalle> detalleCollection;
-    @OneToMany(mappedBy = "equipos")
-    private Collection<Contratos> contratosCollection;
-    @OneToMany(mappedBy = "equipos1")
-    private Collection<Contratos> contratosCollection1;
-    @OneToMany(mappedBy = "equipos2")
-    private Collection<Contratos> contratosCollection2;
+//    @OneToMany(mappedBy = "equipos")
+//    private Collection<Detalle> detalleCollection;
+//    @OneToMany(mappedBy = "equipos")
+//    private Collection<Contratos> contratosCollection;
+//    @OneToMany(mappedBy = "equipos1")
+//    private Collection<Contratos> contratosCollection1;
+//    @OneToMany(mappedBy = "equipos2")
+//    private Collection<Contratos> contratosCollection2;
 
     public Equipos() {
     }
@@ -180,37 +179,37 @@ public class Equipos implements Serializable {
         this.marcas = marcas;
     }
 
-    public Collection<Detalle> getDetalleCollection() {
-        return detalleCollection;
-    }
-
-    public void setDetalleCollection(Collection<Detalle> detalleCollection) {
-        this.detalleCollection = detalleCollection;
-    }
-
-    public Collection<Contratos> getContratosCollection() {
-        return contratosCollection;
-    }
-
-    public void setContratosCollection(Collection<Contratos> contratosCollection) {
-        this.contratosCollection = contratosCollection;
-    }
-
-    public Collection<Contratos> getContratosCollection1() {
-        return contratosCollection1;
-    }
-
-    public void setContratosCollection1(Collection<Contratos> contratosCollection1) {
-        this.contratosCollection1 = contratosCollection1;
-    }
-
-    public Collection<Contratos> getContratosCollection2() {
-        return contratosCollection2;
-    }
-
-    public void setContratosCollection2(Collection<Contratos> contratosCollection2) {
-        this.contratosCollection2 = contratosCollection2;
-    }
+//    public Collection<Detalle> getDetalleCollection() {
+//        return detalleCollection;
+//    }
+//
+//    public void setDetalleCollection(Collection<Detalle> detalleCollection) {
+//        this.detalleCollection = detalleCollection;
+//    }
+//
+//    public Collection<Contratos> getContratosCollection() {
+//        return contratosCollection;
+//    }
+//
+//    public void setContratosCollection(Collection<Contratos> contratosCollection) {
+//        this.contratosCollection = contratosCollection;
+//    }
+//
+//    public Collection<Contratos> getContratosCollection1() {
+//        return contratosCollection1;
+//    }
+//
+//    public void setContratosCollection1(Collection<Contratos> contratosCollection1) {
+//        this.contratosCollection1 = contratosCollection1;
+//    }
+//
+//    public Collection<Contratos> getContratosCollection2() {
+//        return contratosCollection2;
+//    }
+//
+//    public void setContratosCollection2(Collection<Contratos> contratosCollection2) {
+//        this.contratosCollection2 = contratosCollection2;
+//    }
 
     @Override
     public int hashCode() {

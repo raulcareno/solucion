@@ -1,0 +1,495 @@
+<?page id="contratospage"?>
+<window id="contratosventana"  border="normal" >
+    <style>
+.MyGridRowHeight tr.z-row td.z-row-inner  
+{
+      background: white;
+      border-top: none;
+      border-left: 1px solid white;
+      border-right: 1px solid #CCC;
+      border-bottom: 1px solid #DDD;
+ 
+}
+/*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+  background: #F8F8F8;
+} */
+.MyGridRowHeight td.z-row-inner
+{
+    padding: 0px;
+    //overflow: hidden;
+}
+    </style>
+    <zscript>   <![CDATA[
+    
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+  Session ses = Sessions.getCurrent();
+  //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
+    Administrador adm = new Administrador();
+    List planes = adm.query("Select o from Plan as o");
+    List nodos = adm.query("Select o from Radios as o");
+    static Contratos equi = new Contratos();
+    Permisos permiso = new Permisos();
+    //SimpleTreeModel stm = new SimpleTreeModel(root);
+            
+    Empleados usuarioActual = ses.getAttribute("user");
+   Empresa empresa = ses.getAttribute("empresa");
+    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+    
+ 
+ 
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Contratos",accion);
+ }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new Contratos(0));
+        estado(false,false);
+        
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Contratos)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; 
+       estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ 
+ limpiarTodo(){
+     int a=0;
+        for (Iterator it = contratosCliente.getItems().iterator(); it.hasNext();) {
+                   contratosCliente.getItems().remove(a);
+        }
+         a=0;
+        for (Iterator it = facturasDatos.getItems().iterator(); it.hasNext();) {
+                facturasDatos.getItems().remove(a);
+            }
+     
+ 
+ }
+llenarCliente(Clientes clienteEn){
+     identificacion.value = clienteEn.getIdentificacion();
+     codigocli.value = clienteEn.getCodigo()+"";
+     direccion.value  = clienteEn.getDireccion();
+     direccioni.value  = clienteEn.getDireccion();
+     direccioni.value  = clienteEn.getTelefono();
+     combo.value = clienteEn.getApellidos()+" "+clienteEn.getNombres() ;
+
+}
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
+            if(empleados.size()>0){
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Clientes object = (Clientes)it.next();
+                      empa = object;
+                      
+                 }
+                  contratosCliente = new Listbox();
+        int a=0;
+            for (Iterator it = contratosCliente.getItems().iterator(); it.hasNext();) {
+                   contratosCliente.getItems().remove(a);
+                }
+                List  ControlequiposEncontrados = adm.query("Select o from Contratos as o " +
+                "where o.clientes.codigo = '"+empa.getCodigo()+"' and o.estado not in('Terminado') ");
+                                for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
+                                      Contratos  acceIt = (Contratos) it.next();
+                                      Listitem li = new Listitem();
+                                      li.setValue(acceIt);
+                                      Listcell contratoCelda = new Listcell(acceIt.getContrato()+"");
+                                      Listcell planCelda = new Listcell(acceIt.getPlan().getNombre()+" "+acceIt.getPlan().getTipo()+" "+acceIt.getPlan().getValor());
+                                      Listcell fechaCelda = new Listcell(acceIt.getFecha().toLocaleString().substring(0,11)+"");
+                                      Listcell estadoCelda = new Listcell(acceIt.getEstado()+"");
+                                      String estilo = "background:#00E673";
+                                      if(acceIt.getEstado().contains("Activo")){
+                                       // estilo = "background:#00E673";
+                                      }
+                                      if(acceIt.getEstado().contains("Suspendido")){
+                                       // estilo  = "background:#FFFF6F";
+                                      }
+                                      if(acceIt.getEstado().contains("Terminado")){
+                                      //  estilo = "background:#FF7575";   
+                                      }
+                                      contratoCelda.setStyle(estilo);
+                                 /*     planCelda.setStyle(estilo);
+                                      fechaCelda.setStyle(estilo);
+                                      estadoCelda.setStyle(estilo);*/
+                                      //li.appendChild(contratoCelda);
+                                      li.appendChild(planCelda);
+                                      li.appendChild(fechaCelda);
+                                      li.appendChild(estadoCelda);
+                                        contratosCliente.appendChild(li);
+                             }
+                             if(ControlequiposEncontrados.size()>0)
+                                contratosPanel.visible = true;
+                llenarCliente(empa);
+                buscarSoportes();
+                facturasPendientes();
+            }else{
+                   alert("No encontrado");
+                }
+
+        }else{
+                if(valor.contains("999")){
+                    List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
+                     if(empleados.size()>0){
+                        for(Iterator it = empleados.iterator(); it.hasNext();) {
+                              Clientes object = (Clientes)it.next();
+                              empa = object;
+
+                         }
+                        llenarCliente(empa);
+                         numerocontrato.focus();
+                    }
+                }
+        
+        }
+ 
+    }
+    
+    
+ 
+      
+                nuevos(Soporte sop){
+                            codigos.value = sop.getCodigo();
+                            try{
+                                
+                                atendida.value = sop.getEmpleados().getCodigo();
+                                atendidanombre.value = sop.getEmpleados().getApellidos()+" "+sop.getEmpleados().getNombres();
+                            }catch(Exception e){
+                                atendida.value =  usuarioActual.getCodigo();
+                                atendidanombre.value = usuarioActual.getApellidos()+" "+usuarioActual.getNombres();
+                            }
+                            
+                                fechasoporte.value = sop.getFecha();
+                            if(sop.getFecha() == null)
+                                fechasoporte.value = new Date();
+                            observacion.value = sop.getObservacion();
+                            generar.checked  = sop.getGenerada();
+                            noorden.value = sop.getNoorden();
+              }
+          habilitar(Boolean estado){
+                            fechasoporte.readonly = estado;
+                            observacion.readonly = estado;
+                            generar.disabled  = estado;
+            }
+                        
+                void guardars(){
+ 
+                                Soporte sop = new Soporte();
+                                sop.setCodigo(codigos.value);
+                                sop.setEmpleados(new Empleados(atendida.value));
+                                sop.setFecha(fechasoporte.value);
+                                sop.setObservacion(observacion.value);
+                                sop.setGenerada(generar.checked);
+                                sop.setClientes(new Clientes(new Integer(codigocli.value)));
+                                sop.setNoorden(noorden.value);
+
+                                if(sop.getGenerada() && sop.getNoorden() == null){ 
+                                    Integer valor = adm.getNuevaClave("Soporte","noorden");
+                                    sop.setNoorden(valor);
+                                }
+                                if((!sop.getCodigo().equals(0)) ){
+                                     sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
+                                     adm.actualizar(sop);
+                                        permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
+                                 }else{
+                                        sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
+                                        sop.setCodigo(adm.getNuevaClave("Soporte","codigo"));
+                                        adm.guardar(sop);
+                                        permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
+                                 }
+                                        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                             
+                                       
+                                              if(sop.getGenerada()){  //GENERAR ORDEN DE COMPRA
+                                         
+                                                   Map parameters = new HashMap();
+                                                   System.out.println("00000");
+                                             
+                                                    parameters.put("ruc", empresa.getRuc());
+                                                    System.out.println("0000-1");
+                                                    parameters.put("empresa", empresa.getRazonsocial());
+                                                    System.out.println("00001");
+                                                    parameters.put("direccion", empresa.getDireccion());
+                                                    parameters.put("observacion", observacion.value);
+                                                    parameters.put("telefono", empresa.getTelefono());
+                                                    parameters.put("cliente", combo.value);
+                                                    parameters.put("noorden", sop.getNoorden());
+                                                    System.out.println("00002");
+                                                    parameters.put("telefono1", telefonoi.value);
+                                                    parameters.put("direccion1", direccioni.value);
+                                                    System.out.println("00003");
+                                                    reportelocal.setSrc("/jcinform/bean/reportes/jrxml/orden.jasper");
+                                                    reportelocal.setParameters(parameters);
+                                                    reportelocal.setDatasource(null);
+                                                    reportelocal.setType("pdf");
+                                                     System.out.println("000041");
+                                                    final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
+                                                    win.setMaximizable(true);
+                                                    win.setClosable(true);
+                                                    win.setAttribute("reporte",reportelocal);
+                                                    win.setTitle("Reporte");
+                                                    win.doModal();
+                                              }
+                                            guardars.disabled=true;
+                                            agregars.disabled=false;
+                                            nuevos(new Soporte(0));
+                                            habilitar(true);
+                                            buscarSoportes();
+                                      
+                  
+                    }
+                     
+                    
+                      void buscarSoportes(){
+                    try{
+                            List ControlequiposEncontrados = adm.query("Select o from Soporte  as o where o.clientes.codigo = '"+codigocli.value+"' order by o.fecha desc ");
+                        
+                        soporte = new Listbox();
+                        int a=0;
+                            for (Iterator it =soporte.getItems().iterator(); it.hasNext();) {
+                                    soporte.getItems().remove(a);
+                                }
+
+
+                               for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
+                                      Soporte  acceIt = (Soporte) it.next();
+                                      Listitem li = new Listitem();
+                                      li.setValue(acceIt);
+                                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
+                                      li.appendChild(new Listcell(acceIt.getObservacion()+""));
+                                      li.appendChild(new Listcell((acceIt.getGenerada()==true?"SI":"NO")));
+                                      li.appendChild(new Listcell(acceIt.getEmpleados().getApellidos()+" "+acceIt.getEmpleados().getNombres()));
+                                      soporte.appendChild(li);
+                             }
+
+                    }catch(Exception e){
+                            Messagebox.show("Seleccione primero un CLIENTE  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+
+                        }
+                 }
+                 
+
+  void facturasPendientes(){
+  
+                try{
+                List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.fecha, p.nombre, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo FROM plan p, detalle de, cxcobrar cx, factura  fa "   +
+                        " WHERE p.codigo = de.plan AND  de.factura = fa.codigo AND fa.clientes  =  "+codigocli.value+"   AND cx.factura = fa.codigo GROUP BY fa.codigo  HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0"); 
+                
+                facturasDatos = new Listbox();
+                int a=0;
+               for (Iterator it = facturasDatos.getItems().iterator(); it.hasNext();) {
+                    facturasDatos.getItems().remove(a);
+                }
+
+                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                            Vector vec = (Vector) itna.next();
+                            Listitem li = new Listitem();
+                            
+                            for (int j = 0; j < vec.size(); j++) {
+                                Object dos = vec.get(j);
+                                    if(dos instanceof Integer){
+                                        li.setValue(dos);
+                                       // li.appendChild(new Listcell(dos+""));
+                                    }else if(dos instanceof Date){
+                                     SimpleDateFormat d1 = new SimpleDateFormat("dd - MMMM - yyyy");
+                                     Date d = (Date)dos;
+                                      
+                                      li.appendChild(new Listcell(d1.format(d)+""));
+                                    }else{
+                                        li.appendChild(new Listcell(dos+""));
+                                    }
+                            }
+                   
+                            
+                            facturasDatos.appendChild(li);
+                }
+               
+                   }catch(Exception e){
+                            Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            
+                        }
+                
+                }
+                
+                
+                
+                
+  ]]>
+    </zscript>
+    <div style="align:center">
+        <grid  width="802px">
+            <rows>
+                <row>
+                                        
+                                 
+                    <panel framable="true" visible="true" title="DATOS CLIENTE" height="300px" width="400px">
+                        <panelchildren>
+                            <grid>
+                                <rows>
+                                    <row spans="2">
+                            
+                                    </row>
+                                    <row>
+                                        <span style="float:right"> Identificación: </span> 
+                                        <span> 
+                                            <textbox id="identificacion" cols="13" readonly="false" onBlur="verificarCedula(self.value)" onOK="verificarCedula(self.value)"  />
+                               
+                            Digite el No.[ENTER]
+                                            <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
+                                        </span>
+                                    </row>
+                                    <row>
+                                        <span style="float:right"> Nombres:</span> 
+                                        <span>     
+                                            <textbox readonly="true" cols="32"   id="combo" />
+                           
+                              
+                                            <button label="" id="buscarC" disabled="false"  image="/images/auditoria.gif">
+                                                <attribute name="onClick">{
+                                                limpiarTodo();
+                                            final Window win = (Window) Executions.createComponents("buscarClientes.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setTitle("Buscar Clientes");
+                                            win.doModal();
+                                            }                            
+                                                </attribute>
+                                            </button> 
+                                           
+                              
+                    
+                       
+                      
+                                        </span>
+                                    </row>
+                                    <row visible="false">
+                                        <span style="float:right">Dirección:  </span>
+                                        <textbox id="direccion" cols="32"  readonly="true"  />
+                                    </row>
+                    
+                                    <row visible = "false">
+                                        <intbox id="codigos" readonly="true" />    
+                                        <intbox id="atendida" readonly="true" />    
+                                    </row>
+                                    <row>
+                                        <span style="float:right">Atendido por:  </span>
+                                        <textbox id="atendidanombre" cols="32"  readonly="true" />        
+                                    </row>
+                                    <row> 
+                                        <span style="float:right">Fecha:  </span>
+                                        <datebox readonly="true" onCreate="self.value = new Date()" id="fechasoporte"/> 
+                                    </row>
+                                    <row>
+                                        <span style="float:right"> Observación: </span>
+                                        <textbox readonly="true" cols="32"  rows="3" id="observacion"/> 
+                                    </row>
+                                    <row>
+                                        <span style="float:right"> Generar Orden: </span>
+                                        <span>   
+                                            <checkbox id="generar" disabled="true"   />
+                                      No. Orden: 
+                                            <intbox id="noorden" readonly="true"   /> 
+                                        </span>
+                                    </row>
+                                    <row spans="2">
+                                        <span>
+                                            <button image="/images/guardar.gif" id="guardars" label="Guardar"  disabled="true"  onClick="guardars();modificars.disabled = true;"/>
+                                            <button  image="/images/nuevo.gif" id="agregars" label="Agregar" onClick="nuevos(new Soporte(0)); habilitar(false); observacion.focus();guardars.disabled = false;modificars.disabled = true" />
+                                            <button  image="/images/editar.gif" id="modificars"  label="Modificar" disabled="true"  onClick="habilitar(false); observacion.focus();guardars.disabled = false;"/>                           
+                                        </span>
+                                    </row>
+                                </rows>
+                            </grid>
+                                    
+                        </panelchildren>
+                    </panel>
+                    <span>
+                        <panel framable="true" visible="true" id="contratosPanel"  title="CONTRATOS"   height="150px" width="390px">
+                            <panelchildren>
+                                <listbox mold="paging" rows="3" pageSize="3" id="contratosCliente" height="100%" width="100%">
+                                    <listhead>
+                                        <listheader label="Plan"/>
+                                        <listheader label="Fecha"/>
+                                        <listheader label="Estado"/>
+                                    </listhead>
+                                    <listitem forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.fecha}" />
+                                    </listitem>
+                                </listbox>
+                            </panelchildren>
+                        </panel>
+                        <panel framable="true" visible="true" id="contratosPanel001"  title="FACTURAS PENDIENTES"   height="150px" width="390px">
+                            <panelchildren>
+                                <listbox mold="paging" rows="3" pageSize="3"   id="facturasDatos" width="100%">
+                                    <listhead>
+                                   
+                                        <listheader label="Fecha Pago"/>
+                                        <listheader label="Servicio"/>
+                                        <listheader label="Total"/>
+                                        <listheader label="Saldo"/>
+                                        <listheader label="Opcion"/>
+                                    </listhead>
+                                    <listitem forEach="${allEvents}" value="${each}">
+                                    </listitem>
+                                </listbox>    
+                         
+                            </panelchildren>
+                        </panel>
+                    </span>
+                </row>
+               
+            </rows>
+        </grid>
+        <textbox id="direccioni" cols="40" readonly="true"  visible="false" />
+        <textbox id="telefonoi" readonly="true" visible="false" />
+        <groupbox id="gb" mold="3d" width="802px">
+	    			
+            <panel framable="true" visible="true"  title="HISTORIAL DE ATENCIONES"   height="250px" width="795px">
+                <panelchildren>
+                            
+                        
+	   
+                    <listbox mold="paging" rows="10" pageSize="10"  onSelect="nuevos(soporte.selectedItem.value);modificars.disabled = false" id="soporte" width="100%">
+                        <listhead>
+                            <listheader label="Fecha"/>
+                            <listheader label="Observación"/>
+                            <listheader label="Orden Generada"/>
+                            <listheader label="Atendida"/>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.fecha}" />
+                            <listcell label="${each.observacion}" />
+                            <listcell label="${each.generada}" />
+                            <listcell label="${each.empleados}" />
+                        </listitem>
+                    </listbox>
+                </panelchildren>	 
+            </panel>
+        </groupbox>
+        <panel height="1px" visible="false" style="margin-bottom:10px"
+                           title="Reporte" border="normal">
+            <panelchildren>
+                <jasperreport id="reportelocal" />
+            </panelchildren>
+        </panel>
+             
+     
+    </div>
+</window>
