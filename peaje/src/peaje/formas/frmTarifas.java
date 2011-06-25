@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
+import java.math.BigInteger;
 
 /**
  *
@@ -87,7 +88,11 @@ public class frmTarifas   extends javax.swing.JInternalFrame {
                 obj[0] = tarifas.getCodigo();
                 obj[1] = tarifas.getDesde();
                 obj[2] = tarifas.getHasta();
-                obj[3] = tarifas.getValor().doubleValue();
+                try{
+                    obj[3] = tarifas.getValor().doubleValue();
+                }catch(Exception e){
+                    obj[3] = 0.0;
+                }
                 dtm.addRow(obj);
             }
            
@@ -668,6 +673,7 @@ void llenarProductos(){
                         try {
                            val = new BigDecimal((Double) tarifario.getValueAt(i, 3));
                         } catch (Exception e) {
+                            val = new BigDecimal(0);
                             System.out.println("ERROR 002: "+e);
                         }
                         
