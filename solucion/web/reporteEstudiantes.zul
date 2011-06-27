@@ -242,6 +242,36 @@ public JRDataSource inscritos4(ArrayList listadodeCursos, String tipo){
       ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
       return ds;
 }
+public JRDataSource inscritos6(ArrayList listadodeCursos, String tipo){
+  String curso =  "";
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+        String query = "SELECT mat.apellido,mat.nombre FROM Inscripciones AS mat  WHERE mat.periodo = '"+periodo.getCodigoper()+"' AND mat.validada = TRUE UNION SELECT   est.apellido, est.nombre  FROM matriculas AS mati, estudiantes est WHERE   mati.estado = 'Inscrito'  AND mati.estudiante = est.codigoest AND mati.curso IN (SELECT  codigocur FROM cursos WHERE periodo =  '"+periodo.getCodigoper()+"' )  ORDER BY  1" ;
+               
+                System.out.println(query);
+      List hoy = adm.queryNativo(query);
+      int i=1;
+       for (Iterator itna = hoy.iterator(); itna.hasNext();) {
+            Vector vec = (Vector) itna.next();
+            Matriculas matri = new Matriculas();
+            Estudiantes est = new Estudiantes();
+            Cursos cur = new Cursos();
+            Global gl = new Global();
+            gl.setDescripcion("");
+            cur.setEspecialidad(gl);
+            cur.setParalelo(gl);
+            matri.setCurso(cur);
+            est.setApellido(vec.get(0)+"");
+            est.setNombre(vec.get(1)+"");
+            est.setCodigoest(i);
+            i++;
+            matri.setEstudiante(est);
+            detalle.add(matri);
+      }
+      ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
+      return ds;
+}
 public JRDataSource inscritos5(ArrayList listadodeCursos, String tipo){
   String curso =  "";
 
@@ -639,6 +669,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = inscritos4(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"estudiantes2.jasper");
+            }else if(tipo.equals("INS6")){
+                    datasource = inscritos6(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantesVerificados.jasper");
             }else if(tipo.equals("INS5")){
                     datasource = inscritos5(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
@@ -828,6 +862,7 @@ void campos(String valor){
                                 <listitem  id="INS3" label="Calificacion de Inscritos por Internet" value="INS3" />
                                 <listitem  id="INS4" label="Listado de Pre-aprobados" value="INS4" />
                                 <listitem  id="INS5" label="Listado de Pre-aprobados(Escuela)" value="INS5" />
+                                <listitem  id="INS6" label="Listado de Pre-aprobados(Inf. Verificada)" value="INS6" />
                                 <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
                                 <listitem  id="LMAT" label="Matriculados" value="LMAT" />
                                 <listitem  id="LMATYR" label="Matriculados con Retirados" value="LMATYR" />
