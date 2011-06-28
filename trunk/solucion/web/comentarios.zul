@@ -196,7 +196,7 @@ datos.selectedIndex = 0;
                SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy H:m:s");
                Date d = com.getFecha();
 
-
+            codigocomentario.value = com.getCodigo();
             fechav.value = d1.format(d)+"";
             profesorv.value = com.getEmpleado()+"";
             materiav.value = com.getMateria()+"";
@@ -221,6 +221,23 @@ datos.selectedIndex = 0;
 
             panel.visible = true;
             busquedaList.clearSelection();
+}
+
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+              
+             adm.eliminarObjeto(Comentarios.class, codigocomentario.value);
+             permiso.auditar("Comentarios","Eliminar",profesorv.value+"");
+            //datos.removeItemAt(datos.getSelectedIndex());
+            //llenar(new Empleados(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
 }
 
         ]]>
@@ -336,7 +353,7 @@ datos.selectedIndex = 0;
             <grid width="100%">
                 <rows>
                     <row>
-                        <span style="float:right">FECHA:</span>
+                        <span style="float:right"> <intbox id="codigocomentario" readonly="true" /> FECHA:</span>
                         <textbox style="border:0px;background:transparent" cols="80" readonly="true" id="fechav" value=""/>
                     </row>
                     <row>
@@ -353,10 +370,13 @@ datos.selectedIndex = 0;
                     </row>
                     <row align="center" spans="2">C O M E N T A R I O :  </row>
                     <row spans="2">
-                        <textbox cols="100" rows="8" id="comentariov" value=""/>
+                        <textbox cols="100" rows="5" id="comentariov" value=""/>
                     </row>
                     <row align="center" spans="2">
-                        <button  label="CERRAR" image ="/images/eliminar.gif" onClick='panel.setVisible(false)'  />
+                        <span>
+                        <button  label="CERRAR" image ="/images/exit.gif" onClick='panel.setVisible(false)'  />
+                        <button  label="ELIMINAR" image ="/images/eliminar.gif" onClick='eliminar();panel.setVisible(false)'  />
+                        </span>
                     </row>
                 </rows>
             </grid>

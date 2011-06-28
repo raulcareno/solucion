@@ -53,7 +53,7 @@
                     </row>
                     <row align="center" spans="2">C O M E N T A R I O :  </row>
                     <row spans="2">
-                        <textbox cols="100" rows="8" id="comentario" value=""/>
+                        <textbox cols="100" rows="6" id="comentario" value=""/>
                     </row>
                     <row align="center" spans="2">
                         <button  label="CERRAR" image ="/images/eliminar.gif" onClick='panel.setVisible(false)'  />
