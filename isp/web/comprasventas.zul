@@ -1,0 +1,542 @@
+<?page id="controlequipospage"?>
+<window id="controlventana">
+    <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+    <script type="text/javascript" src="/js/masks.js"/>
+    <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+    <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.util.ArrayList;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+    Administrador adm = new Administrador();
+ //  List allEvents = adm.query("Select o from Cabeceracompra as o ");
+    //static Cabeceracompra empa = new Cabeceracompra();
+    Permisos permiso = new Permisos();
+    List perfiles = adm.query("Select o from Equipos as o order by o.nombre, o.modelo ");
+    List proveedoresList = adm.query("Select o from Proveedores as o order by o.razonsocial ");
+    Object media = null;
+
+//FUNCIONES
+void cargarFoto(byte[] imageData){
+  foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+}
+void cargarVacio(){
+  foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+}
+
+//FUNCIONES
+
+void llenar(Cabeceracompra empa){
+    codigo.value = empa.getCodigo();
+    factura.value = empa.getFactura();
+    fecha.value = empa.getFecha();
+    series.value = empa.getSeries();
+    idproveedores.value = empa.getProveedores().getCodigo();
+    proveedores.value = empa.getProveedores().getRazonsocial();
+
+    /* compra  equipos, cantidad  costo pvp1 */
+filas.getChildren().clear();
+    List detalleCompra = adm.query("Select o from Detallecompra as o where o.cabeceracompra.codigo = '"+empa.getCodigo()+"' ");
+       for (Iterator it = detalleCompra.iterator(); it.hasNext();) {
+                      Cabeceracompra acceIt = (Cabeceracompra) it.next();
+                        try{
+                            Row row = new Row();
+                                   Doublebox dou = new Doublebox(0);
+                                    dou.setStyle("float:right;text-align:right");
+                                    dou.setValue(acceIt.getCosto());
+                                    Intbox intb = new Intbox(acceIt.getCantidad());
+                                    intb.setCols(3);
+                                     intb.setStyle("float:right;text-align:right");
+                                    Label prod = new Label(acceIt.getEquipos().getNombre() +" "+ acceIt.getEquipos().getModelo()+" "+acceIt.getEquipos().getMarcas());
+                                    row.appendChild(intb);
+                                    row.appendChild(prod);
+                                    row.appendChild(dou);
+
+                                    Button aButton = null;
+                                    aButton = new Button("quitar");
+                                    aButton.setImage("/images/quitar.gif");
+                                    aButton.setHeight("5px");
+                                    aButton.setId("id"+acceIt.getEquipos().getCodigo());
+                                    aButton.addEventListener("onClick", new EventListener() {
+                                        public void onEvent(Event event) throws Exception {
+                                              //  int valor0 = Messagebox.show("PRECAUCIÓN: Si quita este elemento se eliminará de todos los Cursos y de todos los profesores, Desea Continuar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                quitarFila(aButton.getId());
+
+
+                                        }
+                                    });
+
+                                    row.appendChild(aButton);
+                                    row.setValue(new Equipos(acceIt.getEquipos().getCodigo())); 
+
+                            filas.appendChild(row);
+
+                            }catch(Exception e){
+                                alert("YA SE HA AGREGADO ESTE PRODUCTO");
+                            }                    
+        }
+    
+
+    
+  
+}
+ 
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            empa = (Cabeceracompra)datos.selectedItem.value;
+        }
+
+    cantidad.readonly = estado;
+    precio.readonly = estado;
+    fecha.readonly = estado;
+    series.readonly = estado;
+    mac.readonly = estado;
+    perf.disabled = estado;
+    bd.disabled = estado;
+    bd2.disabled = estado;
+
+}
+
+
+ void guardar(){
+       Cabeceracompra cabeCompra = new Cabeceracompra();
+       
+       cabeCompra.setFactura(factura.value);
+       cabeCompra.setProveedores(new Proveedores(idproveedores.value));
+       cabeCompra.setFecha(fecha.value);
+       cabeCompra.setCantidad(0);
+       cabeCompra.setTotal(0d);
+       cabeCompra.setSeries(series.value);
+        adm.guardar(cabeCompra);
+            List col = opciones.getRows().getChildren();
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    Detallecompra det = new Detallecompra();
+                     det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                     det.setCabeceracompra(cabeCompra);
+                     List labels = object.getChildren();
+                     
+                         det.setEquipos((Equipos)object.getValue());
+                         det.setCantidad(((Intbox) labels.get(0)).getValue());
+                         det.setCosto(((Doublebox) labels.get(2)).getValue());
+                         cabeCompra.setCantidad(cabeCompra.getCantidad()+det.getCantidad());
+                         cabeCompra.setTotal(cabeCompra.getTotal()+det.getCosto());
+                     adm.guardar(det);
+             }
+      adm.actualizar(cabeCompra);
+              Boolean a = true;
+            if(a){
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                permiso.auditar("Cabeceracompra","Guardar",factura.value+" cantidad"+cantidad.value+ ""+fecha.value);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                   // llenar(new Cabeceracompra(0));
+                    
+            }else{
+                Messagebox.show("No se pudo almacenar...X", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+            }
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Equipos",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+          
+          guardar.disabled=false; 
+          //llenar(new Cabeceracompra(0));estado(false,false);
+          cantidad.setDisabled(false);
+          fecha.setDisabled(false);
+          filas.getChildren().clear();
+          
+          //String command = "applyTelefono('"+seguridad.getUuid()+"');";
+          //Clients.evalJavaScript(command);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Cabeceracompra)datos.selectedItem.value);
+        modificar.disabled = false;
+        registro.setSelected(true);
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             empa = (Cabeceracompra)datos.selectedItem.value;
+             adm.eliminarObjeto(Cabeceracompra.class, empa.getCodigo());
+             permiso.auditar("Cabeceracompra","Eliminar",""+nombre.value);
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Cabeceracompra(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ 
+  void buscar(String p){
+        List CabeceracompraEncontrados = adm.queryNativo("Select o.* from Cabeceracompra as o " 
+        +" where o.factura like '"+ p +"%' order by o.factura",Cabeceracompra.class);
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+               for (Iterator it = CabeceracompraEncontrados.iterator(); it.hasNext();) {
+                      Cabeceracompra acceIt = (Cabeceracompra) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                      li.appendChild(new Listcell(acceIt.getProveedores().getRazonsocial()+""));
+                      li.appendChild(new Listcell(acceIt.getCantidad()+""));
+                      li.appendChild(new Listcell(acceIt.getTotal()+""));
+                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
+                       
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Equipos g){
+empa.setEquipos(g);
+}
+  Listbox llenaProve(Listbox ba){
+    ba.setMold("select");
+                   for (Iterator it = proveedoresList.iterator(); it.hasNext();) {
+                      Proveedores acceIt = (Proveedores) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.setSelected(true);
+                      li.appendChild(new Listcell(acceIt.getRazonsocial()+""));
+                      ba.appendChild(li);
+             }
+    return ba;
+}
+  Listbox llenaEquipo(Listbox eq){
+            eq.setMold("select");
+                   for (Iterator it = perfiles.iterator(); it.hasNext();) {
+                      Equipos acceIt = (Equipos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.setSelected(true);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "+ acceIt.getMarcas()+" "+acceIt.getModelo()));
+                      eq.appendChild(li);
+             }
+    return eq;
+}
+llenarGrid(){
+  if(cantidad.value == 0 || cantidad.value == null || cantidad.value == ""
+  || idproducto.value == null || idproducto.value == "" 
+  || vu.value == "" || vu.value == 0 || vu.value == null){
+  
+  alert("LLENE TODOS LOS CAMPOS");
+    return;
+  
+  }
+                try{
+                    Row row = new Row();
+                           Doublebox dou = new Doublebox(0);
+                            dou.setStyle("float:right;text-align:right");
+                            dou.setValue(vu.value);
+                            Intbox intb = new Intbox(cantidad.value);
+                            intb.setCols(3);
+                             intb.setStyle("float:right;text-align:right");
+                            Label prod = new Label(productod.value);
+                            row.appendChild(intb);
+                            row.appendChild(prod);
+                            row.appendChild(dou);
+                            
+                            Button aButton = null;
+                            aButton = new Button("quitar");
+                            aButton.setImage("/images/quitar.gif");
+                            aButton.setHeight("5px");
+                            aButton.setId("id"+idproducto.value);
+                            aButton.addEventListener("onClick", new EventListener() {
+                                public void onEvent(Event event) throws Exception {
+                                      //  int valor0 = Messagebox.show("PRECAUCIÓN: Si quita este elemento se eliminará de todos los Cursos y de todos los profesores, Desea Continuar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                        quitarFila(aButton.getId());
+                                         
+                      
+                                }
+                            });
+
+                            row.appendChild(aButton);
+                            row.setValue(new Equipos(idproducto.value)); 
+                         
+                    filas.appendChild(row);
+
+                    }catch(Exception e){
+                        alert("YA SE HA AGREGADO ESTE PRODUCTO");
+                    }
+                        
+                        vu.value=null;
+                        cantidad.value= null;
+                        productod.value=null;
+                        idproducto.value = null;
+                        cantidad.focus();
+        
+}
+ public void quitarFila(String codigoBuscar){
+                 Rows filas2 =opciones.getRows();
+                List listadoProductos = filas2.getChildren();
+                    for (int i = 0; i <= listadoProductos.size()-1; i++) {
+                       Row object = (Row) listadoProductos.get(i);
+                       Equipos nuevo = ((Equipos)object.getValue());
+                       String codigoA = "id"+nuevo.getCodigo();
+                       if(codigoA.equals(codigoBuscar)){
+                            opciones.getRows().removeChild(object);
+                            break;
+                       }
+                    }
+
+}
+llenarGridMac(int numero){
+ 
+    filas2.getChildren().clear();
+            for(int i = 0; i< numero; i++){
+                    Row row = new Row();
+                             Textbox t = new Textbox("");
+                            row.appendChild(t);
+                    filas2.appendChild(row);
+            }
+}
+
+void tipoDocumento(String tipo){
+compras1.visible = false;
+seriesfilas.visible = false;
+        if(tipo.equals("compras")){
+            compras1.visible = true;
+            seriesfilas.visible = true;            
+        }
+}
+
+]]>
+    </zscript>
+    <tabbox width="100%">
+        <tabs>
+            <tab id="registro" label="Registro" />
+            <tab id="busqueda" label="Busquedas" />
+        </tabs>
+        <tabpanels>
+            <tabpanel>
+
+
+                <grid width="100%">
+                    <rows>
+                        <row>
+                            <span style="float:right">  TIPO DE DOCUMENTO: </span> 
+                            <bandbox readonly="true"  width="70px" value="COMPRAS" id="tipodocumento" >
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox width="90px" id="format"  onSelect="tipoDocumento(self.selectedItem.value);tipodocumento.close();">
+                                            <listitem  value="compras" selected="true">
+                                                <listcell  image="/images/compras.png" label="Compras" />
+                                            </listitem>
+                                            <listitem value="ventas">
+                                                <listcell  image="/images/ventas.png" label="Ventas" />
+                                            </listitem>
+                                            <listitem value="ajustes">
+                                                <listcell  image="/images/ajustes.png"  label="Ajustes" />
+                                            </listitem>
+                                                     
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>    
+                        </row>
+                        <row id="compras1">
+                            <span style="float:right"> Proveedor:</span> 
+                            <span>
+                                
+                                <intbox  readonly="true"   cols="1" id="idproveedores" />
+                                <textbox readonly="true"  cols="39" id="proveedores" />
+                                
+                                <button label=""  id="buscarE3" disabled="false"  image="/images/auditoria.gif">
+                                    <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("buscarProveedores.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setAttribute("equipo", 3);
+                                            win.setTitle("Buscar");
+                                            win.doModal();
+                                            }                            
+                                    </attribute>
+                                </button> 
+                            </span>
+                        </row>
+                        <row>
+                            <span style="float:right"> Fecha Comp/Ven:</span>
+                            <span>
+                                <datebox id="fecha" onCreate="self.value = new Date()"/>
+                                <span> No.Factura:</span> 
+                                <intbox id="factura"/>
+                            </span>
+                        </row>
+                        <row id="seriesfilas"  >
+                            <span style="float:right">  Series:</span> 
+                            <span> 
+                                <textbox id="series" cols="80" rows = "2" />
+                             separar con ; ejem.: 0012545155; 0542545845; 54158444;
+                            </span> 
+                        </row>
+                       
+                        <row spans="4">
+                            <grid  width="98%" id="anadir">
+                                <columns sizable="true">
+                                   
+                                    <column label="CANTIDAD" width="80px" />
+                             
+                                    <column label="EQUIPO" />
+                                    <column label="V.U."  width="30px" />
+                                    <column label="OPCION" width="30px"  />
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <intbox onOK="buscarPro.focus()" style="float:right;text-align:center" cols="2" id="cantidad" value="1"/>
+                                        <span>
+                                            <intbox cols="1" visible="false"  id="idproducto" readonly="true" />
+                                            <textbox value="" onFocus="vu.focus()" id="productod" cols="50"  readonly="true" />
+                                            
+                                            <button label=""  id="buscarPro" disabled="false"  image="/images/auditoria.gif">
+                                                <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("buscarProductos.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setAttribute("equipo", 3);
+                                            win.setTitle("Buscar");
+                                            win.doModal();
+                                            }                            
+                                                </attribute>
+                                            </button> 
+                                       
+                                        </span>
+                                        <doublebox onOK="add.focus()"  style="float:right;text-align:center" id="vu"  />
+                                        <span>
+                                            <button  id="add"  label="Añadir Filas" image="/images/add2.png" onClick="llenarGrid();"/>
+                                        </span>
+                                       
+                                    </row>
+                                    
+                                    <row>
+                                      
+                                    </row>
+                                     
+                                </rows>
+                            </grid>
+                                
+                        </row>
+                        <row spans="4">
+                          
+                            <grid height="240px"  width="98%" id="opciones">
+                                <columns sizable="true">
+                                    <column label="CANTIDAD" width="80px" />
+                                    <column label="EQUIPO" />
+                                    <column label="V.U."  width="30px" />
+                                    <column label="OPCION" width="30px"  />
+                                </columns>
+                                <rows id="filas">
+                                     
+                                </rows>
+                            </grid>
+                                 
+                        </row>
+                            
+                            
+
+                      
+                    </rows>
+                </grid>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <vbox>
+                    <hbox>
+                        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    </hbox>
+                </vbox>
+
+
+            </tabpanel>
+
+            <tabpanel>
+
+                <groupbox  width="100%" mold="3d" >
+
+                    <caption label="Busquedas" />
+                    <vbox>
+                        <hbox>  Ip:
+                            <textbox id="buscarText"  maxlength="60" cols="40" />
+                            <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                        </hbox>
+                        <hbox>
+                            <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                                <listhead>
+                                    <listheader label="Cod."/>
+                                    <listheader label="Nombre"/>
+                                    <listheader label="MAC"/>
+                                    <listheader label="Precio"/>
+                                    <listheader label="Comprado"/>
+                                    <listheader label="Asignado"/>
+
+                                </listhead>
+                                <listitem forEach="${allEvents2}" value="${each}">
+                                        <!--listcell label="${each.codigo}" />
+                                        <listcell label="${each.ip}" />
+                                        <listcell label="${each.ssid}" /-->
+                                </listitem>
+                            </listbox>
+
+
+                        </hbox>
+                    </vbox>
+                </groupbox>
+
+
+
+            </tabpanel>
+
+        </tabpanels>
+
+
+    </tabbox>
+   
+</window>
+ 
