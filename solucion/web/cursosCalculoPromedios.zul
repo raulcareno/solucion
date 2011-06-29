@@ -16,19 +16,45 @@ Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 
 List cursos = adm.query("Select o from Cursos as o "+ 
-" where o.periodo.codigoper = '"+periodo.getCodigoper()+"'   ");
+" where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia, o.descripcion, o.paralelo.descripcion ");
 
 void aprovechamiento(){
-
+        
         Procesos pro = new Procesos();
-        pro.aprovechamiento((Cursos)cursosList.selectedItem.value);
+                Set items = cursosList.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("Seleccion un al menos un Curso...!");
+                            return;
+						}else{
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+                                    Cursos curses = li.getValue();
+                                        pro.aprovechamiento(curses);
+                                    
+							}
+						}
+    
         Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-
-}
+  }
 void disciplina(){
-Procesos pro = new Procesos();
-pro.disciplina((Cursos)cursosList.selectedItem.value);
-Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        Procesos pro = new Procesos();
+                 Set items = cursosList.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("Seleccion un al menos un Curso...!");
+                            return;
+						}else{
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+                                    Cursos curses = li.getValue();
+                                        pro.disciplina(curses);
+                                    
+							}
+						}
+    
+        Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        
 }
 
 
@@ -75,14 +101,15 @@ void generar(String tipo){
                             <row style="background:transparent" >
                                 <span style="float:right"> Curso(*):</span>
                                 <span>
-                                    <listbox mold="select" id="cursosList"  width="420px" >
-                                        <listitem>
-                                            <listcell label="Seleccione un Curso" />
-                                        </listitem>
+                                    <listbox   id="cursosList"  height="150px" multiple="true" checkmark="true"  width="420px" >
+                                        <listhead>
+                                                <listheader label="Seleccionar Todos"/>    
+                                         </listhead>
                                         <listitem forEach="${cursos}" value="${each}">
                                             <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
                                         </listitem>
                                     </listbox>
+                                  
                                     <button label="Aprovechamiento"   image="/images/run.gif" onClick="aprovechamiento();"/>
                                     <button label="Disciplina"   image="/images/run.gif" onClick="disciplina()"/>
                                 </span>
@@ -108,7 +135,7 @@ void generar(String tipo){
                                 <span style="float:right"> Curso(*):</span>
                                 <span>
                                   
-                                                <listbox fixedLayout="true" multiple="true" checkmark="true" id="curs" width="420px">
+                                                <listbox fixedLayout="true" height="150px" multiple="true" checkmark="true" id="curs" width="420px">
                                                 <listhead>
                                                 <listheader label="Seleccionar Todos"/>    
                                                 </listhead>

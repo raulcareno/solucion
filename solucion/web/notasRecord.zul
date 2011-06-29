@@ -20,7 +20,7 @@ Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 
 List cursos = adm.query("Select o from Cursos as o "+ 
-" where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia asc, o.descripcion asc");
+" where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia, o.descripcion, o.paralelo.descripcion ");
 Cursos cr = new Cursos(-1);
 
 cursos.add(0,cr);
