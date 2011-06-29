@@ -32,7 +32,7 @@ public class Procesos {
      public  void aprovechamiento(Cursos cur) {
         Administrador adm = new Administrador();
         List<Cursos> cursosList = new ArrayList<Cursos>();
-      Periodo periodo = new Periodo(1);
+      Periodo periodo = cur.getPeriodo();
         if (cur.getCodigocur().equals(-1)) {
             cursosList = adm.query("Select o from Cursos as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"' ");
         }else{
@@ -55,13 +55,15 @@ public class Procesos {
                  System.out.println("CURSO: "+cursos.getDescripcion()+" "+ cursos.getEspecialidad());
                 for (Iterator<Matriculas> it = matriculas.iterator(); it.hasNext();) {
                     Matriculas matriculas1 = it.next();
-                    List val = adm.queryNativo("select avg(" + no.getNota() + ")  from notas " +
+                    String que = "select avg(" + no.getNota() + ")  from notas " +
                             "where matricula = '" + matriculas1.getCodigomat() + "' " +
                             " and promedia = true "
                             + "and seimprime = true "
                             + "and cuantitativa = true  "
                             + "and materia != 0 "
-                            + "and disciplina = false  ");
+                            + "and disciplina = false  ";
+                    System.out.println(que);
+                    List val = adm.queryNativo(que);
 
                     /*
                      "where notas.matricula = '" + matriculas1.getCodigomat() + "' "
