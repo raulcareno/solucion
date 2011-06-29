@@ -132,7 +132,7 @@ public class Procesos {
       public void disciplina(Cursos cur) {
         Administrador adm = new Administrador();
         List<Cursos> cursosList = new ArrayList<Cursos>();
-      Periodo periodo = new Periodo(1);
+      Periodo periodo = cur.getPeriodo();
         if (cur.getCodigocur().equals(-1)) {
             cursosList = adm.query("Select o from Cursos as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"' ");
         }else{
