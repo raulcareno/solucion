@@ -422,7 +422,8 @@ public class reportesClase {
         return ds;
 
     }
-     public JRDataSource cuadrofinalsupletorio(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta) {
+
+    public JRDataSource cuadrofinalsupletorio(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -502,6 +503,7 @@ public class reportesClase {
             MateriaProfesor mprofesor1 = null;
             Double aprovecha = 0.0;
             Double disciplina = 0.0;
+            Double sumatoria = 0.0;
             String obs = "";
             int ksis = 0;
             for (int j = 0; j < vec.size(); j++) {
@@ -515,7 +517,7 @@ public class reportesClase {
                 } catch (Exception e) {
                     dos = new Double(0.0);
                 }
-                if (j == (vec.size()-1)  ) {
+                if (j == (vec.size() - 1)) {
 //                    val = redondear((Double) dos, 2);
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
@@ -524,14 +526,14 @@ public class reportesClase {
                     Sistemacalificacion sistemp1 = new Sistemacalificacion();
                     sistemp1.setNombre("OBS");
                     sistemp1.setAbreviatura("OBS");
-                    sistemp1.setTrimestre(((Sistemacalificacion) sistemas.get(ksis-1)).getTrimestre());
+                    sistemp1.setTrimestre(((Sistemacalificacion) sistemas.get(ksis - 1)).getTrimestre());
                     nota.setNota("APRO");
-                    nota.setNota(""+obs);
+                    nota.setNota("" + obs);
                     nota.setSistema(sistemp1);
                     nota.setAprovechamiento(aprovecha);
                     nota.setDisciplina(disciplina);
                     lisNotas.add(nota);
-                }else if (j >= 3 ) {
+                } else if (j >= 3) {
                     val = redondear((Double) dos, 2);
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
@@ -565,11 +567,27 @@ public class reportesClase {
 
 
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
-                    if(nota.getSistema().getPromediofinal().equals("SM")){
-                        if(val < 25)
-                        obs = "Pierde";
-                    }else if(nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")){
-                        obs = equivalenciaSupletorio(dos, equivalenciasSuple)+"";
+                    if (nota.getSistema().getPromediofinal().equals("SM")) {
+                        if (val < 25) {
+                            obs = "Pierde";
+                        }
+                        sumatoria = val;
+                    } else if (nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")) {
+                        if(sumatoria<40){
+                        try {
+                            Double valor = new Double(equivalenciaSupletorio(sumatoria, equivalenciasSuple)+"");
+                            if (val < valor) {
+                                obs = "Pierde";
+                            } else {
+                                obs = "";
+                            }
+                        } catch (Exception e) {
+                            //System.out.println("" + e);
+
+                        }
+                        }else{
+                            obs="";
+                        }
                     }
                     nota.setAprovechamiento(aprovecha);
                     nota.setDisciplina(disciplina);
@@ -617,8 +635,8 @@ public class reportesClase {
         return ds;
 
     }
- 
-  public JRDataSource cuadrocalificacionessupletorio(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta) {
+
+    public JRDataSource cuadrocalificacionessupletorio(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -636,7 +654,7 @@ public class reportesClase {
                 + "order by o.sistema.orden ");
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
- 
+
         String query = "";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
@@ -713,14 +731,14 @@ public class reportesClase {
 
                     nota.setMprofesor(maprofesor);
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
-                    if((!nota.getMateria().getDescripcion().toUpperCase().contains("PROME") && !nota.getMateria().getDescripcion().toUpperCase().contains("DISCI") ) && !(nota.getNota().toString().equals("")) ){
+                    if ((!nota.getMateria().getDescripcion().toUpperCase().contains("PROME") && !nota.getMateria().getDescripcion().toUpperCase().contains("DISCI")) && !(nota.getNota().toString().equals(""))) {
                         lisNotas.add(nota);
-                    }else{
+                    } else {
 ////                        matriculaNo.getEstudiante().setApellido("");
 ////                        matriculaNo.getEstudiante().setNombre("");
 ////                        lisNotas.add(nota);
                     }
-                    
+
                     ksis++;
                 } else if (j == 1) {
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
@@ -829,6 +847,7 @@ public class reportesClase {
 
 
     }
+
     public JRDataSource conteoReligion() {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -845,7 +864,7 @@ public class reportesClase {
             Long a = (Long) object[1];
             n.setCurso(cu);
             n.setNota(a);
-            n.setCargo1( object[2].toString());
+            n.setCargo1(object[2].toString());
             lisNotas.add(n);
         }
 
@@ -1799,6 +1818,7 @@ public class reportesClase {
 //                    parametros.put("nombre", insts.getNombre());
 //                    parametros.put("periodo", insts.getDireccion());
     }
+
     public JRDataSource promocion(Cursos curso, Matriculas matri) {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
@@ -2980,8 +3000,8 @@ public class reportesClase {
         }
 
         List<Pregunta> preg = adm.query("Select o from Pregunta as o  order by o.orden ");
-  
-          ArrayList listaResultados = new ArrayList();
+
+        ArrayList listaResultados = new ArrayList();
         for (Iterator<Cursos> itCursos = lisCursos.iterator(); itCursos.hasNext();) {
             Cursos curso = itCursos.next();
             int i = 1;
@@ -3021,7 +3041,7 @@ public class reportesClase {
 
     }
 
-       public JRDataSource resumenGrupal() {
+    public JRDataSource resumenGrupal() {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -3029,12 +3049,12 @@ public class reportesClase {
         List<Cursos> lisCursos = new ArrayList<Cursos>();
 
 
-        lisCursos = adm.queryNativo("Select o.* from Cursos as o where o.periodo = '" + periodo.getCodigoper() + "'  group by o.secuencia order by o.secuencia ",Cursos.class);
+        lisCursos = adm.queryNativo("Select o.* from Cursos as o where o.periodo = '" + periodo.getCodigoper() + "'  group by o.secuencia order by o.secuencia ", Cursos.class);
 
 
         List<Pregunta> preg = adm.query("Select o from Pregunta as o  order by o.orden ");
 
-          ArrayList listaResultados = new ArrayList();
+        ArrayList listaResultados = new ArrayList();
         for (Iterator<Cursos> itCursos = lisCursos.iterator(); itCursos.hasNext();) {
             Cursos curso = itCursos.next();
             int i = 1;
@@ -3048,7 +3068,7 @@ public class reportesClase {
                     Detallepregunta detallepregunta = it1.next();
 //                rep.setId(i);
                     ResumenClase rep = new ResumenClase();
-                    rep.setCurso(curso.getDescripcion() + " " );
+                    rep.setCurso(curso.getDescripcion() + " ");
                     rep.setPregunta(i + ".- " + pregunta.getPregunta());
                     rep.setRespuesta(detallepregunta.getOpcion());
                     Object respuestas = adm.querySimple("Select count(o) from Respuestasencuesta as o "
@@ -3108,6 +3128,7 @@ public class reportesClase {
 
         return "";
     }
+
     public static Object equivalenciaSupletorio(Object no, List<Equivalencias> equivalencias) {
         Double nota = (Double) no;
         ArrayList listado = new ArrayList();
@@ -3128,7 +3149,7 @@ public class reportesClase {
             }
         }
 
-        return "";
+        return "40";
     }
 
     public static Object equivalencia2(Object no, List<Equivalencias> equivalencias) {
