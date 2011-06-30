@@ -355,6 +355,12 @@ void recalcular(){
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc(directorioReportes+"cuadrocalificaciones.jasper");
 
+            }else if(tipo.equals("CSUP")){
+                    //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
+                    datasource = noti.cuadrocalificacionessupletorio(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    report.setSrc(directorioReportes+"cuadrocalificacionessupletorio.jasper");
+                           
             }else if(tipo.equals("CNF")){
                     
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
@@ -492,6 +498,13 @@ void campos(String valor){
             sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Calificaciones";
              fila.visible = true;
+             
+        }else if(valor.equals("CSUP")){
+            curs.disabled = false;
+            sistemasCombo.disabled = false;
+             titulo.value= "Cuadro de Calificaciones";
+             fila.visible = true;
+             hasta.value = new java.math.BigDecimal(40);
         }else if(valor.equals("AG") ){
             curs.disabled = false;
             titulo.value= "Acta de Grado";
@@ -542,7 +555,7 @@ void campos(String valor){
                                     <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
                                     <listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
                                     <listitem  id="CNF2" label="Cuadro Juntas o Final (2)" value="CNF2" />
-                                    
+                                    <listitem id="CSUP"  label="Cuadro de Supletorios" value="CSUP" />
                                     <listitem  id="CNF3" label="Cuadro Final" value="CNF3" />
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
                                     <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
