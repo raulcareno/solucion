@@ -1,7 +1,7 @@
  
 <window   title="Control de Equivalencias"   border="normal" >
 
- <zscript>
+    <zscript>
   import jcinform.persistencia.Global;
   import bean.EventDAO; 
   import java.util.ArrayList; 
@@ -40,19 +40,33 @@ void llenar(Equivalencias equi2){
     desde.value = mini;
  BigDecimal maxi= new BigDecimal(equi.getValormaximo());
     hasta.value = maxi;
-String p = "Aprovechamiento";
-try{
+    int p   = 0;
+    try{
         if(equi.getGrupo().equals("AP")){
-            p = "Aprovechamiento";
+            p = 1;
         }else if(equi.getGrupo().equals("DI")){
-            p = "Disciplina";
+            p = 2;
         }else if(equi.getGrupo().equals("SU")){
-            p = "Supletorio";
+            p = 3;
         }
-}catch(Exception ea)
-{equi.setGrupo("AP");
-}
-   grupo.value = p;
+    }catch(Exception ea){
+            try{
+            p = 0;
+            if(equi.getCodigoequi().equals(0)){
+                        equi.setGrupo(buscarText.selectedItem.getValue());
+                        if(equi.getGrupo().equals("AP")){
+                            p = 1;
+                        }else if(equi.getGrupo().equals("DI")){
+                            p = 2;
+                        }else if(equi.getGrupo().equals("SU")){
+                            p = 3;
+                        }
+            }
+            }catch(Exception ea){
+                p = 0;
+            }
+    }
+   grupo.selectedIndex = p;
 
     
 }
@@ -70,7 +84,7 @@ void estado(Boolean estado,Boolean modificar){
 
 
  void guardar(){
-    if(nombre.value.equals("") || abreviatura.value.equals("") || grupo.value.equals("")){
+    if(nombre.value.equals("")  || grupo.selectedItem.value.equals("")){
             Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             return;
     }
@@ -101,6 +115,8 @@ void estado(Boolean estado,Boolean modificar){
                     agregar.disabled=false;
                     estado(true,false);
                     llenar(new Equivalencias(0));
+                    if(grupo.selectedItem.value.equals("SU"))
+                     abreviatura.value = ".";
   
 
     }
@@ -148,12 +164,16 @@ void eliminar(){
 }
 
   void buscar(String p){
-        if(p.equals("Aprovechamiento")){
+  int indice = 0;
+        if(p.equals("AP")){
             p = "AP";
-        }else if(p.equals("Disciplina")){
+            indice = 1;
+        }else if(p.equals("DI")){
             p = "DI";
-        }else if(p.equals("Supletorio")){
+            indice = 2;
+        }else if(p.equals("SU")){
             p = "SU";
+            indice = 3;
         }
 List equivaEncontrados = adm.query("Select o from Equivalencias as o where o.grupo = '"+p+"' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
 datos = new Listbox();
@@ -173,81 +193,131 @@ int a=0;
                       li.appendChild(new Listcell(acceIt.getValormaximo()+""));
                       datos.appendChild(li);
              }
-
+        grupo.selectedIndex = indice;
+        grupo(p);
     }
 void cargar(Global g){
 equi.setPerfil(g);
 }
-  </zscript>
-<groupbox mold="3d" >
-       <caption label="Agregar" />
+
+void grupo(String tipo){
+ 
+            rnombre.visible = false;
+            rabreviatura.visible = false;
+            rdesde.visible = false;
+            rhasta.visible = false;
+            
+        if(tipo.equals("AP")){
+            rnombre.visible = true;
+            rabreviatura.visible = true;
+            rdesde.visible = true;
+            rhasta.visible = true;
+            lbldesde.value = "Desde(*)";
+            lbldesde.value = "Hasta(*)";
+            lblnombre.value = "Nombre(*)";
+            lblabreviatura.value = "Abreviatura(*)";
+        }else if(tipo.equals("DI")){
+            rnombre.visible = true;
+            rabreviatura.visible = true;
+            
+        }if(tipo.equals("SU")){
+            abreviatura.value = ".";
+            rnombre.visible = true;
+            lblnombre.value = "Nota ha obtener(*): ";
+            rdesde.visible = true;
+            rhasta.visible = true;
+            
+        }
+ }
+
+ 
+    </zscript>
+    <groupbox mold="3d" >
+        <caption label="Agregar" />
 	
-<grid width="100%">
-<rows> 
-<row><span style="float:right"> Nombre(*):</span>
-        <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />   </row>
-    <row> <span style="float:right"> Abreviatura(*):</span>
-        <textbox id="abreviatura"  maxlength="10" cols="10" readonly="true"  /> </row>
-    <row> <span style="float:right"> Desde(*):</span>
-        <decimalbox format="#,##0.##" id="desde" maxlength="8" cols="8"  readonly="true"    /> </row>
-    <row> <span style="float:right"> Hasta(*):</span>
-        <decimalbox format="#,##0.##" id="hasta" maxlength="8" cols="8"  readonly="true"  /> </row>
+        <grid width="100%">
+            <rows> 
+              <row> 
+                    <span style="float:right"> Grupo(*):</span>
+                   
+                    <listbox disabled="true" mold="select" id="grupo"  onSelect="grupo(self.selectedItem.value)">
+						 <listitem  value="" label="[Seleccione un Grupo]"/>
+						  <listitem  value="AP" label="Aprovechamiento"/>
+                        <listitem  value="DI" label="Disciplina"/>
+                        <listitem  value="SU" label="Supletorio"/>
+						
+					</listbox>
+                </row>
+                <row  id="rnombre">
+                    <span style="float:right"> <label id="lblnombre" value="Nombre(*):" /></span>
+                    <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />   
+                </row>
+                <row id="rabreviatura"> 
+                    <span style="float:right"><label id="lblabreviatura" value="Abreviatura(*):" /></span>
+                    <textbox id="abreviatura"  maxlength="10" cols="10" readonly="true"  /> 
+                </row>
+                <row id="rdesde"> 
+                    <span style="float:right"> <label id="lbldesde" value="Desde(*):" /> </span>
+                    <decimalbox format="#,##0.##" id="desde" maxlength="8" cols="8"  readonly="true"    /> 
+                </row>
+                <row id="rhasta"> 
+                    <span style="float:right"><label id="lblhasta" value="Hasta(*):"/></span>
+                    <decimalbox format="#,##0.##" id="hasta" maxlength="8" cols="8"  readonly="true"  /> 
+                </row>
     
  
-<row> <span style="float:right"> Grupo(*):</span>
-     <combobox   readonly="true"  disabled="true"  id="grupo"  width="120px">
-            <comboitem  value="AP" label="Aprovechamiento"/>
-            <comboitem  value="DI" label="Disciplina"/>
-            <comboitem  value="SU" label="Supletorio"/>
-    </combobox>
-</row>
+              
 
-</rows>
-</grid>
-<vbox>
-<vbox>
-<hbox>
-    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-</hbox>
-</vbox>
+            </rows>
+        </grid>
+        <vbox>
+            <vbox>
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                </hbox>
+            </vbox>
 
-			</vbox>
+        </vbox>
 
- </groupbox>
-<groupbox width="100%" mold="3d" >
+    </groupbox>
+    <groupbox width="100%" mold="3d" >
 
-       <caption label="Busquedas" />
-<vbox width="100%">
-    <hbox>  Tipo:
-<combobox     id="buscarText"  width="60px">
-            <comboitem id="AP" label="Aprovechamiento"/>
-            <comboitem id="DI"  label="Disciplina"/>
-            <comboitem id="SU"  label="Supletorio"/>
-    </combobox>
- <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
-    <hbox width="100%" >
-         <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-			<listhead>
-                                <listheader label="Descripción"/>
-                                <listheader label="Abreviatura"/>
-                                <listheader label="Desde"/>
-                                <listheader label="Hasta"/>
+        <caption label="Busquedas" />
+        <vbox width="100%">
+            <hbox>  Tipo:
+                
+                   <listbox mold="select" id="buscarText"  onSelect="buscar(buscarText.selectedItem.getValue());">
+						 <listitem  value="SEL" label="[Seleccione un Grupo]"/>
+						  <listitem  value="AP" label="Aprovechamiento"/>
+                        <listitem  value="DI" label="Disciplina"/>
+                        <listitem  value="SU" label="Supletorio"/>
+						
+					</listbox>
+                <button id="buscar"  image="/images/actualizar.png" label="Buscar" onClick="buscar(buscarText.selectedItem.getValue());"/> 
+            </hbox>
+            <hbox width="100%" >
+                <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                    <listhead>
+                        <listheader label="Descripción"/>
+                        <listheader label="Abreviatura"/>
+                        <listheader label="Desde"/>
+                        <listheader label="Hasta"/>
 
-			</listhead>
-			<listitem forEach="${allEvents}" value="${each}">
-                           <listcell label="${each.nombre}" />
-                           <listcell label="${each.abreviatura}" />
-                           <listcell label="${each.valorminimo}" />
-                            <listcell label="${each.valormaximo}" />
-            </listitem>
-		</listbox>
+                    </listhead>
+                    <listitem forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.nombre}" />
+                        <listcell label="${each.abreviatura}" />
+                        <listcell label="${each.valorminimo}" />
+                        <listcell label="${each.valormaximo}" />
+                    </listitem>
+                </listbox>
 
 
-    </hbox>
-</vbox>
-</groupbox>
+            </hbox>
+        </vbox>
+    </groupbox>
 
 </window>

@@ -256,13 +256,15 @@ void llenar(Sistemacalificacion empa){
          mini = new BigDecimal(empa.getConduca());
         conducta.value = mini;
         if(empa.getPromediofinal().equals("NI")){
-        ninguno.selected = true;
+            ninguno.selected = true;
         }else if(empa.getPromediofinal().equals("PG")){
         promediogeneral.selected = true;
         }else if(empa.getPromediofinal().equals("PF")){
         promediofinal.selected = true;
         }else if(empa.getPromediofinal().equals("SU")){
-        supletorio.selected = true;
+            supletorio.selected = true;
+        }else if(empa.getPromediofinal().equals("SM")){
+            sumatoria.selected = true;
         }
 
         if(empa.getTrimestre()!=null){
@@ -610,8 +612,9 @@ if(formula1.equals("")){
  <row> <span style="float:right"> Tipo de Nota:</span>
        <span>
 <radiogroup id="promedios">
-        <radio id="promediogeneral" value="PG" label="Prom. General"/>
-        <radio id="promediofinal" value="PF"  label="Prom. Final"/>
+      <radio id="sumatoria" value="SM" label="Sumatoria"/>
+        <radio id="promediogeneral" value="PG" label="Prom.Gen."/>
+        <radio id="promediofinal" value="PF"  label="Prom.Final"/>
         <radio id="supletorio"  value="SU" label="Suplet."/>
         <radio id="ninguno"  value = "NI" label="Ninguno"/>
 </radiogroup>
