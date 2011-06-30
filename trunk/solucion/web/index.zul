@@ -265,7 +265,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                     <menuitem onClick="ingresar(self)" id="Empleados" image="/images/pensum.png" label="Empleados" value="/empleados.zul" />
                                     <menuitem onClick="ingresar(self)" id="EmpleadosPeriodos" image="/images/eperiodo.png" label="Asignar Periodos" value="/empleadoPeriodo.zul" />
                                     <menuitem onClick="ingresar(self)" id="EmpleadosCursos" image="/images/eperiodo.png" label="Asignar Cursos" value="/cursosEmpleados.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Equivalencias" image="/images/equivalencias.png"  label="Equivalencias" value="/equivalencias.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Equivalencias" image="/images/equivalencias.png"  label="Equivalencias y Rangos(S,MB, FJ,FI)" value="/equivalencias.zul" />
                                     <menuitem onClick="ingresar(self)" id="Globales" label="Globales" image="/images/run.gif"  value="/globales.zul" />
                                     <menuitem onClick="ingresar(self)" id="Institucion" label="Institución" image="/images/institucion.png"  value="/institucion.zul" />
                                     <menuitem onClick="ingresar(self)" id="Parametros" label="Parametros" image="/images/textos.png" value="/parametros.zul" />

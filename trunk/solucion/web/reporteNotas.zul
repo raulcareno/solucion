@@ -358,8 +358,8 @@ void recalcular(){
             }else if(tipo.equals("CSUP")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    datasource = noti.cuadrocalificacionessupletorio(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
-                    report.setSrc(directorioReportes+"cuadrocalificacionessupletorio.jasper");
+                    datasource = noti.cuadrofinalsupletorio(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    report.setSrc(directorioReportes+"cuadrofinalsupletorio.jasper");
                            
             }else if(tipo.equals("CNF")){
                     

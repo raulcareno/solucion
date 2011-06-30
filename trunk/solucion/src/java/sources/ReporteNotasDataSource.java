@@ -2,9 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sources;
-
 
 import bean.notas;
 import java.io.ByteArrayInputStream;
@@ -22,11 +20,12 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
  *
  * @author GEOVANNY
  */
-public class ReporteNotasDataSource implements JRDataSource{
+public class ReporteNotasDataSource implements JRDataSource {
+
     private Iterator itrAlumnos;
-     private Iterator itrNodos;
-   private Object valorAtual;
-   private boolean irParaProximoAlumno = true;
+    private Iterator itrNodos;
+    private Object valorAtual;
+    private boolean irParaProximoAlumno = true;
 
     public ReporteNotasDataSource(List lista) {
         super();
@@ -44,43 +43,45 @@ public class ReporteNotasDataSource implements JRDataSource{
      *
      * @see net.sf.jasperreports.engine.JRDataSource#getFieldValue(net.sf.jasperreports.engine.JRField)
      */
+
     public Object getFieldValue(JRField campo) throws JRException {
         Object valor = null;
-        Nota   nodo = (Nota) valorAtual;
+        Nota nodo = (Nota) valorAtual;
 //        NumerosaLetras num = new NumerosaLetras();
-       try {
+        try {
             String fieldName = campo.getName();
-        if ("sistema".equals(fieldName)){
-            valor = nodo.getSistema().getAbreviatura();
-        }else if ("tipo".equals(fieldName)) {
-            valor = nodo.getSistema().getTrimestre().getDescripcion();
-        }else if ("contador".equals(fieldName)) {
-            valor = nodo.getContador();
-        }else if ("nota".equals(fieldName)) {
+            if ("sistema".equals(fieldName)) {
+                valor = nodo.getSistema().getAbreviatura();
+            } else if ("tipo".equals(fieldName)) {
+                valor = nodo.getSistema().getTrimestre().getDescripcion();
+            } else if ("contador".equals(fieldName)) {
+                valor = nodo.getContador();
+            } else if ("nota".equals(fieldName)) {
 
-            try {
-                if(nodo.getNota().toString().contains(".0")){
-                    String vale = nodo.getNota().toString();
-                    if(!vale.contains(".01") && !vale.contains(".02") && !vale.contains(".03") && !vale.contains(".04") &&
-                            !vale.contains(".06") && !vale.contains(".07") && !vale.contains(".08") && !vale.contains(".05") &&
-                            !vale.contains(".09") ){
-                        nodo.setNota(nodo.getNota().toString().replace(".0",""));
-                    }
-                }
-              String vale = nodo.getNota().toString();
-              if(vale.contains("0") || vale.contains("1") || vale.contains("2") || vale.contains("3") || vale.contains("4") || vale.contains("5") ||
-                      vale.contains("6") || vale.contains("7") || vale.contains("8") || vale.contains("9") ){
-                   String codigo = vale;
-                      while(codigo.length()<2){
-                            codigo = "0"+codigo;
+                try {
+                    if (nodo.getNota().toString().contains(".0")) {
+                        String vale = nodo.getNota().toString();
+                        if (!vale.contains(".01") && !vale.contains(".02") && !vale.contains(".03") && !vale.contains(".04")
+                                && !vale.contains(".06") && !vale.contains(".07") && !vale.contains(".08") && !vale.contains(".05")
+                                && !vale.contains(".09")) {
+                            nodo.setNota(nodo.getNota().toString().replace(".0", ""));
                         }
-                    nodo.setNota(codigo);
-              }
+                    }
+                    String vale = nodo.getNota().toString();
+                    if (vale.contains("0") || vale.contains("1") || vale.contains("2") || vale.contains("3") || vale.contains("4") || vale.contains("5")
+                            || vale.contains("6") || vale.contains("7") || vale.contains("8") || vale.contains("9")) {
+                        String codigo = vale;
+                        while (codigo.length() < 2) {
+                            codigo = "0" + codigo;
+                        }
+                        nodo.setNota(codigo);
+                    }
 
-              
-            valor = nodo.getNota().toString();
-            if(nodo.getNota().toString().equals("00"))
-                valor = "";
+
+                    valor = nodo.getNota().toString();
+                    if (nodo.getNota().toString().equals("00")) {
+                        valor = "";
+                    }
 //            if(valor.equals(""))
 //                valor = "0";
 //            System.out.println("NOTA: "+valor);
@@ -89,111 +90,116 @@ public class ReporteNotasDataSource implements JRDataSource{
 //            if(nodo.getNota().toString().matches("[A-Z]"))
 //                System.out.println("CONTIENE LETRAS**");
 
-            //valor = new Double(nodo.getNota().toString());
-            
+                    //valor = new Double(nodo.getNota().toString());
+
 //                System.out.println("NOTA: "+valor);
 
-            } catch (Exception e) {
+                } catch (Exception e) {
 //                System.out.println("fieldcargar: "+e);
-            }
+                }
 
-        }else
-            if ("estudiante".equals(fieldName)) {
-           //valor = nodo.getMatricula().getEstudiante().getApellido()+" "+ nodo.getMatricula().getEstudiante().getNombre();
+            } else if ("estudiante".equals(fieldName)) {
+                //valor = nodo.getMatricula().getEstudiante().getApellido()+" "+ nodo.getMatricula().getEstudiante().getNombre();
 
-           String estado = (nodo.getMatricula().getEstado().equals("Retirado")?"(R)":(nodo.getMatricula().getEstado().equals("Emitir Pase")?"(PE)":""));
-            valor = nodo.getMatricula().getEstudiante().getApellido() + " "+ nodo.getMatricula().getEstudiante().getNombre()+" "+estado;
+                String estado = (nodo.getMatricula().getEstado().equals("Retirado") ? "(R)" : (nodo.getMatricula().getEstado().equals("Emitir Pase") ? "(PE)" : ""));
+                valor = nodo.getMatricula().getEstudiante().getApellido() + " " + nodo.getMatricula().getEstudiante().getNombre() + " " + estado;
 //            System.out.println("estudiante: "+valor);
-        }else    if ("matricula".equals(fieldName)) {
-           valor = nodo.getMatricula().getCodigomat();
-        }else if ("curso".equals(fieldName)) {
-           valor = nodo.getMatricula().getCurso().getDescripcion()+" "+nodo.getMatricula().getCurso().getEspecialidad()+" "+nodo.getMatricula().getCurso().getParalelo();
-        }else if ("cursos".equals(fieldName)) {
-            try{
-           valor = nodo.getCurso().getDescripcion()+" "+nodo.getCurso().getEspecialidad()+" "+nodo.getCurso().getParalelo();
-                }catch(Exception a){
-                    System.out.println("CURSO AGREGADO TOTALIZADO"+a);
+            } else if ("matricula".equals(fieldName)) {
+                valor = nodo.getMatricula().getCodigomat();
+            } else if ("curso".equals(fieldName)) {
+                valor = nodo.getMatricula().getCurso().getDescripcion() + " " + nodo.getMatricula().getCurso().getEspecialidad() + " " + nodo.getMatricula().getCurso().getParalelo();
+            } else if ("cursos".equals(fieldName)) {
+                try {
+                    valor = nodo.getCurso().getDescripcion() + " " + nodo.getCurso().getEspecialidad() + " " + nodo.getCurso().getParalelo();
+                } catch (Exception a) {
+                    System.out.println("CURSO AGREGADO TOTALIZADO" + a);
                 }
-        }else if ("secuencia".equals(fieldName)) {
-            try{
-                valor = nodo.getCurso().getSecuencia();
-                }catch(Exception a){
-                    System.out.println("CURSO AGREGADO TOTALIZADO"+a);
+            } else if ("secuencia".equals(fieldName)) {
+                try {
+                    valor = nodo.getCurso().getSecuencia();
+                } catch (Exception a) {
+                    System.out.println("CURSO AGREGADO TOTALIZADO" + a);
                 }
-        }else if ("regimen".equals(fieldName)) {
-           valor = nodo.getMatricula().getCurso().getPeriodo().getRegimen();
-        }else if ("jornada".equals(fieldName)) {
-           valor = nodo.getMatricula().getCurso().getPeriodo().getSeccion().getDescripcion();
-        }else if ("religion".equals(fieldName)) {
-           valor = nodo.getCargo1();
-        }else if ("materia".equals(fieldName)) {
-           valor = nodo.getMateria().getDescripcion();
-     
-        }else if ("profesor".equals(fieldName)) {
-           valor = nodo.getMprofesor().getEmpleado().getApellidos() +" "+nodo.getMprofesor().getEmpleado().getNombres()+" ";
-           if(valor.equals("")){
-           valor = null;
-           }
-        }else if ("optativa".equals(fieldName)) {
-           valor = nodo.getMprofesor().getEmpleado().getApellidos() +" "+nodo.getMprofesor().getEmpleado().getNombres()+" ";
-        }else if ("aprovechamiento".equals(fieldName)) {
-           valor = nodo.getAprovechamiento();
-        }else if ("disciplina".equals(fieldName)) {
-           valor = nodo.getDisciplina();
-        }
-        else if ("observacion".equals(fieldName)) {
-            try{
-                if(nodo.getMatricula().getEstado().equals("Retirado")){
-                    valor = ("RETIRADO "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11))+" "+nodo.getMatricula().getObservacion();
-                }else if(nodo.getMatricula().getEstado().equals("Emitir Pase")){
-                    valor = "PASE EMITIDO: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11)+" "+nodo.getMatricula().getObservacion();
-                }else if(nodo.getMatricula().getEstado().equals("Recibir Pase")){
-                    valor = "PASE RECIBIDO: "+nodo.getMatricula().getFechamat().toLocaleString().substring(0, 11)+" "+nodo.getMatricula().getObservacion();
-                }else{
-                    valor="";
-                }
-            }catch(Exception e){
-               valor = (nodo.getMatricula().getEstado().equals("Retirado")?"Retirado":"");
-            }
- 
-        }else if ("observacion1".equals(fieldName)) {
-            try{
-                if(nodo.getMatricula().getEstado().equals("Retirado")){
-                    valor = ("RETIRADO: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11))+" "+nodo.getMatricula().getObservacion();
-                }else if(nodo.getMatricula().getEstado().equals("Emitir Pase")){
-                    valor = "PASE EMITIDO: "+nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11)+" "+nodo.getMatricula().getObservacion();
-                }else if(nodo.getMatricula().getEstado().equals("Recibir Pase")){
-                    valor = "PASE RECIBIDO: "+nodo.getMatricula().getFechamat().toLocaleString().substring(0, 11)+" "+nodo.getMatricula().getObservacion();
-                }else{
-                    valor="";
-                }
-            }catch(Exception e){
-               valor = (nodo.getMatricula().getEstado().equals("Retirado")?"Retirado":"");
-            }
+            } else if ("regimen".equals(fieldName)) {
+                valor = nodo.getMatricula().getCurso().getPeriodo().getRegimen();
+            } else if ("jornada".equals(fieldName)) {
+                valor = nodo.getMatricula().getCurso().getPeriodo().getSeccion().getDescripcion();
+            } else if ("religion".equals(fieldName)) {
+                valor = nodo.getCargo1();
+            } else if ("materia".equals(fieldName)) {
+                valor = nodo.getMateria().getDescripcion();
 
-        }
-       else if ("sello".equals(fieldName)) {
+            } else if ("profesor".equals(fieldName)) {
+                try {
 
 
-           try{//FONDO PARA CARNET
-                byte[] bImage =nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getEscudo();
-                if(bImage!=null){
-                    InputStream is = new ByteArrayInputStream(bImage);
-                    valor = is;
-                }else{
+                    valor = nodo.getMprofesor().getEmpleado().getApellidos() + " " + nodo.getMprofesor().getEmpleado().getNombres() + " ";
+                if (valor.equals("")) {
+                    valor = null;
                 }
-            }catch(Exception ex){
-                System.out.println("Error en foto:"+ex);
+                } catch (Exception e) {
+                }
+                
+            } else if ("optativa".equals(fieldName)) {
+                try {
+                    valor = nodo.getMprofesor().getEmpleado().getApellidos() + " " + nodo.getMprofesor().getEmpleado().getNombres() + " ";
+                } catch (Exception e) {
+                }
+
+            } else if ("aprovechamiento".equals(fieldName)) {
+                valor = nodo.getAprovechamiento();
+            } else if ("disciplina".equals(fieldName)) {
+                valor = nodo.getDisciplina();
+            } else if ("observacion".equals(fieldName)) {
+                try {
+                    if (nodo.getMatricula().getEstado().equals("Retirado")) {
+                        valor = ("RETIRADO " + nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11)) + " " + nodo.getMatricula().getObservacion();
+                    } else if (nodo.getMatricula().getEstado().equals("Emitir Pase")) {
+                        valor = "PASE EMITIDO: " + nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11) + " " + nodo.getMatricula().getObservacion();
+                    } else if (nodo.getMatricula().getEstado().equals("Recibir Pase")) {
+                        valor = "PASE RECIBIDO: " + nodo.getMatricula().getFechamat().toLocaleString().substring(0, 11) + " " + nodo.getMatricula().getObservacion();
+                    } else {
+                        valor = "";
+                    }
+                } catch (Exception e) {
+                    valor = (nodo.getMatricula().getEstado().equals("Retirado") ? "Retirado" : "");
+                }
+
+            } else if ("observacion1".equals(fieldName)) {
+                try {
+                    if (nodo.getMatricula().getEstado().equals("Retirado")) {
+                        valor = ("RETIRADO: " + nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11)) + " " + nodo.getMatricula().getObservacion();
+                    } else if (nodo.getMatricula().getEstado().equals("Emitir Pase")) {
+                        valor = "PASE EMITIDO: " + nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11) + " " + nodo.getMatricula().getObservacion();
+                    } else if (nodo.getMatricula().getEstado().equals("Recibir Pase")) {
+                        valor = "PASE RECIBIDO: " + nodo.getMatricula().getFechamat().toLocaleString().substring(0, 11) + " " + nodo.getMatricula().getObservacion();
+                    } else {
+                        valor = "";
+                    }
+                } catch (Exception e) {
+                    valor = (nodo.getMatricula().getEstado().equals("Retirado") ? "Retirado" : "");
+                }
+
+            } else if ("sello".equals(fieldName)) {
+
+
+                try {//FONDO PARA CARNET
+                    byte[] bImage = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getEscudo();
+                    if (bImage != null) {
+                        InputStream is = new ByteArrayInputStream(bImage);
+                        valor = is;
+                    } else {
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Error en foto:" + ex);
+                }
+            } else if ("listaNotas".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getNotas());
             }
-        }
-                     else if ("listaNotas".equals(fieldName)){
-            valor = new JRBeanCollectionDataSource(nodo.getNotas());
-        }
-} catch (Exception e) {
-       Logger.getLogger(ReporteNotasDataSource.class.getName()).log(Level.SEVERE, null, e);
-            System.out.println("EN DATASOURCE"+e);
+        } catch (Exception e) {
+            Logger.getLogger(ReporteNotasDataSource.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("EN DATASOURCE" + e);
         }
         return valor;
     }
 }
-
