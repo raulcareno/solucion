@@ -422,6 +422,131 @@ public class reportesClase {
         return ds;
 
     }
+  public JRDataSource cuadrocalificacionessupletorio(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta) {
+//     int tamanio=0;
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
+        List sistemas = adm.query("Select o from Sistemacalificacion as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
+
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+                + "where  o.sistema.codigosis  = '" + sistema.getCodigosis() + "' "
+                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + "  "
+                + "order by o.sistema.orden ");
+        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+
+        String query = "";
+        for (Notanotas notass : notas) {
+            query += notass.getNota() + ",";
+        }
+        query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+        String[] values = new String[sistemas.size()];
+
+        for (int i = 0; i < sistemas.size(); i++) {
+            values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
+        }
+//    tamanio = sistemas.size();
+        //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
+/*String q = "Select matricula,materia, "+query+" from notas " +
+        "where matricula in (select codigomat from matriculas where  curso  =  '"+curso.getCodigocur()+"' ) " +
+        " ";*/
+        //and matriculas.estado in ('Matriculado','Recibir Pase','Retirado')
+        String q = "Select codigomap, mat.codigomat,notas.materia, " + query + "  "
+                + "from notas, materia_profesor, matriculas mat, estudiantes est, GLOBAL glo "
+                + "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "'  AND materia_profesor.materia = glo.codigo  "
+                + " AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
+                + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "' "
+                + " and estado in ('Matriculado','Recibir Pase','Emitir Pase','Retirado') )"
+                + "and notas.disciplina = false and materia_profesor.seimprime = true   AND glo.descripcion NOT LIKE '%PROMED%'  "
+                + "order by CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
+        System.out.println("" + q);
+        List nativo = adm.queryNativo(q);
+        List<Nota> lisNotas = new ArrayList();
+        Integer cont = 0;
+        String matricula = "";
+        for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+            Vector vec = (Vector) itna.next();
+            //row = new Row();
+            Matriculas matriculaNo = null;
+            Global materiaNo = null;
+            MateriaProfesor maprofesor = null;
+            int ksis = 0;
+            for (int j = 0; j < vec.size(); j++) {
+                Object dos = vec.get(j);
+                Double val = 0.0;
+                Nota nota = new Nota();
+                try {
+                    if (dos.equals(null)) {
+                        dos = new Double(0.0);
+                    }
+                } catch (Exception e) {
+                    dos = new Double(0.0);
+                }
+                if (j >= 3) {
+
+                    val = redondear((Double) dos, 2);
+                    if (materiaNo.getCodigo().equals(0)) {
+                        val = redondear((Double) dos, numeroDecimalesDisc.intValue());
+                    }
+                    nota.setMatricula(matriculaNo);
+                    nota.setMateria(materiaNo);
+                    nota.setContador(cont);
+                    matricula = matriculaNo.toString();
+                    if (maprofesor.getCuantitativa() == false) {
+
+                        nota.setNota(equivalencia(dos, equivalencias));
+                    } else {
+                        nota.setNota(val.toString());
+                        if (val == 0.0) {
+                            nota.setNota("");
+                        }
+
+                    }
+                    if (val >= desde && val < hasta) {
+                    } else {
+                        nota.setNota("");
+                    }
+
+
+
+                    nota.setMprofesor(maprofesor);
+                    nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
+                    if((!nota.getMateria().getDescripcion().toUpperCase().contains("PROME") && !nota.getMateria().getDescripcion().toUpperCase().contains("DISCI") ) && !(nota.getNota().toString().equals("")) ){
+                        lisNotas.add(nota);
+                    }else{
+////                        matriculaNo.getEstudiante().setApellido("");
+////                        matriculaNo.getEstudiante().setNombre("");
+////                        lisNotas.add(nota);
+                    }
+                    
+                    ksis++;
+                } else if (j == 1) {
+                    matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
+                } else if (j == 2) {
+                    materiaNo = (Global) adm.buscarClave((Integer) dos, Global.class);
+                } else if (j == 0) {
+                    maprofesor = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
+                }
+                if (matriculaNo != null && j > 1) {
+                    if (!matriculaNo.toString().equals(matricula)) {
+                        cont++;
+                    }
+                }
+            }
+
+
+        }
+        nativo = null;
+        ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotas);
+        return ds;
+
+    }
 
     //Promedio por curso
     public JRDataSource promediocurso(Sistemacalificacion sistema) {
