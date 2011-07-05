@@ -1,7 +1,7 @@
 <?page id="main-page"?>
 <window
   title="Cursos " width="45%" id="cursosdeGrado">
-<zscript>
+    <zscript>
 <![CDATA[
 import bean.notas;
 import java.math.BigDecimal;
@@ -17,12 +17,11 @@ import org.zkoss.zul.Listbox;
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 Empleados user = ses.getAttribute("user");
-List cursos = adm.query("Select o from Cursos as o "+ 
-" where o.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.secuencia = 6  ");
+List cursos = adm.queryNativo("SELECT DISTINCT cursos.* FROM cursos,materiasgrado WHERE cursos.codigocur = materiasgrado.curso  and materiasgrado.profesor = '"+user.getCodigoemp()+"' and cursos.secuencia = 6  ",Cursos.class);
 
 void verNotasCursoEstudiante(Cursos elcurso){
             if(elcurso != null){
-            ses.setAttribute("curso",elcurso);
+                    ses.setAttribute("curso",elcurso);
                     Cursos curSe =  adm.buscarClave( elcurso.getCodigocur() , Cursos.class);
                     if(curSe.getOcupado() && !curSe.getOcupador().equals(user.getCodigoemp())){
                         Empleados estud =  adm.buscarClave( curSe.getOcupador(), Empleados.class);
@@ -30,10 +29,10 @@ void verNotasCursoEstudiante(Cursos elcurso){
                         return;
                         
                     }
-                     elcurso.setOcupado(true);
+                    elcurso.setOcupado(true);
                     elcurso.setOcupador(user.getCodigoemp());
-                    adm.actualizar(elcurso);    
-                    Window win = (Window) Executions.createComponents("/notasGrado.zul", null, null);
+                    adm.actualizar(elcurso);            
+                    Window win = (Window) Executions.createComponents("/notasGradoFuera.zul", null, null);
                     win.setAttribute("curso", elcurso);
                     //win4.doModal();
                     win.doModal();
@@ -47,7 +46,7 @@ void verNotasCursoEstudiante(Cursos elcurso){
     <grid>
         <rows>
             <row>
-                 <listbox mold="select" id="cursos"  width="420px"
+                <listbox mold="select" id="cursos"  width="420px"
                     onSelect="verNotasCursoEstudiante(((Cursos)self.selectedItem.value));  ">
                     <listitem>
                         <listcell label="Seleccione un Curso" />

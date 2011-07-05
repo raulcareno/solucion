@@ -23,8 +23,7 @@ import java.util.Iterator;
                     "where o.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.secuencia = 6 "+
                     "order by o.secuencia,o.paralelo.descripcion, o.descripcion");
                     Cursos cr = new Cursos(-1);
-
-cursos.add(0,cr);
+                    cursos.add(0,cr);
     List profesores = adm.query("Select o from Empleados as o ");
     List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
     Object media = null;
@@ -253,101 +252,240 @@ Cursos cur = curs.selectedItem.value;
     void anadir(String glob){
             formula.value = formula.value +""+ glob+" + ";
     
-    }   ]]>
+    }
+    void vaciarList(){
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                   datos.getItems().remove(a);
+            }
+            for (Iterator it = desCursos.getItems().iterator(); it.hasNext();) {
+                   desCursos.getItems().remove(a);
+            }
+            
+            
+}
+     void buscar2Desde(Cursos cur){
+            List empleadosEncontrados = adm.query("Select o from Materiasgrado as o where o.curso.codigocur = '"+cur.codigocur+"'");
+        desCursos = new Listbox();
+        int a=0;
+            for (Iterator it = desCursos.getItems().iterator(); it.hasNext();) {
+                    desCursos.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Materiasgrado acceIt = (Materiasgrado) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+      
+                      li.appendChild(new Listcell(acceIt.getProfesor().getApellidos()+" "+acceIt.getProfesor().getNombres()));
+                      li.appendChild(new Listcell(acceIt.getNombre()+""));
+  li.setSelected(true);
+                      desCursos.appendChild(li);
+             }
+
+    }
+           void buscar2Hasta(Cursos cur){
+        
+        
+        if(cur.equals(desdeCurso.selectedItem.value)){
+                alert("Seleccione otro curso, El Origen es igual al Destino");
+      
+            return;
+        }
+
+        List empleadosEncontrados = adm.query("Select o from Materiasgrado as o where o.curso.codigocur = '"+cur.codigocur+"'");
+        hasCursos = new Listbox();
+        int a=0;
+            for (Iterator it = hasCursos.getItems().iterator(); it.hasNext();) {
+                    hasCursos.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Materiasgrado acceIt = (Materiasgrado) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getProfesor().getApellidos()+" "+acceIt.getProfesor().getNombres()));
+                      li.appendChild(new Listcell(acceIt.getNombre()+""));
+                    
+                      hasCursos.appendChild(li);
+             }
+
+    }
+       public void anadirCursos(){
+        if(desdeCurso.selectedItem.value == -1){
+            alert("Seleccione el Origen y Destino");
+            return;
+        }
+        Set  selec =  desCursos.getSelectedItems();
+        Set  selecHasta =  hastaCurso.getSelectedItems();
+                for (Iterator it = selec.iterator(); it.hasNext();) {
+                        Listitem object = (Listitem)it.next();
+                             List children = object.children;
+                              Materiasgrado nuevaMat =   object.getValue();
+                              Integer cursoAnteSelc = nuevaMat.getCurso().getCodigocur();
+                               for (Iterator it2 = selecHasta.iterator(); it2.hasNext();) {
+                                            Listitem object2 = (Listitem)it2.next();
+                                                 List children2 = object2.children;
+                                                    Cursos curSele =   object2.getValue();
+                                                       nuevaMat.setCurso(curSele);
+                                                       nuevaMat.setCodigo(adm.getNuevaClave("Materiasgrado","codigo"));
+                                                       if(!curSele.getCodigocur().equals(cursoAnteSelc))
+                                                            adm.guardar(nuevaMat);
+                                 }
+        }
+       permiso.auditar("Copiar Materias Grado","Guardar","D: "+desdeCurso.selectedItem.value+" H: "+hastaCurso.selectedItem.value);
+}
+    ]]>
     </zscript>
 
-
-        <grid width="100%">
-            <rows>
-                <row>
-                    <span style="float:right"> Curso(*):
-                    </span>
-
+    <grid width="100%">
+        <rows>
+            <row>
+                <span style="float:right"> Curso(*):
+                </span>
+                <span>
                     <listbox id="curs" mold="select"  width="420px"
                                         onSelect=" buscar2(((Cursos)self.selectedItem.value));">
                         <listitem   forEach="${cursos}" value="${each}">
                             <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
                         </listitem>
                     </listbox>
-
-                </row>
-                <row>
-                    <span style="float:right"> Codigo :
-                    </span><span>
+                    <button image="/images/add.png" id="copiarDistributivo" label="COPIAR EL DISTRIBUTIVO DE OTRO CURSO "     onClick="panel.visible = true; desdeCurso.selectedIndex =-1; vaciarList();"/>
+                </span>
+            </row>
+            <row>
+                <span style="float:right"> Codigo :
+                </span>
+                <span>
                     <intbox maxlength="14" cols="5"  readonly = "true"   disabled="true" id="codigo"  />
-                    <textbox id="columna" readonly="true" /> </span>
-                </row>
-                <row>
-                    <span style="float:right"> Materias(*):
-                    </span>
-                    <span> 
-                        <textbox id="materia" width="220px" />
+                    <textbox id="columna" readonly="true" /> 
+                </span>
+            </row>
+            <row>
+                <span style="float:right"> Materias(*):
+                </span>
+                <span> 
+                    <textbox id="materia" width="220px" />
                         Abreviatura(*):
                     
                     <textbox id="abreviatura" width="120px" />
-                    </span>
-                </row>
-                <row>
-                    <span style="float:right"> Profesores(*):
-                    </span>
+                </span>
+            </row>
+            <row>
+                <span style="float:right"> Profesores(*):
+                </span>
 
-                    <listbox mold="select" id="profes" width="320px">
-                        <listitem selected="true"  forEach="${profesores}" value="${each}">
-                            <listcell label="${each.apellidos} ${each.nombres}" />
-                        </listitem>
-                    </listbox>
+                <listbox mold="select" id="profes" width="320px">
+                    <listitem selected="true"  forEach="${profesores}" value="${each}">
+                        <listcell label="${each.apellidos} ${each.nombres}" />
+                    </listitem>
+                </listbox>
                             
-                </row>
-                   <row>
-                    <span style="float:right"> Encargado(*):
-                    </span>
+            </row>
+            <row>
+                <span style="float:right"> Encargado(*):
+                </span>
 
-                    <listbox mold="select" id="encarg" width="320px">
-                        <listitem selected="true"  forEach="${profesores}" value="${each}">
-                            <listcell label="${each.apellidos} ${each.nombres}" />
-                        </listitem>
-                    </listbox>
+                <listbox mold="select" id="encarg" width="320px">
+                    <listitem selected="true"  forEach="${profesores}" value="${each}">
+                        <listcell label="${each.apellidos} ${each.nombres}" />
+                    </listitem>
+                </listbox>
 
-                </row>
-                <row>
-                    <span style="float:right"> Es promedio
-                    </span>
-                    <span>
-                        <checkbox id="promediada"  disabled="true"  />
-                    </span>
-                </row>
+            </row>
+            <row>
+                <span style="float:right"> Es promedio
+                </span>
+                <span>
+                    <checkbox id="promediada"  disabled="true"  />
+                </span>
+            </row>
 
                 
 
-                <row>
-                    <span style="float:right"> Fórmula:
-                    </span>
-                    <span>
-                        <textbox rows="1" id="formula" cols="65"  disabled="true"  />
-                        <button label="Ver" onClick=" materias123(); "/>
-                        <listbox onSelect="anadir(self.selectedItem.value)" visible="false" id="materiaslista" width="45%">
+            <row>
+                <span style="float:right"> Fórmula:
+                </span>
+                <span>
+                    <textbox rows="1" id="formula" cols="65"  disabled="true"  />
+                    <button label="Ver" onClick=" materias123(); "/>
+                    <listbox onSelect="anadir(self.selectedItem.value)" visible="false" id="materiaslista" width="45%">
+                        <listhead>
+                            <listheader label="Materia"  sort="auto"/>
+                        </listhead>
+                    </listbox>
+                    <button  label="Cerrar" visible="false" id="cerrar" onClick="materiaslista.visible = false; cerrar.visible=false; verificar.visible = false;"/>
+                    <button  label="Verificar" visible="false" id="verificar"/>
+                </span>
+            </row>
+        </rows>
+    </grid>
+
+
+    <panel id="panel" visible = "false" style="position:absolute; top:1%; left:1%" 
+    framable="true" height="400px"	
+    title="COPIAR DISTRIBUTIVO" border="normal"   >
+
+        <panelchildren>
+            <grid width="100%">
+                <rows>
+                    
+                    <row>
+                        <span>
+                             DESDE EL CURSO(*): 
+                            <listbox id="desdeCurso" mold="select"  width="420px"
+                            onSelect=" buscar2Desde(((Cursos)self.selectedItem.value));">
+                                <listitem  forEach="${cursos}" value="${each}">
+                                    <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                </listitem>
+                                <listitem selected="true"   value="-1">
+                                    <listcell label="[Seleccione]" />
+                                </listitem>
+                            </listbox>
+                        </span>
+                        <span>
+                         HASTA EL CURSO(*):
+                        </span>
+                    </row>
+                    <row> 
+                        <listbox  id="desCursos" multiple="true" checkmark="true" rows="60"  mold="paging" height="240px"  width="100%">
                             <listhead>
+                                <listheader label="Seleccionar Todo"   sort="auto"/>
                                 <listheader label="Materia"  sort="auto"/>
                             </listhead>
+                            <listitem forEach="${allEvents}" value="${each}">
+                                <listcell label="${each.apellido} ${each.nombre}" />
+                            </listitem>
                         </listbox>
-                        <button  label="Cerrar" visible="false" id="cerrar" onClick="materiaslista.visible = false; cerrar.visible=false; verificar.visible = false;"/>
-                        <button  label="Verificar" visible="false" id="verificar"/>
-                    </span>
-                </row>
-            </rows>
-        </grid>
+                         
+                        <listbox id="hastaCurso"  multiple="true" checkmark="true"   mold="paging" height="240px" width="420px"  >
+                            <listitem    forEach="${cursos}" value="${each}">
+                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                            </listitem>
+                               
+                        </listbox>
 
 
+                    </row>
+                    <row>
+                        <span style="float:right">
+                            <button image="/images/anadir.png" dir="reverse"  id="anadirCursos" label="EMPEZAR A COPIAR A CURSOS SELECCIONADOS"  disabled="false"  onClick="anadirCursos();"/>
+                        </span>
+                        <button image="/images/exit.gif" height="35px" label="Salir" width="150px"  onClick="panel.visible=false;"/>
+                        <!--button image="/images/quitar.png" id="quitarCursos" label="Quitar del Curso"  disabled="false"  onClick="guardar2();"/-->
+                    </row>
+                </rows>
+            </grid>
+        </panelchildren>
+    </panel>
 
-                <listbox  mold="paging" rows="7" pageSize="7"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-                    <listhead>
-                        <listheader label="Cod."/>
+    <listbox  mold="paging" rows="7" pageSize="7"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+        <listhead>
+            <listheader label="Cod."/>
 
-                        <listheader label="Materia"   sort="auto"/>
+            <listheader label="Materia"   sort="auto"/>
 
-                    </listhead>
+        </listhead>
 
-                </listbox>
+    </listbox>
  
 
     <vbox>

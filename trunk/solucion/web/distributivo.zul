@@ -35,19 +35,14 @@
     
     List allEvents = adm.query("Select o from Empleados as o where o.identificacion = 0");
     static MateriaProfesor matricula = new MateriaProfesor();
-
    //List cursos = adm.query("Select o from Cursos as o  where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia,o.paralelo.descripcion, o.descripcion");
-
    List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
       " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
-
-
    if(cursos.size()<=0){
              cursos = adm.query("Select o from Cursos as o "
             + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"'  order by o.secuencia,o.paralelo.descripcion, o.descripcion  ");
             System.out.println("ENTRO VACIO");
    }
-
    List profesores = adm.query("Select o from Empleados as o order by o.apellidos ");
         Empleados selecp = new Empleados(-1);
         selecp.setApellidos("[Seleccione]");

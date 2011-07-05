@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Decimalbox;
@@ -24,6 +23,7 @@ import org.zkoss.zul.Rows;
 
 public class notasGrado extends Rows {
 //ArrayList listad = new ArrayList();
+
     public notasGrado() {
 //        Cursos todos = new Cursos(-2);
 //        todos.setDescripcion("[TODOS]");
@@ -31,27 +31,48 @@ public class notasGrado extends Rows {
 
     public void addRow(Cursos curso) {
         Administrador adm = new Administrador();
-        List<Materiasgrado> notas = adm.query("Select o from Materiasgrado as o where o.curso.codigocur = '"+curso.getCodigocur()+"' order by o.codigo ");
+        List<Materiasgrado> notas = adm.query("Select o from Materiasgrado as o"
+                + " where o.curso.codigocur = '" + curso.getCodigocur() + "' order by o.codigo ");
         String query = "";
+        ArrayList estados = new ArrayList();
+        Session ses = Sessions.getCurrent();
+          Empleados user = (Empleados) ses.getAttribute("user");
+/*
+            Cursos periodo = (Cursos) ses.getAttribute("curso");
+                List sistemas = adm.query("Select o from Materiasgrado as o "+
+                 " where o.curso.codigocur =  '"+periodo.getCodigocur()+"' order by o.codigo ");
+              
+                    else if(!((Materiasgrado)sistemas.get(i)).getProfesor().getCodigoemp().equals(user.getCodigoemp())){
+                            values[i][1]= "readonly";
+                     }*/
+          estados.add(false);
+          estados.add(false);
         for (Materiasgrado notass : notas) {
             query += notass.getColumna() + ",";
+                    if(!notass.getProfesor().getCodigoemp().equals(user.getCodigoemp())){
+                        estados.add(true);
+                     }else if(notass.getEspromedio()){
+                        estados.add(true); 
+                     }else{
+                        estados.add(false);
+                    }
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         getChildren().clear();
         Label label3 = null;
-         Decimalbox label = null;
-        String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas " +
-                "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
-                "left join notasgrado on matriculas.codigomat = notasgrado.matricula " +
-                 "where matriculas.curso = '" + curso.getCodigocur() + "' " +
-                "order by estudiantes.apellido";
-        ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1),ParametrosGlobales.class);
-        if(para.getCvalor().equals("P")){
-             q = "Select matriculas.codigomat,(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas " +
-                "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
-                "left join notasgrado on matriculas.codigomat = notasgrado.matricula " +
-                 "where matriculas.curso = '" + curso.getCodigocur() + "' " +
-                "order by estudiantes.apellido";
+        Decimalbox label = null;
+        String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas "
+                + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
+                + "left join notasgrado on matriculas.codigomat = notasgrado.matricula "
+                + "where matriculas.curso = '" + curso.getCodigocur() + "' "
+                + "order by estudiantes.apellido";
+        ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1), ParametrosGlobales.class);
+        if (para.getCvalor().equals("P")) {
+            q = "Select matriculas.codigomat,(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas "
+                    + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
+                    + "left join notasgrado on matriculas.codigomat = notasgrado.matricula "
+                    + "where matriculas.curso = '" + curso.getCodigocur() + "' "
+                    + "order by estudiantes.apellido";
         }
         List nativo = adm.queryNativo(q);
         Row row = new Row();
@@ -60,7 +81,7 @@ public class notasGrado extends Rows {
             row = new Row();
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
-                 label = new Decimalbox();
+                label = new Decimalbox();
                 label3 = new Label();
                 try {
                     if (dos.equals(null)) {
@@ -71,30 +92,32 @@ public class notasGrado extends Rows {
                 }
                 if (j >= 2) {
                     Double valor = (Double) dos;
-                    if(valor.equals(0.0)){
-                       label.setValue(new BigDecimal(0));
-                    }else{
+                    if (valor.equals(0.0)) {
+                        label.setReadonly((Boolean)estados.get(j));
+                        label.setValue(new BigDecimal(0));
+                    } else {
+                        label.setReadonly((Boolean)estados.get(j));
                         label.setValue(new BigDecimal(redondear((Double) dos, 3)));
                     }
-                    
+
                 } else {
-                    String valor = dos.toString().replace("(","").replace(")","").replace("\"","").replace(",","");
+                    String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
                     label3.setValue("" + valor);
                 }
-       if(j==0){
+                if (j == 0) {
                     label3.setStyle("width:15px;font-size:11px;font:arial; ");
                     //label3.setReadonly(true);
                     row.appendChild(label3);
-                }else if(j==1){
+                } else if (j == 1) {
                     label3.setStyle("width:300px;font-size:11px;font:arial; ");
                     //label3.setReadonly(true);
                     row.appendChild(label3);
-                }else if(j==(vec.size()-1)){
+                } else if (j == (vec.size() - 1)) {
 //                    label.setDisabled(true);
                     row.appendChild(label);
-                }else{
+                } else {
 
-                     row.appendChild(label);
+                    row.appendChild(label);
                 }
 //                row.appendChild(label);
 //                                 System.out.print(","+dos);
@@ -110,16 +133,16 @@ public class notasGrado extends Rows {
 
     @SuppressWarnings("static-access")
     public String guardar(List col, Cursos curso) {
-         Session ses = Sessions.getCurrent();
-     Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
         try {
             String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
 //            System.out.println("INICIO EN: " + new Date());
             Interpreter inter = new Interpreter();
             inter.eval(redon);
             Administrador adm = new Administrador();
-            List<Materiasgrado> notas = adm.query("Select o from Materiasgrado as o " +
-                    "where o.curso.codigocur = '"+curso.getCodigocur() +"' order by o.codigo ");
+            List<Materiasgrado> notas = adm.query("Select o from Materiasgrado as o "
+                    + "where o.curso.codigocur = '" + curso.getCodigocur() + "' order by o.codigo ");
 //            List<Sistemacalificacion> sisFormulas = adm.query("Select o from Sistemacalificacion as o " +
 
 //            for (Iterator<Sistemacalificacion> it = sisFormulas.iterator(); it.hasNext();) {
@@ -161,7 +184,7 @@ public class notasGrado extends Rows {
                     }
                     nota = (Notasgrado) inter.get("nota");
                     adm.guardar(nota);
-                    
+
                 } catch (EvalError ex) {
                     Logger.getLogger(notasGrado.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -171,12 +194,13 @@ public class notasGrado extends Rows {
             return "ok";
         } catch (EvalError ex) {
             Logger.getLogger(notasGrado.class.getName()).log(Level.SEVERE, null, ex);
-             return "Error en:  "+ex;
+            return "Error en:  " + ex;
         }
 
 
     }
-     public Double redondear(Double numero, int decimales) {
+
+    public Double redondear(Double numero, int decimales) {
         try {
 
             BigDecimal d = new BigDecimal(numero);
@@ -186,60 +210,58 @@ public class notasGrado extends Rows {
             return 0.0;
         }
     }
-    
-    public static Object equivalencia(Object no,List<Equivalencias> equivalencias){
-        Double nota = (Double) no;
-            ArrayList listado  = new ArrayList();     
-        for (Equivalencias acaEquivalencias : equivalencias) {
-                Object obj[] = new Object[3];
-                obj[0] = acaEquivalencias.getValorminimo();
-                obj[1] = acaEquivalencias.getValormaximo();
-                obj[2] = acaEquivalencias.getAbreviatura();
-                listado.add(obj);
-          }
 
-            for (Iterator it = listado.iterator(); it.hasNext();) {
-                Object object[] = (Object[]) it.next();
-                Double mini  = (Double) object[0];
-                Double maxi  = (Double) object[1];
-                if(nota>= mini && nota<= maxi){
-                    //System.out.println(""+);
-                        return object[2];
-                }
-            }    
-        
+    public static Object equivalencia(Object no, List<Equivalencias> equivalencias) {
+        Double nota = (Double) no;
+        ArrayList listado = new ArrayList();
+        for (Equivalencias acaEquivalencias : equivalencias) {
+            Object obj[] = new Object[3];
+            obj[0] = acaEquivalencias.getValorminimo();
+            obj[1] = acaEquivalencias.getValormaximo();
+            obj[2] = acaEquivalencias.getAbreviatura();
+            listado.add(obj);
+        }
+
+        for (Iterator it = listado.iterator(); it.hasNext();) {
+            Object object[] = (Object[]) it.next();
+            Double mini = (Double) object[0];
+            Double maxi = (Double) object[1];
+            if (nota >= mini && nota <= maxi) {
+                //System.out.println(""+);
+                return object[2];
+            }
+        }
+
         return "";
     }
-    
 
-public Boolean verificar(String formula,List<Notanotas> notas){
+    public Boolean verificar(String formula, List<Notanotas> notas) {
 
-     formula = formula.replace("()", "");
-       String redon = "public Double redondear(Double numero, int decimales) {" +
-               "" +
-               "try{" +
-               "               " +
-               " java.math.BigDecimal d = new java.math.BigDecimal(numero);" +
-               "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" +
-               "        return d.doubleValue();" +
-               "        }catch(Exception e){" +
-               "            return 0.0;" +
-               "        }" +
-               "     }";
+        formula = formula.replace("()", "");
+        String redon = "public Double redondear(Double numero, int decimales) {"
+                + ""
+                + "try{"
+                + "               "
+                + " java.math.BigDecimal d = new java.math.BigDecimal(numero);"
+                + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);"
+                + "        return d.doubleValue();"
+                + "        }catch(Exception e){"
+                + "            return 0.0;"
+                + "        }"
+                + "     }";
 
         Interpreter inter = new Interpreter();
-         try {
-             inter.eval(redon);
-        for (Iterator<Notanotas> it = notas.iterator(); it.hasNext();) {
-                     Notanotas notanotas = it.next();
-                    inter.eval(""+notanotas.getNota()+"=1;");
+        try {
+            inter.eval(redon);
+            for (Iterator<Notanotas> it = notas.iterator(); it.hasNext();) {
+                Notanotas notanotas = it.next();
+                inter.eval("" + notanotas.getNota() + "=1;");
+            }
+            inter.eval(formula + "*1");
+        } catch (EvalError ex) {
+            Logger.getLogger(notasGrado.class.getName()).log(Level.SEVERE, null, ex);
+            return true;
         }
-              inter.eval(formula+"*1");
-      } catch (EvalError ex) {
-           Logger.getLogger(notasGrado.class.getName()).log(Level.SEVERE, null, ex);
-          return true;
-      }
         return false;
-}
-
+    }
 }
