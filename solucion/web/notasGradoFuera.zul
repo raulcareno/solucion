@@ -1,6 +1,6 @@
 
 <?page id="main-page"?>
-<window onClose="liberar()" title="Registro de Notas de Exámenes de Grado" onCreate="notas()"    mode="overlapped"
+<window onClose="liberar()" title="Registro de Notas de Grado" onCreate="notas()"    mode="overlapped"
         sizable="true"  closable="true" border="normal" width="80%" id="principalGrado">
     <zscript>
         <![CDATA[
@@ -16,22 +16,25 @@ import org.zkoss.zul.Listbox;
 
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
-Empleados user = ses.getAttribute("user");
+
 Cursos periodo = (Cursos) ses.getAttribute("curso");
 List sistemas = adm.query("Select o from Materiasgrado as o "+
                  " where o.curso.codigocur =  '"+periodo.getCodigocur()+"' order by o.codigo ");
-
+Empleados user = ses.getAttribute("user");
 String[][] values = new String[sistemas.size()][2];
 
                   for (int i=0;i<sistemas.size();i++) {
                      values[i][0]= ((Materiasgrado)sistemas.get(i)).getNombre();
                      values[i][1]= "number";
                      if(((Materiasgrado)sistemas.get(i)).getEspromedio()){
-                     values[i][1]= "readonly";
+                        values[i][1]= "readonly";
+                     }else if(!((Materiasgrado)sistemas.get(i)).getProfesor().getCodigoemp().equals(user.getCodigoemp())){
+                            values[i][1]= "readonly";
                      }
 
-                  }
-                   liberar(){
+                  } 
+                  
+                  liberar(){
                     List curses = adm.query("Select o from Cursos as o where o.ocupador = '"+user.getCodigoemp()+"' ");
                          for (Iterator it = curses.iterator(); it.hasNext();) {
                                  Cursos cur = (Cursos) it.next();
@@ -51,7 +54,7 @@ guardar(){
      }else{
         Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
      }
-liberar();
+    liberar();
 }
 
 

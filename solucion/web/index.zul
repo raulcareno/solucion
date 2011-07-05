@@ -38,11 +38,19 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
             Executions.sendRedirect("login.zul");
             }
             void salir(){
-            Executions.sendRedirect("login.zul");
+            
+                       List curses = adm.query("Select o from Cursos as o where o.ocupador = '"+emp.getCodigoemp()+"' ");
+                         for (Iterator it = curses.iterator(); it.hasNext();) {
+                                 Cursos cur = (Cursos) it.next();
+                                cur.setOcupado(false);
+                                cur.setOcupador(null);
+                                adm.actualizar(cur);
+                            }
+                        Executions.sendRedirect("login.zul");
 
-            a.removeAttribute("accesos");
-            a.removeAttribute("user");
-            a.invalidate();
+                        a.removeAttribute("accesos");
+                        a.removeAttribute("user");
+                        a.invalidate();
             }
             void ingresar(Menuitem item ){
             try{
@@ -257,7 +265,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                 <tab label="Administración" />
                                 <tab label="Grados" />
                                 <tablabel="Varios" /-->
-                                  <menu image="/images/herramientas.png"  label="Administración" ><!--ADMINISTRACION-->
+                            <menu image="/images/herramientas.png"  label="Administración" ><!--ADMINISTRACION-->
                                 <menupopup   >
                                                  
                                     <menuitem onClick="ingresar(self)" id="Accesos" image="/images/key.png" label="Accesos" value="/accesos.zul"/>
@@ -324,7 +332,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                 </menupopup>
                             </menu>
                             <menu   image="/images/exit.gif" label="Cerrar Sesión" onClick="salir()"/>
-                             <menu image="/images/candado.gif"  label="Cambiar Clave" onClick='cambioC("/cambioClaveProfesor.zul")'/>
+                            <menu image="/images/candado.gif"  label="Cambiar Clave" onClick='cambioC("/cambioClaveProfesor.zul")'/>
                           
                         </menubar>
                     </panelchildren>
