@@ -30,12 +30,13 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
             import jcinform.persistencia.*;
             import jcinform.procesos.Administrador;
             import bean.Permisos;
-
+            
+                //Clients.confirmClose("Desdea liberar todo ?");
             Administrador adm = new Administrador();
             Session a = Sessions.getCurrent();
             Empleados emp = a.getAttribute("user");
             if(emp==null){
-            Executions.sendRedirect("login.zul");
+                Executions.sendRedirect("login.zul");
             }
             void salir(){
             

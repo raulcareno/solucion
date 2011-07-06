@@ -39,6 +39,7 @@ import jcinform.procesos.Administrador;
 import net.sf.jasperreports.engine.JRDataSource;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Messagebox;
 import sources.ActaGeneralDataSource;
 import sources.DisciplinaDataSource;
@@ -2033,7 +2034,6 @@ public class reportesClase {
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
                 + "and o.sistema.promediofinal = 'PF' ");
-
         Integer noDecimales = 3;
         try {
             noDecimales = regresaVariableParametrosDecimal("DECIPROMOCION", parametrosGlobales).intValue();
@@ -2041,8 +2041,6 @@ public class reportesClase {
             noDecimales = 3;
 
         }
-
-
         try {
             if (notas.size() <= 0) {
                 Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
@@ -2064,8 +2062,8 @@ public class reportesClase {
             String cabe1 = cabecera;
             String piea = aprobado;
             String pier = reprobado;
-
             boolean estadoEstudiante = true;
+            //PARA CARGAR EL APROVECHAMIENTO
             String q = "Select round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal(8,4))," + 3 + ") from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
                     + "left join notas on matriculas.codigomat = notas.matricula "
@@ -2095,7 +2093,7 @@ public class reportesClase {
                     aprovechamiento = b.doubleValue();
                 }
             }
-
+//PARA CARGAR LA DISCIPLINA
             q = "Select  round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal(8,4))," + 3 + ")  from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
                     + "left join notas on matriculas.codigomat = notas.matricula "
