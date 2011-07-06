@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="290"/>
-	<property name="ireport.y" value="478"/>
+	<property name="ireport.x" value="233"/>
+	<property name="ireport.y" value="428"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -30,6 +30,7 @@
 	<field name="sello" class="java.io.InputStream"/>
 	<field name="estudiante" class="java.lang.String"/>
 	<field name="codigoAsignatura" class="java.lang.String"/>
+	<field name="desarrollo" class="java.lang.String"/>
 	<group name="estudiantes" isStartNewPage="true" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{matricula}]]></groupExpression>
 		<groupHeader>
@@ -198,23 +199,23 @@
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{textPie}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="1" y="27" width="118" height="15"/>
+					<reportElement x="1" y="45" width="118" height="15"/>
 					<textElement>
-						<font pdfFontName="Helvetica-Bold"/>
+						<font pdfFontName="Helvetica"/>
 					</textElement>
 					<text><![CDATA[(I) AMBITO CIENTIFICO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="128" y="27" width="142" height="15"/>
+					<reportElement x="128" y="45" width="142" height="15"/>
 					<textElement>
-						<font pdfFontName="Helvetica-Bold"/>
+						<font pdfFontName="Helvetica"/>
 					</textElement>
 					<text><![CDATA[(II) AMBITO INSTRUMENTAL]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="275" y="27" width="260" height="15"/>
+					<reportElement x="275" y="45" width="260" height="15"/>
 					<textElement>
-						<font pdfFontName="Helvetica-Bold"/>
+						<font pdfFontName="Helvetica"/>
 					</textElement>
 					<text><![CDATA[(III) AMBITO DE DESARROLLO PERSONAL Y SOCIAL]]></text>
 				</staticText>
@@ -253,6 +254,42 @@
 						<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[PROMEDIO DE COMPORTAMIENTO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="25" y="19" width="250" height="19"/>
+					<box leftPadding="2" rightPadding="5">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[DESARROLLO DEL PENSAMIENTO]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="275" y="19" width="62" height="19"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[""+$F{promedio2}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="337" y="19" width="170" height="19"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement/>
+					<text><![CDATA[]]></text>
 				</staticText>
 			</band>
 		</groupFooter>
@@ -324,9 +361,10 @@
 	</columnHeader>
 	<detail>
 		<band height="19" splitType="Stretch">
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="25" y="0" width="250" height="19">
-					<printWhenExpression><![CDATA[(!$F{asignatura}.contains("PROMEDIO"))]]></printWhenExpression>
+			<printWhenExpression><![CDATA[(!$F{asignatura}.contains("PENSAMIENTO"))]]></printWhenExpression>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="25" y="0" width="250" height="19" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[(!$F{asignatura}.contains("PROMEDIO") && !$F{asignatura}.contains("PENSAMIENTO"))]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="3">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -340,8 +378,8 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{asignatura}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-1" x="275" y="0" width="63" height="19">
-					<printWhenExpression><![CDATA[(!$F{asignatura}.contains("PROMEDIO"))]]></printWhenExpression>
+				<reportElement key="textField-1" x="275" y="0" width="63" height="19" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[(!$F{asignatura}.contains("PROMEDIO") && !$F{asignatura}.contains("PENSAMIENTO"))]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -420,7 +458,7 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band splitType="Stretch"/>
+		<band height="25" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band splitType="Stretch"/>

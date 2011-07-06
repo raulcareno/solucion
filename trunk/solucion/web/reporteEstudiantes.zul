@@ -673,6 +673,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = inscritos6(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"estudiantesVerificados.jasper");
+            }else if(tipo.equals("INS7")){
+                    datasource = inscritos6(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"fichaMatriculados.jasper");
             }else if(tipo.equals("INS5")){
                     datasource = inscritos5(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
@@ -858,11 +862,14 @@ void campos(String valor){
                                 <listitem  id="CM2" label="Certificado de Matricula(2)" value="CM2" />
                                 <listitem  id="LMIN" label="Folio y No. Matricula" value="LMIN"/>
                                 <listitem  id="INS" label="Inscritos" value="INS" />
+                                <listitem disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <listitem  id="INS2" label="Inscritos por Internet" value="INS2" />
                                 <listitem  id="INS3" label="Calificacion de Inscritos por Internet" value="INS3" />
                                 <listitem  id="INS4" label="Listado de Pre-aprobados" value="INS4" />
                                 <listitem  id="INS5" label="Listado de Pre-aprobados(Escuela)" value="INS5" />
                                 <listitem  id="INS6" label="Listado de Pre-aprobados(Inf. Verificada)" value="INS6" />
+                                <listitem  id="INS7" label="Listado de Pre-aprobados(Impresión Ficha Individual)" value="INS7" />
+                                <listitem disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
                                 <listitem  id="LMAT" label="Matriculados" value="LMAT" />
                                 <listitem  id="LMATYR" label="Matriculados con Retirados" value="LMATYR" />
