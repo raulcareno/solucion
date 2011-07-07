@@ -77,7 +77,12 @@ public class Procesos {
                      */
 
                      //       System.out.println(matriculas1.getEstudiante().getApellido()+": " + ((Vector)val.get(0)).get(0));
-                    Double  promedio =  (Double) ((Vector)val.get(0)).get(0);
+                    Double  promedio = 0.0;
+                    try{
+                        promedio =  (Double) ((Vector)val.get(0)).get(0);
+                    }catch(Exception e){
+                            promedio = 0.0;
+                    }
                     if(promedio == null){
                         promedio = 0.0;
                     }
@@ -162,7 +167,12 @@ public class Procesos {
                             "and materia = '"+materia.getCodigo()+"' and disciplina = false ";
                     //System.out.println(que);
                     List val = adm.queryNativo(que);
-                      Double  promedio =  (Double) ((Vector)val.get(0)).get(0);
+                    Double  promedio = 0.0;
+                    try{
+                        promedio =  (Double) ((Vector)val.get(0)).get(0);
+                    }catch(Exception e){
+                            promedio = 0.0;
+                    }
                     if(promedio == null){
                         promedio = 0.0;
                     }
