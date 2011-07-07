@@ -17,6 +17,8 @@ Periodo periodo = (Periodo) ses.getAttribute("periodo");
 
 List cursos = adm.query("Select o from Cursos as o "+ 
 " where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia, o.descripcion, o.paralelo.descripcion ");
+List materias = adm.query("Select o from Global as o "+ 
+" where o.grupo = 'MAT' and o.descripcion like '%PROM%' order by o.descripcion ");
 
 void aprovechamiento(){
         
@@ -37,6 +39,45 @@ void aprovechamiento(){
     
         Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
   }
+  
+  void aprovechamiento2(){
+        
+        Procesos pro = new Procesos();
+                Set items = cursosList2.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("Seleccion un al menos un Curso...!");
+                            return;
+						}else{
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+                                    Cursos curses = li.getValue();
+                                        pro.aprovechamiento2(curses,materiasList.selectedItem.value);
+                                    
+							}
+						}
+    
+        Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+  }
+void disciplina2(){
+        Procesos pro = new Procesos();
+                 Set items = cursosList2.getSelectedItems();
+						if (items.isEmpty()) {
+							alert("Seleccion un al menos un Curso...!");
+                            return;
+						}else{
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+                                    Cursos curses = li.getValue();
+                                        pro.disciplina(curses);
+                                    
+							}
+						}
+    
+        Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        
+}
 void disciplina(){
         Procesos pro = new Procesos();
                  Set items = cursosList.getSelectedItems();
@@ -103,8 +144,8 @@ void generar(String tipo){
                                 <span>
                                     <listbox   id="cursosList"  height="150px" multiple="true" checkmark="true"  width="420px" >
                                         <listhead>
-                                                <listheader label="Seleccionar Todos"/>    
-                                         </listhead>
+                                            <listheader label="Seleccionar Todos"/>    
+                                        </listhead>
                                         <listitem forEach="${cursos}" value="${each}">
                                             <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
                                         </listitem>
@@ -135,16 +176,16 @@ void generar(String tipo){
                                 <span style="float:right"> Curso(*):</span>
                                 <span>
                                   
-                                                <listbox fixedLayout="true" height="150px" multiple="true" checkmark="true" id="curs" width="420px">
-                                                <listhead>
-                                                <listheader label="Seleccionar Todos"/>    
-                                                </listhead>
+                                    <listbox fixedLayout="true" height="150px" multiple="true" checkmark="true" id="curs" width="420px">
+                                        <listhead>
+                                            <listheader label="Seleccionar Todos"/>    
+                                        </listhead>
 
-                                                    <listitem forEach="${cursos}" value="${each}">
-                                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                        <listitem forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
-                                                    </listitem>
-                                                </listbox>
+                                        </listitem>
+                                    </listbox>
                                            
 
                                     <button label="Recalcular Disciplina"    image="/images/run.gif"  onClick="recalculo();"/>
@@ -192,8 +233,52 @@ void generar(String tipo){
                 </panelchildren>
             </panel>
 
+            <panel title="RECORD ACADEMICO SI MATERIA"    style="margin-bottom:10px" framable="true" >
+                <panelchildren>
 
+                    <grid>
+                        <rows>
+
+                            <row style="background:transparent"  spans="2">
+
+                Nos permite hacer el Recalculo del Promedio final para el Record Académico, si el promedio es una materia.
+
+                            </row>
+                            <row>
+                                <span style="float:right"> Materias(*):</span>
+                              <listbox   id="materiasList" mold="select" width="420px" >
+                                        <listhead>
+                                            <listheader label="Seleccionar Todos"/>    
+                                        </listhead>
+                                        <listitem forEach="${materias}" value="${each}">
+                                            <listcell label="${each.descripcion}" />
+                                        </listitem>
+                                    </listbox>    
+                            </row>
+                            <row style="background:transparent" >
+                                <span style="float:right"> Curso(*):</span>
+                                <span>
+                                    <listbox   id="cursosList2"  height="150px" multiple="true" checkmark="true"  width="420px" >
+                                        <listhead>
+                                            <listheader label="Seleccionar Todos"/>    
+                                        </listhead>
+                                        <listitem forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                        </listitem>
+                                    </listbox>
+                                  
+                                    <button label="Aprovechamiento"   image="/images/run.gif" onClick="aprovechamiento2();"/>
+                                    <button label="Disciplina"   image="/images/run.gif" onClick="disciplina()"/>
+                                </span>
+                            </row>
+                        </rows>
+                    </grid>
+
+
+                </panelchildren>
+
+            </panel>
         </portalchildren>
     </portallayout>
-  </zk>
+</zk>
 

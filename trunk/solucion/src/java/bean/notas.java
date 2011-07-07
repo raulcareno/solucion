@@ -133,8 +133,8 @@ public class notas extends Rows {
 
         List nativo = adm.queryNativo(q);
         Row row = new Row();
-        String Shabilitado = "color:black;font-weight:bold;width:30px;font:arial;font-size:12px;text-align:right;";
-        String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
+        String Shabilitado = "color:black;font-weight:bold;width:37px;font:arial;font-size:12px;text-align:right;";
+        String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:37px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
         String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
