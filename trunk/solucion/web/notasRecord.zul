@@ -1,6 +1,6 @@
  
 <?page id="main-page"?>
-<window    title="Ingreso de Notas" border="normal"
+<window    title="Ingreso de Notas del Record Académico" border="normal"
             width="100%" id="principal">
     <zscript>
         <![CDATA[
@@ -27,31 +27,31 @@ cursos.add(0,cr);
 notasRecordBean no = new notasRecordBean();
 
 String[][] values = new String[14][2];
-             values[0][0]= "Primero";
+             values[0][0]= "Octavo";
              values[0][1]= "number";
-             values[1][0]= "Segundo";
+             values[1][0]= "Noveno";
              values[1][1]= "number";
-             values[2][0]= "Tercero";
+             values[2][0]= "Décimo";
              values[2][1]= "number";
-             values[3][0]= "Cuarto";
+             values[3][0]= "1ro.Bach";
              values[3][1]= "number";
-             values[4][0]= "Quinto";
+             values[4][0]= "2do.Bach";
              values[4][1]= "number";
-             values[5][0]= "Sexto";
+             values[5][0]= "3ro.Bach";
              values[5][1]= "number";
              values[6][0]= "Promedio";
              values[6][1]= "readonly";
-             values[7][0]= "Primero";
+             values[7][0]= "Octavo";
              values[7][1]= "number";
-             values[8][0]= "Segundo";
+             values[8][0]= "Noveno";
              values[8][1]= "number";
-             values[9][0]= "Tercero";
+             values[9][0]= "Décimo";
              values[9][1]= "number";
-             values[10][0]= "Cuarto";
+             values[10][0]= "1ro.Bach";
              values[10][1]= "number";
-             values[11][0]= "Quinto";
+             values[11][0]= "2do.Bach";
              values[11][1]= "number";
-             values[12][0]= "Sexto";
+             values[12][0]= "3ro.Bach";
              values[12][1]= "number";
              values[13][0]= "Disciplina";
              values[13][1]= "readonly";

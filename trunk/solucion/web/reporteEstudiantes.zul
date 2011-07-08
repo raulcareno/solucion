@@ -200,6 +200,40 @@ void buscar2(Cursos cur){
       ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
       return ds;
 }
+
+public JRDataSource inscritos8(ArrayList listadodeCursos, String tipo){
+  String curso =  "";
+
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+        String query = "SELECT mat FROM Inscripciones AS mat " +
+                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' AND mat.validada = false order by mat.apellido, mat.nombre ";
+                System.out.println(query);
+      List hoy = adm.query(query);
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+            Inscripciones elem = (Inscripciones) it.next();
+            Matriculas matri = new Matriculas();
+            Estudiantes est = new Estudiantes();
+            Cursos cur = new Cursos();
+            Global gl = new Global();
+            gl.setDescripcion("");
+            cur.setEspecialidad(gl);
+            cur.setParalelo(gl);
+            matri.setCurso(cur);
+            est.setApellido(elem.getApellido());
+            est.setNombre(elem.getNombre());
+            est.setFechanacimiento(elem.getFechanacimiento());
+            matri.setEstudiante(est);
+            matri.setFechamat(elem.getFechamatricula());
+            
+          
+            detalle.add(matri);
+      }
+      ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
+      return ds;
+}
 public JRDataSource inscritos4(ArrayList listadodeCursos, String tipo){
   String curso =  "";
 
@@ -669,6 +703,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = inscritos4(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"estudiantes2.jasper");
+            }else if(tipo.equals("INS8")){
+                    datasource = inscritos8(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantesVerificados.jasper");
             }else if(tipo.equals("INS6")){
                     datasource = inscritos6(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
@@ -869,6 +907,7 @@ void campos(String valor){
                                 <listitem  id="INS5" label="Listado de Pre-aprobados(Escuela)" value="INS5" />
                                 <listitem  id="INS6" label="Listado de Pre-aprobados(Inf. Verificada)" value="INS6" />
                                 <listitem  id="INS7" label="Listado de Pre-aprobados(Impresión Ficha Individual)" value="INS7" />
+                                <listitem  id="INS8" label="Listado de NO-aprobados " value="INS8" />
                                 <listitem disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
                                 <listitem  id="LMAT" label="Matriculados" value="LMAT" />
@@ -1037,6 +1076,7 @@ void campos(String valor){
             INS3.visible = per.verificarPermisoReporte("INS", "Ingresar");
             INS4.visible = per.verificarPermisoReporte("INS", "Ingresar");
             INS5.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            INS8.visible = per.verificarPermisoReporte("INS", "Ingresar");
             MAT.visible = per.verificarPermisoReporte("MAT", "Ingresar");
             RET.visible = per.verificarPermisoReporte("RET", "Ingresar");
             LMAT.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
