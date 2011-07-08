@@ -65,7 +65,7 @@ public Boolean verificar(String formula,List<Notanotas> notas){
      //Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
         String query = "";
-        query = "primero,segundo,tercero,cuarto,quinto,sexto,((primero+segundo+tercero+cuarto+quinto+sexto)/5),primerod,segundod,tercerd,cuartod,quintod,sextod,((primerod+segundod+tercerd+cuartod+quintod+sextod)/5)";
+        query = "primero,segundo,tercero,cuarto,quinto,sexto,((primero+segundo+tercero+cuarto+quinto+sexto)/6),primerod,segundod,tercerd,cuartod,quintod,sextod,((primerod+segundod+tercerd+cuartod+quintod+sextod)/6)";
         getChildren().clear();
              Decimalbox label = null;
         Label label3 = null;
