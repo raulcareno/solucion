@@ -53,6 +53,8 @@ Empleados user = (Empleados)ses.getAttribute("user");
             parametros.put("ruc", empresa.getRuc());
             parametros.put("direccion", empresa.getDireccion());
             parametros.put("telefono", empresa.getTelefono());
+            parametros.put("desde", desde.value);
+            parametros.put("hasta", hasta.value);
             
            String directorioReportes = empresa.getReportes();
             JRDataSource datasource = null;
