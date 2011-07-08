@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window onCreate="cargando();" height="100%" border="normal">
+    <zk xmlns="http://www.zkoss.org/2005/zul">
+        <zscript>
+<![CDATA[
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.disciplina;
+import java.math.BigDecimal;
+import bean.reportesClase;
+import jcinform.persistencia.*;
+import jcinform.conexion.Administrador;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+import jcinform.conexion.*;
+import jcinform.bean.sources.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+Permisos per = new Permisos();
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Empresa empresa = (Empresa) ses.getAttribute("empresa");
+Empleados user = (Empleados)ses.getAttribute("user");
+ ReportesClase reportes = new ReportesClase();
+      public Double redondear(Double numero, int decimales) {
+                try{
+                        BigDecimal d = new BigDecimal(numero);
+                d = d.setScale(decimales, RoundingMode.HALF_UP);
+                return d.doubleValue();
+                }catch(Exception e){
+                    return 0.0;
+                }
+        
+        }
+
+ 
+                
+
+ void showReport() {
+ try{
+    String tipo = reporte.getSelectedItem().getValue();
+           if(tipo.equals("linea")){
+                return;
+           }
+            ver.visible = false;
+            reportese.visible = true;
+            cerrar.setVisible(true);
+            Map parametros = new HashMap();
+           
+            parametros.put("empresa", empresa.getRazonsocial());
+            parametros.put("ruc", empresa.getRuc());
+            parametros.put("direccion", empresa.getDireccion());
+            parametros.put("telefono", empresa.getTelefono());
+            
+           String directorioReportes = empresa.getReportes();
+            JRDataSource datasource = null;
+           if(tipo.equals("CXCLI")){
+                Integer cclientev = ccliente.value;
+                if(cclientev != null ){
+                }else{
+                        cclientev = -1;
+                }
+                   datasource = reportes.facturasPendientes(new Clientes(cclientev));
+                    report.setSrc(directorioReportes+"cxcclientes.jasper");
+            }else  if(tipo.equals("COBROS")){
+                Integer cclientev = ccliente.value;
+                if(cclientev != null ){
+                }else{
+                        cclientev = -1;
+                }
+                   datasource = reportes.facturasCobradas(new Clientes(cclientev), desde.value, hasta.value);
+                    report.setSrc(directorioReportes+"cpclientes.jasper");
+            }else if(tipo.equals("-1")){
+                   alert("No ha seleccionado ningún reporte...!");
+                    return;
+            }
+            if(!tipo.equals("-1")){
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType((String) format.getSelectedItem().getValue());
+            }
+            } catch (Exception ex) {
+                Logger.getLogger("reportescobros.zul").log(Level.SEVERE, null, ex);
+                
+            }
+}
+
+void campos(String valor){
+     
+        if(valor.equals("CXCLI")){
+            titulo.value= "Cuentas por Pagar";
+        }else if(valor.equals("COBROS")){
+            titulo.value= "Cobros Realizados";
+        }else{
+            titulo.value= " ";
+        }
+}
+
+ //BUSQUEDA DE CLIENTES
+  void buscar(String p){
+        List ClientesEncontrados = adm.query("Select o from Clientes as o where o.apellidos like '"+p+"%' order by o.apellidos");
+        lcliente = new Listbox();
+        int a=0;
+            for (Iterator it = lcliente.getItems().iterator(); it.hasNext();) {
+                    lcliente.getItems().remove(a);
+                }
+
+
+               for (Iterator it = ClientesEncontrados.iterator(); it.hasNext();) {
+                      Clientes acceIt = (Clientes) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getApellidos()+" "+acceIt.getNombres()));
+                      li.appendChild(new Listcell(acceIt.getDireccion()+""));
+                      lcliente.appendChild(li);
+             }
+
+    }
+
+
+]]>
+        </zscript>
+        <panel width="100%" id="parametros"  height="100%" border="normal">
+            <panelchildren>
+                <grid  id="ver" style="background:transparent;border:1px" width="700px">
+                    <rows>
+                        <row  style="background:transparent;border:0px">
+     
+                            <span style="float:right"> Reporte:</span>
+                            <span>
+                                <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="400px"  mold="select" >
+                                    <listitem label="[Seleccione]" value="-1" selected="true" />
+        
+                                    <listitem id="CXCLI" label="Cuentas x Cobrar" value="CXCLI" />
+                                    <listitem id="COBROS"  label="Historial de Cobros por Cliente " value="COBROS" />
+                                    <listitem id="ARQUEO" label="Reporte de Caja" value="ARQUEO" />
+                                    <listitem id="linea" label="=========================" value="linea" />
+                                    <listitem id="linea2" label="=========================" value="linea2" />
+            
+                                </listbox>
+    
+                            </span>
+                        </row>
+ 
+                        <row  style="background:transparent;border:0px" >
+                            <span style="float:right"> Clientes: </span>
+
+                            <span>
+                                <intbox cols="1" disabled="true" id ="ccliente" />
+                                <textbox cols="50" onOK ="btcliente.value = ncliente.value; buscar(btcliente.value); bcliente.open(ccliente);btcliente.focus()" id="ncliente" />
+                                <button  image="/images/auditoria.gif" onClick="bcliente.open(ccliente);btcliente.focus();"  />
+                                <button   image="/images/eliminar.gif" onClick='ccliente.value = null; ncliente.value = null; ' /> 
+                                
+                        
+                                <popup    id="bcliente" width="580px">
+                                    <groupbox>
+                                        <vbox>
+                                            <hbox>
+                                            Buscar: 
+                                                <textbox value="" id="btcliente" constraint="no empty"  onChanging="buscar(event.value)"  onOK="buscar(self.value)" maxlength="60" />
+                                                <button id="buscar"   label="Buscar" onClick="buscar(btcliente.getValue());"/>
+                                            </hbox>
+                                            <hbox>
+                                                <listbox onSelect='ccliente.value = ((Clientes)self.selectedItem.value).getCodigo(); ncliente.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); bcliente.close()' id="lcliente" width="400px">
+                                                    <listhead>
+                                                        <listheader label="Nombres"/>
+                                                        <listheader label="Dirección"/>
+                                                    </listhead>
+                                                    <listitem forEach="${allEvents}" value="${each}">
+                                                        <listcell label="${each.apellidos}" />
+                                                        <listcell label="${each.direccion}" />
+                                                    </listitem>
+                                                </listbox>
+                                            </hbox>
+                                        </vbox>
+                                    </groupbox>
+                                    
+                                </popup>
+                            </span>
+                        </row>
+                        <row  style="background:transparent;border:0px" >
+                            <span style="float:right"> </span>
+
+                            <span>
+                               
+                                <label style="color:blue" value="(EN BLANCO PARA TODOS LOS CLIENTES)"/>
+                              
+                            </span>
+                        </row>
+                        
+                        <row  style="background:transparent;border:0px" >
+                            <span style="float:right"> Fechas: </span>
+
+                            <span>
+                           Desde:
+                                <datebox onCreate="self.value = new Date()" id="desde"/>
+                           Hasta: 
+                                <datebox onCreate="self.value = new Date()"  id="hasta"/>
+                              
+                            </span>
+                        </row>
+                        <row  style="background:transparent;border:0px">
+                            <span style="float:right"> Título:</span>
+                            <span>
+                                <textbox id="titulo" value=" " cols="30"/>
+                                <span>
+                                    <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
+                                        <bandpopup>
+                                            <vbox>
+                                                <listbox width="90px" id="format"  onSelect="bd.value=self.selectedItem.label; bd.close();showReport();">
+                                                    <listitem  value="pdf" selected="true">
+                                                        <listcell  image="/images/pdf.png" label="PDF" />
+                                                    </listitem>
+                                                    <listitem value="rtf">
+                                                        <listcell  image="/images/word.gif" label="Word" />
+                                                    </listitem>
+                                                    <listitem value="xls">
+                                                        <listcell  image="/images/excel.gif"  label="Excel" />
+                                                    </listitem>
+                                                    <listitem value="jxl">
+                                                        <listcell  image="/images/excel.gif" label="JXL" />
+                                                    </listitem>
+                                                    <listitem value="csv">
+                                                        <listcell  image="/images/csv.gif" label="CSV" />
+                                                    </listitem>
+                                                    <listitem value="odt">
+                                                        <listcell  image="/images/open.png" label="OpenOfic" />
+                                                    </listitem>
+                                                    <listitem value="xml">
+                                                        <listcell  image="/images/xml.gif" label="XML" />
+                                                    </listitem>
+                                                    <listitem value="html">
+                                                        <listcell  image="/images/html.gif" label="HTML" />
+                                                    </listitem>
+                                                </listbox>
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
+                                    <button label="Ejecutar...!" image="/images/run.gif" onClick='showReport();'/>
+                                
+                                </span>
+
+                            </span>
+                        </row>
+
+                      
+                    </rows>
+                </grid>
+                <zscript>
+                    public void aumentar(){
+                    String tamanio = report.height.replace("px","").replace("%","");
+                       Integer t = new Integer(tamanio);
+                       report.height = (t+100)+"px";
+                    }
+                    public void reducir(){
+                    String tamanio = report.height.replace("px","").replace("%","");
+                       Integer t = new Integer(tamanio);
+                       report.height = (t-100)+"px";
+                    }
+
+                </zscript>
+                <grid id="reportese" visible="false" width="100%" height="100%">
+                    <rows>
+                        <row   spans="2">
+                            <span>
+                                <button  image="/images/eliminar.gif" id="cerrar"   label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
+                                <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
+                                <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
+                            </span>
+
+                        </row>
+
+                        <row   spans="2">
+                            <jasperreport width="100%" height="500px" id="report" />
+                        </row>
+
+                    </rows>
+                </grid>
+            </panelchildren>
+        </panel>
+
+
+        <zscript>
+
+Permisos per = new Permisos();
+void cargando(){
+        NMAT.visible = per.verificarPermisoReporte("NMAT", "Ingresar");
+        NMATD.visible = per.verificarPermisoReporte("NMATD", "Ingresar");
+   
+}
+        </zscript>
+
+
+    </zk>
+</window>

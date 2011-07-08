@@ -143,7 +143,7 @@
                                 <menuitem image="/images/facturacion.png" value="/facturacion.zul"  label="Facturación" onClick="ingresar(self)" />
                                 <menuitem image="/images/calendario.png" value="/generarFacturas.zul"  label="Generación Facturas" onClick="ingresar(self)" />
                                 <menuitem  value="/planes.zul"    image="/images/planes.png" label="Planes Productos" onClick="ingresar(self)" />
-                                <menuitem image="/images/reportes.png" label="Reportes" onClick="ingresar()" />
+                                <menuitem value="/reporteCobros.zul"  image="/images/reportes.png" label="Reportes" onClick="ingresar(self)" />
                             </menupopup>
                         </menu>
                     </menubar>
