@@ -74,6 +74,9 @@ Empleados user = (Empleados)ses.getAttribute("user");
                 }
                    datasource = reportes.facturasCobradas(new Clientes(cclientev), desde.value, hasta.value);
                     report.setSrc(directorioReportes+"cpclientes.jasper");
+            }else  if(tipo.equals("ARQUEO")){
+                   datasource = reportes.reporteCaja(desde.value, hasta.value);
+                    report.setSrc(directorioReportes+"rpcaja.jasper");
             }else if(tipo.equals("-1")){
                    alert("No ha seleccionado ningún reporte...!");
                     return;
@@ -90,11 +93,22 @@ Empleados user = (Empleados)ses.getAttribute("user");
 }
 
 void campos(String valor){
-     
+    filaclientes.visible=false;
+    filaclientes1.visible=false;
+    filafechas.visible=false;
         if(valor.equals("CXCLI")){
             titulo.value= "Cuentas por Pagar";
+            filaclientes.visible=true;
+            filaclientes1.visible=true;
+             
         }else if(valor.equals("COBROS")){
             titulo.value= "Cobros Realizados";
+            filaclientes.visible=true;
+            filaclientes1.visible=true;
+            filafechas.visible=true;
+        }else if(valor.equals("ARQUEO")){
+            titulo.value= "Cobros Diarios";
+           filafechas.visible=true;
         }else{
             titulo.value= " ";
         }
@@ -118,35 +132,31 @@ void campos(String valor){
                       li.appendChild(new Listcell(acceIt.getDireccion()+""));
                       lcliente.appendChild(li);
              }
-
     }
-
-
 ]]>
         </zscript>
         <panel width="100%" id="parametros"  height="100%" border="normal">
             <panelchildren>
                 <grid  id="ver" style="background:transparent;border:1px" width="700px">
                     <rows>
-                        <row  style="background:transparent;border:0px">
+                        <row >
      
                             <span style="float:right"> Reporte:</span>
                             <span>
                                 <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="400px"  mold="select" >
                                     <listitem label="[Seleccione]" value="-1" selected="true" />
-        
                                     <listitem id="CXCLI" label="Cuentas x Cobrar" value="CXCLI" />
                                     <listitem id="COBROS"  label="Historial de Cobros por Cliente " value="COBROS" />
                                     <listitem id="ARQUEO" label="Reporte de Caja" value="ARQUEO" />
                                     <listitem id="linea" label="=========================" value="linea" />
                                     <listitem id="linea2" label="=========================" value="linea2" />
-            
+           
                                 </listbox>
     
                             </span>
                         </row>
  
-                        <row  style="background:transparent;border:0px" >
+                        <row id="filaclientes" visible="false" >
                             <span style="float:right"> Clientes: </span>
 
                             <span>
@@ -182,7 +192,7 @@ void campos(String valor){
                                 </popup>
                             </span>
                         </row>
-                        <row  style="background:transparent;border:0px" >
+                        <row  id="filaclientes1"  visible="false"  >
                             <span style="float:right"> </span>
 
                             <span>
@@ -192,7 +202,7 @@ void campos(String valor){
                             </span>
                         </row>
                         
-                        <row  style="background:transparent;border:0px" >
+                        <row   id="filafechas"  visible="false">
                             <span style="float:right"> Fechas: </span>
 
                             <span>

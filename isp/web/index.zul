@@ -131,7 +131,7 @@
                             <menupopup>
                                 
                                 <menuitem value="/comprasventas.zul" image="/images/equipos.png" label="Compras/Ventas" onClick="ingresar(self)" />
-                                <menuseparator />
+                            <menuseparator />
                                 <menuitem   value="/marcas.zul"  image="/images/marcas.png" label="Marcas" onClick="ingresar(self)" />
                                 <menuitem  value="/equipos.zul"   image="/images/equipos2.png" label="Equipos" onClick="ingresar(self)" />
                             </menupopup>
