@@ -208,10 +208,11 @@ public JRDataSource inscritos8(ArrayList listadodeCursos, String tipo){
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
       ArrayList detalle = new ArrayList();
-        String query = "SELECT mat FROM Inscripciones AS mat " +
-                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' AND mat.validada = false order by mat.apellido, mat.nombre ";
+        String query = "SELECT mat.* FROM Inscripciones AS mat " +
+                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' AND mat.validada = false ORDER BY mat.apellido ";
                 System.out.println(query);
-      List hoy = adm.query(query);
+      List hoy = adm.queryNativo(query,Inscripciones.class);
+      int i=1;
       for(Iterator it = hoy.iterator(); it.hasNext();) {
             Inscripciones elem = (Inscripciones) it.next();
             Matriculas matri = new Matriculas();
@@ -225,6 +226,14 @@ public JRDataSource inscritos8(ArrayList listadodeCursos, String tipo){
             est.setApellido(elem.getApellido());
             est.setNombre(elem.getNombre());
             est.setFechanacimiento(elem.getFechanacimiento());
+            est.setDiscapacidad(elem.getDiscapacidad());
+            est.setTipodiscapacidad(elem.getTdiscapacidad());
+            est.setHermanos((elem.getHermano().toString().equals("true")?1:0));  //si tiene heramos es entero
+            est.setEconomia(elem.getAbanderado()); //si es abanderado 
+            est.setDireccion(elem.getParroquia()); //si es sector 
+            est.setIngpadre(elem.getAprovechamiento());
+            est.setCodigoest(i);
+            i++;
             matri.setEstudiante(est);
             matri.setFechamat(elem.getFechamatricula());
             
@@ -706,7 +715,7 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
             }else if(tipo.equals("INS8")){
                     datasource = inscritos8(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
-                    report.setSrc(directorioReportes+"estudiantesVerificados.jasper");
+                    report.setSrc(directorioReportes+"estudiantes2.jasper");
             }else if(tipo.equals("INS6")){
                     datasource = inscritos6(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
