@@ -3455,6 +3455,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
             ta.outputSream.write(lapuertaaAbrir.getBytes());
+//             try {
+//                            Thread.sleep(1000);  // Me aseguro que es transmitido correctamente antes de cerrar
+//                        } catch (Exception e) {
+//                        } //ESPERO UN POCO
             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
             barrera1.setEnabled(true);
         } catch (IOException ex) {
@@ -4393,7 +4397,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("3".getBytes());
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(500);
                     } catch (Exception e) {
                     }
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
@@ -4417,8 +4421,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 try {
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("2".getBytes());
+                    System.out.println("ABRIR PUERTA 2"+new Date());
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                     } catch (Exception e) {
                     }
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
@@ -4443,8 +4448,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("1".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                     System.out.println("ABRIR PUERTA 1"+new Date());
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                     } catch (Exception e) {
                     }
                     barrera1.setEnabled(true);

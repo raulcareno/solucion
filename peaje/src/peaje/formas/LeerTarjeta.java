@@ -104,7 +104,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                             System.out.println("" + e);
                         }
                         try {
-                            Thread.sleep(2000);  // Me aseguro que es transmitido correctamente antes de cerrar
+                            Thread.sleep(500);  // Me aseguro que es transmitido correctamente antes de cerrar
                         } catch (Exception e) {
                         } //ESPERO UN POCO
                         serialPort.close();
@@ -138,6 +138,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         try {
             inputStream = serialPort.getInputStream();
         } catch (IOException e) {
+            System.out.println("LEER TARJETA.CLASS "+e);
         }
         try {
             outputSream = serialPort.getOutputStream();
@@ -158,7 +159,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
     public void run() {
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
         }
     }
@@ -174,10 +175,6 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
     @Override
     public void serialEvent(SerialPortEvent event) {
-//    if(tarjeta.length()>10){
-//        tarjeta = "";
-//    }
-//        tarjeta = "";
         System.out.println("" + tarjeta);
         switch (event.getEventType()) {
             case SerialPortEvent.BI:
@@ -207,28 +204,28 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
             //System.out.println("" + tarjeta);
             if ("AEIOUAEIOU".equals(tarjeta)) {
+                System.out.println("AEIOUAEIOU"+new Date());
                 imprimir("");
                 tarjeta = "";
                 return;
-            }
-            if ("AEIOUAEIOU2".equals(tarjeta)) {
+            }else  if ("AEIOUAEIOU2".equals(tarjeta)) {
+                System.out.println("AEIOUAEIOU2"+new Date());
                 imprimir("2");
                 tarjeta = "";
                 return;
-            }
-            //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
-            if (puertoId.getName().equals(princip.empresaObj.getBarras())) {
+            } else  if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
                 princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
                 tarjeta = "";
                 return;
+            }else{
+                //BUSCAR TARJETA 
+                princip.tarjetatxt.setText("");
+                princip.tarjetatxt.setText(tarjeta);
+                princip.buscarTarjeta(puertoId.getName());
+                tarjeta = "";
+                //peaje.formas.SimpleWrite.llamar("COM3");
+                return;
             }
-            princip.tarjetatxt.setText("");
-            princip.tarjetatxt.setText(tarjeta);
-            princip.buscarTarjeta(puertoId.getName());
-            tarjeta = "";
-            //peaje.formas.SimpleWrite.llamar("COM3");
-
-            return;
         }
 
 
@@ -282,7 +279,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             }
             job.setPrintService(services[selectedService]);
             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
-            MediaSizeName mediaSizeName = MediaSize.findMedia(4, 3.2f, MediaPrintableArea.INCH);
+            MediaSizeName mediaSizeName = MediaSize.findMedia(4, 3.8f, MediaPrintableArea.INCH);
             printRequestAttributeSet.add(mediaSizeName);
             printRequestAttributeSet.add(new Copies(1));
             JRPrintServiceExporter exporter;
