@@ -31,16 +31,13 @@ import java.text.SimpleDateFormat;
   Session ses = Sessions.getCurrent();
   //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
     Administrador adm = new Administrador();
-    List planes = adm.query("Select o from Plan as o");
-    List nodos = adm.query("Select o from Radios as o");
     static Contratos equi = new Contratos();
     Permisos permiso = new Permisos();
-    //SimpleTreeModel stm = new SimpleTreeModel(root);
-            
     Empleados usuarioActual = ses.getAttribute("user");
    Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
-    
+      List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getCodigo()+"' ");
+    List nodos = adm.query("Select o from Radios as o");
 //FUNCIONES
 void llenar(Contratos  equi2){
     equi = equi2;
@@ -78,9 +75,9 @@ void llenar(Contratos  equi2){
        if(equi.getEstado().equals("Activo")){
             eactivo.selected = true;
         }else if(equi.getEstado().equals("Suspendido")){
-            eterminado.selected = true;
-        }else if(equi.getEstado().equals("Terminado")){
             esuspendido.selected = true;
+        }else if(equi.getEstado().equals("Terminado")){
+            eterminado.selected = true;
         } 
     if(equi.getEmpleados2() != null){
         codigoemp.value = equi.getEmpleados2().getCodigo()+""; //EMPLEADOS
@@ -267,21 +264,34 @@ llenarCliente(Clientes clienteEn){
      combo.value = clienteEn.getApellidos()+" "+clienteEn.getNombres() ;
 
 }
-  void verificarCedula(String valor){
+void verificarCedula(String valor){
       if(valor.length()>9){
             List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
             if(empleados.size()>0){
                 for(Iterator it = empleados.iterator(); it.hasNext();) {
                       Clientes object = (Clientes)it.next();
                       empa = object;
-                      
                  }
                   contratosCliente = new Listbox();
         int a=0;
             for (Iterator it = contratosCliente.getItems().iterator(); it.hasNext();) {
                    contratosCliente.getItems().remove(a);
                 }
-                List  ControlequiposEncontrados = adm.query("Select o from Contratos as o where o.clientes.codigo = '"+empa.getCodigo()+"' ");
+                List  ControlequiposEncontrados = adm.query("Select o from Contratos as o where o.clientes.codigo = '"+empa.getCodigo()+"' and o.estado not in ('Terminado') ");
+                        if(ControlequiposEncontrados.size()>0){
+                        
+                                 if(ControlequiposEncontrados.size() > 1){
+                                          contratosPanel.visible = true; 
+                                          llenarCliente(empa);
+                                          numerocontrato.focus();
+                                 }else{
+                                          contratosPanel.visible = false; 
+                                          llenarCliente(empa);
+                                          llenar(ControlequiposEncontrados.get(0));
+                                          numerocontrato.focus();
+                                 }
+                                
+                                
                                 for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
                                       Contratos  acceIt = (Contratos) it.next();
                                       Listitem li = new Listitem();
@@ -310,10 +320,12 @@ llenarCliente(Clientes clienteEn){
                                       li.appendChild(estadoCelda);
                                         contratosCliente.appendChild(li);
                              }
-                             if(ControlequiposEncontrados.size()>0)
-                                contratosPanel.visible = true;
-                llenarCliente(empa);
-                numerocontrato.focus();
+                           }
+                           
+                  
+                                
+                             
+              
             }else{
                     Window win = (Window) Executions.createComponents("clientes.zul", null, null);
                     win.setMaximizable(true);
@@ -527,7 +539,7 @@ llenarCliente(Clientes clienteEn){
                                     }
                             }
                             Button aButton = null;
-                            aButton = new Button("Facturar");
+                            aButton = new Button("Pagar");
                             aButton.setImage("/images/dinero.gif");
                             aButton.setId(""+vec.get(0));
                             aButton.setAttribute("valor",vec.get(4));
@@ -600,7 +612,7 @@ llenarCliente(Clientes clienteEn){
                                     <row>
                                         <span style="float:right"> Identificación: </span> 
                                         <span> 
-                                            <textbox id="identificacion"  readonly="false"  onOK="verificarCedula(self.value)"  />
+                                            <textbox id="identificacion"  readonly="false" onBlur="verificarCedula(self.value)"  onOK="verificarCedula(self.value)"  />
                                
                             Digite el No. luego presione ENTER
                                             <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
@@ -669,7 +681,7 @@ llenarCliente(Clientes clienteEn){
                                                         </row>
                                                         <row>
                                                             <span style="float:right"> Planes (*):</span>
-                                                            <bandbox disabled="true" readonly="true"  id="bd">
+                                                            <bandbox disabled="true" readonly="true" width="240px"  id="bd">
                                                                 <bandpopup>
                                                                     <vbox>
                                                                         <listbox id="perf" width="450px"
@@ -779,7 +791,7 @@ llenarCliente(Clientes clienteEn){
                                             <tabpanel>
                                                 <grid  sclass="MyGridRowHeight">
                                                     <rows>
-                                                                                             <row>   
+                                                        <row>   
                                                             <span style="float:right"> Anidado a Nodo(*):</span>
                                                             <bandbox  disabled="true"  readonly="true"  id="bd2">
                                                                 <bandpopup>
@@ -886,6 +898,17 @@ llenarCliente(Clientes clienteEn){
                     <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
                     <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    <button label="Añadir Cobros" disabled="false" id="anadir" image="/images/empleados.png" >
+                        <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("generarIndividual.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("nuevo", true);
+                                            win.setTitle("Asignar rubros por cobrar");
+                                            win.doModal();
+                                            }                            
+                        </attribute>
+                    </button> 
                 </tabpanel>
                 <tabpanel>
                     <listbox mold="paging" rows="10" pageSize="10"   id="facturasDatos" width="100%">

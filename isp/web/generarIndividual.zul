@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+    
+ 
+    <window onCreate="cargar()" width="500px" id="crearClientes">
+        <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+        <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+        <script type="text/javascript" src="/js/masks.js"/>
+        <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.util.ArrayList;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+    import java.math.BigDecimal;
+  
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Clientes as o where o.identificacion = 0");
+    static Clientes empa = new Clientes();
+    Permisos permiso = new Permisos();
+    List perfiles = adm.query("Select o from Sector as o  ");
+    Object media = null;
+   Boolean instanciadaContratos = false;
+   Session ses = Sessions.getCurrent();
+   Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+   List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getCodigo()+"' ");
+ ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
+ void move(){
+    cargarCliente((Clientes)datos.selectedItem.value);
+        crearClientes.detach();
+  }
+ 
+  
+ 
+  void buscar(String p){
+        List ClientesEncontrados = adm.query("Select o from Clientes as o where o.apellidos like '"+p+"%' order by o.apellidos");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = ClientesEncontrados.iterator(); it.hasNext();) {
+                      Clientes acceIt = (Clientes) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getIdentificacion()+""));
+                      li.appendChild(new Listcell(acceIt.getApellidos()+" "+acceIt.getNombres()));
+                      li.appendChild(new Listcell(acceIt.getDireccion()+""));
+                      datos.appendChild(li);
+             }
+
+    }
+ 
+
+cargarCliente(Clientes clientes){
+ iden = Path.getComponent("//contratospage/contratosventana/identificacion");
+ nomb = Path.getComponent("//contratospage/contratosventana/combo");
+ dire = Path.getComponent("//contratospage/contratosventana/direccion");
+ codi = Path.getComponent("//contratospage/contratosventana/codigocli");
+direi = Path.getComponent("//contratospage/contratosventana/direccioni");
+ teli = Path.getComponent("//contratospage/contratosventana/telefonoi");
+ iden.value = clientes.getIdentificacion();
+ nomb.value = clientes.getApellidos()+" "+clientes.getNombres();
+ dire.value = clientes.getDireccion();
+ direi.value = dire.value;
+ teli.value = clientes.getTelefono();
+ codi.value = clientes.getCodigo()+"";
+ try{
+ iden.focus();
+ nomb.focus();
+ }catch(Exception err){}
+
+}
+
+]]>
+        </zscript>
+     
+       
+            <vbox>
+                <hbox>  
+                    <span style="float:right"> Rubros (*):</span>
+                    <bandbox disabled="false" readonly="true" width="240px"  id="bd">
+                        <bandpopup>
+                            <vbox>
+                                <zscript>
+                                   void cargar(String a){
+                                            valorp.value = new BigDecimal(((Plan)perf.selectedItem.value).getValor());
+                                    }
+                                </zscript>
+                                <listbox id="perf" width="450px" onSelect='cargar(""); bd.value=self.selectedItem.label;bd.closeDropdown(); '>
+                                    <listhead>
+                                        <listheader label="Descripción"/>
+                                        <listheader label="Tipo"/>
+                                        <listheader label="valor"/>
+                                            
+                                    </listhead>
+                                    <listitem forEach="${planes}" value="${each}">
+                                        <listcell label="${each.nombre}" />
+                                        <listcell label="${each.tipo}" />
+                                        <listcell label="${each.valor}" />
+
+                                    </listitem>
+                                </listbox>
+                            </vbox>
+                        </bandpopup>
+                    </bandbox>
+                    <decimalbox   id="valorp"/>        
+                    <button label="Añadir" onClick=""/>
+                </hbox>
+                <hbox>
+                    <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();" id="datos" width="100%">
+                        <listhead>
+                            <listheader label="Descripción"/>
+                            <listheader label="Tipo"/>
+                            <listheader label="Valor"/>
+                            <listheader label="Opción"/>
+                                            
+                        </listhead>
+                        <listitem forEach="${planesa}" value="${each}">
+                            <listcell label="${each.nombre}" />
+                            <listcell label="${each.tipo}" />
+                            <listcell label="${each.valor}" />
+
+                        </listitem>
+                    </listbox>
+
+
+                </hbox>
+            </vbox>
+        
+ 
+        <zscript>
+            void cargar(){
+            try{
+                    instanciadaContratos = crearClientes.getAttribute("nuevo");
+             }catch(Exception e){
+                    instanciadaContratos = false;
+             }
+                    
+            }
+        </zscript>
+    </window>
+</zk>

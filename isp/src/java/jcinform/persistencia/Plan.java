@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package jcinform.persistencia;
 
 import java.io.Serializable;
@@ -13,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -27,6 +28,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Plan.findAll", query = "SELECT p FROM Plan p")})
 public class Plan implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,6 +59,9 @@ public class Plan implements Serializable {
     private Collection<Detalle> detalleCollection;
     @OneToMany(mappedBy = "plan")
     private Collection<Contratos> contratosCollection;
+    @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sucursal sucursal;
 
     public Plan() {
     }
@@ -145,6 +150,14 @@ public class Plan implements Serializable {
         this.bien = bien;
     }
 
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
     public Collection<Comisiones> getComisionesCollection() {
         return comisionesCollection;
     }
@@ -193,5 +206,4 @@ public class Plan implements Serializable {
     public String toString() {
         return "jcinform.persistencia.Plan[codigo=" + codigo + "]";
     }
-
 }

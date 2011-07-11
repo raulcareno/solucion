@@ -19,10 +19,15 @@
 
     void generar(){
         generarFacturas gen = new generarFacturas();
-          for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
-                 Listitem object = (Listitem)it.next();
-                 Sucursal emp = object.getValue();
-                    gen.empezarGenerar(fecha.value,numero.value,emp);            
+                for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                            Listitem object = (Listitem)it.next();
+                            Sucursal emp = object.getValue();
+                                String resultado =  gen.empezarGenerar(fecha.value,numero.value,emp);            
+                                if(resultado.equals("OK")){
+                                    alert("Generación Correcta en "+emp.getDescripcion());
+                                }else{
+                                    alert(resultado);
+                                }
                 }
         
     }

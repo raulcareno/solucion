@@ -29,7 +29,7 @@ import java.util.Map;
            //  facturarCliente.detach();
         }
         void guardar(){
-        BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue());
+        BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue());
         if(total.compareTo(new BigDecimal(0)) == 0 ){
             Messagebox.show("Valor a pagar está en Cero  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             efectivo.focus();
@@ -88,7 +88,7 @@ import java.util.Map;
         
        public void sumarcobros(String tipo){
                 BigDecimal  totalFinal = valor.getValue();
-                BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue());
+                BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue());
             //    Double antesTotal = new Double(totalCobros.getValue());
                 if(total.compareTo(totalFinal)==1){ //>
                     if(tipo.equals("efe")){
@@ -108,7 +108,7 @@ import java.util.Map;
                         tarjeta.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
                     }
                 }
-                 total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue());
+                 total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue());
                 totalCobros.setValue(total);
 }
 

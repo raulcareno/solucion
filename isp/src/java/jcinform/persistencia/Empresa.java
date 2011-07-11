@@ -6,6 +6,7 @@
 package jcinform.persistencia;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -66,6 +67,8 @@ public class Empresa implements Serializable {
     private String logo;
     @Column(name = "star")
     private Boolean star;
+    @Column(name = "instalacion")
+    private BigDecimal instalacion;
     @OneToMany(mappedBy = "empresa")
     private Collection<Sucursal> sucursalCollection;
 
@@ -228,6 +231,15 @@ public class Empresa implements Serializable {
         this.star = star;
     }
 
+    public BigDecimal getInstalacion() {
+        return instalacion;
+    }
+
+    public void setInstalacion(BigDecimal instalacion) {
+        this.instalacion = instalacion;
+    }
+
+    
     public Collection<Sucursal> getSucursalCollection() {
         return sucursalCollection;
     }

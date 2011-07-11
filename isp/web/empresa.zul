@@ -51,6 +51,11 @@
                     <a:bind value="inobjeto.documento"/>
                     <textbox readonly="true" id="documento" onChange="update();"/>
                 </row>
+                <row>
+                    <span style="float:right"> Valor Instalación:</span>
+                    <a:bind value="inobjeto.instalacion"/>
+                    <decimalbox id="instalacion" onChange="update();"/>
+                </row>
             </rows>
         </grid>
         <grid align="center" width="100%">
