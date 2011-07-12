@@ -100,12 +100,6 @@ void estado(Boolean estado,Boolean modificar){
         empa.setDireccion(direccion.value);
         empa.setTelefono(telefono.value);
         empa.setEmail(email.value);
-        empa.setSector(perf.selectedItem.value);
-                empa.setUsuario(usuario.value);
-
-        empa.setClave(permiso.encriptar(clave.value));
- 
-
         if((!empa.getCodigo().equals(0)) ){
              adm.actualizar(empa);
              try{
@@ -283,8 +277,7 @@ cargarCliente(Clientes clientes){
                             <row>
                                 <span style="float:right"> Dirección(*):</span>
                                 <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
-                                 <span style="float:right"> Usuario:</span>
-                                <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
+                                  
                             </row>
                             <row>
                                 <span style="float:right"> Teléfono:</span>
@@ -293,29 +286,14 @@ cargarCliente(Clientes clientes){
                                 </textbox>
                                  <span style="float:right"> 
                                  <textbox id="movil" maxlength="30" cols="13" visible="false"    />
-                                   Clave:</span>
-                                <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
+                                    </span>
+                                 
                             </row>
                             <row>
                                 <span style="float:right"> e-mail:</span>
                                 <textbox id="email" maxlength="100" cols="40" readonly="true"  />
-                                <span style="float:right"> Sector(*):</span>
-                                <bandbox  readonly="true"  id="bd">
-                                    <bandpopup>
-                                        <vbox>
-                                            <listbox id="perf" width="250px"
-                                                     onSelect="bd.value=self.selectedItem.label;cargar(((Sector)self.selectedItem.value));bd.closeDropdown();">
-                                                <listhead>
-                                                    <listheader label="Description"/>
-                                                </listhead>
-                                                <listitem forEach="${perfiles}" value="${each}">
-                                                    <listcell label="${each.nombre}" />
-
-                                                </listitem>
-                                            </listbox>
-                                        </vbox>
-                                    </bandpopup>
-                                </bandbox>
+                                 
+                                
 
                             </row>
 

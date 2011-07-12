@@ -268,12 +268,14 @@ void verificarCedula(String valor){
       if(valor.length()>9){
             List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
             if(empleados.size()>0){
+            
                 for(Iterator it = empleados.iterator(); it.hasNext();) {
                       Clientes object = (Clientes)it.next();
                       empa = object;
                  }
+                 llenarCliente(empa);
                   contratosCliente = new Listbox();
-        int a=0;
+                   int a=0;
             for (Iterator it = contratosCliente.getItems().iterator(); it.hasNext();) {
                    contratosCliente.getItems().remove(a);
                 }
@@ -613,8 +615,6 @@ void verificarCedula(String valor){
                                         <span style="float:right"> Identificación: </span> 
                                         <span> 
                                             <textbox id="identificacion"  readonly="false" onBlur="verificarCedula(self.value)"  onOK="verificarCedula(self.value)"  />
-                               
-                            Digite el No. luego presione ENTER
                                             <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
                                         </span>
                                     </row>
