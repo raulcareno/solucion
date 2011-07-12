@@ -123,12 +123,20 @@ void estado(Boolean estado,Boolean modificar){
                          det.setCantidad(((Intbox) labels.get(0)).getValue());
                          det.setCosto(((Doublebox) labels.get(2)).getValue());
                          Button bu = ((Button) labels.get(3));
-                         ArrayList series = bu.getAttribute("series"+det.getEquipos().getCodigo());
-                         alert(series+"");
+                         
                          cabeCompra.setCantidad(cabeCompra.getCantidad()+det.getCantidad());
                          cabeCompra.setTotal(cabeCompra.getTotal()+det.getCosto());
                        
                         // adm.guardar(det);
+                        ArrayList series = bu.getAttribute("series"+det.getEquipos().getCodigo());
+                          for (Iterator it = series.iterator(); it.hasNext();) {
+                                    String object = (String) it.next();
+                                    Series ser = new Series();
+                                    ser.setSerie(object);
+                                    ser.setDetallecompra(det);
+                                    //adm.guardar(ser);
+                                     
+                          }
              }
     //  adm.actualizar(cabeCompra);
               Boolean a = true;
