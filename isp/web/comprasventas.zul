@@ -111,7 +111,7 @@ void estado(Boolean estado,Boolean modificar){
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
        cabeCompra.setSeries(series.value);
-        adm.guardar(cabeCompra);
+        //adm.guardar(cabeCompra);
             List col = opciones.getRows().getChildren();
              for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
@@ -119,15 +119,18 @@ void estado(Boolean estado,Boolean modificar){
                      det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
                      det.setCabeceracompra(cabeCompra);
                      List labels = object.getChildren();
-                     
                          det.setEquipos((Equipos)object.getValue());
                          det.setCantidad(((Intbox) labels.get(0)).getValue());
                          det.setCosto(((Doublebox) labels.get(2)).getValue());
+                         Button bu = ((Button) labels.get(3));
+                         ArrayList series = bu.getAttribute("series"+det.getEquipos().getCodigo());
+                         alert(series+"");
                          cabeCompra.setCantidad(cabeCompra.getCantidad()+det.getCantidad());
                          cabeCompra.setTotal(cabeCompra.getTotal()+det.getCosto());
-                     adm.guardar(det);
+                       
+                        // adm.guardar(det);
              }
-      adm.actualizar(cabeCompra);
+    //  adm.actualizar(cabeCompra);
               Boolean a = true;
             if(a){
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -241,21 +244,28 @@ empa.setEquipos(g);
     return eq;
 }
 llenarGrid(){
-  if(cantidad.value == 0 || cantidad.value == null || cantidad.value == ""
-  || idproducto.value == null || idproducto.value == "" 
-  || vu.value == "" || vu.value == 0 || vu.value == null){
+
+
   
-  alert("LLENE TODOS LOS CAMPOS");
-    return;
-  
-  }
                 try{
                     Row row = new Row();
+                      
+                      //CARGO LAS SERIES COMO ATRIBUTO
+                      List col = opciones2.getRows().getChildren();
+                      ArrayList series = new ArrayList();
+                         for (int i = 0; i < col.size(); i++) {
+                                Row object = (Row) col.get(i);
+                                 List labels = object.getChildren();
+                                String serie = ((Textbox) labels.get(1)).getValue();
+                                 series.add(serie);
+                         }
+                    
                            Doublebox dou = new Doublebox(0);
                             dou.setStyle("float:right;text-align:right");
                             dou.setValue(vu.value);
                             Intbox intb = new Intbox(cantidad.value);
                             intb.setCols(3);
+                            intb.setReadonly(true);
                              intb.setStyle("float:right;text-align:right");
                             Label prod = new Label(productod.value);
                             row.appendChild(intb);
@@ -267,6 +277,7 @@ llenarGrid(){
                             aButton.setImage("/images/quitar.gif");
                             aButton.setHeight("5px");
                             aButton.setId("id"+idproducto.value);
+                            aButton.setAttribute("series"+idproducto.value,series);
                             aButton.addEventListener("onClick", new EventListener() {
                                 public void onEvent(Event event) throws Exception {
                                       //  int valor0 = Messagebox.show("PRECAUCIÓN: Si quita este elemento se eliminará de todos los Cursos y de todos los profesores, Desea Continuar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
@@ -336,7 +347,7 @@ seriesfilas.visible = false;
         <tabpanels>
             <tabpanel>
 
-
+            
                 <grid width="100%">
                     <rows>
                         <row>
@@ -409,7 +420,54 @@ seriesfilas.visible = false;
                                 </columns>
                                 <rows>
                                     <row>
-                                        <intbox onOK="buscarPro.focus()" style="float:right;text-align:center" cols="2" id="cantidad" value="1"/>
+                                        <zscript>      <![CDATA[
+                                        llenarGrid(int numero,String tipo){
+                                        
+                                        if(cantidad.value == 0 || cantidad.value == null || cantidad.value == ""
+                                              || idproducto.value == null || idproducto.value == "" 
+                                              || vu.value == "" || vu.value == 0 || vu.value == null){
+                                                        alert("LLENE TODOS LOS CAMPOS");
+                                                        seriespanel.visible = false;
+                                                return;
+
+                                              }
+                                              seriespanel.visible = true;
+                                        
+                                                                filas2.getChildren().clear();
+                                                                for(int i = 0; i< numero; i++){
+                                                                          Row row = new Row();
+                                                                           Textbox t = new Textbox();
+                                                                               t.focus();
+                                                                               t.setId("cod"+i);
+                                                                               t.setCols(14);
+                                                                               t.addEventListener("onOK", new EventListener() {
+                                                                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
+                                                                     
+                                                                                String idn = ((Textbox) event.getTarget()).getId().replace("cod","");
+                                                                                        Integer val = new Integer(idn);
+                                                                                        
+                                                                                            valo = Path.getComponent("/controlventana/cod"+(val+1));
+                                                                                        if(valo != null)    
+                                                                                            valo.focus();
+                                                                                       if((val+1) == i)
+                                                                                            continuar.focus();
+
+                                                                                }
+                                                                            });
+                                                                                
+                                                                                
+                                                                                row.appendChild(new Label((i+1)+".- "));
+                                                                                row.appendChild(t);
+                                                                                filas2.appendChild(row);
+                                                                                if(i==0)
+                                                                                    t.focus();
+                                                                }
+                                                    }
+                                                   
+                                       ]]>
+                                        </zscript>
+                                 
+                                        <intbox onOK='buscarPro.focus();' style="float:right;text-align:center" cols="2" id="cantidad" value="1"/>
                                         <span>
                                             <intbox cols="1" visible="false"  id="idproducto" readonly="true" />
                                             <textbox value="" onFocus="vu.focus()" id="productod" cols="50"  readonly="true" />
@@ -430,7 +488,7 @@ seriesfilas.visible = false;
                                         </span>
                                         <doublebox onOK="add.focus()"  style="float:right;text-align:center" id="vu"  />
                                         <span>
-                                            <button  id="add"  label="Añadir Filas" image="/images/add2.png" onClick="llenarGrid();"/>
+                                            <button  id="add"  label="Añadir Filas" image="/images/add2.png" onClick='llenarGrid(cantidad.value,"");'/>
                                         </span>
                                        
                                     </row>
@@ -442,6 +500,25 @@ seriesfilas.visible = false;
                                 </rows>
                             </grid>
                                 
+                        </row>
+                        <row>
+                            <panel id="seriespanel" visible="false" style="position:absolute; top:5%;left:20%;" framable="true" 
+                          width="200px" height="400px" title="Ingrese las series"	 border="normal">
+                                <panelchildren>
+                                    <grid height="380px" id="opciones2">
+                                        <columns sizable="true">
+                                            <column label="Series" width="150px"/>
+                                        </columns>
+                                        <rows id="filas2">
+                                        </rows>
+                                    </grid> 
+                                  
+                                </panelchildren>    
+                                <toolbar mold="panel" align="center">
+                                    <button label="CONTINUAR" id="continuar" onClick="seriespanel.visible = false;llenarGrid();"/>
+                                </toolbar>
+                            </panel>
+                  
                         </row>
                         <row spans="4">
                           
