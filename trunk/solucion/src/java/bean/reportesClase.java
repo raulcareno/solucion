@@ -2218,6 +2218,18 @@ public class reportesClase {
             matriculas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '" + curso.getCodigocur() + "'"
                     + complemento +"  order by o.estudiante.apellido, o.estudiante.nombre ");
         } else {
+            for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
+                    Matriculas matriculaA = it.next();
+                    if(matri.getCodigomat().equals(matriculaA.getCodigomat())){
+                    try {
+                        Messagebox.show("EL ESTUDIANTE "+ matri.getEstudiante() +" ESTA REPROBADO, ESCOJA OTRO ESTUDIANTE", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                        return null;
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(reportesClase.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    }
+              }
+            
             matriculas.add(matri);
         }
         for (Matriculas matriculas1 : matriculas) {
