@@ -223,11 +223,6 @@ public class notas extends Rows {
                                         ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
                                     }
 
-
-
-
-
-
                                 }
                             });
                             if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {

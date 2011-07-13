@@ -273,8 +273,6 @@ void guardar(){
                 <grid height="150px" id="opciones">
                     <columns sizable="true">
                         <column label="Opcion" />
-                        <column label="Valor por Opción" width="150px"/>
-
                     </columns>
                     <rows id="filas">
                     </rows>

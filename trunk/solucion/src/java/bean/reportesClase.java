@@ -2188,9 +2188,12 @@ public class reportesClase {
             codigosPerdidos = matriculas.getCodigomat()+","+codigosPerdidos;
             
         }
+        String complemento ="";
         if(codigosPerdidos.length()>0){
-        
-        codigosPerdidos = codigosPerdidos.substring(0,codigosPerdidos.length()-1);
+                codigosPerdidos = codigosPerdidos.substring(0,codigosPerdidos.length()-1);
+                complemento = " and o.codigomat not in ("+codigosPerdidos+") ";
+        }else{
+                complemento = "";
         }
         Integer noDecimales = 3;
         try {
@@ -2213,7 +2216,7 @@ public class reportesClase {
         List<Matriculas> matriculas = new ArrayList();
         if (matri.getCodigomat().equals(-2)) {
             matriculas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '" + curso.getCodigocur() + "'"
-                    + " and o.codigomat not in ("+codigosPerdidos+") order by o.estudiante.apellido, o.estudiante.nombre ");
+                    + complemento +"  order by o.estudiante.apellido, o.estudiante.nombre ");
         } else {
             matriculas.add(matri);
         }
