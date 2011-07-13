@@ -93,13 +93,15 @@ void estado(Boolean estado,Boolean modificar){
 
     cantidad.readonly = estado;
     precio.readonly = estado;
-    fecha.readonly = estado;
-    series.readonly = estado;
-    mac.readonly = estado;
+    vu.readonly = estado;
+    factura.readonly = estado;
+    fecha.disabled = estado;
     perf.disabled = estado;
     bd.disabled = estado;
     bd2.disabled = estado;
-
+    buscarE3.disabled = estado;
+    buscarPro.disabled = estado;
+    add.disabled = estado;
 }
 Boolean validarSeries(){
     String seriesTodas = "";
@@ -154,13 +156,18 @@ Boolean validarSeries(){
  if(validarSeries()){
         return;
  }
+ 
+ if(proveedores.value == "" || proveedores.value == null || factura.value == "" || factura.value == null){
+    Messagebox.show("Registre todos los campos para continuar ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+    return;
+ }
        Cabeceracompra cabeCompra = new Cabeceracompra();
        cabeCompra.setFactura(factura.value);
        cabeCompra.setProveedores(new Proveedores(idproveedores.value));
        cabeCompra.setFecha(fecha.value);
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
-        //adm.guardar(cabeCompra);
+       adm.guardar(cabeCompra);
             List col = opciones.getRows().getChildren();
              for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
@@ -176,18 +183,20 @@ Boolean validarSeries(){
                          cabeCompra.setCantidad(cabeCompra.getCantidad()+det.getCantidad());
                          cabeCompra.setTotal(cabeCompra.getTotal()+det.getCosto());
                        
-                        // adm.guardar(det);
+                       adm.guardar(det);
                         ArrayList series = bu.getAttribute("series"+det.getEquipos().getCodigo());
                           for (Iterator it = series.iterator(); it.hasNext();) {
                                     String object = (String) it.next();
                                     Series ser = new Series();
+                                      ser.setCodigo(adm.getNuevaClave("Series","codigo"));
                                     ser.setSerie(object);
                                     ser.setDetallecompra(det);
-                                    //adm.guardar(ser);
+                                    ser.setEstado("C");//CREADA
+                                   adm.guardar(ser);
                                      
                           }
              }
-    //  adm.actualizar(cabeCompra);
+      adm.actualizar(cabeCompra);
               Boolean a = true;
             if(a){
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -211,13 +220,12 @@ Boolean validarSeries(){
     if(verificar("Agregar")){
           
           guardar.disabled=false; 
-          //llenar(new Cabeceracompra(0));estado(false,false);
-          cantidad.setDisabled(false);
+          //llenar(new Cabeceracompra(0));
+          estado(false,false);
+          cantidad.setReadonly(false);
           fecha.setDisabled(false);
           filas.getChildren().clear();
           
-          //String command = "applyTelefono('"+seguridad.getUuid()+"');";
-          //Clients.evalJavaScript(command);
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
@@ -508,7 +516,7 @@ seriesfilas.visible = false;
                                 <intbox  readonly="true"   cols="1" id="idproveedores" />
                                 <textbox readonly="true"  cols="39" id="proveedores" />
                                 
-                                <button label=""  id="buscarE3" disabled="false"  image="/images/auditoria.gif">
+                                <button label="" disabled="true"  id="buscarE3"  image="/images/auditoria.gif">
                                     <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarProveedores.zul", null, null);
                                             win.setMaximizable(true);
@@ -527,7 +535,7 @@ seriesfilas.visible = false;
                             <span>
                                 <datebox id="fecha" onCreate="self.value = new Date()"/>
                                 <span> No.Factura:</span> 
-                                <intbox id="factura"/>
+                                <intbox  readonly="true"  id="factura"/>
                             </span>
                         </row>
                  
@@ -592,12 +600,12 @@ seriesfilas.visible = false;
                                        ]]>
                                         </zscript>
                                  
-                                        <intbox onOK='buscarPro.focus();' style="float:right;text-align:center" cols="2" id="cantidad" value="1"/>
+                                        <intbox onOK='buscarPro.focus();'  style="float:right;text-align:center" readonly="true"  cols="2" id="cantidad" value="1"/>
                                         <span>
                                             <intbox cols="1" visible="false"  id="idproducto" readonly="true" />
-                                            <textbox value="" onFocus="vu.focus()" id="productod" cols="50"  readonly="true" />
+                                            <textbox value="" onFocus="vu.focus()" readonly="true" id="productod" cols="50" />
                                             
-                                            <button label=""  id="buscarPro" disabled="false"  image="/images/auditoria.gif">
+                                            <button label=""  id="buscarPro" disabled="true"  image="/images/auditoria.gif">
                                                 <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarProductos.zul", null, null);
                                             win.setMaximizable(true);
@@ -611,9 +619,9 @@ seriesfilas.visible = false;
                                             </button> 
                                        
                                         </span>
-                                        <doublebox onOK="add.focus()"  style="float:right;text-align:center" id="vu"  />
+                                        <doublebox onOK="add.focus()"  style="float:right;text-align:center"  readonly="true"  id="vu"  />
                                         <span>
-                                            <button  id="add"  label="Añadir Filas" image="/images/add2.png" onClick='actualizar.visible = false; continuar.visible = true; llenarGrid(cantidad.value,"");'/>
+                                            <button  id="add"  label="Añadir Filas"  disabled="true"  image="/images/add2.png" onClick='actualizar.visible = false; continuar.visible = true; llenarGrid(cantidad.value,"");'/>
                                         </span>
                                        
                                     </row>
