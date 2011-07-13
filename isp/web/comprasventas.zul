@@ -252,9 +252,6 @@ empa.setEquipos(g);
     return eq;
 }
 llenarGrid(){
-
-
-  
                 try{
                     Row row = new Row();
                       
@@ -288,22 +285,57 @@ llenarGrid(){
                             aButton.setAttribute("series"+idproducto.value,series);
                             aButton.addEventListener("onClick", new EventListener() {
                                 public void onEvent(Event event) throws Exception {
-                                      //  int valor0 = Messagebox.show("PRECAUCIÓN: Si quita este elemento se eliminará de todos los Cursos y de todos los profesores, Desea Continuar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
                                         quitarFila(aButton.getId());
-                                         
-                      
                                 }
                             });
-
                             row.appendChild(aButton);
+                            
+                            
+                            Button aButtons = null;
+                            aButtons = new Button("series");
+                            aButtons.setImage("/images/series.png");
+                            aButtons.setHeight("5px");
+                            aButtons.setId("ids"+idproducto.value);
+                            aButtons.setAttribute("series"+idproducto.value,series);
+                            aButtons.addEventListener("onClick", new EventListener() {
+                                public void onEvent(Event event) throws Exception {
+                                        //quitarFila(aButtons.getId());
+                                        ArrayList series = aButtons.getAttribute("series"+aButtons.getId().replace("ids",""));
+                                        alert(""+series);
+                                              seriespanel.visible = true;
+                                               filas2.getChildren().clear();
+                                              int i = 0;
+                                              for (Iterator it = series.iterator(); it.hasNext();) {
+                                                    String object = (String) it.next();
+                                                      Row row = new Row();
+                                                       Textbox t = new Textbox(object);
+                                                           t.focus();    t.setId("cod"+i);   t.setCols(14);
+                                                           t.addEventListener("onOK", new EventListener() {
+                                                            public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
+                                                            String idn = ((Textbox) event.getTarget()).getId().replace("cod","");
+                                                                    Integer val = new Integer(idn);
+                                                                        valo = Path.getComponent("/controlventana/cod"+(val+1));
+                                                                    if(valo != null)    
+                                                                        valo.focus();
+                                                                   if((val+1) == i)
+                                                                        continuar.focus();
+                                                            }
+                                                        });
+                                                            row.appendChild(new Label((i+1)+".- "));
+                                                            row.appendChild(t);
+                                                            filas2.appendChild(row);
+                                                            if(i==0)
+                                                                t.focus();
+                                             }
+                                }
+                            });
+                            row.appendChild(aButtons);
+                            
                             row.setValue(new Equipos(idproducto.value)); 
-                         
                     filas.appendChild(row);
-
                     }catch(Exception e){
                         alert("YA SE HA AGREGADO ESTE PRODUCTO");
                     }
-                        
                         vu.value=null;
                         cantidad.value= null;
                         productod.value=null;
@@ -408,13 +440,7 @@ seriesfilas.visible = false;
                                 <intbox id="factura"/>
                             </span>
                         </row>
-                        <row id="seriesfilas"  >
-                            <span style="float:right">  Series:</span> 
-                            <span> 
-                                <textbox id="series" cols="80" rows = "2" />
-                             separar con ; ejem.: 0012545155; 0542545845; 54158444;
-                            </span> 
-                        </row>
+                 
                        
                         <row spans="4">
                             <grid  width="98%" id="anadir">
@@ -513,10 +539,7 @@ seriesfilas.visible = false;
                             <panel id="seriespanel" visible="false" style="position:absolute; top:5%;left:20%;" framable="true" 
                           width="200px" height="400px" title="Ingrese las series"	 border="normal">
                                 <panelchildren>
-                                    <grid height="380px" id="opciones2">
-                                        <columns sizable="true">
-                                            <column label="Series" width="150px"/>
-                                        </columns>
+                                    <grid height="309px" id="opciones2">
                                         <rows id="filas2">
                                         </rows>
                                     </grid> 
