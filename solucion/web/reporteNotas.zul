@@ -197,6 +197,35 @@ public JRDataSource profesores(){
       ProfesoresDataSource ds = new ProfesoresDataSource(detalle);
       return ds;
 }
+
+public JRDataSource aprobados(Cursos curso, Sistemacalificacion sistema){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        List listaMatriculasPerdidos = noti.cuadroverificar(curso, sistema);
+        String codigosPerdidos ="";
+        for (Iterator  it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
+            Matriculas matriculas = it.next();
+            codigosPerdidos = matriculas.getCodigomat()+","+codigosPerdidos;
+            
+        }
+        if(codigosPerdidos.length()>0){
+                codigosPerdidos = codigosPerdidos.substring(0,codigosPerdidos.length()-1);
+        }
+        
+        List hoy = adm.query("SELECT mat FROM Matriculas AS mat where mat.codigomat not in ("+ codigosPerdidos +") " +
+                "  and mat.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  " + 
+                " order by mat.curso.secuencia, mat.curso.especialidad.descripcion, mat.estudiante.apellido, mat.estudiante.nombre ");
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            Matriculas elem = (Matriculas) it.next();
+            elem.setObservacion(elem.getCurso().getParalelo().getDescripcion());
+            elem.getCurso().getParalelo().setDescripcion("");
+            detalle.add(elem);
+        }
+      ReporteActaDataSource ds = new ReporteActaDataSource(detalle);
+      return ds;
+}
  
 void recalcular(){
    List hoy = adm.query("SELECT o FROM MateriaProfesor AS  o " +
@@ -396,6 +425,10 @@ void recalcular(){
                     parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
                     parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
                    
+            }else if(tipo.equals("APRO")){
+                     datasource = aprobados(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"estudiantesAprobados.jasper");
+                   
             }else if(tipo.equals("LIBF")){
 
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
@@ -483,6 +516,11 @@ void campos(String valor){
             sistemasCombo.disabled = false;
              titulo.value= "Libreta de Calificaciones";
             estudiantesCombo.setSelectedIndex(-1);
+        }else if(valor.equals("APRO")){
+            curs.disabled = false;
+            sistemasCombo.disabled = false;
+             titulo.value= "Libreta de Calificaciones";
+
         }else if(valor.equals("CERT") || valor.equals("CERT2")   ){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
@@ -567,6 +605,7 @@ void campos(String valor){
                                     <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
                                     <listitem  id="CERT2" label="Certificado de Promoción(con decimales en notas)" value="CERT2"/>
+                                    <listitem  id="APRO" label="Listado de Estudiantes Aprobados" value="APRO"/>
                                     <listitem  id="CERD" label="Certificado de Disciplina" value="CERD"/>
                                     <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
                                     <listitem  label="Mejor egresado(*)" value="MEJE"/>
