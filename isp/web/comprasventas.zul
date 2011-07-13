@@ -63,8 +63,9 @@ filas.getChildren().clear();
                                     aButton.setId("id"+acceIt.getEquipos().getCodigo());
                                     aButton.addEventListener("onClick", new EventListener() {
                                         public void onEvent(Event event) throws Exception {
-                                              //  int valor0 = Messagebox.show("PRECAUCIÓN: Si quita este elemento se eliminará de todos los Cursos y de todos los profesores, Desea Continuar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                seriespanel.visible = false;
                                                 quitarFila(aButton.getId());
+                                                
 
 
                                         }
@@ -100,17 +101,65 @@ void estado(Boolean estado,Boolean modificar){
     bd2.disabled = estado;
 
 }
-
+Boolean validarSeries(){
+    String seriesTodas = "";
+    String seriesAcumuladasDuplicadas = "";
+    ArrayList seriesAcumuladas = new ArrayList();
+    int sihay = 0;
+    List col = opciones.getRows().getChildren();
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                     List labels = object.getChildren();
+                        Button bu = ((Button) labels.get(3));
+                        ArrayList series = bu.getAttribute("series"+((Equipos)object.getValue()).getCodigo());
+                          for (Iterator it = series.iterator(); it.hasNext();) {
+                                    String object = (String) it.next();
+                                    seriesTodas = "'"+object+"',"+seriesTodas;
+                                    if(!seriesAcumuladas.contains(object)){
+                                            seriesAcumuladas.add(object);
+                                     }else{
+                                            seriesAcumuladasDuplicadas += object+"," ;
+                                            sihay++;
+                                            
+                                            
+                                     }
+                          }
+             }
+             
+              if(sihay>0){
+                    Messagebox.show("ESTÁ INGRESANDO SERIES DUPLICADAS EN LOS PRODUCTOS ACTUALES \n SERIES: "+ seriesAcumuladasDuplicadas, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        return true;              
+              }
+              if(seriesTodas.length()>0){
+                seriesTodas = seriesTodas.substring(0,seriesTodas.length()-1);
+              } 
+             
+             List encontradas =  adm.query("Select o from Series as o where o.serie in ("+ seriesTodas+")");
+             String sencontradas="";
+                          for (Iterator it = encontradas.iterator(); it.hasNext();) {
+                                    Series object = it.next();
+                                    sencontradas = object.getSerie()+", "+ sencontradas;
+                          }
+             if(sencontradas.length()> 0){
+                    Messagebox.show("LAS SERIES QUE ESTA TRATANDO DE GUARDAR YA EXISTEN, NO PODRA CONTINUAR \n SERIES: "+ sencontradas, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return true;
+             }
+             
+            return false;
+             
+}
 
  void guardar(){
+ 
+ if(validarSeries()){
+        return;
+ }
        Cabeceracompra cabeCompra = new Cabeceracompra();
-       
        cabeCompra.setFactura(factura.value);
        cabeCompra.setProveedores(new Proveedores(idproveedores.value));
        cabeCompra.setFecha(fecha.value);
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
-       cabeCompra.setSeries(series.value);
         //adm.guardar(cabeCompra);
             List col = opciones.getRows().getChildren();
              for (int i = 0; i < col.size(); i++) {
@@ -262,6 +311,12 @@ llenarGrid(){
                                 Row object = (Row) col.get(i);
                                  List labels = object.getChildren();
                                 String serie = ((Textbox) labels.get(1)).getValue();
+                                if(serie.trim().length()<=0){
+                                    Messagebox.show("DEBE INGRESAR TODAS LAS SERIES PARA CONTINUAR", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                    ((Textbox) labels.get(1)).focus();
+                                    return;
+                                    
+                                }
                                  series.add(serie);
                          }
                     
@@ -285,7 +340,12 @@ llenarGrid(){
                             aButton.setAttribute("series"+idproducto.value,series);
                             aButton.addEventListener("onClick", new EventListener() {
                                 public void onEvent(Event event) throws Exception {
+                                     int valor0 = Messagebox.show("Seguro que desea quitar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                     seriespanel.visible = false;
+                                     if(valor0 == 16){
                                         quitarFila(aButton.getId());
+                                     }
+                                        
                                 }
                             });
                             row.appendChild(aButton);
@@ -301,8 +361,10 @@ llenarGrid(){
                                 public void onEvent(Event event) throws Exception {
                                         //quitarFila(aButtons.getId());
                                         ArrayList series = aButtons.getAttribute("series"+aButtons.getId().replace("ids",""));
-                                        alert(""+series);
                                               seriespanel.visible = true;
+                                              actualizar.visible = true; 
+                                              continuar.visible = false;
+                                              seriespanel.setAttribute("productoid",aButtons.getId().replace("ids",""));
                                                filas2.getChildren().clear();
                                               int i = 0;
                                               for (Iterator it = series.iterator(); it.hasNext();) {
@@ -317,8 +379,12 @@ llenarGrid(){
                                                                         valo = Path.getComponent("/controlventana/cod"+(val+1));
                                                                     if(valo != null)    
                                                                         valo.focus();
-                                                                   if((val+1) == i)
+                                                                   if((val+1) == i){
+                                                                    if(continuar.isVisible())
                                                                         continuar.focus();
+                                                                        else
+                                                                        actualizar.focus();
+                                                                    }
                                                             }
                                                         });
                                                             row.appendChild(new Label((i+1)+".- "));
@@ -326,6 +392,7 @@ llenarGrid(){
                                                             filas2.appendChild(row);
                                                             if(i==0)
                                                                 t.focus();
+                                                                i++;
                                              }
                                 }
                             });
@@ -341,8 +408,42 @@ llenarGrid(){
                         productod.value=null;
                         idproducto.value = null;
                         cantidad.focus();
+ seriespanel.visible = false;       
+}
+
+
+llenarGridActualizar(){
+               
+                    Row row = new Row();
+                      String producto = seriespanel.getAttribute("productoid");
+                      //CARGO LAS SERIES COMO ATRIBUTO
+                      List col = opciones2.getRows().getChildren();
+                      ArrayList series = new ArrayList();
+                         for (int i = 0; i < col.size(); i++) {
+                                Row object = (Row) col.get(i);
+                                 List labels = object.getChildren();
+                                String serie = ((Textbox) labels.get(1)).getValue();
+                                 if(serie.trim().length()<=0){
+                                    Messagebox.show("DEBE INGRESAR TODAS LAS SERIES PARA CONTINUAR", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                    ((Textbox) labels.get(1)).focus();
+                                    return;
+                                    
+                                }
+                                
+                                 series.add(serie);
+                         }
+                     aButtons = Path.getComponent("/controlventana/ids"+producto);
+                     aButton = Path.getComponent("/controlventana/id"+producto);
+                     aButton.setAttribute("series"+producto,series);
+                     aButtons.setAttribute("series"+producto,series);
+                     actualizar.visible = false; 
+                     continuar.visible = true; 
+                    
+              seriespanel.visible = false;       
         
 }
+
+
  public void quitarFila(String codigoBuscar){
                  Rows filas2 =opciones.getRows();
                 List listadoProductos = filas2.getChildren();
@@ -357,16 +458,7 @@ llenarGrid(){
                     }
 
 }
-llenarGridMac(int numero){
  
-    filas2.getChildren().clear();
-            for(int i = 0; i< numero; i++){
-                    Row row = new Row();
-                             Textbox t = new Textbox("");
-                            row.appendChild(t);
-                    filas2.appendChild(row);
-            }
-}
 
 void tipoDocumento(String tipo){
 compras1.visible = false;
@@ -386,8 +478,6 @@ seriesfilas.visible = false;
         </tabs>
         <tabpanels>
             <tabpanel>
-
-            
                 <grid width="100%">
                     <rows>
                         <row>
@@ -460,7 +550,8 @@ seriesfilas.visible = false;
                                         if(cantidad.value == 0 || cantidad.value == null || cantidad.value == ""
                                               || idproducto.value == null || idproducto.value == "" 
                                               || vu.value == "" || vu.value == 0 || vu.value == null){
-                                                        alert("LLENE TODOS LOS CAMPOS");
+                                                        
+                                                        Messagebox.show("LLENE TODOS LOS CAMPOS PARA CONTINUAR", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                                                         seriespanel.visible = false;
                                                 return;
 
@@ -522,7 +613,7 @@ seriesfilas.visible = false;
                                         </span>
                                         <doublebox onOK="add.focus()"  style="float:right;text-align:center" id="vu"  />
                                         <span>
-                                            <button  id="add"  label="Añadir Filas" image="/images/add2.png" onClick='llenarGrid(cantidad.value,"");'/>
+                                            <button  id="add"  label="Añadir Filas" image="/images/add2.png" onClick='actualizar.visible = false; continuar.visible = true; llenarGrid(cantidad.value,"");'/>
                                         </span>
                                        
                                     </row>
@@ -546,7 +637,8 @@ seriesfilas.visible = false;
                                   
                                 </panelchildren>    
                                 <toolbar mold="panel" align="center">
-                                    <button label="CONTINUAR" id="continuar" onClick="seriespanel.visible = false;llenarGrid();"/>
+                                    <button label="CONTINUAR"  image="/images/add2.png" id="continuar" onClick="llenarGrid();"/>
+                                    <button label="ACTUALIZAR"  image="/images/actualizar.png" id="actualizar" onClick="llenarGridActualizar();"/>
                                 </toolbar>
                             </panel>
                   
@@ -559,6 +651,7 @@ seriesfilas.visible = false;
                                     <column label="EQUIPO" />
                                     <column label="V.U."  width="30px" />
                                     <column label="OPCION" width="30px"  />
+                                    <column label=" " width="30px"  />
                                 </columns>
                                 <rows id="filas">
                                      
