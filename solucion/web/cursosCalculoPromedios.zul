@@ -3,6 +3,7 @@
     <zscript>
         <![CDATA[
 import bean.Procesos;
+import bean.reportesClase;
 import java.math.BigDecimal;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
@@ -14,7 +15,7 @@ import org.zkoss.zul.Listbox;
  Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
-
+reportesClase  noti = new reportesClase();
 List cursos = adm.query("Select o from Cursos as o "+ 
 " where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia, o.descripcion, o.paralelo.descripcion ");
 List materias = adm.query("Select o from Global as o "+ 
@@ -25,7 +26,7 @@ void aprovechamiento(){
         Procesos pro = new Procesos();
                 Set items = cursosList.getSelectedItems();
 						if (items.isEmpty()) {
-							alert("Seleccion un al menos un Curso...!");
+							Messagebox.show("Seleccione al menos un Curso para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                             return;
 						}else{
 							List al = new ArrayList(items);
@@ -42,10 +43,10 @@ void aprovechamiento(){
   
   void aprovechamiento2(){
         
-        Procesos pro = new Procesos();
+                Procesos pro = new Procesos();
                 Set items = cursosList2.getSelectedItems();
 						if (items.isEmpty()) {
-							alert("Seleccion un al menos un Curso...!");
+							Messagebox.show("Seleccione al menos un Curso para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                             return;
 						}else{
 							List al = new ArrayList(items);
@@ -59,11 +60,48 @@ void aprovechamiento(){
     
         Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
   }
+  public void aprobados(){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      Periodo periodo = (Periodo) ses.getAttribute("periodo");
+      
+      Set items = cursosList5.getSelectedItems();
+                        if (items.isEmpty()) {
+							Messagebox.show("Seleccione al menos un Curso para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                            return;
+						}else{
+                             List  notas = adm.query("Select o from Notanotas as o "
+                                + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
+                                + "and o.sistema.promediofinal = 'PF' ");
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+                                    
+                                    Cursos curses = li.getValue();
+                                    String quera = "update matriculas set perdio = false where curso = '"+curses.getCodigocur()+"' ";
+                                     adm.ejecutaSqlNativo(quera);
+                                        List listaMatriculasPerdidos = noti.cuadroverificar(curses, notas.get(0).getSistema());
+                                        for (Iterator  it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
+                                            Matriculas matriculas = it.next();
+                                            matriculas.setPerdio(true);
+                                            adm.actualizar(matriculas);
+                                        }
+                                       
+                               
+                                    
+							}
+						}
+ 
+        
+     Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+    
+}
+  
 void disciplina2(){
         Procesos pro = new Procesos();
                  Set items = cursosList2.getSelectedItems();
 						if (items.isEmpty()) {
-							alert("Seleccion un al menos un Curso...!");
+							Messagebox.show("Seleccione al menos un Curso para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                             return;
 						}else{
 							List al = new ArrayList(items);
@@ -82,7 +120,7 @@ void disciplina(){
         Procesos pro = new Procesos();
                  Set items = cursosList.getSelectedItems();
 						if (items.isEmpty()) {
-							alert("Seleccion un al menos un Curso...!");
+							Messagebox.show("Seleccione al menos un Curso para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                             return;
 						}else{
 							List al = new ArrayList(items);
@@ -104,7 +142,7 @@ void recalculo(){
     notas nso = new notas();
      Set items = curs.getSelectedItems();
 						if (items.isEmpty()) {
-							alert("Seleccion un al menos un Curso...!");
+							Messagebox.show("Seleccione al menos un Curso para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                             return;
 						}else{
 							List al = new ArrayList(items);
@@ -197,9 +235,7 @@ void generar(String tipo){
                 </panelchildren>
 
             </panel>
-        </portalchildren>
-        <portalchildren style="padding: 5px"  width="50%">
-            <panel  framable="true" style="margin-bottom:10px" title="RECALCULO DE ACTAS DE GRADO">
+             <panel  framable="true" style="margin-bottom:10px" title="RECALCULO DE ACTAS DE GRADO">
                 <panelchildren>
                     <grid>
                         <rows>
@@ -217,23 +253,11 @@ void generar(String tipo){
                 </panelchildren>
 
             </panel>
+        </portalchildren>
+        <portalchildren style="padding: 5px"  width="50%">
+            
 
-            <panel framable="true" style="margin-bottom:10px"  title="ACTAS DE SUSPENSO">
-                <panelchildren>
-                    <grid>
-                        <rows>
-                            <row style="background:transparent"  spans="2">
-                                Generar Actas de Grado Suspensos
-                            </row>
-                            <row  style="background:transparent" spans="2">
-                                <button label="Generar Números de Actas"   onClick='generar("sus")' />
-                            </row>
-                        </rows>
-                    </grid>
-                </panelchildren>
-            </panel>
-
-            <panel title="RECORD ACADEMICO SI MATERIA"    style="margin-bottom:10px" framable="true" >
+            <panel title="RECORD ACADEMICO SI PROMEDIO ES UNA MATERIA"    style="margin-bottom:10px" framable="true" >
                 <panelchildren>
 
                     <grid>
@@ -241,7 +265,7 @@ void generar(String tipo){
 
                             <row style="background:transparent"  spans="2">
 
-                Nos permite hacer el Recalculo del Promedio final para el Record Académico, si el promedio es una materia.
+                 Recalcula el Promedio final para el Record Académico, si el promedio es una materia.
 
                             </row>
                             <row>
@@ -258,7 +282,7 @@ void generar(String tipo){
                             <row style="background:transparent" >
                                 <span style="float:right"> Curso(*):</span>
                                 <span>
-                                    <listbox   id="cursosList2"  height="150px" multiple="true" checkmark="true"  width="420px" >
+                                    <listbox   id="cursosList2"  height="120px" multiple="true" checkmark="true"  width="420px" >
                                         <listhead>
                                             <listheader label="Seleccionar Todos"/>    
                                         </listhead>
@@ -269,7 +293,8 @@ void generar(String tipo){
                                   
                                     <button label="Aprovechamiento"   image="/images/run.gif" onClick="aprovechamiento2();"/>
                                     <button label="Disciplina"   image="/images/run.gif" onClick="disciplina()"/>
-                                </span>
+                                 
+                              </span>
                             </row>
                         </rows>
                     </grid>
@@ -277,6 +302,57 @@ void generar(String tipo){
 
                 </panelchildren>
 
+            </panel>
+            
+            <panel title="RECALCULO DE APROBADOS O PERDIDOS"    style="margin-bottom:10px" framable="true" >
+                <panelchildren>
+
+                    <grid>
+                        <rows>
+
+                            <row style="background:transparent"  spans="2">
+
+                                    Recalcula los estudiantes que aprueban o reprueban el año, en base a la sumatoria, y los supletorios.
+
+                            </row>
+                            <row style="background:transparent" >
+                                <span style="float:right"> Cursos(*):</span>
+                                <span>
+                                    <listbox   id="cursosList5"  height="150px" multiple="true" checkmark="true"  width="420px" >
+                                        <listhead>
+                                            <listheader label="Seleccionar Todos"/>    
+                                        </listhead>
+                                        <listitem forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                        </listitem>
+                                    </listbox>
+                                    
+                                    <button label="Calcular Aprobados/Reprobados"   image="/images/run.gif" onClick="aprobados();"/>
+                                    Este proceso puede tardar un poco.
+                              </span>
+                            </row>
+                        </rows>
+                    </grid>
+
+
+                </panelchildren>
+
+            </panel>
+           
+
+            <panel framable="true" style="margin-bottom:10px"  title="ACTAS DE SUSPENSO">
+                <panelchildren>
+                    <grid>
+                        <rows>
+                            <row style="background:transparent"  spans="2">
+                                Generar Actas de Grado Suspensos
+                            </row>
+                            <row  style="background:transparent" spans="2">
+                                <button label="Generar Números de Actas"   onClick='generar("sus")' />
+                            </row>
+                        </rows>
+                    </grid>
+                </panelchildren>
             </panel>
         </portalchildren>
     </portallayout>
