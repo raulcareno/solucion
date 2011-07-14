@@ -315,19 +315,19 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                             <menu image="/images/birrete.gif"  label="Grados" ><!--GRADOS-->
                                 <menupopup   >
                                     <menuitem onClick="ingresar(self)" id="Notas_Primero_Quinto" image="/images/llave.gif"  label="Record Academico" value="/notasRecord.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Materias_de_Grado"   image="/images/distributivo.png" label="Materias de Grado" value="/materiasdeGrado.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Notas_de_Grado"  image="/images/notas.png"  label="Notas de Grado" value="/cursosIngresonotasGrado.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Materias_de_Grado"   image="/images/distributivo.png" label="Creación de Materias de  Exa. Grado" value="/materiasdeGrado.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Notas_de_Grado"  image="/images/notas.png"  label="Registro de Notas de Exa. Grado" value="/cursosIngresonotasGrado.zul"/>
                                     <menuitem onClick="ingresar(self)" id="Calculo_Promedios" image="/images/calculo.gif"  label="Calculo Promedios" value="/cursosCalculoPromedios.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Acta_de_Grado" image="/images/acta.gif"  label="Acta de Grado" value="/materiasdeActa.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Notas_de_Acta" image="/images/notas.png"  label="Notas de Acta" value="/cursosIngresonotasActa.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Acta_de_Grado" image="/images/acta.gif"  label="Acta de Grado(Creación, Modelo)" value="/materiasdeActa.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Notas_de_Acta" image="/images/notas.png"  label="Registro de Notas del Acta Grado" value="/cursosIngresonotasActa.zul"/>
                                 </menupopup>
                             </menu>
                             <menu  image="/images/varios.gif"  label="Varios" ><!--VARIOS-->
                                 <menupopup >
                                     <menuitem onClick="ingresar(self)"  id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correoInterno.zul"/>
                                     <menuitem onClick="ingresar(self)"  id="Correo_Interno" image="/images/bandeja2.png"   label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Respaldos" image="/images/base.gif"   label="Respaldos" value="/respaldos.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Calendario" image="/images/calendar.gif"   label="Calendario" value="/calendar.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Respaldos" image="/images/base.gif"   label="Respaldar Sistema" value="/respaldos.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="Calendario" image="/images/calendar.gif"   label="Calendario Académico" value="/calendar.zul"/>
                                     <menuitem onClick="ingresar(self)" id="Dobe" image="/images/pensum.png"   label="Dobe" value="/dobe.zul"/>
                                     <menuitem onClick="ingresar(self)" id="Registrar" image="/images/chat.png"  label="Chat" value="/chat/chat.zul"    />
                                 </menupopup>

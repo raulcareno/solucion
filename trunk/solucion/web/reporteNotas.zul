@@ -203,24 +203,84 @@ public JRDataSource aprobados(Cursos curso, Sistemacalificacion sistema){
       Session ses = Sessions.getCurrent();
       Periodo periodo = (Periodo) ses.getAttribute("periodo");
         ArrayList detalle = new ArrayList();
-        List listaMatriculasPerdidos = noti.cuadroverificar(curso, sistema);
-        String codigosPerdidos ="";
-        for (Iterator  it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
-            Matriculas matriculas = it.next();
-            codigosPerdidos = matriculas.getCodigomat()+","+codigosPerdidos;
-            
-        }
-        if(codigosPerdidos.length()>0){
-                codigosPerdidos = codigosPerdidos.substring(0,codigosPerdidos.length()-1);
+       
+     String query ="";
+        if(curso.getCodigocur().equals(-2)){
+            query = "SELECT mat FROM Matriculas AS mat where  " +
+                        "   mat.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' and mat.curso.paralelo.descripcion <> '.'   " + 
+                        " order by mat.curso.secuencia, mat.curso.especialidad.descripcion, mat.curso.paralelo.descripcion, mat.estudiante.apellido, mat.estudiante.nombre ";
+        
+        }else{
+            query = "SELECT mat FROM Matriculas AS mat where  " +
+                "   mat.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' and mat.curso.paralelo.descripcion <> '.'  and mat.curso.codigocur = '"+curso.getCodigocur()+"'  " + 
+                " order by mat.curso.secuencia, mat.curso.especialidad.descripcion, mat.curso.paralelo.descripcion, mat.estudiante.apellido, mat.estudiante.nombre ";
+        
         }
         
-        List hoy = adm.query("SELECT mat FROM Matriculas AS mat where mat.codigomat not in ("+ codigosPerdidos +") " +
-                "  and mat.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  " + 
-                " order by mat.curso.secuencia, mat.curso.especialidad.descripcion, mat.estudiante.apellido, mat.estudiante.nombre ");
+        List hoy = adm.query(query);
         for (Iterator it = hoy.iterator(); it.hasNext();) {
             Matriculas elem = (Matriculas) it.next();
-            elem.setObservacion(elem.getCurso().getParalelo().getDescripcion());
-            elem.getCurso().getParalelo().setDescripcion("");
+            if(elem.getPerdio()){
+               elem.setObservacion("Perdido");
+            }else{
+                
+                 elem.setObservacion("Aprobado");
+            }
+           detalle.add(elem);
+        }
+      ReporteActaDataSource ds = new ReporteActaDataSource(detalle);
+      return ds;
+}
+
+public JRDataSource aprobadosRes(Cursos curso, Sistemacalificacion sistema){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        
+        String codigosPerdidos ="";
+        ArrayList matriculadosPerdidos = new ArrayList();
+        
+        if(curso.getCodigocur().equals(-2)){
+        List cursosList = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+                for (Iterator  itC = cursosList.iterator(); itC.hasNext();) {
+                        Cursos curso1 = itC.next();
+                        List listaMatriculasPerdidos = noti.cuadroverificar(curso1, sistema);
+                        for (Iterator  it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
+                            Matriculas matriculas = it.next();
+                            matriculadosPerdidos.add(matriculas);
+                        }
+                }
+        }else{
+            List listaMatriculasPerdidos = noti.cuadroverificar(curso, sistema);
+                for (Iterator  it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
+                    Matriculas matriculas = it.next();
+                    matriculadosPerdidos.add(matriculas);
+                }
+        }
+        
+     String query ="";
+        if(curso.getCodigocur().equals(-2)){
+            query = "SELECT mat FROM Matriculas AS mat where  " +
+                        "   mat.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' and mat.curso.paralelo.descripcion <> '.'   " + 
+                        " order by mat.curso.secuencia, mat.curso.especialidad.descripcion, mat.curso.paralelo.descripcion, mat.estudiante.apellido, mat.estudiante.nombre ";
+        
+        }else{
+            query = "SELECT mat FROM Matriculas AS mat where  " +
+                "   mat.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' and mat.curso.paralelo.descripcion <> '.'  and mat.curso.codigocur = '"+curso.getCodigocur()+"'  " + 
+                " order by mat.curso.secuencia, mat.curso.especialidad.descripcion, mat.curso.paralelo.descripcion, mat.estudiante.apellido, mat.estudiante.nombre ";
+        
+        }
+        
+        List hoy = adm.query(query);
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            Matriculas elem = (Matriculas) it.next();
+            if(!matriculadosPerdidos.contains(elem)){
+                elem.setObservacion("Aprobado");
+            }else{
+                elem.setObservacion("Perdido");
+            }
+           //elem.getCurso().getParalelo().setDescripcion("");
             detalle.add(elem);
         }
       ReporteActaDataSource ds = new ReporteActaDataSource(detalle);
@@ -519,7 +579,7 @@ void campos(String valor){
         }else if(valor.equals("APRO")){
             curs.disabled = false;
             sistemasCombo.disabled = false;
-             titulo.value= "Libreta de Calificaciones";
+             titulo.value= "Listado de Estudiantes Aprobados/Reprobados";
 
         }else if(valor.equals("CERT") || valor.equals("CERT2")   ){
             curs.disabled = false;
