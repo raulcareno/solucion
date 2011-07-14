@@ -47,7 +47,7 @@ public class Contratos implements Serializable {
     private String telefono;
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
-    private Date fecha;
+    private Date fecha = new Date();
     @Column(name = "formapago")
     private Integer formapago;
     @Column(name = "nocuenta")
@@ -58,7 +58,7 @@ public class Contratos implements Serializable {
     private Integer diapago;
     @Column(name = "fechapago")
     @Temporal(TemporalType.DATE)
-    private Date fechapago;
+    private Date fechapago  = new Date();
     @Column(name = "ip")
     private String ip;
     @Column(name = "usuario")
@@ -69,10 +69,10 @@ public class Contratos implements Serializable {
     private Boolean autorizado = true;
     @Column(name = "fechainstalacion")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechainstalacion;
+    private Date fechainstalacion = new Date();
     @Column(name = "fechafinal")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechafinal;
+    private Date fechafinal = new Date();
     @Column(name = "equipos1")
     private Integer equipos1;
     @Column(name = "equipos2")
@@ -106,6 +106,10 @@ public class Contratos implements Serializable {
     @JoinColumn(name = "radios", referencedColumnName = "codigo")
     @ManyToOne
     private Radios radios;
+    
+    @JoinColumn(name = "bancos", referencedColumnName = "codigo")
+    @ManyToOne
+    private Bancos bancos;
 
     public Contratos() {
     }
@@ -360,6 +364,14 @@ public class Contratos implements Serializable {
 
     public void setRadios(Radios radios) {
         this.radios = radios;
+    }
+
+    public Bancos getBancos() {
+        return bancos;
+    }
+
+    public void setBancos(Bancos bancos) {
+        this.bancos = bancos;
     }
 
     @Override

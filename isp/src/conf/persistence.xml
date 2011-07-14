@@ -28,6 +28,7 @@
     <class>jcinform.persistencia.Series</class>
     <class>jcinform.persistencia.Soporte</class>
     <class>jcinform.persistencia.Sucursal</class>
+    <class>jcinform.persistencia.Bancos</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <!--property name="toplink.jdbc.user" value="root"/>

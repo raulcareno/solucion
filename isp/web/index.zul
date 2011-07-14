@@ -111,6 +111,7 @@
                                 <menuseparator />
                                 <menuitem   value="/nodos.zul"  image="/images/nodos.png" label="Nodos" onClick="ingresar(self)" />
                                 <menuitem   value="/radios.zul"  image="/images/radio.png" label="Radios" onClick="ingresar(self)" />
+                                <menuitem   value="/bancos.zul"  image="/images/bancos.png" label="Bancos" onClick="ingresar(self)" />
                                 <menuseparator />
                                 <menuitem label="Salir" image="/images/exit.gif"  onClick="salir()" />
                             </menupopup>

@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
    Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
       List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getCodigo()+"' ");
+      List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
     List nodos = adm.query("Select o from Radios as o");
 //FUNCIONES
 void llenar(Contratos  equi2){
@@ -158,6 +159,7 @@ void estado(Boolean estado,Boolean modificar){
     clave.readonly = estado;
     bd.disabled = estado;
     bd2.disabled = estado;
+    bd22.disabled = estado;
     numerocontrato.readonly = estado;
     nuevoC.disabled = estado;
     nuevoE.disabled = estado;
@@ -724,11 +726,35 @@ void verificarCedula(String valor){
                                       
                                                             <span>  Forma Pago(*): 
                                                                 <radiogroup Id="formapago" onCheck="">
-                                                                    <radio value="1" selected="true"  label="Efectivo"/>
-                                                                    <radio value="2" label="Débito"/>
+                                                                    <radio value="1" onCheck="debitorow.visible=false" selected="true"  label="Efectivo"/>
+                                                                    <radio value="2" onCheck="debitorow.visible=true" label="Débito"/>
                                                                 </radiogroup>
                                         
+                                                              
+                                                            </span>
+                                                        </row>
+                                                          <row visible="true" id="debitorow" spans="4">
+                                      
+                                                            <span>                                          
                                                                 <separator bar="true" orient="vertical"/>
+                                                                Banco:
+                                                                <bandbox disabled="true" readonly="true" width="100px"  id="bd22">
+                                                                <bandpopup>
+                                                                    <vbox>
+                                                                   <listbox id="bancosList" width="250px"
+                                                                    onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
+                                                                            <listhead>
+                                                                                <listheader label="Seleccione un Banco"/>
+                                                                            </listhead>
+                                                                            <listitem forEach="${bancos}" value="${each}">
+                                                                                <listcell label="${each.nombre}" />
+
+                                                                            </listitem>
+                                                                        </listbox>
+                                                                    </vbox>
+                                                                </bandpopup>
+                                                            </bandbox>
+                                                                
                                                                 <span style="">No.Cuenta:  </span>
                                                                 <span>
                                                                     <textbox id="nocuenta" cols="10"  readonly="true"  />
