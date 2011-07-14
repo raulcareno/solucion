@@ -313,6 +313,13 @@ void llenarMatricula(Matriculas matri){
          numero.value = matri.getNumero();
          folio.value = matri.getFolio();
          institucion.value = matri.getInstitucion();
+            if(matri.getPerdio()!=null){
+                perdio.checked = matri.getPerdio();
+            }
+            if(matri.getSuspenso()!=null){
+                suspenso.checked = matri.getSuspenso();
+            }
+         
             if(matri.getNuevo()!=null){
                 nuevo.checked = matri.getNuevo();
             }
@@ -677,6 +684,8 @@ void estado(Boolean estado,Boolean modificar){
         matricula.setNuevo(nuevo.checked);
         matricula.setRepite(new Integer(repite.selectedItem.value));
         matricula.setInstitucion(institucion.value);
+        matricula.setPerdio(perdio.checked);
+        matricula.setSuspenso(suspenso.checked);
 
         try{
             matricula.setBeca((beca.value).doubleValue());
@@ -1553,6 +1562,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                         BLOQUEADO
                                             <checkbox id="pendientes"/>
                                             <checkbox visible = "false"  id="aplico"/>
+                                            <checkbox visible = "false"  id="perdio"/>
+                                            <checkbox visible = "false"  id="suspenso"/>
                                         </span>
                                     </row>
                                     <row>
