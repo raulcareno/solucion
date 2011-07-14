@@ -31,13 +31,19 @@ void cargarVacio(){
 //FUNCIONES
 
 void llenar(Cabeceracompra empa){
+
     codigo.value = empa.getCodigo();
     factura.value = empa.getFactura();
     fecha.value = empa.getFecha();
     observacion.value = empa.getSeries();
+try{
     idproveedores.value = empa.getProveedores().getCodigo();
     proveedores.value = empa.getProveedores().getRazonsocial();
+}catch(Exception exs){
+idproveedores.value = null;
+    proveedores.value = null;
 
+}
     /* compra  equipos, cantidad  costo pvp1 */
 filas.getChildren().clear();
     List detalleCompra = adm.query("Select o from Detallecompra as o where o.cabeceracompra.codigo = '"+empa.getCodigo()+"' ");
@@ -68,7 +74,7 @@ filas.getChildren().clear();
                                     aButton = new Button("quitar");
                                     aButton.setImage("/images/quitar.gif");
                                     aButton.setHeight("5px");
-                                    aButton.setAttribute("series"+acceIt.getEquipos().getCodigo(),series);
+                                    aButton.setAttribute("series"+acceIt.getEquipos().getCodigo(),seriesA);
                                     aButton.setId("id"+acceIt.getEquipos().getCodigo());
                                     aButton.addEventListener("onClick", new EventListener() {
                                         public void onEvent(Event event) throws Exception {
@@ -87,7 +93,7 @@ filas.getChildren().clear();
                             aButtons.setImage("/images/series.png");
                             aButtons.setHeight("5px");
                             aButtons.setId("ids"+acceIt.getEquipos().getCodigo());
-                            aButtons.setAttribute("series"+acceIt.getEquipos().getCodigo(),series);
+                            aButtons.setAttribute("series"+acceIt.getEquipos().getCodigo(),seriesA);
                             aButtons.addEventListener("onClick", new EventListener() {
                                 public void onEvent(Event event) throws Exception {
                                         //quitarFila(aButtons.getId());
@@ -359,7 +365,7 @@ Boolean validarSeriesAju(){
     if(verificar("Agregar")){
           
           guardar.disabled=false; 
-          //llenar(new Cabeceracompra(0));
+          llenar(new Cabeceracompra(0));
           estado(false,false);
           cantidad.setReadonly(false);
           fecha.setDisabled(false);
@@ -807,8 +813,8 @@ void tipoDocumento(String tipo){
                     <hbox>
                         <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
                         <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                        <!--button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/-->
                     </hbox>
                 </vbox>
 
