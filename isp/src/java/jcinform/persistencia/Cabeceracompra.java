@@ -55,6 +55,9 @@ public class Cabeceracompra implements Serializable {
     private Double iva;
     @Column(name = "total")
     private Double total;
+    @Column(name = "documento")
+    private String documento;
+    
     @OneToMany(mappedBy = "cabeceracompra")
     private Collection<Detallecompra> detallecompraCollection;
     @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
@@ -141,6 +144,14 @@ public class Cabeceracompra implements Serializable {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
     }
 
     public Collection<Detallecompra> getDetallecompraCollection() {

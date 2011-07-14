@@ -34,7 +34,7 @@ void llenar(Cabeceracompra empa){
     codigo.value = empa.getCodigo();
     factura.value = empa.getFactura();
     fecha.value = empa.getFecha();
-    series.value = empa.getSeries();
+    observacion.value = empa.getSeries();
     idproveedores.value = empa.getProveedores().getCodigo();
     proveedores.value = empa.getProveedores().getRazonsocial();
 
@@ -42,7 +42,7 @@ void llenar(Cabeceracompra empa){
 filas.getChildren().clear();
     List detalleCompra = adm.query("Select o from Detallecompra as o where o.cabeceracompra.codigo = '"+empa.getCodigo()+"' ");
        for (Iterator it = detalleCompra.iterator(); it.hasNext();) {
-                      Cabeceracompra acceIt = (Cabeceracompra) it.next();
+                      Detallecompra acceIt = (Detallecompra) it.next();
                         try{
                             Row row = new Row();
                                    Doublebox dou = new Doublebox(0);
@@ -55,11 +55,20 @@ filas.getChildren().clear();
                                     row.appendChild(intb);
                                     row.appendChild(prod);
                                     row.appendChild(dou);
+                                    //SELECCIONO LAS SERIES INGRESADAS A ÉSTE DETALLE
+                                    List series = adm.query("Select o from Series as o where o.detallecompra.codigo = '"+acceIt.getCodigo()+"' ");
+                                    ArrayList seriesA = new ArrayList();
+                                    for (Iterator it = series.iterator(); it.hasNext();) {
+                                            Series serIt = (Series) it.next();
+                                            seriesA.add(serIt.getSerie());
+                                    }
+
 
                                     Button aButton = null;
                                     aButton = new Button("quitar");
                                     aButton.setImage("/images/quitar.gif");
                                     aButton.setHeight("5px");
+                                    aButton.setAttribute("series"+acceIt.getEquipos().getCodigo(),series);
                                     aButton.setId("id"+acceIt.getEquipos().getCodigo());
                                     aButton.addEventListener("onClick", new EventListener() {
                                         public void onEvent(Event event) throws Exception {
@@ -70,8 +79,44 @@ filas.getChildren().clear();
 
                                         }
                                     });
-
                                     row.appendChild(aButton);
+                                    
+                                    
+                             Button aButtons = null;
+                            aButtons = new Button("series");
+                            aButtons.setImage("/images/series.png");
+                            aButtons.setHeight("5px");
+                            aButtons.setId("ids"+acceIt.getEquipos().getCodigo());
+                            aButtons.setAttribute("series"+acceIt.getEquipos().getCodigo(),series);
+                            aButtons.addEventListener("onClick", new EventListener() {
+                                public void onEvent(Event event) throws Exception {
+                                        //quitarFila(aButtons.getId());
+                                        ArrayList series = aButtons.getAttribute("series"+aButtons.getId().replace("ids",""));
+                                              seriespanel.visible = true;
+                                              actualizar.visible = true; 
+                                              continuar.visible = false;
+                                              seriespanel.setAttribute("productoid",aButtons.getId().replace("ids",""));
+                                               filas2.getChildren().clear();
+                                              int i = 0;
+                                              for (Iterator it = series.iterator(); it.hasNext();) {
+                                                    String object = (String) it.next();
+                                                      Row row = new Row();
+                                                       Textbox t = new Textbox(object);
+                                                           t.focus();    t.setId("cod"+i);   t.setCols(14);
+                                                        t.setReadonly(true);
+                                                            row.appendChild(new Label((i+1)+".- "));
+                                                            row.appendChild(t);
+                                                            filas2.appendChild(row);
+                                                            if(i==0)
+                                                                t.focus();
+                                                                i++;
+                                             }
+                                }
+                            });
+                            row.appendChild(aButtons);
+                                    
+                                    
+                                    
                                     row.setValue(new Equipos(acceIt.getEquipos().getCodigo())); 
 
                             filas.appendChild(row);
@@ -97,6 +142,7 @@ void estado(Boolean estado,Boolean modificar){
     factura.readonly = estado;
     fecha.disabled = estado;
     perf.disabled = estado;
+    observacion.readonly = estado;
     bd.disabled = estado;
     bd2.disabled = estado;
     buscarE3.disabled = estado;
@@ -138,10 +184,10 @@ Boolean validarSeries(){
              
              List encontradas =  adm.query("Select o from Series as o where o.serie in ("+ seriesTodas+")");
              String sencontradas="";
-                          for (Iterator it = encontradas.iterator(); it.hasNext();) {
-                                    Series object = it.next();
-                                    sencontradas = object.getSerie()+", "+ sencontradas;
-                          }
+              for (Iterator it = encontradas.iterator(); it.hasNext();) {
+                        Series object = it.next();
+                        sencontradas = object.getSerie()+", "+ sencontradas;
+              }
              if(sencontradas.length()> 0){
                     Messagebox.show("LAS SERIES QUE ESTA TRATANDO DE GUARDAR YA EXISTEN, NO PODRA CONTINUAR \n SERIES: "+ sencontradas, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                     return true;
@@ -151,22 +197,104 @@ Boolean validarSeries(){
              
 }
 
+Boolean validarSeriesAju(){
+    String seriesTodas = "";
+    String seriesAcumuladasDuplicadas = "";
+    ArrayList seriesAcumuladas = new ArrayList();
+    int sihay = 0;
+    List col = opciones.getRows().getChildren();
+             for (int i = 0; i < col.size(); i++) {
+                    Row objectfila = (Row) col.get(i);
+                     List labels = objectfila.getChildren();
+                        Button bu = ((Button) labels.get(3));
+                        ArrayList series = bu.getAttribute("series"+((Equipos)objectfila.getValue()).getCodigo());
+                          for (Iterator it = series.iterator(); it.hasNext();) {
+                                    String object = (String) it.next();
+                                    Plan plan = new Plan(((Equipos)objectfila.getValue()).getCodigo());
+                                        plan.setNombre(object);
+                                        seriesTodas = "'"+object+"',"+seriesTodas;
+                                     if(!seriesAcumuladas.contains(plan)){
+                                            seriesAcumuladas.add(plan);
+                                     }else{
+                                            seriesAcumuladasDuplicadas += object+"," ;
+                                            sihay++;
+                                            
+                                            
+                                     }
+                          }
+             }
+             
+              if(sihay>0){
+                    Messagebox.show("ESTÁ INGRESANDO SERIES DUPLICADAS EN LOS PRODUCTOS ACTUALES \n SERIES: "+ seriesAcumuladasDuplicadas, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        return true;              
+              }
+              if(seriesTodas.length()>0){
+                seriesTodas = seriesTodas.substring(0,seriesTodas.length()-1);
+              } 
+             
+             List encontradas =  adm.query("Select o from Series as o where o.serie in ("+ seriesTodas+")");
+             String sencontradas="";
+             ArrayList encontradasActualizar = new ArrayList();
+             
+             int nohay = 0;
+              for (Iterator it = encontradas.iterator(); it.hasNext();) {
+                        Series object = it.next();
+                        Plan pla = new Plan(object.getDetallecompra().getEquipos().getCodigo());
+                        pla.setNombre(object.getSerie());
+                        if(!seriesAcumuladas.contains(pla)){
+                            nohay ++;
+                        }
+ 
+              }
+             if(nohay >0){
+                    Messagebox.show("LAS SERIES QUE ESTA INGRESANDO NO COINCIDEN CON EL PRODUCTO QUE SE ENCUENTRA EN STOCK", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return true;
+             }
+             
+            return false;
+             
+}
+
+
  void guardar(){
+   List colValida = opciones.getRows().getChildren();
+  if(colValida.size() <= 0){
+      Messagebox.show("No ha ingresado productos...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+        return;  
+  }
+
+     if(documento.selectedItem.value.equals("COM")){
+         if(validarSeries()){
+                return;
+         }
+    }else{
+        if(validarSeriesAju()){
+                return;
+         }
+    }
  
- if(validarSeries()){
+ if(documento.selectedItem.value.equals("COM")){
+     if(proveedores.value == "" || proveedores.value == null || factura.value == "" || factura.value == null){
+        Messagebox.show("Registre todos los campos para continuar ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
         return;
+     }
+ }else{
+    if(observacion.value == "" || observacion.value == null || factura.value == "" || factura.value == null){
+        Messagebox.show("Registre todos los campos para continuar ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+        return;
+    }
  }
  
- if(proveedores.value == "" || proveedores.value == null || factura.value == "" || factura.value == null){
-    Messagebox.show("Registre todos los campos para continuar ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-    return;
- }
+         
        Cabeceracompra cabeCompra = new Cabeceracompra();
        cabeCompra.setFactura(factura.value);
-       cabeCompra.setProveedores(new Proveedores(idproveedores.value));
+     if(documento.selectedItem.value.equals("COM"))      
+                cabeCompra.setProveedores(new Proveedores(idproveedores.value));
        cabeCompra.setFecha(fecha.value);
+       cabeCompra.setSeries(observacion.value);
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
+       cabeCompra.setDocumento(documento.selectedItem.value);
        adm.guardar(cabeCompra);
             List col = opciones.getRows().getChildren();
              for (int i = 0; i < col.size(); i++) {
@@ -176,7 +304,11 @@ Boolean validarSeries(){
                      det.setCabeceracompra(cabeCompra);
                      List labels = object.getChildren();
                          det.setEquipos((Equipos)object.getValue());
-                         det.setCantidad(((Intbox) labels.get(0)).getValue());
+                         if(documento.selectedItem.value.equals("COM")) 
+                            det.setCantidad(((Intbox) labels.get(0)).getValue());
+                         else
+                            det.setCantidad( (-1) * ((Intbox) labels.get(0)).getValue());
+                            
                          det.setCosto(((Doublebox) labels.get(2)).getValue());
                          Button bu = ((Button) labels.get(3));
                          
@@ -191,8 +323,15 @@ Boolean validarSeries(){
                                       ser.setCodigo(adm.getNuevaClave("Series","codigo"));
                                     ser.setSerie(object);
                                     ser.setDetallecompra(det);
-                                    ser.setEstado("C");//CREADA
-                                   adm.guardar(ser);
+                                    
+                                    if(documento.selectedItem.value.equals("COM")){
+                                        ser.setEstado("C");//CREADA
+                                        adm.guardar(ser);
+                                    }else{
+                                        ser.setEstado("A");//CREADA
+                                        adm.guardar(ser);
+                                        //adm.ejecutaSql("Update Series set estado = 'A' where serie = '"+ser.getSerie()+"'");
+                                    }
                                      
                           }
              }
@@ -258,29 +397,7 @@ void eliminar(){
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
 }
- 
-  void buscar(String p){
-        List CabeceracompraEncontrados = adm.queryNativo("Select o.* from Cabeceracompra as o " 
-        +" where o.factura like '"+ p +"%' order by o.factura",Cabeceracompra.class);
-        datos = new Listbox();
-        int a=0;
-            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
-                    datos.getItems().remove(a);
-                }
-               for (Iterator it = CabeceracompraEncontrados.iterator(); it.hasNext();) {
-                      Cabeceracompra acceIt = (Cabeceracompra) it.next();
-                      Listitem li = new Listitem();
-                      li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
-                      li.appendChild(new Listcell(acceIt.getProveedores().getRazonsocial()+""));
-                      li.appendChild(new Listcell(acceIt.getCantidad()+""));
-                      li.appendChild(new Listcell(acceIt.getTotal()+""));
-                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
-                       
-                      datos.appendChild(li);
-             }
 
-    }
 void cargar(Equipos g){
 empa.setEquipos(g);
 }
@@ -469,11 +586,11 @@ llenarGridActualizar(){
  
 
 void tipoDocumento(String tipo){
-compras1.visible = false;
-seriesfilas.visible = false;
-        if(tipo.equals("compras")){
+    compras1.visible = false;
+    observacionrow.visible = true;
+        if(tipo.equals("COM")){
             compras1.visible = true;
-            seriesfilas.visible = true;            
+            observacionrow.visible = false;
         }
 }
 
@@ -490,17 +607,17 @@ seriesfilas.visible = false;
                     <rows>
                         <row>
                             <span style="float:right">  TIPO DE DOCUMENTO: </span> 
-                            <bandbox readonly="true"  width="70px" value="COMPRAS" id="tipodocumento" >
+                            <bandbox readonly="true"  width="70px" value="Compras" id="tipodocumento" >
                                 <bandpopup>
                                     <vbox>
-                                        <listbox width="90px" id="format"  onSelect="tipoDocumento(self.selectedItem.value);tipodocumento.close();">
-                                            <listitem  value="compras" selected="true">
+                                        <listbox width="90px" id="documento"  onSelect="tipoDocumento(self.selectedItem.value);tipodocumento.value = self.selectedItem.label; tipodocumento.close();">
+                                            <listitem  value="COM" selected="true">
                                                 <listcell  image="/images/compras.png" label="Compras" />
                                             </listitem>
-                                            <listitem value="ventas">
+                                            <!--listitem value="ventas">
                                                 <listcell  image="/images/ventas.png" label="Ventas" />
-                                            </listitem>
-                                            <listitem value="ajustes">
+                                            </listitem-->
+                                            <listitem value="AJU">
                                                 <listcell  image="/images/ajustes.png"  label="Ajustes" />
                                             </listitem>
                                                      
@@ -538,6 +655,13 @@ seriesfilas.visible = false;
                                 <intbox  readonly="true"  id="factura"/>
                             </span>
                         </row>
+                        
+                        <row visible="false" id="observacionrow">
+                            <span style="float:right"> Observación: </span>
+                            <span>
+                                <textbox  readonly="true" rows="2"  cols="60" id="observacion"/>
+                            </span>
+                        </row>
                  
                        
                         <row spans="4">
@@ -555,13 +679,18 @@ seriesfilas.visible = false;
                                         <zscript>      <![CDATA[
                                         llenarGrid(int numero,String tipo){
                                         
+                                         if(documento.selectedItem.value.equals("COM") && vu.value == 0){
+                                                                Messagebox.show("LLENE TODOS LOS CAMPOS PARA CONTINUAR AÑADIENDO FILAS, VALOR ESTÁ EN CERO", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                                                                seriespanel.visible = false;  return;
+                                         }
                                         if(cantidad.value == 0 || cantidad.value == null || cantidad.value == ""
                                               || idproducto.value == null || idproducto.value == "" 
-                                              || vu.value == "" || vu.value == 0 || vu.value == null){
-                                                        
-                                                        Messagebox.show("LLENE TODOS LOS CAMPOS PARA CONTINUAR", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-                                                        seriespanel.visible = false;
-                                                return;
+                                              || vu.value == ""  || vu.value == null){
+                                                       
+                                                                Messagebox.show("LLENE TODOS LOS CAMPOS PARA CONTINUAR AÑADIENDO FILAS", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                                                                seriespanel.visible = false;  return;
+                                                       
+                                                      
 
                                               }
                                               seriespanel.visible = true;
@@ -674,25 +803,6 @@ seriesfilas.visible = false;
                     </rows>
                 </grid>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 <vbox>
                     <hbox>
                         <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
@@ -711,18 +821,61 @@ seriesfilas.visible = false;
 
                     <caption label="Busquedas" />
                     <vbox>
-                        <hbox>  Ip:
-                            <textbox id="buscarText"  maxlength="60" cols="40" />
+                        <hbox>
+                            <zscript>
+                              <![CDATA[
+                                  void buscar(String p){
+                                    String fechaDe = jcinform.bean.generarFacturas.convertiraString(desde.value);
+                                    String fechaHa = jcinform.bean.generarFacturas.convertiraString(hasta.value);
+                                        List CabeceracompraEncontrados = adm.queryNativo("Select o.* from Cabeceracompra as o, Proveedores prov " 
+                                        +" where prov.codigo = o.proveedores and prov.razonsocial like '%" + proveedor.value + "%' and o.factura like '"+ p +"%' and o.fecha between '"+fechaDe+"' and  '"+fechaHa+"'  "  + 
+                                        "order by o.factura",Cabeceracompra.class);
+                                        datos = new Listbox();
+                                        int a=0;
+                                            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                                                    datos.getItems().remove(a);
+                                                }
+                                               for (Iterator it = CabeceracompraEncontrados.iterator(); it.hasNext();) {
+                                                      Cabeceracompra acceIt = (Cabeceracompra) it.next();
+                                                      Listitem li = new Listitem();
+                                                      li.setValue(acceIt);
+                                                      li.appendChild(new Listcell(acceIt.getFactura()+""));
+                                                      try{
+                                                        li.appendChild(new Listcell(acceIt.getProveedores().getRazonsocial()+""));
+                                                      }catch(Exception err){
+                                                        li.appendChild(new Listcell("* AJUSTE"));
+                                                      }
+                                                      li.appendChild(new Listcell(acceIt.getSeries()+""));
+                                                      li.appendChild(new Listcell(acceIt.getCantidad()+""));
+                                                      li.appendChild(new Listcell(acceIt.getTotal()+""));
+                                                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
+
+                                                      datos.appendChild(li);
+                                             }
+
+                                    }    
+                                    ]]>
+                            </zscript>
+                            
+                            No.Factura:
+                            <textbox id="buscarText"  maxlength="60" cols="10" />
+                            Proveedor:
+                            <textbox id="proveedor"  maxlength="60" cols="10" />
+                            Fechas:
+                            Desde: 
+                            <datebox id="desde" onCreate="Date fec = new Date(); fec.setDate(1); self.value = fec;"/> Hasta: 
+                            <datebox id="hasta"  onCreate="self.value = new Date()"/>
                             <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                         </hbox>
                         <hbox>
                             <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                                 <listhead>
-                                    <listheader label="Cod."/>
+                                    <listheader label="Factura"/>
                                     <listheader label="Nombre"/>
-                                    <listheader label="MAC"/>
+                                    <listheader label="Observación"/>
+                                    <listheader label="Cantidad"/>
                                     <listheader label="Precio"/>
-                                    <listheader label="Comprado"/>
+                                    <listheader label="Fecha"/>
                                     <listheader label="Asignado"/>
 
                                 </listhead>

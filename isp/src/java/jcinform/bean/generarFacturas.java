@@ -21,7 +21,7 @@ import org.zkoss.zul.Button;
 
 /**
  *
- * @author Familia Jadan Cahueñ
+ * @author Familia Jadan Cahueñ jcinform.bean.generarFacturas.convertiraString
  */
 public class generarFacturas {
 
