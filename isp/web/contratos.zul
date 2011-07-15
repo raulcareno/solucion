@@ -7,7 +7,8 @@
       border-top: none;
       border-left: 1px solid white;
       border-right: 1px solid #CCC;
-      border-bottom: 1px solid #DDD;
+      //border-bottom: 1px solid #DDD;
+      border-bottom: none;
  
 }
 /*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
@@ -164,6 +165,11 @@ void estado(Boolean estado,Boolean modificar){
     nuevoC.disabled = estado;
     nuevoE.disabled = estado;
      identificacion.focus();
+     deb.disabled=estado;
+     efe.disabled=estado;
+     eactivo.disabled=estado;
+     esuspendido.disabled=estado;
+     eterminado.disabled=estado;
 
 
 }
@@ -238,7 +244,7 @@ void estado(Boolean estado,Boolean modificar){
        guardar.disabled=false;
         llenar(new Contratos(0));
         estado(false,false);
-        
+     bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
@@ -594,7 +600,7 @@ void verificarCedula(String valor){
         <!--button id="facturas" onClick="facturasPendientes()" /-->
 
         <tabbox width="100%"  >
-            <tabs  >
+            <tabs>
                 <tab id="registro" label="Contratos"/>
                 <tab label="Facturas Pendientes" id="facturas" onSelect="facturasPendientes()"/>
                 <tab onSelect="buscarSoportes()" label="Historia Técnica" />
@@ -603,271 +609,295 @@ void verificarCedula(String valor){
             <tabpanels>
                 <tabpanel>
        
-                    <panel id="panel" framable="true"  title="DATOS DEL CLIENTE" width="650px" height="100%" >
-                        <panelchildren>
-                
+                    <groupbox id="panel" mold="3d" width="800px">
+	    	
+                        <panel id="equiposcontrol"  width="100%" >
+                            <panelchildren>
+                                <tabbox id="tb2"  >
+                                    <tabs  >
+                                        <tab label="DATOS CONTRATO"/>
+                                        <tab label="OTROS DATOS"/>
+                                    </tabs>
+                                    <tabpanels>
+                                        <tabpanel height="100%">
+                                                              
             
         
-                            <grid  sclass="MyGridRowHeight" width="100%">
-                                <rows>
-                                    <row spans="2">
+                                            <grid  sclass="MyGridRowHeight" width="100%">
+                                                <rows>
+                                                    <row spans="2">
                             
-                                    </row>
-                                    <row>
-                                        <span style="float:right"> Identificación: </span> 
-                                        <span> 
-                                            <textbox id="identificacion"  readonly="false" onBlur="verificarCedula(self.value)"  onOK="verificarCedula(self.value)"  />
-                                            <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
-                                        </span>
-                                    </row>
-                                    <row>
-                                        <span style="float:right"> Nombres:</span> 
-                                        <span>     
-                                            <textbox readonly="true" cols="32"   id="combo" />
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right"> 
+                                                            <label style="font-weight:bold2" value=" Identificación: " /> 
+                                                        </span> 
+                                                        <span> 
+                                                            <textbox id="identificacion"  readonly="false" onBlur="verificarCedula(self.value)"  onOK="verificarCedula(self.value)"  />
+                                                            <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
+                                                        </span>
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right"> 
+                                                            <label style="font-weight:bold2" value=" Nombres: " />  
+                                                        </span> 
+                                                        <span>     
+                                                            <textbox readonly="true" cols="32"   id="combo" />
                            
                               
-                                            <button label="" id="buscarC" disabled="false"  image="/images/auditoria.gif">
-                                                <attribute name="onClick">{
-                                            final Window win = (Window) Executions.createComponents("buscarClientes.zul", null, null);
-                                            win.setMaximizable(true);
-                                            win.setClosable(true);
-                                            win.setAttribute("nuevo", true);
-                                            win.setTitle("Buscar Clientes");
-                                            win.doModal();
-                                            }                            
-                                                </attribute>
-                                            </button> 
-                                            <button label="" disabled="true" id="nuevoC" image="/images/clientes.png">
-                                                <attribute name="onClick">{
-                                            final Window win = (Window) Executions.createComponents("clientes.zul", null, null);
-                                            win.setMaximizable(true);
-                                            win.setClosable(true);
-                                            win.setAttribute("nuevo", true);
-                                            win.setTitle("Nuevo Cliente");
-                                            win.doModal();
-                                            }                            
-                                                </attribute>
-                                            </button> 
+                                                            <button label="" id="buscarC" disabled="false"  image="/images/auditoria.gif">
+                                                                <attribute name="onClick">{
+                                                                        final Window win = (Window) Executions.createComponents("buscarClientes.zul", null, null);
+                                                                        win.setMaximizable(true);
+                                                                        win.setClosable(true);
+                                                                        win.setAttribute("nuevo", true);
+                                                                        win.setTitle("Buscar Clientes");
+                                                                        win.doModal();
+                                                                        }                            
+                                                                </attribute>
+                                                            </button> 
+                                                            <button label="" disabled="true" id="nuevoC" image="/images/clientes.png">
+                                                                <attribute name="onClick">{
+                                                                        final Window win = (Window) Executions.createComponents("clientes.zul", null, null);
+                                                                        win.setMaximizable(true);
+                                                                        win.setClosable(true);
+                                                                        win.setAttribute("nuevo", true);
+                                                                        win.setTitle("Nuevo Cliente");
+                                                                        win.doModal();
+                                                                        }                            
+                                                                </attribute>
+                                                            </button> 
                               
                     
                        
                       
-                                        </span>
-                                    </row>
-                                    <row>
-                                        <span style="float:right">Dirección:  </span>
-                                        <textbox id="direccion" cols="40" readonly="true"  />
-                                    </row>
+                                                        </span>
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" Dirección: " />   
+                                                        </span>
+                                                        <textbox id="direccion" cols="32" readonly="true"  />
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" Teléfono " />   
+                                                        </span>
+                                                        <textbox id="telefono" cols="32" readonly="true"  />
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" Email: " />   
+                                                        </span>
+                                                        <textbox id="email" cols="32" readonly="true"  />
+                                                    </row>
                     
-                                </rows>
-                            </grid>
-             
-                            <panel id="equiposcontrol"  width="100%" >
-                                <panelchildren>
-                                    <tabbox id="tb2"  >
-                                        <tabs  >
-                                            <tab label="DATOS CONTRATO"/>
-                                            <tab label="OTROS DATOS"/>
-                                        </tabs>
-                                        <tabpanels>
-                                            <tabpanel>
-                                                
-                                                <grid  sclass="MyGridRowHeight" width="100%">
-                                                    <rows>
-                                          
-                                                        <row>
-                                                            <span style="float:right">No.Contrato:  </span>
-                                                            <intbox style="color:red;font-size:16px"  readonly="true" id="numerocontrato" cols="16" />
-                                                            <span style="float:right">Fecha:  </span>
-                                                            <datebox id="fecha" disabled="true" onCreate="self.value = new Date()"/>
-                                                        </row>
-                                                        <row>
-                                                            <span style="float:right"> Planes (*):</span>
-                                                            <bandbox disabled="true" readonly="true" width="240px"  id="bd">
-                                                                <bandpopup>
-                                                                    <vbox>
-                                                                        <listbox id="perf" width="450px"
-                                                     onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();">
-                                                                            <listhead>
-                                                                                <listheader label="Descripción"/>
-                                                                                <listheader label="Tipo"/>
-                                                                                <listheader label="valor"/>
-                                            
-                                                                            </listhead>
-                                                                            <listitem forEach="${planes}" value="${each}">
-                                                                                <listcell label="${each.nombre}" />
-                                                                                <listcell label="${each.tipo}" />
-                                                                                <listcell label="${each.valor}" />
-
-                                                                            </listitem>
-                                                                        </listbox>
-                                                                    </vbox>
-                                                                </bandpopup>
-                                                            </bandbox>
-                                                            <span style="float:right"> Instalación (*):</span>
-                                                            <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = new Date()"/>
-                                 
-                                                        </row>
-                                                        <row>
-                                                            <span style="float:right">Dirección:  </span>
-                                                            <textbox id="direccioni" cols="40" readonly="true"  />
-                                                            <span style="float:right">Teléfono:  </span>
-                                                            <textbox id="telefonoi" readonly="true"  />
-                                                        </row>
-                                                        <row >
-                                                            <span style="float:right">Referencia:  
-                                                              
-                                                            </span>
-                                                            <textbox id="referenciai" cols="40" readonly="true"  />
-                                                        </row>
-                                                        <row>
-                                                        </row>
-                                                        <row spans="4">
-                                      
-                                                            <span>  Forma Pago(*): 
-                                                                <radiogroup Id="formapago" onCheck="">
-                                                                    <radio value="1" onCheck="debitorow.visible=false" selected="true"  label="Efectivo"/>
-                                                                    <radio value="2" onCheck="debitorow.visible=true" label="Débito"/>
-                                                                </radiogroup>
-                                        
-                                                              
-                                                            </span>
-                                                        </row>
-                                                          <row visible="true" id="debitorow" spans="4">
-                                      
-                                                            <span>                                          
-                                                                <separator bar="true" orient="vertical"/>
-                                                                Banco:
-                                                                <bandbox disabled="true" readonly="true" width="100px"  id="bd22">
-                                                                <bandpopup>
-                                                                    <vbox>
-                                                                   <listbox id="bancosList" width="250px"
-                                                                    onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
-                                                                            <listhead>
-                                                                                <listheader label="Seleccione un Banco"/>
-                                                                            </listhead>
-                                                                            <listitem forEach="${bancos}" value="${each}">
-                                                                                <listcell label="${each.nombre}" />
-
-                                                                            </listitem>
-                                                                        </listbox>
-                                                                    </vbox>
-                                                                </bandpopup>
-                                                            </bandbox>
+                                                    <row>
+                                                         
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" Estado: " /> 	   
+                                                        </span>
                                                                 
-                                                                <span style="">No.Cuenta:  </span>
-                                                                <span>
-                                                                    <textbox id="nocuenta" cols="10"  readonly="true"  />
-                                                                    <combobox width="29px" id="tipocuenta">
-                                                                        <comboitem label="AHO"/>
-                                                                        <comboitem label="COR"/>
-                                                                    </combobox> 
-                                                                </span>
-                                                                <span style="">Día Pago(*):  </span>
-                                                                <combobox width="17px"  id="diapago">
-                                                                    <comboitem label="1"/>
-                                                                    <comboitem label="2"/>
-                                                                    <comboitem label="3"/>
-                                                                    <comboitem label="4"/> 
-                                                                    <comboitem label="5"/>
-                                                                    <comboitem label="6"/> 
-                                                                    <comboitem label="7"/>
-                                                                    <comboitem label="8"/> 
-                                                                    <comboitem label="9"/>
-                                                                    <comboitem label="10"/> 
-                                                                    <comboitem label="11"/>
-                                                                    <comboitem label="12"/> 
-                                                                    <comboitem label="13"/>
-                                                                    <comboitem label="14"/> 
-                                                                    <comboitem label="15"/>
-                                                                    <comboitem label="16"/> 
-                                                                    <comboitem label="17"/>
-                                                                    <comboitem label="18"/> 
-                                                                    <comboitem label="19"/>
-                                                                    <comboitem label="20"/> 
-                                                                    <comboitem label="23"/>
-                                                                    <comboitem label="22"/> 
-                                                                    <comboitem label="25"/>
-                                                                    <comboitem label="24"/> 
-                                                                    <comboitem label="27"/>
-                                                                    <comboitem label="26"/> 
-                                                                    <comboitem label="29"/>
-                                                                    <comboitem label="28"/>
-                                                                    <comboitem label="30"/>
-                                                                </combobox> 
-                                                            </span>
-                                                        </row>
-                                                       
-                                                      
-                                                        <row spans="4" style="background:yellow">
-                                                            <span>
-	    			Estado: 
-                                                                <radiogroup id="estadoContrato" >
-                                                                    <radio id="eactivo" selected="true" value="Activo" label="ACTIVO"/>
-                                                                    <radio id="esuspendido"  value="Suspendido"  label="CORTADO"/>
-                                                                    <radio  id="eterminado" value="Terminado"  label="TERMINADO"/>
+                                                        <radiogroup id="estadoContrato" >
+                                                            <radio disabled="true" id="eactivo" selected="true" value="Activo" label="ACTIVO" style="font-weight:bold2" />
+                                                            <radio disabled="true"  id="esuspendido"  value="Suspendido"  label="CORTADO" style="font-weight:bold2" />
+                                                            <radio  disabled="true"  id="eterminado" value="Terminado"  label="TERMINADO" style="font-weight:bold2" />
                                          
-                                                                </radiogroup>
-                                                            </span>
-                                                        </row>
-                                                    
-                                                    </rows>
-                                                </grid>
-                                            </tabpanel>
-                                            <tabpanel>
-                                                <grid  sclass="MyGridRowHeight">
-                                                    <rows>
-                                                        <row>   
-                                                            <span style="float:right"> Anidado a Nodo(*):</span>
-                                                            <bandbox  disabled="true"  readonly="true"  id="bd2">
-                                                                <bandpopup>
-                                                                    <vbox>
-                                                                        <listbox id="nodo" width="450px"
-                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();">
-                                                                            <listhead>
-                                                                                <listheader label="Nombre"/>
-                                                                                <listheader label="Sector"/>
-                                                                                <listheader label="Radio"/>
-                                                                                <listheader label="Ip"/>
+                                                        </radiogroup>
+                                                        <span></span>
+                                                        <span></span>
+                                                            
+                                                       
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" No.Contrato: " /> 
+                                                        </span>
+                                                        <intbox style="color:red;font-size:16px"  readonly="true" id="numerocontrato" cols="16" />
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" Fecha: " />   
+                                                        </span>
+                                                        <datebox id="fecha" disabled="true" onCreate="self.value = new Date()"/>
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right"> 
+                                                            <label style="font-weight:bold2" value=" Planes (*): " />  
+                                                        </span>
+                                                        <bandbox disabled="true" readonly="true" width="240px"  id="bd">
+                                                            <bandpopup>
+                                                                <vbox>
+                                                                    <listbox id="perf" width="450px"
+                                                     onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();">
+                                                                        <listhead>
+                                                                            <listheader label="Descripción"/>
+                                                                            <listheader label="Tipo"/>
+                                                                            <listheader label="valor"/>
                                             
-                                                                            </listhead>
-                                                                            <listitem forEach="${nodos}" value="${each}">
-                                                                                <listcell label="${each.nombre}" />
-                                                                                <listcell label="${each.nodos.sector}" />
-                                                                                <listcell label="${each.nodos.nombre}" />
-                                                                                <listcell label="${each.ip}" />
-                                                                            </listitem>
-                                                                        </listbox>
-                                                                    </vbox>
-                                                                </bandpopup>
-                                                            </bandbox>
-                                                          
-                                                        </row>
-                                                        <row>
-                                                            <span style="float:right"> Autorizado a Inst(*):</span>
-                                                            <checkbox id="autorizado" disabled="true"  />    
-                                                        </row>
-                                                        <row spans="2">
-                                                            <grid>
-                                                                <rows>
-                                                                    <row>
-                                                                        <span style="float:right">   IP(*):</span>
-                                                                        <textbox cols="15" readonly="true" id="ip" /> 
-                                                                        <span style="float:right">   Usuario:</span>
-                                                                        <textbox cols="15" readonly="true"   id="usuario" /> 
-                                                                        <span style="float:right">   Clave:</span>
-                                                                        <textbox cols="15" readonly="true"   id="clave" /> 
-                                                                    </row>
-                                                                </rows>
-                                                            </grid>
-                                                        </row>
-                                                        <row>
-                                                            <span style="float:right"> Vendido por(*):</span> 
-                                                            <span>
-                                                                <textbox  readonly="true"  cols="32"   id="combov" />
+                                                                        </listhead>
+                                                                        <listitem forEach="${planes}" value="${each}">
+                                                                            <listcell label="${each.nombre}" />
+                                                                            <listcell label="${each.tipo}" />
+                                                                            <listcell label="${each.valor}" />
 
-                                                                <button label=""  id="buscarE" disabled="true" image="/images/auditoria.gif">
-                                                                    <attribute name="onClick">{
+                                                                        </listitem>
+                                                                    </listbox>
+                                                                </vbox>
+                                                            </bandpopup>
+                                                        </bandbox>
+                                                        <span style="float:right"> 
+                                                            <label style="font-weight:bold2" value=" Instalación (*): " /> 
+                                                        </span>
+                                                        <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = new Date()"/>
+                                 
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" Dirección: " />  
+                                                        </span>
+                                                        <textbox id="direccioni" cols="40" readonly="true"  />
+                                                        <span style="float:right"> 
+                                                            <label style="font-weight:bold2" value=" Teléfono: " />  
+                                                        </span>
+                                                        <textbox id="telefonoi" readonly="true"  />
+                                                    </row>
+                                                    <row >
+                                                        <span style="float:right">  
+                                                            <label style="font-weight:bold2" value=" Referencia: " />
+                                                              
+                                                        </span>
+                                                        <textbox id="referenciai" cols="40" readonly="true"  />
+                                                        <span style="float:right"> </span>
+                                                        <span style="float:right"> </span>
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right">  
+                                                            <label style="font-weight:bold2" value=" Pago en(*): " />
+                                                        </span>
+                                                        <radiogroup Id="formapago" onCheck="">
+                                                            <radio disabled="true" id="efe" selected="true" value="1" onCheck="bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;" label="Efectivo"/>
+                                                            <radio disabled="true" id="deb"   value="2" onCheck="bd22.disabled=false;tipocuenta.disabled= false;nocuenta.disabled = false;diapago.disabled = false;  " label="Débito"/>
+                                                        </radiogroup>
+                                                        <span style="float:right"> 
+                                                            <label style="font-weight:bold2" value="Banco:" />
+                                                        </span>
+                                                        <bandbox disabled="true" readonly="true" width="100px"  id="bd22">
+                                                            <bandpopup>
+                                                                <vbox>
+                                                                    <listbox  id="bancosList" width="250px"
+                                                                    onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
+                                                                        <listhead>
+                                                                            <listheader label="Seleccione un Banco"/>
+                                                                        </listhead>
+                                                                        <listitem forEach="${bancos}" value="${each}">
+                                                                            <listcell label="${each.nombre}" />
+
+                                                                        </listitem>
+                                                                    </listbox>
+                                                                </vbox>
+                                                            </bandpopup>
+                                                        </bandbox>
+                                                    </row>
+                                                    <row>
+                                       
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value="No.Cuen: " />   
+                                                        </span>
+                                                        <span>
+                                                            <textbox id="nocuenta" cols="10"  readonly="true"  />
+                                                            <combobox disabled="true" width="29px" id="tipocuenta">
+                                                                <comboitem label="AHO"/>
+                                                                <comboitem label="COR"/>
+                                                            </combobox> 
+                                                        </span>
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value="Día Pago(*): " />   
+                                                        </span>
+                                                        <combobox disabled="true" width="17px"  id="diapago">
+                                                            <comboitem label="1"/>
+                                                            <comboitem label="2"/>
+                                                            <comboitem label="3"/>
+                                                            <comboitem label="4"/> 
+                                                            <comboitem label="5"/>
+                                                            <comboitem label="6"/> 
+                                                            <comboitem label="7"/>
+                                                            <comboitem label="8"/> 
+                                                            <comboitem label="9"/>
+                                                            <comboitem label="10"/> 
+                                                            <comboitem label="11"/>
+                                                            <comboitem label="12"/> 
+                                                            <comboitem label="13"/>
+                                                            <comboitem label="14"/> 
+                                                            <comboitem label="15"/>
+                                                            <comboitem label="16"/> 
+                                                            <comboitem label="17"/>
+                                                            <comboitem label="18"/> 
+                                                            <comboitem label="19"/>
+                                                            <comboitem label="20"/> 
+                                                            <comboitem label="23"/>
+                                                            <comboitem label="22"/> 
+                                                            <comboitem label="25"/>
+                                                            <comboitem label="24"/> 
+                                                            <comboitem label="27"/>
+                                                            <comboitem label="26"/> 
+                                                            <comboitem label="29"/>
+                                                            <comboitem label="28"/>
+                                                            <comboitem label="30"/>
+                                                        </combobox> 
+                                                                           			
+	    		 
+                                                    </row>
+                                                           
+                                                     
+                                                    
+                                               
+                                                    <row>   
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value="Anidado Nodo(*): " />  
+                                                        </span>
+                                                        <bandbox  disabled="true"  readonly="true"  id="bd2">
+                                                            <bandpopup>
+                                                                <vbox>
+                                                                    <listbox id="nodo" width="450px"
+                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();">
+                                                                        <listhead>
+                                                                            <listheader label="Nombre"/>
+                                                                            <listheader label="Sector"/>
+                                                                            <listheader label="Radio"/>
+                                                                            <listheader label="Ip"/>
+                                            
+                                                                        </listhead>
+                                                                        <listitem forEach="${nodos}" value="${each}">
+                                                                            <listcell label="${each.nombre}" />
+                                                                            <listcell label="${each.nodos.sector}" />
+                                                                            <listcell label="${each.nodos.nombre}" />
+                                                                            <listcell label="${each.ip}" />
+                                                                        </listitem>
+                                                                    </listbox>
+                                                                </vbox>
+                                                            </bandpopup>
+                                                        </bandbox>
+                                                        <span style="float:right">   IP(*):</span>
+                                                        <textbox cols="15" readonly="true" id="ip" /> 
+                                                    </row>
+                                                    <row visible="false">
+                                                        <span style="float:right"> Autorizado a Inst(*):</span>
+                                                        <checkbox id="autorizado" disabled="true"  />    
+                                                           
+                                                    </row>
+                                                    <row>
+                                                           
+                                                           
+                                                        <span style="float:right">   Usuario:</span>
+                                                        <textbox cols="15" readonly="true"   id="usuario" /> 
+                                                        <span style="float:right">   Clave:</span>
+                                                        <textbox cols="15" readonly="true"   id="clave" /> 
+                                                            
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right"> 
+                                                            <label style="font-weight:bold2" value=" Vendido por(*): " /> 
+                                                        </span> 
+                                                        <span>
+                                                            <textbox  readonly="true"  cols="32"   id="combov" />
+
+                                                            <button label=""  id="buscarE" disabled="true" image="/images/auditoria.gif">
+                                                                <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("buscarEmpleados.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -875,10 +905,10 @@ void verificarCedula(String valor){
                                             win.setTitle("Buscar Empleados");
                                             win.doModal();
                                             }                            
-                                                                    </attribute>
-                                                                </button> 
-                                                                <button label="" disabled="true" id="nuevoE" image="/images/empleados.png" >
-                                                                    <attribute name="onClick">{
+                                                                </attribute>
+                                                            </button> 
+                                                            <button label="" disabled="true" id="nuevoE" image="/images/empleados.png" >
+                                                                <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("empleados.zul", null, null);
                                             win.setMaximizable(true);
                                             win.setClosable(true);
@@ -886,40 +916,47 @@ void verificarCedula(String valor){
                                             win.setTitle("Nuevo Empleado");
                                             win.doModal();
                                             }                            
-                                                                    </attribute>
-                                                                </button> 
+                                                                </attribute>
+                                                            </button> 
                      
                               
-                                                                <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                                            <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
                                         
                     
                        
                       
-                                                            </span>
-                                                        </row>
-                                                        <row>
-                                                            <span style="float:right"> Registrado por(*):</span> 
+                                                        </span>
+                                                    </row>
+                                                    <row>
+                                                        <span style="float:right"> 
+                                                            <label style="font-weight:bold2" value=" Registrado por(*): " />  
+                                                        </span> 
+                                                        <span>
                                                             <textbox id="registrado" readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
                                                             <textbox id="registradoU"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
-                                                        </row>
-                                                    </rows>
-                                                </grid>    
+                                                        </span>
+                                                        <span></span>
+                                                        <span></span>
+                                                    </row>
+                                                </rows>
+                                            </grid>    
                                                         
-                                            </tabpanel>
+                                        </tabpanel>
                                            
                                           
 
-                                        </tabpanels>
-                                    </tabbox>
+                                    </tabpanels>
+                                </tabbox>
                           
                                      
                               
-                                </panelchildren>
-                            </panel>
+                            </panelchildren>
+                        </panel>
                        
-                          
-                        </panelchildren>
-                    </panel>
+                   		
+	    		
+                    </groupbox>
+    
                     <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
                     <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
                     <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
