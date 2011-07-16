@@ -40,6 +40,9 @@ import java.text.SimpleDateFormat;
       List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getCodigo()+"' ");
       List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
     List nodos = adm.query("Select o from Radios as o");
+    Boolean modificare = false;
+    Boolean agregare = false;
+    
 //FUNCIONES
 void llenar(Contratos  equi2){
     equi = equi2;
@@ -170,6 +173,10 @@ void estado(Boolean estado,Boolean modificar){
      eactivo.disabled=estado;
      esuspendido.disabled=estado;
      eterminado.disabled=estado;
+     direccion.readonly = estado;
+     telefono.readonly = estado;
+     email.readonly = estado;
+     combo.readonly = estado;
 
 
 }
@@ -592,7 +599,25 @@ void verificarCedula(String valor){
                 }
                 
                 
-                
+        //BUSQUEDA DE CLIENTES
+  void buscarCli(String p){
+        List ClientesEncontrados = adm.query("Select o from Clientes as o where o.apellidos like '"+p+"%' order by o.apellidos");
+        lcliente = new Listbox();
+        int a=0;
+            for (Iterator it = lcliente.getItems().iterator(); it.hasNext();) {
+                    lcliente.getItems().remove(a);
+                }
+
+
+               for (Iterator it = ClientesEncontrados.iterator(); it.hasNext();) {
+                      Clientes acceIt = (Clientes) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getApellidos()+" "+acceIt.getNombres()));
+                      li.appendChild(new Listcell(acceIt.getDireccion()+""));
+                      lcliente.appendChild(li);
+             }
+    }         
                 
   ]]>
     </zscript>
@@ -639,11 +664,34 @@ void verificarCedula(String valor){
                                                     </row>
                                                     <row>
                                                         <span style="float:right"> 
-                                                            <label style="font-weight:bold2" value=" Nombres: " />  
+                                                            <label style="font-weight:bold2" id="labelnombre" value=" Nombres(*): " />  
                                                         </span> 
                                                         <span>     
-                                                            <textbox readonly="true" cols="32"   id="combo" />
-                           
+                                                            <textbox readonly="true" cols="32"   onOK ="btcliente.value = combo.value; buscarCli(btcliente.value); bcliente.open(labelnombre);btcliente.focus()"   id="combo" />
+                                                            <popup    id="bcliente" width="580px">
+                                                                <groupbox>
+                                                                    <vbox>
+                                                                        <hbox>
+                                            Buscar: 
+                                                                            <textbox value="" id="btcliente" constraint="no empty"  onChanging="buscarCli(event.value)"  onOK="buscarCli(self.value)" maxlength="60" />
+                                                                            <button id="buscar"   label="Buscar" onClick="buscarCli(btcliente.getValue());"/>
+                                                                        </hbox>
+                                                                        <hbox>
+                                                                            <listbox onSelect='codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); bcliente.close()' id="lcliente" width="400px">
+                                                                                <listhead>
+                                                                                    <listheader label="Nombres"/>
+                                                                                    <listheader label="Dirección"/>
+                                                                                </listhead>
+                                                                                <listitem forEach="${allEvents}" value="${each}">
+                                                                                    <listcell label="${each.apellidos}" />
+                                                                                    <listcell label="${each.direccion}" />
+                                                                                </listitem>
+                                                                            </listbox>
+                                                                        </hbox>
+                                                                    </vbox>
+                                                                </groupbox>
+                                    
+                                                            </popup>
                               
                                                             <button label="" id="buscarC" disabled="false"  image="/images/auditoria.gif">
                                                                 <attribute name="onClick">{
