@@ -345,13 +345,27 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     fac.setPlaca(placa.getText().replace("_", "").toUpperCase());
                     fac.setFechaini(new Date());
                     fac.setFecha(new Date());
-                    Integer numero = new Integer(emp.getDocumentoticket())+1;
-                    fac.setTicket(""+(numero));
-                    emp.setDocumentoticket(""+numero);
-                    adm.actualizar(emp);//GUARDO EMPRESA
-                    noTicket.setText(numero+"");
-                    adm.guardar(fac);//GUARDO FACTURA
-                    codigo.setText(fac.getCodigo() + "");
+                   
+                      Boolean pasar = true;
+                        Integer numero = new Integer(emp.getDocumentoticket())+1;
+                        while(pasar){
+                            List sihay = adm.query("Select o from Factura as o where o.ticket = '"+numero+"'"); 
+                            if(sihay.size()<=0){
+                                pasar = false;
+
+                                fac.setTicket("" + numero);
+                                emp.setDocumentoticket((numero) + "");
+                                adm.actualizar(emp);//GUARDO EMPRESA
+                                adm.guardar(fac); // GUARDO FACTURA
+                                noTicket.setText(numero+"");
+                                 codigo.setText(fac.getCodigo() + "");
+
+                            }else{
+                                numero++;
+                            }
+
+                        }
+                    
                     
                     
                     imprimir(fac.getCodigo(), emp);

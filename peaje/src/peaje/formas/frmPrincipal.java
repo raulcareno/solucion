@@ -429,7 +429,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel38 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
         jLabel42 = new javax.swing.JLabel();
-        jButton11 = new javax.swing.JButton();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -1989,15 +1988,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jLabel42.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
             jLabel42.setBounds(490, 480, 190, 130);
             contenedor.add(jLabel42, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-            jButton11.setText("jButton11");
-            jButton11.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jButton11ActionPerformed(evt);
-                }
-            });
-            jButton11.setBounds(20, 610, 130, 40);
-            contenedor.add(jButton11, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
 
@@ -5173,12 +5163,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         tecla(evt.getKeyCode());
 }//GEN-LAST:event_btnEliminar1KeyPressed
-
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
-        LeerTarjeta s = new LeerTarjeta();
-             s.imprimir("");         
-    }//GEN-LAST:event_jButton11ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -5357,7 +5341,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JSpinner ingresos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

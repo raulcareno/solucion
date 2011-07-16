@@ -248,11 +248,23 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             fac.setPlaca("CLIENTE BOTON");
             fac.setFechaini(new Date());
             fac.setFecha(new Date());
+            Boolean pasar = true;
             Integer numero = new Integer(emp.getDocumentoticket())+1;
-            fac.setTicket("" + numero);
-            emp.setDocumentoticket((numero) + "");
-            adm.actualizar(emp);//GUARDO EMPRESA
-            adm.guardar(fac); // GUARDO FACTURA
+            while(pasar){
+                List sihay = adm.query("Select o from Factura as o where o.ticket = '"+numero+"'"); 
+                if(sihay.size()<=0){
+                    pasar = false;
+                    
+                    fac.setTicket("" + numero);
+                    emp.setDocumentoticket((numero) + "");
+                    adm.actualizar(emp);//GUARDO EMPRESA
+                    adm.guardar(fac); // GUARDO FACTURA
+                    
+                }else{
+                    numero++;
+                }
+                
+            }
             
             
 //            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
