@@ -60,6 +60,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
     Boolean guardando = false;
     WorkingDirectory w = new WorkingDirectory();
     String ubicacionDirectorio = w.get() + separador;
+    logger lger = new logger();
     /** Creates new form frmProfesores */
     public frmTicket(java.awt.Frame parent, boolean modal, Administrador adm1) {
 //        super(parent, modal);
@@ -387,6 +388,9 @@ if(empresaObj.getSeabretic()){
                     principal.auditar("Ticket", "No." + fac.getTicket(), "GUARDAR");
                     principal.contenedor.requestFocus();
                     guardando = false;
+                    try {
+                        
+                    
                     if(empresaObj.getWebcam()){
                          if (ubicacionDirectorio.contains("build")) {
                             ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
@@ -394,13 +398,20 @@ if(empresaObj.getSeabretic()){
                         
                         fotografiar(""+fac.getCodigo(), ubicacionDirectorio+"\\fotos");
                     }
+                    } catch (Exception e) {
+                        System.out.println("fotografíar: "+e);
+                        lger.logger(frmTicket.class.getName(), e.getMessage());   
+                    }
                     principal = null;
                     empresaObj = null;
                     System.gc();
                     this.dispose();
                 } catch (Exception ex) {
+                    lger.logger(frmTicket.class.getName(), ex.getMessage());
+                    
                     JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
                     Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+                     
                     btnAgregar.setEnabled(true);
                     btnSalir.setEnabled(true);
                    guardando = false;
@@ -497,6 +508,7 @@ public void fotografiar(String nombre,String direccion){
 //            }
         } catch (Exception ex) {
             Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmTicket.class.getName(), ex+"");
         }
 
 //        } catch (JRException ex) {

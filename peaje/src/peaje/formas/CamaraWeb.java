@@ -28,7 +28,7 @@ class CamaraWeb {
     public Player p = null;
     public Component video;
     public MediaLocator ml;
-
+ logger lger = new logger();
  
     CamaraWeb() {
         Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
@@ -44,6 +44,7 @@ class CamaraWeb {
             }
         } catch (Exception e) {
             System.out.println("error en la comunicacion con la webcam REVISE VFW: "+e);
+             lger.logger(frmPrincipal.class.getName(), e+"");
             //JOptionPane.showMessageDialog(null, "Error de Comunicacion con la WebCam " + e);
         }
     }
