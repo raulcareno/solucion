@@ -76,6 +76,7 @@ filas.getChildren().clear();
                                     aButton.setHeight("5px");
                                     aButton.setAttribute("series"+acceIt.getEquipos().getCodigo(),seriesA);
                                     aButton.setId("id"+acceIt.getEquipos().getCodigo());
+                                    aButton.setDisabled(true);
                                     aButton.addEventListener("onClick", new EventListener() {
                                         public void onEvent(Event event) throws Exception {
                                                 seriespanel.visible = false;
