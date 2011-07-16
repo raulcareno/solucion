@@ -1203,9 +1203,9 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="panelHoras1" pref="312" max="32767" attributes="0"/>
+                                  <Component id="panelHoras1" pref="309" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jPanel10" pref="285" max="32767" attributes="0"/>
+                                  <Component id="jPanel10" pref="282" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
@@ -1230,12 +1230,12 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="diasHabiles1" pref="595" max="32767" attributes="2"/>
+                          <Component id="diasHabiles1" pref="589" max="32767" attributes="2"/>
                           <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane5" pref="595" max="32767" attributes="0"/>
+                          <Component id="jScrollPane5" pref="589" max="32767" attributes="0"/>
                           <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
@@ -1248,7 +1248,7 @@
                               <Component id="jLabel33" min="-2" pref="329" max="-2" attributes="0"/>
                               <Component id="jLabel35" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="40" max="32767" attributes="1"/>
+                          <EmptySpace pref="34" max="32767" attributes="1"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2746,6 +2746,19 @@
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
                   <JLayeredPaneConstraints x="490" y="480" width="190" height="130" layer="0" position="-1"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton11">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jButton11"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton11ActionPerformed"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
+                  <JLayeredPaneConstraints x="20" y="610" width="130" height="40" layer="0" position="-1"/>
                 </Constraint>
               </Constraints>
             </Component>

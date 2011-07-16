@@ -451,7 +451,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList textFNList = usuarioElement.getChildNodes();
                     user.setPuerto(((Node) textFNList.item(0)).getNodeValue().trim());
                      } catch (Exception parserConfigurationException) {
-                        System.out.println("puerto principal 1");
+//                        System.out.println("puerto principal 1");
                     }
                       //------
                     try {
@@ -460,7 +460,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList claveList = lastNameElement.getChildNodes();
                     user.setLed(((Node) claveList.item(0)).getNodeValue().trim());
                      } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+//                        System.out.println("ERROR XML LED"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -469,7 +469,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList textAgeList = ageElement.getChildNodes();
                     user.setBarras(((Node) textAgeList.item(0)).getNodeValue().trim());
                      } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+//                        System.out.println("ERROR XML BARRA1"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -478,7 +478,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList puertoAgeList = puertoElement.getChildNodes();
                     user.setBarras2(((Node) puertoAgeList.item(0)).getNodeValue().trim());
                        } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+//                        System.out.println("ERROR XML BARRA 2"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -486,8 +486,8 @@ public static UsuarioActivo user = new UsuarioActivo();
                     Element inElement = (Element) inList.item(0);
                     NodeList inAgeList = inElement.getChildNodes();
                     user.setSale(((Node) inAgeList.item(0)).getNodeValue().trim());
-  } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    } catch (Exception parserConfigurationException) {
+                    //    System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -496,7 +496,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList saleinAgeList = sale2Elm.getChildNodes();
                     user.setSale2(((Node) saleinAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -505,7 +505,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList ENTRADA1outAgeList = ENTRADA1outElement.getChildNodes();
                     user.setPuerto1(((Node) ENTRADA1outAgeList.item(0)).getNodeValue().trim());
                        } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -514,7 +514,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList ENTRADA2outAgeList = ENTRADA2outElement.getChildNodes();
                     user.setPuerto2(((Node) ENTRADA2outAgeList.item(0)).getNodeValue().trim());
                      } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -523,7 +523,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList ENTRADA3outAgeList = ENTRADA3outElement.getChildNodes();
                     user.setPuerto3(((Node) ENTRADA3outAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -532,7 +532,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList ENTRADA4outAgeList = ENTRADA4outElement.getChildNodes();
                     user.setPuerto4(((Node) ENTRADA4outAgeList.item(0)).getNodeValue().trim());
                      } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -541,7 +541,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList ENTRADA5outAgeList = ENTRADA5outElement.getChildNodes();
                     user.setPuerto5(((Node) ENTRADA5outAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -550,7 +550,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList ENTRADA6outAgeList = ENTRADA6outElement.getChildNodes();
                     user.setPuerto6(((Node) ENTRADA6outAgeList.item(0)).getNodeValue().trim());
                     } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -560,7 +560,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setPuerto7(((Node) ENTRADA7outAgeList.item(0)).getNodeValue().trim());
  //------
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -569,7 +569,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList SALIDA1outAgeList = SALIDA1outElement.getChildNodes();
                     user.setSalida1(((Node) SALIDA1outAgeList.item(0)).getNodeValue().trim());
                     } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -578,7 +578,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList SALIDA2outAgeList = SALIDA2outElement.getChildNodes();
                     user.setSalida2(((Node) SALIDA2outAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -587,7 +587,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList SALIDA3outAgeList = SALIDA3outElement.getChildNodes();
                     user.setSalida3(((Node) SALIDA3outAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -597,7 +597,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList SALIDA4outAgeList = SALIDA4outElement.getChildNodes();
                     user.setSalida4(((Node) SALIDA4outAgeList.item(0)).getNodeValue().trim());
                         } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -606,7 +606,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList SALIDA5outAgeList = SALIDA5outElement.getChildNodes();
                     user.setSalida5(((Node) SALIDA5outAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -616,7 +616,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList SALIDA6outAgeList = SALIDA6outElement.getChildNodes();
                     user.setSalida6(((Node) SALIDA6outAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -626,7 +626,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList SALIDA7outAgeList = SALIDA7outElement.getChildNodes();
                     user.setSalida7(((Node) SALIDA7outAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -636,7 +636,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList ACTIVA1outAgeList = ACTIVA1outElement.getChildNodes();
                     user.setActiva1(new Boolean(((Node) ACTIVA1outAgeList.item(0)).getNodeValue().trim()));
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -646,7 +646,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList ACTIVA2outAgeList = ACTIVA2outElement.getChildNodes();
                     user.setActiva2(new Boolean(((Node) ACTIVA2outAgeList.item(0)).getNodeValue().trim()));
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -656,7 +656,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList ACTIVA3outAgeList = ACTIVA3outElement.getChildNodes();
                     user.setActiva3(new Boolean(((Node) ACTIVA3outAgeList.item(0)).getNodeValue().trim()));
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -666,7 +666,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList ACTIVA4outAgeList = ACTIVA4outElement.getChildNodes();
                     user.setActiva4(new Boolean(((Node) ACTIVA4outAgeList.item(0)).getNodeValue().trim()));
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -676,7 +676,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList ACTIVA5outAgeList = ACTIVA5outElement.getChildNodes();
                     user.setActiva5(new Boolean(((Node) ACTIVA5outAgeList.item(0)).getNodeValue().trim()));
                      } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -685,7 +685,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList ACTIVA6outAgeList = ACTIVA6outElement.getChildNodes();
                     user.setActiva6(new Boolean(((Node) ACTIVA6outAgeList.item(0)).getNodeValue().trim()));
                        } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -715,7 +715,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setMulta(new Double(((Node) MULTAoutAgeList.item(0)).getNodeValue().trim()));
                     
   } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+//                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -724,7 +724,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList PUERTA1outAgeList = PUERTA1outElement.getChildNodes();
                     user.setPuerta1(((Node) PUERTA1outAgeList.item(0)).getNodeValue().trim());
                     } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+//                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -733,7 +733,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList PUERTA2outAgeList = PUERTA2outElement.getChildNodes();
                     user.setPuerta2(((Node) PUERTA2outAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+//                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -742,7 +742,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList PUERTA3outAgeList = PUERTA3outElement.getChildNodes();
                     user.setPuerta3(((Node) PUERTA3outAgeList.item(0)).getNodeValue().trim());
                      } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+//                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -751,7 +751,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList PUERTA4outAgeList = PUERTA4outElement.getChildNodes();
                     user.setPuerta4(((Node) PUERTA4outAgeList.item(0)).getNodeValue().trim());
                        } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+//                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -760,7 +760,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList PUERTA5outAgeList = PUERTA5outElement.getChildNodes();
                     user.setPuerta5(((Node) PUERTA5outAgeList.item(0)).getNodeValue().trim());
                      } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+//                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -769,7 +769,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList PUERTA6outAgeList = PUERTA6outElement.getChildNodes();
                     user.setPuerta6(((Node) PUERTA6outAgeList.item(0)).getNodeValue().trim());
                    } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+//                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {
@@ -778,7 +778,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList PUERTA7outAgeList = PUERTA7outElement.getChildNodes();
                     user.setPuerta7(((Node) PUERTA7outAgeList.item(0)).getNodeValue().trim());
   } catch (Exception parserConfigurationException) {
-                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+//                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     

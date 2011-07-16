@@ -19,7 +19,7 @@ import hibernate.cargar.UsuarioActivo;
         datosConecta = pXml.user;
         try {
             String nombre = datosConecta.getNombre();
-            System.out.println("NOMB:" + nombre);
+            //System.out.println("NOMB:" + nombre);
             if (nombre.equals("null") || datosConecta.getContrasenia().equals("null")) {
                 return false;
             }

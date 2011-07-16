@@ -113,11 +113,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         btnAyuda.setEnabled(estado);
         btnSalir2.setEnabled(estado);
         btnCerrar.setEnabled(estado);
-
     }
-//public frmPrincipal(){
-//
-//    }
 
     /** Creates new form frmPrincipal */
     public frmPrincipal() {
@@ -433,6 +429,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel38 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
         jLabel42 = new javax.swing.JLabel();
+        jButton11 = new javax.swing.JButton();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -1339,9 +1336,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addContainerGap()
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frmLoteLayout.createSequentialGroup()
-                        .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                        .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                         .addGap(4, 4, 4))
                     .addGroup(frmLoteLayout.createSequentialGroup()
                         .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1359,11 +1356,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGap(23, 23, 23))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
+                .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
                 .addGap(35, 35, 35))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
                 .addGap(35, 35, 35))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
@@ -1374,7 +1371,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel35))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         frmLoteLayout.setVerticalGroup(
             frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1993,6 +1990,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jLabel42.setBounds(490, 480, 190, 130);
             contenedor.add(jLabel42, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+            jButton11.setText("jButton11");
+            jButton11.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton11ActionPerformed(evt);
+                }
+            });
+            jButton11.setBounds(20, 610, 130, 40);
+            contenedor.add(jButton11, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
             jSplitPane1.setRightComponent(contenedor);
 
             jXTaskPaneContainer1.setAlignmentX(0.1F);
@@ -2303,6 +2309,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             LeerTarjeta reader;
             String puertoYaAbiertos = "";
             puertoListo = new ArrayList();
+            Boolean interfaz = true;
+            Boolean leds = true;
+            Boolean barras1 = true;
+            Boolean barras2 = true;
             while (portList.hasMoreElements()) {
                 try {
                     portId = (CommPortIdentifier) portList.nextElement();
@@ -2310,30 +2320,60 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                         //(0) //PUERTO DE LA TARJETA INTERFAZ PC - BARRERA
 //                         puertoYaAbiertos = puertoYaAbiertos+"; "+portId.getName();
-                        System.out.println("" + portId.getName() + " " + empresaObj.getPuerto());
+//                        System.out.println("" + portId.getName() + " " + empresaObj.getPuerto());
                         if (portId.getName().equals(empresaObj.getPuerto())) {
-                            reader = new LeerTarjeta(portId, this);
-                            puertoListo.add(reader);
+                            try {
+                                if (interfaz) {
+                                    reader = new LeerTarjeta(portId, this);
+                                    puertoListo.add(reader);
+                                    System.out.println("PUERTO INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto());
+                                    interfaz = false;
+                                }
+                            } catch (Exception e) {
+                                System.out.println("NO SE ABRIÓ: INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto());
+                            }
 
-                            System.out.println("ABIERTO: " + empresaObj.getPuerto());
                         }
                         //(1)    //PUERTO DE LETRERO LEDS
                         if (portId.getName().equals(empresaObj.getLed())) {
-                            reader = new LeerTarjeta(portId, this);
-                            puertoListo.add(reader);
-                            System.out.println("ABIERTO: " + empresaObj.getLed());
+                            try {
+                                if (leds) {
+                                    reader = new LeerTarjeta(portId, this);
+                                    puertoListo.add(reader);
+                                    System.out.println("PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed());
+                                    leds = false;
+                                }
+                            } catch (Exception e) {
+                                System.out.println("NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed());
+                            }
                         }
                         //(2)  //PUERTO DE CODIGO DE BARRAS
                         if (portId.getName().equals(empresaObj.getBarras())) {
-                            reader = new LeerTarjeta(portId, this);
-                            puertoListo.add(reader);
-                            System.out.println("ABIERTO: " + empresaObj.getBarras());
+                            try {
+                                if (barras1) {
+                                    reader = new LeerTarjeta(portId, this);
+                                    puertoListo.add(reader);
+                                    System.out.println("PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras());
+                                    barras1 = false;
+                                }
+                            } catch (Exception e) {
+                                System.out.println("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras());
+                            }
                         }
                         //(3)  //PUERTO DE CODIGO DE BARRAS 2
                         if (portId.getName().equals(empresaObj.getBarras2())) {
-                            reader = new LeerTarjeta(portId, this);
-                            puertoListo.add(reader);
-                            System.out.println("ABIERTO: " + empresaObj.getBarras2());
+                            try {
+                                if (barras2) {
+
+                                    reader = new LeerTarjeta(portId, this);
+                                    puertoListo.add(reader);
+                                    System.out.println("PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2());
+                                    barras2 = false;
+                                }
+                            } catch (Exception e) {
+                                System.out.println("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2());
+                            }
+
                         }
                         if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
                             reader = new LeerTarjeta(portId, this);
@@ -2416,7 +2456,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             }
             portList = null;
-            System.out.println("LISTA DE PUERTOS PRINCIPALES: " + puertoListo);
+            System.out.println("# PUERTOS PRINCIPALES INICIADOS: " + puertoListo.size());
         } catch (Exception ex) {
             Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -2457,7 +2497,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         datosConecta = pXml.user;
         try {
             String nombre = datosConecta.getNombre();
-            System.out.println("NOMB:" + nombre);
+            //System.out.println("NOMB:" + nombre);
             if (nombre.equals("null") || datosConecta.getContrasenia().equals("null")) {
                 return false;
             }
@@ -2497,22 +2537,25 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             ocupados.setText("Ocupados: " + val2.intValue());
             final int dispo = (empresaObj.getParqueaderos() - val2.intValue());
             //ENVIO A LA PANTALLA DE LEDS LA INFORMACIÓN
-            Thread cargar = new Thread() {
+            if (empresaObj.getLed() != null && !empresaObj.getLed().equals("") && !empresaObj.getLed().equals("null")) {
+                Thread cargar = new Thread() {
 
-                public void run() {
-                    try {
-                        LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
-                        ta.outputSream.write((("" + dispo).getBytes()));
-                        //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                        barrera1.setEnabled(true);
-                    } catch (IOException ex) {
-                        System.out.println("ERROR EN ENVIAR NO. DE DISPONIBLES ");
-                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                        System.out.println("FIN ERROR EN ENVIAR");
+                    public void run() {
+                        try {
+
+                            LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
+                            ta.outputSream.write((("" + dispo).getBytes()));
+                            //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+                            barrera1.setEnabled(true);
+                        } catch (IOException ex) {
+                            System.out.println("ERROR EN ENVIAR NO. DE DISPONIBLES ");
+                            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                            System.out.println("FIN ERROR EN ENVIAR");
+                        }
                     }
-                }
-            };
-            cargar.start();
+                };
+                cargar.start();
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -3999,9 +4042,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private void btnGuardarTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarTarjetaActionPerformed
         // TODO add your handling code here:
         try {
-            if(noTarjeta.getText().isEmpty()){
+            if (noTarjeta.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "PASE LA TARJETA POR LA LECTORA");
-            return;
+                return;
             }
             tarjeta.setTarjeta(noTarjeta.getText());
             tarjeta.setClientes(clienteObj);
@@ -4261,7 +4304,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
                         new Object[]{"SI", "NO", "Cancelar"}, "NO");// null para YES, NO y CANCEL
                 if (0 == seleccion) {
-                     seleccion = JOptionPane.showOptionDialog(this, "¿ESTÁ UD. SEGURO QUE DESEA CONTINUAR SE BORRARÁ LA CONFIGURACIÓN? \n NO PODRÁ USAR EL SISTEMA, HASTA QUE VUELVA A CONFIGURARLO",
+                    seleccion = JOptionPane.showOptionDialog(this, "¿ESTÁ UD. SEGURO QUE DESEA CONTINUAR SE BORRARÁ LA CONFIGURACIÓN? \n NO PODRÁ USAR EL SISTEMA, HASTA QUE VUELVA A CONFIGURARLO",
                             "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
                             new Object[]{"SI", "NO", "Cancelar"}, "NO");// null para YES, NO y CANCEL
                     if (0 == seleccion) {
@@ -4421,7 +4464,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 try {
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("2".getBytes());
-                    System.out.println("ABRIR PUERTA 2"+new Date());
+                    System.out.println("ABRIR PUERTA 2" + new Date());
                     try {
                         Thread.sleep(500);
                     } catch (Exception e) {
@@ -4448,7 +4491,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("1".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                     System.out.println("ABRIR PUERTA 1"+new Date());
+                    System.out.println("ABRIR PUERTA 1" + new Date());
                     try {
                         Thread.sleep(500);
                     } catch (Exception e) {
@@ -5130,6 +5173,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         tecla(evt.getKeyCode());
 }//GEN-LAST:event_btnEliminar1KeyPressed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+        LeerTarjeta s = new LeerTarjeta();
+             s.imprimir("");         
+    }//GEN-LAST:event_jButton11ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -5308,6 +5357,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JSpinner ingresos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

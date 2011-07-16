@@ -352,6 +352,8 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     noTicket.setText(numero+"");
                     adm.guardar(fac);//GUARDO FACTURA
                     codigo.setText(fac.getCodigo() + "");
+                    
+                    
                     imprimir(fac.getCodigo(), emp);
 if(empresaObj.getSeabretic()){
 

@@ -134,6 +134,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             //SimpleReadApp
             serialPort = (SerialPort) puertoId.open("LECTORA", 2000);
         } catch (PortInUseException e) {
+            System.out.println(""+e);
         }
         try {
             inputStream = serialPort.getInputStream();
@@ -143,10 +144,12 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         try {
             outputSream = serialPort.getOutputStream();
         } catch (IOException e) {
+            System.out.println(""+e);
         }
         try {
             serialPort.addEventListener(this);
         } catch (TooManyListenersException e) {
+            System.out.println(""+e);
         }
         serialPort.notifyOnDataAvailable(true);
         try {
@@ -161,7 +164,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-        }
+                    }
     }
 
     public String getTarjeta() {
@@ -241,11 +244,8 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //            Empresa emp = princip.empresaObj;
             JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes" + separador + "ticket2.jasper");
             Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-
-
-
             Factura fac = new Factura();
-            fac.setPlaca("CLIENTE LECTORA");
+            fac.setPlaca("CLIENTE BOTON");
             fac.setFechaini(new Date());
             fac.setFecha(new Date());
             Integer numero = new Integer(emp.getDocumentoticket())+1;
