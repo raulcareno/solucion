@@ -2320,9 +2320,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                     puertoListo.add(reader);
                                     System.out.println("PUERTO INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto());
                                     interfaz = false;
+                                    lger.logger("PUERTO INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto(),"OK");
+                                    
                                 }
                             } catch (Exception e) {
                                 System.out.println("NO SE ABRIÓ: INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto());
+                                 lger.logger("NO SE ABRIÓ: INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto(),"ERROR");
                             }
 
                         }
@@ -2332,11 +2335,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                 if (leds) {
                                     reader = new LeerTarjeta(portId, this);
                                     puertoListo.add(reader);
-                                    System.out.println("PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed());
                                     leds = false;
+                                    System.out.println("PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed());
+                                    lger.logger("PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed(),"OK");
+                                    
                                 }
                             } catch (Exception e) {
                                 System.out.println("NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed());
+                                lger.logger("NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed(),"ERROR");
                             }
                         }
                         //(2)  //PUERTO DE CODIGO DE BARRAS
@@ -2345,11 +2351,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                 if (barras1) {
                                     reader = new LeerTarjeta(portId, this);
                                     puertoListo.add(reader);
-                                    System.out.println("PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras());
                                     barras1 = false;
+                                    System.out.println("PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras());
+                                    lger.logger("PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras(),"OK");
+                                    
                                 }
                             } catch (Exception e) {
                                 System.out.println("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras());
+                                lger.logger("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras(),"ERROR");
                             }
                         }
                         //(3)  //PUERTO DE CODIGO DE BARRAS 2
@@ -2361,9 +2370,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                     puertoListo.add(reader);
                                     System.out.println("PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2());
                                     barras2 = false;
+                                    lger.logger("PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2(),"OK");
+                                    
                                 }
                             } catch (Exception e) {
                                 System.out.println("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2());
+                                lger.logger("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2(),"ERROR");
                             }
 
                         }
@@ -2449,6 +2461,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
             portList = null;
             System.out.println("# PUERTOS PRINCIPALES INICIADOS: " + puertoListo.size());
+            lger.logger("# PUERTOS PRINCIPALES INICIADOS: " + puertoListo.size(),"OK");
         } catch (Exception ex) {
             Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         }
