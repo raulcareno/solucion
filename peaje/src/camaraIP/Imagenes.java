@@ -42,7 +42,8 @@ public class Imagenes extends JFrame  {
               
         try {
             //nUrl = new URL("http://192.168.1.106/axis-cgi/jpg/image.cgi?resolution=320x240"); 
-            nUrl = new URL("http://localhost:8084/solucion/images/about.jpg");
+            //nUrl = new URL("http://localhost:8084/solucion/images/about.jpg");
+            nUrl = new URL("http://60.248.39.152:1025/cgi-bin/viewer/video.jpg?streamid=0");
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
         }
