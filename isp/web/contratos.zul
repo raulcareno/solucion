@@ -39,7 +39,9 @@ import java.text.SimpleDateFormat;
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
       List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getCodigo()+"' ");
       List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
-    List nodos = adm.query("Select o from Radios as o");
+      List nodos = adm.query("Select o from Radios as o");
+      
+
     Boolean modificare = false;
     Boolean agregare = false;
     
@@ -49,8 +51,8 @@ void llenarCliente(Clientes cli){
             identificacion.value = cli.getIdentificacion();
             codigocli.value = cli.getCodigo()+"";
             direccion.value = cli.getDireccion();
-            telefono.value = cli.getTelefono();
-            email.value = cli.getEmail();
+            telefono.value = cli.getTelefono()+"";
+            email.value = cli.getEmail()+"";
             combo.value = cli.getApellidos()+" "+cli.getNombres();//cliente
 
 }
@@ -59,13 +61,19 @@ void llenar(Contratos  equi2){
     registro.setSelected(true);
     try{
      if(equi.getClientes()!=null){
+        if(agregare==false)
            llenarCliente(equi.getClientes()); //LLLENAR CLIENTES
       }else{
           Clientes cli = new Clientes(0);
-          cli.setApellidos(""); cli.setDireccion("");
-          cli.setNombres("");  cli.setTelefono("");
           cli.setEmail("");
-          llenarCliente(cli); //LLLENAR CLIENTES
+          cli.setApellidos(""); 
+          cli.setNombres("");  
+          cli.setDireccion("");
+          cli.setTelefono("");
+          
+        if(agregare==false){
+            llenarCliente(cli); //LLLENAR CLIENTES
+        }
        }
     }catch(Exception ecliente){
         
@@ -79,6 +87,9 @@ void llenar(Contratos  equi2){
     ip.value = equi.getIp();
     nocuenta.value = equi.getNocuenta();
     tipocuenta.value  = equi.getTipocuenta();
+    direccioni.value = equi.getDireccion();
+    referenciai.value = equi.getReferencia();
+    telefonoi.value = equi.getTelefono();
     try{
         if(equi.getDiapago() == null){
             diapago.value  = "1";
@@ -144,6 +155,26 @@ void llenar(Contratos  equi2){
     }else{
        bd2.value = "";
         nodo.setSelectedItem(null);
+    }
+    
+       if(equi.getBancos() != null){
+ 
+        try{
+                      for (int i = 0; i <= bancosList.getItems().size(); i++) {
+                                    Bancos tr0 = ((Bancos)((Listitem)bancosList.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getBancos().getCodigo();
+                                    if(primero == segundo){
+                                        bancosList.setSelectedItem((Listitem)bancosList.getItems().get(i));
+                                        bd22.value = equi.getBancos().getNombre()+" ";
+                                        break;
+                                    }
+                           }
+                 }catch(Exception err){System.out.println("ERROR no tiene Bancos asignados COMBO bancosList"+err);}
+        
+    }else{
+       bd22.value = "";
+        bancosList.setSelectedItem(null);
     }
     try{
         registrado.value = equi.getEmpleados()+"";//REGISTRADOR
@@ -213,6 +244,11 @@ void estado(Boolean estado,Boolean modificar){
     equi.setContrato(numerocontrato.value);
     equi.setEstado(estadoContrato.selectedItem.value);
     equi.setSucursal(sucursalEmp.getSucursal());
+    equi.setDireccion(direccioni.value);
+    equi.setReferencia(referenciai.value);
+    equi.setTelefono(telefonoi.value);
+    
+    
     
      if(equi.getContrato()==null){
             Integer valor = adm.getNuevaClave("Contratos","contrato");
@@ -236,6 +272,11 @@ void estado(Boolean estado,Boolean modificar){
     }
     try{
         equi.setRadios(nodo.getSelectedItem().getValue());
+    }catch(Exception e){
+    }
+    
+    try{
+        equi.setBancos(bancosList.getSelectedItem().getValue());
     }catch(Exception e){
     }
     
@@ -263,8 +304,50 @@ void estado(Boolean estado,Boolean modificar){
  void nuevo(){
     if(verificar("Agregar")){
        guardar.disabled=false;
+       agregare = false;
+      if(planes.size()<=0){
+        Messagebox.show("No se han creado planes, cierre esta pantalla e ingresse nuevos Planes  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         return;
+      }
+      if(bancos.size()<=0){
+        Messagebox.show("No se han creado Bancos, cierre esta pantalla e ingrese nuevos Bancos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         return;
+      }
+    if(nodos.size()<=0){
+        Messagebox.show("No se han creado Radios, cierre esta pantalla e ingrese nuevos Radios  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         return;
+      }
+       
         llenar(new Contratos(0));
         estado(false,false);
+        
+        
+     bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void nuevo2(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+       agregare = true;
+       if(planes.size()<=0){
+        Messagebox.show("No se han creado planes, cierre esta pantalla e ingresse nuevos Planes  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         return;
+      }
+      if(bancos.size()<=0){
+        Messagebox.show("No se han creado Bancos, cierre esta pantalla e ingrese nuevos Bancos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         return;
+      }
+    if(nodos.size()<=0){
+        Messagebox.show("No se han creado Nodos, cierre esta pantalla e ingrese nuevos Nodos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         return;
+      }
+       
+        llenar(new Contratos(0));
+        estado(false,false);
+        efe.selected = true;
+        efe.checked = true;
      bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -288,8 +371,8 @@ llenarCliente(Clientes clienteEn){
     identificacion.value = clienteEn.getIdentificacion();
      codigocli.value = clienteEn.getCodigo()+"";
      direccion.value  = clienteEn.getDireccion();
-     direccioni.value  = clienteEn.getDireccion();
-     direccioni.value  = clienteEn.getTelefono();
+     email.value  = clienteEn.getEmail();
+     telefono.value  = clienteEn.getTelefono();
      String espacio = "";
      if(!clienteEn.getApellidos().trim().equals("")){
      espacio = " ";
@@ -635,6 +718,10 @@ void verificarCedula(String valor){
                       li.appendChild(new Listcell(acceIt.getDireccion()+""));
                       lcliente.appendChild(li);
              }
+             if(ClientesEncontrados.size()>0){
+                    bcliente.visible = true;
+             }
+             
     }
       void buscarCliCed(String p){
       if(p.length()>5){
@@ -654,6 +741,9 @@ void verificarCedula(String valor){
                       li.appendChild(new Listcell(acceIt.getApellidos()+" "+acceIt.getNombres()));
                       
                       lclienteced.appendChild(li);
+             }
+             if(ClientesEncontrados.size()>0){
+                    bclientei.visible = true;
              }
         }
     }
@@ -679,7 +769,7 @@ void verificarCedula(String valor){
                                 <tabbox id="tb2"  >
                                     <tabs  >
                                         <tab label="DATOS CONTRATO"/>
-                                        <tab label="OTROS DATOS"/>
+                                        <tab label="EQUIPOS OCUPADOS Y VENDIDOS"/>
                                     </tabs>
                                     <tabpanels>
                                         <tabpanel height="100%">
@@ -693,11 +783,17 @@ void verificarCedula(String valor){
                                                             <label style="font-weight:bold2" value=" Identificación: " /> 
                                                         </span> 
                                                         <span> 
-                                                            <textbox id="identificacion"  readonly="false"   onChanging="buscarCliCed(event.value); bclientei.visible = true"     onOK="verificarCedula(self.value)"  />
+                                                            <textbox id="identificacion"  readonly="false"   onChanging="buscarCliCed(event.value); "     onOK="verificarCedula(self.value); bclientei.visible = false;"  />
+                                                            <image  tooltip="autompletar" popup="autompletar"  src="/images/keyboard.png"  />
+                                                            <popup id="autompletar" width="300px">
+                                                                <html>
+                                                                        Ingrese un número de cédula, ruc o pasaporte, para buscar Ejemplo: 1709700548, luego presione ENTER o seleccione uno de los del listado de búsqueda
+                                                                </html>
+                                                            </popup>
                                                             <groupbox closable="true" style="position: absolute;background:#E2EDFE;" visible="false" id="bclientei">
                                                                 <vbox>
-                                                                   <hbox>
-                                                                        <listbox onSelect='direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres();bclientei.visible =false;' id="lclienteced" width="400px">
+                                                                    <hbox>
+                                                                        <listbox onSelect='direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres();bclientei.visible =false; verificarCedula(identificacion.value);' id="lclienteced" width="400px">
                                                                             <listhead>
                                                                                 <listheader label="Nombres"/>
                                                                                 <listheader label="Dirección"/>
@@ -718,18 +814,23 @@ void verificarCedula(String valor){
                                                     </row>
                                                     <row>
                                                         <span style="float:right"> 
-                                                            <label style="font-weight:bold2" id="labelnombre" value=" Nombres(*): " />  
+                                                            <label style="font-weight:bold2" id="labelnombre" value="Ape.y Nomb(*): " />  
                                                         </span> 
                                                         <span>     
-                                                            <textbox readonly="true" cols="32"   onChanging="buscarCli(event.value); bcliente.visible = true"   onOK ="btcliente.value = combo.value; buscarCli(btcliente.value); bcliente.visible = true"   id="combo" />
+                                                            <textbox readonly="false" cols="32"   onChanging="buscarCli(event.value);"   onOK ="btcliente.value = combo.value; buscarCli(btcliente.value); bcliente.visible = true"   id="combo" />
+                                                            <image  tooltip="autompletar2" popup="autompletar2"  src="/images/keyboard.png"  />
+                                                            <popup id="autompletar2" width="300px">
+                                                                <html>
+                                                                            Ingrese un Apellido del Cliente Ejemplo: AGUIRRE y seleccione uno de los del listado de búsqueda, si es que existe.
+                                                                </html>
+                                                            </popup>
                                                             <groupbox closable="true" style="position: absolute;background:#E2EDFE; display: none;" visible="false" id="bcliente">
                                                                 <vbox>
                                                                  
                                                                         
                                                                         
-                                                                    
                                                                     <hbox>
-                                                                        <listbox style="background:white" onSelect='direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres();bcliente.visible =false;' id="lcliente" width="400px">
+                                                                        <listbox style="background:white" onSelect='direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres();bcliente.visible =false;verificarCedula(identificacion.value);' id="lcliente" width="400px">
                                                                             <listhead>
                                                                                 <listheader label="Nombres"/>
                                                                                 <listheader label="Dirección"/>
@@ -841,11 +942,11 @@ void verificarCedula(String valor){
                                                     </row>
                                                     <row>
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Dirección: " />  
+                                                            <label style="font-weight:bold2" value=" Dir.Instalar: " />  
                                                         </span>
                                                         <textbox id="direccioni" cols="40" readonly="true"  />
                                                         <span style="float:right"> 
-                                                            <label style="font-weight:bold2" value=" Teléfono: " />  
+                                                            <label style="font-weight:bold2" value=" Telf.Instalar: " />  
                                                         </span>
                                                         <textbox id="telefonoi" readonly="true"  />
                                                     </row>
@@ -1051,7 +1152,8 @@ void verificarCedula(String valor){
                     </groupbox>
     
                     <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/nuevo.gif" id="agregar" label="Nuevo Cliente y Contrato" onClick="nuevo();" />
+                    <button  image="/images/nuevo.gif" id="agregar2" label="Nuevo Contrato" onClick="nuevo2();" />
                     <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
                     <button label="Añadir Cobros" disabled="false" id="anadir" image="/images/empleados.png" >
