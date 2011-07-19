@@ -225,11 +225,66 @@ void estado(Boolean estado,Boolean modificar){
 
 
 }
+Boolean validar(Textbox text){
+        if(text.value == "" || text.value == null){
+            text.focus();
+            return true;
+        }
+        return false;
+}
+Boolean validar(Intbox text){
+        if(text.value == "" || text.value == null){
+            text.focus();
+            return true;
+        }
+        return false;
+}
 
+Boolean validar(Datebox text){
+        if(text.value == "" || text.value == null){
+            text.focus();
+            return true;
+        }
+        return false;
+}
+Boolean validar(Combobox text){
+        if(text.value == "" || text.value == null){
+            text.focus();
+            return true;
+        }
+        return false;
+}
 
+Boolean validar(){
+        if(validar(identificacion)  || validar(direccion)  || validar(telefono)  || 
+                  validar(combo) ||    validar(numerocontrato) || validar(fecha) || validar(fechainstalacion)  || 
+                  validar(direccioni) ||  validar(telefonoi) || validar(nocuenta) || validar(diapago) || validar(combov) ){
+                          //Messagebox.show("Complete todos los campos que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                          return true;
+          
+          }
+            return false;
+          
+            /*
+                        codigocli.value  == null ||  //codigo del cliente 
+                        bd.value == "" || bd.value == null || //planes 
+                        perf.value == "" || perf.value == null || //planes 
+                        formapago  groupbox
+                                efe
+                                deb
+                        bd22.value == "" || bd22.value == null || 	//bancos
+                        bancosList.selectedItem.value	 == "" ||  bancosList.selectedItem.value == null ||//
+                        bd2 == null || 	 bd2 == null || 	//radios
+                        nodo.value == "" || nodo.value == null || 
+                        ip.value == "" ||  ip.value == null || 
+                        usuario.value == "" ||  usuario.value == null || 
+                        clave.value == "" ||  clave.value == null || */
+                                  
+
+}
  void guardar(){
  
-    if(codigocli.value == null || diapago.value == ""){
+    if(validar()){
             Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             return;
     }
@@ -780,7 +835,7 @@ void verificarCedula(String valor){
                                                     </row>
                                                     <row>
                                                         <span style="float:right"> 
-                                                            <label style="font-weight:bold2" value=" Identificación: " /> 
+                                                            <label style="font-weight:bold2" value=" Identificación(*):" /> 
                                                         </span> 
                                                         <span> 
                                                             <textbox id="identificacion"  readonly="false"   onChanging="buscarCliCed(event.value); "     onOK="verificarCedula(self.value); bclientei.visible = false;"  />
