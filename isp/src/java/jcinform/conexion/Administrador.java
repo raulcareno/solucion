@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import jcinform.persistencia.*;
 
 /**
@@ -162,7 +163,19 @@ public class Administrador {
         }
         return null;
     }
-
+   public List query(String query, int ini, int fin) {
+        try {
+            EntityManager em = getEMF().createEntityManager();
+            em.getTransaction().begin();
+            Query query3 = em.createQuery(query);
+            query3.setFirstResult(ini);
+            query3.setMaxResults(fin);
+            return query3.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public Object querySimple(String query) {
         EntityManager em = getEMF().createEntityManager();
         em.getTransaction().begin();

@@ -619,7 +619,7 @@ void verificarCedula(String valor){
                 
         //BUSQUEDA DE CLIENTES
   void buscarCli(String p){
-        List ClientesEncontrados = adm.query("Select o from Clientes as o where o.apellidos like '"+p+"%' order by o.apellidos");
+        List ClientesEncontrados = adm.query("Select o from Clientes as o where o.apellidos like '"+p+"%' order by o.apellidos",0,5);
         lcliente = new Listbox();
         int a=0;
             for (Iterator it = lcliente.getItems().iterator(); it.hasNext();) {
@@ -722,7 +722,7 @@ void verificarCedula(String valor){
                                                         </span> 
                                                         <span>     
                                                             <textbox readonly="true" cols="32"   onChanging="buscarCli(event.value); bcliente.visible = true"   onOK ="btcliente.value = combo.value; buscarCli(btcliente.value); bcliente.visible = true"   id="combo" />
-                                                            <groupbox closable="true" style="position: absolute;background:#E2EDFE;" visible="false" id="bcliente">
+                                                            <groupbox closable="true" style="position: absolute;background:#E2EDFE; display: none;" visible="false" id="bcliente">
                                                                 <vbox>
                                                                  
                                                                         
