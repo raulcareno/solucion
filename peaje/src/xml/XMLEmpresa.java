@@ -100,6 +100,8 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String PUERTA7 = "PUERTA7";
     private static final String WEBCAM = "WEBCAM";
     private static final String URL = "URL";
+    private static final String ENTRA1 = "ENTRA1";
+    private static final String ENTRA2 = "ENTRA2";
     private static final String IPCAM = "IPCAM";
     private static final String SEABRETIC = "SEABRETIC";
     private static final String SEABREFAC = "SEABREFAC";
@@ -271,6 +273,13 @@ public static UsuarioActivo user = new UsuarioActivo();
          item = xmlDoc.createElement(URL);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getUrl()+""));
         personal.appendChild(item);
+       item = xmlDoc.createElement(ENTRA1);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getEntra1()+""));
+        personal.appendChild(item);
+        item = xmlDoc.createElement(ENTRA2);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getEntra2()+""));
+        personal.appendChild(item);
+        
     }
 
     // genera el objeto de documento XML en una cadena de texto
@@ -408,6 +417,8 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setSeabrefac(emp.getSeabrefac());
         beanEmpleado.setMulta(emp.getMulta());
         beanEmpleado.setUrl(emp.getUrl()); 
+        beanEmpleado.setEntra1(emp.getEntra1()); 
+        beanEmpleado.setEntra2(emp.getEntra2()); 
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
         //obtenemos el documento XML en cadena de texto
@@ -739,6 +750,26 @@ public static UsuarioActivo user = new UsuarioActivo();
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
+                       try {
+                      //------
+                    NodeList ENTRA1outList = firstPersonElement.getElementsByTagName("ENTRA1");
+                    Element ENTRA1outElement = (Element) ENTRA1outList.item(0);
+                    NodeList ENTRA1outAgeList = ENTRA1outElement.getChildNodes();
+                    user.setEntra1(((Node) ENTRA1outAgeList.item(0)).getNodeValue().trim());
+                      } catch (Exception parserConfigurationException) {
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                       
+                    try {
+                      //------
+                    NodeList ENTRA2outList = firstPersonElement.getElementsByTagName("ENTRA2");
+                    Element ENTRA2outElement = (Element) ENTRA2outList.item(0);
+                    NodeList ENTRA2outAgeList = ENTRA2outElement.getChildNodes();
+                    user.setEntra2(((Node) ENTRA2outAgeList.item(0)).getNodeValue().trim());
+                      } catch (Exception parserConfigurationException) {
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                     
                       //------
                     try {
                     NodeList PUERTA1outList = firstPersonElement.getElementsByTagName("PUERTA1");
