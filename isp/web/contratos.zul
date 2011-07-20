@@ -802,7 +802,89 @@ void verificarCedula(String valor){
              }
         }
     }
-                
+       
+                                     public void quitarFila(String codigoBuscar){
+                              
+                                                     Rows filas2 = productos.getRows();
+                                                
+                                                    List listadoProductos = filas2.getChildren();
+                                                        for (int i = 0; i <= listadoProductos.size()-1; i++) {
+                                                           Row object = (Row) listadoProductos.get(i);
+                                                                                                              
+                                                          Series nuevo = ((Series)object.getValue());
+                                                          String codigoA = "id"+nuevo.getSerie();
+                                                           if(codigoA.equals(codigoBuscar)){
+                                                                productos.getRows().removeChild(object);
+                                                                break;
+                                                           }
+                                                        }
+
+                                    }
+                                           void buscarSeries(String serie){
+                                           List seriesEn = adm.query("Select o from Series as o where o.estado = 'C'  and o.serie = '"+serie+"'" + 
+                                           "and o.codigo not in (Select a.codigo from Series as a where a.estado = 'A')  ");
+                                           if(seriesEn.size()>0){
+                                           
+                                           try{
+                                                    Row row = new Row();
+                                                      //CARGO LAS SERIES COMO ATRIBUTO
+                                                      ArrayList series = new ArrayList();
+                                                            Intbox intb = new Intbox(seriesEn.get(0).getDetallecompra().getEquipos().getCodigo());
+                                                            intb.setCols(3);
+                                                            intb.setReadonly(true);
+                                                            intb.setStyle("float:right;text-align:right");
+                                                             row.appendChild(intb);
+                                                            Label prod = new Label(""+seriesEn.get(0).getDetallecompra().getEquipos());
+                                                            row.appendChild(prod);
+                                                            Decimalbox valor = new Decimalbox(new BigDecimal(seriesEn.get(0).getDetallecompra().getEquipos().getPvp1()));
+                                                            valor.setFormat("##0.00");
+                                                            valor.setStyle("float:right;text-align:right");
+                                                            valor.setReadonly(true);
+                                                            row.appendChild(valor);
+                                                            
+                                                            
+                                                            Label seri = new Label(""+seriesEn.get(0).getSerie());
+                                                            row.appendChild(seri);
+                                                         
+                                                            Button aButton = null;
+                                                            aButton = new Button("quitar");
+                                                            aButton.setImage("/images/quitar.gif");
+                                                            aButton.setHeight("5px");
+                                                            aButton.setId("id"+seriesEn.get(0).getSerie());
+                                                            aButton.addEventListener("onClick", new EventListener() {
+                                                                public void onEvent(Event event) throws Exception {
+                                                                     //int valor0 = Messagebox.show("Seguro que desea quitar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                                     //seriespanel.visible = false;
+                                                                     //if(valor0 == 16){
+                                                                        quitarFila(aButton.getId());
+                                                                     //}
+
+                                                                }
+                                                            });
+                                                            row.appendChild(aButton);
+                                                            
+                                                            Checkbox facturado = new Checkbox();
+                                                            facturado.setChecked(true);
+                                                            row.appendChild(facturado);
+                                                            
+                                                            
+                                                            row.setValue(seriesEn.get(0)); 
+                                                    filas.appendChild(row);
+                                                    }catch(Exception e){
+                                                        Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                                                    }
+                                                
+                                                seriebuscar.value="";
+                                                seriebuscar.focus();
+                                                
+                                           }else{
+                                                Messagebox.show("SERIE NO ENCONTRADA (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                seriebuscar.value="";
+                                                seriebuscar.focus();
+                                           }
+                                           
+                                           
+                                           }               
   ]]>
     </zscript>
     <div>
@@ -951,14 +1033,12 @@ void verificarCedula(String valor){
                                                         </radiogroup>
                                                         <span></span>
                                                         <span></span>
-                                                            
-                                                       
                                                     </row>
                                                     <row>
                                                         <span style="float:right">
                                                             <label style="font-weight:bold2" value=" No.Contrato: " /> 
                                                         </span>
-                                                        <intbox style="color:red;font-size:16px"  readonly="true" id="numerocontrato" cols="16" />
+                                                        <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" id="numerocontrato" cols="16" />
                                                         <span style="float:right">
                                                             <label style="font-weight:bold2" value=" Fecha: " />   
                                                         </span>
@@ -1191,8 +1271,22 @@ void verificarCedula(String valor){
                                             </grid>    
                                                         
                                         </tabpanel>
-                                           
-                                          
+                                       
+                                        <tabpanel>
+                                            Digite la Serie: <textbox onOK="buscarSeries(self.value)" id="seriebuscar" value=""/>
+                                            <grid id="productos">
+                                                    <columns sizable="true">
+                                                        <column label="Cant" width="10px" />
+                                                        <column label="Equipo"  width="280px" />
+                                                        <column label="Valor"  width="90px" />
+                                                        <column label="Series"  width="80px" />
+                                                        <column label="Opción" width="10px"  />
+                                                        <column label="Facturado/Prestado" width="90px"  />
+                                                    </columns>
+                                                <rows id="filas">
+                                                </rows>
+                                            </grid>
+                                        </tabpanel>
 
                                     </tabpanels>
                                 </tabbox>

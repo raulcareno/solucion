@@ -233,7 +233,7 @@ public class Equipos implements Serializable {
 
     @Override
     public String toString() {
-        return "jcinform.persistencia.Equipos[codigo=" + codigo + "]";
+        return nombre+" "+ getMarcas()+" "+getModelo();
     }
 
 }
