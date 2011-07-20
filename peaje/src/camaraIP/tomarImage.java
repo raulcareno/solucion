@@ -10,9 +10,16 @@
  */
 package camaraIP;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import javax.swing.JEditorPane;
-import javax.swing.JScrollPane;
+import java.net.MalformedURLException;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  *
@@ -36,21 +43,43 @@ public class tomarImage extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        miLabel = new javax.swing.JLabel();
+        miPanel = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Ventana con Imagenes");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Setear foto");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
+            }
+        });
+
+        miLabel.setText("jLabel1");
+
+        javax.swing.GroupLayout miPanelLayout = new javax.swing.GroupLayout(miPanel);
+        miPanel.setLayout(miPanelLayout);
+        miPanelLayout.setHorizontalGroup(
+            miPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 534, Short.MAX_VALUE)
+        );
+        miPanelLayout.setVerticalGroup(
+            miPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 313, Short.MAX_VALUE)
+        );
+
+        jButton3.setText("añadira a label");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
             }
         });
 
@@ -59,25 +88,41 @@ public class tomarImage extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                        .addGap(58, 58, 58)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56)
+                        .addComponent(jButton3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(miLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(miPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(44, 44, 44)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jButton3)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(144, 144, 144)
+                        .addComponent(miPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(miLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         pack();
@@ -92,25 +137,122 @@ public class tomarImage extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-String url = "http://www.jcinform.com/ec";
-try {
-  JEditorPane htmlPane = new JEditorPane(url);
-  htmlPane.setEditable(false);
-  htmlPane.setSize(800,400);
-  jScrollPane1.add(htmlPane);
- //this.add(new JScrollPane(htmlPane));
-} catch(IOException ioe) {
-  System.err.println("Error displaying " + url);
-}
-//        if (java.awt.Desktop.isDesktopSupported()) {
-//            try {
-//                Desktop dk = Desktop.getDesktop();
-//                dk.browse(new URI("http://www.jcinform.com"));
-//            } catch (Exception e) {
-//                System.out.println("Error al abrir URL: " + e.getMessage());
-//            }
-//        }
+        URL nUrl = null;
+
+        try {
+            nUrl = new URL("http://192.168.10.3/cgi-bin/viewer/video.jpg");
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+        }
+
+        //public BufferedImage image = null;
+        try {
+            image = ImageIO.read(nUrl);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        miPanel = new ImagePanel();
+//         miPanel.paintComponents(miPanel.getGraphics());
+//         miPanel.setLocation(100, 100);
+//         miLabel = new JLabel(new ImageIcon( image));
+//         miLabel.repaint();
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        URL nUrl = null;
+
+        try {
+            nUrl = new URL("http://192.168.10.3/cgi-bin/viewer/video.jpg");
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+        }
+
+        //public BufferedImage image = null;
+        try {
+            image = ImageIO.read(nUrl);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        try {
+
+            File outputfile = new File("f://miimagen.jpg");
+            ImageIO.write(image, "jpg", outputfile);
+            miLabel.setIcon(new ImageIcon(image));
+            //JLabel picLabel = new JLabel(new ImageIcon(image));
+            //add(picLabel);
+//            Image image = Toolkit.getDefaultToolkit().getImage("f://miimagen.jpg");
+//            //Icon icon = new ImageIcon(image);
+//            ImageIcon tmpIconAux = new ImageIcon(image);
+//            ImageIcon tmpIcon = new ImageIcon(tmpIconAux.getImage().getScaledInstance(700, -1, Image.SCALE_DEFAULT));
+//            miLabel.setIcon(tmpIcon);
+
+
+//            BufferedImage myPicture = ImageIO.read(outputfile);
+//            JLabel picLabel = new JLabel(new ImageIcon( myPicture ));
+//            add( picLabel );
+
+
+
+        } catch (IOException e) {
+        }
+
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+    public void tomarFotoIp(String Carpeta) {
+        URL nUrl = null;
+
+        try {
+            nUrl = new URL("http://192.168.10.3/cgi-bin/viewer/video.jpg");
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+        }
+
+        //public BufferedImage image = null;
+        try {
+            image = ImageIO.read(nUrl);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        try {
+
+            File outputfile = new File(Carpeta+"");
+            ImageIO.write(image, "jpg", outputfile);
+            miLabel.setIcon(new ImageIcon(image));
+
+        } catch (IOException e) {
+        }
+
+    }
+    public BufferedImage image = null;
+//     public void paint(Graphics g){
+//         
+//        
+//        Graphics2D g2 = (Graphics2D)g; 
+//        URL nUrl = null;
+//              
+//        try {
+//          nUrl = new URL("http://192.168.10.3/cgi-bin/viewer/video.jpg");
+//        } catch (MalformedURLException ex) {
+//            ex.printStackTrace();
+//        }
+//        
+//        //public BufferedImage image = null;
+//        try {
+//          image = ImageIO.read(nUrl);
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//       }
+//        
+//        setTitle("Imagen_Camara");   
+//        g2.drawImage(image,100,100,this);
+//        repaint();
+//        
+//       
+//     
+//    }
 
     /**
      * @param args the command line arguments
@@ -126,6 +268,8 @@ try {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel miLabel;
+    private javax.swing.JPanel miPanel;
     // End of variables declaration//GEN-END:variables
 }

@@ -32,6 +32,7 @@ public class EmpresaPuertos {
      */
     public EmpresaPuertos() {
     }
+    public String url;
     public String impticket;
     public String impfactura;
     public String impresora;
@@ -86,9 +87,18 @@ public class EmpresaPuertos {
     public String puerta13;
     public String puerta14;
     public Boolean webcam;
+    public Boolean ipcam;
     public Boolean seabrefac;
     public Boolean seabretic;
     public Double multa;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getLed() {
         return led;
@@ -522,6 +532,14 @@ public class EmpresaPuertos {
         this.webcam = webcam;
     }
 
+    public Boolean getIpcam() {
+        return ipcam;
+    }
+
+    public void setIpcam(Boolean ipcam) {
+        this.ipcam = ipcam;
+    }
+
     public Boolean getSeabrefac() {
         return seabrefac;
     }
@@ -545,6 +563,4 @@ public class EmpresaPuertos {
     public void setMulta(Double multa) {
         this.multa = multa;
     }
-    
-    
 }

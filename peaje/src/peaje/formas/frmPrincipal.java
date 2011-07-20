@@ -1,5 +1,6 @@
 package peaje.formas;
 
+//import camaraIP.tomarImage;
 import java.awt.AWTException;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -30,6 +31,8 @@ import hibernate.cargar.UsuarioActivo;
 import hibernate.cargar.WorkingDirectory;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -41,13 +44,17 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
+import javax.imageio.ImageIO;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -70,7 +77,6 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import sources.FacturaDetalleSource;
 import sources.FacturaSource;
 import xml.XMLEmpresa;
-import peaje.utilerias.*;
 
 /**
  *
@@ -97,6 +103,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     static WorkingDirectory w = new WorkingDirectory();
     String ubicacionDirectorio = w.get() + separador;
     public CamaraWeb ver = new CamaraWeb();
+    public tomarImage verIp = new tomarImage();
     logger lger = new logger();
 
     public void habilitarBotones(Boolean estado) {
@@ -115,7 +122,34 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         btnSalir2.setEnabled(estado);
         btnCerrar.setEnabled(estado);
     }
-
+//  public BufferedImage image = null;
+//     public void paint(Graphics g){
+//         
+//        
+//        Graphics2D g2 = (Graphics2D)g; 
+//        URL nUrl = null;
+//              
+//        try {
+//          nUrl = new URL("http://192.168.10.3/cgi-bin/viewer/video.jpg");
+//        } catch (MalformedURLException ex) {
+//            ex.printStackTrace();
+//        }
+//        
+//        //public BufferedImage image = null;
+//        try {
+//          image = ImageIO.read(nUrl);
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//       }
+//        
+//        setTitle("Imagen_Camara");   
+//        g2.drawImage(image,camaraVista.getX(),camaraVista.getY(),this);
+//        repaint();
+//        
+//       
+//     
+//    }
+    
     /** Creates new form frmPrincipal */
     public frmPrincipal() {
 //        super("frmPrincipal");
@@ -431,6 +465,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel38 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
         jLabel42 = new javax.swing.JLabel();
+        camaraVista1 = new javax.swing.JLabel();
+        jButton11 = new javax.swing.JButton();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -1991,6 +2027,25 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jLabel42.setBounds(490, 480, 190, 130);
             contenedor.add(jLabel42, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+            camaraVista1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            camaraVista1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 204), 1, true));
+            camaraVista1.addKeyListener(new java.awt.event.KeyAdapter() {
+                public void keyPressed(java.awt.event.KeyEvent evt) {
+                    camaraVista1KeyPressed(evt);
+                }
+            });
+            camaraVista1.setBounds(10, 30, 670, 440);
+            contenedor.add(camaraVista1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+            jButton11.setText("Ver Instantanea");
+            jButton11.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton11ActionPerformed(evt);
+                }
+            });
+            jButton11.setBounds(290, 0, 120, 23);
+            contenedor.add(jButton11, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
             jSplitPane1.setRightComponent(contenedor);
 
             jXTaskPaneContainer1.setAlignmentX(0.1F);
@@ -2609,6 +2664,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setPuerto6(emp.getPuerto6());
         empresaObj.setPuerto7(emp.getPuerto7());
         empresaObj.setWebcam(emp.getWebcam());
+        empresaObj.setIpcam(emp.getIpcam());
+        empresaObj.setUrl(emp.getUrl());
         empresaObj.setSeabretic(emp.getSeabretic());
         empresaObj.setSeabrefac(emp.getSeabrefac());
         empresaObj.setMulta(emp.getMulta());
@@ -5178,6 +5235,23 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         tecla(evt.getKeyCode());
 }//GEN-LAST:event_btnEliminar1KeyPressed
+
+    private void camaraVista1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_camaraVista1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_camaraVista1KeyPressed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+        
+          Thread cargar = new Thread() {
+
+            public void run() {
+                verIp.mostrarFotop(camaraVista1,empresaObj.getUrl());         
+
+            }
+        };
+        cargar.start();
+    }//GEN-LAST:event_jButton11ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -5319,6 +5393,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JDialog buscarClientes;
     private javax.swing.JTable busquedaTabla;
     private javax.swing.JLabel camaraVista;
+    public javax.swing.JLabel camaraVista1;
     private javax.swing.JPasswordField clave;
     private javax.swing.JPasswordField claveActual;
     private javax.swing.JFormattedTextField cliente;
@@ -5356,6 +5431,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JSpinner ingresos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

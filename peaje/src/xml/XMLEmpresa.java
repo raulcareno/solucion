@@ -99,6 +99,8 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String PUERTA6 = "PUERTA6";
     private static final String PUERTA7 = "PUERTA7";
     private static final String WEBCAM = "WEBCAM";
+    private static final String URL = "URL";
+    private static final String IPCAM = "IPCAM";
     private static final String SEABRETIC = "SEABRETIC";
     private static final String SEABREFAC = "SEABREFAC";
     private static final String MULTA = "MULTA";
@@ -263,8 +265,12 @@ public static UsuarioActivo user = new UsuarioActivo();
         item = xmlDoc.createElement(MULTA);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getMulta()+""));
         personal.appendChild(item);
-        
-        
+        item = xmlDoc.createElement(IPCAM);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getIpcam()+""));
+        personal.appendChild(item);
+         item = xmlDoc.createElement(URL);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getUrl()+""));
+        personal.appendChild(item);
     }
 
     // genera el objeto de documento XML en una cadena de texto
@@ -373,7 +379,7 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setSalida6(emp.getSalida6());
         beanEmpleado.setSalida7(emp.getSalida7());
         beanEmpleado.setWebcam(emp.getWebcam());
-
+        beanEmpleado.setIpcam(emp.getIpcam());
         beanEmpleado.setActiva1(emp.getActiva1());
         beanEmpleado.setActiva2(emp.getActiva2());
         beanEmpleado.setActiva3(emp.getActiva3());
@@ -401,6 +407,7 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setSeabretic(emp.getSeabretic());
         beanEmpleado.setSeabrefac(emp.getSeabrefac());
         beanEmpleado.setMulta(emp.getMulta());
+        beanEmpleado.setUrl(emp.getUrl()); 
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
         //obtenemos el documento XML en cadena de texto
@@ -714,8 +721,23 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList MULTAoutAgeList = MULTAoutElement.getChildNodes();
                     user.setMulta(new Double(((Node) MULTAoutAgeList.item(0)).getNodeValue().trim()));
                     
+                    NodeList IPCAMoutList = firstPersonElement.getElementsByTagName("IPCAM");
+                    Element IPCAMoutElement = (Element) IPCAMoutList.item(0);
+                    NodeList IPCAMoutAgeList = IPCAMoutElement.getChildNodes();
+                    user.setIpcam(new Boolean(((Node) IPCAMoutAgeList.item(0)).getNodeValue().trim()));
+                    
   } catch (Exception parserConfigurationException) {
 //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    
+                     try {
+                      //------
+                    NodeList URLoutList = firstPersonElement.getElementsByTagName("URL");
+                    Element URLoutElement = (Element) URLoutList.item(0);
+                    NodeList URLoutAgeList = URLoutElement.getChildNodes();
+                    user.setUrl(((Node) URLoutAgeList.item(0)).getNodeValue().trim());
+                      } catch (Exception parserConfigurationException) {
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                       //------
                     try {

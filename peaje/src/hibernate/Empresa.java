@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hibernate;
 
 import java.io.Serializable;
@@ -23,6 +22,7 @@ import javax.persistence.Transient;
 @Table(name = "empresa")
 @NamedQueries({})
 public class Empresa implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -60,15 +60,15 @@ public class Empresa implements Serializable {
     private Integer gracia;
     @Column(name = "salida")
     private Integer salida;
-      @Column(name = "led")
+    @Column(name = "led")
     private String led;
-      @Column(name = "barras")
+    @Column(name = "barras")
     private String barras;
-      @Column(name = "barras2")
+    @Column(name = "barras2")
     private String barras2;
-      @Column(name = "sale")
+    @Column(name = "sale")
     private String sale;
-      @Column(name = "sale2")
+    @Column(name = "sale2")
     private String sale2;
     @Column(name = "puerto1")
     private String puerto1;
@@ -185,7 +185,6 @@ public class Empresa implements Serializable {
     public void setLed(String led) {
         this.led = led;
     }
-
 
     public String getRazon() {
         return razon;
@@ -338,8 +337,6 @@ public class Empresa implements Serializable {
     public void setSale2(String sale2) {
         this.sale2 = sale2;
     }
-
-   
 
     public String getPuerto1() {
         return puerto1;
@@ -676,7 +673,6 @@ public class Empresa implements Serializable {
     public void setPuerta14(String puerta14) {
         this.puerta14 = puerta14;
     }
-
     @Transient
     public Boolean webcam = false;
 
@@ -686,6 +682,26 @@ public class Empresa implements Serializable {
 
     public void setWebcam(Boolean webcam) {
         this.webcam = webcam;
+    }
+    @Transient
+    public Boolean ipcam = false;
+
+    public Boolean getIpcam() {
+        return ipcam;
+    }
+
+    public void setIpcam(Boolean ipcam) {
+        this.ipcam = ipcam;
+    }
+    @Transient
+    public String url = "";
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
     @Transient
     public Boolean seabretic = false;
@@ -717,10 +733,7 @@ public class Empresa implements Serializable {
     public void setMulta(Double multa) {
         this.multa = multa;
     }
-    
-    
-    
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -745,5 +758,4 @@ public class Empresa implements Serializable {
     public String toString() {
         return "hibernate.Empresa[ruc=" + ruc + "]";
     }
-
 }

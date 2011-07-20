@@ -210,7 +210,9 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         telefono.setEditable(estado);
         graciasalida.setEditable(estado);
         graciaentrada.setEditable(estado);
-        
+        url.setEditable(estado);
+        chkIpcam.setEnabled(estado);
+        chkWebcam.setEnabled(estado);
         parqueaderos.setEditable(estado);
         iva.setEditable(estado);
         cmbFactura.setEnabled(estado);
@@ -322,6 +324,9 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel29 = new javax.swing.JLabel();
         cmbImpresora1 = new javax.swing.JComboBox();
         jLabel37 = new javax.swing.JLabel();
+        chkIpcam = new javax.swing.JCheckBox();
+        jLabel38 = new javax.swing.JLabel();
+        url = new javax.swing.JFormattedTextField();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -584,7 +589,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         btnSalir.setBounds(340, 10, 60, 50);
 
         getContentPane().add(jPanel4);
-        jPanel4.setBounds(10, 360, 410, 70);
+        jPanel4.setBounds(10, 380, 410, 70);
 
         jPanel2.setLayout(null);
 
@@ -718,7 +723,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("No. Parqueaderos:");
         jPanel2.add(jLabel9);
-        jLabel9.setBounds(-10, 110, 130, 14);
+        jLabel9.setBounds(-10, 110, 120, 14);
 
         jLabel13.setForeground(new java.awt.Color(0, 0, 153));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -762,7 +767,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel20.setText("Impresora Botón(1):");
         jPanel2.add(jLabel20);
-        jLabel20.setBounds(0, 170, 120, 14);
+        jLabel20.setBounds(0, 170, 110, 14);
 
         iva.setEditable(false);
 
@@ -780,7 +785,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel16.setText("Gracia por Hora: ");
         jPanel2.add(jLabel16);
-        jLabel16.setBounds(0, 210, 120, 20);
+        jLabel16.setBounds(0, 210, 110, 20);
 
         graciaentrada.setEditable(false);
         graciaentrada.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -816,15 +821,19 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel2.add(jLabel28);
         jLabel28.setBounds(190, 210, 110, 20);
 
-        chkWebcam.setText("Trabaja con WebCam:");
-        chkWebcam.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        chkWebcam.setText("Trabaja con WebCam");
         chkWebcam.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.webcam}"), chkWebcam, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         bindingGroup.addBinding(binding);
 
+        chkWebcam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkWebcamActionPerformed(evt);
+            }
+        });
         jPanel2.add(chkWebcam);
-        chkWebcam.setBounds(40, 230, 140, 23);
+        chkWebcam.setBounds(240, 270, 140, 18);
 
         seabrefactura.setText("Abrir barrera al cobrar");
 
@@ -837,7 +846,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(seabrefactura);
-        seabrefactura.setBounds(210, 250, 180, 23);
+        seabrefactura.setBounds(210, 230, 180, 18);
 
         seabreticket.setText("Abrir barrera al imprimir Ticket");
 
@@ -845,7 +854,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         bindingGroup.addBinding(binding);
 
         jPanel2.add(seabreticket);
-        seabreticket.setBounds(210, 230, 190, 23);
+        seabreticket.setBounds(20, 230, 190, 18);
 
         multa.setEditable(false);
         multa.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
@@ -856,11 +865,11 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         bindingGroup.addBinding(binding);
 
         jPanel2.add(multa);
-        multa.setBounds(120, 250, 60, 20);
+        multa.setBounds(120, 250, 40, 18);
 
-        jLabel29.setText("Multa por pérdida: ");
+        jLabel29.setText("URL IP:");
         jPanel2.add(jLabel29);
-        jLabel29.setBounds(10, 250, 100, 20);
+        jLabel29.setBounds(70, 290, 40, 20);
 
         cmbImpresora1.setEnabled(false);
 
@@ -879,7 +888,33 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel37.setText("Impresora Botón(2):");
         jPanel2.add(jLabel37);
-        jLabel37.setBounds(0, 190, 120, 14);
+        jLabel37.setBounds(0, 190, 110, 14);
+
+        chkIpcam.setText("Trabaja con Cámara IP");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.ipcam}"), chkIpcam, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        chkIpcam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkIpcamActionPerformed(evt);
+            }
+        });
+        jPanel2.add(chkIpcam);
+        chkIpcam.setBounds(70, 270, 140, 18);
+
+        jLabel38.setText("Multa por pérdida: ");
+        jPanel2.add(jLabel38);
+        jLabel38.setBounds(20, 250, 100, 20);
+
+        url.setEditable(false);
+        url.setText("http://");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.url}"), url, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        jPanel2.add(url);
+        url.setBounds(120, 290, 240, 18);
 
         jTabbedPane1.addTab("DATOS DE LA EMPRESA", new javax.swing.ImageIcon(getClass().getResource("/images/empresa.png")), jPanel2); // NOI18N
 
@@ -1319,7 +1354,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jTabbedPane1.addTab("PUERTAS Y LECTORAS", new javax.swing.ImageIcon(getClass().getResource("/images/admin.gif")), jPanel5); // NOI18N
 
         getContentPane().add(jTabbedPane1);
-        jTabbedPane1.setBounds(10, 50, 410, 310);
+        jTabbedPane1.setBounds(10, 40, 410, 340);
 
         bindingGroup.bind();
 
@@ -1375,8 +1410,11 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setSale((String)cmbPuertaSale.getSelectedItem());
                     empresaObj.setSale2((String)cmbPuertaSale2.getSelectedItem());
                     empresaObj.setWebcam(chkWebcam.isSelected());
+                    empresaObj.setUrl(url.getText());
+                    empresaObj.setIpcam(chkIpcam.isSelected());
                     empresaObj.setSeabretic(seabreticket.isSelected());
                     empresaObj.setSeabrefac(seabrefactura.isSelected());
+                    
                     try {
                         empresaObj.setMulta(new Double(multa.getText()));
                     } catch (Exception e) {
@@ -1881,6 +1919,19 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
          principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_cmbImpresora1KeyPressed
 
+    private void chkIpcamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkIpcamActionPerformed
+        // TODO add your handling code here:
+        if(chkIpcam.isSelected())
+            chkWebcam.setSelected(false);
+        
+    }//GEN-LAST:event_chkIpcamActionPerformed
+
+    private void chkWebcamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkWebcamActionPerformed
+        // TODO add your handling code here:
+         if(chkWebcam.isSelected())
+            chkIpcam.setSelected(false);
+    }//GEN-LAST:event_chkWebcamActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
@@ -1892,6 +1943,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JCheckBox chkActivo2;
     private javax.swing.JCheckBox chkActivo3;
     private javax.swing.JCheckBox chkActivo4;
+    private javax.swing.JCheckBox chkIpcam;
     private javax.swing.JCheckBox chkWebcam;
     private javax.swing.JComboBox cmbEntrada1;
     private javax.swing.JComboBox cmbEntrada2;
@@ -1955,6 +2007,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1976,6 +2029,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JCheckBox seabrefactura;
     private javax.swing.JCheckBox seabreticket;
     private javax.swing.JFormattedTextField telefono;
+    private javax.swing.JFormattedTextField url;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

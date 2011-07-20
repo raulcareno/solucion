@@ -31,7 +31,7 @@ public class EmpresaPuertosStatic {
      */
     public   EmpresaPuertosStatic() {
     }
-        public Boolean webcam;
+        public Boolean webcam; public Boolean ipcam;
         public Boolean seabretic;
         public Boolean seabrefac;
         public String impticket;
@@ -88,7 +88,7 @@ public class EmpresaPuertosStatic {
         public String puerta13;
         public String puerta14;
         public Double multa;
-
+   public String url;
     public Double getMulta() {
         return multa;
     }
@@ -103,6 +103,22 @@ public class EmpresaPuertosStatic {
 
     public void setWebcam(Boolean webcam) {
         this.webcam = webcam;
+    }
+
+    public Boolean getIpcam() {
+        return ipcam;
+    }
+
+    public void setIpcam(Boolean ipcam) {
+        this.ipcam = ipcam;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
         

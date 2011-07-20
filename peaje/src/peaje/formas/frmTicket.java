@@ -398,6 +398,13 @@ if(empresaObj.getSeabretic()){
                         
                         fotografiar(""+fac.getCodigo(), ubicacionDirectorio+"\\fotos");
                     }
+                    if(empresaObj.getIpcam()){
+                         if (ubicacionDirectorio.contains("build")) {
+                            ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                        }
+                        
+                        fotografiarIp(""+fac.getCodigo()+".jpg", ubicacionDirectorio+"\\fotos");
+                    }
                     } catch (Exception e) {
                         System.out.println("fotografíar: "+e);
                         lger.logger(frmTicket.class.getName(), e.getMessage());   
@@ -430,6 +437,13 @@ public void fotografiar(String nombre,String direccion){
         if (resultado == 0) {
             JOptionPane.showMessageDialog(null, "Error en la Fotografia");
         }
+}
+
+public void fotografiarIp(String nombre,String direccion){
+   principal.verIp.tomarFotoIp(direccion+separador+nombre,principal);
+//        if (resultado == 0) {
+//            JOptionPane.showMessageDialog(null, "Error en la Fotografia");
+//        }
 }
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
