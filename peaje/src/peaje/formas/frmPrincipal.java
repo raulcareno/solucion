@@ -2666,6 +2666,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setWebcam(emp.getWebcam());
         empresaObj.setIpcam(emp.getIpcam());
         empresaObj.setUrl(emp.getUrl());
+        empresaObj.setEntra1(emp.getEntra1());
+        empresaObj.setEntra2(emp.getEntra2());
         empresaObj.setSeabretic(emp.getSeabretic());
         empresaObj.setSeabrefac(emp.getSeabrefac());
         empresaObj.setMulta(emp.getMulta());
@@ -3640,7 +3642,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 return;
             }
             frmEmpresa usu = new frmEmpresa(this, true, this, adm);
-            usu.setSize(441, 470);
+            usu.setSize(462, 496);
             usu.setLocation(240, 80);
             contenedor.add(usu);
 

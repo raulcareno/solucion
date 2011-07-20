@@ -89,6 +89,8 @@ public class EmpresaPuertosStatic {
         public String puerta14;
         public Double multa;
    public String url;
+   public String entra1;
+   public String entra2;
     public Double getMulta() {
         return multa;
     }
@@ -561,6 +563,22 @@ public class EmpresaPuertosStatic {
 
     public void setSeabretic(Boolean seabretic) {
         this.seabretic = seabretic;
+    }
+
+    public String getEntra1() {
+        return entra1;
+    }
+
+    public void setEntra1(String entra1) {
+        this.entra1 = entra1;
+    }
+
+    public String getEntra2() {
+        return entra2;
+    }
+
+    public void setEntra2(String entra2) {
+        this.entra2 = entra2;
     }
         
         

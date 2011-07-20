@@ -33,6 +33,8 @@ public class EmpresaPuertos {
     public EmpresaPuertos() {
     }
     public String url;
+    public String entra1;
+    public String entra2;
     public String impticket;
     public String impfactura;
     public String impresora;
@@ -92,6 +94,24 @@ public class EmpresaPuertos {
     public Boolean seabretic;
     public Double multa;
 
+    public String getEntra1() {
+        return entra1;
+    }
+
+    public void setEntra1(String entra1) {
+        this.entra1 = entra1;
+    }
+
+    public String getEntra2() {
+        return entra2;
+    }
+
+    public void setEntra2(String entra2) {
+        this.entra2 = entra2;
+    }
+
+    
+    
     public String getUrl() {
         return url;
     }

@@ -134,22 +134,22 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             //SimpleReadApp
             serialPort = (SerialPort) puertoId.open("LECTORA", 2000);
         } catch (PortInUseException e) {
-            System.out.println(""+e);
+            System.out.println("" + e);
         }
         try {
             inputStream = serialPort.getInputStream();
         } catch (IOException e) {
-            System.out.println("LEER TARJETA.CLASS "+e);
+            System.out.println("LEER TARJETA.CLASS " + e);
         }
         try {
             outputSream = serialPort.getOutputStream();
         } catch (IOException e) {
-            System.out.println(""+e);
+            System.out.println("" + e);
         }
         try {
             serialPort.addEventListener(this);
         } catch (TooManyListenersException e) {
-            System.out.println(""+e);
+            System.out.println("" + e);
         }
         serialPort.notifyOnDataAvailable(true);
         try {
@@ -164,7 +164,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-                    }
+        }
     }
 
     public String getTarjeta() {
@@ -207,20 +207,24 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
             //System.out.println("" + tarjeta);
             if ("AEIOUAEIOU".equals(tarjeta)) {
-                System.out.println("AEIOUAEIOU"+new Date());
+
+                System.out.println("AEIOUAEIOU" + new Date());
                 imprimir("");
+                abrirPuerta(princip.empresaObj.getEntra1());
                 tarjeta = "";
                 return;
-            }else  if ("AEIOUAEIOU2".equals(tarjeta)) {
-                System.out.println("AEIOUAEIOU2"+new Date());
+
+            } else if ("AEIOUAEIOU2".equals(tarjeta)) {
+                System.out.println("AEIOUAEIOU2" + new Date());
                 imprimir("2");
+                abrirPuerta(princip.empresaObj.getEntra1());
                 tarjeta = "";
                 return;
-            } else  if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
+            } else if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
                 princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
                 tarjeta = "";
                 return;
-            }else{
+            } else {
                 //BUSCAR TARJETA 
                 princip.tarjetatxt.setText("");
                 princip.tarjetatxt.setText(tarjeta);
@@ -232,6 +236,15 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         }
 
 
+    }
+
+    public void abrirPuerta(String puerta) {
+        try {
+            LeerTarjeta ta = (LeerTarjeta) princip.puertoListo.get(0);
+            ta.outputSream.write(puerta.getBytes());
+        } catch (IOException ex) {
+            Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void imprimir(String impresoraLlega) {
@@ -249,24 +262,24 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             fac.setFechaini(new Date());
             fac.setFecha(new Date());
             Boolean pasar = true;
-            Integer numero = new Integer(emp.getDocumentoticket())+1;
-            while(pasar){
-                List sihay = adm.query("Select o from Factura as o where o.ticket = '"+numero+"'"); 
-                if(sihay.size()<=0){
+            Integer numero = new Integer(emp.getDocumentoticket()) + 1;
+            while (pasar) {
+                List sihay = adm.query("Select o from Factura as o where o.ticket = '" + numero + "'");
+                if (sihay.size() <= 0) {
                     pasar = false;
-                    
+
                     fac.setTicket("" + numero);
                     emp.setDocumentoticket((numero) + "");
                     adm.actualizar(emp);//GUARDO EMPRESA
                     adm.guardar(fac); // GUARDO FACTURA
-                    
-                }else{
+
+                } else {
                     numero++;
                 }
-                
+
             }
-            
-            
+
+
 //            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
             ArrayList detalle = new ArrayList();
             detalle.add(fac);
@@ -308,11 +321,11 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 if (ubicacionDirectorio.contains("build")) {
                     ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                 }
-                int resultado = princip.ver.Fotografiar( ubicacionDirectorio + "\\fotos", false, fac.getCodigo()+"");
+                int resultado = princip.ver.Fotografiar(ubicacionDirectorio + "\\fotos", false, fac.getCodigo() + "");
                 if (resultado == 0) {
                     JOptionPane.showMessageDialog(null, "Error en la Fotografia");
                 }
-              
+
             }
 
 
