@@ -704,7 +704,29 @@ public class Empresa implements Serializable {
         this.url = url;
     }
     @Transient
+    public String entra1 = "";
+    @Transient
+    public String entra2 = "";
+    
+    
+    @Transient
     public Boolean seabretic = false;
+
+    public String getEntra1() {
+        return entra1;
+    }
+
+    public void setEntra1(String entra1) {
+        this.entra1 = entra1;
+    }
+
+    public String getEntra2() {
+        return entra2;
+    }
+
+    public void setEntra2(String entra2) {
+        this.entra2 = entra2;
+    }
     @Transient
     public Boolean seabrefac = false;
     @Transient
