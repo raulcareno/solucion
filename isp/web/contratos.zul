@@ -1380,33 +1380,39 @@ void verificarCedula(String valor){
                                         </tabpanel>
                                        
                                         <tabpanel>
-                                            Digite la Serie: <textbox onOK="buscarSeries(self.value)" id="seriebuscar" value=""/>
+                                            <groupbox id="gb" mold="3d" width="100%">
+                                                        Digite la Serie: 
+                                                        <textbox onOK="buscarSeries(self.value)" id="seriebuscar" value=""/>
+                                        </groupbox>
                                             <grid id="productos">
-                                                    <columns sizable="true">
-                                                        <column label="Cant" width="10px" />
-                                                        <column label="Equipo"  width="280px" />
-                                                        <column label="Valor"  width="90px" />
-                                                        <column label="Series"  width="80px" />
-                                                        <column label="Opción" width="10px"  />
-                                                        <column label="Facturado/Prestado" width="90px"  />
-                                                    </columns>
+                                                <columns sizable="true">
+                                                    <column label="Cant" width="10px" />
+                                                    <column label="Equipo"  width="280px" />
+                                                    <column label="Valor"  width="90px" />
+                                                    <column label="Series"  width="80px" />
+                                                    <column label="Opción" width="10px"  />
+                                                    <column label="Facturado/Prestado" width="90px"  />
+                                                </columns>
                                                 <rows id="filas">
                                                 </rows>
-                                                   <foot style="background:#CCCCCC">
+                                                <foot style="background:#E1E1E1">
                                                     <footer/>
                                                     <footer>
-                                                        <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px" value="VALOR A FACTURAR: "/>    
+                                                        <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="VALOR A FACTURAR: "/>    
                                                     </footer>
                                                     <footer>
-                                                        <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
+                                                        <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
                                                     </footer>
-                                                   
-                                                    <footer width="10px"/>
-                                                    <footer>
-                                                        <label style="float:right; text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px" value="# "/>    <intbox cols="3"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px"  id="cantidadtotal" readonly="true" value="0"    /> 
+                                                    <footer width="10px">
+                                                        <label style="font:14px;font-weight:bold;background:#E1E1E1;border:0px" value=" + IVA"/> 
                                                     </footer>
                                                     <footer>
-                                                        <label style="float:right; text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px" value="# "/>    <intbox cols="3"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px"  id="facturadostotal" readonly="true" value="0"    /> 
+                                                        <label style="float:right; text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="# "/>    
+                                                        <intbox cols="3"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="cantidadtotal" readonly="true" value="0"    /> 
+                                                    </footer>
+                                                    <footer>
+                                                        <label style="float:right; text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="# "/>    
+                                                        <intbox cols="3"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="facturadostotal" readonly="true" value="0"    /> 
                                                     </footer>
                                                 </foot>
                                             </grid>
