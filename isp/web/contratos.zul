@@ -974,6 +974,7 @@ void verificarCedula(String valor){
         List col = productos.getRows().getChildren();
         BigDecimal total = new BigDecimal(0);
         int cantidad = 0;
+        int facturados = 0;
              for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
                     Detallecompra det = new Detallecompra();
@@ -982,11 +983,13 @@ void verificarCedula(String valor){
                        if(fac){
                             BigDecimal val = ((Decimalbox) labels.get(2)).getValue();
                             total = total.add(val);
-                            cantidad ++;
+                            facturados ++;
                        }
+                       cantidad ++;
              }
              valortotal.value = total;
              cantidadtotal.value = cantidad;
+             facturadostotal.value = facturados;
     }
     
   ]]>
@@ -1390,18 +1393,21 @@ void verificarCedula(String valor){
                                                 <rows id="filas">
                                                 </rows>
                                                    <foot style="background:#CCCCCC">
+                                                    <footer/>
                                                     <footer>
-                                                        <intbox cols="3"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px"  id="cantidadtotal" readonly="true" value="0"    /> 
-                                                    </footer>
-                                                    <footer>
-                                                    <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px" value="VALOR A FACTURAR: "/>    
+                                                        <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px" value="VALOR A FACTURAR: "/>    
                                                     </footer>
                                                     <footer>
                                                         <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
                                                     </footer>
-                                                    <footer  width="90px" />
+                                                   
                                                     <footer width="10px"/>
-                                                    <footer width="90px" />
+                                                    <footer>
+                                                        <label style="float:right; text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px" value="# "/>    <intbox cols="3"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px"  id="cantidadtotal" readonly="true" value="0"    /> 
+                                                    </footer>
+                                                    <footer>
+                                                        <label style="float:right; text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px" value="# "/>    <intbox cols="3"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px"  id="facturadostotal" readonly="true" value="0"    /> 
+                                                    </footer>
                                                 </foot>
                                             </grid>
                                         </tabpanel>
