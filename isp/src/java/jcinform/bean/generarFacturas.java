@@ -60,6 +60,8 @@ public class generarFacturas {
                     fac.setFecha(fecha);
                     fac.setSucursal(suc);
                     fac.setTotal(new BigDecimal(object.getPlan().getValor()));
+                    fac.getTotal().multiply((new  BigDecimal(12).divide(new BigDecimal(100))));
+                    fac.setSubtotal(BigDecimal.ZERO);//FALTAN CARGAR LOS DATOS RESTANTES DEL IVA Y VALOR DEL IVA
                     adm.guardar(fac);
                     Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
                     det.setTotal(new BigDecimal(object.getPlan().getValor()));

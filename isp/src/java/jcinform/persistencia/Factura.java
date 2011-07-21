@@ -61,6 +61,18 @@ public class Factura implements Serializable {
     private String nocheque;
     @Column(name = "tarjeta")
     private BigDecimal tarjeta;
+    
+    @Column(name = "subtotal")
+    private BigDecimal subtotal;
+    @Column(name = "descuento")
+    private BigDecimal descuento;
+    @Column(name = "baseiva")
+    private BigDecimal baseiva;
+    @Column(name = "porcentajeiva")
+    private BigDecimal porcentajeiva;
+    @Column(name = "valoriva")
+    private BigDecimal valoriva;
+    
     @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
     @ManyToOne
     private Sucursal sucursal;
@@ -208,6 +220,46 @@ public class Factura implements Serializable {
 
     public void setClientes(Clientes clientes) {
         this.clientes = clientes;
+    }
+
+    public BigDecimal getBaseiva() {
+        return baseiva;
+    }
+
+    public void setBaseiva(BigDecimal baseiva) {
+        this.baseiva = baseiva;
+    }
+
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
+    }
+
+    public BigDecimal getPorcentajeiva() {
+        return porcentajeiva;
+    }
+
+    public void setPorcentajeiva(BigDecimal porcentajeiva) {
+        this.porcentajeiva = porcentajeiva;
+    }
+
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public BigDecimal getValoriva() {
+        return valoriva;
+    }
+
+    public void setValoriva(BigDecimal valoriva) {
+        this.valoriva = valoriva;
     }
 
     public Collection<Detalle> getDetalleCollection() {

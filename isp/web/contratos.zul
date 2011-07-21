@@ -350,6 +350,53 @@ Boolean validar(){
                     agregar.disabled=false;
                     estado(true,false);
                     llenar(new Contratos(0));
+//EMPIEZO A GENERAR FACTURA Y CXCOBRAR
+             Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
+            fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
+            fac.setEfectivo(new BigDecimal(object.getPlan().getValor()));
+            fac.setEstado(true);
+            fac.setClientes(object.getClientes());
+            fac.setFecha(fecha);
+            fac.setSucursal(suc);
+            fac.setSubtotal(valortotal.value);
+            fac.setDescuento(new BigDecimal(0));
+            fac.setBaseiva(valortotal.value);
+            fac.setPorcentajeva(valortotal.value);
+            fac.setValoriva((valortotal.value).multiply(empresa.getIva().divide(new BigDecimal(100))));
+            fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
+            adm.guardar(fac);
+
+                                Date fecha = new Date();
+                            List col = productos.getRows().getChildren();
+                                    for (int i = 0; i < col.size(); i++) {
+                                             Row object = (Row) col.get(i);
+                                             Series det = new Series();
+                                                Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+                                                det.setTotal(det.getDetallecompra().getEquipos().getPvp1());
+                                                det.setPlan(null);
+                                                det.setEquipos(new Equipos((Intbox) labels.get(0)).getValue());
+                                                det.setCantidad(1);
+                                                det.setMes(fecha.getMonth()+1);  
+                                                det.setAnio(fecha.getYear()+1900); 
+                                                det.setDescripcion("generada");
+                                                det.setFactura(fac);
+                                                adm.guardar(det);
+                                                //TOMAR EN CUENTA LOS SERVICIOS NO SE DEBEN ACTUALIZAR PARA LAS SERIES
+
+                                      }
+                    Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+                    cuenta.setDebe(fac.getTotal());
+                    cuenta.setHaber(BigDecimal.ZERO);
+                    cuenta.setDebito(BigDecimal.ZERO);
+                    cuenta.setCheque(BigDecimal.ZERO);
+                    cuenta.setEfectivo(BigDecimal.ZERO);
+                    cuenta.setFactura(fac);
+                    cuenta.setFecha(fecha);
+                    cuenta.setNotarjeta("");
+                    cuenta.setNocheque("");
+                    cuenta.setTotal(fac.getTotal());
+                    adm.guardar(cuenta);
+                    
                     /*
                     
               final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
@@ -1382,8 +1429,8 @@ void verificarCedula(String valor){
                                         <tabpanel>
                                             <groupbox id="gb" mold="3d" width="100%">
                                                         Digite la Serie: 
-                                                        <textbox onOK="buscarSeries(self.value)" id="seriebuscar" value=""/>
-                                        </groupbox>
+                                                <textbox onOK="buscarSeries(self.value)" id="seriebuscar" value=""/>
+                                            </groupbox>
                                             <grid id="productos">
                                                 <columns sizable="true">
                                                     <column label="Cant" width="10px" />

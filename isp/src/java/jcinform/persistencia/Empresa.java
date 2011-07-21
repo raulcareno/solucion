@@ -69,6 +69,8 @@ public class Empresa implements Serializable {
     private Boolean star;
     @Column(name = "instalacion")
     private BigDecimal instalacion;
+    @Column(name = "iva")
+    private BigDecimal iva;
     @OneToMany(mappedBy = "empresa")
     private Collection<Sucursal> sucursalCollection;
 
@@ -237,6 +239,14 @@ public class Empresa implements Serializable {
 
     public void setInstalacion(BigDecimal instalacion) {
         this.instalacion = instalacion;
+    }
+
+    public BigDecimal getIva() {
+        return iva;
+    }
+
+    public void setIva(BigDecimal iva) {
+        this.iva = iva;
     }
 
     
