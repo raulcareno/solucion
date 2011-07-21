@@ -6,6 +6,7 @@
 package jcinform.persistencia;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -43,17 +44,17 @@ public class Equipos implements Serializable {
     @Column(name = "caracteristica")
     private String caracteristica;
     @Column(name = "costo")
-    private Double costo;
+    private BigDecimal costo;
     @Column(name = "pvp1")
-    private Double pvp1;
+    private BigDecimal pvp1;
     @Column(name = "pvp2")
-    private Double pvp2;
+    private BigDecimal pvp2;
     @Column(name = "pvp3")
-    private Double pvp3;
+    private BigDecimal pvp3;
     @Column(name = "pvp4")
-    private Double pvp4;
+    private BigDecimal pvp4;
     @Column(name = "bien")
-    private Boolean bien;
+    private Boolean bien = true;
     @OneToMany(mappedBy = "equipos")
     private Collection<Detallecompra> detallecompraCollection;
     @JoinColumn(name = "marcas", referencedColumnName = "codigo")
@@ -115,43 +116,43 @@ public class Equipos implements Serializable {
         this.caracteristica = caracteristica;
     }
 
-    public Double getCosto() {
+    public BigDecimal getCosto() {
         return costo;
     }
 
-    public void setCosto(Double costo) {
+    public void setCosto(BigDecimal costo) {
         this.costo = costo;
     }
 
-    public Double getPvp1() {
+    public BigDecimal getPvp1() {
         return pvp1;
     }
 
-    public void setPvp1(Double pvp1) {
+    public void setPvp1(BigDecimal pvp1) {
         this.pvp1 = pvp1;
     }
 
-    public Double getPvp2() {
+    public BigDecimal getPvp2() {
         return pvp2;
     }
 
-    public void setPvp2(Double pvp2) {
+    public void setPvp2(BigDecimal pvp2) {
         this.pvp2 = pvp2;
     }
 
-    public Double getPvp3() {
+    public BigDecimal getPvp3() {
         return pvp3;
     }
 
-    public void setPvp3(Double pvp3) {
+    public void setPvp3(BigDecimal pvp3) {
         this.pvp3 = pvp3;
     }
 
-    public Double getPvp4() {
+    public BigDecimal getPvp4() {
         return pvp4;
     }
 
-    public void setPvp4(Double pvp4) {
+    public void setPvp4(BigDecimal pvp4) {
         this.pvp4 = pvp4;
     }
 

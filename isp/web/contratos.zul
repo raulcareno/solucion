@@ -350,8 +350,20 @@ Boolean validar(){
                     agregar.disabled=false;
                     estado(true,false);
                     llenar(new Contratos(0));
-                  
-    }
+                    /*
+                    
+              final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
+                                win.setMaximizable(true);
+                                win.setClosable(true);
+                                win.setAttribute("codigoFactura", aButton.getId());
+                                win.setAttribute("valoraPagar", aButton.getAttribute("valor"));
+                                win.setTitle("Facturar Clientes");
+                                win.doModal();
+                             
+             */
+             
+             
+}
 
  Boolean verificar(String accion){
         return permiso.verificarPermiso("Contratos",accion);
@@ -820,8 +832,8 @@ void verificarCedula(String valor){
                                                         }
 
                                     }
-                                           void buscarSeries(String serie){
-                                           List seriesEn = adm.query("Select o from Series as o where o.estado = 'C'  and o.serie = '"+serie+"'" + 
+      void buscarSeries(String serie){
+           List seriesEn = adm.query("Select o from Series as o where o.estado = 'C'  and o.serie = '"+serie+"'" + 
                                            "and o.codigo not in (Select a.codigo from Series as a where a.estado = 'A')  ");
                                            if(seriesEn.size()>0){
                                            
@@ -836,7 +848,7 @@ void verificarCedula(String valor){
                                                              row.appendChild(intb);
                                                             Label prod = new Label(""+seriesEn.get(0).getDetallecompra().getEquipos());
                                                             row.appendChild(prod);
-                                                            Decimalbox valor = new Decimalbox(new BigDecimal(seriesEn.get(0).getDetallecompra().getEquipos().getPvp1()));
+                                                            Decimalbox valor = new Decimalbox((seriesEn.get(0).getDetallecompra().getEquipos().getPvp1()));
                                                             valor.setFormat("##0.00");
                                                             valor.setStyle("float:right;text-align:right");
                                                             valor.setReadonly(true);
@@ -857,6 +869,7 @@ void verificarCedula(String valor){
                                                                      //seriespanel.visible = false;
                                                                      //if(valor0 == 16){
                                                                         quitarFila(aButton.getId());
+                                                                        sumar();
                                                                      //}
 
                                                                 }
@@ -865,11 +878,19 @@ void verificarCedula(String valor){
                                                             
                                                             Checkbox facturado = new Checkbox();
                                                             facturado.setChecked(true);
+                                                            facturado.addEventListener("onCheck", new EventListener() {
+                                                                public void onEvent(Event event) throws Exception {
+                                                                     sumar();
+
+                                                                }
+                                                            });
+                                                            
                                                             row.appendChild(facturado);
                                                             
                                                             
                                                             row.setValue(seriesEn.get(0)); 
                                                     filas.appendChild(row);
+                                                    sumar();
                                                     }catch(Exception e){
                                                         Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                                                     }
@@ -878,13 +899,96 @@ void verificarCedula(String valor){
                                                 seriebuscar.focus();
                                                 
                                            }else{
-                                                Messagebox.show("SERIE NO ENCONTRADA (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                                                seriebuscar.value="";
-                                                seriebuscar.focus();
+                                            List equipos = adm.query("Select o from Equipos as o where o.tipo = '"+serie+"' and o.bien = false ");
+                                                       if(equipos.size()>0){
+                                                                       try{
+                                                                                    Row row = new Row();
+                                                                                      //CARGO LAS SERIES COMO ATRIBUTO
+                                                                                      ArrayList series = new ArrayList();
+                                                                                            Intbox intb = new Intbox(equipos.get(0).getCodigo());
+                                                                                            intb.setCols(3);
+                                                                                            intb.setReadonly(true);
+                                                                                            intb.setStyle("float:right;text-align:right");
+                                                                                             row.appendChild(intb);
+                                                                                            Label prod = new Label(""+equipos.get(0));
+                                                                                            row.appendChild(prod);
+                                                                                            Decimalbox valor = new Decimalbox((equipos.get(0).getPvp1()));
+                                                                                            valor.setFormat("##0.00");
+                                                                                            valor.setStyle("float:right;text-align:right");
+                                                                                            valor.setReadonly(true);
+                                                                                            row.appendChild(valor);
+
+
+                                                                                            Label seri = new Label(""+equipos.get(0).getTipo());
+                                                                                            row.appendChild(seri);
+
+                                                                                            Button aButton = null;
+                                                                                            aButton = new Button("quitar");
+                                                                                            aButton.setImage("/images/quitar.gif");
+                                                                                            aButton.setHeight("5px");
+                                                                                            aButton.setId("id"+equipos.get(0).getTipo());
+                                                                                            aButton.addEventListener("onClick", new EventListener() {
+                                                                                                public void onEvent(Event event) throws Exception {
+                                                                                                        quitarFila(aButton.getId());
+                                                                                                        sumar();
+                                                                                                  }
+                                                                                            });
+                                                                                            row.appendChild(aButton);
+
+                                                                                            Checkbox facturado = new Checkbox();
+                                                                                            facturado.setChecked(true);
+                                                                                            facturado.addEventListener("onCheck", new EventListener() {
+                                                                                                public void onEvent(Event event) throws Exception {
+                                                                                                     sumar();
+
+                                                                                                }
+                                                                                            });
+
+                                                                                            row.appendChild(facturado);
+                                                                                            Detallecompra det = new Detallecompra();
+                                                                                            Series ser = new Series();
+                                                                                            ser.setSerie(equipos.get(0).getTipo());
+                                                                                            det.setEquipos(equipos.get(0));
+                                                                                            ser.setDetallecompra(det);
+                                                                                            row.setValue(ser); 
+                                                                                    filas.appendChild(row);
+                                                                                    sumar();
+                                                                                    }catch(Exception e){
+                                                                                        Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...! \\n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                                                                                    }
+
+                                                                                seriebuscar.value="";
+                                                                                seriebuscar.focus();
+                                                                
+                                                                
+                                                        }else{
+                                                         Messagebox.show("SERIE NO ENCONTRADA (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                        seriebuscar.value="";
+                                                        seriebuscar.focus();
+                                                        }
                                            }
                                            
                                            
-                                           }               
+    } 
+    public void sumar(){
+        List col = productos.getRows().getChildren();
+        BigDecimal total = new BigDecimal(0);
+        int cantidad = 0;
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    Detallecompra det = new Detallecompra();
+                    List labels = object.getChildren();
+                       Boolean fac = ((Checkbox) labels.get(5)).isChecked();
+                       if(fac){
+                            BigDecimal val = ((Decimalbox) labels.get(2)).getValue();
+                            total = total.add(val);
+                            cantidad ++;
+                       }
+             }
+             valortotal.value = total;
+             cantidadtotal.value = cantidad;
+    }
+    
   ]]>
     </zscript>
     <div>
@@ -1285,6 +1389,20 @@ void verificarCedula(String valor){
                                                     </columns>
                                                 <rows id="filas">
                                                 </rows>
+                                                   <foot style="background:#CCCCCC">
+                                                    <footer>
+                                                        <intbox cols="3"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px"  id="cantidadtotal" readonly="true" value="0"    /> 
+                                                    </footer>
+                                                    <footer>
+                                                    <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px" value="VALOR A FACTURAR: "/>    
+                                                    </footer>
+                                                    <footer>
+                                                        <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#CCCCCC;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
+                                                    </footer>
+                                                    <footer  width="90px" />
+                                                    <footer width="10px"/>
+                                                    <footer width="90px" />
+                                                </foot>
                                             </grid>
                                         </tabpanel>
 

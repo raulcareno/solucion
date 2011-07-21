@@ -37,6 +37,16 @@ void llenar(Equipos empa){
     codigo.value = empa.getCodigo();
     nombre.value = empa.getNombre();
     modelo.value = empa.getModelo();
+    serie.value = empa.getTipo();
+    if(empa.getBien()){
+        bien.checked = true;
+        codigoserie.visible = false;
+     }else{
+        servicio.checked = true;
+        codigoserie.visible = true;
+      }
+  
+    pvp.value = empa.getPvp1();
     
                 if(empa.getMarcas()!=null){
                   for (int i = 0; i <= perf.getItems().size(); i++) {
@@ -59,11 +69,12 @@ void estado(Boolean estado,Boolean modificar){
         if(modificar){
             empa = (Equipos)datos.selectedItem.value;
         }
-
     nombre.readonly = estado;
-   
     modelo.readonly = estado;
- 
+    serie.readonly = estado;
+    bien.disabled = estado;
+    servicio.disabled = estado;
+    pvp.readonly = estado;
     perf.disabled = estado;
     bd.disabled = estado;
 
@@ -71,17 +82,27 @@ void estado(Boolean estado,Boolean modificar){
 
 
  void guardar(){
-
-
- if(nombre.value =="" || modelo.value == "" || perf.selectedItem == null){
+ if(nombre.value =="" || modelo.value == "" || perf.selectedItem == null || pvp.value == null  ){
     Messagebox.show("Registre los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
     return;
- }
+ } 
+        if(bien.checked){
+            empa.setBien(true);
+         }else{
+                empa.setBien(false);
+              if(serie.value == "" || serie.value == null){
+                    Messagebox.show("Ingrese la serie, esto servirá para registrar el producto en factura para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                    serie.focus();
+                    return;
+              }
+         }
+        empa.setTipo(serie.value);
         empa.setCodigo(codigo.value);
         empa.setNombre(nombre.value);
         empa.setMarcas(perf.selectedItem.value);
-       empa.setModelo(modelo.value);
-                if((!empa.getCodigo().equals(0)) ){
+        empa.setModelo(modelo.value);
+        empa.setPvp1(pvp.value);
+         if((!empa.getCodigo().equals(0)) ){
              adm.actualizar(empa);
          }else{
              adm.guardar(empa);
@@ -107,10 +128,7 @@ void estado(Boolean estado,Boolean modificar){
     }
  void nuevo(){
     if(verificar("Agregar")){
-          
           guardar.disabled=false; llenar(new Equipos(0));estado(false,false);
-          //String command = "applyTelefono('"+seguridad.getUuid()+"');";
-          //Clients.evalJavaScript(command);
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
@@ -212,7 +230,22 @@ empa.setMarcas(g);
                                 </bandbox>
 
                             </row>
-
+                         <row>
+                                <span style="float:right"> Es un Bien:</span>
+                                <span>
+	    			<radiogroup onCheck="">
+	    				<radio id="bien" value="true" onCheck="codigoserie.visible=false" selected="true" label="Bien"/>
+	    				<radio id="servicio" value="true" label="Servicio"  onCheck="codigoserie.visible=true" />
+	    			</radiogroup>
+                                    <span id="codigoserie" visible="false">
+                                        <textbox id="serie" />
+                                    </span>
+                                </span>
+                            </row>
+                              <row>
+                    <span style="float:right"> P.V.P. (*):</span>
+                            <decimalbox id="pvp"  maxlength="100" cols="40" readonly="true"   />
+                </row>
                       
                         </rows>
                     </grid>
