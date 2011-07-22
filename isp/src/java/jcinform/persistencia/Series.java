@@ -40,6 +40,9 @@ public class Series implements Serializable {
     @JoinColumn(name = "detallecompra", referencedColumnName = "codigo")
     @ManyToOne
     private Detallecompra detallecompra;
+    @JoinColumn(name = "contratos", referencedColumnName = "codigo")
+    @ManyToOne
+    private Contratos contratos;
 
     public Series() {
     }
@@ -80,6 +83,16 @@ public class Series implements Serializable {
         this.detallecompra = detallecompra;
     }
 
+    public Contratos getContratos() {
+        return contratos;
+    }
+
+    public void setContratos(Contratos contratos) {
+        this.contratos = contratos;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

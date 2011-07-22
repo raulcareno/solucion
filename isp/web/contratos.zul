@@ -257,15 +257,15 @@ Boolean validar(Combobox text){
 
 Boolean validar(){
         if(validar(identificacion)  || validar(direccion)  || validar(telefono)  || 
-                  validar(combo) ||    validar(numerocontrato) || validar(fecha) || validar(fechainstalacion)  || 
-                  validar(direccioni) ||  validar(telefonoi) || validar(nocuenta) || validar(diapago) || validar(combov) ){
+                  validar(combo) ||   validar(numerocontrato) || validar(fecha) || validar(fechainstalacion)  || 
+                  validar(direccioni) ||  validar(telefonoi) || validar(combov) ){
                           //Messagebox.show("Complete todos los campos que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                           return true;
           
           }
-            return false;
+            return false; 
           
-            /*
+            /*|| validar(diapago)|| validar(nocuenta) 
                         codigocli.value  == null ||  //codigo del cliente 
                         bd.value == "" || bd.value == null || //planes 
                         perf.value == "" || perf.value == null || //planes 
@@ -346,19 +346,20 @@ Boolean validar(){
                 permiso.auditar("Contratos","Guardar",""+equi.getContrato()+" - "+equi.getClientes());
          }
              
-                    
+ if(facturadostotal.value > 0){
+ 
 //EMPIEZO A GENERAR FACTURA Y CXCOBRAR 
 Date fecha = new Date();
              Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
             fac.setNumero(null);
-            fac.setCliente(equi.getClientes());
+            fac.setClientes(equi.getClientes());
             fac.setEstado(true);
             fac.setFecha(fecha);
             fac.setSucursal(sucursalEmp.getSucursal());
             fac.setSubtotal(valortotal.value);
             fac.setDescuento(new BigDecimal(0));
             fac.setBaseiva(valortotal.value);
-            fac.setPorcentajeva(valortotal.value);
+            fac.setPorcentajeiva(empresa.getIva());
             fac.setValoriva((valortotal.value).multiply(empresa.getIva().divide(new BigDecimal(100))));
             fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
             adm.guardar(fac);
@@ -366,26 +367,59 @@ Date fecha = new Date();
                              
                             List col = productos.getRows().getChildren();
                             String seriesString = "";
+                            
                                     for (int i = 0; i < col.size(); i++) {
                                              Row object = (Row) col.get(i);
                                              Series serieDet = ((Series)object.getValue());
-                                                Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                                                det.setTotal(serieDet.getDetallecompra().getEquipos().getPvp1());
-                                                det.setPlan(null);
-                                                det.setEquipos(new Equipos((Intbox) labels.get(0)).getValue());
-                                                det.setCantidad(1);
-                                                det.setMes(fecha.getMonth()+1);  
-                                                det.setAnio(fecha.getYear()+1900); 
-                                                det.setDescripcion(null);
-                                                det.setFactura(fac);
-                                                adm.guardar(det);
+                                              List labels = object.getChildren();
+                                                if(((Checkbox) labels.get(5)).isChecked()){
+                                                        Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+                                                        det.setTotal(serieDet.getDetallecompra().getEquipos().getPvp1());
+                                                        det.setPlan(null);
+                                                        det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
+                                                        det.setCantidad(1);
+                                                        det.setMes(fecha.getMonth()+1);  
+                                                        det.setAnio(fecha.getYear()+1900); 
+                                                        det.setDescripcion(null);
+                                                        det.setFactura(fac);
+                                                        adm.guardar(det);
+                                                
+                                                }else{
+                                                        Series serieNueva = new Series(adm.getNuevaClave("Series", "codigo"));
+                                                        serieNueva.setSerie(serieDet.getSerie());
+                                                        serieNueva.setContrato(equi);
+                                                        serieNueva.setEstado("P");
+                                                        serieNueva.setDetallecompra("");
+                                                        if(modificar == true){
+                                                          adm.ejecutaSql("Delete from Series where codigo = '"+serieDet.getCodigo()+"' "+ 
+                                                                " and contratos.codigo = '"+equi.getCodigo()+"' "); //ELIMINO LAS SERIES INGRESADAS ANTERIORMENTE CON EL CONTRATO Y CREO OTRAS NUEVAS
+                                                        }
+                                                        
+                                                      if(serieDet.getDetallecompra().getEquipos().getBien()){
+                                                          seriesString = "'"+serieDet.getSerie()+"',"+seriesString;
+                                                          adm.guardar(serieNueva);
+                                                      }
+                                                
+                                                }
                                                 if(serieDet.getDetallecompra().getEquipos().getBien()){
-                                                    seriesString = serieDet.getSerie()+","+seriesString;
+                                                    seriesString = "'"+serieDet.getSerie()+"',"+seriesString;
                                                 }
                                                 //TOMAR EN CUENTA LOS SERVICIOS NO SE DEBEN ACTUALIZAR PARA LAS SERIES
 
                                       }
-                            /*    Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+                                      
+                                      if(seriesString.length()>0 ){
+                                            seriesString = seriesString.substring(0,seriesString.length()-1);
+                                            List seriesEnc = adm.query("Select o from Series as o where o.serie in ("+seriesString+") ");
+                                            for(Iterator it = seriesEnc.iterator(); it.hasNext();) {
+                                                  Series object = (Series)it.next();
+                                                  empa = object;
+                                             }
+                                            
+                                      }
+                                      
+                                      
+                            Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
                             cuenta.setDebe(fac.getTotal());
                             cuenta.setHaber(BigDecimal.ZERO);
                             cuenta.setDebito(BigDecimal.ZERO);
@@ -399,17 +433,42 @@ Date fecha = new Date();
                             adm.guardar(cuenta);
 
 
-                     */
                     
               final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
                                 win.setMaximizable(true);
                                 win.setClosable(true);
-                                win.setAttribute("codigoFactura", fac.getCodigo());
+                                win.setAttribute("codigoFactura", fac.getCodigo()+"");
                                 win.setAttribute("valoraPagar", fac.getTotal());
                                 win.setTitle("Facturar Clientes");
                                 win.doModal();
            
-             
+            
+ 
+ }else if(cantidadtotal.value  > 0){
+                
+                            List col = productos.getRows().getChildren();
+                            String seriesString = "";
+                            
+                                    for (int i = 0; i < col.size(); i++) {
+                                             Row object = (Row) col.get(i);
+                                             Series serieDet = ((Series)object.getValue());
+    List labels = object.getChildren();
+                                                        Series serieNueva = new Series(adm.getNuevaClave("Series", "codigo"));
+                                                        serieNueva.setSerie(serieDet.getSerie());
+                                                        serieNueva.setContrato(equi);
+                                                        serieNueva.setEstado("P");
+                                                        serieNueva.setDetallecompra("");
+                                                        if(modificar == true){
+                                                          adm.ejecutaSql("Delete from Series where codigo = '"+serieDet.getCodigo()+"' "+ 
+                                                                " and contratos.codigo = '"+equi.getCodigo()+"' "); //ELIMINO LAS SERIES INGRESADAS ANTERIORMENTE CON EL CONTRATO Y CREO OTRAS NUEVAS
+                                                        }
+                                                      if(serieDet.getDetallecompra().getEquipos().getBien()){
+                                                          seriesString = "'"+serieDet.getSerie()+"',"+seriesString;
+                                                          adm.guardar(serieNueva);
+                                                      }
+                                      }
+ 
+ }
           Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                     guardar.disabled=true;
                     agregar.disabled=false;
