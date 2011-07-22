@@ -333,6 +333,14 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                     JOptionPane.showMessageDialog(null, "Error en la Fotografia");
                 }
 
+            }else if (princip.empresaObj.getIpcam()) {
+                   if (ubicacionDirectorio.contains("build")) {
+                            ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                        }
+                        
+                        fotografiarIp(""+fac.getCodigo()+".jpg", ubicacionDirectorio+"\\fotos");
+                        
+                
             }
 
 
@@ -351,4 +359,11 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //            ex.printStackTrace();
 //        }
     }
+    
+    public void fotografiarIp(String nombre,String direccion){
+                princip.verIp.tomarFotoIp(direccion+separador+nombre,princip);
+//        if (resultado == 0) {
+//            JOptionPane.showMessageDialog(null, "Error en la Fotografia");
+//        }
+}
 }

@@ -298,7 +298,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(150, 10, 60, 50);
+        btnAgregar.setBounds(170, 10, 60, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
