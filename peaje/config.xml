@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <JCINFORMEMPRESA>
     <PUERTOPRINCIPAL/>
-    <LED>null</LED>
+    <LED/>
     <BARRA1/>
     <BARRA2/>
     <SALE1>1</SALE1>
@@ -40,4 +40,6 @@
     <MULTA>10.0</MULTA>
     <IPCAM>true</IPCAM>
     <URL>http://192.168.10.3/cgi-bin/viewer/video.jpg</URL>
+    <ENTRA1>1</ENTRA1>
+    <ENTRA2>2</ENTRA2>
 </JCINFORMEMPRESA>
