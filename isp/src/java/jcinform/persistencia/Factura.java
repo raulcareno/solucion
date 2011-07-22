@@ -28,8 +28,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "factura")
-@NamedQueries({
-    @NamedQuery(name = "Factura.findAll", query = "SELECT f FROM Factura f")})
+@NamedQueries({})
 public class Factura implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,22 +46,7 @@ public class Factura implements Serializable {
     private Boolean estado;
     @Column(name = "observacion")
     private String observacion;
-    @Column(name = "efectivo")
-    private BigDecimal efectivo;
-    @Column(name = "deposito")
-    private BigDecimal deposito;
-    @Column(name = "cheque")
-    private BigDecimal cheque;
-    @Column(name = "banco")
-    private String banco;
-    @Column(name = "nocuenta")
-    private String nocuenta;
-    @Column(name = "nocheque")
-    private String nocheque;
-    @Column(name = "tarjeta")
-    private BigDecimal tarjeta;
-    
-    @Column(name = "subtotal")
+       @Column(name = "subtotal")
     private BigDecimal subtotal;
     @Column(name = "descuento")
     private BigDecimal descuento;
@@ -72,7 +56,6 @@ public class Factura implements Serializable {
     private BigDecimal porcentajeiva;
     @Column(name = "valoriva")
     private BigDecimal valoriva;
-    
     @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
     @ManyToOne
     private Sucursal sucursal;
@@ -142,62 +125,7 @@ public class Factura implements Serializable {
         this.observacion = observacion;
     }
 
-    public BigDecimal getEfectivo() {
-        return efectivo;
-    }
-
-    public void setEfectivo(BigDecimal efectivo) {
-        this.efectivo = efectivo;
-    }
-
-    public BigDecimal getDeposito() {
-        return deposito;
-    }
-
-    public void setDeposito(BigDecimal deposito) {
-        this.deposito = deposito;
-    }
-
-    public BigDecimal getCheque() {
-        return cheque;
-    }
-
-    public void setCheque(BigDecimal cheque) {
-        this.cheque = cheque;
-    }
-
-    public String getBanco() {
-        return banco;
-    }
-
-    public void setBanco(String banco) {
-        this.banco = banco;
-    }
-
-    public String getNocuenta() {
-        return nocuenta;
-    }
-
-    public void setNocuenta(String nocuenta) {
-        this.nocuenta = nocuenta;
-    }
-
-    public String getNocheque() {
-        return nocheque;
-    }
-
-    public void setNocheque(String nocheque) {
-        this.nocheque = nocheque;
-    }
-
-    public BigDecimal getTarjeta() {
-        return tarjeta;
-    }
-
-    public void setTarjeta(BigDecimal tarjeta) {
-        this.tarjeta = tarjeta;
-    }
-
+  
     public Sucursal getSucursal() {
         return sucursal;
     }

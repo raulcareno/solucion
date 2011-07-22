@@ -345,19 +345,16 @@ Boolean validar(){
                 adm.guardar(equi);
                 permiso.auditar("Contratos","Guardar",""+equi.getContrato()+" - "+equi.getClientes());
          }
-                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-                    guardar.disabled=true;
-                    agregar.disabled=false;
-                    estado(true,false);
-                    llenar(new Contratos(0));
-//EMPIEZO A GENERAR FACTURA Y CXCOBRAR
+             
+                    
+//EMPIEZO A GENERAR FACTURA Y CXCOBRAR 
+Date fecha = new Date();
              Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
-            fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
-            fac.setEfectivo(new BigDecimal(object.getPlan().getValor()));
+            fac.setNumero(null);
+            fac.setCliente(equi.getClientes());
             fac.setEstado(true);
-            fac.setClientes(object.getClientes());
             fac.setFecha(fecha);
-            fac.setSucursal(suc);
+            fac.setSucursal(sucursalEmp.getSucursal());
             fac.setSubtotal(valortotal.value);
             fac.setDescuento(new BigDecimal(0));
             fac.setBaseiva(valortotal.value);
@@ -366,50 +363,58 @@ Boolean validar(){
             fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
             adm.guardar(fac);
 
-                                Date fecha = new Date();
+                             
                             List col = productos.getRows().getChildren();
+                            String seriesString = "";
                                     for (int i = 0; i < col.size(); i++) {
                                              Row object = (Row) col.get(i);
-                                             Series det = new Series();
+                                             Series serieDet = ((Series)object.getValue());
                                                 Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                                                det.setTotal(det.getDetallecompra().getEquipos().getPvp1());
+                                                det.setTotal(serieDet.getDetallecompra().getEquipos().getPvp1());
                                                 det.setPlan(null);
                                                 det.setEquipos(new Equipos((Intbox) labels.get(0)).getValue());
                                                 det.setCantidad(1);
                                                 det.setMes(fecha.getMonth()+1);  
                                                 det.setAnio(fecha.getYear()+1900); 
-                                                det.setDescripcion("generada");
+                                                det.setDescripcion(null);
                                                 det.setFactura(fac);
                                                 adm.guardar(det);
+                                                if(serieDet.getDetallecompra().getEquipos().getBien()){
+                                                    seriesString = serieDet.getSerie()+","+seriesString;
+                                                }
                                                 //TOMAR EN CUENTA LOS SERVICIOS NO SE DEBEN ACTUALIZAR PARA LAS SERIES
 
                                       }
-                    Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
-                    cuenta.setDebe(fac.getTotal());
-                    cuenta.setHaber(BigDecimal.ZERO);
-                    cuenta.setDebito(BigDecimal.ZERO);
-                    cuenta.setCheque(BigDecimal.ZERO);
-                    cuenta.setEfectivo(BigDecimal.ZERO);
-                    cuenta.setFactura(fac);
-                    cuenta.setFecha(fecha);
-                    cuenta.setNotarjeta("");
-                    cuenta.setNocheque("");
-                    cuenta.setTotal(fac.getTotal());
-                    adm.guardar(cuenta);
-                    
-                    /*
+                            /*    Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+                            cuenta.setDebe(fac.getTotal());
+                            cuenta.setHaber(BigDecimal.ZERO);
+                            cuenta.setDebito(BigDecimal.ZERO);
+                            cuenta.setCheque(BigDecimal.ZERO);
+                            cuenta.setEfectivo(BigDecimal.ZERO);
+                            cuenta.setFactura(fac);
+                            cuenta.setFecha(fecha);
+                            cuenta.setNotarjeta("");
+                            cuenta.setNocheque("");
+                            cuenta.setTotal(fac.getTotal());
+                            adm.guardar(cuenta);
+
+
+                     */
                     
               final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
                                 win.setMaximizable(true);
                                 win.setClosable(true);
-                                win.setAttribute("codigoFactura", aButton.getId());
-                                win.setAttribute("valoraPagar", aButton.getAttribute("valor"));
+                                win.setAttribute("codigoFactura", fac.getCodigo());
+                                win.setAttribute("valoraPagar", fac.getTotal());
                                 win.setTitle("Facturar Clientes");
                                 win.doModal();
-                             
-             */
+           
              
-             
+          Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Contratos(0));      
 }
 
  Boolean verificar(String accion){
@@ -838,7 +843,7 @@ void verificarCedula(String valor){
              
     }
       void buscarCliCed(String p){
-      if(p.length()>5){
+      if(p.length() > 3){
         List ClientesEncontrados = adm.query("Select o from Clientes as o where o.identificacion like '"+p+"%' order by o.identificacion");
         lclienteced = new Listbox();
         int a=0;

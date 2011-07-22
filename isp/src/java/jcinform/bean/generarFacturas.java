@@ -54,7 +54,6 @@ public class generarFacturas {
                     Contratos object = (Contratos) it.next();
                     Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
                     fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
-                    fac.setEfectivo(new BigDecimal(object.getPlan().getValor()));
                     fac.setEstado(true);
                     fac.setClientes(object.getClientes());
                     fac.setFecha(fecha);
@@ -127,7 +126,7 @@ public class generarFacturas {
                     Contratos object = (Contratos) it.next();
                     Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
                     fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
-                    fac.setEfectivo(new BigDecimal(object.getPlan().getValor()));
+                
                     fac.setEstado(true);
                     fac.setClientes(object.getClientes());
                     fac.setFecha(fecha);

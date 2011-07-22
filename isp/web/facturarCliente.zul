@@ -234,8 +234,6 @@ import java.util.Map;
                     cheque.value = BigDecimal.ZERO;
                     tarjeta.value = BigDecimal.ZERO;
                     deposito.value = BigDecimal.ZERO;
-                    
-                    
              }catch(Exception e){
                      System.out.println("ERROR EN FACTURA "+e);
              }
