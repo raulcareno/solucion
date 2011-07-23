@@ -302,7 +302,7 @@ Boolean validar(){
     equi.setDireccion(direccioni.value);
     equi.setReferencia(referenciai.value);
     equi.setTelefono(telefonoi.value);
-    
+    equi.setEmpleados2(new Empleados((new Integer(codigoemp.value))));
     
     
      if(equi.getContrato()==null){
@@ -388,9 +388,9 @@ Date fecha = new Date();
                                                 }else{
                                                         Series serieNueva = new Series(adm.getNuevaClave("Series", "codigo"));
                                                         serieNueva.setSerie(serieDet.getSerie());
-                                                        serieNueva.setContrato(equi);
+                                                        serieNueva.setContratos(equi);
                                                         serieNueva.setEstado("P");
-                                                        serieNueva.setDetallecompra("");
+                                                        serieNueva.setDetallecompra(null);
                                                         if(modificar == true){
                                                           adm.ejecutaSql("Delete from Series where codigo = '"+serieDet.getCodigo()+"' "+ 
                                                                 " and contratos.codigo = '"+equi.getCodigo()+"' "); //ELIMINO LAS SERIES INGRESADAS ANTERIORMENTE CON EL CONTRATO Y CREO OTRAS NUEVAS
@@ -456,9 +456,9 @@ Date fecha = new Date();
     List labels = object.getChildren();
                                                         Series serieNueva = new Series(adm.getNuevaClave("Series", "codigo"));
                                                         serieNueva.setSerie(serieDet.getSerie());
-                                                        serieNueva.setContrato(equi);
+                                                        serieNueva.setContratos(equi);
                                                         serieNueva.setEstado("P");
-                                                        serieNueva.setDetallecompra("");
+                                                        serieNueva.setDetallecompra(null);
                                                         if(modificar == true){
                                                           adm.ejecutaSql("Delete from Series where codigo = '"+serieDet.getCodigo()+"' "+ 
                                                                 " and contratos.codigo = '"+equi.getCodigo()+"' "); //ELIMINO LAS SERIES INGRESADAS ANTERIORMENTE CON EL CONTRATO Y CREO OTRAS NUEVAS
