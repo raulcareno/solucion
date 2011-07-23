@@ -88,6 +88,8 @@ public class EmpresaPuertosStatic {
         public String puerta13;
         public String puerta14;
         public Double multa;
+        public String puertatic;
+        public String puertafac;
    public String url;
    public String entra1;
    public String entra2;
@@ -579,6 +581,22 @@ public class EmpresaPuertosStatic {
 
     public void setEntra2(String entra2) {
         this.entra2 = entra2;
+    }
+
+    public String getPuertafac() {
+        return puertafac;
+    }
+
+    public void setPuertafac(String puertafac) {
+        this.puertafac = puertafac;
+    }
+
+    public String getPuertatic() {
+        return puertatic;
+    }
+
+    public void setPuertatic(String puertatic) {
+        this.puertatic = puertatic;
     }
         
         

@@ -2671,6 +2671,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setSeabretic(emp.getSeabretic());
         empresaObj.setSeabrefac(emp.getSeabrefac());
         empresaObj.setMulta(emp.getMulta());
+        empresaObj.setPuertafac(emp.getPuertafac());
+        empresaObj.setPuertatic(emp.getPuertatic());
 
 
     }
@@ -4368,7 +4370,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
                         new Object[]{"SI", "NO", "Cancelar"}, "NO");// null para YES, NO y CANCEL
                 if (0 == seleccion) {
-                    seleccion = JOptionPane.showOptionDialog(this, "¿ESTÁ UD. SEGURO QUE DESEA CONTINUAR SE BORRARÁ LA CONFIGURACIÓN? \n NO PODRÁ USAR EL SISTEMA, HASTA QUE VUELVA A CONFIGURARLO",
+                    seleccion = JOptionPane.showOptionDialog(this, "¿ESTÁ UD. SEGURO QUE DESEA CONTINUAR SE BORRARÁ LA CONFIGURACIÓN? \n NO PODRÁ USAR EL SISTEMA, HASTA QUE VUELVA A CONFIGURARLO "
+                            + "\\n ESTO TENDRÁ UN COSTO (USD) POR REINSTALACION, PARA SALIR PRESIONE ( NO ) ",
                             "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
                             new Object[]{"SI", "NO", "Cancelar"}, "NO");// null para YES, NO y CANCEL
                     if (0 == seleccion) {

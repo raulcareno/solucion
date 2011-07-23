@@ -373,13 +373,12 @@ public class frmTicket extends javax.swing.JInternalFrame {
 if(empresaObj.getSeabretic()){
 
                     try {
-                        Thread.sleep(2000);
                         LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
-                        ta.outputSream.write(UsuarioActivo.getIn().getBytes());
+                        ta.outputSream.write(empresaObj.getPuertatic().getBytes());
                     } catch (Exception ex) {
                         Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    System.out.println("ABRIO PUERTA: " + principal.in);
+                    System.out.println("ABRIO PUERTA: " + empresaObj.getPuertatic());
 }else{
                     System.out.println("NO ABRE BARRERA POR DESHABILITACION DEN FRMEMPRESA " );
 }

@@ -151,11 +151,13 @@ public class frmConfiguracion extends javax.swing.JFrame {
         jPanel1.add(jLabel35);
         jLabel35.setBounds(200, 100, 200, 20);
 
-        jLabel36.setText("(Puerta que se CIERRA desde este PC");
+        jLabel36.setForeground(new java.awt.Color(255, 51, 0));
+        jLabel36.setText("NO USABLE");
         jPanel1.add(jLabel36);
         jLabel36.setBounds(170, 140, 200, 20);
 
-        jLabel37.setText("(Puerta que se ABRE desde este PC");
+        jLabel37.setForeground(new java.awt.Color(255, 51, 0));
+        jLabel37.setText("NO USABLE");
         jPanel1.add(jLabel37);
         jLabel37.setBounds(170, 120, 200, 20);
 

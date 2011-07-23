@@ -244,8 +244,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         multa.setEditable(estado);
         cmbPuertaEntra1.setEnabled(estado);
         cmbPuertaEntra2.setEnabled(estado);
-
-
+        cmbPuertaTicket.setEnabled(estado);
+        cmbPuertaFac.setEnabled(estado);
     }
 
     public void limpiar() {
@@ -328,6 +328,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         chkIpcam = new javax.swing.JCheckBox();
         jLabel38 = new javax.swing.JLabel();
         url = new javax.swing.JFormattedTextField();
+        cmbPuertaFac = new javax.swing.JComboBox();
+        cmbPuertaTicket = new javax.swing.JComboBox();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -860,7 +862,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(seabrefactura);
-        seabrefactura.setBounds(240, 250, 180, 18);
+        seabrefactura.setBounds(220, 250, 140, 18);
 
         seabreticket.setText("Abrir barrera al imprimir Ticket");
 
@@ -868,7 +870,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         bindingGroup.addBinding(binding);
 
         jPanel2.add(seabreticket);
-        seabreticket.setBounds(70, 250, 190, 18);
+        seabreticket.setBounds(10, 250, 170, 18);
 
         multa.setEditable(false);
         multa.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
@@ -929,6 +931,34 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
         jPanel2.add(url);
         url.setBounds(120, 290, 240, 18);
+
+        cmbPuertaFac.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
+        cmbPuertaFac.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puertafac}"), cmbPuertaFac, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        cmbPuertaFac.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbPuertaFacKeyPressed(evt);
+            }
+        });
+        jPanel2.add(cmbPuertaFac);
+        cmbPuertaFac.setBounds(360, 250, 37, 20);
+
+        cmbPuertaTicket.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
+        cmbPuertaTicket.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.puertatic}"), cmbPuertaTicket, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        cmbPuertaTicket.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbPuertaTicketKeyPressed(evt);
+            }
+        });
+        jPanel2.add(cmbPuertaTicket);
+        cmbPuertaTicket.setBounds(180, 250, 37, 20);
 
         jTabbedPane1.addTab("DATOS DE LA EMPRESA", new javax.swing.ImageIcon(getClass().getResource("/images/empresa.png")), jPanel2); // NOI18N
 
@@ -1508,7 +1538,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setIpcam(chkIpcam.isSelected());
                     empresaObj.setSeabretic(seabreticket.isSelected());
                     empresaObj.setSeabrefac(seabrefactura.isSelected());
-                    
+                    empresaObj.setPuertatic((String)cmbPuertaTicket.getSelectedItem());
+                    empresaObj.setPuertafac((String)cmbPuertaFac.getSelectedItem());
                     try {
                         empresaObj.setMulta(new Double(multa.getText()));
                     } catch (Exception e) {
@@ -2034,6 +2065,14 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbPuertaEntra2KeyPressed
 
+    private void cmbPuertaFacKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPuertaFacKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbPuertaFacKeyPressed
+
+    private void cmbPuertaTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPuertaTicketKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbPuertaTicketKeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
@@ -2062,8 +2101,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JComboBox cmbPuerta4;
     private javax.swing.JComboBox cmbPuertaEntra1;
     private javax.swing.JComboBox cmbPuertaEntra2;
+    private javax.swing.JComboBox cmbPuertaFac;
     private javax.swing.JComboBox cmbPuertaSale;
     private javax.swing.JComboBox cmbPuertaSale2;
+    private javax.swing.JComboBox cmbPuertaTicket;
     private javax.swing.JComboBox cmbPuertoBarras1;
     private javax.swing.JComboBox cmbPuertoLed;
     private javax.swing.JComboBox cmbPuertoPrincipal;

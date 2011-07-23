@@ -731,6 +731,11 @@ public class Empresa implements Serializable {
     public Boolean seabrefac = false;
     @Transient
     public Double multa;
+    
+    @Transient
+    public String puertatic;
+    @Transient
+    public String puertafac;
 
     public Boolean getSeabrefac() {
         return seabrefac;
@@ -754,6 +759,22 @@ public class Empresa implements Serializable {
 
     public void setMulta(Double multa) {
         this.multa = multa;
+    }
+
+    public String getPuertafac() {
+        return puertafac;
+    }
+
+    public void setPuertafac(String puertafac) {
+        this.puertafac = puertafac;
+    }
+
+    public String getPuertatic() {
+        return puertatic;
+    }
+
+    public void setPuertatic(String puertatic) {
+        this.puertatic = puertatic;
     }
 
     @Override

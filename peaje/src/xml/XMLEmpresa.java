@@ -106,6 +106,8 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String SEABRETIC = "SEABRETIC";
     private static final String SEABREFAC = "SEABREFAC";
     private static final String MULTA = "MULTA";
+    private static final String PUERTATIC = "PUERTATIC";
+    private static final String PUERTAFAC = "PUERTAFAC";
 
 
     // Variables
@@ -280,6 +282,13 @@ public static UsuarioActivo user = new UsuarioActivo();
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getEntra2()+""));
         personal.appendChild(item);
         
+        item = xmlDoc.createElement(PUERTATIC);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getPuertatic()+""));
+        personal.appendChild(item);
+        item = xmlDoc.createElement(PUERTAFAC);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getPuertafac()+""));
+        personal.appendChild(item);
+        
     }
 
     // genera el objeto de documento XML en una cadena de texto
@@ -404,6 +413,9 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setPuerto5(emp.getPuerto5());
         beanEmpleado.setPuerto6(emp.getPuerto6());
         beanEmpleado.setPuerto7(emp.getPuerto7());
+       
+        beanEmpleado.setPuertatic(emp.getPuertatic());
+        beanEmpleado.setPuertafac(emp.getPuertafac());
 
 
    beanEmpleado.setPuerta1(emp.getPuerta1());
@@ -769,6 +781,37 @@ public static UsuarioActivo user = new UsuarioActivo();
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
+                    
+                    
+                    
+                    
+                      try {
+                      //------
+                    NodeList PUERTATICoutList = firstPersonElement.getElementsByTagName("PUERTATIC");
+                    Element PUERTATICoutElement = (Element) PUERTATICoutList.item(0);
+                    NodeList PUERTATICoutAgeList = PUERTATICoutElement.getChildNodes();
+                    user.setPuertatic(((Node) PUERTATICoutAgeList.item(0)).getNodeValue().trim());
+                      } catch (Exception parserConfigurationException) {
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                       
+                    try {
+                      //------
+                    NodeList PUERTAFACoutList = firstPersonElement.getElementsByTagName("PUERTAFAC");
+                    Element PUERTAFACoutElement = (Element) PUERTAFACoutList.item(0);
+                    NodeList PUERTAFACoutAgeList = PUERTAFACoutElement.getChildNodes();
+                    user.setPuertafac(((Node) PUERTAFACoutAgeList.item(0)).getNodeValue().trim());
+                      } catch (Exception parserConfigurationException) {
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                      
                       //------
                     try {

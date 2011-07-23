@@ -35,11 +35,13 @@
     <ACTIVA6>false</ACTIVA6>
     <ACTIVA7>false</ACTIVA7>
     <WEBCAM>false</WEBCAM>
-    <SEABREFAC>false</SEABREFAC>
-    <SEABRETIC>false</SEABRETIC>
+    <SEABREFAC>true</SEABREFAC>
+    <SEABRETIC>true</SEABRETIC>
     <MULTA>10.0</MULTA>
     <IPCAM>true</IPCAM>
     <URL>http://192.168.10.3/cgi-bin/viewer/video.jpg</URL>
     <ENTRA1>1</ENTRA1>
     <ENTRA2>2</ENTRA2>
+    <PUERTATIC>1</PUERTATIC>
+    <PUERTAFAC>2</PUERTAFAC>
 </JCINFORMEMPRESA>

@@ -35,6 +35,7 @@ import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import hibernate.cargar.Administrador;
+import hibernate.cargar.UsuarioActivo;
 import hibernate.cargar.validaciones;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -1126,17 +1127,18 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     }
                     imprimir(facActual.getCodigo(), emp, dia, false, cli);
                     adm.actualizar(emp);
-                    if (empresaObj.getSeabretic()) {
-                        Thread cargar = new Thread() {
+                 if(empresaObj.getSeabrefac()){
 
-                            public void run() {
-                                AbrirPuerta.abrir(empresaObj.getPuerto(), frmPrincipal.out);
-                                System.out.println("SALIO PUERTA: " + frmPrincipal.out);
-
-                            }
-                        };
-
+                    try {
+                        LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
+                        ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                    } catch (Exception ex) {
+                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    System.out.println("ABRIO PUERTA: " + empresaObj.getPuertafac());
+            }else{
+                    System.out.println("NO ABRE BARRERA POR DESHABILITACION DEN FRMEMPRESA " );
+                }
 
 //                cargar.start();
                     principal.noDisponibles();

@@ -583,4 +583,25 @@ public class EmpresaPuertos {
     public void setMulta(Double multa) {
         this.multa = multa;
     }
+
+     String puertatic;
+     String puertafac;
+
+    public String getPuertafac() {
+        return puertafac;
+    }
+
+    public void setPuertafac(String puertafac) {
+        this.puertafac = puertafac;
+    }
+
+    public String getPuertatic() {
+        return puertatic;
+    }
+
+    public void setPuertatic(String puertatic) {
+        this.puertatic = puertatic;
+    }
+     
+     
 }
