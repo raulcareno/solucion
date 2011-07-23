@@ -65,6 +65,9 @@ public class Factura implements Serializable {
     @JoinColumn(name = "clientes", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
+       @JoinColumn(name = "contratos", referencedColumnName = "codigo")
+    @ManyToOne
+    private Contratos contratos;
     @OneToMany(mappedBy = "factura")
     private Collection<Detalle> detalleCollection;
     @OneToMany(mappedBy = "factura")
@@ -188,6 +191,14 @@ public class Factura implements Serializable {
 
     public void setValoriva(BigDecimal valoriva) {
         this.valoriva = valoriva;
+    }
+
+    public Contratos getContratos() {
+        return contratos;
+    }
+
+    public void setContratos(Contratos contratos) {
+        this.contratos = contratos;
     }
 
     public Collection<Detalle> getDetalleCollection() {

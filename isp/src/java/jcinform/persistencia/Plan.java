@@ -204,6 +204,6 @@ public class Plan implements Serializable {
 
     @Override
     public String toString() {
-        return "jcinform.persistencia.Plan[codigo=" + codigo + "]";
+        return nombre+" "+tipo;
     }
 }

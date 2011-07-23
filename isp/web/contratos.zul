@@ -355,6 +355,7 @@ Date fecha = new Date();
             fac.setClientes(equi.getClientes());
             fac.setEstado(true);
             fac.setFecha(fecha);
+            fac.setContratos(equi);
             fac.setSucursal(sucursalEmp.getSucursal());
             fac.setSubtotal(valortotal.value);
             fac.setDescuento(new BigDecimal(0));
@@ -799,46 +800,65 @@ void verificarCedula(String valor){
                  
 
   void facturasPendientes(){
-  /*
-    SimpleDateFormat d1 = new SimpleDateFormat("dd - MMMM");
-                 Date d = cita.getFecha();
-                 correo.setContenido("SE HA CONFIRMADO LA CITA EN LA HORA Y FECHA ESTABLECIDA, SE LE RECOMIENDA ESTAR 10 MIN, ANTES PARA UNA MEJOR ATENCIÓNCITA: <b> "+ d1.format(d) + " </b> A LAS <b>"+ cita.getHorario().getHora().getDesde().getHours()+":"+cita.getHorario().getHora().getDesde().getMinutes()+ " HORAS </b> <p> POR FAVOR RECONFIRMAR ESTA CITA </p> <p> GRACIAS POR SU COMPRENSIÓN </> " );
-  */
-  
-  
                 try{
-                List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.fecha, p.nombre, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo FROM plan p, detalle de, cxcobrar cx, factura  fa "   +
-                        " WHERE p.codigo = de.plan AND  de.factura = fa.codigo AND fa.clientes  =  "+codigocli.value+"   AND cx.factura = fa.codigo GROUP BY fa.codigo  HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0"); 
+                List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo,fa.contratos FROM cxcobrar cx, factura  fa "   +
+                        " WHERE fa.clientes  =  "+codigocli.value+"  " + 
+                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo   HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha "); 
                 
-                facturasDatos = new Listbox();
-                int a=0;
-               for (Iterator it = facturasDatos.getItems().iterator(); it.hasNext();) {
+                //facturasDatos = new Listbox();
+               // int a=0;
+              /* for(Iterator it = facturasDatos.getItems().iterator(); it.hasNext();) {
                     facturasDatos.getItems().remove(a);
-                }
-
+                } */
+                //facturasDatos.getChildren().clear();
+                facturasDatos.getRows().getChildren().clear();
+  ArrayList contratosAnadidos = new ArrayList();
+  int i =0;
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
                             Vector vec = (Vector) itna.next();
-                            Listitem li = new Listitem();
-                            
+                          
+                              Contratos con = adm.buscarClave(vec.get(4), Contratos.class);
+                              Group grupo = new Group(con.getPlan()+"");
+                              grupo.setId("grup"+con.getCodigo()+"");
+                              grupo.setStyle("background-color:#FFDDAA");
+                              
+                              if(contratosAnadidos.size() == 0){
+                                    grupo.setParent(filasFac);
+                                    contratosAnadidos.add(con.getCodigo()+"");
+                                    
+                              }else{
+                                      if(!contratosAnadidos.contains(con.getCodigo()+"")){
+                                               grupo.setParent(filasFac);
+                                      }
+                                        contratosAnadidos.add(con.getCodigo()+"");
+                              }
+                              
+                              
+                            Row row = new Row();
+                                   if(row == null){
+                                    row = new Row();
+                                   }
                             for (int j = 0; j < vec.size(); j++) {
                                 Object dos = vec.get(j);
+                                if(row == null){
+                                    row = new Row();
+                                   }
                                     if(dos instanceof Integer){
-                                        li.setValue(dos);
-                                        li.appendChild(new Listcell(dos+""));
+                                       row.setValue(dos);
+                                        row.appendChild(new Label(dos+""));
                                     }else if(dos instanceof Date){
-                                     SimpleDateFormat d1 = new SimpleDateFormat("dd - MMMM - yyyy");
+                                     SimpleDateFormat d1 = new SimpleDateFormat("dd-MMMM-yyyy");
                                      Date d = (Date)dos;
-                                      
-                                      li.appendChild(new Listcell(d1.format(d)+""));
+                                      row.appendChild(new Label(d1.format(d)+""));
                                     }else{
-                                        li.appendChild(new Listcell(dos+""));
+                                        row.appendChild(new Label(dos+""));
                                     }
                             }
                             Button aButton = null;
                             aButton = new Button("Pagar");
                             aButton.setImage("/images/dinero.gif");
                             aButton.setId(""+vec.get(0));
-                            aButton.setAttribute("valor",vec.get(4));
+                            aButton.setAttribute("valor",vec.get(3));
                             aButton.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
                                 registro.setSelected(true);
@@ -853,11 +873,9 @@ void verificarCedula(String valor){
                                
                               }
                                 });
-                              Listcell celda = new Listcell();
-                              celda.appendChild(aButton);
-                              li.appendChild(celda);
+                              row.appendChild(aButton);
                             
-                            facturasDatos.appendChild(li);
+                            filasFac.appendChild(row);
                 }
                /* for (Iterator it = facEncontradas.iterator(); it.hasNext();) {
                       Object
@@ -872,6 +890,7 @@ void verificarCedula(String valor){
              } */
                    }catch(Exception e){
                             Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            System.out.println("ERROR: "+e);
                             registro.setSelected(true);
                         }
                 
@@ -1256,7 +1275,10 @@ void verificarCedula(String valor){
                                                         <span style="float:right">
                                                             <label style="font-weight:bold2" value=" No.Contrato: " /> 
                                                         </span>
+                                                        <span>
                                                         <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" id="numerocontrato" cols="16" />
+                                                            <button label="Contratos" id="vercontratos" onClick="  contratosPanel.visible = true; "/>
+                                                        </span>
                                                         <span style="float:right">
                                                             <label style="font-weight:bold2" value=" Fecha: " />   
                                                         </span>
@@ -1559,18 +1581,29 @@ void verificarCedula(String valor){
                     </button> 
                 </tabpanel>
                 <tabpanel>
-                    <listbox mold="paging" rows="10" pageSize="10"   id="facturasDatos" width="100%">
+                    <!--listbox mold="paging" rows="10" pageSize="10"   id="facturasDatos" width="100%">
                         <listhead>
                             <listheader label="Factura"/>
                             <listheader label="Fecha Pago"/>
-                            <listheader label="Servicio"/>
                             <listheader label="Total"/>
                             <listheader label="Saldo"/>
                             <listheader label="Opcion"/>
                         </listhead>
                         <listitem forEach="${allEvents}" value="${each}">
                         </listitem>
-                    </listbox>    
+                    </listbox--> 
+                     <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasDatos" >
+                        <columns>
+                            <column  label="Factura"/>
+                            <column  label="Fecha Pago"/>
+                            <column   label="Total"/>
+                            <column   label="Saldo"/>
+                            <column   label="No.Contrato"/>
+                            <column   label="Opcion"/>
+                        </columns>
+                        <rows id="filasFac">
+                        </rows>
+                    </grid>
                 </tabpanel>
                 <!--tabpanel>
                     <groupbox  width="100%" mold="3d" >
