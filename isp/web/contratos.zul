@@ -221,7 +221,7 @@ void estado(Boolean estado,Boolean modificar){
      direccion.readonly = estado;
      telefono.readonly = estado;
      email.readonly = estado;
-     combo.readonly = estado;
+     //combo.readonly = estado;
 
 
 }
@@ -470,11 +470,14 @@ Date fecha = new Date();
                                       }
  
  }
-          Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+          Messagebox.show("Contrato Registrado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                     guardar.disabled=true;
                     agregar.disabled=false;
+                    
+                    //llenar(new Contratos(0));      
+                    nuevo2();
                     estado(true,false);
-                    llenar(new Contratos(0));      
+                    
 }
 
  Boolean verificar(String accion){
@@ -499,7 +502,7 @@ Date fecha = new Date();
        
         llenar(new Contratos(0));
         estado(false,false);
-        
+        facturasDatos.getRows().getChildren().clear();
         
      bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
     }else{
@@ -511,9 +514,9 @@ Date fecha = new Date();
        guardar.disabled=false;
        agregare = true;
        if(planes.size()<=0){
-        Messagebox.show("No se han creado planes, cierre esta pantalla e ingresse nuevos Planes  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-         return;
-      }
+            Messagebox.show("No se han creado planes, cierre esta pantalla e ingresse nuevos Planes  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+        }
       if(bancos.size()<=0){
         Messagebox.show("No se han creado Bancos, cierre esta pantalla e ingrese nuevos Bancos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          return;
@@ -527,6 +530,7 @@ Date fecha = new Date();
         estado(false,false);
         efe.selected = true;
         efe.checked = true;
+        facturasDatos.getRows().getChildren().clear();
      bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -586,6 +590,7 @@ void verificarCedula(String valor){
                                           llenarCliente(empa);
                                           llenar(ControlequiposEncontrados.get(0));
                                           numerocontrato.focus();
+                                          modificar.disabled = false;
                                  }
                                 
                                 

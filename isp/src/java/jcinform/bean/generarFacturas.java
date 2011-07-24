@@ -38,10 +38,10 @@ public class generarFacturas {
         String mesActualIni = convertiraString(fecha2);
         String mesActualFin = convertiraString(ultimoDia(fecha));
         String nn = suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero);
-        List existe = adm.query("Select o from Factura as o where o.numero = '"+ nn +"'");
-                if(existe.size()>0){
-                        return " "+ "EL NÚMERO DE FACTURA INICIAL YA EXISTE EN SUCURSAL: "+suc.getDescripcion();
-                }
+//        List existe = adm.query("Select o from Factura as o where o.numero = '"+ nn +"'");
+//                if(existe.size()>0){
+//                        return " "+ "EL NÚMERO DE FACTURA INICIAL YA EXISTE EN SUCURSAL: "+suc.getDescripcion();
+//                }
         
         List facturasHechas = adm.queryNativo("Select o.* from Contratos  as o "
                 + "where o.clientes not in (Select f.clientes from Factura as f "
@@ -53,7 +53,7 @@ public class generarFacturas {
                 for (Iterator it = facturasHechas.iterator(); it.hasNext();) {
                     Contratos object = (Contratos) it.next();
                     Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
-                    fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
+                    //fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
                     fac.setEstado(true);
                     fac.setClientes(object.getClientes());
                     fac.setFecha(fecha);
@@ -110,23 +110,23 @@ public class generarFacturas {
         String mesActualIni = convertiraString(fecha2);
         String mesActualFin = convertiraString(ultimoDia(fecha));
         String nn = suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero);
-        List existe = adm.query("Select o from Factura as o where o.numero = '"+ nn +"'");
-                if(existe.size()>0){
-                        return " "+ "EL NÚMERO DE FACTURA INICIAL YA EXISTE EN SUCURSAL: "+suc.getDescripcion();
-                }
+//        List existe = adm.query("Select o from Factura as o where o.numero = '"+ nn +"'");
+//                if(existe.size()>0){
+//                        return " "+ "EL NÚMERO DE FACTURA INICIAL YA EXISTE EN SUCURSAL: "+suc.getDescripcion();
+//                }
         
         List facturasHechas = adm.queryNativo("Select o.* from Contratos  as o "
                 + "where o.clientes not in (Select f.clientes from Factura as f "
                 + "where f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "') "
-                + "and  o.estado in ('Activo','Terminado')  and o.sucursal = '"+suc.getCodigo()+"' order by o.codigo ", Contratos.class);
+                + "and  o.estado in ('Activo')  and o.sucursal = '"+suc.getCodigo()+"' order by o.codigo ", Contratos.class);
         try {
             
         
                 for (Iterator it = facturasHechas.iterator(); it.hasNext();) {
                     Contratos object = (Contratos) it.next();
                     Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
-                    fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
-                
+                    //fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
+                    fac.setNumero(null);
                     fac.setEstado(true);
                     fac.setClientes(object.getClientes());
                     fac.setFecha(fecha);

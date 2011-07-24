@@ -44,6 +44,13 @@ import java.util.Map;
             efectivo.focus();
             return;
         }
+        String nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"FAC"+llenarCeros(""+nofactura.value);        
+        List siExiste = adm.query("Select o from Factura as o where o.numero = '"+nn+"'");
+        if(siExiste.size()>0){
+            Messagebox.show("Número de factura ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            nofactura.focus();
+            return;        
+        }
             Cxcobrar cobrar = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
             cobrar.setFactura(new Factura(codigofac.value));
             cobrar.setDebe(new BigDecimal(0));
@@ -61,7 +68,7 @@ import java.util.Map;
       
             Factura fac = adm.buscarClave(codigofac.value,Factura.class);
             
-           String nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"FAC"+llenarCeros(""+nofactura.value);
+        
             
             fac.setNumero(nn+"");
             adm.actualizar(fac);
@@ -147,7 +154,7 @@ import java.util.Map;
                                     <label style="font-weight:bold;color:red" value="No.Factura" /> 
                                 </span>
                                 <span> 
-                                    <intbox  constraint="no empty: Ingrese el No. de Factura" id="nofactura" /> 
+                                    <intbox style="text-align:center; font-weight:bold; color:blue; font-size:14px"  constraint="no empty: Ingrese el No. de Factura" id="nofactura" /> 
                                 </span>
                             </row>
                            <row> 
