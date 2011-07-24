@@ -373,7 +373,7 @@ Date fecha = new Date();
                                              Row object = (Row) col.get(i);
                                              Series serieDet = ((Series)object.getValue());
                                               List labels = object.getChildren();
-                                                if(((Checkbox) labels.get(5)).isChecked()){
+                                                if(((Checkbox) labels.get(5)).isChecked()){ //si el item es facturado
                                                         Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
                                                         det.setTotal(serieDet.getDetallecompra().getEquipos().getPvp1());
                                                         det.setPlan(null);
