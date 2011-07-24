@@ -502,7 +502,7 @@ Date fecha = new Date();
        
         llenar(new Contratos(0));
         estado(false,false);
-        facturasDatos.getRows().getChildren().clear();
+        productos.getRows().getChildren().clear();
         
      bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
     }else{
@@ -530,7 +530,7 @@ Date fecha = new Date();
         estado(false,false);
         efe.selected = true;
         efe.checked = true;
-        facturasDatos.getRows().getChildren().clear();
+        productos.getRows().getChildren().clear();
      bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -575,6 +575,8 @@ void verificarCedula(String valor){
                  llenarCliente(empa);
                   contratosCliente = new Listbox();
                    int a=0;
+                   nuevo2();
+                   estado(true,false);
             for (Iterator it = contratosCliente.getItems().iterator(); it.hasNext();) {
                    contratosCliente.getItems().remove(a);
                 }

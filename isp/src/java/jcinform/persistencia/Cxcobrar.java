@@ -53,6 +53,8 @@ public class Cxcobrar implements Serializable {
     private BigDecimal debito;
     @Column(name = "tarjeta")
     private BigDecimal tarjeta;
+    @Column(name = "descuento")
+    private BigDecimal descuento;
     @Column(name = "nocheque")
     private String nocheque;
     @Column(name = "notarjeta")
@@ -180,6 +182,14 @@ public class Cxcobrar implements Serializable {
 
     public void setFactura(Factura factura) {
         this.factura = factura;
+    }
+
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
     }
 
     @Override

@@ -57,6 +57,7 @@ import java.util.Map;
             cobrar.setHaber(totalCobros.value);
             cobrar.setFecha(new Date());
             cobrar.setTipo("P");
+            cobrar.setDescuento(descuento.value);
             cobrar.setEfectivo(efectivo.value);
             cobrar.setCheque(cheque.value);
             cobrar.setDebito(deposito.value);
