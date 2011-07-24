@@ -6,6 +6,7 @@ package jcinform.persistencia;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -35,6 +37,13 @@ public class Descuentos implements Serializable {
     private BigDecimal valor;
     @Column(name = "aplicado")
     private Boolean aplicado;
+    @Column(name = "fecha")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fecha;
+    @Column(name = "fechaaplicado")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaaplicado;
+    
    @JoinColumn(name = "factura", referencedColumnName = "codigo")
     @ManyToOne
     private Factura factura;
@@ -86,6 +95,22 @@ public class Descuentos implements Serializable {
 
     public void setFactura(Factura factura) {
         this.factura = factura;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public Date getFechaaplicado() {
+        return fechaaplicado;
+    }
+
+    public void setFechaaplicado(Date fechaaplicado) {
+        this.fechaaplicado = fechaaplicado;
     }
     
      

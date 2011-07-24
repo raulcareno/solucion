@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+    <window  onClose="cerrar()" onCreate="cargar()" width="410px" id="descuentoCliente">
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.util.ArrayList;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+  import java.util.HashMap;
+import java.util.Map;
+    import java.math.BigDecimal;
+    Administrador adm = new Administrador();
+    Permisos permiso = new Permisos();
+       Session ses = Sessions.getCurrent();
+       
+           Empleados usuarioActual = ses.getAttribute("user");
+   Empresa empresa = ses.getAttribute("empresa");
+    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+       ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
+        cargarCliente(){
+            boton = Path.getComponent("//controlequipospage/controlventana/facturas");
+            boton.doClick();
+        }
+         String llenarCeros(String numero){
+        
+     while(numero.length()<7){
+        numero = "0"+numero;
+     }  
+     return numero;
+    
+    }  
+        
+        void cerrar(){
+               Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
+           //  facturarCliente.detach();
+        }
+        void eliminar(){
+            adm.ejecutaSql("Delete from Descuentos where factura.codigo = '"+codigofac.value +"' and aplicado = false ");
+            codigodes.value = 0;
+            efectivo.value = new BigDecimal(1);
+            sumarcobros("efe");  
+            descuentoCliente.detach();
+        }
+        void guardar(){
+            Descuentos des = new Descuentos();
+            des.setEmpleados(usuarioActual);
+            des.setFactura(new Factura(codigofac.value));
+            des.setAplicado(false);
+            des.setValor(efectivo.value);
+            des.setFecha(new Date());
+            
+            if(codigodes.value == 0){
+                    adm.guardar(des);
+            }else{
+                des.setCodigo(codigodes.value);
+                adm.actualizar(des);
+            }
+            //Messagebox.show("Descuento aplicado con éxito...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
+            descuentoCliente.detach();
+            
+        }
+        
+       public void sumarcobros(String tipo){
+                BigDecimal  totalFinal = valor.getValue();
+                if(efectivo.getValue().compareTo(totalFinal)==1){ //>
+                    efectivo.setValue(totalFinal);
+                }
+                total = totalFinal.subtract(efectivo.getValue()) ;
+                totalCobros.setValue(total);
+}
+
+]]>
+        </zscript>
+       
+         
+                    <grid width="100%" >
+                        <rows>
+                           <row> 
+                                <span  style="float:right">
+                                    <label style="font-weight:bold" value="CLIENTE: " /> 
+                                </span>
+                                <span> 
+                                    <label id="cliente" />  
+                                    <intbox visible="false" readonly="true" id="codigocli" /> 
+                                    <intbox visible="false"  readonly="true" id="codigofac" /> 
+                                    <intbox visible="false"  readonly="true" id="codigodes" /> 
+                                </span>
+                            </row>
+                            <row>
+                                <span  style="float:right">
+                                    <label style="font-weight:bold" value="FECHA: " /> 
+                                </span>
+                                <label id="fecha" /> 
+                            </row>
+                            <row>
+                                <span  style="float:right;"> 
+                                    <label style="font-weight:bold" value="DIRECCIÓN: " />
+                                </span>
+                                <span>
+                                    <label id="direccion" /> 
+                                    <label style="font-weight:bold" value="TELEFONO:" />
+                                    <label id="telefono" /> 
+                                </span>
+                            </row>
+                            <row>
+                                <span  style="float:right">
+                                    <label style="font-weight:bold" value="VALOR MORA: " />
+                                </span> 
+                                <span>
+                                    <decimalbox readonly="true" cols="7" format="##0.00"  id="valor" />
+                                </span>
+                            </row>
+                            <row>
+                                
+                                <span  style="float:right"><label style="font-weight:bold;color:red" value="V.DESCUENTO: " /></span> 
+                                <decimalbox onOK='sumarcobros("")' constraint="no zero,no empty: Valor debe ser mayor a cero" 
+                                style="text-align:center; font-weight:bold; color:blue; font-size:14px"  onBlur='sumarcobros("efe")' format="##0.00" cols="7" id="efectivo" />
+                            </row>
+                            <row>
+                                <span  style="float:right"><label style="font-weight:bold" value="A COBRAR: " /></span>
+                                <decimalbox readonly="true" cols="7" format="##0.00"  id="totalCobros" />
+                            </row>
+                            <row>
+                            </row>
+                            <row align="center">
+                                <button label="APLICAR DSCTO." image="/images/guardar.gif" onClick="efectivo.getValue();guardar()" id="btnguardar" />
+                                <button label="ELIMINAR DSCTOS. ACTUALES"  image="/images/eliminar.gif" onClick="eliminar()" id="btneliminar" />
+                            </row>
+                        </rows>
+                  
+
+                    </grid>
+                
+ 
+          
+        <zscript>
+            void cargar(){
+            
+            try{
+                    String factura = descuentoCliente.getAttribute("codigoFactura");
+                    java.math.BigDecimal valoraPagar = descuentoCliente.getAttribute("valoraPagar");
+                    System.out.println("codigoFactura: "+factura+" " + valoraPagar);
+                    Factura facEnc = adm.buscarClave(new Integer(factura),Factura.class);
+                    cliente.value = facEnc.getClientes().getApellidos() +" "+facEnc.getClientes().getNombres();
+                    codigocli.value = facEnc.getClientes().getCodigo();
+                    codigofac.value = new Integer(facEnc.getCodigo());
+                    direccion.value = facEnc.getClientes().getDireccion();
+                    telefono.value  = facEnc.getClientes().getTelefono();
+                    fecha.value = (new Date()).toLocaleString();
+                    valor.value = valoraPagar;
+                    totalCobros.value = valoraPagar;
+                    efectivo.value = new BigDecimal(1);
+                    
+                    List descuentos = adm.query("Select o from Descuentos as o where o.aplicado = false and o.factura.codigo = '"+ facEnc.getCodigo() +"' ");
+                    if(descuentos.size()>0){
+                            Descuentos descuento = descuentos.get(0);
+                            codigodes.value = descuento.getCodigo();
+                            efectivo.value = descuento.getValor();
+                            btneliminar.visible = true;
+                    }else{
+                    btneliminar.visible = false;
+                                codigodes.value = 0;
+                    }
+                    sumarcobros("efe"); 
+                    efectivo.focus();
+             }catch(Exception e){
+                     System.out.println("ERROR EN FACTURA "+e);
+             }
+            
+                    
+            }
+        </zscript>
+    </window>
+</zk>

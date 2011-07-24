@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import jcinform.persistencia.*;
 
@@ -281,7 +282,7 @@ public class Administrador {
 
             em.getTransaction().commit();
         } catch (Exception e) {
-            //throw new PersistenceException(e);
+            throw new PersistenceException(e);
         } finally {
             em.close();
         }

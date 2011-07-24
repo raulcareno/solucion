@@ -879,6 +879,26 @@ void verificarCedula(String valor){
                               }
                                 });
                               row.appendChild(aButton);
+                              
+                            Button aButtonDes = null;
+                            aButtonDes = new Button("Descuento");
+                            aButtonDes.setImage("/images/descuento.png");
+                            aButtonDes.setId("des"+vec.get(0));
+                            aButtonDes.setAttribute("valor",vec.get(3));
+                            aButtonDes.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                                registro.setSelected(true);
+                                final Window win = (Window) Executions.createComponents("descuentoCliente.zul", null, null);
+                                win.setMaximizable(true);
+                                win.setClosable(true);
+                                win.setAttribute("codigoFactura", aButtonDes.getId().replace("des",""));
+                                win.setAttribute("valoraPagar", aButtonDes.getAttribute("valor"));
+                                win.setTitle("Aplicar Descuento");
+                                win.doModal();
+                               
+                              }
+                                });
+                              row.appendChild(aButtonDes);
                             
                             filasFac.appendChild(row);
                 }
@@ -1610,7 +1630,8 @@ void verificarCedula(String valor){
                             <column   label="Total"/>
                             <column   label="Saldo"/>
                             <column   label="No.Contrato"/>
-                            <column   label="Opcion"/>
+                            <column   label=" "/>
+                            <column   label=" "/>
                         </columns>
                         <rows id="filasFac">
                         </rows>
