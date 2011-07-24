@@ -1324,11 +1324,17 @@ void verificarCedula(String valor){
                                                         <span style="float:right">
                                                             <label style="font-weight:bold2" value=" Dir.Instalar: " />  
                                                         </span>
-                                                        <textbox id="direccioni" cols="40" readonly="true"  />
+                                                        <span>
+                                                            <textbox id="direccioni" cols="40" readonly="true"  />
+                                                            <button image="/images/copiar.png"   onClick="direccioni.value=direccion.value;"/>
+                                                        </span>
                                                         <span style="float:right"> 
                                                             <label style="font-weight:bold2" value=" Telf.Instalar: " />  
                                                         </span>
+                                                        <span>
                                                         <textbox id="telefonoi" readonly="true"  />
+                                                        <button  image="/images/copiar.png"   onClick="telefonoi.value=telefono.value;"/>
+                                                        </span>
                                                     </row>
                                                     <row >
                                                         <span style="float:right">  
