@@ -67,11 +67,14 @@ import java.util.Map;
             
       
             Factura fac = adm.buscarClave(codigofac.value,Factura.class);
-            
-        
-            
             fac.setNumero(nn+"");
             adm.actualizar(fac);
+            if(codigodes.value > 0){
+                Descuentos des = adm.buscarClave(codigodes.value,Descuentos.class);
+                des.setAplicado(true);
+                des.setFechaaplicado(new Date());
+                adm.actualizar(des);
+            }
             try{
                Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
                     
@@ -104,7 +107,11 @@ import java.util.Map;
             }catch(Exception  ex){
                 System.out.println("EXXX: "+ex);
             }
-            
+            efectivo.readonly = true;
+            deposito.readonly = true;
+            cheque.readonly = true;
+            tarjeta.readonly = true;
+            btnguardar.disabled = true;
            
                impresion.setSelected(true);
             
@@ -112,7 +119,7 @@ import java.util.Map;
         
        public void sumarcobros(String tipo){
                 BigDecimal  totalFinal = valor.getValue();
-                BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue());
+                BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue());
             //    Double antesTotal = new Double(totalCobros.getValue());
                 if(total.compareTo(totalFinal)==1){ //>
                     if(tipo.equals("efe")){
@@ -132,7 +139,7 @@ import java.util.Map;
                         tarjeta.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
                     }
                 }
-                 total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue());
+                 total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue());
                 totalCobros.setValue(total);
 }
 
@@ -165,6 +172,7 @@ import java.util.Map;
                                     <label id="cliente" />  
                                     <intbox visible="false" readonly="true" id="codigocli" /> 
                                     <intbox visible="false"  readonly="true" id="codigofac" /> 
+                                    <intbox visible="true"  readonly="true" id="codigodes" /> 
                                 </span>
                             </row>
                             <row>
@@ -192,6 +200,11 @@ import java.util.Map;
                                     <label style="font-weight:bold" value="A COBRAR: " />
                                     <decimalbox readonly="true" cols="7" format="##0.00"  id="totalCobros" />
                                 </span>
+                            </row>
+                            
+                            <row>
+                                <span  style="float:right"><label style="font-weight:bold" value="DESCUENTO: " /></span> 
+                                <decimalbox  readonly="true" format="##0.00" cols="7" id="descuento" />
                             </row>
                             <row align="center" spans="2">
                                 <label style="font-weight:bold" value="FORMA DE PAGO" />
@@ -266,6 +279,17 @@ import java.util.Map;
                     cheque.value = BigDecimal.ZERO;
                     tarjeta.value = BigDecimal.ZERO;
                     deposito.value = BigDecimal.ZERO;
+                    List descuentos = adm.query("Select o from Descuentos as o where o.aplicado = false and o.factura.codigo = '"+ facEnc.getCodigo() +"' ");
+                    if(descuentos.size()>0){
+                            Descuentos descuentoIt = descuentos.get(0);
+                            codigodes.value = descuentoIt.getCodigo();
+                            descuento.value = descuentoIt.getValor();
+                            efectivo.value = valoraPagar.subtract(descuento.value);
+                    }else{
+                            codigodes.value = 0;
+                            descuento.value = new BigDecimal(0);
+                    }
+                    
              }catch(Exception e){
                      System.out.println("ERROR EN FACTURA "+e);
              }
