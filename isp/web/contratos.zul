@@ -78,8 +78,6 @@ void llenar(Contratos  equi2){
     }catch(Exception ecliente){
         
     }
-    
-      
     fecha.value = equi.getFecha();
     fechainstalacion.value = equi.getFechainstalacion();
     autorizado.checked = equi.getAutorizado();
@@ -812,12 +810,6 @@ void verificarCedula(String valor){
                         " WHERE fa.clientes  =  "+codigocli.value+"  " + 
                         "  AND cx.factura = fa.codigo GROUP BY fa.codigo   HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha "); 
                 
-                //facturasDatos = new Listbox();
-               // int a=0;
-              /* for(Iterator it = facturasDatos.getItems().iterator(); it.hasNext();) {
-                    facturasDatos.getItems().remove(a);
-                } */
-                //facturasDatos.getChildren().clear();
                 facturasDatos.getRows().getChildren().clear();
   ArrayList contratosAnadidos = new ArrayList();
   int i =0;
@@ -827,7 +819,7 @@ void verificarCedula(String valor){
                               Contratos con = adm.buscarClave(vec.get(4), Contratos.class);
                               Group grupo = new Group(con.getPlan()+"");
                               grupo.setId("grup"+con.getCodigo()+"");
-                              grupo.setStyle("background-color:#FFDDAA");
+                             // grupo.setStyle("background-color:#FFDDAA");
                               
                               if(contratosAnadidos.size() == 0){
                                     grupo.setParent(filasFac);
@@ -904,17 +896,7 @@ void verificarCedula(String valor){
                             
                             filasFac.appendChild(row);
                 }
-               /* for (Iterator it = facEncontradas.iterator(); it.hasNext();) {
-                      Object
-                      Factura acceIt = (Factura) it.next();
-                      Listitem li = new Listitem();
-                      li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getNumero()+""));
-                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()));
-                      li.appendChild(new Listcell(acceIt.getTotal()+""));
-                      
-                      facturasDatos.appendChild(li);
-             } */
+            
                    }catch(Exception e){
                             Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             System.out.println("ERROR: "+e);
@@ -1595,7 +1577,6 @@ void verificarCedula(String valor){
                    		
 	    		
                     </groupbox>
-    
                     <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
                     <button  image="/images/nuevo.gif" id="agregar" label="Nuevo Cliente y Contrato" onClick="nuevo();" />
                     <button  image="/images/nuevo.gif" id="agregar2" label="Nuevo Contrato" onClick="nuevo2();" />
@@ -1603,12 +1584,16 @@ void verificarCedula(String valor){
                     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
                     <button label="Añadir Cobros" disabled="false" id="anadir" image="/images/empleados.png" >
                         <attribute name="onClick">{
-                                            final Window win = (Window) Executions.createComponents("generarIndividual.zul", null, null);
-                                            win.setMaximizable(true);
-                                            win.setClosable(true);
-                                            win.setAttribute("nuevo", true);
-                                            win.setTitle("Asignar rubros por cobrar");
-                                            win.doModal();
+                                                    final Window win = (Window) Executions.createComponents("generarIndividual.zul", null, null);
+                                                    win.setMaximizable(true);
+                                                    win.setClosable(true);
+                                                    win.setAttribute("plan", equi.getPlan()+"");
+                                                    win.setAttribute("planid", equi.getPlan().getCodigo());
+                                                    win.setAttribute("planvalor", new BigDecimal(equi.getPlan().getValor()));
+                                                    win.setAttribute("contrato", equi.getCodigo());
+                                                    win.setAttribute("clienteid", equi.getClientes().getCodigo());
+                                                    win.setTitle("Asignar rubros por cobrar");
+                                                    win.doModal();
                                             }                            
                         </attribute>
                     </button> 
@@ -1627,11 +1612,11 @@ void verificarCedula(String valor){
                     </listbox--> 
                      <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasDatos" >
                         <columns>
-                            <column  label="Factura"/>
+                            <column  label="No."/>
                             <column  label="Fecha Pago"/>
                             <column   label="Total"/>
                             <column   label="Saldo"/>
-                            <column   label="No.Contrato"/>
+                            <column   label="Ref."/>
                             <column   label=" "/>
                             <column   label=" "/>
                         </columns>
