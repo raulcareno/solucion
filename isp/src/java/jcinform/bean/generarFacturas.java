@@ -6,10 +6,14 @@ package jcinform.bean;
 
  
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jcinform.conexion.Administrador;
 import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
@@ -223,6 +227,88 @@ public class generarFacturas {
     }
 
     
+     
+        public String generarCobros(Sucursal suc,Contratos con,Date fechaInstalacion) {
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+            int dia = fechaInstalacion.getDate();
+        Date fec = fechaInstalacion;
+       fec.setDate(1);
+        Administrador adm = new Administrador();
+        String mesActualIni = convertiraString(fec);
+        String mesActualFin = convertiraString(ultimoDia(fec));
+        List facturaExistente = adm.query("Select f from Factura as f "
+                + "where f.contratos.codigo = '"+ con.getCodigo() +"' " 
+                + "and f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "' "
+                + "and f.clientes.codigo = '"+ con.getClientes().getCodigo() +"' ");
+        if(facturaExistente.size()>0){
+            try {
+                int valor0 = Messagebox.show("Ya se ha añadido una Deuda para éste mes, desea continuar añadiendolo?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                          if(valor0 == 16){
+                          }else{
+                              return "";
+                          }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(generarFacturas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        try {
+          
+                    Contratos object = con;
+                    Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
+                    fac.setNumero(null);
+                    fac.setEstado(true);
+                    fac.setContratos(con);
+                    fac.setClientes(object.getClientes());
+                    fechaInstalacion.setDate(dia);
+                    fac.setFecha(fechaInstalacion);
+                    fac.setSucursal(suc);
+                    fac.setDescuento(BigDecimal.ZERO);
+                    BigDecimal valor = new BigDecimal(con.getPlan().getValor());
+                    if(fechaInstalacion.getDate() > 1){
+                        int noDias = object.getPlan().getDias()-fechaInstalacion.getDate();
+                             valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(object.getPlan().getDias()));
+                    }
+                      fac.setSubtotal(valor);
+                      fac.setDescuento(new BigDecimal(0));
+                      fac.setBaseiva(fac.getSubtotal());
+                      fac.setPorcentajeiva(suc.getEmpresa().getIva());
+                      fac.setValoriva((valor).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
+                      fac.setTotal(fac.getValoriva().add(valor));
+                     adm.guardar(fac);
+                    Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+                    det.setTotal(new BigDecimal(object.getPlan().getValor()));
+                    det.setPlan(object.getPlan());
+                    det.setCantidad(1);
+                    det.setMes(fechaInstalacion.getMonth()+1);
+                    det.setAnio(fechaInstalacion.getYear()+1900);
+                    det.setDescripcion("generada");
+                    det.setFactura(fac);
+                    adm.guardar(det);
+                    Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+                    cuenta.setDebe(fac.getTotal());
+                    cuenta.setHaber(BigDecimal.ZERO);
+                    cuenta.setDebito(BigDecimal.ZERO);
+                    cuenta.setCheque(BigDecimal.ZERO);
+                    cuenta.setEfectivo(BigDecimal.ZERO);
+                    cuenta.setDescuento(BigDecimal.ZERO);
+                    cuenta.setFactura(fac);
+                    cuenta.setFecha(fechaInstalacion);
+                    cuenta.setNotarjeta("");
+                    cuenta.setNocheque("");
+                    cuenta.setTotal(fac.getTotal());
+                    adm.guardar(cuenta);
+                
+        } catch (Exception e) {
+            System.out.println("DUPLICADO: "+e.hashCode());
+            return e.hashCode()+"";
+        }
+        //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
+
+        //generar en facturas con el número y también en cxc.
+
+        return "OK";
+    }
     public static String convertiraString(Date fecha) {
 
         return (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();

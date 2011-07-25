@@ -29,6 +29,8 @@
   import jcinform.bean.*;
   import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+  import jcinform.bean.generarFacturas;
+
   Session ses = Sessions.getCurrent();
   //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
     Administrador adm = new Administrador();
@@ -40,7 +42,7 @@ import java.text.SimpleDateFormat;
       List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getCodigo()+"' ");
       List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
       List nodos = adm.query("Select o from Radios as o");
-      
+      generarFacturas gen = new generarFacturas();
 
     Boolean modificare = false;
     Boolean agregare = false;
@@ -468,6 +470,11 @@ Date fecha = new Date();
                                       }
  
  }
+ 
+ 
+            if(genFactura.isChecked()){
+                    gen.generarCobros(sucursalEmp.getSucursal(),equi,fechainstalacion.value);
+              }
           Messagebox.show("Contrato Registrado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                     guardar.disabled=true;
                     agregar.disabled=false;
@@ -1521,6 +1528,12 @@ void verificarCedula(String valor){
                                                         </span>
                                                         <span></span>
                                                         <span></span>
+                                                    </row>
+                                                    <row style="background:cyan" spans="4" align="center">
+                                                        <span > 
+                                                            <checkbox style="font-weight:bold;size:14px" id="genFactura" label="¿GENERAR COBRO PARA ÉSTE MES?" />
+                                                        </span> 
+                                                         
                                                     </row>
                                                 </rows>
                                             </grid>    
