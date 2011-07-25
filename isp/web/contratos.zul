@@ -59,6 +59,7 @@ void llenarCliente(Clientes cli){
 
 }
 void llenar(Contratos  equi2){
+ genFactura.setChecked(false);
     equi = equi2;
     registro.setSelected(true);
     try{
@@ -346,7 +347,140 @@ Boolean validar(){
                 permiso.auditar("Contratos","Guardar",""+equi.getContrato()+" - "+equi.getClientes());
          }
              
- if(facturadostotal.value > 0){
+ if(facturadostotal.value > 0){//GENERO LA CABECERA DE COMPRA Y LOS DETALLLES CON LAS SERIES PARA
+      Cabeceracompra cabeCompra = new Cabeceracompra();
+       //cabeCompra.setFactura(equi);
+       cabeCompra.setProveedores(null);
+       cabeCompra.setFecha(fecha.value);
+       cabeCompra.setSeries(null);
+       cabeCompra.setCantidad(0);
+       cabeCompra.setTotal(0d);
+       cabeCompra.setDocumento("VEN");
+       adm.guardar(cabeCompra);
+        List col = productos.getRows().getChildren();
+        String seriesString = "";
+                  for (int i = 0; i < col.size(); i++) {
+                         Row object = (Row) col.get(i);
+                         Series serieDet = ((Series)object.getValue());
+                          List labels = object.getChildren();
+                            if(((Checkbox) labels.get(5)).isChecked()){ //si el item es facturado
+                                  Detallecompra det = new Detallecompra();
+                                  Boolean actualizar = false;
+                                  int cantidad = 0;
+                                  if(i > 0){
+                                    List detList = adm.query("Select o from Detallecompra as o " + 
+                                            " where o.contratos.codigo = '"+equi.getCodigo()+"' " + 
+                                            " and o.equipos.codigo = '"+ ((Intbox) labels.get(0)).getValue()+"' ");
+                                            if(detList.size()>0){
+                                                    det = (Detallecompra)detList.get(0);
+                                                    cantidad = det.getCantidad();
+                                                    actualizar = true;
+                                            }else{
+                                                    det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                                     actualizar = false;
+                                            }
+                                  }else{
+                                        det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                  }
+                                  det.setContratos(equi);
+                                  det.setCabeceracompra(cabeCompra);
+                                  det.setCosto(serieDet.getDetallecompra().getEquipos().getPvp1().doubleValue());
+                                  det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
+                                  det.setCantidad(-1);
+                                    if(serieDet.getDetallecompra().getEquipos().getBien()){
+                                  if(actualizar){
+                                    det.setCantidad(cantidad-1);
+                                    adm.actualizar(det);
+                                  }else{
+                                    adm.guardar(det);
+                                  }
+                                  }
+                                  Series ser = new Series();
+                                  ser.setCodigo(adm.getNuevaClave("Series","codigo"));
+                                  ser.setSerie(serieDet.getSerie());
+                                  ser.setDetallecompra(det);
+                                  ser.setContratos(equi);
+                                  ser.setEstado("V");//VENTA
+                               if(serieDet.getDetallecompra().getEquipos().getBien())
+                                  adm.guardar(ser);
+                            }
+
+                  }
+
+ 
+ 
+ 
+ 
+ }
+ 
+  if(cantidadtotal.value  > 0){
+       Cabeceracompra cabeCompra = new Cabeceracompra();
+       //cabeCompra.setFactura(equi);
+       cabeCompra.setProveedores(null);
+       cabeCompra.setFecha(fecha.value);
+       cabeCompra.setSeries(null);
+       cabeCompra.setCantidad(0);
+       cabeCompra.setTotal(0d);
+       cabeCompra.setDocumento("VEN");
+       adm.guardar(cabeCompra);
+        List col = productos.getRows().getChildren();
+        String seriesString = "";
+                  for (int i = 0; i < col.size(); i++) {
+                         Row object = (Row) col.get(i);
+                         Series serieDet = ((Series)object.getValue());
+                          List labels = object.getChildren();
+                            if(serieDet.getDetallecompra().getEquipos().getBien()){
+                            
+                            }
+                          
+                            if(!((Checkbox) labels.get(5)).isChecked()){ //si el item es facturado
+                                  Detallecompra det = new Detallecompra();
+                                  Boolean actualizar = false;
+                                  int cantidad = 0;
+                                  if(i > 0){
+                                    List detList = adm.query("Select o from Detallecompra as o " + 
+                                            " where o.contratos.codigo = '"+equi.getCodigo()+"' " + 
+                                            " and o.equipos.codigo = '"+ ((Intbox) labels.get(0)).getValue()+"' ");
+                                            if(detList.size()>0){
+                                                    det = (Detallecompra)detList.get(0);
+                                                    cantidad = det.getCantidad();
+                                                    actualizar = true;
+                                            }else{
+                                                    det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                                     actualizar = false;
+                                            }
+                                  }else{
+                                        det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                  }
+                                  det.setContratos(equi);
+                                  det.setCabeceracompra(cabeCompra);
+                                  det.setCosto(serieDet.getDetallecompra().getEquipos().getPvp1().doubleValue());
+                                  det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
+                                  det.setCantidad(-1);
+                                  if(actualizar){
+                                    det.setCantidad(cantidad-1);
+                                    adm.actualizar(det);
+                                  }else{
+                                    adm.guardar(det);
+                                  }
+                                  Series ser = new Series();
+                                  ser.setCodigo(adm.getNuevaClave("Series","codigo"));
+                                  ser.setSerie(serieDet.getSerie());
+                                  ser.setDetallecompra(det);
+                                  ser.setContratos(equi);
+                                  ser.setEstado("V");//VENTA
+                                  adm.guardar(ser);
+                            }
+
+                  }
+
+ 
+ 
+ 
+ 
+ }
+ /*
+  if(facturadostotal.value > 0){
  
 //EMPIEZO A GENERAR FACTURA Y CXCOBRAR 
 Date fecha = new Date();
@@ -364,8 +498,7 @@ Date fecha = new Date();
             fac.setValoriva((valortotal.value).multiply(empresa.getIva().divide(new BigDecimal(100))));
             fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
             adm.guardar(fac);
-
-                             
+    
                             List col = productos.getRows().getChildren();
                             String seriesString = "";
                             
@@ -385,41 +518,10 @@ Date fecha = new Date();
                                                         det.setFactura(fac);
                                                         adm.guardar(det);
                                                 
-                                                }else{
-                                                        Series serieNueva = new Series(adm.getNuevaClave("Series", "codigo"));
-                                                        serieNueva.setSerie(serieDet.getSerie());
-                                                        serieNueva.setContratos(equi);
-                                                        serieNueva.setEstado("P");
-                                                        serieNueva.setDetallecompra(null);
-                                                        if(modificar == true){
-                                                          adm.ejecutaSql("Delete from Series where codigo = '"+serieDet.getCodigo()+"' "+ 
-                                                                " and contratos.codigo = '"+equi.getCodigo()+"' "); //ELIMINO LAS SERIES INGRESADAS ANTERIORMENTE CON EL CONTRATO Y CREO OTRAS NUEVAS
-                                                        }
-                                                        
-                                                      if(serieDet.getDetallecompra().getEquipos().getBien()){
-                                                          seriesString = "'"+serieDet.getSerie()+"',"+seriesString;
-                                                          adm.guardar(serieNueva);
-                                                      }
-                                                
                                                 }
-                                                if(serieDet.getDetallecompra().getEquipos().getBien()){
-                                                    seriesString = "'"+serieDet.getSerie()+"',"+seriesString;
-                                                }
-                                                //TOMAR EN CUENTA LOS SERVICIOS NO SE DEBEN ACTUALIZAR PARA LAS SERIES
+
 
                                       }
-                                      
-                                      if(seriesString.length()>0 ){
-                                            seriesString = seriesString.substring(0,seriesString.length()-1);
-                                            List seriesEnc = adm.query("Select o from Series as o where o.serie in ("+seriesString+") ");
-                                            for(Iterator it = seriesEnc.iterator(); it.hasNext();) {
-                                                  Series object = (Series)it.next();
-                                                  empa = object;
-                                             }
-                                            
-                                      }
-                                      
-                                      
                             Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
                             cuenta.setDebe(fac.getTotal());
                             cuenta.setHaber(BigDecimal.ZERO);
@@ -435,7 +537,7 @@ Date fecha = new Date();
 
 
                     
-              final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
+                              final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
                                 win.setMaximizable(true);
                                 win.setClosable(true);
                                 win.setAttribute("codigoFactura", fac.getCodigo()+"");
@@ -470,7 +572,7 @@ Date fecha = new Date();
                                       }
  
  }
- 
+ */
  
             if(genFactura.isChecked()){
                     gen.generarCobros(sucursalEmp.getSucursal(),equi,fechainstalacion.value);
@@ -489,6 +591,7 @@ Date fecha = new Date();
         return permiso.verificarPermiso("Contratos",accion);
  }
  void nuevo(){
+     genFactura.setChecked(false);
     if(verificar("Agregar")){
        guardar.disabled=false;
        agregare = false;
@@ -515,6 +618,7 @@ Date fecha = new Date();
     }
 }
  void nuevo2(){
+  genFactura.setChecked(false);
     if(verificar("Agregar")){
        guardar.disabled=false;
        agregare = true;
@@ -910,7 +1014,7 @@ void verificarCedula(String valor){
                             registro.setSelected(true);
                         }
                 
-                }
+ }
                 
                 
         //BUSQUEDA DE CLIENTES
@@ -980,7 +1084,7 @@ void verificarCedula(String valor){
                                     }
       void buscarSeries(String serie){
            List seriesEn = adm.query("Select o from Series as o where o.estado = 'C'  and o.serie = '"+serie+"'" + 
-                                           "and o.codigo not in (Select a.codigo from Series as a where a.estado = 'A')  ");
+                                           "and o.serie not in (Select a.serie from Series as a where a.estado IN ( 'A','P','V') )  ");
                                            if(seriesEn.size()>0){
                                            
                                            try{
@@ -1138,6 +1242,78 @@ void verificarCedula(String valor){
              facturadostotal.value = facturados;
     }
     
+void buscarSeries(Contratos contratos){
+           List seriesEn = adm.query("Select o from Series as o where o.estado = 'P'  o.contratos.codigo = '"+contratos.getCodigo()+"' ");
+                                           if(seriesEn.size()>0){
+                                           
+                                           try{
+                                                    Row row = new Row();
+                                                      //CARGO LAS SERIES COMO ATRIBUTO
+                                                      ArrayList series = new ArrayList();
+                                                            Intbox intb = new Intbox(seriesEn.get(0).getDetallecompra().getEquipos().getCodigo());
+                                                            intb.setCols(3);
+                                                            intb.setReadonly(true);
+                                                            intb.setStyle("float:right;text-align:right");
+                                                             row.appendChild(intb);
+                                                            Label prod = new Label(""+seriesEn.get(0).getDetallecompra().getEquipos());
+                                                            row.appendChild(prod);
+                                                            Decimalbox valor = new Decimalbox((seriesEn.get(0).getDetallecompra().getEquipos().getPvp1()));
+                                                            valor.setFormat("##0.00");
+                                                            valor.setStyle("float:right;text-align:right");
+                                                            valor.setReadonly(true);
+                                                            row.appendChild(valor);
+                                                            
+                                                            
+                                                            Label seri = new Label(""+seriesEn.get(0).getSerie());
+                                                            row.appendChild(seri);
+                                                         
+                                                            Button aButton = null;
+                                                            aButton = new Button("quitar");
+                                                            aButton.setImage("/images/quitar.gif");
+                                                            aButton.setHeight("5px");
+                                                            aButton.setId("id"+seriesEn.get(0).getSerie());
+                                                            aButton.addEventListener("onClick", new EventListener() {
+                                                                public void onEvent(Event event) throws Exception {
+                                                                     //int valor0 = Messagebox.show("Seguro que desea quitar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                                     //seriespanel.visible = false;
+                                                                     //if(valor0 == 16){
+                                                                        quitarFila(aButton.getId());
+                                                                        sumar();
+                                                                     //}
+
+                                                                }
+                                                            });
+                                                            row.appendChild(aButton);
+                                                            
+                                                            Checkbox facturado = new Checkbox();
+                                                            facturado.setChecked(true);
+                                                            facturado.addEventListener("onCheck", new EventListener() {
+                                                                public void onEvent(Event event) throws Exception {
+                                                                     sumar();
+
+                                                                }
+                                                            });
+                                                            
+                                                            row.appendChild(facturado);
+                                                            
+                                                            
+                                                            row.setValue(seriesEn.get(0)); 
+                                                    filas.appendChild(row);
+                                                    sumar();
+                                                    }catch(Exception e){
+                                                        Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                                                    }
+                                                
+                                                seriebuscar.value="";
+                                                seriebuscar.focus();
+                                                
+                                           }
+                                           
+                                           
+    } 
+  
+  
+  
   ]]>
     </zscript>
     <div>
@@ -1216,9 +1392,6 @@ void verificarCedula(String valor){
                                                             </popup>
                                                             <groupbox closable="true" style="position: absolute;background:#E2EDFE; display: none;" visible="false" id="bcliente">
                                                                 <vbox>
-                                                                 
-                                                                        
-                                                                        
                                                                     <hbox>
                                                                         <listbox style="background:white" onSelect='direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres();bcliente.visible =false;verificarCedula(identificacion.value);' id="lcliente" width="400px">
                                                                             <listhead>
