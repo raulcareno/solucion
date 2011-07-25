@@ -1582,7 +1582,7 @@ void verificarCedula(String valor){
                     <button  image="/images/nuevo.gif" id="agregar2" label="Nuevo Contrato" onClick="nuevo2();" />
                     <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                    <button label="Añadir Cobros" disabled="false" id="anadir" image="/images/empleados.png" >
+                    <button label="Añadir Pendientes" disabled="false" id="anadir" image="/images/empleados.png" >
                         <attribute name="onClick">{
                                                     final Window win = (Window) Executions.createComponents("generarIndividual.zul", null, null);
                                                     win.setMaximizable(true);
