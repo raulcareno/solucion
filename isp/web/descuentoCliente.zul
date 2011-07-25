@@ -45,12 +45,18 @@ import java.util.Map;
             descuentoCliente.detach();
         }
         void guardar(){
+            if(motivo.value == null || motivo.value.length() < 10 ){
+            Messagebox.show("Debe ingresar, un motivo al descuento,  \n mínimo 10 caractéres...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+            motivo.focus();
+            return;
+            }
             Descuentos des = new Descuentos();
             des.setEmpleados(usuarioActual);
             des.setFactura(new Factura(codigofac.value));
             des.setAplicado(false);
             des.setValor(efectivo.value);
             des.setFecha(new Date());
+            des.setMotivo(motivo.value);
             
             if(codigodes.value == 0){
                     adm.guardar(des);
@@ -58,7 +64,7 @@ import java.util.Map;
                 des.setCodigo(codigodes.value);
                 adm.actualizar(des);
             }
-            //Messagebox.show("Descuento aplicado con éxito...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+           
             Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
             descuentoCliente.detach();
             
@@ -124,7 +130,11 @@ import java.util.Map;
                                 <span  style="float:right"><label style="font-weight:bold" value="A COBRAR: " /></span>
                                 <decimalbox readonly="true" cols="7" format="##0.00"  id="totalCobros" />
                             </row>
-                            <row>
+                            <row spans="2" align="center">
+                                    <label style="font-weight:bold" value="MOTIVO DSCTO: " />
+                            </row>
+                            <row spans="2" align="center" >
+                                <textbox id="motivo" cols="35" rows="2" value="" /> 
                             </row>
                             <row align="center">
                                 <button label="APLICAR DSCTO." image="/images/guardar.gif" onClick="efectivo.getValue();guardar()" id="btnguardar" />
@@ -161,9 +171,11 @@ import java.util.Map;
                             codigodes.value = descuento.getCodigo();
                             efectivo.value = descuento.getValor();
                             btneliminar.visible = true;
+                            motivo.value = descuento.getMotivo();
                     }else{
                     btneliminar.visible = false;
                                 codigodes.value = 0;
+                                motivo.value = "";
                     }
                     sumarcobros("efe"); 
                     efectivo.focus();

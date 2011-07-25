@@ -43,7 +43,8 @@ public class Descuentos implements Serializable {
     @Column(name = "fechaaplicado")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaaplicado;
-    
+    @Column(name = "motivo")
+    private String motivo;
    @JoinColumn(name = "factura", referencedColumnName = "codigo")
     @ManyToOne
     private Factura factura;
@@ -111,6 +112,14 @@ public class Descuentos implements Serializable {
 
     public void setFechaaplicado(Date fechaaplicado) {
         this.fechaaplicado = fechaaplicado;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
     }
     
      
