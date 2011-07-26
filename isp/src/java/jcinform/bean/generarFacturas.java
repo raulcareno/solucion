@@ -4,7 +4,6 @@
  */
 package jcinform.bean;
 
- 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -28,20 +27,20 @@ import org.zkoss.zul.Button;
  * @author Familia Jadan Cahueñ jcinform.bean.generarFacturas.convertiraString
  */
 public class generarFacturas {
-
+    
     public void generarFacturas() {
     }
-
+    
     public String empezarGenerar(Date fecha, Integer numero, Sucursal suc) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         Button b = new Button();
-       
+        
         Administrador adm = new Administrador();
         Date fecha2 = fecha;
         fecha2.setDate(1);
         String mesActualIni = convertiraString(fecha2);
         String mesActualFin = convertiraString(ultimoDia(fecha));
-        String nn = suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero);
+        String nn = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + numero);
 //        List existe = adm.query("Select o from Factura as o where o.numero = '"+ nn +"'");
 //                if(existe.size()>0){
 //                        return " "+ "EL NÚMERO DE FACTURA INICIAL YA EXISTE EN SUCURSAL: "+suc.getDescripcion();
@@ -50,51 +49,56 @@ public class generarFacturas {
         List facturasHechas = adm.queryNativo("Select o.* from Contratos  as o "
                 + "where o.clientes not in (Select f.clientes from Factura as f "
                 + "where f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "') "
-                + "and  o.estado in ('Activo','Terminado')  and o.sucursal = '"+suc.getCodigo()+"' order by o.codigo ", Contratos.class);
+                + "and  o.estado in ('Activo','Terminado')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ", Contratos.class);
         try {
             
-        
-                for (Iterator it = facturasHechas.iterator(); it.hasNext();) {
-                    Contratos object = (Contratos) it.next();
-                    Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
-                    //fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
-                    fac.setEstado(true);
-                    fac.setClientes(object.getClientes());
-                    fac.setFecha(fecha);
-                    fac.setSucursal(suc);
-                    fac.setTotal(new BigDecimal(object.getPlan().getValor()));
-                    fac.getTotal().multiply((new  BigDecimal(12).divide(new BigDecimal(100))));
-                    fac.setSubtotal(BigDecimal.ZERO);//FALTAN CARGAR LOS DATOS RESTANTES DEL IVA Y VALOR DEL IVA
-                    adm.guardar(fac);
-                    Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                    det.setTotal(new BigDecimal(object.getPlan().getValor()));
-                    det.setPlan(object.getPlan());
-                    det.setCantidad(1);
-                    det.setMes(fecha.getMonth()+1);
-                    det.setAnio(fecha.getYear()+1900);
-                    det.setDescripcion("generada");
-                    det.setFactura(fac);
-                    adm.guardar(det);
-                    Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
-                    cuenta.setDebe(fac.getTotal());
-                    cuenta.setHaber(BigDecimal.ZERO);
-                    cuenta.setDebito(BigDecimal.ZERO);
-                    cuenta.setCheque(BigDecimal.ZERO);
-                    cuenta.setEfectivo(BigDecimal.ZERO);
-                    cuenta.setFactura(fac);
-                    cuenta.setFecha(fecha);
-                    cuenta.setNotarjeta("");
-                    cuenta.setNocheque("");
-                    cuenta.setTotal(fac.getTotal());
-                    adm.guardar(cuenta);
-                            
-                    
-                    
-                    numero++;
-                }
+            
+            for (Iterator it = facturasHechas.iterator(); it.hasNext();) {
+                Contratos object = (Contratos) it.next();
+                Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
+                //fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
+                fac.setEstado(true);
+                fac.setClientes(object.getClientes());
+                fac.setFecha(fecha);
+                fac.setSucursal(suc);
+                fac.setContratos(object);
+             fac.setSubtotal(new BigDecimal(object.getPlan().getValor()));
+                fac.setDescuento(new BigDecimal(0));
+                fac.setBaseiva(new BigDecimal(object.getPlan().getValor()));
+                fac.setPorcentajeiva(suc.getEmpresa().getIva());
+                fac.setValoriva((new BigDecimal(object.getPlan().getValor())).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
+                fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
+                adm.guardar(fac);
+                Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+                det.setTotal(new BigDecimal(object.getPlan().getValor()));
+                det.setPlan(object.getPlan());
+                det.setCantidad(1);
+                det.setMes(fecha.getMonth() + 1);
+                det.setAnio(fecha.getYear() + 1900);
+                det.setDescripcion("generada");
+                det.setFactura(fac);
+                adm.guardar(det);
+                Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+                cuenta.setDebe(fac.getTotal());
+                cuenta.setHaber(BigDecimal.ZERO);
+                cuenta.setDebito(BigDecimal.ZERO);
+                cuenta.setCheque(BigDecimal.ZERO);
+                cuenta.setEfectivo(BigDecimal.ZERO);
+                cuenta.setFactura(fac);
+                cuenta.setFecha(fecha);
+                cuenta.setNotarjeta("");
+                cuenta.setNocheque("");
+                cuenta.setDescuento(BigDecimal.ZERO);
+                cuenta.setTotal(fac.getTotal());
+                adm.guardar(cuenta);
+                
+                
+                
+                numero++;
+            }
         } catch (Exception e) {
-            System.out.println("DUPLICADO: "+e.hashCode());
-            return e.hashCode()+"";
+            System.out.println("DUPLICADO: " + e.hashCode());
+            return e.hashCode() + "";
         }
         //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
 
@@ -102,11 +106,11 @@ public class generarFacturas {
 
         return "OK";
     }
-
-        public String empezarGenerarIndividual(Date fecha, Integer numero, Sucursal suc) {
+    
+    public String empezarGenerarIndividual(Date fecha, Integer numero, Sucursal suc) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         Button b = new Button();
-       
+        
         Administrador adm = new Administrador();
         Date fecha2 = fecha;
         fecha2.setDate(1);
@@ -115,109 +119,115 @@ public class generarFacturas {
         List facturasHechas = adm.queryNativo("Select o.* from Contratos  as o "
                 + "where o.clientes not in (Select f.clientes from Factura as f "
                 + "where f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "') "
-                + "and  o.estado in ('Activo')  and o.sucursal = '"+suc.getCodigo()+"' order by o.codigo ", Contratos.class);
+                + "and  o.estado in ('Activo')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ", Contratos.class);
         try {
-            
-        
-                for (Iterator it = facturasHechas.iterator(); it.hasNext();) {
-                    Contratos object = (Contratos) it.next();
-                    Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
-                    //fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
-                    fac.setNumero(null);
-                    fac.setEstado(true);
-                    fac.setClientes(object.getClientes());
-                    fac.setFecha(fecha);
-                    fac.setSucursal(suc);
-                    fac.setTotal(new BigDecimal(object.getPlan().getValor()));
-                    adm.guardar(fac);
-                    Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                    det.setTotal(new BigDecimal(object.getPlan().getValor()));
-                    det.setPlan(object.getPlan());
-                    det.setCantidad(1);
-                    det.setMes(fecha.getMonth()+1);
-                    det.setAnio(fecha.getYear()+1900);
-                    det.setDescripcion("generada");
-                    det.setFactura(fac);
-                    adm.guardar(det);
-                    Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
-                    cuenta.setDebe(fac.getTotal());
-                    cuenta.setHaber(BigDecimal.ZERO);
-                    cuenta.setDebito(BigDecimal.ZERO);
-                    cuenta.setCheque(BigDecimal.ZERO);
-                    cuenta.setEfectivo(BigDecimal.ZERO);
-                    cuenta.setFactura(fac);
-                    cuenta.setFecha(fecha);
-                    cuenta.setNotarjeta("");
-                    cuenta.setNocheque("");
-                    cuenta.setTotal(fac.getTotal());
-                    adm.guardar(cuenta);
-                            
-                    
-                    
-                    numero++;
-                }
+            for (Iterator it = facturasHechas.iterator(); it.hasNext();) {
+                Contratos object = (Contratos) it.next();
+                Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
+                //fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
+                fac.setNumero(null);
+                fac.setEstado(true);
+                fac.setClientes(object.getClientes());
+                fac.setFecha(fecha);
+                fac.setContratos(object);
+                fac.setSucursal(suc);
+                fac.setSubtotal(new BigDecimal(object.getPlan().getValor()));
+                fac.setDescuento(new BigDecimal(0));
+                fac.setBaseiva(new BigDecimal(object.getPlan().getValor()));
+                fac.setPorcentajeiva(suc.getEmpresa().getIva());
+                fac.setValoriva((new BigDecimal(object.getPlan().getValor())).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
+                fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
+                adm.guardar(fac);
+                Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+                det.setTotal(new BigDecimal(object.getPlan().getValor()));
+                det.setPlan(object.getPlan());
+                det.setCantidad(1);
+                det.setMes(fecha.getMonth() + 1);
+                det.setAnio(fecha.getYear() + 1900);
+                det.setDescripcion("generada");
+                det.setFactura(fac);
+                adm.guardar(det);
+                Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+                cuenta.setDebe(fac.getTotal());
+                cuenta.setDescuento(BigDecimal.ZERO);
+                cuenta.setHaber(BigDecimal.ZERO);
+                cuenta.setDebito(BigDecimal.ZERO);
+                cuenta.setCheque(BigDecimal.ZERO);
+                cuenta.setEfectivo(BigDecimal.ZERO);
+                cuenta.setFactura(fac);
+                cuenta.setFecha(fecha);
+                cuenta.setNotarjeta("");
+                cuenta.setNocheque("");
+                cuenta.setTotal(fac.getTotal());
+                adm.guardar(cuenta);
+                
+                
+                
+                numero++;
+            }
         } catch (Exception e) {
-            System.out.println("DUPLICADO: "+e.hashCode());
-            return e.hashCode()+"";
+            System.out.println("DUPLICADO: " + e.hashCode());
+            return e.hashCode() + "";
         }
         //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
 
         //generar en facturas con el número y también en cxc.
 
         return "OK";
-    } 
-     public String anadirCobros(Sucursal suc,Contratos con) {
+    }    
+
+    public String anadirCobros(Sucursal suc, Contratos con) { //ESTO ES PARA AÑADIR COBROS PENDIENTES
         //seleccionar todos los que no tenga deuda en éste més o periodo
         Button b = new Button();
-       
+        
         Administrador adm = new Administrador();
         Date fecha2 = con.getFecha();
         fecha2.setDate(1);
         try {
-          
-                    Contratos object = con;
-                    Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
-                    //fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
-                    fac.setNumero(null);
-                    fac.setEstado(true);
-                    fac.setContratos(con);
-                    fac.setClientes(object.getClientes());
-                    fac.setFecha(fecha2);
-                    fac.setSucursal(suc);
-                    fac.setDescuento(BigDecimal.ZERO);
-                      fac.setSubtotal(new BigDecimal(con.getPlan().getValor()));
-                      fac.setDescuento(new BigDecimal(0));
-                      fac.setBaseiva(new BigDecimal(con.getPlan().getValor()));
-                      fac.setPorcentajeiva(suc.getEmpresa().getIva());
-                      fac.setValoriva((new BigDecimal(con.getPlan().getValor())).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
-                      fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
-                    adm.guardar(fac);
-                    Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                    det.setTotal(new BigDecimal(object.getPlan().getValor()));
-                    det.setPlan(object.getPlan());
-                    det.setCantidad(1);
-                    det.setMes(fecha2.getMonth()+1);
-                    det.setAnio(fecha2.getYear()+1900);
-                    det.setDescripcion("generada");
-                    det.setFactura(fac);
-                    adm.guardar(det);
-                    Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
-                    cuenta.setDebe(fac.getTotal());
-                    cuenta.setHaber(BigDecimal.ZERO);
-                    cuenta.setDebito(BigDecimal.ZERO);
-                    cuenta.setCheque(BigDecimal.ZERO);
-                    cuenta.setEfectivo(BigDecimal.ZERO);
-                    cuenta.setDescuento(BigDecimal.ZERO);
-                    cuenta.setFactura(fac);
-                    cuenta.setFecha(fecha2);
-                    cuenta.setNotarjeta("");
-                    cuenta.setNocheque("");
-                    cuenta.setTotal(fac.getTotal());
-                    adm.guardar(cuenta);
-                
+            
+            Contratos object = con;
+            Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
+            //fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
+            fac.setNumero(null);
+            fac.setEstado(true);
+            fac.setContratos(con);
+            fac.setClientes(object.getClientes());
+            fac.setFecha(fecha2);
+            fac.setSucursal(suc);
+            fac.setDescuento(BigDecimal.ZERO);
+            fac.setSubtotal(new BigDecimal(con.getPlan().getValor()));
+            fac.setDescuento(new BigDecimal(0));
+            fac.setBaseiva(new BigDecimal(con.getPlan().getValor()));
+            fac.setPorcentajeiva(suc.getEmpresa().getIva());
+            fac.setValoriva((new BigDecimal(con.getPlan().getValor())).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
+            fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
+            adm.guardar(fac);
+            Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+            det.setTotal(new BigDecimal(object.getPlan().getValor()));
+            det.setPlan(object.getPlan());
+            det.setCantidad(1);
+            det.setMes(fecha2.getMonth() + 1);
+            det.setAnio(fecha2.getYear() + 1900);
+            det.setDescripcion("generada");
+            det.setFactura(fac);
+            adm.guardar(det);
+            Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+            cuenta.setDebe(fac.getTotal());
+            cuenta.setHaber(BigDecimal.ZERO);
+            cuenta.setDebito(BigDecimal.ZERO);
+            cuenta.setCheque(BigDecimal.ZERO);
+            cuenta.setEfectivo(BigDecimal.ZERO);
+            cuenta.setDescuento(BigDecimal.ZERO);
+            cuenta.setFactura(fac);
+            cuenta.setFecha(fecha2);
+            cuenta.setNotarjeta("");
+            cuenta.setNocheque("");
+            cuenta.setTotal(fac.getTotal());
+            adm.guardar(cuenta);
+            
         } catch (Exception e) {
-            System.out.println("DUPLICADO: "+e.hashCode());
-            return e.hashCode()+"";
+            System.out.println("DUPLICADO: " + e.hashCode());
+            return e.hashCode() + "";
         }
         //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
 
@@ -226,82 +236,81 @@ public class generarFacturas {
         return "OK";
     }
 
-    
-     
-        public String generarCobros(Sucursal suc,Contratos con,Date fechaInstalacion) {
+    //ESTO ES PARA AÑADIR EL COBRO CUANDO GUARDA EL CONTRATO 
+    public String generarCobros(Sucursal suc, Contratos con, Date fechaInstalacion) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
-            int dia = fechaInstalacion.getDate();
+        int dia = fechaInstalacion.getDate();
         Date fec = fechaInstalacion;
-       fec.setDate(1);
+        fec.setDate(1);
         Administrador adm = new Administrador();
         String mesActualIni = convertiraString(fec);
         String mesActualFin = convertiraString(ultimoDia(fec));
         List facturaExistente = adm.query("Select f from Factura as f "
-                + "where f.contratos.codigo = '"+ con.getCodigo() +"' " 
+                + "where f.contratos.codigo = '" + con.getCodigo() + "' "
                 + "and f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "' "
-                + "and f.clientes.codigo = '"+ con.getClientes().getCodigo() +"' ");
-        if(facturaExistente.size()>0){
+                + "and f.clientes.codigo = '" + con.getClientes().getCodigo() + "' ");
+        if (facturaExistente.size() > 0) {
             try {
                 int valor0 = Messagebox.show("Ya se ha añadido una Deuda para éste mes, desea continuar añadiendolo?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
-                          if(valor0 == 16){
-                          }else{
-                              return "";
-                          }
+                if (valor0 == 16) {
+                } else {
+                    return "";
+                }
             } catch (InterruptedException ex) {
                 Logger.getLogger(generarFacturas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+        
         try {
-          
-                    Contratos object = con;
-                    Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
-                    fac.setNumero(null);
-                    fac.setEstado(true);
-                    fac.setContratos(con);
-                    fac.setClientes(object.getClientes());
-                    fechaInstalacion.setDate(dia);
-                    fac.setFecha(fechaInstalacion);
-                    fac.setSucursal(suc);
-                    fac.setDescuento(BigDecimal.ZERO);
-                    BigDecimal valor = new BigDecimal(con.getPlan().getValor());
-                    if(fechaInstalacion.getDate() > 1){
-                        int noDias = object.getPlan().getDias()-fechaInstalacion.getDate();
-                             valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(object.getPlan().getDias()));
-                    }
-                      fac.setSubtotal(valor);
-                      fac.setDescuento(new BigDecimal(0));
-                      fac.setBaseiva(fac.getSubtotal());
-                      fac.setPorcentajeiva(suc.getEmpresa().getIva());
-                      fac.setValoriva((valor).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
-                      fac.setTotal(fac.getValoriva().add(valor));
-                     adm.guardar(fac);
-                    Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                    det.setTotal(new BigDecimal(object.getPlan().getValor()));
-                    det.setPlan(object.getPlan());
-                    det.setCantidad(1);
-                    det.setMes(fechaInstalacion.getMonth()+1);
-                    det.setAnio(fechaInstalacion.getYear()+1900);
-                    det.setDescripcion("generada");
-                    det.setFactura(fac);
-                    adm.guardar(det);
-                    Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
-                    cuenta.setDebe(fac.getTotal());
-                    cuenta.setHaber(BigDecimal.ZERO);
-                    cuenta.setDebito(BigDecimal.ZERO);
-                    cuenta.setCheque(BigDecimal.ZERO);
-                    cuenta.setEfectivo(BigDecimal.ZERO);
-                    cuenta.setDescuento(BigDecimal.ZERO);
-                    cuenta.setFactura(fac);
-                    cuenta.setFecha(fechaInstalacion);
-                    cuenta.setNotarjeta("");
-                    cuenta.setNocheque("");
-                    cuenta.setTotal(fac.getTotal());
-                    adm.guardar(cuenta);
-                
+            
+            Contratos object = con;
+            Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
+            fac.setNumero(null);
+            fac.setEstado(true);
+            fac.setContratos(con);
+            fac.setClientes(object.getClientes());
+            fechaInstalacion.setDate(dia);
+            fac.setFecha(fechaInstalacion);
+            fac.setSucursal(suc);
+            fac.setDescuento(BigDecimal.ZERO);
+            BigDecimal valor = new BigDecimal(con.getPlan().getValor());
+            if (fechaInstalacion.getDate() > 1) {
+                int noDias = object.getPlan().getDias() - fechaInstalacion.getDate();
+                valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(object.getPlan().getDias()));
+            }
+            fac.setSubtotal(valor);
+            fac.setDescuento(new BigDecimal(0));
+            fac.setBaseiva(fac.getSubtotal());
+            fac.setPorcentajeiva(suc.getEmpresa().getIva());
+            fac.setValoriva((valor).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
+            fac.setTotal(fac.getValoriva().add(valor));
+            adm.guardar(fac);
+            Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+            det.setTotal(new BigDecimal(object.getPlan().getValor()));
+            det.setPlan(object.getPlan());
+            det.setCantidad(1);
+            det.setMes(fechaInstalacion.getMonth() + 1);
+            det.setAnio(fechaInstalacion.getYear() + 1900);
+            det.setDescripcion("generada");
+            det.setFactura(fac);
+            adm.guardar(det);
+            Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+            cuenta.setDebe(fac.getTotal());
+            cuenta.setHaber(BigDecimal.ZERO);
+            cuenta.setDebito(BigDecimal.ZERO);
+            cuenta.setCheque(BigDecimal.ZERO);
+            cuenta.setEfectivo(BigDecimal.ZERO);
+            cuenta.setDescuento(BigDecimal.ZERO);
+            cuenta.setFactura(fac);
+            cuenta.setFecha(fechaInstalacion);
+            cuenta.setNotarjeta("");
+            cuenta.setNocheque("");
+            cuenta.setTotal(fac.getTotal());
+            adm.guardar(cuenta);
+            
         } catch (Exception e) {
-            System.out.println("DUPLICADO: "+e.hashCode());
-            return e.hashCode()+"";
+            System.out.println("DUPLICADO: " + e.hashCode());
+            return e.hashCode() + "";
         }
         //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
 
@@ -309,21 +318,22 @@ public class generarFacturas {
 
         return "OK";
     }
+
     public static String convertiraString(Date fecha) {
-
-        return (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
-
-    }
-    
-     String llenarCeros(String numero){
         
-     while(numero.length()<7){
-        numero = "0"+numero;
-     }  
-     return numero;
-    
+        return (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+        
     }
-
+    
+    String llenarCeros(String numero) {
+        
+        while (numero.length() < 7) {
+            numero = "0" + numero;
+        }        
+        return numero;
+        
+    }
+    
     public static Date ultimoDia(Date fecha) {
         //Calendar calInicio = Calendar.getInstance();
         Calendar calFin = Calendar.getInstance();
@@ -334,9 +344,9 @@ public class generarFacturas {
         Date fechaFin = calFin.getTime();
         System.out.println("ULTIMO: " + fechaFin.toLocaleString());
         return fechaFin;
-
+        
     }
-
+    
     public static Date primerDia(Date fecha) {
         //Calendar calInicio = Calendar.getInstance();
         Calendar calFin = Calendar.getInstance();
@@ -347,11 +357,11 @@ public class generarFacturas {
         Date fechaFin = calFin.getTime();
         System.out.println("PRIMER: " + fechaFin.toLocaleString());
         return fechaFin;
-
+        
     }
-
+    
     public static void main(String arg[]) {
-
+        
         ultimoDia(new Date());
         primerDia(new Date());
         System.out.println("" + convertiraString(new Date()));
