@@ -51,11 +51,13 @@ import java.text.SimpleDateFormat;
 
 void llenarCliente(Clientes cli){
             identificacion.value = cli.getIdentificacion();
+            identificacion2.value = cli.getIdentificacion();
             codigocli.value = cli.getCodigo()+"";
             direccion.value = cli.getDireccion();
             telefono.value = cli.getTelefono()+"";
             email.value = cli.getEmail()+"";
             combo.value = cli.getApellidos()+" "+cli.getNombres();//cliente
+            apellidos.value = cli.getApellidos()+" "+cli.getNombres();//cliente
 
 }
 void llenar(Contratos  equi2){
@@ -657,6 +659,7 @@ void modificar(){
  
 llenarCliente(Clientes clienteEn){
     identificacion.value = clienteEn.getIdentificacion();
+    identificacion2.value = clienteEn.getIdentificacion();
      codigocli.value = clienteEn.getCodigo()+"";
      direccion.value  = clienteEn.getDireccion();
      email.value  = clienteEn.getEmail();
@@ -666,6 +669,9 @@ llenarCliente(Clientes clienteEn){
      espacio = " ";
      }
      combo.value = clienteEn.getApellidos()+espacio+clienteEn.getNombres() ;
+     apellidos.value = clienteEn.getApellidos();
+     nombres.value = clienteEn.getNombres() ;
+     
 
 }
 void verificarCedula(String valor){
@@ -1363,96 +1369,113 @@ void llamar(){
                                                     <row spans="2">
                             
                                                     </row>
-                                                    <row>
-                                                        <span style="float:right"> 
-                                                            <label style="font-weight:bold2" value=" Identificación(*):" /> 
-                                                        </span> 
-                                                        <span> 
-                                                            <textbox id="identificacion"  readonly="false"   onChanging="buscarCliCed(event.value); "     onOK="verificarCedula(self.value); bclientei.visible = false;"  />
-                                                            <image  tooltip="autompletar" popup="autompletar"  src="/images/keyboard.png"  />
-                                                            <popup id="autompletar" width="300px">
-                                                                <html>
+                                                    <row spans="4">
+                                                        <groupbox id="busqueda" mold="3d" width="100%">
+                                                            <span> 
+                                                                <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
+                                                                <label style="font-weight:bold2" value="Identificación(*):" /> 
+                                                            </span> 
+                                                            <span> 
+                                                                <textbox id="identificacion"  readonly="false"   onChanging="buscarCliCed(event.value); "  cols="13"   onOK="verificarCedula(self.value); bclientei.visible = false;"  />
+                                                                <image  tooltip="autompletar" popup="autompletar"  src="/images/keyboard.png"  />
+                                                                <popup id="autompletar" width="300px">
+                                                                    <html>
                                                                         Ingrese un número de cédula, ruc o pasaporte, para buscar Ejemplo: 1709700548, luego presione ENTER o seleccione uno de los del listado de búsqueda
-                                                                </html>
-                                                            </popup>
-                                                            <groupbox closable="true" style="position: absolute;background:#E2EDFE;" visible="false" id="bclientei">
-                                                                <vbox>
-                                                                    <hbox>
-                                                                        <listbox onSelect='direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres();bclientei.visible =false; verificarCedula(identificacion.value);' id="lclienteced" width="400px">
-                                                                            <listhead>
-                                                                                <listheader label="Nombres"/>
-                                                                                <listheader label="Dirección"/>
-                                                                            </listhead>
-                                                                            <listitem forEach="${allEvents}" value="${each}">
-                                                                                <listcell label="${each.apellidos}" />
-                                                                                <listcell label="${each.direccion}" />
-                                                                            </listitem>
-                                                                        </listbox>
-                                                                    </hbox>
-                                                                    <button label="CERRAR" onClick="bclientei.visible = false;"/>
-                                                                </vbox>
+                                                                    </html>
+                                                                </popup>
+                                                                <groupbox closable="true" style="position: absolute;background:#E2EDFE;" visible="false" id="bclientei">
+                                                                    <vbox>
+                                                                        <hbox>
+                                                                            <listbox onSelect='direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+"";  telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos(); nombres.value = ((Clientes)self.selectedItem.value).getNombres();  bclientei.visible =false; verificarCedula(identificacion.value);' id="lclienteced" width="400px">
+                                                                                <listhead>
+                                                                                    <listheader label="Nombres"/>
+                                                                                    <listheader label="Dirección"/>
+                                                                                </listhead>
+                                                                                <listitem forEach="${allEvents}" value="${each}">
+                                                                                    <listcell label="${each.apellidos}" />
+                                                                                    <listcell label="${each.direccion}" />
+                                                                                </listitem>
+                                                                            </listbox>
+                                                                        </hbox>
+                                                                        <button label="CERRAR" onClick="bclientei.visible = false;"/>
+                                                                    </vbox>
                                                                 
-                                                            </groupbox>
+                                                                </groupbox>
                                     
-                                                            <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
-                                                        </span>
-                                                    </row>
-                                                    <row>
-                                                        <span style="float:right"> 
-                                                            <label style="font-weight:bold2" id="labelnombre" value="Ape.y Nomb(*): " />  
-                                                        </span> 
-                                                        <span>     
-                                                            <textbox readonly="false" cols="32"   onChanging="buscarCli(event.value);"   onOK ="btcliente.value = combo.value; buscarCli(btcliente.value); bcliente.visible = true"   id="combo" />
-                                                            <image  tooltip="autompletar2" popup="autompletar2"  src="/images/keyboard.png"  />
-                                                            <popup id="autompletar2" width="300px">
-                                                                <html>
+                                                            
+                                                            </span>
+                                                  
+                                                            <span> 
+                                                                <label style="font-weight:bold2" id="labelnombre" value="Apellidos: " />  
+                                                            </span> 
+                                                            <span>     
+                                                                <textbox readonly="false" cols="25"   onChanging="buscarCli(event.value);"   onOK ="btcliente.value = combo.value; buscarCli(btcliente.value); bcliente.visible = true"   id="combo" />
+                                                                <image  tooltip="autompletar2" popup="autompletar2"  src="/images/keyboard.png"  />
+                                                                <popup id="autompletar2" width="300px">
+                                                                    <html>
                                                                             Ingrese un Apellido del Cliente Ejemplo: AGUIRRE y seleccione uno de los del listado de búsqueda, si es que existe.
-                                                                </html>
-                                                            </popup>
-                                                            <groupbox closable="true" style="position: absolute;background:#E2EDFE; display: none;" visible="false" id="bcliente">
-                                                                <vbox>
-                                                                    <hbox>
-                                                                        <listbox style="background:white" onSelect='direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres();bcliente.visible =false;verificarCedula(identificacion.value);' id="lcliente" width="400px">
-                                                                            <listhead>
-                                                                                <listheader label="Nombres"/>
-                                                                                <listheader label="Dirección"/>
-                                                                            </listhead>
-                                                                            <listitem forEach="${allEvents}" value="${each}">
-                                                                                <listcell label="${each.apellidos}" />
-                                                                                <listcell label="${each.direccion}" />
-                                                                            </listitem>
-                                                                        </listbox>
-                                                                    </hbox>
-                                                                    <button label="CERRAR" onClick="bcliente.visible = false;"/>
+                                                                    </html>
+                                                                </popup>
+                                                                <groupbox closable="true" style="position: absolute;background:#E2EDFE; display: none;" visible="false" id="bcliente">
+                                                                    <vbox>
+                                                                        <hbox>
+                                                                            <listbox style="background:white" onSelect='direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos(); nombres.value = ((Clientes)self.selectedItem.value).getNombres(); bcliente.visible =false;verificarCedula(identificacion.value);' id="lcliente" width="400px">
+                                                                                <listhead>
+                                                                                    <listheader label="Nombres"/>
+                                                                                    <listheader label="Dirección"/>
+                                                                                </listhead>
+                                                                                <listitem forEach="${allEvents}" value="${each}">
+                                                                                    <listcell label="${each.apellidos}" />
+                                                                                    <listcell label="${each.direccion}" />
+                                                                                </listitem>
+                                                                            </listbox>
+                                                                        </hbox>
+                                                                        <button label="CERRAR" onClick="bcliente.visible = false;"/>
                                                                    
-                                                                </vbox>
+                                                                    </vbox>
                                                                 
-                                                            </groupbox>
-                                    
-                                                             
-                              
-                                                            <!--button label="" id="buscarC" disabled="false"  image="/images/auditoria.gif">
-                                                                <attribute name="onClick">{
-                                                                        final Window win = (Window) Executions.createComponents("buscarClientes.zul", null, null);
-                                                                        win.setMaximizable(true);
-                                                                        win.setClosable(true);
-                                                                        win.setAttribute("nuevo", true);
-                                                                        win.setTitle("Buscar Clientes");
-                                                                        win.doModal();
-                                                                        }                            
-                                                                </attribute>
-                                                            </button--> 
-                                                   
-                              
+                                                                </groupbox>
+                                                                <label style="font-weight:bold2" id="labelcontrato" value="No.Contrato" />  
+                                                                <textbox readonly="false" cols="5"   onOK ="btcliente.value = combo.value; buscarCli(btcliente.value); bcliente.visible = true"   id="buscarContrato" />
+                                                                <image  tooltip="autompletarNo" popup="autompletarNo"  src="/images/keyboard.png"  />
+                                                                <popup id="autompletarNo" width="300px">
+                                                                    <html>
+                                                                            Digite el No de Contrato y Presione Enter
+                                                                    </html>
+                                                                </popup>
+                               
                     
                        
                       
-                                                        </span>
+                                                            </span>
+                                                   
+	    			 
+                                                        </groupbox>
+                                                    </row>
+                                                    <row>
+                                                        <span  style="float:right" >Identificación(*):</span> 
+                                                        <textbox id="identificacion2"  readonly="false"   cols="13" />
                                                         <span style="float:right">
                                                             <label style="font-weight:bold2" value=" Dirección: " />   
                                                         </span>
                                                         <textbox id="direccion" cols="32" readonly="true"  />
                                                     </row>
+                                                    <row>
+                                                        <span style="float:right"> 
+                                                            <label style="font-weight:bold2" id="labelnombre2" value="Apellidos: " />  
+                                                        </span> 
+                                                        <span>     
+                                                            <textbox readonly="true" cols="25"  id="apellidos" />
+                                                        </span>
+                                                        <span style="float:right"> 
+                                                            <label style="font-weight:bold2" id="labelnombre332" value="Nombres: " />  
+                                                        </span> 
+                                                        <span>     
+                                                            <textbox readonly="true" cols="25"  id="nombres" />
+                                                        </span>
+                                                      
+                                                    </row>
+                                                    
                                                     <row>
                                                         <span style="float:right">
                                                             <label style="font-weight:bold2" value=" Teléfono " />   
@@ -1484,7 +1507,7 @@ void llamar(){
                                                             <label style="font-weight:bold2" value=" No.Contrato: " /> 
                                                         </span>
                                                         <span>
-                                                        <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" id="numerocontrato" cols="16" />
+                                                            <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" id="numerocontrato" cols="16" />
                                                             <button label="Contratos" id="vercontratos" onClick="  contratosPanel.visible = true; "/>
                                                         </span>
                                                         <span style="float:right">
@@ -1535,8 +1558,8 @@ void llamar(){
                                                             <label style="font-weight:bold2" value=" Telf.Instalar: " />  
                                                         </span>
                                                         <span>
-                                                        <textbox id="telefonoi" readonly="true"  />
-                                                        <button  image="/images/copiar.png"   onClick="telefonoi.value=telefono.value;"/>
+                                                            <textbox id="telefonoi" readonly="true"  />
+                                                            <button  image="/images/copiar.png"   onClick="telefonoi.value=telefono.value;"/>
                                                         </span>
                                                     </row>
                                                     <row >
@@ -1819,7 +1842,7 @@ void llamar(){
                         <listitem forEach="${allEvents}" value="${each}">
                         </listitem>
                     </listbox--> 
-                     <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasDatos" >
+                    <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasDatos" >
                         <columns>
                             <column  label="No."/>
                             <column  label="Fecha Pago"/>
