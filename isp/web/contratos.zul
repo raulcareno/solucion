@@ -224,6 +224,10 @@ void estado(Boolean estado,Boolean modificar){
      direccion.readonly = estado;
      telefono.readonly = estado;
      email.readonly = estado;
+     nombres.readonly = estado;
+     apellidos.readonly = estado;
+     identificacion2.readonly = estado;
+     
      //combo.readonly = estado;
 
 
@@ -259,7 +263,7 @@ Boolean validar(Combobox text){
 }
 
 Boolean validar(){
-        if(validar(identificacion)  || validar(direccion)  || validar(telefono)  || 
+        if(validar(identificacion2)||  validar(nombres) || validar(apellidos) || validar(direccion)  || validar(telefono)  || 
                   validar(combo) ||   validar(numerocontrato) || validar(fecha) || validar(fechainstalacion)  || 
                   validar(direccioni) ||  validar(telefonoi) || validar(combov) ){
                           //Messagebox.show("Complete todos los campos que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -291,7 +295,17 @@ Boolean validar(){
             Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             return;
     }
- 
+     if(codigocli.value.equals("0")){
+        Clientes empa = new Clientes();
+            empa.setIdentificacion(""+identificacion2.value);
+            empa.setNombres(nombres.value);
+            empa.setApellidos(apellidos.value);
+            empa.setDireccion(direccion.value);
+            empa.setTelefono(telefono.value);
+            empa.setEmail(email.value);
+            adm.guardar(empa);
+            codigocli.value = empa.getCodigo()+"";
+     }
     equi.setClientes(new Clientes(new Integer(codigocli.value)));
     equi.setFecha(fecha.value);
     equi.setFechainstalacion(fechainstalacion.value);
@@ -609,7 +623,7 @@ if(sihay==0){
         llenar(new Contratos(0));
         estado(false,false);
         productos.getRows().getChildren().clear();
-        
+        identificacion2.focus();
      bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -698,12 +712,14 @@ void verificarCedula(String valor){
                                           contratosPanel.visible = true; 
                                           llenarCliente(empa);
                                           numerocontrato.focus();
+                                          anadir.disabled = true;
                                  }else{
                                           contratosPanel.visible = false; 
                                           llenarCliente(empa);
                                           llenar(ControlequiposEncontrados.get(0));
                                           numerocontrato.focus();
                                           modificar.disabled = false;
+                                          anadir.disabled = false;
                                  }
                                 
                                 
@@ -1370,10 +1386,10 @@ void llamar(){
                             
                                                     </row>
                                                     <row spans="4">
-                                                        <groupbox id="busqueda" mold="3d" width="100%">
+                                                        <groupbox id="busqueda" style="background:#D6E3F6" mold="3d" width="100%">
                                                             <span> 
-                                                                <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
-                                                                <label style="font-weight:bold2" value="Identificación(*):" /> 
+                                                                
+                                                                <label style="font-weight:bold2" value="Identificación:" /> 
                                                             </span> 
                                                             <span> 
                                                                 <textbox id="identificacion"  readonly="false"   onChanging="buscarCliCed(event.value); "  cols="13"   onOK="verificarCedula(self.value); bclientei.visible = false;"  />
@@ -1386,7 +1402,7 @@ void llamar(){
                                                                 <groupbox closable="true" style="position: absolute;background:#E2EDFE;" visible="false" id="bclientei">
                                                                     <vbox>
                                                                         <hbox>
-                                                                            <listbox onSelect='direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+"";  telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos(); nombres.value = ((Clientes)self.selectedItem.value).getNombres();  bclientei.visible =false; verificarCedula(identificacion.value);' id="lclienteced" width="400px">
+                                                                            <listbox onSelect='combo.value = ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+"";  telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; apellidos.value = ((Clientes)self.selectedItem.value).getApellidos(); nombres.value = ((Clientes)self.selectedItem.value).getNombres();  bclientei.visible =false; verificarCedula(identificacion.value);' id="lclienteced" width="400px">
                                                                                 <listhead>
                                                                                     <listheader label="Nombres"/>
                                                                                     <listheader label="Dirección"/>
@@ -1419,7 +1435,7 @@ void llamar(){
                                                                 <groupbox closable="true" style="position: absolute;background:#E2EDFE; display: none;" visible="false" id="bcliente">
                                                                     <vbox>
                                                                         <hbox>
-                                                                            <listbox style="background:white" onSelect='direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos(); nombres.value = ((Clientes)self.selectedItem.value).getNombres(); bcliente.visible =false;verificarCedula(identificacion.value);' id="lcliente" width="400px">
+                                                                            <listbox style="background:white" onSelect='identificacion.value= ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";  identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos()+""; nombres.value = ((Clientes)self.selectedItem.value).getNombres()+""; bcliente.visible =false;verificarCedula(identificacion2.value);' id="lcliente" width="400px">
                                                                                 <listhead>
                                                                                     <listheader label="Nombres"/>
                                                                                     <listheader label="Dirección"/>
@@ -1454,21 +1470,26 @@ void llamar(){
                                                     </row>
                                                     <row>
                                                         <span  style="float:right" >Identificación(*):</span> 
-                                                        <textbox id="identificacion2"  readonly="false"   cols="13" />
+                                                        <span>
+                                                         <textbox id="identificacion2"  readonly="true"   cols="13" />
+                                                        <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
+                                                        <button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/>
+                                                        </span>
+                                                        
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Dirección: " />   
+                                                            <label style="font-weight:bold2" value=" Dirección(*): " />   
                                                         </span>
                                                         <textbox id="direccion" cols="32" readonly="true"  />
                                                     </row>
                                                     <row>
                                                         <span style="float:right"> 
-                                                            <label style="font-weight:bold2" id="labelnombre2" value="Apellidos: " />  
+                                                            <label style="font-weight:bold2" id="labelnombre2" value="Apellidos(*): " />  
                                                         </span> 
                                                         <span>     
                                                             <textbox readonly="true" cols="25"  id="apellidos" />
                                                         </span>
                                                         <span style="float:right"> 
-                                                            <label style="font-weight:bold2" id="labelnombre332" value="Nombres: " />  
+                                                            <label style="font-weight:bold2" id="labelnombre332" value="Nombres(*): " />  
                                                         </span> 
                                                         <span>     
                                                             <textbox readonly="true" cols="25"  id="nombres" />
@@ -1478,7 +1499,7 @@ void llamar(){
                                                     
                                                     <row>
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Teléfono " />   
+                                                            <label style="font-weight:bold2" value=" Teléfono(*):" />   
                                                         </span>
                                                         <textbox id="telefono" cols="32" readonly="true"  />
                                                         <span style="float:right">
@@ -1508,7 +1529,7 @@ void llamar(){
                                                         </span>
                                                         <span>
                                                             <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" id="numerocontrato" cols="16" />
-                                                            <button label="Contratos" id="vercontratos" onClick="  contratosPanel.visible = true; "/>
+                                                            <button label="Contratos"  image="/images/contratos.png"  id="vercontratos" onClick="contratosPanel.visible = true; "/>
                                                         </span>
                                                         <span style="float:right">
                                                             <label style="font-weight:bold2" value=" Fecha: " />   
@@ -1744,7 +1765,7 @@ void llamar(){
                                                         <span></span>
                                                         <span></span>
                                                     </row>
-                                                    <row style="background:cyan" spans="4" align="center">
+                                                    <row style="background:#D6E3F6" spans="4" align="center">
                                                         <span > 
                                                             <checkbox style="font-weight:bold;size:14px" id="genFactura" label="¿GENERAR COBRO PARA ÉSTE MES?" />
                                                         </span> 
@@ -1814,7 +1835,7 @@ void llamar(){
                     <button  image="/images/nuevo.gif" id="agregar2" label="Nuevo Contrato" onClick="nuevo2();" />
                     <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                    <button label="Añadir Pendientes" disabled="false" id="anadir" image="/images/empleados.png" >
+                    <button label="Añadir Pendientes" disabled="true" id="anadir" image="/images/empleados.png" >
                         <attribute name="onClick">{
                                                     final Window win = (Window) Executions.createComponents("generarIndividual.zul", null, null);
                                                     win.setMaximizable(true);
@@ -1945,7 +1966,7 @@ void llamar(){
         </tabbox>
         <panel framable="true" visible="false" id="contratosPanel" title="CONTRATOS CON ÉSTE CLIENTE" style="position:absolute; top:5%; left:5%" width="600px">
             <panelchildren>
-                <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;" id="contratosCliente" width="100%">
+                <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;anadir.disabled = false;" id="contratosCliente" width="100%">
                     <listhead>
                         <listheader label="Contra."/>
                         <listheader label="Plan"/>

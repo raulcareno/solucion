@@ -4,6 +4,8 @@
  */
 package jcinform.bean.sources;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -70,7 +72,7 @@ public class ReporteFacturaDataSource implements JRDataSource {
                  if(nodo.getEquipos()!= null)
                    valor = nodo.getEquipos().getPvp1();
                 else
-                    valor = nodo.getPlan().getValor();
+                    valor = new BigDecimal(nodo.getPlan().getValor());
                 
                    
             } else if ("subtotal".equals(fieldName)) {

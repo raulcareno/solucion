@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="87"/>
+	<property name="ireport.y" value="189"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -26,7 +26,7 @@
 	<field name="fecha" class="java.util.Date"/>
 	<field name="telefono" class="java.lang.String"/>
 	<field name="descuento" class="java.math.BigDecimal"/>
-	<field name="tarjeta" class="java.lang.String"/>
+	<field name="tarjeta" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -187,70 +187,81 @@
 	<columnFooter>
 		<band height="138" splitType="Stretch">
 			<textField pattern="#,##0.00">
-				<reportElement x="248" y="102" width="100" height="16"/>
+				<reportElement x="248" y="98" width="100" height="16"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="248" y="38" width="100" height="16"/>
+				<reportElement x="248" y="18" width="100" height="16"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{efectivo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="248" y="54" width="100" height="16"/>
+				<reportElement x="248" y="34" width="100" height="16"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cheque}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="248" y="70" width="100" height="16"/>
+				<reportElement x="248" y="50" width="100" height="16"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{debito}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="248" y="86" width="100" height="16"/>
+				<reportElement x="248" y="82" width="100" height="16"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{descuento}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="141" y="53" width="100" height="16"/>
+				<reportElement x="141" y="33" width="100" height="16"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[Cheque: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="141" y="69" width="100" height="16"/>
+				<reportElement x="141" y="49" width="100" height="16"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[Debito: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="141" y="101" width="100" height="16"/>
+				<reportElement x="141" y="97" width="100" height="16"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[Total: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="141" y="37" width="100" height="16"/>
+				<reportElement x="141" y="17" width="100" height="16"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[Efectivo: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="141" y="85" width="100" height="16"/>
+				<reportElement x="141" y="81" width="100" height="16"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[Descuento: ]]></text>
 			</staticText>
 			<textField pattern="#,##0.00">
-				<reportElement x="248" y="118" width="100" height="16"/>
+				<reportElement x="248" y="114" width="100" height="16"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{total}.subtract($F{descuento})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="141" y="117" width="100" height="16"/>
+				<reportElement x="141" y="113" width="100" height="16"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[A Pagar: ]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="248" y="66" width="100" height="16"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{tarjeta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="141" y="65" width="100" height="16"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Tarjeta:]]></text>
 			</staticText>
 		</band>
 	</columnFooter>
