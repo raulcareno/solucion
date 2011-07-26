@@ -12,6 +12,8 @@
   import java.util.HashMap;
 import java.util.Map;
     import java.math.BigDecimal;
+    import jcinform.bean.sources.*;
+    
     Administrador adm = new Administrador();
     Permisos permiso = new Permisos();
        Session ses = Sessions.getCurrent();
@@ -19,6 +21,8 @@ import java.util.Map;
            Empleados usuarioActual = ses.getAttribute("user");
    Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+     String directorioReportes = empresa.getReportes();
+     
        ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
         cargarCliente(){
             boton = Path.getComponent("//controlequipospage/controlventana/facturas");
@@ -76,7 +80,8 @@ import java.util.Map;
                     
                 }else{
                        registrofactura.visible= false;
-                    imprimir(); impresion.setSelected(true);
+                    imprimirRecibo(cobrar.getCodigo());
+                    impresion.setSelected(true);
                 }
 
             efectivo.readonly = true;
@@ -99,9 +104,7 @@ import java.util.Map;
                     Factura fac = adm.buscarClave(codigofac.value,Factura.class);
                     fac.setNumero(nn+"");
                     adm.actualizar(fac);
-                    
                     facturaPanel.visible=false;
-                  
                    imprimir();
                    impresion.setSelected(true); 
                    registrofactura.visible= false;
@@ -111,25 +114,46 @@ import java.util.Map;
  
                     try{
                Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
-                    
                     Map parameters = new HashMap();
-                    parameters.put("ruc", empresa.getRuc());
-                    System.out.println("0000-1");
-                    parameters.put("empresa", empresa.getRazonsocial());
-                    parameters.put("direccion", empresa.getDireccion());
-                    reportelocal.setSrc("/jcinform/bean/reportes/jrxml/orden.jasper");
-                    reportelocal.setParameters(parameters);
-                    reportelocal.setDatasource(null);
-                    reportelocal.setType("pdf");
-/*
-                    final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
-                    win.setMaximizable(true);
-                    win.setClosable(true);
-                    win.setAttribute("reporte",reportelocal);
-                    win.setTitle("Reporte");
-                    win.doModal();
-  */              
+                   
+                    List detalleFac = adm.query("Select o from Detalle as o where o.factura.codigo = '" + codigofac.value + "'");
+                    ArrayList detalles = new ArrayList();
+                   for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
+                        Detalle det = itAbono.next();
+                         detalles.add(det);
+                   }
+                   ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
+                   reportelocal.setSrc(directorioReportes+"factura.jasper");
+                   reportelocal.setParameters(parameters);
+                   reportelocal.setDatasource(ds);
+                   reportelocal.setType("pdf");
+            }catch(Exception  ex){
+                System.out.println("EXXX: "+ex);
+            }
         
+        
+        }
+         public void imprimirRecibo(Integer codigo){
+ 
+                    try{
+               Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
+                    Map parameters = new HashMap();
+                     parameters.put("empresa", empresa.getRazonsocial());
+                    parameters.put("ruc", empresa.getRuc());
+                   parameters.put("direccion", empresa.getDireccion());
+                    parameters.put("telefono", empresa.getTelefono());
+            
+                    List detalleFac = adm.query("Select o from Cxcobrar as o where o.codigo = '" + codigo + "'");
+                    ArrayList detalles = new ArrayList();
+                   for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
+                        Cxcobrar det = itAbono.next();
+                         detalles.add(det);
+                   }
+                   ReporteReciboDataSource ds = new ReporteReciboDataSource(detalles);
+                   reportelocal.setSrc(directorioReportes+"recibos.jasper");
+                   reportelocal.setParameters(parameters);
+                   reportelocal.setDatasource(ds);
+                   reportelocal.setType("pdf");
             }catch(Exception  ex){
                 System.out.println("EXXX: "+ex);
             }
