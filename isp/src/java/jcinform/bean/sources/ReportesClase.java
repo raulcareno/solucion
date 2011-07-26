@@ -5,6 +5,7 @@
 package jcinform.bean.sources;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import java.util.Vector;
 import jcinform.bean.sources.clasestmp.Pendientes;
 import jcinform.conexion.Administrador;
 import jcinform.persistencia.Clientes;
+import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
 import net.sf.jasperreports.engine.JRDataSource;
 
@@ -23,6 +25,8 @@ import net.sf.jasperreports.engine.JRDataSource;
 public class ReportesClase {
 
     public ReportesClase() {
+        BigDecimal a = new BigDecimal(BigInteger.ONE);
+        a.compareTo(a);
     }
 
     public JRDataSource facturasPendientes(Clientes cli) {
@@ -37,8 +41,16 @@ public class ReportesClase {
         ArrayList detalles = new ArrayList();
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
             Clientes clientes1 = itCli.next();
-            List facEncontradas = adm.queryNativo("SELECT fa.codigo, fa.fecha, p.nombre, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo FROM plan p, detalle de, cxcobrar cx, factura  fa "
-                    + " WHERE p.codigo = de.plan AND  de.factura = fa.codigo AND fa.clientes  =  " + clientes1.getCodigo() + "   AND cx.factura = fa.codigo GROUP BY fa.codigo  HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0");
+//            List facEncontradas = adm.queryNativo("SELECT fa.codigo, fa.fecha, p.nombre, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo FROM plan p, detalle de, cxcobrar cx, factura  fa "
+//                    + " WHERE p.codigo = de.plan AND  de.factura = fa.codigo AND fa.clientes  =  " + clientes1.getCodigo() + "   AND cx.factura = fa.codigo GROUP BY fa.codigo  HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0");
+            String quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
+                     + "FROM cxcobrar cx, factura  fa "   +
+                        " WHERE fa.clientes  =  "+ clientes1.getCodigo()  +"  " + 
+                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
+                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
+            
+            List facEncontradas =  adm.queryNativo(quer); 
+            System.out.println(""+quer);
             if (facEncontradas.size() > 0) {
                 Pendientes pendi = null;
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
@@ -48,9 +60,11 @@ public class ReportesClase {
                     pendi.setFactura("" + vec.get(0));
                     Date d = (Date) vec.get(1);
                     pendi.setFecha(d);
-                    pendi.setPlan((String) vec.get(2));
-                    pendi.setTotal((BigDecimal) vec.get(3));
-                    pendi.setSaldo((BigDecimal) vec.get(4));
+                    Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
+                    pendi.setPlan(c.getPlan()+"");
+                    pendi.setDireccion(c.getDireccion());
+                    pendi.setTotal((BigDecimal) vec.get(2));
+                    pendi.setSaldo((BigDecimal) vec.get(3));
                     detalles.add(pendi);
                 }
 

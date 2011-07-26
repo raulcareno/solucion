@@ -515,6 +515,7 @@ if(sihay==0){
             fac.setPorcentajeiva(empresa.getIva());
             fac.setValoriva((valortotal.value).multiply(empresa.getIva().divide(new BigDecimal(100))));
             fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
+            fac.setObservacion("V");
             adm.guardar(fac);
     
                             List col = productos.getRows().getChildren();
@@ -1327,12 +1328,15 @@ productos.getRows().getChildren().clear();
                }
     } 
   
-  
-  
+void llamar(){  
+          String object = (String)InputMessageBox.showQuestion("Número de Factura", "Ingreso");
+        System.out.println("RESULT: " + object);
+}
   ]]>
     </zscript>
     <div>
-        <!--button id="facturas" onClick="facturasPendientes()" /-->
+        <!--button label="MOSTRAR" id="mensaje"  onClick="llamar()" /-->
+
 
         <tabbox width="100%"  >
             <tabs>

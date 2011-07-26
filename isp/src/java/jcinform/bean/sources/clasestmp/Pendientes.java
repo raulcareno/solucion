@@ -26,6 +26,7 @@ public class Pendientes {
     Integer noabono;
     String plan;
     String formapago,notarjeta,nocheque,nocuenta;
+    String direccion;
 
     public Clientes getCliente() {
         return cliente;
@@ -155,6 +156,14 @@ public class Pendientes {
 
     public void setValorabonotar(BigDecimal valorabonotar) {
         this.valorabonotar = valorabonotar;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
   

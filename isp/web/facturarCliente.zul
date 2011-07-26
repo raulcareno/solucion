@@ -34,23 +34,21 @@ import java.util.Map;
     }  
         
         void cerrar(){
+        if(facturaPanel.isVisible()){
+                nofactura.getValue();
+                return;
+        }
                Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
            //  facturarCliente.detach();
         }
-        void guardar(){
-        BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue());
+  void guardar(){
+        BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue());
         if(total.compareTo(new BigDecimal(0)) == 0 ){
             Messagebox.show("Valor a pagar está en Cero  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             efectivo.focus();
             return;
         }
-        String nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"FAC"+llenarCeros(""+nofactura.value);        
-        List siExiste = adm.query("Select o from Factura as o where o.numero = '"+nn+"'");
-        if(siExiste.size()>0){
-            Messagebox.show("Número de factura ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-            nofactura.focus();
-            return;        
-        }
+      
             Cxcobrar cobrar = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
             cobrar.setFactura(new Factura(codigofac.value));
             cobrar.setDebe(new BigDecimal(0));
@@ -66,17 +64,52 @@ import java.util.Map;
             cobrar.setNotarjeta(notarjeta.value);
             adm.guardar(cobrar);
             
-      
-            Factura fac = adm.buscarClave(codigofac.value,Factura.class);
-            fac.setNumero(nn+"");
-            adm.actualizar(fac);
+   
             if(codigodes.value > 0){
                 Descuentos des = adm.buscarClave(codigodes.value,Descuentos.class);
                 des.setAplicado(true);
                 des.setFechaaplicado(new Date());
                 adm.actualizar(des);
             }
-            try{
+                if(valor.value.compareTo(totalCobros.value) == 0 ){
+                    facturaPanel.visible = true;
+                    
+                }else{
+                       registrofactura.visible= false;
+                    imprimir(); impresion.setSelected(true);
+                }
+
+            efectivo.readonly = true;
+            deposito.readonly = true;
+            cheque.readonly = true;
+            tarjeta.readonly = true;
+            btnguardar.disabled = true;
+           
+              
+            
+        }
+        void actualFactura(){
+                String nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"FAC"+llenarCeros(""+nofactura.value);        
+                List siExiste = adm.query("Select o from Factura as o where o.numero = '"+nn+"'");
+                if(siExiste.size()>0){
+                    Messagebox.show("Número de factura ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    nofactura.focus();
+                    return;        
+                }
+                    Factura fac = adm.buscarClave(codigofac.value,Factura.class);
+                    fac.setNumero(nn+"");
+                    adm.actualizar(fac);
+                    
+                    facturaPanel.visible=false;
+                  
+                   imprimir();
+                   impresion.setSelected(true); 
+                   registrofactura.visible= false;
+        }
+        
+        public void imprimir(){
+ 
+                    try{
                Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
                     
                     Map parameters = new HashMap();
@@ -84,14 +117,6 @@ import java.util.Map;
                     System.out.println("0000-1");
                     parameters.put("empresa", empresa.getRazonsocial());
                     parameters.put("direccion", empresa.getDireccion());
-                  /*  parameters.put("observacion", observacion.value);
-                    parameters.put("telefono", empresa.getTelefono());
-                    parameters.put("cliente", combo.value);
-                    parameters.put("noorden", sop.getNoorden());
-  
-                    parameters.put("telefono1", telefonoi.value);
-                    parameters.put("direccion1", direccioni.value);*/
-
                     reportelocal.setSrc("/jcinform/bean/reportes/jrxml/orden.jasper");
                     reportelocal.setParameters(parameters);
                     reportelocal.setDatasource(null);
@@ -104,20 +129,13 @@ import java.util.Map;
                     win.setTitle("Reporte");
                     win.doModal();
   */              
-         //       facturarCliente.detach();
+        
             }catch(Exception  ex){
                 System.out.println("EXXX: "+ex);
             }
-            efectivo.readonly = true;
-            deposito.readonly = true;
-            cheque.readonly = true;
-            tarjeta.readonly = true;
-            btnguardar.disabled = true;
-           
-               impresion.setSelected(true);
-            
-        }
         
+        
+        }
        public void sumarcobros(String tipo){
                 BigDecimal  totalFinal = valor.getValue();
                 BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue());
@@ -149,23 +167,30 @@ import java.util.Map;
        
         <tabbox>
             <tabs>
-                <tab label="Registro Factura" />
+                <tab id="registrofactura" label="Registro Factura" />
                 <tab id="impresion" label="Impresión" />
          
             </tabs>
             <tabpanels>
                 <tabpanel>
+                    <panel framable="true" title="Ingrese el Número de Factura" visible="false" style="position:absolute; top:20%; left:15%" id="facturaPanel"  width="200px" >
+                        <panelchildren>
+                            <span >
+                                <label style="font-weight:bold;color:red" value="No.Factura" /> 
+                            </span>
+                            <span> 
+                                <intbox onOK="nofactura.getValue();actualFactura();" style="text-align:center; font-weight:bold; color:blue; font-size:14px"  constraint="no empty: Ingrese el No. de Factura" id="nofactura" /> 
+                            </span>
+                            <button label="Continuar" onClick='nofactura.getValue();actualFactura();'/>
+                        </panelchildren>
+                    </panel>
+                        
+                                
+                        
                     <grid width="100%" >
                         <rows>
+                         
                             <row> 
-                                <span  style="float:right">
-                                    <label style="font-weight:bold;color:red" value="No.Factura" /> 
-                                </span>
-                                <span> 
-                                    <intbox style="text-align:center; font-weight:bold; color:blue; font-size:14px"  constraint="no empty: Ingrese el No. de Factura" id="nofactura" /> 
-                                </span>
-                            </row>
-                           <row> 
                                 <span  style="float:right">
                                     <label style="font-weight:bold" value="CLIENTE: " /> 
                                 </span>
@@ -204,7 +229,9 @@ import java.util.Map;
                             </row>
                             
                             <row>
-                                <span  style="float:right"><label style="font-weight:bold" value="DESCUENTO: " /></span> 
+                                <span  style="float:right">
+                                    <label style="font-weight:bold" value="DESCUENTO: " />
+                                </span> 
                                 <decimalbox  readonly="true" format="##0.00" cols="7" id="descuento" />
                             </row>
                             <row align="center" spans="2">
@@ -241,7 +268,7 @@ import java.util.Map;
                             <row>
                             </row>
                             <row align="center" spans="2">
-                                <button label="GUARDAR PAGO" image="/images/guardar.gif" onClick="nofactura.getValue();guardar()" id="btnguardar" />
+                                <button label="GUARDAR PAGO" image="/images/guardar.gif" onClick="guardar()" id="btnguardar" />
                             </row>
                            
                            

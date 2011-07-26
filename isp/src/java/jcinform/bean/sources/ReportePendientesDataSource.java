@@ -76,6 +76,8 @@ public class ReportePendientesDataSource implements JRDataSource {
                 valor = nodo.getNocheque();
             } else if ("nocuenta".equals(fieldName)) {
                 valor = nodo.getNocuenta();
+            }  else if ("direccioncontrato".equals(fieldName)) {
+                valor = nodo.getDireccion();
             }   
 
         } catch (Exception e) {
