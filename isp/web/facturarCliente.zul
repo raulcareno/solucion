@@ -90,7 +90,7 @@ import java.util.Map;
         }
         void actualFactura(){
                 String nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"FAC"+llenarCeros(""+nofactura.value);        
-                List siExiste = adm.query("Select o from Factura as o where o.numero = '"+nn+"'");
+                List siExiste = adm.query("Select o from Factura as o where o.numero = '"+nn+"' and o.codigo not in ("+ codigofac.value +") ");
                 if(siExiste.size()>0){
                     Messagebox.show("Número de factura ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                     nofactura.focus();
@@ -307,6 +307,12 @@ import java.util.Map;
                     cheque.value = BigDecimal.ZERO;
                     tarjeta.value = BigDecimal.ZERO;
                     deposito.value = BigDecimal.ZERO;
+                    if(facEnc.getNumero() != null){
+                    System.out.println("FACTURA SUBSTRINEADA "+facEnc.getNumero().substring(9,facEnc.getNumero().length()));
+                        nofactura.value = new Integer(facEnc.getNumero().substring(9,facEnc.getNumero().length()));
+                        nofactura.readonly = true;
+                        
+                    }
                     List descuentos = adm.query("Select o from Descuentos as o where o.aplicado = false and o.factura.codigo = '"+ facEnc.getCodigo() +"' ");
                     if(descuentos.size()>0){
                             Descuentos descuentoIt = descuentos.get(0);
