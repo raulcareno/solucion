@@ -41,7 +41,7 @@
         <rows>
             <row>
                             Fecha Emisión: 
-                <datebox id="fecha" onCreate="self.value = new Date()"/>
+                <datebox id="fecha" onCreate="self.value = adm.Date()"/>
             </row>    
             <row>    
                             Empezar Generación en Factura No.: 

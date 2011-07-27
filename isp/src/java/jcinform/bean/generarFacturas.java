@@ -18,6 +18,7 @@ import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
 import jcinform.persistencia.Detalle;
 import jcinform.persistencia.Factura;
+import jcinform.persistencia.Procesos;
 import jcinform.persistencia.Sucursal;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zul.Button;
@@ -27,15 +28,33 @@ import org.zkoss.zul.Button;
  * @author Familia Jadan Cahueñ jcinform.bean.generarFacturas.convertiraString
  */
 public class generarFacturas {
-    
-    public void generarFacturas() {
+     Administrador adm;
+    public generarFacturas() {
+        adm = new Administrador();
+    }
+    public void generacionAutomatico(Sucursal suc){
+        if(adm == null)
+            adm = new Administrador();
+        Date fecha = adm.Date();
+        String fechaSql = suc.getCodigo()+""+(fecha.getYear() + 1900) +  (fecha.getMonth() + 1)+"";
+        List procesosList = adm.query("Select o from Procesos as o where o.fechastring = '"+fechaSql+"'  ");
+        if(procesosList.size()>0){
+            //Messagebox.show("Proceso ya realizado en éste mes", "Alerta", Messagebox.OK, Messagebox.INFORMATION);
+            System.out.println("Proceso para éste mes ya realizado");
+        }else{
+            Procesos pro = new Procesos(fechaSql);
+            pro.setFecha(fecha);
+            pro.setFechaejecutado(fecha);
+            pro.setEjecutado(true);
+            //pro.setProblemas(fechaSql);
+            adm.guardar(pro);
+            empezarGenerar(fecha, 0, suc);
+            System.out.println("SE EJECUTO PROCESO PARA FECHA"+ fecha);
+        }
     }
     
     public String empezarGenerar(Date fecha, Integer numero, Sucursal suc) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
-        Button b = new Button();
-        
-        Administrador adm = new Administrador();
         Date fecha2 = fecha;
         fecha2.setDate(1);
         String mesActualIni = convertiraString(fecha2);
@@ -103,6 +122,26 @@ public class generarFacturas {
         //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
 
         //generar en facturas con el número y también en cxc.
+        Date fechas = adm.Date();
+        String fechaSql = suc.getCodigo()+""+ (fechas.getYear() + 1900) +  (fechas.getMonth() + 1);
+        try{
+        
+         Procesos pro = new Procesos(fechaSql);
+            pro.setFecha(fecha);
+            pro.setFechaejecutado(fecha);
+            pro.setEjecutado(true);
+            adm.guardar(pro);
+        }catch(Exception er){
+            Procesos pro = new Procesos(fechaSql);
+            pro.setFecha(fecha);
+            pro.setFechaejecutado(fecha);
+            pro.setEjecutado(true);
+            pro.setProblemas("Re-ejecutado");
+            adm.actualizar(pro);
+            System.out.println("PROCESO YA EJECUTADO");
+        }
+        
+        
 
         return "OK";
     }
@@ -361,9 +400,6 @@ public class generarFacturas {
     }
     
     public static void main(String arg[]) {
-        
-        ultimoDia(new Date());
-        primerDia(new Date());
-        System.out.println("" + convertiraString(new Date()));
+       
     }
 }

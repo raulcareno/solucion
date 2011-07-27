@@ -226,7 +226,7 @@ public class Permisos {
             Auditoria audi = new Auditoria();
 
             audi.setCodigo(adm.getNuevaClave("Auditoria", "codigo"));
-            audi.setFecha(new Date());
+            audi.setFecha(adm.Date());
             audi.setIp(a.getRemoteAddr());
             //.getClientAddr()
             audi.setPc(campo);

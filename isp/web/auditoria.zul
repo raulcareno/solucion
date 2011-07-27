@@ -131,8 +131,8 @@
     </groupbox>
     
     <zscript>
-        desde.setValue(new Date());
-        hasta.setValue(new Date());
+        desde.setValue(adm.Date());
+        hasta.setValue(adm.Date());
     </zscript>
 
 </window>

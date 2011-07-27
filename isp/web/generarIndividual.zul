@@ -150,7 +150,7 @@ fec.setDate(1);
                 <intbox readonly ="true" visible="false" id="contrato" />
                 <intbox readonly ="true" visible="false" id="planid" />
                 <decimalbox format="#00.00" readonly="true" id="valor" />
-                <datebox onCreate="self.value = new Date()" format="MMM/yyyy" id="fecha"/>
+                <datebox onCreate="self.value = adm.Date()" format="MMM/yyyy" id="fecha"/>
                 <button label="Añadir" onClick="anadir()"/>
                 <button label="Guardar" image="/images/guardar.gif" id="btnguardar" disabled="true" onClick="guardar()"/>
             </hbox>

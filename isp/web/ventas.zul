@@ -155,7 +155,6 @@ void estado(Boolean estado,Boolean modificar){
           cantidad.setDisabled(false);
           fecha.setDisabled(false);
           filas.getChildren().clear();
-          
           //String command = "applyTelefono('"+seguridad.getUuid()+"');";
           //Clients.evalJavaScript(command);
     }else{
@@ -354,7 +353,7 @@ llenarGridMac(int numero){
                         <row>
                             <span style="float:right"> Fecha de Compra:</span>
                             <span>
-                            <datebox id="fecha" onCreate="self.value = new Date()"/>
+                            <datebox id="fecha" onCreate="self.value = adm.Date()"/>
                             <span> No.Factura:</span> 
                             <intbox id="factura"/>
                             </span>

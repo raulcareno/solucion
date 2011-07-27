@@ -657,7 +657,7 @@ void tipoDocumento(String tipo){
                         <row>
                             <span style="float:right"> Fecha Comp/Ven:</span>
                             <span>
-                                <datebox id="fecha" onCreate="self.value = new Date()"/>
+                                <datebox id="fecha" onCreate="self.value = adm.Date()"/>
                                 <span> No.Factura:</span> 
                                 <intbox  readonly="true"  id="factura"/>
                             </span>
@@ -870,8 +870,8 @@ void tipoDocumento(String tipo){
                             <textbox id="proveedor"  maxlength="60" cols="10" />
                             Fechas:
                             Desde: 
-                            <datebox id="desde" onCreate="Date fec = new Date(); fec.setDate(1); self.value = fec;"/> Hasta: 
-                            <datebox id="hasta"  onCreate="self.value = new Date()"/>
+                            <datebox id="desde" onCreate="Date fec = adm.Date(); fec.setDate(1); self.value = fec;"/> Hasta: 
+                            <datebox id="hasta"  onCreate="self.value = adm.Date()"/>
                             <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                         </hbox>
                         <hbox>

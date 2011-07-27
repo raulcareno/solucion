@@ -177,7 +177,7 @@ llenarCliente(Clientes clienteEn){
                             
                                 fechasoporte.value = sop.getFecha();
                             if(sop.getFecha() == null)
-                                fechasoporte.value = new Date();
+                                fechasoporte.value = adm.Date();
                             observacion.value = sop.getObservacion();
                             generar.checked  = sop.getGenerada();
                             noorden.value = sop.getNoorden();
@@ -394,7 +394,7 @@ llenarCliente(Clientes clienteEn){
                                     </row>
                                     <row> 
                                         <span style="float:right">Fecha:  </span>
-                                        <datebox readonly="true" onCreate="self.value = new Date()" id="fechasoporte"/> 
+                                        <datebox readonly="true" onCreate="self.value = adm.Date()" id="fechasoporte"/> 
                                     </row>
                                     <row>
                                         <span style="float:right"> Observación: </span>

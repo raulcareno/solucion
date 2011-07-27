@@ -7,6 +7,7 @@ package jcinform.conexion;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -205,6 +206,19 @@ public class Administrador {
         }
         return null;
 
+    }
+    public java.util.Date Date(){
+        EntityManager em = getEMF().createEntityManager();
+        try {
+            java.util.Date fec = (java.util.Date) ((Vector)em.createNativeQuery("Select now()").getSingleResult()).get(0);
+            //System.out.println("FECHA NOW: "+fec);
+            return fec;
+        } catch (Exception e) {
+            //System.out.println("ERROR AL OBTENER FECHA: "+e);
+        } finally {
+ 
+        }
+        return new java.util.Date();
     }
 
     public List queryNativo(String query) {

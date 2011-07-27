@@ -57,7 +57,7 @@ import java.util.Map;
             cobrar.setFactura(new Factura(codigofac.value));
             cobrar.setDebe(new BigDecimal(0));
             cobrar.setHaber(totalCobros.value);
-            cobrar.setFecha(new Date());
+            cobrar.setFecha(adm.Date());
             cobrar.setTipo("P");
             cobrar.setDescuento(descuento.value);
             cobrar.setEfectivo(efectivo.value);
@@ -72,7 +72,7 @@ import java.util.Map;
             if(codigodes.value > 0){
                 Descuentos des = adm.buscarClave(codigodes.value,Descuentos.class);
                 des.setAplicado(true);
-                des.setFechaaplicado(new Date());
+                des.setFechaaplicado(adm.Date());
                 adm.actualizar(des);
             }
                 if(valor.value.compareTo(totalCobros.value) == 0 ){
@@ -325,7 +325,7 @@ import java.util.Map;
                     codigofac.value = new Integer(facEnc.getCodigo());
                     direccion.value = facEnc.getClientes().getDireccion();
                     telefono.value  = facEnc.getClientes().getTelefono();
-                    fecha.value = (new Date()).toLocaleString();
+                    fecha.value = (adm.Date()).toLocaleString();
                     valor.value = valoraPagar;
                     totalCobros.value = valoraPagar;
                     efectivo.value = valoraPagar;

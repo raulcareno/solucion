@@ -386,7 +386,7 @@ llenarCliente(Clientes clienteEn){
                                                 <span style="float:right">No.Contrato:  </span>
                                                 <textbox style="color:red;font-size:16px"  readonly="true" id="numerocontrato" cols="16" />
                                                 <span style="float:right">Fecha:  </span>
-                                                <datebox id="fecha" disabled="true" onCreate="self.value = new Date()"/>
+                                                <datebox id="fecha" disabled="true" onCreate="self.value = adm.Date()"/>
                                             </row>
                                             <row>
                                                 <span style="float:right"> Planes (*):</span>
@@ -412,7 +412,7 @@ llenarCliente(Clientes clienteEn){
                                                     </bandpopup>
                                                 </bandbox>
                                                 <span style="float:right"> Fecha Instalación (*):</span>
-                                                <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = new Date()"/>
+                                                <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = adm.Date()"/>
                                  
                                             </row>
                   

@@ -55,7 +55,7 @@ import java.util.Map;
             des.setFactura(new Factura(codigofac.value));
             des.setAplicado(false);
             des.setValor(efectivo.value);
-            des.setFecha(new Date());
+            des.setFecha(adm.Date());
             des.setMotivo(motivo.value);
             
             if(codigodes.value == 0){
@@ -160,7 +160,7 @@ import java.util.Map;
                     codigofac.value = new Integer(facEnc.getCodigo());
                     direccion.value = facEnc.getClientes().getDireccion();
                     telefono.value  = facEnc.getClientes().getTelefono();
-                    fecha.value = (new Date()).toLocaleString();
+                    fecha.value = (adm.Date()).toLocaleString();
                     valor.value = valoraPagar;
                     totalCobros.value = valoraPagar;
                     efectivo.value = new BigDecimal(1);

@@ -207,9 +207,9 @@ void campos(String valor){
 
                             <span>
                            Desde:
-                                <datebox onCreate="self.value = new Date()" id="desde"/>
+                                <datebox onCreate="self.value = adm.Date()" id="desde"/>
                            Hasta: 
-                                <datebox onCreate="self.value = new Date()"  id="hasta"/>
+                                <datebox onCreate="self.value = adm.Date()"  id="hasta"/>
                               
                             </span>
                         </row>

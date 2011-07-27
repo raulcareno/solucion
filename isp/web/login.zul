@@ -35,7 +35,7 @@
   import java.util.ArrayList;
   import jcinform.persistencia.*;
   import jcinform.conexion.*;
-
+  import jcinform.bean.*;
  Session a = Sessions.getCurrent();
  
         a.removeAttribute("accesos");
@@ -50,7 +50,7 @@ a.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
  Permisos permisos = new Permisos();
  
 cargar(){
-    derechos.value = "Todos los derechos reservados a JCINFORM, derecho de copia @2009-"+ ((new Date()).getYear()+1900) +", web: ";
+    derechos.value = "Todos los derechos reservados a JCINFORM, derecho de copia @2009-"+ ((adm.Date()).getYear()+1900) +", web: ";
 }
  
 
@@ -128,13 +128,15 @@ void ingresoSistemas(){
         return;
     }
 
-    Empresa inst = (Empresa) adm.buscarClave(new Integer(1), Empresa.class);
+  //  Empresa inst = (Empresa) adm.buscarClave(new String(1), Empresa.class);
     //String bas = inst.getIniciales().substring(1,inst.getIniciales().length());
      
             Empleados user = adm.ingresoSistema(usuario.value, clave.value);
             if(user != null){
                     Empleadossucursal perio = (Empleadossucursal)periodo.selectedItem.value;
                     permisos.llenar(user,perio);
+                    generarFacturas gen = new generarFacturas();
+                    gen.generacionAutomatico(perio.getSucursal());
                     Executions.sendRedirect("index.zul");
 
 

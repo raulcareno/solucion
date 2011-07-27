@@ -517,7 +517,7 @@ if(sihay==0){
  
  if(facturadostotal.value > 0){
  //EMPIEZO A GENERAR FACTURA Y CXCOBRAR 
- Date fecha = new Date();
+ Date fecha = adm.Date();
              Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
             fac.setNumero(null);
             fac.setClientes(equi.getClientes());
@@ -825,7 +825,7 @@ void verificarCedula(String valor){
                             
                                 fechasoporte.value = sop.getFecha();
                             if(sop.getFecha() == null)
-                                fechasoporte.value = new Date();
+                                fechasoporte.value = adm.Date();
                             observacion.value = sop.getObservacion();
                             generar.checked  = sop.getGenerada();
                             noorden.value = sop.getNoorden();
@@ -1534,7 +1534,7 @@ void llamar(){
                                                         <span style="float:right">
                                                             <label style="font-weight:bold2" value=" Fecha: " />   
                                                         </span>
-                                                        <datebox id="fecha" disabled="true" onCreate="self.value = new Date()"/>
+                                                        <datebox id="fecha" disabled="true" onCreate="self.value = adm.Date()"/>
                                                     </row>
                                                     <row>
                                                         <span style="float:right"> 
@@ -1564,7 +1564,7 @@ void llamar(){
                                                         <span style="float:right"> 
                                                             <label style="font-weight:bold2" value=" Instalación (*): " /> 
                                                         </span>
-                                                        <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = new Date()"/>
+                                                        <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = adm.Date()"/>
                                  
                                                     </row>
                                                     <row>
@@ -1917,7 +1917,7 @@ void llamar(){
                             </row>
                             <row> 
                                 <span style="float:right">Fecha:  </span>
-                                <datebox readonly="true" onCreate="self.value = new Date()" id="fechasoporte"/> 
+                                <datebox readonly="true" onCreate="self.value = adm.Date()" id="fechasoporte"/> 
                             </row>
                             <row>
                                 <span style="float:right"> Observación: </span>
