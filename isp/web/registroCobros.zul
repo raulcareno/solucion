@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+    <window  onClose="cerrar()" onCreate="cargar()" width="410px" id="facturarCliente">
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.util.ArrayList;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+  import java.util.HashMap;
+import java.util.Map;
+    import java.math.BigDecimal;
+    import jcinform.bean.sources.*;
+    
+    Administrador adm = new Administrador();
+    Permisos permiso = new Permisos();
+       Session ses = Sessions.getCurrent();
+       
+           Empleados usuarioActual = ses.getAttribute("user");
+   Empresa empresa = ses.getAttribute("empresa");
+    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+     String directorioReportes = empresa.getReportes();
+     
+       ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
+        cargarCliente(){
+            boton = Path.getComponent("//controlequipospage/controlventana/facturas");
+            boton.doClick();
+        }
+         String llenarCeros(String numero){
+        
+     while(numero.length()<7){
+        numero = "0"+numero;
+     }  
+     return numero;
+    
+    }  
+        
+        void cerrar(){
+        if(facturaPanel.isVisible()){
+                nofactura.getValue();
+                return;
+        }
+               Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
+           //  facturarCliente.detach();
+        }
+  void guardar(){
+        BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue());
+        if(total.compareTo(new BigDecimal(0)) == 0 ){
+            Messagebox.show("Valor a pagar está en Cero  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            efectivo.focus();
+            return;
+        }
+      
+            Cxcobrar cobrar = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+            cobrar.setFactura(new Factura(codigofac.value));
+            cobrar.setDebe(new BigDecimal(0));
+            cobrar.setHaber(totalCobros.value);
+            cobrar.setFecha(adm.Date());
+            cobrar.setTipo("P");
+            cobrar.setDescuento(descuento.value);
+            cobrar.setEfectivo(efectivo.value);
+            cobrar.setCheque(cheque.value);
+            cobrar.setDebito(deposito.value);
+            cobrar.setTarjeta(tarjeta.value);
+            cobrar.setNocheque(nocheque.value);
+            cobrar.setNotarjeta(notarjeta.value);
+            adm.guardar(cobrar);
+            
+   
+            if(codigodes.value > 0){
+                Descuentos des = adm.buscarClave(codigodes.value,Descuentos.class);
+                des.setAplicado(true);
+                des.setFechaaplicado(adm.Date());
+                adm.actualizar(des);
+            }
+                if(valor.value.compareTo(totalCobros.value) == 0 ){
+                    facturaPanel.visible = true;
+                    nofactura.focus();
+                    
+                }else{
+                       registrofactura.visible= false;
+                    imprimirRecibo(cobrar.getCodigo());
+                    impresion.setSelected(true);
+                }
+
+            efectivo.readonly = true;
+            deposito.readonly = true;
+            cheque.readonly = true;
+            tarjeta.readonly = true;
+            btnguardar.disabled = true;
+           
+              
+            
+        }
+        void actualFactura(){
+                String nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"FAC"+llenarCeros(""+nofactura.value);        
+                List siExiste = adm.query("Select o from Factura as o where o.numero = '"+nn+"' and o.codigo not in ("+ codigofac.value +") ");
+                if(siExiste.size()>0){
+                    Messagebox.show("Número de factura ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    nofactura.focus();
+                    return;        
+                }
+                    Factura fac = adm.buscarClave(codigofac.value,Factura.class);
+                    fac.setNumero(nn+"");
+                    adm.actualizar(fac);
+                    facturaPanel.visible=false;
+                   imprimir();
+                   impresion.setSelected(true); 
+                   registrofactura.visible= false;
+        }
+        
+        public void imprimir(){
+ 
+                    try{
+               Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
+                    Map parameters = new HashMap();
+                   
+                    List detalleFac = adm.query("Select o from Detalle as o where o.factura.codigo = '" + codigofac.value + "'");
+                    ArrayList detalles = new ArrayList();
+                   for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
+                        Detalle det = itAbono.next();
+                         detalles.add(det);
+                   }
+                   ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
+                   reportelocal.setSrc(directorioReportes+"factura.jasper");
+                   reportelocal.setParameters(parameters);
+                   reportelocal.setDatasource(ds);
+                   reportelocal.setType("pdf");
+            }catch(Exception  ex){
+                System.out.println("EXXX: "+ex);
+            }
+        
+        
+        }
+         public void imprimirRecibo(Integer codigo){
+ 
+                    try{
+               Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
+                    Map parameters = new HashMap();
+                     parameters.put("empresa", empresa.getRazonsocial());
+                    parameters.put("ruc", empresa.getRuc());
+                   parameters.put("direccion", empresa.getDireccion());
+                    parameters.put("telefono", empresa.getTelefono());
+            
+                    List detalleFac = adm.query("Select o from Cxcobrar as o where o.codigo = '" + codigo + "'");
+                    ArrayList detalles = new ArrayList();
+                   for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
+                        Cxcobrar det = itAbono.next();
+                         detalles.add(det);
+                   }
+                   ReporteReciboDataSource ds = new ReporteReciboDataSource(detalles);
+                   reportelocal.setSrc(directorioReportes+"recibos.jasper");
+                   reportelocal.setParameters(parameters);
+                   reportelocal.setDatasource(ds);
+                   reportelocal.setType("pdf");
+            }catch(Exception  ex){
+                System.out.println("EXXX: "+ex);
+            }
+        
+        
+        }
+       public void sumarcobros(String tipo){
+                BigDecimal  totalFinal = valor.getValue();
+                BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue());
+            //    Double antesTotal = new Double(totalCobros.getValue());
+                if(total.compareTo(totalFinal)==1){ //>
+                    if(tipo.equals("efe")){
+                        BigDecimal cobros =  totalCobros.getValue() ;
+                        efectivo.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
+                    }else if(tipo.equals("dep")){
+                        BigDecimal cobros = (totalCobros.getValue());
+                         //deposito.setValue(""+(redondear((totalFinal -cobros),2)<0?0:redondear((totalFinal -cobros),2)));
+                         deposito.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
+                    }else if(tipo.equals("che")){
+                        BigDecimal cobros = (totalCobros.getValue());
+                        //cheque.setValue(""+(redondear((totalFinal -cobros),2)<0?0:redondear((totalFinal -cobros),2)));
+                        cheque.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
+                    }else if(tipo.equals("tar")){
+                        BigDecimal cobros = (totalCobros.getValue());
+                        //cheque.setValue(""+(redondear((totalFinal -cobros),2)<0?0:redondear((totalFinal -cobros),2)));
+                        tarjeta.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
+                    }
+                }
+                 total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue());
+                totalCobros.setValue(total);
+}
+
+]]>
+        </zscript>
+
+                    <panel framable="true" title="Ingrese el Número de Factura" visible="false" style="position:absolute; top:20%; left:15%" id="facturaPanel"  width="200px" >
+                        <panelchildren>
+                            <span >
+                                <label style="font-weight:bold;color:red" value="No.Factura" /> 
+                            </span>
+                            <span> 
+                                <intbox onOK="nofactura.getValue();actualFactura();" style="text-align:center; font-weight:bold; color:blue; font-size:14px"  constraint="no empty: Ingrese el No. de Factura" id="nofactura" /> 
+                            </span>
+                            <button label="Continuar" onClick='nofactura.getValue();actualFactura();'/>
+                        </panelchildren>
+                    </panel>
+        
+                    <grid width="100%" >
+                        <rows>
+                         
+                            <row> 
+                                <span  style="float:right">
+                                    <label style="font-weight:bold" value="CLIENTE: " /> 
+                                </span>
+                                <span> 
+                                    <label id="cliente" />  
+                                    <intbox visible="false" readonly="true" id="codigocli" /> 
+                                    <intbox visible="false"  readonly="true" id="codigofac" /> 
+                                    <intbox visible="true"  readonly="true" id="codigodes" /> 
+                                </span>
+                            </row>
+                            <row>
+                                <span  style="float:right">
+                                    <label style="font-weight:bold" value="FECHA: " /> 
+                                </span>
+                                <label id="fecha" /> 
+                            </row>
+                            <row>
+                                <span  style="float:right;"> 
+                                    <label style="font-weight:bold" value="DIRECCIÓN: " />
+                                </span>
+                                <span>
+                                    <label id="direccion" /> 
+                                    <label style="font-weight:bold" value="TELEFONO:" />
+                                    <label id="telefono" /> 
+                                </span>
+                            </row>
+                            <row>
+                                <span  style="float:right">
+                                    <label style="font-weight:bold" value="VALOR MORA: " />
+                                </span> 
+                                <span>
+                                    <decimalbox readonly="true" cols="7" format="##0.00"  id="valor" />
+                                    <label style="font-weight:bold" value="A COBRAR: " />
+                                    <decimalbox readonly="true" cols="7" format="##0.00"  id="totalCobros" />
+                                </span>
+                            </row>
+                            
+                            <row>
+                                <span  style="float:right">
+                                    <label style="font-weight:bold" value="DESCUENTO: " />
+                                </span> 
+                                <decimalbox  readonly="true" format="##0.00" cols="7" id="descuento" />
+                            </row>
+                            <row align="center" spans="2">
+                                <label style="font-weight:bold" value="FORMA DE PAGO" />
+                            </row>
+                            <row>
+                                <span  style="float:right">Efectivo:</span> 
+                                <decimalbox onOK="deposito.focus()" onBlur='sumarcobros("efe")' format="##0.00" cols="7" id="efectivo" />
+                            </row>
+                            <row>
+                                <span  style="float:right">Depósito:</span> 
+                                <span>
+                                    <decimalbox cols="7"   onBlur='sumarcobros("dep")'  format="##0.00"  onOK="nocuenta.focus()" id="deposito" />
+                      No.Depósito:
+                                    <textbox id="nocuenta"  onOK="cheque.focus()"  />
+                                </span>
+                            </row>
+                            <row>
+                                <span  style="float:right">Cheque:</span> 
+                                <span>
+                                    <decimalbox  onBlur='sumarcobros("che")'   format="##0.00"  onOK="nocheque.focus()"  cols="7" id="cheque" />
+                     No.Cheque: 
+                                    <textbox id="nocheque"  onOK="tarjeta.focus()"  />
+                                </span>
+                            </row>
+                            <row>
+                                <span  style="float:right">Tarjeta:</span> 
+                                <span>
+                                    <decimalbox   onBlur='sumarcobros("tar")' onOK="notarjeta.focus()"  format="##0.00"   cols="7" id="tarjeta" />
+                     No.Tarjeta: 
+                                    <textbox id="notarjeta"  onOK="btnguardar.focus()"  />
+                                </span>
+                            </row>
+                            <row>
+                            </row>
+                            <row align="center" spans="2">
+                                <button label="GUARDAR PAGO" image="/images/guardar.gif" onClick="guardar()" id="btnguardar" />
+                            </row>
+                           
+                           
+                           
+                        </rows>
+                  
+
+                    </grid>
+               
+                    <jasperreport height="330px" id="reportelocal" />
+
+        <zscript>
+            void cargar(){
+            
+            try{
+                    String factura = facturarCliente.getAttribute("codigoFactura");
+                    java.math.BigDecimal valoraPagar = facturarCliente.getAttribute("valoraPagar");
+                    System.out.println("codigoFactura: "+factura+" " + valoraPagar);
+                    Factura facEnc = adm.buscarClave(new Integer(factura),Factura.class);
+                    cliente.value = facEnc.getClientes().getApellidos() +" "+facEnc.getClientes().getNombres();
+                    codigocli.value = facEnc.getClientes().getCodigo();
+                    codigofac.value = new Integer(facEnc.getCodigo());
+                    direccion.value = facEnc.getClientes().getDireccion();
+                    telefono.value  = facEnc.getClientes().getTelefono();
+                    fecha.value = (adm.Date()).toLocaleString();
+                    valor.value = valoraPagar;
+                    totalCobros.value = valoraPagar;
+                    efectivo.value = valoraPagar;
+                    cheque.value = BigDecimal.ZERO;
+                    tarjeta.value = BigDecimal.ZERO;
+                    deposito.value = BigDecimal.ZERO;
+                    if(facEnc.getNumero() != null){
+                    System.out.println("FACTURA SUBSTRINEADA "+facEnc.getNumero().substring(9,facEnc.getNumero().length()));
+                        nofactura.value = new Integer(facEnc.getNumero().substring(9,facEnc.getNumero().length()));
+                        nofactura.readonly = true;
+                        
+                    }
+                    List descuentos = adm.query("Select o from Descuentos as o where o.aplicado = false and o.factura.codigo = '"+ facEnc.getCodigo() +"' ");
+                    if(descuentos.size()>0){
+                            Descuentos descuentoIt = descuentos.get(0);
+                            codigodes.value = descuentoIt.getCodigo();
+                            descuento.value = descuentoIt.getValor();
+                            efectivo.value = valoraPagar.subtract(descuento.value);
+                    }else{
+                            codigodes.value = 0;
+                            descuento.value = new BigDecimal(0);
+                    }
+                    
+             }catch(Exception e){
+                     System.out.println("ERROR EN FACTURA "+e);
+             }
+            
+                    
+            }
+        </zscript>
+    </window>
+</zk>

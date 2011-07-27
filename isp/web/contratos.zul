@@ -41,7 +41,8 @@ import java.text.SimpleDateFormat;
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
       List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getCodigo()+"' ");
       List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
-      List nodos = adm.query("Select o from Radios as o");
+      List radios = adm.query("Select o from Radios as o");
+      List nodos = adm.query("Select o from Nodos as o");
       generarFacturas gen = new generarFacturas();
 
     Boolean modificare = false;
@@ -211,6 +212,7 @@ void estado(Boolean estado,Boolean modificar){
     clave.readonly = estado;
     bd.disabled = estado;
     bd2.disabled = estado;
+    bdNodo.disabled = estado;
     bd22.disabled = estado;
     numerocontrato.readonly = estado;
     nuevoC.disabled = estado;
@@ -615,7 +617,7 @@ if(sihay==0){
         Messagebox.show("No se han creado Bancos, cierre esta pantalla e ingrese nuevos Bancos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          return;
       }
-    if(nodos.size()<=0){
+    if(radios.size()<=0){
         Messagebox.show("No se han creado Radios, cierre esta pantalla e ingrese nuevos Radios  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          return;
       }
@@ -642,7 +644,7 @@ if(sihay==0){
         Messagebox.show("No se han creado Bancos, cierre esta pantalla e ingrese nuevos Bancos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          return;
       }
-    if(nodos.size()<=0){
+    if(radios.size()<=0){
         Messagebox.show("No se han creado Nodos, cierre esta pantalla e ingrese nuevos Nodos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          return;
       }
@@ -758,14 +760,14 @@ void verificarCedula(String valor){
                              
               
             }else{
-                    Window win = (Window) Executions.createComponents("clientes.zul", null, null);
+                    /*Window win = (Window) Executions.createComponents("clientes.zul", null, null);
                     win.setMaximizable(true);
                     win.setClosable(true);
                     win.setAttribute("nuevo", true);
                     win.setAttribute("cedula", valor);
                     win.setTitle("Nuevo Cliente");
-                    win.doModal();
-                }
+                    win.doModal();*/
+           }
 
         }else{
                 if(valor.contains("999")){
@@ -784,6 +786,24 @@ void verificarCedula(String valor){
         }
  
     }
+    
+    
+    
+    void verificarContrato(Integer valor){
+                      nuevo2();
+                   estado(true,false);
+                   List  ControlequiposEncontrados = adm.query("Select o from Contratos as o where o.contrato = '"+valor+"'  ");
+                   if(ControlequiposEncontrados.size()>0){
+                  contratosPanel.visible = false; 
+                  llenarCliente(ControlequiposEncontrados.get(0).getClientes());
+                  llenar(ControlequiposEncontrados.get(0));
+                  numerocontrato.focus();
+                  modificar.disabled = false;
+                  anadir.disabled = false;
+                  }else{
+                        Messagebox.show("No. de Contrato no Existente ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                  }
+  }
     
     
      
@@ -1370,7 +1390,7 @@ void llamar(){
             <tabpanels>
                 <tabpanel>
        
-                    <groupbox id="panel" mold="3d" width="800px">
+                    <groupbox id="panel" mold="3d" width="830px">
                         <panel id="equiposcontrol"  width="100%" >
                             <panelchildren>
                                 <tabbox id="tb2"  >
@@ -1452,7 +1472,7 @@ void llamar(){
                                                                 
                                                                 </groupbox>
                                                                 <label style="font-weight:bold2" id="labelcontrato" value="No.Contrato" />  
-                                                                <textbox readonly="false" cols="5"   onOK ="btcliente.value = combo.value; buscarCli(btcliente.value); bcliente.visible = true"   id="buscarContrato" />
+                                                                <intbox readonly="false" cols="5"   onOK ="verificarContrato(self.value)"   id="buscarContrato" />
                                                                 <image  tooltip="autompletarNo" popup="autompletarNo"  src="/images/keyboard.png"  />
                                                                 <popup id="autompletarNo" width="300px">
                                                                     <html>
@@ -1471,9 +1491,9 @@ void llamar(){
                                                     <row>
                                                         <span  style="float:right" >Identificación(*):</span> 
                                                         <span>
-                                                         <textbox id="identificacion2"  readonly="true"   cols="13" />
-                                                        <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
-                                                        <button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/>
+                                                            <textbox id="identificacion2"  readonly="true"   cols="13" />
+                                                            <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
+                                                            <button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/>
                                                         </span>
                                                         
                                                         <span style="float:right">
@@ -1675,30 +1695,51 @@ void llamar(){
                                                
                                                     <row>   
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value="Anidado Nodo(*): " />  
+                                                            <label style="font-weight:bold2" value="Nodos(*): " />  
                                                         </span>
-                                                        <bandbox  disabled="true"  readonly="true"  id="bd2">
-                                                            <bandpopup>
-                                                                <vbox>
-                                                                    <listbox id="nodo" width="450px"
+                                                        <span>
+                                                            <bandbox  disabled="true"  readonly="true"  id="bdNodo">
+                                                                <bandpopup>
+                                                                    <vbox>
+                                                                        <listbox id="nodoNodo" width="450px"
+                                                     onSelect="bdNodo.value=self.selectedItem.label;bdNodo.closeDropdown();">
+                                                                            <listhead>
+                                                                                <listheader label="Nombre"/>
+                                                                                <listheader label="Sector"/>
+                                                                            </listhead>
+                                                                            <listitem forEach="${nodos}" value="${each}">
+                                                                                <listcell label="${each.nombre}" />
+                                                                                <listcell label="${each.sector}" />
+                                                                            </listitem>
+                                                                        </listbox>
+                                                                    </vbox>
+                                                                </bandpopup>
+                                                            </bandbox>   
+                                                               <label style="font-weight:bold2" value="Radio(*): " />  
+                                                                  <bandbox  disabled="true"  readonly="true"  id="bd2">
+                                                                <bandpopup>
+                                                                    <vbox>
+                                                                        <listbox id="nodo" width="450px"
                                                      onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();">
-                                                                        <listhead>
-                                                                            <listheader label="Nombre"/>
-                                                                            <listheader label="Sector"/>
-                                                                            <listheader label="Radio"/>
-                                                                            <listheader label="Ip"/>
+                                                                            <listhead>
+                                                                                <listheader label="Nombre"/>
+                                                                                <listheader label="Sector"/>
+                                                                                <listheader label="Radio"/>
+                                                                                <listheader label="Ip"/>
                                             
-                                                                        </listhead>
-                                                                        <listitem forEach="${nodos}" value="${each}">
-                                                                            <listcell label="${each.nombre}" />
-                                                                            <listcell label="${each.nodos.sector}" />
-                                                                            <listcell label="${each.nodos.nombre}" />
-                                                                            <listcell label="${each.ip}" />
-                                                                        </listitem>
-                                                                    </listbox>
-                                                                </vbox>
-                                                            </bandpopup>
-                                                        </bandbox>
+                                                                            </listhead>
+                                                                            <listitem forEach="${radios}" value="${each}">
+                                                                                <listcell label="${each.nombre}" />
+                                                                                <listcell label="${each.nodos.sector}" />
+                                                                                <listcell label="${each.nodos.nombre}" />
+                                                                                <listcell label="${each.ip}" />
+                                                                            </listitem>
+                                                                        </listbox>
+                                                                    </vbox>
+                                                                </bandpopup>
+                                                            </bandbox>  
+                                                        </span>
+                                                       
                                                         <span style="float:right">   IP(*):</span>
                                                         <textbox cols="15" readonly="true" id="ip" /> 
                                                     </row>

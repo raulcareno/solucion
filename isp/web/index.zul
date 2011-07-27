@@ -22,7 +22,7 @@
     ]]>
     </zscript>
     <div height="110%" class="estilo2" >
-        <window   style="padding-top:5px;padding-left:60px;padding-right:60px;border:4px">
+        <window   style="padding-top:1px;padding-left:60px;padding-right:60px;border:4px">
             <zscript>
                      Session a = Sessions.getCurrent();
              
@@ -142,6 +142,7 @@
                                 <menuitem image="/images/contratos.png" value="/contratos.zul"  label="Contratos" onClick="ingresar(self)" />
                                 <menuitem image="/images/soporte.png" value="/soporte.zul"  label="Soporte" onClick="ingresar(self)" />
                                 <!--menuitem image="/images/facturacion.png" value="/facturacion.zul"  label="Facturación" onClick="ingresar(self)" /-->
+                                <menuitem image="/images/facturacion.png" value="/registroCobros.zul"  label="Registro de Cobros" onClick="ingresar(self)" />
                                 <menuitem image="/images/calendario.png" value="/generarFacturas.zul"  label="Generación Facturas" onClick="ingresar(self)" />
                                 <menuitem  value="/planes.zul"    image="/images/planes.png" label="Planes Productos" onClick="ingresar(self)" />
                                 <menuitem value="/reporteCobros.zul"  image="/images/reportes.png" label="Reportes" onClick="ingresar(self)" />

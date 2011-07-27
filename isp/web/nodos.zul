@@ -21,7 +21,8 @@
     List allEvents = adm.query("Select o from Nodos as o where o.nombre = 0");
     static Nodos empa = new Nodos();
     Permisos permiso = new Permisos();
-    List perfiles = adm.query("Select o from Sector as o  ");
+    List perfiles = adm.query("Select o from Sector as o where o.codigo = -1  ");
+    List cantones = adm.query("Select o from Canton as o  ");
     Object media = null;
 
 //FUNCIONES
@@ -41,18 +42,32 @@ void llenar(Nodos empa){
     observacion.value = empa.getObservaciones();
 
                 if(empa.getSector()!=null){
-                  for (int i = 0; i <= perf.getItems().size(); i++) {
-                            Sector tr0 = ((Sector)((Listitem)perf.getItems().get(i)).getValue());
-                            int primero = tr0.getCodigo();
-                            int segundo = empa.getSector().getCodigo();
-                            if(primero == segundo){
-                                perf.setSelectedItem((Listitem)perf.getItems().get(i));
-                                bd.value = empa.getSector()+"";
-                                break;
-                            }
-                   }
+                          //buscarSectores(empa.getCanton().getCodigo());
+                          
+                          for (int i = 0; i <= cant.getItems().size(); i++) {
+                                    Canton tr0 = ((Canton)((Listitem)cant.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = empa.getSector().getCanton().getCodigo();
+                                    if(primero == segundo){
+                                        cant.setSelectedItem((Listitem)cant.getItems().get(i));
+                                        bdCanton.value = empa.getSector().getCanton().getNombre()+"";
+                                        break;
+                                    }
+                           }
+                          
+                               buscarSectores(empa.getSector().getCanton().getCodigo());
+                          for (int i = 0; i <= perf.getItems().size(); i++) {
+                                    Sector tr0 = ((Sector)((Listitem)perf.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = empa.getSector().getCodigo();
+                                    if(primero == segundo){
+                                        perf.setSelectedItem((Listitem)perf.getItems().get(i));
+                                        bd.value = empa.getSector()+"";
+                                        break;
+                                    }
+                           }
 
-
+                        
                     
                 }
 
@@ -68,7 +83,10 @@ void estado(Boolean estado,Boolean modificar){
     observaciones.readonly = estado;
     
     perf.disabled = estado;
+    cant.disabled = estado;
     bd.disabled = estado;
+    bdCanton.disabled = estado;
+    
 
 }
 
@@ -169,6 +187,26 @@ void eliminar(){
              }
 
     }
+    
+     void buscarSectores(Integer codigo){
+        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.nombre");
+        perf = new Listbox();
+        int a=0;
+            for (Iterator it = perf.getItems().iterator(); it.hasNext();) {
+                    perf.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      perf.appendChild(li);
+             }
+
+    }
+    
 void cargar(Sector g){
 empa.setSector(g);
 }
@@ -176,103 +214,118 @@ empa.setSector(g);
         </zscript>
       
 
-                    <grid width="100%">
-                        <rows>
-                            <row>
-                                <span>
-                                    <intbox id="codigo" disabled="true" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
-                                </span>
-                                <span></span>
-                            </row>
-                                                        <row>
-                                <span style="float:right"> Sector(*):</span>
-                                <bandbox  readonly="true"  id="bd">
-                                    <bandpopup>
-                                        <vbox>
-                                            <listbox id="perf" width="250px"
+        <grid width="100%">
+            <rows>
+                <row>
+                    <span>
+                        <intbox id="codigo" disabled="true" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
+                    </span>
+                    <span></span>
+                </row>
+                <row>
+                    <span style="float:right"> Seleccione un Cantón(*):</span>
+                    <bandbox  width="200px" readonly="true"  id="bdCanton">
+                        <bandpopup>
+                            <vbox>
+                                <listbox id="cant" width="250px"
+                                                     onSelect="bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();">
+                        
+                                    <listitem forEach="${cantones}" value="${each}">
+                                        <listcell label="${each.nombre}" />
+
+                                    </listitem>
+                                </listbox>
+                            </vbox>
+                        </bandpopup>
+                    </bandbox>
+
+                </row>
+                <row>
+                    <span style="float:right"> Seleccione un Sector(*):</span>
+                    <bandbox  width="200px" readonly="true"  id="bd">
+                        <bandpopup>
+                            <vbox>
+                                <listbox id="perf" width="250px"
                                                      onSelect="bd.value=self.selectedItem.label;cargar(((Sector)self.selectedItem.value));bd.closeDropdown();">
-                                                <listhead>
-                                                    <listheader label="Description"/>
-                                                </listhead>
-                                                <listitem forEach="${perfiles}" value="${each}">
-                                                    <listcell label="${each.nombre}" />
+                                 
+                                    <listitem forEach="${perfiles}" value="${each}">
+                                        <listcell label="${each.nombre}" />
 
-                                                </listitem>
-                                            </listbox>
-                                        </vbox>
-                                    </bandpopup>
-                                </bandbox>
+                                    </listitem>
+                                </listbox>
+                            </vbox>
+                        </bandpopup>
+                    </bandbox>
 
-                            </row>
-
-                            <row>
-                                <span style="float:right"> Nombre(*):</span>
-                                <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Nombre(*):</span>
+                    <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />
                                 
-                            </row>
-                            <row>
-                                <span style="float:right"> Dirección(*):</span>
-                                <textbox id="direccion"  maxlength="60" cols="40" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Dirección(*):</span>
+                    <textbox id="direccion"  maxlength="60" cols="40" readonly="true"   />
                                 
-                            </row>
-                            <row>
-                                <span style="float:right"> Torre:</span>
-                                <textbox id="torre"  maxlength="60" cols="40" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Torre:</span>
+                    <textbox id="torre"  maxlength="60" cols="40" readonly="true"   />
                                 
-                            </row>
-                            <row>
-                                <span style="float:right"> Observaciones:</span>
-                                <textbox id="observaciones"  rows="2" cols="40" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Observaciones:</span>
+                    <textbox id="observaciones"  rows="2" cols="40" readonly="true"   />
                                 
-                            </row>
+                </row>
                     
 
 
                       
-                        </rows>
-                    </grid>
+            </rows>
+        </grid>
 
-                    <vbox>
-                        <hbox>
-                            <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                            <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                            <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                            <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                        </hbox>
-                    </vbox>
+        <vbox>
+            <hbox>
+                <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+            </hbox>
+        </vbox>
 
 
     
 
-                    <groupbox  width="100%" mold="3d" >
+        <groupbox  width="100%" mold="3d" >
 
-                        <caption label="Busquedas" />
-                        <vbox>
-                            <hbox>  Nombre:
-                                <textbox id="buscarText"  maxlength="60" cols="40" />
-                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
-                            </hbox>
-                            <hbox>
-                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-                                    <listhead>
-                                        <listheader label="Cod."/>
-                                        <listheader label="Nombre"/>
-                                        <listheader label="Torre"/>
-                                        <listheader label="Direccion"/>
+            <caption label="Busquedas" />
+            <vbox>
+                <hbox>  Nombre:
+                    <textbox id="buscarText"  maxlength="60" cols="40" />
+                    <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                </hbox>
+                <hbox>
+                    <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                        <listhead>
+                            <listheader label="Cod."/>
+                            <listheader label="Nombre"/>
+                            <listheader label="Torre"/>
+                            <listheader label="Direccion"/>
 
-                                    </listhead>
-                                    <listitem forEach="${allEvents}" value="${each}">
-                                        <listcell label="${each.codigo}" />
-                                        <listcell label="${each.nombre}" />
-                                        <listcell label="${each.torre}" />
-                                        <listcell label="${each.direccion}" />
-                                    </listitem>
-                                </listbox>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.codigo}" />
+                            <listcell label="${each.nombre}" />
+                            <listcell label="${each.torre}" />
+                            <listcell label="${each.direccion}" />
+                        </listitem>
+                    </listbox>
 
 
-                            </hbox>
-                        </vbox>
-                    </groupbox>
+                </hbox>
+            </vbox>
+        </groupbox>
 
 
  
