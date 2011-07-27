@@ -67,7 +67,8 @@ error.visible = false;
   if(user != null){
               servicionestudiantes.visible = true;
                 // cargo los periodos que tienen
- List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'");
+ List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"' " + 
+            " order by o.periodo.descripcion, o.periodo.institucion.tipo, o.periodo.seccion.descripcion ");
              if(user.getCodigoemp().equals(-1)){
                   equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
              }
@@ -101,7 +102,7 @@ error.visible = false;
                                               Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
                                               Listitem li = new Listitem();
                                               li.setValue(acceIt.getPeriodo());
-                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + "-"+ acceIt.getPeriodo().getInstitucion().getTipo()+"["+acceIt.getPeriodo().getSeccion()+"]" ));
+                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" . " +acceIt.getPeriodo().getInstitucion().getTipo() + " ["+acceIt.getPeriodo().getSeccion()+"] " +  acceIt.getPeriodo().getInstitucion() + "" ));
                                               periodo.appendChild(li);
                                      }
                                      periodo.setSelectedIndex(0);
