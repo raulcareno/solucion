@@ -144,6 +144,6 @@ public class Nodos implements Serializable {
 
     @Override
     public String toString() {
-        return "jcinform.persistencia.Nodos[codigo=" + codigo + "]";
+        return nombre;
     }
 }

@@ -18,8 +18,8 @@
     //SimpleTreeModel stm = new SimpleTreeModel(root);
 //FUNCIONES
 
-
-List cantones2 = adm.query("Select o from Nodos as o ");
+ 
+List cantonesList = adm.query("Select o from Canton as o ");
 
 void llenar(Radios equi2){
    equi = equi2;
@@ -33,20 +33,46 @@ void llenar(Radios equi2){
     
        if(equi2.getNodos() != null){
              try{
-                      for (int i = 0; i <= cantones.getItems().size(); i++) {
-                                    Nodos tr0 = ((Nodos)((Listitem)cantones.getItems().get(i)).getValue());
+                    
+                         for (int i = 0; i <= cantones.getItems().size(); i++) {
+                                    Canton tr0 = ((Canton)((Listitem)cantones.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi2.getNodos().getSector().getCanton().getCodigo();
+                                    if(primero == segundo){
+                                        cantones.setSelectedItem((Listitem)cantones.getItems().get(i));
+                                        bdCanton.value = equi2.getNodos().getSector().getCanton().getNombre()+"";
+                                        break;
+                                    }
+                           }
+                   buscarSectores(equi2.getNodos().getSector().getCanton().getCodigo());
+                    
+                    for (int i = 0; i <= sectores.getItems().size(); i++) {
+                                    Sector tr0 = ((Sector)((Listitem)sectores.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi2.getNodos().getSector().getCodigo();
+                                    if(primero == segundo){
+                                        sectores.setSelectedItem((Listitem)sectores.getItems().get(i));
+                                        bdSector.value = equi2.getNodos().getSector().getNombre();
+                                        break;
+                                    }
+                    }
+                           
+                      buscarNodos(equi2.getNodos().getSector().getCodigo());
+                    
+                    for (int i = 0; i <= nodos.getItems().size(); i++) {
+                                    Nodos tr0 = ((Nodos)((Listitem)nodos.getItems().get(i)).getValue());
                                     int primero = tr0.getCodigo();
                                     int segundo = equi2.getNodos().getCodigo();
                                     if(primero == segundo){
-                                        cantones.setSelectedItem((Listitem)cantones.getItems().get(i));
-                                        bd1.value = equi2.getNodos().getNombre();
+                                        nodos.setSelectedItem((Listitem)nodos.getItems().get(i));
+                                        bdNodo.value = equi2.getNodos().getNombre();
                                         break;
                                     }
                            }
                  }catch(Exception err){System.out.println("ERROR no tiene cursos asignados COMBO CURSOS: "+err);}
 
 
-            }
+      }
     
 
 
@@ -62,6 +88,10 @@ void estado(Boolean estado,Boolean modificar){
     seguridad.readonly = estado;
     usuario.readonly = estado;
     clave.readonly = estado;
+    bdCanton.disabled = estado;
+    bdSector.disabled = estado;
+    bdNodo.disabled = estado;
+    
 }
 
 
@@ -70,13 +100,17 @@ void estado(Boolean estado,Boolean modificar){
             Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             return;
     }
+    if(nodos.selectedItem == null){
+            Messagebox.show("No ha seleccionado un Nodo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
         equi.setNombre(nombre.value);
         equi.setIp(ip.value);
         equi.setSsid(ssid.value);
         equi.setSeguridad(seguridad.value);
         equi.setUsuario(usuario.value);
         equi.setClave(permiso.encriptar(clave.value));
-        equi.setNodos(cantones.selectedItem.value);
+        equi.setNodos(nodos.selectedItem.value);
         
         if((!equi.getCodigo().equals(0)) ){
              adm.actualizar(equi);
@@ -152,14 +186,62 @@ void eliminar(){
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getCodigo()+""));
                       li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      li.appendChild(new Listcell(acceIt.getNodos()+" "));
+                      li.appendChild(new Listcell(acceIt.getNodos().getSector()+" "));
+                      li.appendChild(new Listcell(acceIt.getNodos().getSector().getCanton()+" "));
                       li.appendChild(new Listcell(acceIt.getIp()+" "));
                       datos.appendChild(li);
              }
 
     }
-void cargar(Radios g){
-equi.setPerfil(g);
-}
+    void cargar(Radios g){
+        equi.setPerfil(g);
+    }
+    
+     void buscarSectores(Integer codigo){
+          bdSector.value = "";
+        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.nombre");
+        sectores = new Listbox();
+        int a=0;
+            for (Iterator it = sectores.getItems().iterator(); it.hasNext();) {
+                    sectores.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      sectores.appendChild(li);
+             }
+
+    }
+    
+        
+     void buscarNodos(Integer codigo){
+          bdNodo.value = "";
+        List NodosEncontrados = adm.query("Select o from Nodos as o where o.sector.codigo = '"+codigo+"'  order by o.nombre");
+        nodos = new Listbox();
+        int a=0;
+            for (Iterator it = nodos.getItems().iterator(); it.hasNext();) {
+                    nodos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Nodos acceIt = (Nodos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      nodos.appendChild(li);
+             }
+
+    }
+    
+    
+    
+    
   ]]>
     </zscript>
     <groupbox mold="3d" >
@@ -167,15 +249,42 @@ equi.setPerfil(g);
 	
         <grid width="100%">
             <rows>
-                <row>   <span style="float:right"> Nodos(*):</span>
-                    <bandbox  width="400px" readonly="true"  id="bd1">
+                <row>   
+                    <span style="float:right"> Canton(*):</span>
+                    <bandbox  width="200px" readonly="true"  id="bdCanton">
                         <bandpopup>
                             <vbox>
-                                <listbox id="cantones" width="660px" rows="10"
-                                                                                     onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
-                                    <listitem   forEach="${cantones2}" value="${each}">
+                                <listbox id="cantones" width="250px" rows="10"
+                                                                                     onSelect="bdCanton.value=self.selectedItem.label;bdCanton.closeDropdown(); buscarSectores(((Canton)self.selectedItem.value).getCodigo());">
+                                    <listitem   forEach="${cantonesList}" value="${each}">
                                         <listcell label="${each.nombre}" />
                                     </listitem>
+                                </listbox>
+                            </vbox>
+                        </bandpopup>
+                    </bandbox>
+                </row>
+                <row>   
+                    <span style="float:right"> Sector(*):</span>
+                    <bandbox  width="200px" readonly="true"  id="bdSector">
+                        <bandpopup>
+                            <vbox>
+                                <listbox id="sectores" width="250px" rows="10"
+                                    onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown(); buscarNodos(((Sector)self.selectedItem.value).getCodigo());">
+                                    
+                                </listbox>
+                            </vbox>
+                        </bandpopup>
+                    </bandbox>
+                </row>
+                <row>   
+                    <span style="float:right"> Nodos(*):</span>
+                    <bandbox  width="200px" readonly="true"  id="bdNodo">
+                        <bandpopup>
+                            <vbox>
+                                <listbox id="nodos" width="250px" rows="10"
+                                    onSelect="bdNodo.value=self.selectedItem.label;bdNodo.closeDropdown();">
+                                    
                                 </listbox>
                             </vbox>
                         </bandpopup>
@@ -185,30 +294,30 @@ equi.setPerfil(g);
                     <span style="float:right"> Nombre Radios(*):</span>
                     <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />
                 </row>
-                       <row>
-                                <span style="float:right"> Ip(*):</span>
-                                <textbox id="ip"  maxlength="60" cols="40" readonly="true"  />
+                <row>
+                    <span style="float:right"> Ip(*):</span>
+                    <textbox id="ip"  maxlength="60" cols="40" readonly="true"  />
                               
-                            </row>
-                            <row>
-                                <span style="float:right"> SSID:</span>
-                                <textbox id="ssid" maxlength="100" cols="40"  readonly="true"    />
+                </row>
+                <row>
+                    <span style="float:right"> SSID:</span>
+                    <textbox id="ssid" maxlength="100" cols="40"  readonly="true"    />
                                  
-                            </row>
-                            <row>
-                                <span style="float:right"> Seguridad:</span>
-                                <textbox id="seguridad"   readonly="true"></textbox>
+                </row>
+                <row>
+                    <span style="float:right"> Seguridad:</span>
+                    <textbox id="seguridad"   readonly="true"></textbox>
                                 
-                            </row>
-                            <row>
-                                <span style="float:right"> Usuario:</span>
-                                <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
-                            </row>
-                            <row>
-                                <span style="float:right"> Clave:</span>
-                                <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
-                            </row>
-             </rows>
+                </row>
+                <row>
+                    <span style="float:right"> Usuario:</span>
+                    <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
+                </row>
+                <row>
+                    <span style="float:right"> Clave:</span>
+                    <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
+                </row>
+            </rows>
         </grid>
         <vbox>
             <vbox>
@@ -233,12 +342,18 @@ equi.setPerfil(g);
                     <listhead>
                         <listheader  label="Código"/>
                         <listheader sort="auto" label="Nombre"/>
+                        <listheader sort="auto" label="Nodos"/>
+                        <listheader sort="auto" label="Sector"/>
+                        <listheader sort="auto" label="Canton"/>
                         <listheader sort="auto" label="IP"/>
 
                     </listhead>
                     <listitem forEach="${allEvents}" value="${each}">
                         <listcell label="${each.codigo}" />
                         <listcell label="${each.nombre}" />
+                        <listcell label="${each.nodos}" />
+                        <listcell label="${each.nodos.sector}" />
+                        <listcell label="${each.nodos.sector.canton}" />
                         <listcell label="${each.ip}" />
                     </listitem>
                 </listbox>

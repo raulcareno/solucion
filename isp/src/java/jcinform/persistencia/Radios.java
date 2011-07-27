@@ -152,6 +152,6 @@ public class Radios implements Serializable {
 
     @Override
     public String toString() {
-        return "jcinform.persistencia.Radios[codigo=" + codigo + "]";
+        return nombre;
     }
 }

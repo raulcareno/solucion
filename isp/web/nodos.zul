@@ -189,6 +189,7 @@ void eliminar(){
     }
     
      void buscarSectores(Integer codigo){
+          bd.value = "";
         List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.nombre");
         perf = new Listbox();
         int a=0;
