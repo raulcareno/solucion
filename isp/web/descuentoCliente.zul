@@ -32,41 +32,56 @@ import java.util.Map;
      return numero;
     
     }  
-        
+    Boolean verificar(String accion){
+        return permiso.verificarPermiso("Descuentos",accion);
+ }     
         void cerrar(){
                Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
            //  facturarCliente.detach();
         }
         void eliminar(){
-            adm.ejecutaSql("Delete from Descuentos where factura.codigo = '"+codigofac.value +"' and aplicado = false ");
-            codigodes.value = 0;
-            efectivo.value = new BigDecimal(1);
-            sumarcobros("efe");  
-            descuentoCliente.detach();
+        
+           if(verificar("Eliminar")){
+                        adm.ejecutaSql("Delete from Descuentos where factura.codigo = '"+codigofac.value +"' and aplicado = false ");
+                        codigodes.value = 0;
+                        efectivo.value = new BigDecimal(1);
+                        sumarcobros("efe");  
+                        descuentoCliente.detach();        
+            }else{
+                    Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            }   
+        
+         
         }
         void guardar(){
-            if(motivo.value == null || motivo.value.length() < 10 ){
-            Messagebox.show("Debe ingresar, un motivo al descuento,  \n mínimo 10 caractéres...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-            motivo.focus();
-            return;
-            }
-            Descuentos des = new Descuentos();
-            des.setEmpleados(usuarioActual);
-            des.setFactura(new Factura(codigofac.value));
-            des.setAplicado(false);
-            des.setValor(efectivo.value);
-            des.setFecha(adm.Date());
-            des.setMotivo(motivo.value);
-            
-            if(codigodes.value == 0){
-                    adm.guardar(des);
+        
+          if(verificar("Agregar")){
+                    if(motivo.value == null || motivo.value.length() < 10 ){
+                            Messagebox.show("Debe ingresar, un motivo al descuento,  \n mínimo 10 caractéres...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                            motivo.focus();
+                            return;
+                    }
+                    Descuentos des = new Descuentos();
+                    des.setEmpleados(usuarioActual);
+                    des.setFactura(new Factura(codigofac.value));
+                    des.setAplicado(false);
+                    des.setValor(efectivo.value);
+                    des.setFecha(adm.Date());
+                    des.setMotivo(motivo.value);
+
+                    if(codigodes.value == 0){
+                            adm.guardar(des);
+                    }else{
+                        des.setCodigo(codigodes.value);
+                        adm.actualizar(des);
+                    }
+
+                    Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
+                    descuentoCliente.detach();             
             }else{
-                des.setCodigo(codigodes.value);
-                adm.actualizar(des);
-            }
-           
-            Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
-            descuentoCliente.detach();
+                    Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            } 
+         
             
         }
         

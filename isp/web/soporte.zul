@@ -44,7 +44,7 @@ import java.text.SimpleDateFormat;
  
  
  Boolean verificar(String accion){
-        return permiso.verificarPermiso("Contratos",accion);
+        return permiso.verificarPermiso("Soporte",accion);
  }
  void nuevo(){
     if(verificar("Agregar")){
@@ -162,10 +162,9 @@ llenarCliente(Clientes clienteEn){
     }
     
     
- 
-      
-                nuevos(Soporte sop){
-                            codigos.value = sop.getCodigo();
+ nuevos(Soporte sop){
+                   if(verificar("Agregar")){
+                         codigos.value = sop.getCodigo();
                             try{
                                 
                                 atendida.value = sop.getEmpleados().getCodigo();
@@ -181,12 +180,19 @@ llenarCliente(Clientes clienteEn){
                             observacion.value = sop.getObservacion();
                             generar.checked  = sop.getGenerada();
                             noorden.value = sop.getNoorden();
-              }
-          habilitar(Boolean estado){
+                        }else{
+                                Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        }  
+ }
+ habilitar(Boolean estado){
+                if(verificar("Modificar")){
                             fechasoporte.readonly = estado;
                             observacion.readonly = estado;
                             generar.disabled  = estado;
-            }
+                }else{
+                                Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                }  
+ }
                         
                 void guardars(){
  

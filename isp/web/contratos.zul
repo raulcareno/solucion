@@ -647,6 +647,16 @@ if(sihay==0){
  Boolean verificar(String accion){
         return permiso.verificarPermiso("Contratos",accion);
  }
+ Boolean verificar2(String accion){
+        return permiso.verificarPermiso("Descuentos",accion);
+ }
+ Boolean verificar3(String accion){
+        return permiso.verificarPermiso("RealizarCobros",accion);
+ }
+ 
+  Boolean verificar4(String accion){
+        return permiso.verificarPermiso("Soporte",accion);
+ }
  void nuevo(){
      genFactura.setChecked(false);
     if(verificar("Agregar")){
@@ -875,28 +885,42 @@ void verificarCedula(String valor){
 
     }
       
-                nuevos(Soporte sop){
-                            codigos.value = sop.getCodigo();
-                            try{
-                                
-                                atendida.value = sop.getEmpleados().getCodigo();
-                                atendidanombre.value = sop.getEmpleados().getApellidos()+" "+sop.getEmpleados().getNombres();
-                            }catch(Exception e){
-                                atendida.value =  usuarioActual.getCodigo();
-                                atendidanombre.value = usuarioActual.getApellidos()+" "+usuarioActual.getNombres();
-                            }
-                            
-                                fechasoporte.value = sop.getFecha();
-                            if(sop.getFecha() == null)
-                                fechasoporte.value = adm.Date();
-                            observacion.value = sop.getObservacion();
-                            generar.checked  = sop.getGenerada();
-                            noorden.value = sop.getNoorden();
+     nuevos(Soporte sop){
+                
+                     if(verificar4("Agregar")){
+                                          codigos.value = sop.getCodigo();
+                                    try{
+
+                                        atendida.value = sop.getEmpleados().getCodigo();
+                                        atendidanombre.value = sop.getEmpleados().getApellidos()+" "+sop.getEmpleados().getNombres();
+                                    }catch(Exception e){
+                                        atendida.value =  usuarioActual.getCodigo();
+                                        atendidanombre.value = usuarioActual.getApellidos()+" "+usuarioActual.getNombres();
+                                    }
+
+                                        fechasoporte.value = sop.getFecha();
+                                    if(sop.getFecha() == null)
+                                        fechasoporte.value = adm.Date();
+                                    observacion.value = sop.getObservacion();
+                                    generar.checked  = sop.getGenerada();
+                                    noorden.value = sop.getNoorden();        
+                        }else{
+                                Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        }  
+
               }
+              
+              
           habilitar(Boolean estado){
+                         if(verificar4("Modificar")){
                             fechasoporte.readonly = estado;
                             observacion.readonly = estado;
                             generar.disabled  = estado;
+                          }else{
+                                Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        }     
+                            
+                            
             }
                         
                 void guardars(){
@@ -1052,15 +1076,18 @@ void verificarCedula(String valor){
                             aButton.setAttribute("valor",vec.get(3));
                             aButton.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
-                                registro.setSelected(true);
-                                final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
-                                win.setMaximizable(true);
-                                win.setClosable(true);
-                                win.setAttribute("codigoFactura", aButton.getId());
-                                win.setAttribute("valoraPagar", aButton.getAttribute("valor"));
-                                win.setTitle("Facturar Clientes");
-                                win.doModal();
-                             
+                               if(verificar3("Ingresar")){
+                                        registro.setSelected(true);
+                                        final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
+                                        win.setMaximizable(true);
+                                        win.setClosable(true);
+                                        win.setAttribute("codigoFactura", aButton.getId());
+                                        win.setAttribute("valoraPagar", aButton.getAttribute("valor"));
+                                        win.setTitle("Facturar Clientes");
+                                        win.doModal();
+                                 }else{
+                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                    }  
                                
                               }
                                 });
@@ -1073,14 +1100,20 @@ void verificarCedula(String valor){
                             aButtonDes.setAttribute("valor",vec.get(3));
                             aButtonDes.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
-                                registro.setSelected(true);
-                                final Window win = (Window) Executions.createComponents("descuentoCliente.zul", null, null);
-                                win.setMaximizable(true);
-                                win.setClosable(true);
-                                win.setAttribute("codigoFactura", aButtonDes.getId().replace("des",""));
-                                win.setAttribute("valoraPagar", aButtonDes.getAttribute("valor"));
-                                win.setTitle("Aplicar Descuento");
-                                win.doModal();
+                                 if(verificar2("Ingresar")){
+                                      registro.setSelected(true);
+                                    final Window win = (Window) Executions.createComponents("descuentoCliente.zul", null, null);
+                                    win.setMaximizable(true);
+                                    win.setClosable(true);
+                                    win.setAttribute("codigoFactura", aButtonDes.getId().replace("des",""));
+                                    win.setAttribute("valoraPagar", aButtonDes.getAttribute("valor"));
+                                    win.setTitle("Aplicar Descuento");
+                                    win.doModal();
+                                }else{
+                                        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                }                      
+
+                              
                                
                               }
                                 });

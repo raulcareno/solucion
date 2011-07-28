@@ -10,33 +10,35 @@
   import org.zkoss.image.AImage;
   import org.zkoss.image.Image;
   import java.util.HashMap;
-import java.util.Map;
+    import java.util.Map;
     import java.math.BigDecimal;
     import jcinform.bean.sources.*;
-    
+
     Administrador adm = new Administrador();
     Permisos permiso = new Permisos();
-       Session ses = Sessions.getCurrent();
+    Session ses = Sessions.getCurrent();
        
-           Empleados usuarioActual = ses.getAttribute("user");
-   Empresa empresa = ses.getAttribute("empresa");
+    Empleados usuarioActual = ses.getAttribute("user");
+    Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
-     String directorioReportes = empresa.getReportes();
-     
-       ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
-        cargarCliente(){
-            boton = Path.getComponent("//controlequipospage/controlventana/facturas");
-            boton.doClick();
-        }
-         String llenarCeros(String numero){
-        
-     while(numero.length()<7){
-        numero = "0"+numero;
-     }  
-     return numero;
-    
-    }  
-        
+    String directorioReportes = empresa.getReportes();
+   ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
+       
+    cargarCliente(){
+        boton = Path.getComponent("//controlequipospage/controlventana/facturas");
+        boton.doClick();
+    }
+String llenarCeros(String numero){
+
+        while(numero.length()<7){
+            numero = "0"+numero;
+        }  
+        return numero;
+
+}  
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("RealizarCobros",accion);
+ } 
         void cerrar(){
         if(facturaPanel.isVisible()){
                 nofactura.getValue();
@@ -46,6 +48,11 @@ import java.util.Map;
            //  facturarCliente.detach();
         }
   void guardar(){
+  
+  if(verificar("Agregar")){
+ 
+   
+  
         BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue());
         if(total.compareTo(new BigDecimal(0)) == 0 ){
             Messagebox.show("Valor a pagar está en Cero  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -91,7 +98,9 @@ import java.util.Map;
             tarjeta.readonly = true;
             btnguardar.disabled = true;
            
-              
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }  
             
         }
         void actualFactura(){
