@@ -41,10 +41,10 @@ import java.text.SimpleDateFormat;
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
       List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getCodigo()+"' ");
       List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
-      List radios = adm.query("Select o from Radios as o");
-      List nodos = adm.query("Select o from Nodos as o");
+      //List radios = adm.query("Select o from Radios as o");
+      //List nodos = adm.query("Select o from Nodos as o");
       generarFacturas gen = new generarFacturas();
-
+List cantonesList = adm.query("Select o from Canton as o ");
     Boolean modificare = false;
     Boolean agregare = false;
     
@@ -124,7 +124,7 @@ void llenar(Contratos  equi2){
     numerocontrato.value = equi.getContrato();
        if(equi.getPlan() != null){
              try{
-                      for (int i = 0; i <= perf.getItems().size(); i++) {
+                        for (int i = 0; i <= perf.getItems().size(); i++) {
                                     Plan tr0 = ((Plan)((Listitem)perf.getItems().get(i)).getValue());
                                     int primero = tr0.getCodigo();
                                     int segundo = equi.getPlan().getCodigo();
@@ -138,27 +138,70 @@ void llenar(Contratos  equi2){
 
 
       } else{
-               bd2.value = "";
-                nodo.setSelectedItem(null);
+               bdRadio.value = "";
+                radio.setSelectedItem(null);
     }
     if(equi.getRadios() != null){
  
         try{
-                      for (int i = 0; i <= nodo.getItems().size(); i++) {
-                                    Radios tr0 = ((Radios)((Listitem)nodo.getItems().get(i)).getValue());
+        
+                
+                      
+                              for (int i = 0; i <= cantones.getItems().size(); i++) {
+                                    Canton tr0 = ((Canton)((Listitem)cantones.getItems().get(i)).getValue());
                                     int primero = tr0.getCodigo();
-                                    int segundo = equi.getRadios().getCodigo();
+                                    int segundo = equi.getRadios().getNodos().getSector().getCanton().getCodigo();
                                     if(primero == segundo){
-                                        nodo.setSelectedItem((Listitem)nodo.getItems().get(i));
-                                        bd2.value = equi.getRadios().getNombre()+" ";
+                                        cantones.setSelectedItem((Listitem)cantones.getItems().get(i));
+                                        bdCanton.value = equi.getRadios().getNodos().getSector().getCanton().getNombre()+"";
                                         break;
                                     }
                            }
-                 }catch(Exception err){System.out.println("ERROR no tiene Radios asignados COMBO nodo "+err);}
+                   buscarSectores(equi.getRadios().getNodos().getSector().getCanton().getCodigo());
+                    
+                    for (int i = 0; i <= sectores.getItems().size(); i++) {
+                                    Sector tr0 = ((Sector)((Listitem)sectores.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getRadios().getNodos().getSector().getCodigo();
+                                    if(primero == segundo){
+                                        sectores.setSelectedItem((Listitem)sectores.getItems().get(i));
+                                        bdSector.value = equi.getRadios().getNodos().getSector().getNombre();
+                                        break;
+                                    }
+                    }
+                           
+                      buscarNodos(equi.getRadios().getNodos().getSector().getCodigo());
+                    
+                    for (int i = 0; i <= nodos.getItems().size(); i++) {
+                                    Nodos tr0 = ((Nodos)((Listitem)nodos.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getRadios().getNodos().getCodigo();
+                                    if(primero == segundo){
+                                        nodos.setSelectedItem((Listitem)nodos.getItems().get(i));
+                                        bdNodo.value = equi.getRadios().getNodos().getNombre();
+                                        break;
+                                    }
+                           }
+                        
+                        
+                        
+                        buscarRadios(equi.getRadios().getNodos().getCodigo());
+        
+                      for (int i = 0; i <= radio.getItems().size(); i++) {
+                                    Radios tr0 = ((Radios)((Listitem)radio.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getRadios().getCodigo();
+                                    if(primero == segundo){
+                                        radio.setSelectedItem((Listitem)radio.getItems().get(i));
+                                        bdRadio.value = equi.getRadios().getNombre()+" ";
+                                        break;
+                                    }
+                           }
+                 }catch(Exception err){System.out.println("ERROR no tiene Radios asignados COMBO radio "+err);}
         
     }else{
-       bd2.value = "";
-        nodo.setSelectedItem(null);
+       bdRadio.value = "";
+        radio.setSelectedItem(null);
     }
     
        if(equi.getBancos() != null){
@@ -211,7 +254,7 @@ void estado(Boolean estado,Boolean modificar){
     ip.readonly = estado;
     clave.readonly = estado;
     bd.disabled = estado;
-    bd2.disabled = estado;
+    bdRadio.disabled = estado;
     bdNodo.disabled = estado;
     bd22.disabled = estado;
     numerocontrato.readonly = estado;
@@ -283,8 +326,8 @@ Boolean validar(){
                                 deb
                         bd22.value == "" || bd22.value == null || 	//bancos
                         bancosList.selectedItem.value	 == "" ||  bancosList.selectedItem.value == null ||//
-                        bd2 == null || 	 bd2 == null || 	//radios
-                        nodo.value == "" || nodo.value == null || 
+                        bdRadio == null || 	 bdRadio == null || 	//radios
+                        radio.value == "" || radio.value == null || 
                         ip.value == "" ||  ip.value == null || 
                         usuario.value == "" ||  usuario.value == null || 
                         clave.value == "" ||  clave.value == null || */
@@ -345,7 +388,7 @@ Boolean validar(){
         }catch(Exception e){
     }
     try{
-        equi.setRadios(nodo.getSelectedItem().getValue());
+        equi.setRadios(radio.getSelectedItem().getValue());
     }catch(Exception e){
     }
     
@@ -428,7 +471,7 @@ Boolean validar(){
 
  
 if(sihay==0){
-        eliminarObjeto(Cabeceracompra.class, cabeCompra.getCodigo());
+        adm.eliminarObjeto(Cabeceracompra.class, cabeCompra.getCodigo());
 } 
  
  
@@ -511,7 +554,7 @@ if(sihay==0){
                   }
 
          if(sihay==0){
-                eliminarObjeto(Cabeceracompra.class, cabeCompra.getCodigo());
+                adm.eliminarObjeto(Cabeceracompra.class, cabeCompra.getCodigo());
          }
  
  }
@@ -613,14 +656,14 @@ if(sihay==0){
         Messagebox.show("No se han creado planes, cierre esta pantalla e ingresse nuevos Planes  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          return;
       }
-      if(bancos.size()<=0){
+      /*if(bancos.size()<=0){
         Messagebox.show("No se han creado Bancos, cierre esta pantalla e ingrese nuevos Bancos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          return;
       }
     if(radios.size()<=0){
         Messagebox.show("No se han creado Radios, cierre esta pantalla e ingrese nuevos Radios  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          return;
-      }
+      } */
        
         llenar(new Contratos(0));
         estado(false,false);
@@ -640,14 +683,14 @@ if(sihay==0){
             Messagebox.show("No se han creado planes, cierre esta pantalla e ingresse nuevos Planes  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             return;
         }
-      if(bancos.size()<=0){
+      /* if(bancos.size()<=0){
         Messagebox.show("No se han creado Bancos, cierre esta pantalla e ingrese nuevos Bancos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          return;
       }
     if(radios.size()<=0){
         Messagebox.show("No se han creado Nodos, cierre esta pantalla e ingrese nuevos Nodos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          return;
-      }
+      } */
        
         llenar(new Contratos(0));
         estado(false,false);
@@ -1374,6 +1417,64 @@ void llamar(){
           String object = (String)InputMessageBox.showQuestion("Número de Factura", "Ingreso");
         System.out.println("RESULT: " + object);
 }
+   void buscarSectores(Integer codigo){
+          bdSector.value = "";
+        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.nombre");
+        sectores = new Listbox();
+        int a=0;
+            for (Iterator it = sectores.getItems().iterator(); it.hasNext();) {
+                    sectores.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      sectores.appendChild(li);
+             }
+
+    }
+    
+      void buscarNodos(Integer codigo){
+          bdNodo.value = "";
+        List NodosEncontrados = adm.query("Select o from Nodos as o where o.sector.codigo = '"+codigo+"'  order by o.nombre");
+        nodos = new Listbox();
+        int a=0;
+            for (Iterator it = nodos.getItems().iterator(); it.hasNext();) {
+                    nodos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Nodos acceIt = (Nodos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      nodos.appendChild(li);
+             }
+
+    }
+    void buscarRadios(Integer codigo){
+          bdRadio.value = "";
+        List NodosEncontrados = adm.query("Select o from Radios as o where o.nodos.codigo = '"+codigo+"'  order by o.nombre");
+        nodos = new Listbox();
+        int a=0;
+            for (Iterator it = radio.getItems().iterator(); it.hasNext();) {
+                    radio.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Radios acceIt = (Radios) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      radio.appendChild(li);
+             }
+
+    }
   ]]>
     </zscript>
     <div>
@@ -1587,7 +1688,7 @@ void llamar(){
                                                         <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = adm.Date()"/>
                                  
                                                     </row>
-                                                    <row>
+                                                    <row style="background:#F8FFE1">
                                                         <span style="float:right">
                                                             <label style="font-weight:bold2" value=" Dir.Instalar: " />  
                                                         </span>
@@ -1603,7 +1704,7 @@ void llamar(){
                                                             <button  image="/images/copiar.png"   onClick="telefonoi.value=telefono.value;"/>
                                                         </span>
                                                     </row>
-                                                    <row >
+                                                    <row style="background:#F8FFE1" >
                                                         <span style="float:right">  
                                                             <label style="font-weight:bold2" value=" Referencia: " />
                                                               
@@ -1611,6 +1712,87 @@ void llamar(){
                                                         <textbox id="referenciai" cols="40" readonly="true"  />
                                                         <span style="float:right"> </span>
                                                         <span style="float:right"> </span>
+                                                    </row>
+                                                   
+                                                           
+                                                    <row style="background:#F8FFE1">
+                                                        <span style="float:right"> Canton(*):</span>
+                                                        <bandbox  width="200px" readonly="true"  id="bdCanton">
+                                                            <bandpopup>
+                                                                <vbox>
+                                                                    <listbox id="cantones" width="250px" rows="10"
+                                                                                                                         onSelect="bdCanton.value=self.selectedItem.label;bdCanton.closeDropdown(); buscarSectores(((Canton)self.selectedItem.value).getCodigo());">
+                                                                        <listitem   forEach="${cantonesList}" value="${each}">
+                                                                            <listcell label="${each.nombre}" />
+                                                                        </listitem>
+                                                                    </listbox>
+                                                                </vbox>
+                                                            </bandpopup>
+                                                        </bandbox>    
+                                                        <span style="float:right"> Nodos(*):</span>
+                                                           
+                                                        <bandbox  width="200px" readonly="true"  id="bdNodo">
+                                                            <bandpopup>
+                                                                <vbox>
+                                                                    <listbox id="nodos" width="250px" rows="10"
+                                                                        onSelect="bdNodo.value=self.selectedItem.label;bdNodo.closeDropdown();buscarRadios(((Nodos)self.selectedItem.value).getCodigo());">
+
+                                                                    </listbox>
+                                                                </vbox>
+                                                            </bandpopup>
+                                                        </bandbox>
+                                                    </row>
+                                                    
+                                               
+                                                    <row style="background:#F8FFE1">
+                                                        <span style="float:right"> Sector(*):</span>
+                                                        <bandbox  width="200px" readonly="true"  id="bdSector">
+                                                            <bandpopup>
+                                                                <vbox>
+                                                                    <listbox id="sectores" width="250px" rows="10"
+                                                                  onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown(); buscarNodos(((Sector)self.selectedItem.value).getCodigo());">
+                                    
+                                                                    </listbox>
+                                                                </vbox>
+                                                            </bandpopup>
+                                                        </bandbox>
+                                                        
+                                                    
+                                                        
+                                                     
+                                                        <label style="font-weight:bold2" value="Radio(*): " />  
+                                                        <bandbox  disabled="true"  readonly="true"  id="bdRadio">
+                                                            <bandpopup>
+                                                                <vbox>
+                                                                    <listbox id="radio" width="450px"
+                                                     onSelect="bdRadio.value=self.selectedItem.label;bdRadio.closeDropdown();">
+                                                                        <listhead>
+                                                                            <listheader label="Nombre"/>
+                                                                            <listheader label="Sector"/>
+                                                                            <listheader label="Radio"/>
+                                                                            <listheader label="Ip"/>
+                                            
+                                                                        </listhead>
+                                                                        <listitem forEach="${radios}" value="${each}">
+                                                                            <listcell label="${each.nombre}" />
+                                                                            <listcell label="${each.nodos.sector}" />
+                                                                            <listcell label="${each.nodos.nombre}" />
+                                                                            <listcell label="${each.ip}" />
+                                                                        </listitem>
+                                                                    </listbox>
+                                                                </vbox>
+                                                            </bandpopup>
+                                                        </bandbox>  
+                                                      
+                                                       
+                                                       
+                                                    </row>
+                                                    <row visible="false">
+                                                        <span style="float:right">   IP(*):</span>
+                                                        <textbox cols="15" readonly="true" id="ip" /> 
+                                                        <span style="float:right"> Autorizado a Inst(*):</span>
+                                                        <checkbox id="autorizado" disabled="true"  />    
+                                                           
                                                     </row>
                                                     <row>
                                                         <span style="float:right">  
@@ -1689,65 +1871,7 @@ void llamar(){
                                                                            			
 	    		 
                                                     </row>
-                                                           
-                                                     
                                                     
-                                               
-                                                    <row>   
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value="Nodos(*): " />  
-                                                        </span>
-                                                        <span>
-                                                            <bandbox  disabled="true"  readonly="true"  id="bdNodo">
-                                                                <bandpopup>
-                                                                    <vbox>
-                                                                        <listbox id="nodoNodo" width="450px"
-                                                     onSelect="bdNodo.value=self.selectedItem.label;bdNodo.closeDropdown();">
-                                                                            <listhead>
-                                                                                <listheader label="Nombre"/>
-                                                                                <listheader label="Sector"/>
-                                                                            </listhead>
-                                                                            <listitem forEach="${nodos}" value="${each}">
-                                                                                <listcell label="${each.nombre}" />
-                                                                                <listcell label="${each.sector}" />
-                                                                            </listitem>
-                                                                        </listbox>
-                                                                    </vbox>
-                                                                </bandpopup>
-                                                            </bandbox>   
-                                                               <label style="font-weight:bold2" value="Radio(*): " />  
-                                                                  <bandbox  disabled="true"  readonly="true"  id="bd2">
-                                                                <bandpopup>
-                                                                    <vbox>
-                                                                        <listbox id="nodo" width="450px"
-                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();">
-                                                                            <listhead>
-                                                                                <listheader label="Nombre"/>
-                                                                                <listheader label="Sector"/>
-                                                                                <listheader label="Radio"/>
-                                                                                <listheader label="Ip"/>
-                                            
-                                                                            </listhead>
-                                                                            <listitem forEach="${radios}" value="${each}">
-                                                                                <listcell label="${each.nombre}" />
-                                                                                <listcell label="${each.nodos.sector}" />
-                                                                                <listcell label="${each.nodos.nombre}" />
-                                                                                <listcell label="${each.ip}" />
-                                                                            </listitem>
-                                                                        </listbox>
-                                                                    </vbox>
-                                                                </bandpopup>
-                                                            </bandbox>  
-                                                        </span>
-                                                       
-                                                        <span style="float:right">   IP(*):</span>
-                                                        <textbox cols="15" readonly="true" id="ip" /> 
-                                                    </row>
-                                                    <row visible="false">
-                                                        <span style="float:right"> Autorizado a Inst(*):</span>
-                                                        <checkbox id="autorizado" disabled="true"  />    
-                                                           
-                                                    </row>
                                                     <row>
                                                            
                                                            
@@ -1795,7 +1919,7 @@ void llamar(){
                       
                                                         </span>
                                                     </row>
-                                                    <row>
+                                                    <row visible="false">
                                                         <span style="float:right"> 
                                                             <label style="font-weight:bold2" value=" Registrado por(*): " />  
                                                         </span> 
