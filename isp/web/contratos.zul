@@ -1760,7 +1760,7 @@ void llamar(){
                                                     
                                                         
                                                      
-                                                        <label style="font-weight:bold2" value="Radio(*): " />  
+                                                       <span style="float:right">  <label style="font-weight:bold2" value="Radio(*): " />  </span>  
                                                         <bandbox  disabled="true"  readonly="true"  id="bdRadio">
                                                             <bandpopup>
                                                                 <vbox>
