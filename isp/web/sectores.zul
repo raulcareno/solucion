@@ -123,7 +123,7 @@ void eliminar(){
    void buscar(String p){
 
       
-        List equivaEncontrados = adm.query("Select o from Sector as o order by o.nombre");
+        List equivaEncontrados = adm.query("Select o from Sector as o");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {

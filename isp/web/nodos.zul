@@ -39,7 +39,7 @@ void llenar(Nodos empa){
     nombre.value = empa.getNombre();
     direccion.value = empa.getDireccion();
     torre.value = empa.getTorre();
-    observacion.value = empa.getObservaciones();
+    observaciones.value = empa.getObservaciones();
 
                 if(empa.getSector()!=null){
                           //buscarSectores(empa.getCanton().getCodigo());
@@ -167,7 +167,7 @@ void eliminar(){
 }
  
   void buscar(String p){
-        List NodosEncontrados = adm.query("Select o from Nodos as o where o.nombre like '%"+p+"%' order by o.nombre");
+        List NodosEncontrados = adm.query("Select o from Nodos as o where o.nombre like '%"+p+"%' ");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -190,7 +190,7 @@ void eliminar(){
     
      void buscarSectores(Integer codigo){
           bd.value = "";
-        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.nombre");
+        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"' ");
         perf = new Listbox();
         int a=0;
             for (Iterator it = perf.getItems().iterator(); it.hasNext();) {
