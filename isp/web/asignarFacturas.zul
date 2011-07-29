@@ -1,0 +1,311 @@
+<?page id="contratospage"?>
+<window id="contratosventana"  border="normal" >
+    <style>
+.MyGridRowHeight tr.z-row td.z-row-inner  
+{
+      background: white;
+      border-top: none;
+      border-left: 1px solid white;
+      border-right: 1px solid #CCC;
+      //border-bottom: 1px solid #DDD;
+      border-bottom: none;
+ 
+}
+/*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+  background: #F8F8F8;
+} */
+.MyGridRowHeight td.z-row-inner
+{
+    padding: 0px;
+    //overflow: hidden;
+}
+    </style>
+    <zscript>   <![CDATA[
+    
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+  import jcinform.bean.generarFacturas;
+
+  Session ses = Sessions.getCurrent();
+  //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
+    Administrador adm = new Administrador();
+    static Contratos equi = new Contratos();
+    Permisos permiso = new Permisos();
+    Empleados usuarioActual = ses.getAttribute("user");
+   Empresa empresa = ses.getAttribute("empresa");
+    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+      generarFacturas gen = new generarFacturas();
+List cantonesList = adm.query("Select o from Canton as o ");
+           
+
+  void facturasPendientes(){
+                try{
+                List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo,fa.contratos FROM cxcobrar cx, factura  fa "   +
+                        " WHERE fa.clientes  =  "+codigocli.value+"  " + 
+                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo   HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha "); 
+                
+                facturasDatos.getRows().getChildren().clear();
+  ArrayList contratosAnadidos = new ArrayList();
+  int i =0;
+                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                            Vector vec = (Vector) itna.next();
+                          
+                              Contratos con = adm.buscarClave(vec.get(4), Contratos.class);
+                              Group grupo = new Group(con.getPlan()+"");
+                              grupo.setId("grup"+con.getCodigo()+"");
+                             // grupo.setStyle("background-color:#FFDDAA");
+                              
+                              if(contratosAnadidos.size() == 0){
+                                    grupo.setParent(filasFac);
+                                    contratosAnadidos.add(con.getCodigo()+"");
+                                    
+                              }else{
+                                      if(!contratosAnadidos.contains(con.getCodigo()+"")){
+                                               grupo.setParent(filasFac);
+                                      }
+                                        contratosAnadidos.add(con.getCodigo()+"");
+                              }
+                              
+                              
+                            Row row = new Row();
+                                   if(row == null){
+                                    row = new Row();
+                                   }
+                            for (int j = 0; j < vec.size(); j++) {
+                                Object dos = vec.get(j);
+                                if(row == null){
+                                    row = new Row();
+                                   }
+                                    if(dos instanceof Integer){
+                                       row.setValue(dos);
+                                        row.appendChild(new Label(dos+""));
+                                    }else if(dos instanceof Date){
+                                     SimpleDateFormat d1 = new SimpleDateFormat("dd-MMMM-yyyy");
+                                     Date d = (Date)dos;
+                                      row.appendChild(new Label(d1.format(d)+""));
+                                    }else{
+                                        row.appendChild(new Label(dos+""));
+                                    }
+                            }
+                            Button aButton = null;
+                            aButton = new Button("Pagar");
+                            aButton.setImage("/images/dinero.gif");
+                            aButton.setId(""+vec.get(0));
+                            aButton.setAttribute("valor",vec.get(3));
+                            aButton.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                               if(verificar3("Ingresar")){
+                                        registro.setSelected(true);
+                                        final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
+                                        win.setMaximizable(true);
+                                        win.setClosable(true);
+                                        win.setAttribute("codigoFactura", aButton.getId());
+                                        win.setAttribute("valoraPagar", aButton.getAttribute("valor"));
+                                        win.setTitle("Facturar Clientes");
+                                        win.doModal();
+                                 }else{
+                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                    }  
+                               
+                              }
+                                });
+                              row.appendChild(aButton);
+                              
+                            Button aButtonDes = null;
+                            aButtonDes = new Button("Descuento");
+                            aButtonDes.setImage("/images/descuento.png");
+                            aButtonDes.setId("des"+vec.get(0));
+                            aButtonDes.setAttribute("valor",vec.get(3));
+                            aButtonDes.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                                 if(verificar2("Ingresar")){
+                                      registro.setSelected(true);
+                                    final Window win = (Window) Executions.createComponents("descuentoCliente.zul", null, null);
+                                    win.setMaximizable(true);
+                                    win.setClosable(true);
+                                    win.setAttribute("codigoFactura", aButtonDes.getId().replace("des",""));
+                                    win.setAttribute("valoraPagar", aButtonDes.getAttribute("valor"));
+                                    win.setTitle("Aplicar Descuento");
+                                    win.doModal();
+                                }else{
+                                        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                }                      
+
+                              
+                               
+                              }
+                                });
+                              row.appendChild(aButtonDes);
+                            
+                            filasFac.appendChild(row);
+                }
+            
+                   }catch(Exception e){
+                            Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            System.out.println("ERROR: "+e);
+                            registro.setSelected(true);
+                        }
+                
+ }
+                
+ void buscarSectores(Integer codigo){
+          bd.value = "";
+        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.nombre");
+        perf = new Listbox();
+        int a=0;
+            for (Iterator it = perf.getItems().iterator(); it.hasNext();) {
+                    perf.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      perf.appendChild(li);
+             }
+            a=0;
+            for (Iterator it = perf2.getItems().iterator(); it.hasNext();) {
+                    perf2.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      perf2.appendChild(li);
+             }
+    } 
+  ]]>
+    </zscript>
+    <div>
+        <!--button label="MOSTRAR" id="mensaje"  onClick="llamar()" /-->
+
+        <tabbox width="100%"  >
+            <tabs>
+                <tab label="Facturas Pendientes" id="facturas" onSelect="facturasPendientes()"/>
+                <tab label="Impresión" />
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+       
+                    <groupbox id="panel" mold="3d" width="830px">
+                        <grid>
+	 
+                            <rows>
+			
+                                <row visible = "false" id="filacanton">
+                                    <span style="float:right"> Seleccione un Cantón(*):</span>
+                                    <bandbox  width="200px" readonly="true"  id="bdCanton">
+                                        <bandpopup>
+                                            <vbox>
+                                                <listbox id="cant" width="250px"
+                                                     onSelect="bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();">
+                        
+                                                    <listitem forEach="${cantonesList}" value="${each}">
+                                                        <listcell label="${each.nombre}" />
+
+                                                    </listitem>
+                                                </listbox>
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
+
+                                </row>
+                                <row visible = "false" id="filasector">
+                                    <span style="float:right"> Desde el Sector(*):</span>
+                                    <bandbox  width="200px" readonly="true"  id="bdSector">
+                                        <bandpopup>
+                                            <vbox>
+                                                <listbox id="perf" width="250px"
+                                                     onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
+                                 
+                                                    <listitem forEach="${perfiles}" value="${each}">
+                                                        <listcell label="${each.nombre}" />
+
+                                                    </listitem>
+                                                </listbox>
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
+
+                                </row>	
+                                <row visible = "false" id="filasector2">
+                                    <span style="float:right"> Hasta el Sector(*):</span>
+                                    <bandbox  width="200px" readonly="true"  id="bdSector2">
+                                        <bandpopup>
+                                            <vbox>
+                                                <listbox id="perf2" width="250px"
+                                                     onSelect="bdSector2.value=self.selectedItem.label;bdSector2.closeDropdown();">
+                                 
+                                                    <listitem forEach="${perfiles}" value="${each}">
+                                                        <listcell label="${each.nombre}" />
+
+                                                    </listitem>
+                                                </listbox>
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
+
+                                </row>	
+                                <row>	
+                                </row>
+                            </rows>
+                        </grid>
+                    </groupbox>
+ 
+
+                    <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasDatos" >
+                        <columns>
+                            <column  label="No."/>
+                            <column  label="Fecha Pago"/>
+                            <column   label="Total"/>
+                            <column   label="Saldo"/>
+                            <column   label="Ref."/>
+                            <column   label=" "/>
+                            <column   label=" "/>
+                        </columns>
+                        <rows id="filasFac">
+                        </rows>
+                    </grid>
+                </tabpanel>
+           
+                <tabpanel>
+                    <panel height="370px" style="margin-bottom:10px"
+                           title="Reporte" border="normal">
+                        <panelchildren>
+                            <jasperreport id="reportelocal" />
+                        </panelchildren>
+                    </panel>
+                
+                </tabpanel>
+            </tabpanels>
+            
+            
+        </tabbox>
+        <panel framable="true" visible="false" id="contratosPanel" title="CONTRATOS CON ÉSTE CLIENTE" style="position:absolute; top:5%; left:5%" width="600px">
+            <panelchildren>
+                <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;anadir.disabled = false;" id="contratosCliente" width="100%">
+                    <listhead>
+                        <listheader label="Contra."/>
+                        <listheader label="Plan"/>
+                        <listheader label="Fecha"/>
+                        <listheader label="Estado"/>
+                    </listhead>
+                    <listitem forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.fecha}" />
+                    </listitem>
+                </listbox>
+                <button label="CERRAR" onClick="contratosPanel.visible = false"/>
+            </panelchildren>
+        </panel>
+    </div>
+</window>

@@ -31,6 +31,7 @@
     <class>jcinform.persistencia.Bancos</class>
     <class>jcinform.persistencia.Descuentos</class>
     <class>jcinform.persistencia.Procesos</class>
+    <class>jcinform.persistencia.Empleadosfacturas</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <!--property name="toplink.jdbc.user" value="root"/>
