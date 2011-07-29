@@ -474,12 +474,31 @@ Boolean validar(){
                                           }
                                           sihay++;
                                   }
+//                               alert(""+serieDet.getEstado());
+                               //TENGO QUE ELIMINAR TODO EL REGISTRO DE COMPRA EN CASO DE QUE HAYA SOLO UN ITEM
+                               if(serieDet.getEstado().equals("P")){
+                                            Series serAc = serieDet;
+                                            int cant = serAc.getDetallecompra().getCantidad();
+                                            if(cant == -1){
+                                                adm.eliminarObjeto(Series.class, serAc.getCodigo()); 
+                                                adm.eliminarObjeto(Detallecompra.class,serAc.getDetallecompra().getCodigo());
+                                                adm.eliminarObjeto(Cabeceracompra.class,serAc.getDetallecompra().getCabeceracompra().getCodigo());
+                                            }else{
+                                                adm.eliminarObjeto(Series.class, serAc.getCodigo()); 
+                                                Detallecompra deta = serAc.getDetallecompra();
+                                                deta.setCantidad(deta.getCantidad()+1);
+                                                adm.actualizar(deta);
+                                            }
+                                        }
+                                            
+                               
                                   Series ser = new Series();
                                   ser.setCodigo(adm.getNuevaClave("Series","codigo"));
                                   ser.setSerie(serieDet.getSerie());
                                   ser.setDetallecompra(det);
                                   ser.setContratos(equi);
                                   ser.setEstado("V");//VENTA
+                                  
                                if(serieDet.getDetallecompra().getEquipos().getBien())
                                   adm.guardar(ser);
                             }

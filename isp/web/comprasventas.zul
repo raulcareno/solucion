@@ -242,7 +242,10 @@ Boolean validarSeriesAju(){
              List encontradas =  adm.query("Select o from Series as o where o.serie in ("+ seriesTodas+")");
              String sencontradas="";
              ArrayList encontradasActualizar = new ArrayList();
-             
+             if(encontradas.size() <= 0){
+                    Messagebox.show("UNA O VARIAS SERIES NO EXISTEN EN LOS REGISTROS", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return true;
+             }
              int nohay = 0;
               for (Iterator it = encontradas.iterator(); it.hasNext();) {
                         Series object = it.next();
