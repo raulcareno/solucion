@@ -101,7 +101,7 @@ public class Perfil implements Serializable {
 
     @Override
     public String toString() {
-        return "jcinform.persistencia.Perfil[codigo=" + codigo + "]";
+        return nombre;
     }
 
 }

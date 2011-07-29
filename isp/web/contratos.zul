@@ -308,38 +308,55 @@ Boolean validar(Combobox text){
 }
 
 Boolean validar(){
-        if(validar(identificacion2)||  validar(nombres) || validar(apellidos) || validar(direccion)  || validar(telefono)  || 
-                  validar(combo) ||   validar(numerocontrato) || validar(fecha) || validar(fechainstalacion)  || 
+        if(validar(identificacion2)   ||  validar(nombres) || validar(apellidos) || validar(direccion)  || validar(telefono)  || 
+                    validar(numerocontrato) || validar(fecha) || validar(fechainstalacion)  || 
                   validar(direccioni) ||  validar(telefonoi) || validar(combov) ){
                           //Messagebox.show("Complete todos los campos que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                           return true;
           
           }
             return false; 
-          
-            /*|| validar(diapago)|| validar(nocuenta) 
-                        codigocli.value  == null ||  //codigo del cliente 
-                        bd.value == "" || bd.value == null || //planes 
-                        perf.value == "" || perf.value == null || //planes 
-                        formapago  groupbox
-                                efe
-                                deb
-                        bd22.value == "" || bd22.value == null || 	//bancos
-                        bancosList.selectedItem.value	 == "" ||  bancosList.selectedItem.value == null ||//
-                        bdRadio == null || 	 bdRadio == null || 	//radios
-                        radio.value == "" || radio.value == null || 
-                        ip.value == "" ||  ip.value == null || 
-                        usuario.value == "" ||  usuario.value == null || 
-                        clave.value == "" ||  clave.value == null || */
-                                  
-
 }
  void guardar(){
  
-    if(validar()){
-            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    if(validar(identificacion2) ){
+           Messagebox.show("Ingrese la Identificación del Cliente ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           identificacion2.focus();
             return;
     }
+        if(validar(nombres) ){
+           Messagebox.show("Ingrese los Nombres del Cliente  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           nombres.focus();
+            return;
+    } if(validar(apellidos) ){
+           Messagebox.show("Ingrese los Apellidos del Cliente ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           apellidos.focus();
+            return;
+    }if(validar(direccion) ){
+           Messagebox.show("Ingrese la Dirección del Cliente ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           direccion.focus();
+            return;
+    } if(  validar(numerocontrato)){
+           Messagebox.show("Ingrese la Número de Contrato...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           numerocontrato.focus();
+            return;
+    }if( validar(fecha) ){
+           Messagebox.show("Ingrese la Fecha...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           fecha.focus();
+            return;
+    }if( validar(fechainstalacion)  ){
+           Messagebox.show("Ingrese la Fecha de Instalción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           fechainstalacion.focus();
+            return;
+    }if(validar(direccioni) ){
+           Messagebox.show("Ingrese la Dirección de Instalación...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           direccioni.focus();
+            return;
+    } if( validar(combov) ){
+           Messagebox.show("Ingrese el Vendedor...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           combov.focus();
+            return;
+    } 
      if(codigocli.value.equals("0")){
         Clientes empa = new Clientes();
             empa.setIdentificacion(""+identificacion2.value);
