@@ -24,6 +24,7 @@ List cantones2 = adm.query("Select o from Canton as o ");
 void llenar(Sector equi2){
    equi = equi2;
     nombre.value = equi.getNombre();
+    numero.value = equi.getNumero();
        if(equi2.getCanton() != null){
              try{
                       for (int i = 0; i <= cantones.getItems().size(); i++) {
@@ -50,7 +51,7 @@ void estado(Boolean estado,Boolean modificar){
         equi = (Sector)datos.selectedItem.value;
     }
     nombre.readonly = estado;
- 
+ numero.readonly = estado;
 
 }
 
@@ -62,6 +63,7 @@ void estado(Boolean estado,Boolean modificar){
     }
         equi.setNombre(nombre.value);
         equi.setCanton(cantones.selectedItem.value);
+        equi.setNumero(numero.value);
         
         if((!equi.getCodigo().equals(0)) ){
              adm.actualizar(equi);
@@ -135,7 +137,7 @@ void eliminar(){
                       Sector acceIt = (Sector) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                      li.appendChild(new Listcell(acceIt.getNumero()+""));
                       li.appendChild(new Listcell(acceIt.getNombre()+" "));
                       li.appendChild(new Listcell(acceIt.getCanton().getNombre()+" "));
                       datos.appendChild(li);
@@ -170,6 +172,10 @@ equi.setPerfil(g);
                     <span style="float:right"> Nombre Sector(*):</span>
                     <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />
                 </row>
+                <row>
+                    <span style="float:right"> Número Sector(*):</span>
+                    <intbox id="numero"  readonly="true"   />
+                </row>
           
  
 
@@ -196,13 +202,13 @@ equi.setPerfil(g);
             <hbox width="100%">
                 <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                     <listhead>
-                        <listheader  label="Código"/>
+                        <listheader  label="Número"/>
                         <listheader sort="auto" label="Sector"/>
                         <listheader sort="auto" label="Canton"/>
 
                     </listhead>
                     <listitem forEach="${allEvents}" value="${each}">
-                        <listcell label="${each.codigo}" />
+                        <listcell label="${each.numero}" />
                         <listcell label="${each.nombre}" />
                         <listcell label="${each.canton.nombre}" />
                     </listitem>

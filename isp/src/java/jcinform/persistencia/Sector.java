@@ -37,6 +37,8 @@ public class Sector implements Serializable {
     private Integer codigo;
     @Column(name = "nombre")
     private String nombre;
+    @Column(name = "numero")
+    private Integer numero;
     @JoinColumn(name = "canton", referencedColumnName = "codigo")
     @ManyToOne
     private Canton canton;
@@ -76,6 +78,14 @@ public class Sector implements Serializable {
 
     public void setCanton(Canton canton) {
         this.canton = canton;
+    }
+
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
     }
 
     public Collection<Factura> getFacturaCollection() {
