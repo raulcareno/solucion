@@ -24,6 +24,8 @@ Session ses = Sessions.getCurrent();
 Empresa empresa = (Empresa) ses.getAttribute("empresa");
 Empleados user = (Empleados)ses.getAttribute("user");
  ReportesClase reportes = new ReportesClase();
+List cantones = adm.query("Select o from Canton as o  ");
+      
       public Double redondear(Double numero, int decimales) {
                 try{
                         BigDecimal d = new BigDecimal(numero);
@@ -66,6 +68,10 @@ Empleados user = (Empleados)ses.getAttribute("user");
                 }
                    datasource = reportes.facturasPendientes(new Clientes(cclientev));
                     report.setSrc(directorioReportes+"cxcclientes.jasper");
+            }else if(tipo.equals("PORSECTOR")){
+                                datasource = reportes.facturasPendientes(perf.selectedItem.value);
+                   report.setSrc(directorioReportes+"cxcclientesxzona.jasper");
+                   
             }else  if(tipo.equals("COBROS")){
                 Integer cclientev = ccliente.value;
                 if(cclientev != null ){
@@ -96,6 +102,8 @@ void campos(String valor){
     filaclientes.visible=false;
     filaclientes1.visible=false;
     filafechas.visible=false;
+      filacanton.visible=false;
+            filasector.visible=false;
         if(valor.equals("CXCLI")){
             titulo.value= "Cuentas por Pagar";
             filaclientes.visible=true;
@@ -109,6 +117,10 @@ void campos(String valor){
         }else if(valor.equals("ARQUEO")){
             titulo.value= "Cobros Diarios";
            filafechas.visible=true;
+        }else if(valor.equals("PORSECTOR")){
+            titulo.value= "X Cobrar";
+            filacanton.visible=true;
+            filasector.visible=true;
         }else{
             titulo.value= " ";
         }
@@ -133,6 +145,26 @@ void campos(String valor){
                       lcliente.appendChild(li);
              }
     }
+    
+        void buscarSectores(Integer codigo){
+          bd.value = "";
+        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.nombre");
+        perf = new Listbox();
+        int a=0;
+            for (Iterator it = perf.getItems().iterator(); it.hasNext();) {
+                    perf.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      perf.appendChild(li);
+             }
+
+    }
 ]]>
         </zscript>
         <panel width="100%" id="parametros"  height="100%" border="normal">
@@ -149,6 +181,7 @@ void campos(String valor){
                                     <listitem id="COBROS"  label="Historial de Cobros por Cliente " value="COBROS" />
                                     <listitem id="ARQUEO" label="Reporte de Caja" value="ARQUEO" />
                                     <listitem id="linea" label="=========================" value="linea" />
+                                    <listitem id="PORSECTOR" label="X Cobrar por Sectores" value="PORSECTOR" />
                                     <listitem id="linea2" label="=========================" value="linea2" />
            
                                 </listbox>
@@ -212,6 +245,42 @@ void campos(String valor){
                                 <datebox onCreate="self.value = adm.Date()"  id="hasta"/>
                               
                             </span>
+                        </row>
+                        <row visible = "false" id="filacanton">
+                            <span style="float:right"> Seleccione un Cantón(*):</span>
+                            <bandbox  width="200px" readonly="true"  id="bdCanton">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="cant" width="250px"
+                                                     onSelect="bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();">
+                        
+                                            <listitem forEach="${cantones}" value="${each}">
+                                                <listcell label="${each.nombre}" />
+
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+
+                        </row>
+                        <row visible = "false" id="filasector">
+                            <span style="float:right"> Seleccione un Sector(*):</span>
+                            <bandbox  width="200px" readonly="true"  id="bdSector">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="perf" width="250px"
+                                                     onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
+                                 
+                                            <listitem forEach="${perfiles}" value="${each}">
+                                                <listcell label="${each.nombre}" />
+
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+
                         </row>
                         <row  style="background:transparent;border:0px">
                             <span style="float:right"> Título:</span>

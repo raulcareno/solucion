@@ -16,6 +16,7 @@ import jcinform.conexion.Administrador;
 import jcinform.persistencia.Clientes;
 import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
+import jcinform.persistencia.Sector;
 import net.sf.jasperreports.engine.JRDataSource;
 
 /**
@@ -74,6 +75,51 @@ public class ReportesClase {
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
         return ds;
     }
+    
+       public JRDataSource facturasPendientes(Sector sec) {
+        Administrador adm = new Administrador();
+        List<Clientes> clientes = new ArrayList<Clientes>();
+//        if (cli.getCodigo().equals(-1)) {
+            clientes = adm.query("Select o from Clientes as o order by o.apellidos");
+//        } else {
+//            cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
+//            clientes.add(cli);
+//        }
+        ArrayList detalles = new ArrayList();
+        for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
+            Clientes clientes1 = itCli.next();
+            String quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
+                     + "FROM cxcobrar cx, factura  fa "   +
+                        " WHERE fa.sector  = '"+sec.getCodigo()+"' and fa.clientes  =  "+ clientes1.getCodigo()  +"  " + 
+                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
+                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
+            
+            List facEncontradas =  adm.queryNativo(quer); 
+            System.out.println(""+quer);
+            if (facEncontradas.size() > 0) {
+                Pendientes pendi = null;
+                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                    Vector vec = (Vector) itna.next();
+                    pendi = new Pendientes();
+                    pendi.setCliente(clientes1);
+                    pendi.setFactura("" + vec.get(0));
+                    Date d = (Date) vec.get(1);
+                    pendi.setFecha(d);
+                    Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
+                    pendi.setPlan(c.getPlan()+"");
+                    pendi.setDireccion(c.getDireccion());
+                    pendi.setTotal((BigDecimal) vec.get(2));
+                    pendi.setSaldo((BigDecimal) vec.get(3));
+                    detalles.add(pendi);
+                }
+
+            }
+
+        }
+        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
+        return ds;
+    }
+    
 
     public JRDataSource facturasCobradas(Clientes cli, Date desde, Date hasta) {
         Administrador adm = new Administrador();
