@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="ISP Sistema"?>
-<zk xmlns="http://www.zkoss.org/2005/zul">
+<zk onCreate="verificar()" xmlns="http://www.zkoss.org/2005/zul">
     <style>
 .estil{
 	height:100%;
@@ -22,13 +22,13 @@
     ]]>
     </zscript>
     <div height="110%" class="estilo2" >
-        <window   style="padding-top:1px;padding-left:60px;padding-right:60px;border:4px">
+        <window onOpen="verificar()"  onCreate="verificar()" style="padding-top:1px;padding-left:60px;padding-right:60px;border:4px">
             <zscript>
                      Session a = Sessions.getCurrent();
              
             Empleados emp = a.getAttribute("user");
             if(emp==null){
-            Executions.sendRedirect("login.zul");
+                Executions.sendRedirect("login.zul");
             }
 
                     void ingresar(Menuitem item ){
@@ -142,7 +142,7 @@
                                 <menuitem image="/images/contratos.png" value="/contratos.zul"  label="Contratos" onClick="ingresar(self)" />
                                 <menuitem image="/images/soporte.png" value="/soporte.zul"  label="Soporte" onClick="ingresar(self)" />
                                 <!--menuitem image="/images/facturacion.png" value="/facturacion.zul"  label="Facturación" onClick="ingresar(self)" /-->
-                                <menuitem image="/images/facturacion.png" value="/registroCobros.zul"  label="Registro de Cobros" onClick="ingresar(self)" />
+                                <menuitem image="/images/facturacion.png" value="/asignarFacturas.zul"  label="Asignar Facturas" onClick="ingresar(self)" />
                                 <menuitem image="/images/calendario.png" value="/generarFacturas.zul"  label="Generación Facturas" onClick="ingresar(self)" />
                                 <menuitem  value="/planes.zul"    image="/images/planes.png" label="Planes Productos" onClick="ingresar(self)" />
                                 <menuitem value="/reporteCobros.zul"  image="/images/reportes.png" label="Reportes" onClick="ingresar(self)" />
@@ -167,6 +167,15 @@
                 </panelchildren>
             </panel>
 
+<zscript>
+    void verificar(){
+            Session a = Sessions.getCurrent();
+            Empleados emp = a.getAttribute("user");
+            if(emp==null){
+                Executions.sendRedirect("login.zul");
+            }    
+            }
+</zscript>
         </window>
     </div>
  
