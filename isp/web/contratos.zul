@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat;
     Empleados usuarioActual = ses.getAttribute("user");
    Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
-      List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getCodigo()+"' ");
+      List planes = adm.query("Select o from Plan as o ");
       List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
       //List radios = adm.query("Select o from Radios as o");
       //List nodos = adm.query("Select o from Nodos as o");
