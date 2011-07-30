@@ -404,19 +404,22 @@ public class generarFacturas {
         
     public List buscar(Sucursal suc,Sector uno, Sector dos) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
-         List<Contratos> contratos = adm.query("Select o from Contratos as o where o.sector.numero between  "+uno.getNumero()+"  and  "+dos.getNumero()+"  ");
+         List<Contratos> contratos = adm.query("Select o from Contratos as o where o.radios.nodos.sector.numero between  "+uno.getNumero()+"  and  "+dos.getNumero()+"  ");
          String contraString = "";
          for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
             Contratos contratos1 = itContratos.next();
-            contraString = "'"+contratos1.getCodigo()+"',"+contraString+"";
+            contraString = ""+contratos1.getCodigo()+","+contraString+"";
             
         }
-         String quer = "SELECT fa.codigo, fa.numero, fa.fecha, c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
+         if(contraString.length()>0){
+             contraString = contraString.substring(0,contraString.length()-1);
+         }
+         String quer = "SELECT fa.codigo, fa.numero, fa.fecha, c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
                      + "FROM cxcobrar cx, factura  fa, contratos c "   +
                         " WHERE fa.contratos in ("+ contraString  +")  and c.codigo = fa.contratos  " + 
                         "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
                      + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
-         List deudas = adm.query(quer);
+         List deudas = adm.queryNativo(quer);
  
         return deudas;
     }
