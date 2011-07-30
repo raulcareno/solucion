@@ -155,7 +155,7 @@ List cantonesList = adm.query("Select o from Canton as o ");
                 
  void buscarSectores(Integer codigo){
           bd.value = "";
-        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.nombre");
+        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.numero" );
         perf = new Listbox();
         int a=0;
             for (Iterator it = perf.getItems().iterator(); it.hasNext();) {
@@ -167,7 +167,7 @@ List cantonesList = adm.query("Select o from Canton as o ");
                       Sector acceIt = (Sector) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      li.appendChild(new Listcell(acceIt.getNumero()+ ".- " + acceIt.getNombre()+" "));
                       perf.appendChild(li);
              }
             a=0;
@@ -180,7 +180,7 @@ List cantonesList = adm.query("Select o from Canton as o ");
                       Sector acceIt = (Sector) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      li.appendChild(new Listcell(acceIt.getNumero()+".- "+acceIt.getNombre()+" "));
                       perf2.appendChild(li);
              }
     } 
@@ -202,7 +202,7 @@ List cantonesList = adm.query("Select o from Canton as o ");
 	 
                             <rows>
 			
-                                <row visible = "false" id="filacanton">
+                                <row visible = "true" id="filacanton">
                                     <span style="float:right"> Seleccione un Cantón(*):</span>
                                     <bandbox  width="200px" readonly="true"  id="bdCanton">
                                         <bandpopup>
@@ -220,7 +220,7 @@ List cantonesList = adm.query("Select o from Canton as o ");
                                     </bandbox>
 
                                 </row>
-                                <row visible = "false" id="filasector">
+                                <row visible = "true" id="filasector">
                                     <span style="float:right"> Desde el Sector(*):</span>
                                     <bandbox  width="200px" readonly="true"  id="bdSector">
                                         <bandpopup>
@@ -238,7 +238,7 @@ List cantonesList = adm.query("Select o from Canton as o ");
                                     </bandbox>
 
                                 </row>	
-                                <row visible = "false" id="filasector2">
+                                <row visible = "true" id="filasector2">
                                     <span style="float:right"> Hasta el Sector(*):</span>
                                     <bandbox  width="200px" readonly="true"  id="bdSector2">
                                         <bandpopup>
