@@ -77,10 +77,16 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                              Date d = (Date)dos;
                                              row.appendChild(new Label(d1.format(d)+""));
                                     }else{
-                                        if(dos != null)
-                                            row.appendChild(new Label(dos+""));
-                                        else
+                                        if(dos != null){
+                                                if(j==1){
+                                                        row.appendChild(new Label(dos.substring(9)+""));        
+                                                }else{
+                                                        row.appendChild(new Label(dos+""));
+                                                }
+                                            
+                                        }else{
                                             row.appendChild(new Label(""));
+                                       }
                                     }
                             }
                             
@@ -146,6 +152,118 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                  
                  }
     }
+    void generarFacturas(){
+ 
+                       List col = facturasDatos.getRows().getChildren();
+                       Sucursal suc = sucursalEmp.getSucursal();
+                       Integer num = numero.value;
+                       
+                       String vali = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num);
+                        List siExiste = adm.query("Select o from Factura as o where o.numero = '"+vali+"' ");
+                        
+                            if(siExiste.size()>0){
+                                Messagebox.show("El # Inicial de la factura ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                numero.focus();
+                                return;        
+                            }
+                        String nofacturas="";
+                             for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        if(((Checkbox) labels.get(0)).isChecked()){
+                                             String nn = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num);
+                                             nofacturas += "'"+nn+"',";
+                                             num++;
+                                        }
+                               }
+                                        if(nofacturas.length()>0){
+                                             nofacturas = nofacturas.substring(0,nofacturas.length()-1);
+                                             siExiste = adm.query("Select o from Factura as o where o.numero in ("+nofacturas+") ");
+                        
+                                                        if(siExiste.size()>0){
+                                                        String existentes  = "";
+                                                                    for (Iterator itna = siExiste.iterator(); itna.hasNext();) {
+                                                                            Factura f = (Factura) itna.next();  
+                                                                            existentes += f.numero.substring(9)+" , ";
+
+                                                                    }
+                                                            Messagebox.show("Algunas # de Facturas ya se han Usado ...! \n"+existentes, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                            numero.focus();
+                                                            return;        
+                                                        }
+                                             
+                                         }
+                       Integer num2 = numero.value;
+                              for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        if(((Checkbox) labels.get(0)).isChecked()){
+                                                Factura fac = adm. buscarClave(object.getValue(),Factura.class);
+                                                String nn = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num2);
+                                                if(fac.getNumero() == null){
+                                                   fac.setNumero(nn);
+                                                  adm.actualizar(fac);
+                                                    num2++;
+                                                }
+                                        }
+                               }
+                               facturasPendientes();
+    }
+    
+      
+    String llenarCeros(String numero) {
+        
+        while (numero.length() < 7) {
+            numero = "0" + numero;
+        }        
+        return numero;
+        
+    }
+    
+    void anadirFilas(){
+                       List col = facturasDatos.getRows().getChildren();
+                       ArrayList arr  = new ArrayList();
+                       for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        if(((Checkbox) labels.get(0)).isChecked() &&  !((Label) labels.get(2)).getValue().equals("")  ){
+                                            try{
+                                                  arr.add(object);
+                                              }catch(Exception ax){
+                                                System.out.println(""+ax);
+                                            }
+                                              
+                                        }
+                          }
+                          for (int i = 0; i < arr.size(); i++) {
+                                     Row object = (Row) arr.get(i);
+                                      filasFacAsignados.appendChild(object);
+                          }
+                               
+ }
+ void quitarFilas(){
+ 
+                       List col = facturasDatosAsignados.getRows().getChildren();
+                       ArrayList arr  = new ArrayList();
+                       for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        if(((Checkbox) labels.get(0)).isChecked()){
+                                            try{
+                                                  arr.add(object);
+                                              }catch(Exception ax){
+                                                System.out.println(""+ax);
+                                            }
+                                              
+                                        }
+                          }
+                          for (int i = 0; i < arr.size(); i++) {
+                                     Row object = (Row) arr.get(i);
+                                      filasFac.appendChild(object);
+                          }
+                               
+ }
+    
   ]]>
     </zscript>
     <div>
@@ -220,7 +338,9 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                             <button label="Ejecutar" onClick="facturasPendientes()"/>
                                             </span>
                                         </row>	
-                                        <row>	
+                                        <row>
+                                            <intbox id="numero" constraint="no empty: Ingrese el número inicial para continuar" />
+                                            <button label="Generar # de Facturas" onClick="numero.getValue(); generarFacturas(); "/>
                                         </row>
                                     </rows>
                                 </grid>
@@ -229,12 +349,13 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                         <column >
                                             <checkbox id="todos" label="Selección" onCheck="seleccionarTodos(self,0)" />
                                         </column>
-                                        <column  label="Cod."/>
+                                        <column visible="false"  label="Cod."/>
                                         <column  label="# Fac."/>
+                                        <column   label="Fecha"/>
                                         <column  label="Dirección "/>
                                         <column   label="Total"/>
                                         <column   label="Saldo"/>
-                                        <column   label="Ref."/>
+                                        
                                     </columns>
                                     <rows id="filasFac">
                                     </rows>
@@ -243,8 +364,8 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                             <vbox>
                                 <separator height="90px"/>
                                  
-                                 <button label="" image="/images/anadirFilas.png" onClick=""/>
-                                <button label="" image="/images/quitarFilas.png" onClick=""/>
+                                 <button  orient="vertical"  label="AÑADIR" image="/images/anadirFilas.png" onClick="anadirFilas()"/>
+                                <button  orient="vertical"  label="QUITAR" image="/images/quitarFilas.png" onClick="quitarFilas()"/>
                             </vbox>
                             
                             <vbox>
@@ -283,9 +404,10 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                         <column >
                                             <checkbox id="todos2" label="Selección" onCheck="seleccionarTodos(self,1)" />
                                         </column>
-                                        <column  label="No."/>
-                                        <column  label="Fecha Pago"/>
-                                        <column   label="Dirección"/>
+                                        <column visible="false" label="Cod."/>
+                                        <column  label="# Fac."/>
+                                        <column   label="Fecha"/>
+                                        <column  label="Dirección "/>
                                         <column   label="Total"/>
                                         <column   label="Saldo"/>
                                      </columns>

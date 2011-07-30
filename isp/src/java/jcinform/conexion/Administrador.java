@@ -32,6 +32,7 @@ public class Administrador {
         try {
             prop.put("toplink.jdbc.user", "root");
             prop.put("toplink.jdbc.password", "jcinform@2020");
+            prop.put("toplink.cache.type.default","NONE");
             prop.put("toplink.jdbc.url", "jdbc:mysql://localhost:3306/isp?zeroDateTimeBehavior=convertToNull");
         } catch (Exception e) {
             System.out.println("ERROR EN ADMINISTRADOR LINEA 31;" + e);
