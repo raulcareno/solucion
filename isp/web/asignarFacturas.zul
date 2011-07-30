@@ -41,6 +41,7 @@ import java.text.SimpleDateFormat;
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
       generarFacturas gen = new generarFacturas();
 List cantonesList = adm.query("Select o from Canton as o ");
+List empleadosList = adm.query("Select o from Empleados as o ");
            
 
   void facturasPendientes(){
@@ -197,85 +198,134 @@ List cantonesList = adm.query("Select o from Canton as o ");
             <tabpanels>
                 <tabpanel>
        
-                    <groupbox id="panel" mold="3d" width="830px">
-                        <grid>
-	 
-                            <rows>
-			
-                                <row visible = "true" id="filacanton">
-                                    <span style="float:right"> Seleccione un Cantón(*):</span>
-                                    <bandbox  width="200px" readonly="true"  id="bdCanton">
-                                        <bandpopup>
-                                            <vbox>
-                                                <listbox id="cant" width="250px"
+                    <groupbox id="panel" mold="3d" width="100%">
+                        <hbox>
+                            <vbox >
+                                <grid>
+                                    <rows>
+                                        <row visible = "true" id="filacanton">
+                                            <span style="float:right"> Seleccione un Cantón(*):</span>
+                                            <bandbox  width="200px" readonly="true"  id="bdCanton">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="cant" width="250px"
                                                      onSelect="bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();">
                         
-                                                    <listitem forEach="${cantonesList}" value="${each}">
-                                                        <listcell label="${each.nombre}" />
+                                                            <listitem forEach="${cantonesList}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
 
-                                                    </listitem>
-                                                </listbox>
-                                            </vbox>
-                                        </bandpopup>
-                                    </bandbox>
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
 
-                                </row>
-                                <row visible = "true" id="filasector">
-                                    <span style="float:right"> Desde el Sector(*):</span>
-                                    <bandbox  width="200px" readonly="true"  id="bdSector">
-                                        <bandpopup>
-                                            <vbox>
-                                                <listbox id="perf" width="250px"
+                                        </row>
+                                        <row visible = "true" id="filasector">
+                                            <span style="float:right"> Desde el Sector(*):</span>
+                                            <bandbox  width="200px" readonly="true"  id="bdSector">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="perf" width="250px"
                                                      onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
                                  
-                                                    <listitem forEach="${perfiles}" value="${each}">
-                                                        <listcell label="${each.nombre}" />
+                                                            <listitem forEach="${perfiles}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
 
-                                                    </listitem>
-                                                </listbox>
-                                            </vbox>
-                                        </bandpopup>
-                                    </bandbox>
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
 
-                                </row>	
-                                <row visible = "true" id="filasector2">
-                                    <span style="float:right"> Hasta el Sector(*):</span>
-                                    <bandbox  width="200px" readonly="true"  id="bdSector2">
-                                        <bandpopup>
-                                            <vbox>
-                                                <listbox id="perf2" width="250px"
+                                        </row>	
+                                        <row visible = "true" id="filasector2">
+                                            <span style="float:right"> Hasta el Sector(*):</span>
+                                            <bandbox  width="200px" readonly="true"  id="bdSector2">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="perf2" width="250px"
                                                      onSelect="bdSector2.value=self.selectedItem.label;bdSector2.closeDropdown();">
                                  
-                                                    <listitem forEach="${perfiles}" value="${each}">
-                                                        <listcell label="${each.nombre}" />
+                                                            <listitem forEach="${perfiles}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
 
-                                                    </listitem>
-                                                </listbox>
-                                            </vbox>
-                                        </bandpopup>
-                                    </bandbox>
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
 
-                                </row>	
-                                <row>	
-                                </row>
-                            </rows>
-                        </grid>
+                                        </row>	
+                                        <row>	
+                                        </row>
+                                    </rows>
+                                </grid>
+                                <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasDatos" >
+                                    <columns>
+                                        <column  label="No."/>
+                                        <column  label="Fecha Pago"/>
+                                        <column   label="Total"/>
+                                        <column   label="Saldo"/>
+                                        <column   label="Ref."/>
+                                        <column   label=" "/>
+                                        <column   label=" "/>
+                                    </columns>
+                                    <rows id="filasFac">
+                                    </rows>
+                                </grid>
+                            </vbox>
+                            <vbox>
+                                <grid>
+                                    <rows>
+                                        <row>
+                                            <span style="float:right"> Seleccione un Empleado(*):</span>
+                                            <bandbox  width="200px" readonly="true"  id="bdEmpleados">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="empleados" width="250px"
+                                                     onSelect="bdEmpleados.value=self.selectedItem.label; bdEmpleados.closeDropdown();">
+                        
+                                                            <listitem forEach="${empleadosList}" value="${each}">
+                                                                <listcell label="${each.apellidos} ${each.nombres}" />
+
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                              
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Fecha(*):</span>
+                                            <datebox id="fecha" format="dd-MMM-yyyy" onCreate="self.value = adm.Date()"/>    
+                                        </row>
+                                        <row>
+                                            <button label="Listar" onClick=""/>
+                                        </row>
+                                        
+                                    </rows>
+                                </grid>
+                                <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasDatosAsignados" >
+                                    <columns>
+                                        <column  label="No."/>
+                                        <column  label="Fecha Pago"/>
+                                        <column   label="Total"/>
+                                        <column   label="Saldo"/>
+                                        <column   label="Ref."/>
+                                        <column   label=" "/>
+                                        <column   label=" "/>
+                                    </columns>
+                                    <rows id="filasFacAsignados">
+                                    </rows>
+                                </grid>
+                            </vbox>
+                        </hbox>
+                 
+                  
                     </groupbox>
  
 
-                    <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasDatos" >
-                        <columns>
-                            <column  label="No."/>
-                            <column  label="Fecha Pago"/>
-                            <column   label="Total"/>
-                            <column   label="Saldo"/>
-                            <column   label="Ref."/>
-                            <column   label=" "/>
-                            <column   label=" "/>
-                        </columns>
-                        <rows id="filasFac">
-                        </rows>
-                    </grid>
                 </tabpanel>
            
                 <tabpanel>

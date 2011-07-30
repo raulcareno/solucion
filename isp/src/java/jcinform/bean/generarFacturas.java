@@ -5,8 +5,6 @@
 package jcinform.bean;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.MathContext;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -19,6 +17,7 @@ import jcinform.persistencia.Cxcobrar;
 import jcinform.persistencia.Detalle;
 import jcinform.persistencia.Factura;
 import jcinform.persistencia.Procesos;
+import jcinform.persistencia.Sector;
 import jcinform.persistencia.Sucursal;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zul.Button;
@@ -399,7 +398,27 @@ public class generarFacturas {
         
     }
     
-    public static void main(String arg[]) {
-       
+  
+    
+   //BUSCAR PARA ASIGNAR FACTURA 
+        
+    public List buscar(Sucursal suc,Sector uno, Sector dos) {
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+         List<Contratos> contratos = adm.query("Select o from Contratos as o where o.sector.numero between  "+uno.getNumero()+"  and  "+dos.getNumero()+"  ");
+         String contraString = "";
+         for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
+            Contratos contratos1 = itContratos.next();
+            contraString = "'"+contratos1.getCodigo()+"',"+contraString+"";
+            
+        }
+         String quer = "SELECT fa.codigo, fa.numero, fa.fecha, c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
+                     + "FROM cxcobrar cx, factura  fa, contratos c "   +
+                        " WHERE fa.contratos in ("+ contraString  +")  and c.codigo = fa.contratos  " + 
+                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
+                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
+         List deudas = adm.query(quer);
+ 
+        return deudas;
     }
+   
 }
