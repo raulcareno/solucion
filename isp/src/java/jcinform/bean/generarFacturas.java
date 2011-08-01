@@ -314,7 +314,13 @@ public class generarFacturas {
             BigDecimal valor = new BigDecimal(con.getPlan().getValor());
             if (fechaInstalacion.getDate() > 1) {
                 int noDias = object.getPlan().getDias() - fechaInstalacion.getDate();
-                valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(object.getPlan().getDias()));
+                if(noDias > 0)
+                    valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(object.getPlan().getDias()));
+                else
+                       return "";
+              
+            }else{
+                valor = new BigDecimal(con.getPlan().getValor());
             }
             fac.setSubtotal(valor);
             fac.setDescuento(new BigDecimal(0));
@@ -418,7 +424,7 @@ public class generarFacturas {
                      + "FROM cxcobrar cx, factura  fa, contratos c "   +
                         " WHERE fa.contratos in ("+ contraString  +")  and c.codigo = fa.contratos  " + 
                         "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
-                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
+                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.numero, fa.fecha ";
          List deudas = adm.queryNativo(quer);
  
         return deudas;

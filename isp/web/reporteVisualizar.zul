@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?page id="reporteVisualizar"?>
-<window onCreate="llenar()" height="400px" width="400px"  id="reporteVisualizar">
+<window onCreate="llenar()" height="550px" width="750px"  id="reporteVisualizar">
     <jasperreport id="reporte" />
     <zscript>
         void llenar(){
@@ -9,7 +9,7 @@
             reporte.setType(reporteL.getType());
             reporte.setSrc(reporteL.getSrc());
             reporte.setParameters(reporteL.getParameters());
-            reporte.setDatasource(null);
+            reporte.setDatasource(reporteL.getDatasource());
             System.out.println("datos"+reporteL.getType());
          }
     </zscript>
