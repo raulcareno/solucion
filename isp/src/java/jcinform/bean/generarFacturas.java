@@ -15,6 +15,8 @@ import jcinform.conexion.Administrador;
 import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
 import jcinform.persistencia.Detalle;
+import jcinform.persistencia.Empleados;
+import jcinform.persistencia.Empleadosfacturas;
 import jcinform.persistencia.Factura;
 import jcinform.persistencia.Procesos;
 import jcinform.persistencia.Sector;
@@ -424,9 +426,35 @@ public class generarFacturas {
                      + "FROM cxcobrar cx, factura  fa, contratos c "   +
                         " WHERE fa.contratos in ("+ contraString  +")  and c.codigo = fa.contratos  " + 
                         "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
-                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.numero, fa.fecha ";
+                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
          List deudas = adm.queryNativo(quer);
  
+        return deudas;
+    }
+
+
+     public List buscar(Sucursal suc,Empleados emp, Date fecha) {
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+         String fec = convertiraString(fecha);
+//         List<Factura> facturasLista = adm.queryNativo("Select o.factura from Empleadosfacturas as o "
+//                 + "where o.empleados.codigo = "+emp.getCodigo()+"  "
+//                 + "and  o.fecha = '"+fec+"'  ",Factura.class);
+//         String facturaString = "";
+//         for (Iterator<Factura> itfacturas = facturasLista.iterator(); itfacturas.hasNext();) {
+//            Factura facturas1 = itfacturas.next();
+//            facturaString = ""+facturas1.getCodigo()+","+facturaString+"";
+//
+//        }
+//         if(facturaString.length()>0){
+//             facturaString = facturaString.substring(0,facturaString.length()-1);
+//         }
+         String quer = "SELECT fa.codigo, fa.numero, fa.fecha, c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
+                     + "FROM cxcobrar cx, factura  fa, contratos c "   +
+                        " WHERE fa.codigo in ( Select x.factura from Empleadosfacturas as x where x.empleados = '"+emp.getCodigo()+"' and Date(x.fecha) = '"+fec+"' )  and c.codigo = fa.contratos  " +
+                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
+                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
+         List deudas = adm.queryNativo(quer);
+
         return deudas;
     }
    

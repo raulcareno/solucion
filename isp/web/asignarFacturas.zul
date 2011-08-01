@@ -128,8 +128,11 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                               }
                                 });
                               row.appendChild(aButton);
-                            
-                            filasFac.appendChild(row);
+                            try{
+                                    filasFac.appendChild(row);
+                            }catch(Exception exs){
+                            System.out.println("NO SE AGREGÓ FILA POR ERROR: "+exs);
+                            }
                 }
             
                    }catch(Exception e){
@@ -302,7 +305,141 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                           }
                                
  }
-    
+
+
+  void guardarFilas(){
+
+                       List col = facturasDatosAsignados.getRows().getChildren();
+                       ArrayList arr  = new ArrayList();
+                       Date fechaAc = fecha.value;
+                       String fec = gen.convertiraString(fechaAc);
+                       if(empleados.selectedItem == null){
+                            Messagebox.show("Seleccione un Empleado..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            empleados.focus();
+                            return;
+                       }
+                       adm.ejecutaSqlNativo("Delete from Empleadosfacturas where DATE(fecha) = '"+fec +"' and empleados  = '"+((Empleados)empleados.selectedItem.value).getCodigo()+"' and fecharegreso is null  ");
+
+                       List facturasLista = adm.queryNativo("Select o.factura from Empleadosfacturas as o "
+                                         + "where o.empleados  = '"+((Empleados)empleados.selectedItem.value).getCodigo()+"'   "
+                                         + "and  DATE(o.fecha) = '"+fec+"'  ");
+
+                                     for (Iterator itfacturas = facturasLista.iterator(); itfacturas.hasNext();) {
+                                            Vector facturas1 = (Vector) itfacturas.next();
+                                        arr.add(facturas1.get(0));
+
+                                    }
+                           for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                            try{
+                                         
+                                                  Integer facCodigo = object.getValue();
+                                                  Empleadosfacturas empf = new Empleadosfacturas();
+                                                  empf.setFactura(new Factura(facCodigo));
+                                                  empf.setFecha(fechaAc);
+                                                  empf.setEmpleados(empleados.selectedItem.value);
+                                                  if(!arr.contains(facCodigo))
+                                                    adm.guardar(empf);
+                                              }catch(Exception ax){
+                                                System.out.println(""+ax.getMessage());
+                                            }
+
+                                        
+                          }
+
+ }
+   void facturasPendientesEmpleado(){
+        try{
+            List facturasDatosAsignados2 =  gen.buscar(sucursalEmp.getSucursal(),empleados.selectedItem.value,fecha.value);
+            facturasDatosAsignados.getRows().getChildren().clear();
+            ArrayList contratosAnadidos = new ArrayList();
+            int i =0;
+                for (Iterator itna = facturasDatosAsignados2.iterator(); itna.hasNext();) {
+                            Vector vec = (Vector) itna.next();
+
+                           Row row = new Row();
+                                   if(row == null){
+                                        row = new Row();
+                                   }
+                                Checkbox ch = new Checkbox("");
+
+                              row.appendChild(ch);
+
+                            for (int j = 0; j < vec.size(); j++) {
+                                Object dos = vec.get(j);
+                                if(row == null){
+                                    row = new Row();
+                                   }
+                                    if(dos instanceof Integer){
+                                             row.setValue(dos);
+                                             row.appendChild(new Label(dos+""));
+                                    }else if(dos instanceof Date){
+                                             SimpleDateFormat d1 = new SimpleDateFormat("dd-MM-yyyy");
+                                             Date d = (Date)dos;
+                                             row.appendChild(new Label(d1.format(d)+""));
+                                    }else{
+                                        if(dos != null){
+                                                if(j==1){
+                                                        row.appendChild(new Label(dos.substring(9)+""));
+                                                }else{
+                                                        row.appendChild(new Label(dos+""));
+                                                }
+
+                                        }else{
+                                            row.appendChild(new Label(""));
+                                       }
+                                    }
+                            }
+
+
+                              Button aButton = null;
+                            aButton = new Button("");
+                            aButton.setImage("/images/imprimir.gif");
+                            aButton.setId("emp"+vec.get(0));
+                            if( vec.get(1) == null)
+                                aButton.setDisabled(true);
+                            aButton.setAttribute("valor",vec.get(3));
+                            aButton.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                               /* if(verificar3("Ingresar")){ */
+                                     Map parameters = new HashMap();
+                                    List detalleFac = adm.query("Select o from Detalle as o where o.factura.codigo = '" + aButton.getId().replace("emp","") + "'");
+                                    ArrayList detalles = new ArrayList();
+                                   for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
+                                        Detalle det = itAbono.next();
+                                         detalles.add(det);
+                                   }
+                                   ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
+                                   reportelocal.setSrc(directorioReportes+"factura.jasper");
+                                   reportelocal.setParameters(parameters);
+                                   reportelocal.setDatasource(ds);
+                                   reportelocal.setType("pdf");
+                                   impresion.selected = true;
+                                    /*final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
+                                    win.setMaximizable(true);
+                                    win.setClosable(true);
+                                    win.setAttribute("reporte",reportelocal);
+                                    win.setTitle("Reporte");
+                                    win.doModal(); */
+                                 /*}else{
+                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                    } */
+
+                              }
+                                });
+                              row.appendChild(aButton);
+
+                            filasFacAsignados.appendChild(row);
+                }
+
+                   }catch(Exception e){
+                            //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            System.out.println("ERROR: "+e);
+
+                        }
+
+ }
   ]]>
     </zscript>
     <div>
@@ -310,7 +447,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
 
         <tabbox width="100%"  >
             <tabs>
-                <tab label="Facturas Pendientes" id="facturas" onSelect="facturasPendientes()"/>
+                <tab label="Facturas Pendientes" id="facturas" />
                 <tab id="impresion" label="Impresión" />
             </tabs>
             <tabpanels>
@@ -327,7 +464,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                 <bandpopup>
                                                     <vbox>
                                                         <listbox id="cant" width="250px"
-                                                     onSelect="bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();">
+                                                     onSelect="bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();facturasDatos.getRows().getChildren().clear();">
                         
                                                             <listitem forEach="${cantonesList}" value="${each}">
                                                                 <listcell label="${each.nombre}" />
@@ -346,7 +483,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                     <bandpopup>
                                                         <vbox>
                                                             <listbox id="sect" width="250px"
-                                                     onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
+                                                     onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();facturasDatos.getRows().getChildren().clear();">
                                  
                                                                 <listitem forEach="${sectiles}" value="${each}">
                                                                     <listcell label="${each.nombre}" />
@@ -362,7 +499,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                         <bandpopup>
                                                             <vbox>
                                                                 <listbox id="sect2" width="250px"
-                                                     onSelect="bdSector2.value=self.selectedItem.label;bdSector2.closeDropdown();">
+                                                     onSelect="bdSector2.value=self.selectedItem.label;bdSector2.closeDropdown();facturasDatos.getRows().getChildren().clear();">
                                  
                                                                     <listitem forEach="${sectiles}" value="${each}">
                                                                         <listcell label="${each.nombre}" />
@@ -395,7 +532,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                         <column visible="false"  label="Cod."/>
                                         <column   width="68px" label="# Fac."/>
                                         <column   width="85px"   label="Fecha"/>
-                                        <column  label="Dirección "/>
+                                        <column  width="150px"   label="Dirección "/>
                                         <column   width="45px"   label="Total"/>
                                         <column    width="45px"  label="Saldo"/>
                                         <column  width="45px" label=""/>
@@ -420,7 +557,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                 <bandpopup>
                                                     <vbox>
                                                         <listbox id="empleados" width="250px"
-                                                     onSelect="bdEmpleados.value=self.selectedItem.label; bdEmpleados.closeDropdown();">
+                                                     onSelect="bdEmpleados.value=self.selectedItem.label; bdEmpleados.closeDropdown(); facturasDatosAsignados.getRows().getChildren().clear();">
                         
                                                             <listitem forEach="${empleadosList}" value="${each}">
                                                                 <listcell label="${each.apellidos} ${each.nombres}" />
@@ -436,11 +573,14 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                             <span style="float:right"> Fecha(*):</span>
                                             <span>
                                                 <datebox id="fecha" format="dd-MMM-yyyy" onCreate="self.value = adm.Date()"/>
-                                                <button label="Buscar" onClick=""/>
+                                                <button label="Buscar" onClick="facturasPendientesEmpleado()"/>
                                             </span>
                                         </row>
-                                        <row>
-                                          
+                                        <row spans="2" align="center">
+                                            <span>
+                                          <button label="Guardar" image="/images/guardar.gif" onClick="guardarFilas();facturasPendientesEmpleado();"/>
+                                          <button label="Imprimir" image="/images/imprimir.gif" onClick=""/>
+                                          </span>
                                         </row>
                                         
                                     </rows>
@@ -448,16 +588,16 @@ List empleadosList = adm.query("Select o from Empleados as o ");
 
                                 <grid height="350px"  sclass="MyGridRowHeight2"  fixedLayout="true"  id="facturasDatosAsignados" >
                                     <columns>
-                                        <column >
+                                        <column  width="35px" >
                                             <checkbox id="todos2" label="Selección" onCheck="seleccionarTodos(self,1)" />
                                         </column>
                                         <column visible="false" label="Cod."/>
-                                        <column  label="# Fac."/>
-                                        <column   label="Fecha"/>
-                                        <column  label="Dirección "/>
-                                        <column   label="Total"/>
-                                        <column   label="Saldo"/>
-                                        <column   label=""/>
+                                        <column   width="68px" label="# Fac."/>
+                                        <column   width="85px"   label="Fecha"/>
+                                        <column  width="150px" label="Dirección "/>
+                                        <column   width="45px"   label="Total"/>
+                                        <column    width="45px"  label="Saldo"/>
+                                        <column  width="45px" label=""/>
                                     </columns>
                                     <rows id="filasFacAsignados">
                                     </rows>

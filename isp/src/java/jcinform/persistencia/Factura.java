@@ -72,7 +72,8 @@ public class Factura implements Serializable {
     private Collection<Detalle> detalleCollection;
     @OneToMany(mappedBy = "factura")
     private Collection<Cxcobrar> cxcobrarCollection;
-
+@Column(name = "impresa")
+    private Boolean impresa;
     public Factura() {
     }
 
@@ -199,6 +200,14 @@ public class Factura implements Serializable {
 
     public void setContratos(Contratos contratos) {
         this.contratos = contratos;
+    }
+
+    public Boolean getImpresa() {
+        return impresa;
+    }
+
+    public void setImpresa(Boolean impresa) {
+        this.impresa = impresa;
     }
 
     public Collection<Detalle> getDetalleCollection() {
