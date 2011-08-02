@@ -94,10 +94,10 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                             try{
                                               Empleadosfacturas empf = (Empleadosfacturas)object.getValue();
                                               BigDecimal valorAnt = empf.getTotal();
-                                              empf.setCobrado(true);
+                                              
                                               empf.setVisitado(true);
                                               empf.setFecharegreso(adm.Date());
-                                              empf.setDescuento(((Decimalbox)labels.get(5)).getValue());
+                                             empf.setCobrado(false);
                                               empf.setEfectivo(((Decimalbox)labels.get(6)).getValue());
                                               empf.setCheque(((Decimalbox)labels.get(7)).getValue());
                                               empf.setNocheque(((Textbox)labels.get(8)).getValue());
@@ -105,7 +105,13 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                               empf.setNocuenta(((Textbox)labels.get(10)).getValue());
                                               empf.setTarjeta(((Decimalbox)labels.get(11)).getValue());
                                               empf.setNotarjeta(((Textbox)labels.get(12)).getValue());
-                                              empf.setTotal(empf.getEfectivo().add(empf.getCheque()).add(empf.getDebito()).add(empf.getTarjeta()));
+                                              BigDecimal tot = empf.getEfectivo().add(empf.getCheque()).add(empf.getDebito()).add(empf.getTarjeta());
+                                              empf.setTotal(tot);
+                                                  if(tot.doubleValue()>0){
+                                                        empf.setTotal(tot.add(empf.getDescuento()));
+                                                        empf.setDescuento(((Decimalbox)labels.get(5)).getValue());
+                                                        empf.setCobrado(true);
+                                                  }
                                               adm.actualizar(empf);
                                                     Cxcobrar cobrar = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
                                                     cobrar.setFactura(empf.getFactura());
@@ -120,7 +126,9 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                     cobrar.setTarjeta(empf.getTarjeta());
                                                     cobrar.setNocheque(empf.getNocheque());
                                                     cobrar.setNotarjeta(empf.getNotarjeta());
-                                                    adm.guardar(cobrar);
+                                                    if(cobrar.getHaber().doubleValue()>0){
+                                                        adm.guardar(cobrar);
+                                                    }
 
 
                                               }catch(Exception ax){
