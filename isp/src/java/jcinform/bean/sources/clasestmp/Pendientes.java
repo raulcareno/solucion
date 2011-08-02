@@ -20,7 +20,7 @@ public class Pendientes {
     
     String factura;
     Date fecha,fechapago;
-    BigDecimal total,valorabonoefe,valorabonoche,valorabonotar,valorabonodeb;
+    BigDecimal total,valorabonoefe,valorabonoche,valorabonotar,valorabonodeb,valorabonodes;
     BigDecimal saldo;
     Clientes cliente;
     Integer noabono;
@@ -164,6 +164,14 @@ public class Pendientes {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public BigDecimal getValorabonodes() {
+        return valorabonodes;
+    }
+
+    public void setValorabonodes(BigDecimal valorabonodes) {
+        this.valorabonodes = valorabonodes;
     }
 
   

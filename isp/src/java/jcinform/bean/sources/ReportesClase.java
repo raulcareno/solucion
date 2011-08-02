@@ -16,6 +16,8 @@ import jcinform.conexion.Administrador;
 import jcinform.persistencia.Clientes;
 import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
+import jcinform.persistencia.Empleados;
+import jcinform.persistencia.Empleadosfacturas;
 import jcinform.persistencia.Sector;
 import net.sf.jasperreports.engine.JRDataSource;
 
@@ -213,6 +215,42 @@ public JRDataSource reporteCaja(Date desde, Date hasta) {
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
         return ds;
     }
+
+public JRDataSource reporteCobrosRecaudador(Date desde, Empleados emp) {
+        Administrador adm = new Administrador();
+        ArrayList detalles = new ArrayList();
+        String desdestr = convertiraString(desde);
+                Pendientes pendi = null;
+                List<Empleadosfacturas> abonos = adm.queryNativo("Select o.* from Empleadosfacturas as o "
+                        + "where date(o.fecha) = '"+desdestr+"'  and o.empleados = '"+emp.getCodigo()+"' ",Empleadosfacturas.class);
+                    int i = 1;
+                    for (Iterator<Empleadosfacturas> itAbono = abonos.iterator(); itAbono.hasNext();) {
+                        Empleadosfacturas cIt = itAbono.next();
+                        pendi = new Pendientes();
+                        pendi.setFactura("" + cIt.getFactura().getNumero());
+                        pendi.setFecha(cIt.getFecha());
+                        pendi.setCliente(cIt.getFactura().getClientes());
+                        pendi.setPlan("");
+                        pendi.setTotal(cIt.getTotal());
+                        pendi.setSaldo(new BigDecimal(0));
+                        pendi.setNoabono(cIt.getCodigo());
+                        pendi.setFechapago(cIt.getFecha());
+                        pendi.setValorabonodes(cIt.getDescuento());
+                        pendi.setValorabonoefe(cIt.getEfectivo());
+                        pendi.setValorabonoche(cIt.getCheque());
+                        pendi.setValorabonodeb(cIt.getDebito());
+                        pendi.setValorabonotar(cIt.getTarjeta());
+                        pendi.setNocheque(cIt.getNocheque());
+                        pendi.setNocuenta(cIt.getNocuenta());
+                        pendi.setNotarjeta(cIt.getNotarjeta());
+                        detalles.add(pendi);
+                        i++;
+                    }
+        
+        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
+        return ds;
+    }
+
     public static String convertiraString(Date fecha) {
 
         return (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();

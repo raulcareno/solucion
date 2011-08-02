@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="23"/>
 	<parameter name="empresa" class="java.lang.String"/>
 	<parameter name="direccion" class="java.lang.String"/>
 	<parameter name="telefono" class="java.lang.String"/>
 	<parameter name="ruc" class="java.lang.String"/>
 	<parameter name="cliente" class="java.lang.String"/>
-	<parameter name="desde" class="java.util.Date"/>
+	<parameter name="fecha" class="java.util.Date"/>
 	<parameter name="hasta" class="java.util.Date"/>
 	<parameter name="empleados" class="java.lang.String"/>
 	<parameter name="empleados2" class="java.lang.String"/>
@@ -31,6 +31,7 @@
 	<field name="nocuenta" class="java.lang.String"/>
 	<field name="nocheque" class="java.lang.String"/>
 	<field name="notarjeta" class="java.lang.String"/>
+	<field name="valorabonodes" class="java.math.BigDecimal"/>
 	<variable name="saldo_1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
 	</variable>
@@ -40,23 +41,11 @@
 	<variable name="variable1" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{factura}]]></variableExpression>
 	</variable>
-	<variable name="valorabonoefe_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{valorabonoefe}]]></variableExpression>
-	</variable>
-	<variable name="valorabonodeb_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{valorabonodeb}]]></variableExpression>
-	</variable>
 	<variable name="nocheque_1" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{nocheque}]]></variableExpression>
 	</variable>
-	<variable name="valorabonoche_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{valorabonoche}]]></variableExpression>
-	</variable>
-	<variable name="valorabonotar_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{valorabonotar}]]></variableExpression>
-	</variable>
 	<variable name="totalpago" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{valorabonotar}]]></variableExpression>
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
 	</variable>
 	<variable name="valorabonoefe_2" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{valorabonoefe}]]></variableExpression>
@@ -69,6 +58,9 @@
 	</variable>
 	<variable name="valorabonotar_2" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{valorabonotar}]]></variableExpression>
+	</variable>
+	<variable name="valorabonodes_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorabonodes}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -135,10 +127,10 @@
 			<textField pattern="dd-MMM-yyyy">
 				<reportElement x="382" y="3" width="78" height="17"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[$P{desde}]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{fecha}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="199" y="30" width="83" height="15" backcolor="#EDECEC"/>
+				<reportElement mode="Opaque" x="199" y="30" width="82" height="15" backcolor="#EDECEC"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -166,7 +158,7 @@
 				<text><![CDATA[Efectivo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="324" y="30" width="58" height="15" backcolor="#EDECEC"/>
+				<reportElement mode="Opaque" x="281" y="30" width="58" height="15" backcolor="#EDECEC"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -180,7 +172,7 @@
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="282" y="30" width="42" height="15" backcolor="#EDECEC"/>
+				<reportElement mode="Opaque" x="339" y="30" width="43" height="15" backcolor="#EDECEC"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -191,7 +183,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[No.Pago]]></text>
+				<text><![CDATA[Descuento]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="602" y="30" width="60" height="15" backcolor="#EDECEC"/>
@@ -308,7 +300,7 @@
 			<textField>
 				<reportElement x="679" y="0" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["Pág. "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="759" y="0" width="40" height="20"/>
@@ -328,9 +320,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="15" splitType="Stretch">
+		<band height="12" splitType="Stretch">
 			<textField pattern="dd/MMM/yyyy" isBlankWhenNull="true">
-				<reportElement x="324" y="0" width="58" height="15"/>
+				<reportElement x="281" y="0" width="58" height="12"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -339,26 +331,12 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{fechaabono}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="282" y="0" width="42" height="15"/>
-				<box leftPadding="3" rightPadding="3">
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{noabono}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="382" y="0" width="40" height="15"/>
+			<textField pattern="#,#00.00" isBlankWhenNull="true">
+				<reportElement x="339" y="0" width="43" height="12"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -367,12 +345,26 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{valorabonodes}.doubleValue() > new Double(0)? $F{valorabonodes}: null)]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,#00.00" isBlankWhenNull="true">
+				<reportElement x="382" y="0" width="40" height="12"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{valorabonoefe}.doubleValue() > new Double(0)? $F{valorabonoefe}: null)]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="422" y="0" width="40" height="15"/>
+			<textField pattern="#,#00.00" isBlankWhenNull="true">
+				<reportElement x="422" y="0" width="40" height="12"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -381,12 +373,12 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{valorabonodeb}.doubleValue() > new Double(0)? $F{valorabonodeb}: null)]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="462" y="0" width="40" height="15"/>
+			<textField pattern="#,#00.00" isBlankWhenNull="true">
+				<reportElement x="462" y="0" width="40" height="12"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -395,12 +387,12 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{valorabonoche}.doubleValue() > new Double(0)? $F{valorabonoche}: null)]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="502" y="0" width="40" height="15"/>
+			<textField pattern="#,#00.00" isBlankWhenNull="true">
+				<reportElement x="502" y="0" width="40" height="12"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -408,13 +400,13 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{valorabonotar}.doubleValue() > new Double(0)? $F{valorabonotar}: null)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="542" y="0" width="60" height="15"/>
+				<reportElement x="542" y="0" width="60" height="12"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -422,13 +414,13 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nocuenta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="602" y="0" width="60" height="15"/>
+				<reportElement x="602" y="0" width="60" height="12"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -436,13 +428,13 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nocheque}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="662" y="0" width="77" height="15"/>
+				<reportElement x="662" y="0" width="77" height="12"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -450,13 +442,13 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{notarjeta}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="199" y="0" width="82" height="15" backcolor="#EDECEC"/>
+				<reportElement mode="Transparent" x="199" y="0" width="82" height="12" backcolor="#EDECEC"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -464,13 +456,13 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{factura}.substring(6,16)]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{factura}.substring(9)]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement mode="Opaque" x="739" y="0" width="63" height="15" backcolor="#EDECEC"/>
+			<textField pattern="#,#00.00">
+				<reportElement mode="Transparent" x="739" y="0" width="63" height="12" backcolor="#EDECEC"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -478,11 +470,13 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valor}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="0" y="0" width="199" height="15" backcolor="#EDECEC"/>
+				<reportElement mode="Transparent" x="0" y="0" width="199" height="12" backcolor="#EDECEC"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -491,7 +485,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{cliente}]]></textFieldExpression>
 			</textField>
@@ -505,8 +499,8 @@
 	</pageFooter>
 	<summary>
 		<band height="102" splitType="Stretch">
-			<textField pattern="###0.00">
-				<reportElement mode="Opaque" x="382" y="4" width="40" height="20" backcolor="#EDECEC"/>
+			<textField pattern="#,#00.00">
+				<reportElement mode="Opaque" x="382" y="0" width="40" height="20" backcolor="#EDECEC"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -515,12 +509,12 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font pdfFontName="Helvetica-Bold"/>
+					<font size="9" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoefe_2}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
-				<reportElement mode="Opaque" x="422" y="4" width="40" height="20" backcolor="#EDECEC"/>
+			<textField pattern="#,#00.00">
+				<reportElement mode="Opaque" x="422" y="0" width="40" height="20" backcolor="#EDECEC"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -529,12 +523,12 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font pdfFontName="Helvetica-Bold"/>
+					<font size="9" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonodeb_2}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
-				<reportElement mode="Opaque" x="462" y="4" width="40" height="20" backcolor="#EDECEC"/>
+			<textField pattern="#,#00.00">
+				<reportElement mode="Opaque" x="462" y="0" width="40" height="20" backcolor="#EDECEC"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -543,12 +537,12 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font pdfFontName="Helvetica-Bold"/>
+					<font size="9" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoche_2}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
-				<reportElement mode="Opaque" x="502" y="4" width="40" height="20" backcolor="#EDECEC"/>
+			<textField pattern="#,#00.00">
+				<reportElement mode="Opaque" x="502" y="0" width="40" height="20" backcolor="#EDECEC"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -557,26 +551,12 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font pdfFontName="Helvetica-Bold"/>
+					<font size="9" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonotar_2}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement mode="Opaque" x="739" y="4" width="63" height="20" backcolor="#EDECEC"/>
-				<box rightPadding="2">
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="10" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoefe_2}.add($V{valorabonodeb_2}).add($V{valorabonoche_2}).add($V{valorabonotar_2})]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="186" y="4" width="196" height="20" backcolor="#EDECEC"/>
+				<reportElement mode="Opaque" x="199" y="0" width="140" height="20" backcolor="#EDECEC"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -589,12 +569,6 @@
 				</textElement>
 				<text><![CDATA[Totales: ]]></text>
 			</staticText>
-			<line>
-				<reportElement x="248" y="2" width="555" height="1"/>
-				<graphicElement>
-					<pen lineWidth="1.25"/>
-				</graphicElement>
-			</line>
 			<textField>
 				<reportElement x="43" y="82" width="238" height="20"/>
 				<box>
@@ -611,6 +585,41 @@
 				<textElement textAlignment="Center" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA["Registrador: "+$P{empleados2}]]></textFieldExpression>
 			</textField>
+			<textField pattern="#,#00.00">
+				<reportElement mode="Opaque" x="739" y="0" width="63" height="20" backcolor="#EDECEC"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalpago}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,#00.00">
+				<reportElement mode="Opaque" x="339" y="0" width="43" height="20" backcolor="#EDECEC"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonodes_2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="645" y="0" width="94" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL COBRADO: ]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>

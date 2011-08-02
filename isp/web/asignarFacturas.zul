@@ -347,7 +347,8 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                   empf.setDebito(new BigDecimal(0));
                                                   empf.setCheque(new BigDecimal(0));
                                                   empf.setTarjeta(new BigDecimal(0));
-
+                                                  empf.setTotal(new BigDecimal(0));
+                                                  empf.setDescuento(new BigDecimal(0));
                                                   if(!arr.contains(facCodigo))
                                                     adm.guardar(empf);
                                               }catch(Exception ax){

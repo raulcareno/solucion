@@ -32,9 +32,9 @@ import java.text.SimpleDateFormat;
   import jcinform.bean.generarFacturas;
     import jcinform.bean.sources.*;
 import jcinform.bean.sources.clasestmp.Pendientes;
+import bean.reportesClase;
 
   Session ses = Sessions.getCurrent();
-  //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
     Administrador adm = new Administrador();
     static Contratos equi = new Contratos();
     Permisos permiso = new Permisos();
@@ -44,7 +44,7 @@ import jcinform.bean.sources.clasestmp.Pendientes;
       generarFacturas gen = new generarFacturas();
          String directorioReportes = empresa.getReportes();
       
-      
+       ReportesClase reportes = new ReportesClase();
 List cantonesList = adm.query("Select o from Canton as o ");
 List empleadosList = adm.query("Select o from Empleados as o ");
  
@@ -97,7 +97,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                               
                                               empf.setVisitado(true);
                                               empf.setFecharegreso(adm.Date());
-                                             empf.setCobrado(false);
+                                              empf.setCobrado(false);
                                               empf.setEfectivo(((Decimalbox)labels.get(6)).getValue());
                                               empf.setCheque(((Decimalbox)labels.get(7)).getValue());
                                               empf.setNocheque(((Textbox)labels.get(8)).getValue());
@@ -106,13 +106,16 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                               empf.setTarjeta(((Decimalbox)labels.get(11)).getValue());
                                               empf.setNotarjeta(((Textbox)labels.get(12)).getValue());
                                               BigDecimal tot = empf.getEfectivo().add(empf.getCheque()).add(empf.getDebito()).add(empf.getTarjeta());
-                                              alert(tot.doubleValue()+"");
+                                            
                                               empf.setTotal(tot);
                                                   if(tot.doubleValue()>0){
                                                         empf.setDescuento(((Decimalbox)labels.get(5)).getValue());
                                                         empf.setTotal(tot.add(empf.getDescuento()));
-                                                       
-                                                        empf.setCobrado(true);
+                                                         empf.setCobrado(true);
+                                                         Descuentos descu = adm.buscarClave(((Intbox)labels.get(4)).getValue(),Descuentos.class);
+                                                         descu.setAplicado(true);
+                                                         descu.setFechaaplicado(adm.Date());
+                                                         adm.actualizar(descu);
                                                   }
                                               adm.actualizar(empf);
                                                     Cxcobrar cobrar = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
@@ -185,7 +188,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                             descuento.setCols(4);
                             descuento.setTabindex(0);
                             descuento.setReadonly(true);
-                            descuento.setValue(new BigDecimal(0));
+                            descuento.setValue(empf.getDescuento());
 
                             List descuentos = adm.query("Select o from Descuentos as o where o.aplicado = false and o.factura.codigo = '"+ empf.getFactura().getCodigo() +"' ");
                             if(descuentos.size()>0){
@@ -264,106 +267,25 @@ List empleadosList = adm.query("Select o from Empleados as o ");
 
  }
  
- void imprimirTodos(){
-            List col = facturasDatos.getRows().getChildren();
-            String codigos = "";
-                           for (int i = 0; i < col.size(); i++) {
-                                     Row object = (Row) col.get(i);
-                                     List labels = object.getChildren();
-                                     if(((Checkbox) labels.get(0)).isChecked()){
-                                                if(!labels.get(1).equals("")){
-                                                      Integer facCodigo = object.getValue();
-                                                     codigos += facCodigo+",";
-                                                }
-                                     }
-                                                 
-                            }
-            if(codigos.length() >0){
-                codigos = codigos.substring(0,codigos.length()-1);
-                Map parameters = new HashMap();
-                parameters.put("empresa",empresa.getRazonsocial());
-                parameters.put("ruc",empresa.getRuc());
-                parameters.put("direccion",empresa.getDireccion());
-                parameters.put("telefono",empresa.getTelefono());
-                    List detalleFac = adm.query("Select o from Detalle as o " + 
-                    "where o.factura.codigo in (" + codigos + ") order by o.factura.numero  ");
-                    ArrayList detalles = new ArrayList();
-                   for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
-                        Detalle det = itAbono.next();
-                         detalles.add(det);
-                   }
-                   ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
-                   reportelocal.setSrc(directorioReportes+"factura.jasper");
-                   reportelocal.setParameters(parameters);
-                   reportelocal.setDatasource(ds);
-                   reportelocal.setType("pdf");
-                   impresion.selected = true;
-                
-            }
-                
  
- }
  void imprimirTodosEmpleado(){
-            List col = facturasDatosAsignados.getRows().getChildren();
-            ArrayList detalles = new ArrayList();
-            String codigos = "";
-                           for (int i = 0; i < col.size(); i++) {
-                                     Row object = (Row) col.get(i);
-                                     List labels = object.getChildren();
-                                         Integer facCodigo = object.getValue();
-                                         codigos += facCodigo+",";
-                            }
-            if(codigos.length() >0){
-                codigos = codigos.substring(0,codigos.length()-1);
-//--------------------------------------------------------------------------------------------
-            String quer = "SELECT fa.codigo, fa.fecha,max(cx.fecha), fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos,fa.clientes "
-                     + "FROM cxcobrar cx, factura  fa "   +
-                        " WHERE fa.codigo in ("+ codigos +")  " + 
-                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
-                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
-                     System.out.println(quer);
-            List facEncontradas =  adm.queryNativo(quer); 
-            System.out.println(""+quer);
-            if (facEncontradas.size() > 0) {
-                Pendientes pendi = null;
-                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
-                    Vector vec = (Vector) itna.next();
-                    pendi = new Pendientes();
-                    Clientes cli = adm.buscarClave(vec.get(6),Clientes.class);
-                    pendi.setCliente(cli);
-                    pendi.setFactura("" + vec.get(0));
-                    Date d = (Date) vec.get(1);
-                    pendi.setFecha(d);
-                    Date d = (Date) vec.get(2);
-                    pendi.setFechapago(d);
-                    
-                    Contratos c = (Contratos) adm.buscarClave(vec.get(5), Contratos.class);
-                    pendi.setPlan(c.getPlan()+"");
-                    pendi.setDireccion(c.getDireccion());
-                    pendi.setTotal((BigDecimal) vec.get(3));
-                    pendi.setSaldo((BigDecimal) vec.get(4));
-                    detalles.add(pendi);
-                }
-
-            }
-        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);                
-                
-                
-                
-//-------------------------------------------------------------------------------------------------------
+            ReportePendientesDataSource ds = reportes.reporteCobrosRecaudador(fecha.value,empleados.selectedItem.value);
                 Map parameters = new HashMap();
                 parameters.put("empresa",empresa.getRazonsocial());
                 parameters.put("ruc",empresa.getRuc());
                 parameters.put("direccion",empresa.getDireccion());
                 parameters.put("telefono",empresa.getTelefono());    
                 parameters.put("empleados",empleados.selectedItem.value+"");    
-                   reportelocal.setSrc(directorioReportes+"facturasempleado.jasper");
+                parameters.put("empleados2",usuarioActual+"");    
+                parameters.put("fecha",fecha.value);    
+                
+                   reportelocal.setSrc(directorioReportes+"facturacobradassempleado.jasper");
                    reportelocal.setParameters(parameters);
                    reportelocal.setDatasource(ds);
                    reportelocal.setType("pdf");
                    impresion.selected = true;
                 
-            }
+         
                 
  
  }
