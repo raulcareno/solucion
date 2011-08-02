@@ -112,10 +112,14 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                         empf.setDescuento(((Decimalbox)labels.get(5)).getValue());
                                                         empf.setTotal(tot.add(empf.getDescuento()));
                                                          empf.setCobrado(true);
-                                                         Descuentos descu = adm.buscarClave(((Intbox)labels.get(4)).getValue(),Descuentos.class);
-                                                         descu.setAplicado(true);
-                                                         descu.setFechaaplicado(adm.Date());
-                                                         adm.actualizar(descu);
+                                                         try{
+                                                             Descuentos descu = adm.buscarClave(((Intbox)labels.get(4)).getValue(),Descuentos.class);
+                                                             descu.setAplicado(true);
+                                                             descu.setFechaaplicado(adm.Date());
+                                                             adm.actualizar(descu);
+                                                         }catch(Exception em){
+                                                            System.out.println("ERROR EN DESCUENTO: "+em);
+                                                         }
                                                   }
                                               adm.actualizar(empf);
                                                     Cxcobrar cobrar = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
@@ -137,7 +141,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
 
 
                                               }catch(Exception ax){
-                                                System.out.println(""+ax.getMessage());
+                                                System.out.println(ax+" --- "+ax.getMessage());
                                             }
 
                                         
