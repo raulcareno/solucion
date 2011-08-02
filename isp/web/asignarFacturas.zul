@@ -343,6 +343,11 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                   empf.setFecha(fechaAc);
                                                   empf.setEmpleados(empleados.selectedItem.value);
                                                   empf.setSaldo(new BigDecimal(labels.get(5).getValue()));
+                                                  empf.setEfectivo(new BigDecimal(0));
+                                                  empf.setDebito(new BigDecimal(0));
+                                                  empf.setCheque(new BigDecimal(0));
+                                                  empf.setTarjeta(new BigDecimal(0));
+
                                                   if(!arr.contains(facCodigo))
                                                     adm.guardar(empf);
                                               }catch(Exception ax){
