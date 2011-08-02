@@ -106,10 +106,12 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                               empf.setTarjeta(((Decimalbox)labels.get(11)).getValue());
                                               empf.setNotarjeta(((Textbox)labels.get(12)).getValue());
                                               BigDecimal tot = empf.getEfectivo().add(empf.getCheque()).add(empf.getDebito()).add(empf.getTarjeta());
+                                              alert(tot.doubleValue()+"");
                                               empf.setTotal(tot);
                                                   if(tot.doubleValue()>0){
-                                                        empf.setTotal(tot.add(empf.getDescuento()));
                                                         empf.setDescuento(((Decimalbox)labels.get(5)).getValue());
+                                                        empf.setTotal(tot.add(empf.getDescuento()));
+                                                       
                                                         empf.setCobrado(true);
                                                   }
                                               adm.actualizar(empf);
@@ -154,6 +156,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
             facturasDatosAsignados.getRows().getChildren().clear();
             ArrayList contratosAnadidos = new ArrayList();
             int i =0;
+            int si =0;
                 for (Iterator itna = facturasDatosAsignados2.iterator(); itna.hasNext();) {
                           Empleadosfacturas empf = (Empleadosfacturas) itna.next();
                            Row row = new Row();
@@ -246,10 +249,14 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                             notarjeta.setCols(6);
                             notarjeta.setValue(empf.getNotarjeta());
                             row.appendChild(notarjeta);
-
+                            if(empf.getTotal().doubleValue()>0)
+                                    si++;
                             filasFacAsignados.appendChild(row);
                 }
-
+                if(si>0)
+                    guardar.disabled = true;
+                    else
+                    guardar.disabled = false;
                    }catch(Exception e){
                             //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             System.out.println("ERROR: "+e);
@@ -405,7 +412,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                         </row>
                                         <row spans="2" align="center">
                                             <span>
-                                                <button label="Guardar" image="/images/guardar.gif" onClick="guardarFilas();facturasPendientesEmpleado();"/>
+                                                <button id="guardar" label="Guardar" image="/images/guardar.gif" onClick="guardarFilas();facturasPendientesEmpleado();"/>
                                                 <button label="Imprimir" image="/images/imprimir.gif" onClick="imprimirTodosEmpleado()"/>
                                             </span>
                                         </row>
