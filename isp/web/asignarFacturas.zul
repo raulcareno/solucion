@@ -31,6 +31,7 @@
 import java.text.SimpleDateFormat;
   import jcinform.bean.generarFacturas;
     import jcinform.bean.sources.*;
+import jcinform.bean.sources.clasestmp.Pendientes;
 
   Session ses = Sessions.getCurrent();
   //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
@@ -452,6 +453,10 @@ List empleadosList = adm.query("Select o from Empleados as o ");
             if(codigos.length() >0){
                 codigos = codigos.substring(0,codigos.length()-1);
                 Map parameters = new HashMap();
+                parameters.put("empresa",empresa.getRazonsocial());
+                parameters.put("ruc",empresa.getRuc());
+                parameters.put("direccion",empresa.getDireccion());
+                parameters.put("telefono",empresa.getTelefono());
                     List detalleFac = adm.query("Select o from Detalle as o " + 
                     "where o.factura.codigo in (" + codigos + ") order by o.factura.numero  ");
                     ArrayList detalles = new ArrayList();
@@ -461,6 +466,65 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                    }
                    ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
                    reportelocal.setSrc(directorioReportes+"factura.jasper");
+                   reportelocal.setParameters(parameters);
+                   reportelocal.setDatasource(ds);
+                   reportelocal.setType("pdf");
+                   impresion.selected = true;
+                
+            }
+                
+ 
+ }
+ void imprimirTodosEmpleado(){
+            List col = facturasDatosAsignados.getRows().getChildren();
+            ArrayList detalles = new ArrayList();
+            String codigos = "";
+                           for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                     List labels = object.getChildren();
+                                         Integer facCodigo = object.getValue();
+                                         codigos += facCodigo+",";
+                            }
+            if(codigos.length() >0){
+                codigos = codigos.substring(0,codigos.length()-1);
+//--------------------------------------------------------------------------------------------
+            String quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos,fa.clientes "
+                     + "FROM cxcobrar cx, factura  fa "   +
+                        " WHERE fa.codigo in ("+ codigos +")  " + 
+                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
+                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
+            List facEncontradas =  adm.queryNativo(quer); 
+            System.out.println(""+quer);
+            if (facEncontradas.size() > 0) {
+                Pendientes pendi = null;
+                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                    Vector vec = (Vector) itna.next();
+                    pendi = new Pendientes();
+                    Clientes cli = adm.buscarClave(vec.get(5),Clientes.class);
+                    pendi.setCliente(cli);
+                    pendi.setFactura("" + vec.get(0));
+                    Date d = (Date) vec.get(1);
+                    pendi.setFecha(d);
+                    Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
+                    pendi.setPlan(c.getPlan()+"");
+                    pendi.setDireccion(c.getDireccion());
+                    pendi.setTotal((BigDecimal) vec.get(2));
+                    pendi.setSaldo((BigDecimal) vec.get(3));
+                    detalles.add(pendi);
+                }
+
+            }
+        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);                
+                
+                
+                
+//-------------------------------------------------------------------------------------------------------
+                Map parameters = new HashMap();
+                parameters.put("empresa",empresa.getRazonsocial());
+                parameters.put("ruc",empresa.getRuc());
+                parameters.put("direccion",empresa.getDireccion());
+                parameters.put("telefono",empresa.getTelefono());    
+                   reportelocal.setSrc(directorioReportes+"cxcclientesxzona.jasper");
                    reportelocal.setParameters(parameters);
                    reportelocal.setDatasource(ds);
                    reportelocal.setType("pdf");
@@ -610,7 +674,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                         <row spans="2" align="center">
                                             <span>
                                           <button label="Guardar" image="/images/guardar.gif" onClick="guardarFilas();facturasPendientesEmpleado();"/>
-                                          <button label="Imprimir" image="/images/imprimir.gif" onClick=""/>
+                                          <button label="Imprimir" image="/images/imprimir.gif" onClick="imprimirTodosEmpleado()"/>
                                           </span>
                                         </row>
                                         

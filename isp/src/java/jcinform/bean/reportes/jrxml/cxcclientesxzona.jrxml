@@ -62,7 +62,7 @@
 					<text><![CDATA[A Cobrar]]></text>
 				</staticText>
 				<textField>
-					<reportElement mode="Opaque" x="8" y="20" width="343" height="16" backcolor="#EDECEC"/>
+					<reportElement mode="Opaque" x="0" y="20" width="351" height="16" backcolor="#EDECEC"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -76,7 +76,7 @@
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{cliente}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="8" y="36" width="343" height="17" backcolor="#EDECEC"/>
+					<reportElement mode="Opaque" x="60" y="36" width="291" height="17" backcolor="#EDECEC"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -126,6 +126,20 @@
 						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Referencias]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="36" width="60" height="17" backcolor="#EDECEC"/>
+					<box leftPadding="3" rightPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[#Factura]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
@@ -224,7 +238,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="0" width="343" height="16"/>
+				<reportElement x="60" y="0" width="291" height="16"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -250,6 +264,20 @@
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{direccioncontrato}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="60" height="16"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{factura}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

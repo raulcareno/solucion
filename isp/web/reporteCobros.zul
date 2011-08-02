@@ -69,7 +69,7 @@ List cantones = adm.query("Select o from Canton as o  ");
                    datasource = reportes.facturasPendientes(new Clientes(cclientev));
                     report.setSrc(directorioReportes+"cxcclientes.jasper");
             }else if(tipo.equals("PORSECTOR")){
-                                datasource = reportes.facturasPendientes(perf.selectedItem.value);
+                                datasource = reportes.facturasPendientes(sectorList.selectedItem.value);
                    report.setSrc(directorioReportes+"cxcclientesxzona.jasper");
                    
             }else  if(tipo.equals("COBROS")){
@@ -149,10 +149,10 @@ void campos(String valor){
         void buscarSectores(Integer codigo){
           bd.value = "";
         List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.nombre");
-        perf = new Listbox();
+        sectorList = new Listbox();
         int a=0;
-            for (Iterator it = perf.getItems().iterator(); it.hasNext();) {
-                    perf.getItems().remove(a);
+            for (Iterator it = sectorList.getItems().iterator(); it.hasNext();) {
+                    sectorList.getItems().remove(a);
                 }
 
 
@@ -161,7 +161,7 @@ void campos(String valor){
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getNombre()+" "));
-                      perf.appendChild(li);
+                      sectorList.appendChild(li);
              }
 
     }
@@ -269,7 +269,7 @@ void campos(String valor){
                             <bandbox  width="200px" readonly="true"  id="bdSector">
                                 <bandpopup>
                                     <vbox>
-                                        <listbox id="perf" width="250px"
+                                        <listbox id="sectorList" width="250px"
                                                      onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
                                  
                                             <listitem forEach="${perfiles}" value="${each}">
