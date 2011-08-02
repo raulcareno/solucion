@@ -23,6 +23,7 @@ import jcinform.persistencia.Sector;
 import jcinform.persistencia.Sucursal;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Span;
 
 /**
  *
@@ -434,7 +435,7 @@ public class generarFacturas {
 
 
      public List buscar(Sucursal suc,Empleados emp, Date fecha) {
-        //seleccionar todos los que no tenga deuda en éste més o periodo
+         //seleccionar todos los que no tenga deuda en éste més o periodo
          String fec = convertiraString(fecha);
 //         List<Factura> facturasLista = adm.queryNativo("Select o.factura from Empleadosfacturas as o "
 //                 + "where o.empleados.codigo = "+emp.getCodigo()+"  "

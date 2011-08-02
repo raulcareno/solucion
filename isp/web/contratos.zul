@@ -1105,11 +1105,13 @@ void verificarCedula(String valor){
                                         row.appendChild(new Label(dos+""));
                                     }
                             }
+                            Span s = new Span();
                             Button aButton = null;
-                            aButton = new Button("Pagar");
+                            aButton = new Button("");//"Cobrar"
                             aButton.setImage("/images/dinero.gif");
                             aButton.setId(""+vec.get(0));
                             aButton.setAttribute("valor",vec.get(3));
+                            aButton.setTooltip(cobr);
                             aButton.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
                                if(verificar3("Ingresar")){
@@ -1127,13 +1129,15 @@ void verificarCedula(String valor){
                                
                               }
                                 });
-                              row.appendChild(aButton);
+                                s.appendChild(aButton);
+                              //row.appendChild(aButton);
                               
                             Button aButtonDes = null;
-                            aButtonDes = new Button("Descuento");
+                            aButtonDes = new Button("");//"Descuento"
                             aButtonDes.setImage("/images/descuento.png");
                             aButtonDes.setId("des"+vec.get(0));
                             aButtonDes.setAttribute("valor",vec.get(3));
+                            aButtonDes.setTooltip(desc);
                             aButtonDes.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
                                  if(verificar2("Ingresar")){
@@ -1153,13 +1157,15 @@ void verificarCedula(String valor){
                                
                               }
                                 });
-                              row.appendChild(aButtonDes);
+                              s.appendChild(aButtonDes);
+                              //row.appendChild(aButtonDes);
                               
                               
                               Button aButtonEli = null;
-                            aButtonEli = new Button("Eliminar");
+                            aButtonEli = new Button("");//"Eliminar"
                             aButtonEli.setImage("/images/eliminar.gif");
                             aButtonEli.setId("eli"+vec.get(0));
+                            aButton.setTooltip(elm);
                             aButtonEli.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
                                  if(verificar2("Eliminar")){
@@ -1191,8 +1197,9 @@ void verificarCedula(String valor){
                                
                               }
                                 });
-                              row.appendChild(aButtonEli);
-                            
+                                s.appendChild(aButtonEli);
+                              //row.appendChild(aButtonEli);
+                            row.appendChild(s);
                             filasFac.appendChild(row);
                 }
             
@@ -1586,8 +1593,22 @@ void llamar(){
     </zscript>
     <div>
         <!--button label="MOSTRAR" id="mensaje"  onClick="llamar()" /-->
-
-
+    
+        <popup id="desc" width="150px">
+            <vbox>
+			Aplicar o Eliminar un Descuento
+            </vbox>
+        </popup>
+        <popup id="cobr" width="150px">
+            <vbox>
+			Cobrar la deuda seleccionada
+            </vbox>
+        </popup>
+        <popup id="elm" width="150px">
+            <vbox>
+			Eliminar el cobro seleccionado
+            </vbox>
+        </popup>
         <tabbox width="100%"  >
             <tabs>
                 <tab id="registro" label="Contratos"/>
@@ -1615,11 +1636,11 @@ void llamar(){
                                                     </row>
                                                     <row spans="4">
                                                         <groupbox id="busqueda" style="background:#D6E3F6" mold="3d" width="100%">
-                                                            <span> 
+                                                            <span>
                                                                 
-                                                                <label style="font-weight:bold2" value="Identificación:" /> 
-                                                            </span> 
-                                                            <span> 
+                                                                <label style="font-weight:bold2" value="Identificación:" />
+                                                            </span>
+                                                            <span>
                                                                 <textbox id="identificacion"  readonly="false"   onChanging="buscarCliCed(event.value); "  cols="13"   onOK="verificarCedula(self.value); bclientei.visible = false;"  />
                                                                 <image  tooltip="autompletar" popup="autompletar"  src="/images/keyboard.png"  />
                                                                 <popup id="autompletar" width="300px">
@@ -1649,10 +1670,10 @@ void llamar(){
                                                             
                                                             </span>
                                                   
-                                                            <span> 
-                                                                <label style="font-weight:bold2" id="labelnombre" value="Apellidos: " />  
-                                                            </span> 
-                                                            <span>     
+                                                            <span>
+                                                                <label style="font-weight:bold2" id="labelnombre" value="Apellidos: " />
+                                                            </span>
+                                                            <span>
                                                                 <textbox readonly="false" cols="25"   onChanging="buscarCli(event.value);"   onOK ="btcliente.value = combo.value; buscarCli(btcliente.value); bcliente.visible = true"   id="combo" />
                                                                 <image  tooltip="autompletar2" popup="autompletar2"  src="/images/keyboard.png"  />
                                                                 <popup id="autompletar2" width="300px">
@@ -1679,7 +1700,7 @@ void llamar(){
                                                                     </vbox>
                                                                 
                                                                 </groupbox>
-                                                                <label style="font-weight:bold2" id="labelcontrato" value="No.Contrato" />  
+                                                                <label style="font-weight:bold2" id="labelcontrato" value="No.Contrato" />
                                                                 <intbox readonly="false" cols="5"   onOK ="verificarContrato(self.value)"   id="buscarContrato" />
                                                                 <image  tooltip="autompletarNo" popup="autompletarNo"  src="/images/keyboard.png"  />
                                                                 <popup id="autompletarNo" width="300px">
@@ -1697,7 +1718,7 @@ void llamar(){
                                                         </groupbox>
                                                     </row>
                                                     <row>
-                                                        <span  style="float:right" >Identificación(*):</span> 
+                                                        <span  style="float:right" >Identificación(*):</span>
                                                         <span>
                                                             <textbox id="identificacion2"  readonly="true"   cols="13" />
                                                             <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
@@ -1705,21 +1726,21 @@ void llamar(){
                                                         </span>
                                                         
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Dirección(*): " />   
+                                                            <label style="font-weight:bold2" value=" Dirección(*): " />
                                                         </span>
                                                         <textbox id="direccion" cols="32" readonly="true"  />
                                                     </row>
                                                     <row>
-                                                        <span style="float:right"> 
-                                                            <label style="font-weight:bold2" id="labelnombre2" value="Apellidos(*): " />  
-                                                        </span> 
-                                                        <span>     
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" id="labelnombre2" value="Apellidos(*): " />
+                                                        </span>
+                                                        <span>
                                                             <textbox readonly="true" cols="25"  id="apellidos" />
                                                         </span>
-                                                        <span style="float:right"> 
-                                                            <label style="font-weight:bold2" id="labelnombre332" value="Nombres(*): " />  
-                                                        </span> 
-                                                        <span>     
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" id="labelnombre332" value="Nombres(*): " />
+                                                        </span>
+                                                        <span>
                                                             <textbox readonly="true" cols="25"  id="nombres" />
                                                         </span>
                                                       
@@ -1727,11 +1748,11 @@ void llamar(){
                                                     
                                                     <row>
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Teléfono(*):" />   
+                                                            <label style="font-weight:bold2" value=" Teléfono(*):" />
                                                         </span>
                                                         <textbox id="telefono" cols="32" readonly="true"  />
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Email: " />   
+                                                            <label style="font-weight:bold2" value=" Email: " />
                                                         </span>
                                                         <textbox id="email" cols="32" readonly="true"  />
                                                     </row>
@@ -1739,7 +1760,7 @@ void llamar(){
                                                     <row>
                                                          
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Estado: " /> 	   
+                                                            <label style="font-weight:bold2" value=" Estado: " />
                                                         </span>
                                                                 
                                                         <radiogroup id="estadoContrato" >
@@ -1753,20 +1774,20 @@ void llamar(){
                                                     </row>
                                                     <row>
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" No.Contrato: " /> 
+                                                            <label style="font-weight:bold2" value=" No.Contrato: " />
                                                         </span>
                                                         <span>
                                                             <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" id="numerocontrato" cols="16" />
                                                             <button label="Contratos"  image="/images/contratos.png"  id="vercontratos" onClick="contratosPanel.visible = true; "/>
                                                         </span>
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Fecha: " />   
+                                                            <label style="font-weight:bold2" value=" Fecha: " />
                                                         </span>
                                                         <datebox id="fecha" disabled="true" onCreate="self.value = adm.Date()"/>
                                                     </row>
                                                     <row>
-                                                        <span style="float:right"> 
-                                                            <label style="font-weight:bold2" value=" Planes (*): " />  
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" Planes (*): " />
                                                         </span>
                                                         <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
                                                             <bandpopup>
@@ -1789,22 +1810,22 @@ void llamar(){
                                                                 </vbox>
                                                             </bandpopup>
                                                         </bandbox>
-                                                        <span style="float:right"> 
-                                                            <label style="font-weight:bold2" value=" Instalación (*): " /> 
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" Instalación (*): " />
                                                         </span>
                                                         <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = adm.Date()"/>
                                  
                                                     </row>
                                                     <row style="background:#F8FFE1">
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Dir.Instalar: " />  
+                                                            <label style="font-weight:bold2" value=" Dir.Instalar: " />
                                                         </span>
                                                         <span>
                                                             <textbox id="direccioni" cols="40" readonly="true"  />
                                                             <button image="/images/copiar.png"   onClick="direccioni.value=direccion.value;"/>
                                                         </span>
-                                                        <span style="float:right"> 
-                                                            <label style="font-weight:bold2" value=" Telf.Instalar: " />  
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" Telf.Instalar: " />
                                                         </span>
                                                         <span>
                                                             <textbox id="telefonoi" readonly="true"  />
@@ -1812,7 +1833,7 @@ void llamar(){
                                                         </span>
                                                     </row>
                                                     <row style="background:#F8FFE1" >
-                                                        <span style="float:right">  
+                                                        <span style="float:right">
                                                             <label style="font-weight:bold2" value=" Referencia: " />
                                                               
                                                         </span>
@@ -1835,7 +1856,7 @@ void llamar(){
                                                                     </listbox>
                                                                 </vbox>
                                                             </bandpopup>
-                                                        </bandbox>    
+                                                        </bandbox>
                                                         <span style="float:right"> Nodos(*):</span>
                                                            
                                                         <bandbox  width="200px" readonly="true"  id="bdNodo">
@@ -1867,7 +1888,9 @@ void llamar(){
                                                     
                                                         
                                                      
-                                                       <span style="float:right">  <label style="font-weight:bold2" value="Radio(*): " />  </span>  
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value="Radio(*): " />
+                                                        </span>
                                                         <bandbox  disabled="true"  readonly="true"  id="bdRadio">
                                                             <bandpopup>
                                                                 <vbox>
@@ -1889,27 +1912,27 @@ void llamar(){
                                                                     </listbox>
                                                                 </vbox>
                                                             </bandpopup>
-                                                        </bandbox>  
+                                                        </bandbox>
                                                       
                                                        
                                                        
                                                     </row>
                                                     <row visible="false">
                                                         <span style="float:right">   IP(*):</span>
-                                                        <textbox cols="15" readonly="true" id="ip" /> 
+                                                        <textbox cols="15" readonly="true" id="ip" />
                                                         <span style="float:right"> Autorizado a Inst(*):</span>
-                                                        <checkbox id="autorizado" disabled="true"  />    
+                                                        <checkbox id="autorizado" disabled="true"  />
                                                            
                                                     </row>
                                                     <row>
-                                                        <span style="float:right">  
+                                                        <span style="float:right">
                                                             <label style="font-weight:bold2" value=" Pago en(*): " />
                                                         </span>
                                                         <radiogroup Id="formapago" onCheck="">
                                                             <radio disabled="true" id="efe" selected="true" value="1" onCheck="bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;" label="Efectivo"/>
                                                             <radio disabled="true" id="deb"   value="2" onCheck="bd22.disabled=false;tipocuenta.disabled= false;nocuenta.disabled = false;diapago.disabled = false;  " label="Débito"/>
                                                         </radiogroup>
-                                                        <span style="float:right"> 
+                                                        <span style="float:right">
                                                             <label style="font-weight:bold2" value="Banco:" />
                                                         </span>
                                                         <bandbox disabled="true" readonly="true" width="100px"  id="bd22">
@@ -1932,49 +1955,49 @@ void llamar(){
                                                     <row>
                                        
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value="No.Cuen: " />   
+                                                            <label style="font-weight:bold2" value="No.Cuen: " />
                                                         </span>
                                                         <span>
                                                             <textbox id="nocuenta" cols="10"  readonly="true"  />
                                                             <combobox   style="background-color:transparent" disabled="true" width="29px" id="tipocuenta">
                                                                 <comboitem label="AHO"/>
                                                                 <comboitem label="COR"/>
-                                                            </combobox> 
+                                                            </combobox>
                                                         </span>
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value="Día Pago(*): " />   
+                                                            <label style="font-weight:bold2" value="Día Pago(*): " />
                                                         </span>
                                                         <combobox disabled="true" width="17px"  id="diapago">
                                                             <comboitem label="1"/>
                                                             <comboitem label="2"/>
                                                             <comboitem label="3"/>
-                                                            <comboitem label="4"/> 
+                                                            <comboitem label="4"/>
                                                             <comboitem label="5"/>
-                                                            <comboitem label="6"/> 
+                                                            <comboitem label="6"/>
                                                             <comboitem label="7"/>
-                                                            <comboitem label="8"/> 
+                                                            <comboitem label="8"/>
                                                             <comboitem label="9"/>
-                                                            <comboitem label="10"/> 
+                                                            <comboitem label="10"/>
                                                             <comboitem label="11"/>
-                                                            <comboitem label="12"/> 
+                                                            <comboitem label="12"/>
                                                             <comboitem label="13"/>
-                                                            <comboitem label="14"/> 
+                                                            <comboitem label="14"/>
                                                             <comboitem label="15"/>
-                                                            <comboitem label="16"/> 
+                                                            <comboitem label="16"/>
                                                             <comboitem label="17"/>
-                                                            <comboitem label="18"/> 
+                                                            <comboitem label="18"/>
                                                             <comboitem label="19"/>
-                                                            <comboitem label="20"/> 
+                                                            <comboitem label="20"/>
                                                             <comboitem label="23"/>
-                                                            <comboitem label="22"/> 
+                                                            <comboitem label="22"/>
                                                             <comboitem label="25"/>
-                                                            <comboitem label="24"/> 
+                                                            <comboitem label="24"/>
                                                             <comboitem label="27"/>
-                                                            <comboitem label="26"/> 
+                                                            <comboitem label="26"/>
                                                             <comboitem label="29"/>
                                                             <comboitem label="28"/>
                                                             <comboitem label="30"/>
-                                                        </combobox> 
+                                                        </combobox>
                                                                            			
 	    		 
                                                     </row>
@@ -1983,15 +2006,15 @@ void llamar(){
                                                            
                                                            
                                                         <span style="float:right">   Usuario:</span>
-                                                        <textbox cols="15" readonly="true"   id="usuario" /> 
+                                                        <textbox cols="15" readonly="true"   id="usuario" />
                                                         <span style="float:right">   Clave:</span>
-                                                        <textbox cols="15" readonly="true"   id="clave" /> 
+                                                        <textbox cols="15" readonly="true"   id="clave" />
                                                             
                                                     </row>
                                                     <row>
-                                                        <span style="float:right"> 
-                                                            <label style="font-weight:bold2" value=" Vendido por(*): " /> 
-                                                        </span> 
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" Vendido por(*): " />
+                                                        </span>
                                                         <span>
                                                             <textbox  readonly="true"  cols="32"   id="combov" />
 
@@ -2005,7 +2028,7 @@ void llamar(){
                                             win.doModal();
                                             }                            
                                                                 </attribute>
-                                                            </button> 
+                                                            </button>
                                                             <button label="" disabled="true" id="nuevoE" image="/images/empleados.png" >
                                                                 <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("empleados.zul", null, null);
@@ -2016,7 +2039,7 @@ void llamar(){
                                             win.doModal();
                                             }                            
                                                                 </attribute>
-                                                            </button> 
+                                                            </button>
                      
                               
                                                             <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
@@ -2027,9 +2050,9 @@ void llamar(){
                                                         </span>
                                                     </row>
                                                     <row visible="false">
-                                                        <span style="float:right"> 
-                                                            <label style="font-weight:bold2" value=" Registrado por(*): " />  
-                                                        </span> 
+                                                        <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" Registrado por(*): " />
+                                                        </span>
                                                         <span>
                                                             <textbox id="registrado" readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
                                                             <textbox id="registradoU"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
@@ -2038,13 +2061,13 @@ void llamar(){
                                                         <span></span>
                                                     </row>
                                                     <row style="background:#D6E3F6" spans="4" align="center">
-                                                        <span > 
+                                                        <span >
                                                             <checkbox style="font-weight:bold;size:14px" id="genFactura" label="¿GENERAR COBRO PARA ÉSTE MES?" />
-                                                        </span> 
+                                                        </span>
                                                          
                                                     </row>
                                                 </rows>
-                                            </grid>    
+                                            </grid>
                                                         
                                         </tabpanel>
                                        
@@ -2067,24 +2090,24 @@ void llamar(){
                                                 <foot style="background:#E1E1E1">
                                                     <footer/>
                                                     <footer>
-                                                        <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="VALOR A FACTURAR: "/>    
+                                                        <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="VALOR A FACTURAR: "/>
                                                     </footer>
                                                     <footer>
-                                                        <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
+                                                        <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />
                                                     </footer>
                                                     <footer width="10px">
-                                                        <label style="font:14px;font-weight:bold;background:#E1E1E1;border:0px" value=" "/> 
-                                                        <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotaliva"  value="0.0"  readonly="true"   />    
+                                                        <label style="font:14px;font-weight:bold;background:#E1E1E1;border:0px" value=" "/>
+                                                        <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotaliva"  value="0.0"  readonly="true"   />
                                                     </footer>
                                                     <footer>
-                                                        <label style="float:center;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="# "/>    
-                                                        <intbox cols="3"  style="float:center;text-align:left;font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="cantidadtotal" readonly="true" value="0"    /> 
+                                                        <label style="float:center;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="# "/>
+                                                        <intbox cols="3"  style="float:center;text-align:left;font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="cantidadtotal" readonly="true" value="0"    />
                                                     </footer>
                                                     <footer>
-                                                        <label style="text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="#"/>    
-                                                        <intbox cols="3"  style=";font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="facturadostotal" readonly="true" value="0"    /> 
-                                                        <label style="text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="#"/>    
-                                                        <intbox cols="3"  style=";font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="prestadostotal" readonly="true" value="0"    /> 
+                                                        <label style="text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="#"/>
+                                                        <intbox cols="3"  style=";font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="facturadostotal" readonly="true" value="0"    />
+                                                        <label style="text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="#"/>
+                                                        <intbox cols="3"  style=";font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="prestadostotal" readonly="true" value="0"    />
                                                     </footer>
                                                 </foot>
                                                
@@ -2121,7 +2144,7 @@ void llamar(){
                                                     win.doModal();
                                             }                            
                         </attribute>
-                    </button> 
+                    </button>
                 </tabpanel>
                 <tabpanel>
                     <!--listbox mold="paging" rows="10" pageSize="10"   id="facturasDatos" width="100%">
@@ -2142,8 +2165,7 @@ void llamar(){
                             <column   label="Total"/>
                             <column   label="Saldo"/>
                             <column   label="Ref."/>
-                            <column   label=" "/>
-                            <column   label=" "/>
+                            <column  width="150px"  label="Acciones"/>
                         </columns>
                         <rows id="filasFac">
                         </rows>
@@ -2180,20 +2202,20 @@ void llamar(){
                     <grid>
                         <rows>
                             <row visible = "false">
-                                <intbox id="codigos" readonly="true" />    
-                                <intbox id="atendida" readonly="true" />    
+                                <intbox id="codigos" readonly="true" />
+                                <intbox id="atendida" readonly="true" />
                             </row>
                             <row>
                                 <span style="float:right">Atendido por:  </span>
-                                <textbox id="atendidanombre" cols="50" readonly="true" />        
+                                <textbox id="atendidanombre" cols="50" readonly="true" />
                             </row>
-                            <row> 
+                            <row>
                                 <span style="float:right">Fecha:  </span>
-                                <datebox readonly="true" onCreate="self.value = adm.Date()" id="fechasoporte"/> 
+                                <datebox readonly="true" onCreate="self.value = adm.Date()" id="fechasoporte"/>
                             </row>
                             <row>
                                 <span style="float:right"> Observación: </span>
-                                <textbox readonly="true" cols="60" rows="3" id="observacion"/> 
+                                <textbox readonly="true" cols="60" rows="3" id="observacion"/>
                             </row>
                             <row>
                                 <span style="float:right"> Generar Orden: </span>
