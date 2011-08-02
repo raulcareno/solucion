@@ -55,6 +55,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
             facturasDatos.getRows().getChildren().clear();
             ArrayList contratosAnadidos = new ArrayList();
             int i =0;
+            BigDecimal total = new BigDecimal(0);
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
                             Vector vec = (Vector) itna.next();
                           
@@ -91,7 +92,8 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                        }
                                     }
                             }
-
+                            BigDecimal val = ((BigDecimal) vec.get(5));
+                            total = total.add(val);
 
                               Button aButton = null;
                             aButton = new Button("");
@@ -135,7 +137,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                             System.out.println("NO SE AGREGÓ FILA POR ERROR: "+exs);
                             }
                 }
-            
+            valortotal.value = total;
                    }catch(Exception e){
                             //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             System.out.println("ERROR: "+e);
@@ -639,6 +641,19 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                     </columns>
                                     <rows id="filasFac">
                                     </rows>
+                                    <foot style="background:#E1E1E1">
+                                        <footer/>
+                                       <footer/>
+                                       <footer/>
+                                       <footer/>
+                                       <footer/>
+                                        <footer width="10px">
+                                            
+                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
+                                        </footer>
+                                        <footer/>
+                                                                                      
+                                    </foot>
                                 </grid>
                             </vbox>
                             <vbox>
@@ -678,9 +693,9 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                         </row>
                                         <row spans="2" align="center">
                                             <span>
-                                          <button label="Guardar" image="/images/guardar.gif" onClick="guardarFilas();facturasPendientesEmpleado();"/>
-                                          <button label="Imprimir" image="/images/imprimir.gif" onClick="imprimirTodosEmpleado()"/>
-                                          </span>
+                                                <button label="Guardar" image="/images/guardar.gif" onClick="guardarFilas();facturasPendientesEmpleado();"/>
+                                                <button label="Imprimir" image="/images/imprimir.gif" onClick="imprimirTodosEmpleado()"/>
+                                            </span>
                                         </row>
                                         
                                     </rows>
