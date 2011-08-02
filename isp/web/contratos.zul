@@ -1154,6 +1154,44 @@ void verificarCedula(String valor){
                               }
                                 });
                               row.appendChild(aButtonDes);
+                              
+                              
+                              Button aButtonEli = null;
+                            aButtonEli = new Button("Eliminar");
+                            aButtonEli.setImage("/images/eliminar.gif");
+                            aButtonEli.setId("eli"+vec.get(0));
+                            aButtonEli.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                                 if(verificar2("Eliminar")){
+                                 int valor0 = Messagebox.show("Seguro que desea Eliminar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                  seriespanel.visible = false;
+                                   if(valor0 == 16){
+                                      registro.setSelected(true);
+                                      Integer facCodi = new Integer(aButtonEli.getId().replace("eli",""));
+                                      List siEx = adm.query("Select o from Cxcobrar as o where o.factura.codigo = '"+facCodi+"'");
+                                      if(siEx.size()>1){
+                                                Messagebox.show("No se puede eliminar, ya tiene pagos realizados...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
+                                      }else{
+                                              adm.ejecutaSql("Delete from Empleadosfacturas where factura.codigo = '"+facCodi +"' ");
+                                              adm.ejecutaSql("Delete from Cxcobrar where factura.codigo = '"+facCodi +"' ");
+                                              adm.ejecutaSql("Delete from Detalle  where factura.codigo = '"+facCodi +"' ");
+                                              adm.eliminarObjeto(Factura.class, facCodi );                                             
+                                      }
+                                      
+                                      
+                                    }
+                                     
+                                      
+                                      
+                                }else{
+                                        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                }                      
+
+                              
+                               
+                              }
+                                });
+                              row.appendChild(aButtonEli);
                             
                             filasFac.appendChild(row);
                 }
@@ -1625,7 +1663,7 @@ void llamar(){
                                                                 <groupbox closable="true" style="position: absolute;background:#E2EDFE; display: none;" visible="false" id="bcliente">
                                                                     <vbox>
                                                                         <hbox>
-                                                                            <listbox style="background:white" onSelect='identificacion.value= ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";  identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos()+""; nombres.value = ((Clientes)self.selectedItem.value).getNombres()+""; bcliente.visible =false;verificarCedula(identificacion2.value);' id="lcliente" width="400px">
+                                                                            <listbox style="background:white" onSelect='identificacion.value= ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";  identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos()+""; nombres.value = ((Clientes)self.selectedItem.value).getNombres()+""; bcliente.visible =false; verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion());' id="lcliente" width="400px">
                                                                                 <listhead>
                                                                                     <listheader label="Nombres"/>
                                                                                     <listheader label="Dirección"/>
