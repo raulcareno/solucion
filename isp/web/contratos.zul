@@ -1178,10 +1178,12 @@ void verificarCedula(String valor){
                                       if(siEx.size()>1){
                                                 Messagebox.show("No se puede eliminar, ya tiene pagos realizados...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
                                       }else{
+                                              //adm.ejecutaSql("Delete from Cabeceracompra where factura.codigo = '"+facCodi +"' ");
                                               adm.ejecutaSql("Delete from Empleadosfacturas where factura.codigo = '"+facCodi +"' ");
                                               adm.ejecutaSql("Delete from Cxcobrar where factura.codigo = '"+facCodi +"' ");
                                               adm.ejecutaSql("Delete from Detalle  where factura.codigo = '"+facCodi +"' ");
-                                              adm.eliminarObjeto(Factura.class, facCodi );                                             
+                                              adm.eliminarObjeto(Factura.class, facCodi );
+                                              facturas.setSelected(true);
                                       }
                                       
                                       

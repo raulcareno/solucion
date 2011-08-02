@@ -49,6 +49,26 @@ public class Empleadosfacturas implements Serializable {
        @JoinColumn(name = "factura", referencedColumnName = "codigo")
     @ManyToOne
     private Factura factura;
+
+          @Column(name = "efectivo")
+    private BigDecimal efectivo;
+    @Column(name = "cheque")
+    private BigDecimal cheque;
+    @Column(name = "debito")
+    private BigDecimal debito;
+    @Column(name = "tarjeta")
+    private BigDecimal tarjeta;
+    @Column(name = "descuento")
+    private BigDecimal descuento;
+    @Column(name = "nocheque")
+    private String nocheque;
+    @Column(name = "notarjeta")
+    private String notarjeta;
+    @Column(name = "nocuenta")
+    private String nocuenta;
+  @Column(name = "saldo")
+    private BigDecimal saldo;
+
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "total")
     private BigDecimal total;
@@ -74,6 +94,14 @@ public class Empleadosfacturas implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public BigDecimal getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(BigDecimal saldo) {
+        this.saldo = saldo;
     }
 
     public Boolean getCobrado() {
@@ -122,6 +150,70 @@ public class Empleadosfacturas implements Serializable {
 
     public void setFactura(Factura factura) {
         this.factura = factura;
+    }
+
+    public BigDecimal getCheque() {
+        return cheque;
+    }
+
+    public void setCheque(BigDecimal cheque) {
+        this.cheque = cheque;
+    }
+
+    public BigDecimal getDebito() {
+        return debito;
+    }
+
+    public void setDebito(BigDecimal debito) {
+        this.debito = debito;
+    }
+
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
+    }
+
+    public BigDecimal getEfectivo() {
+        return efectivo;
+    }
+
+    public void setEfectivo(BigDecimal efectivo) {
+        this.efectivo = efectivo;
+    }
+
+    public String getNocheque() {
+        return nocheque;
+    }
+
+    public void setNocheque(String nocheque) {
+        this.nocheque = nocheque;
+    }
+
+    public String getNocuenta() {
+        return nocuenta;
+    }
+
+    public void setNocuenta(String nocuenta) {
+        this.nocuenta = nocuenta;
+    }
+
+    public String getNotarjeta() {
+        return notarjeta;
+    }
+
+    public void setNotarjeta(String notarjeta) {
+        this.notarjeta = notarjeta;
+    }
+
+    public BigDecimal getTarjeta() {
+        return tarjeta;
+    }
+
+    public void setTarjeta(BigDecimal tarjeta) {
+        this.tarjeta = tarjeta;
     }
 
     @Override

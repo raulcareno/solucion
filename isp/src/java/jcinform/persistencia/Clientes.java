@@ -204,7 +204,7 @@ public class Clientes implements Serializable {
 
     @Override
     public String toString() {
-        return "jcinform.persistencia.Clientes[codigo=" + codigo + "]";
+        return apellidos+" "+nombres ;
     }
 
 }

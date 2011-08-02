@@ -16,14 +16,13 @@ import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
 import jcinform.persistencia.Detalle;
 import jcinform.persistencia.Empleados;
-import jcinform.persistencia.Empleadosfacturas;
 import jcinform.persistencia.Factura;
 import jcinform.persistencia.Procesos;
 import jcinform.persistencia.Sector;
 import jcinform.persistencia.Sucursal;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zul.Button;
-import org.zkoss.zul.Span;
+import org.zkoss.zul.Decimalbox;
 
 /**
  *
