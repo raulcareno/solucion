@@ -416,12 +416,6 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                    reportelocal.setDatasource(ds);
                                    reportelocal.setType("pdf");
                                    impresion.selected = true;
-                                    /*final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
-                                    win.setMaximizable(true);
-                                    win.setClosable(true);
-                                    win.setAttribute("reporte",reportelocal);
-                                    win.setTitle("Reporte");
-                                    win.doModal(); */
                                  /*}else{
                                             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                                     } */
@@ -439,6 +433,42 @@ List empleadosList = adm.query("Select o from Empleados as o ");
 
                         }
 
+ }
+ 
+ void imprimirTodos(){
+            List col = facturasDatos.getRows().getChildren();
+            String codigos = "";
+                           for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                     List labels = object.getChildren();
+                                     if(((Checkbox) labels.get(0)).isChecked()){
+                                                if(!labels.get(1).equals("")){
+                                                      Integer facCodigo = object.getValue();
+                                                     codigos += facCodigo+",";
+                                                }
+                                     }
+                                                 
+                            }
+            if(codigos.length() >0){
+                codigos = codigos.substring(0,codigos.length()-1);
+                Map parameters = new HashMap();
+                    List detalleFac = adm.query("Select o from Detalle as o " + 
+                    "where o.factura.codigo in (" + codigos + ") order by o.factura.numero  ");
+                    ArrayList detalles = new ArrayList();
+                   for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
+                        Detalle det = itAbono.next();
+                         detalles.add(det);
+                   }
+                   ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
+                   reportelocal.setSrc(directorioReportes+"factura.jasper");
+                   reportelocal.setParameters(parameters);
+                   reportelocal.setDatasource(ds);
+                   reportelocal.setType("pdf");
+                   impresion.selected = true;
+                
+            }
+                
+ 
  }
   ]]>
     </zscript>
@@ -518,6 +548,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
 	    			# Inicial de Factura
                                                 <intbox id="numero" style="color:blue; text-align:center;font-size:14px;font-weight:bold" constraint="no empty,no zero: Ingrese el número inicial para continuar debe ser mayor a 0 y no blanco" />
                                                 <button label="Empezar a Generar #" onClick="numero.getValue(); generarFacturas(); "/>
+                                                <button label="Imprimir" image="/images/imprimir.gif" onClick="imprimirTodos()"/>
 
                                             </groupbox>
                                            
