@@ -488,11 +488,12 @@ List empleadosList = adm.query("Select o from Empleados as o ");
             if(codigos.length() >0){
                 codigos = codigos.substring(0,codigos.length()-1);
 //--------------------------------------------------------------------------------------------
-            String quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos,fa.clientes "
+            String quer = "SELECT fa.codigo, fa.fecha,max(cx.fecha), fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos,fa.clientes "
                      + "FROM cxcobrar cx, factura  fa "   +
                         " WHERE fa.codigo in ("+ codigos +")  " + 
                         "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
                      + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
+                     System.out.println(quer);
             List facEncontradas =  adm.queryNativo(quer); 
             System.out.println(""+quer);
             if (facEncontradas.size() > 0) {
@@ -500,16 +501,19 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
                     Vector vec = (Vector) itna.next();
                     pendi = new Pendientes();
-                    Clientes cli = adm.buscarClave(vec.get(5),Clientes.class);
+                    Clientes cli = adm.buscarClave(vec.get(6),Clientes.class);
                     pendi.setCliente(cli);
                     pendi.setFactura("" + vec.get(0));
                     Date d = (Date) vec.get(1);
                     pendi.setFecha(d);
-                    Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
+                    Date d = (Date) vec.get(2);
+                    pendi.setFechapago(d);
+                    
+                    Contratos c = (Contratos) adm.buscarClave(vec.get(5), Contratos.class);
                     pendi.setPlan(c.getPlan()+"");
                     pendi.setDireccion(c.getDireccion());
-                    pendi.setTotal((BigDecimal) vec.get(2));
-                    pendi.setSaldo((BigDecimal) vec.get(3));
+                    pendi.setTotal((BigDecimal) vec.get(3));
+                    pendi.setSaldo((BigDecimal) vec.get(4));
                     detalles.add(pendi);
                 }
 
@@ -524,7 +528,8 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                 parameters.put("ruc",empresa.getRuc());
                 parameters.put("direccion",empresa.getDireccion());
                 parameters.put("telefono",empresa.getTelefono());    
-                   reportelocal.setSrc(directorioReportes+"cxcclientesxzona.jasper");
+                parameters.put("empleados",empleados.selectedItem.value+"");    
+                   reportelocal.setSrc(directorioReportes+"facturasempleado.jasper");
                    reportelocal.setParameters(parameters);
                    reportelocal.setDatasource(ds);
                    reportelocal.setType("pdf");
