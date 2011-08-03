@@ -23,7 +23,7 @@ respaldosEmail respal = new respaldosEmail();
   Empleados usuarioActual = ses.getAttribute("user");
    Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
-    
+       Permisos permiso = new Permisos();
  public void  respaldar(){
 
   try{
@@ -52,7 +52,7 @@ respaldosEmail respal = new respaldosEmail();
  System.out.println(""+e);
     alert("No se pudo realizar el Respaldo");
  }
-
+  permiso.auditar("Respaldos de BD","Respaldar",""+new Date().toLocaleString());
 }
 
  public void  respaldarLinux(){
@@ -85,7 +85,7 @@ respaldosEmail respal = new respaldosEmail();
  System.out.println(""+e);
     alert("No se pudo realizar el Respaldo");
  }
-
+permiso.auditar("Respaldos de BD","Respaldar",""+new Date().toLocaleString());
 }
 
 
@@ -141,7 +141,7 @@ respaldosEmail respal = new respaldosEmail();
                         <span style="float:right">A CORREO ELECTRONICO:</span>
                         <span>
                             <textbox width="200px" id="destinatario"  constraint="/.+@.+\.[a-z]+/: Ingrese un email valido para poder enviar " />
-                            <button id="enviar"  label="ENVIAR " onClick='respaldo.getValue();destinatario.getValue();respal.enviar(destinatario.value,respaldo.value,empresa.getRazonsocial() );'  image="/images/mail.gif" />
+                            <button id="enviar"  label="ENVIAR " onClick='respaldo.getValue();destinatario.getValue();respal.enviar(destinatario.value,respaldo.value,empresa.getRazonsocial() ); permiso.auditar("Respaldos de BD","Envio",destinatario.value +" "+new Date().toLocaleString());'  image="/images/mail.gif" />
                         </span>
                     </row>
 
