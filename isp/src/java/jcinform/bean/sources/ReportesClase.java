@@ -261,7 +261,7 @@ public class ReportesClase {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         List<Contratos> contra = adm.query("Select o from Contratos as o where o.radios.nodos.sector.codigo =  '" + sec.getCodigo() + "'"
-                + " order by o.radios.nodos.sector.numero");
+                + " order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();
             detalles.add(contratos);
