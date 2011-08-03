@@ -349,7 +349,7 @@ Boolean validarSeriesAju(){
               Boolean a = true;
             if(a){
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-                permiso.auditar("Cabeceracompra","Guardar",factura.value+" cantidad"+cantidad.value+ ""+fecha.value);
+                permiso.auditar("Cabeceracompra"+documento.selectedItem.value,"Guardar","FAC"+factura.value+" USD:"+ cabeCompra.getTotal() + " PROV:"+idproveedores.value);
                     guardar.disabled=true;
                     agregar.disabled=false;
                     estado(true,false);
