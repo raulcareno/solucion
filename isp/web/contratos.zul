@@ -367,6 +367,16 @@ Boolean validar(){
             empa.setEmail(email.value);
             adm.guardar(empa);
             codigocli.value = empa.getCodigo()+"";
+     }else{
+            Clientes empa = new Clientes(new Integer(codigocli.value));
+            empa.setIdentificacion(""+identificacion2.value);
+            empa.setNombres(nombres.value);
+            empa.setApellidos(apellidos.value);
+            empa.setDireccion(direccion.value);
+            empa.setTelefono(telefono.value);
+            empa.setEmail(email.value);
+            adm.actualizar(empa);
+            
      }
     equi.setClientes(new Clientes(new Integer(codigocli.value)));
     equi.setFecha(fecha.value);
