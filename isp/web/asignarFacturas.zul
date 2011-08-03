@@ -266,6 +266,12 @@ List empleadosList = adm.query("Select o from Empleados as o ");
     }
     
     void anadirFilas(){
+    
+                     if(empleados.selectedItem == null){
+                            Messagebox.show("Seleccione un Empleado..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            empleados.focus();
+                            return;
+                       }
                        List col = facturasDatos.getRows().getChildren();
                        ArrayList arr  = new ArrayList();
                        for (int i = 0; i < col.size(); i++) {
