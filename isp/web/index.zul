@@ -113,13 +113,14 @@
                                 <menuitem   value="/radios.zul"  image="/images/radio.png" label="Radios" onClick="ingresar(self)" />
                                 <menuitem   value="/bancos.zul"  image="/images/bancos.png" label="Bancos" onClick="ingresar(self)" />
                                 <menuseparator />
+                                <menuitem value="/respaldos.zul" image="/images/base.gif"   label="Respaldar BD Sistema"  onClick="ingresar(self)" />
                                 <menuitem label="Salir" image="/images/exit.gif"  onClick="salir()" />
                             </menupopup>
                         </menu>
                         <menu label="Personas"   image="/images/personas.png" >
                             <menupopup>
                                 <menuitem   value="/proveedores.zul"  image="/images/proveedor.png" label="Proveedores" onClick="ingresar(self)" />
-                                <menuitem    value="/clientes.zul" image="/images/clientes.png" label="Clientes" onClick="ingresar(self)" />
+                                <!--menuitem    value="/clientes.zul" image="/images/clientes.png" label="Clientes" onClick="ingresar(self)" /-->
                                 <menuseparator />
                                 <menuitem    value="/empleados.zul" image="/images/empleados.png" label="Empleados" onClick="ingresar(self)" />
                                 <menuitem    value="/comisiones.zul" image="/images/comision.png" label="Comisión-Empleados" onClick="ingresar(self)" />

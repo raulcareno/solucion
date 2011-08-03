@@ -14,7 +14,7 @@
         Administrador adm = new Administrador();
         List allEvents = adm.query("Select o from Accesos as o where o.tipo= 0");
         Permisos permiso = new Permisos();
-        Empleadossector periodo = (Empleadossector) ses.getAttribute("sector");
+        //Empleadossector periodo = (Empleadossector) ses.getAttribute("sector");
         exportarExcel exp = new exportarExcel();
         List empleadosEncontrados = adm.query("Select o from Empleados as o order by o.apellidos");
         Empleados es = new Empleados(-2);

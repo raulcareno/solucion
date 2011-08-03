@@ -1730,7 +1730,7 @@ void llamar(){
                                                         <span style="float:right">
                                                             <label style="font-weight:bold2" value=" Dirección(*): " />
                                                         </span>
-                                                        <textbox id="direccion" cols="32" readonly="true"  />
+                                                        <textbox id="direccion" cols="32"  rows="2" readonly="true"  />
                                                     </row>
                                                     <row>
                                                         <span style="float:right">
@@ -1839,7 +1839,7 @@ void llamar(){
                                                             <label style="font-weight:bold2" value=" Referencia: " />
                                                               
                                                         </span>
-                                                        <textbox id="referenciai" cols="40" readonly="true"  />
+                                                        <textbox id="referenciai" rows="2" cols="40" readonly="true"  />
                                                         <span style="float:right"> </span>
                                                         <span style="float:right"> </span>
                                                     </row>

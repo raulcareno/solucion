@@ -99,7 +99,7 @@
 
                 </row>
                 <row>
-                    <span style="float:right">Ubicación Fotos: </span>
+                    <span style="float:right">Ubicación Respaldos: </span>
                         
                     <span>
                         <a:bind value="inobjeto.fotos"/>
