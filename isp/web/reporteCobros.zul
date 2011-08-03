@@ -72,6 +72,10 @@ List cantones = adm.query("Select o from Canton as o  ");
                                 datasource = reportes.facturasPendientes(sectorList.selectedItem.value);
                    report.setSrc(directorioReportes+"cxcclientesxzona.jasper");
                    
+            }else if(tipo.equals("PORSECTORCLI")){
+                  datasource = reportes.clientesxsector(sectorList.selectedItem.value);
+                   report.setSrc(directorioReportes+"cxcclientesxzona.jasper");
+                   
             }else  if(tipo.equals("COBROS")){
                 Integer cclientev = ccliente.value;
                 if(cclientev != null ){
@@ -118,6 +122,10 @@ void campos(String valor){
             titulo.value= "Cobros Diarios";
            filafechas.visible=true;
         }else if(valor.equals("PORSECTOR")){
+            titulo.value= "X Cobrar";
+            filacanton.visible=true;
+            filasector.visible=true;
+        }else if(valor.equals("PORSECTORCLI")){
             titulo.value= "X Cobrar";
             filacanton.visible=true;
             filasector.visible=true;
@@ -182,6 +190,7 @@ void campos(String valor){
                                     <listitem id="ARQUEO" label="Reporte de Caja" value="ARQUEO" />
                                     <listitem id="linea" label="=========================" value="linea" />
                                     <listitem id="PORSECTOR" label="X Cobrar por Sectores" value="PORSECTOR" />
+                                    <listitem id="PORSECTORCLI" label="Reporte de Clientes por Sector " value="PORSECTORCLI" />
                                     <listitem id="linea2" label="=========================" value="linea2" />
            
                                 </listbox>
