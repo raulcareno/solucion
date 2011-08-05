@@ -1211,6 +1211,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             parametros.put("cliente", cli.getNombres());
             parametros.put("direccion", cli.getDireccion());
             parametros.put("telefono", cli.getTelefono());
+            parametros.put("placa", placa.getText());
             parametros.put("dias", (dias > 0 ? dias + " Dias" : ""));
 
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
