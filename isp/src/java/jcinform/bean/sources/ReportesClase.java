@@ -18,7 +18,9 @@ import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Empleadosfacturas;
+import jcinform.persistencia.Radios;
 import jcinform.persistencia.Sector;
+import jcinform.persistencia.Sucursal;
 import net.sf.jasperreports.engine.JRDataSource;
 
 /**
@@ -32,28 +34,29 @@ public class ReportesClase {
         a.compareTo(a);
     }
 
-    public JRDataSource facturasPendientes(Clientes cli) {
+    public JRDataSource facturasPendientes(Clientes cli,Sector sec) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         if (cli.getCodigo().equals(-1)) {
-            clientes = adm.query("Select o from Clientes as o order by o.apellidos");
-        } else {
+            clientes = adm.query("Select o.clientes from Contratos as o "
+                    + "where o.radios.nodos.sector.codigo = '"+sec.getCodigo()+"' "
+                    + "order by o.clientes.apellidos");
+        }else{
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
             clientes.add(cli);
         }
         ArrayList detalles = new ArrayList();
+        String quer ="";
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
             Clientes clientes1 = itCli.next();
-//            List facEncontradas = adm.queryNativo("SELECT fa.codigo, fa.fecha, p.nombre, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo FROM plan p, detalle de, cxcobrar cx, factura  fa "
-//                    + " WHERE p.codigo = de.plan AND  de.factura = fa.codigo AND fa.clientes  =  " + clientes1.getCodigo() + "   AND cx.factura = fa.codigo GROUP BY fa.codigo  HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0");
-            String quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
+             quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
                     + "FROM cxcobrar cx, factura  fa "
                     + " WHERE fa.clientes  =  " + clientes1.getCodigo() + "  "
                     + "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
 
             List facEncontradas = adm.queryNativo(quer);
-            System.out.println("" + quer);
+            
             if (facEncontradas.size() > 0) {
                 Pendientes pendi = null;
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
@@ -74,6 +77,7 @@ public class ReportesClase {
             }
 
         }
+        System.out.println("" + quer);
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
         return ds;
     }
@@ -82,7 +86,10 @@ public class ReportesClase {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
 //        if (cli.getCodigo().equals(-1)) {
-        clientes = adm.query("Select o from Clientes as o order by o.apellidos");
+        //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
+        clientes = adm.query("Select o.clientes from Contratos as o "
+                    + "where o.radios.nodos.sector.codigo = '"+sec.getCodigo()+"' "
+                    + "order by o.clientes.apellidos");
 //        } else {
 //            cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
 //            clientes.add(cli);
@@ -92,7 +99,7 @@ public class ReportesClase {
             Clientes clientes1 = itCli.next();
             String quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
                     + "FROM cxcobrar cx, factura  fa "
-                    + " WHERE fa.sector  = '" + sec.getCodigo() + "' and fa.clientes  =  " + clientes1.getCodigo() + "  "
+                    + " WHERE  fa.clientes  =  " + clientes1.getCodigo() + "  "
                     + "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
 
@@ -122,11 +129,14 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource facturasCobradas(Clientes cli, Date desde, Date hasta) {
+    public JRDataSource facturasCobradas(Clientes cli, Date desde, Date hasta,Sector sec) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         if (cli.getCodigo().equals(-1)) {
-            clientes = adm.query("Select o from Clientes as o order by o.apellidos");
+            //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
+            clientes = adm.query("Select o.clientes from Contratos as o "
+                    + "where o.radios.nodos.sector.codigo = '"+sec.getCodigo()+"' "
+                    + "order by o.clientes.apellidos");
         } else {
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
             clientes.add(cli);
@@ -139,7 +149,7 @@ public class ReportesClase {
             List facEncontradas = adm.queryNativo("SELECT fa.codigo, fa.numero, fa.fecha, p.nombre, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo"
                     + " FROM plan p, detalle de, cxcobrar cx, factura  fa "
                     + " WHERE p.codigo = de.plan AND  de.factura = fa.codigo AND fa.clientes  =  " + clientes1.getCodigo() + "  "
-                    + " AND cx.factura = fa.codigo AND fa.fecha between '" + desdestr + "' and '" + hastastr + "' GROUP BY fa.codigo  ");
+                    + " AND cx.factura = fa.codigo AND cx.fecha between '" + desdestr + "' and '" + hastastr + "' GROUP BY fa.codigo  ");
             if (facEncontradas.size() > 0) {
                 Pendientes pendi = null;
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="empresa" class="java.lang.String"/>
@@ -30,9 +30,9 @@
 	<group name="clientes">
 		<groupExpression><![CDATA[$F{cliente}]]></groupExpression>
 		<groupHeader>
-			<band height="38">
+			<band height="28">
 				<staticText>
-					<reportElement mode="Opaque" x="315" y="21" width="75" height="17" backcolor="#EDECEC"/>
+					<reportElement mode="Transparent" x="315" y="16" width="75" height="12" backcolor="#EDECEC"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -41,12 +41,12 @@
 						<rightPen lineWidth="0.5"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Fecha]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="390" y="21" width="93" height="17" backcolor="#EDECEC"/>
+					<reportElement mode="Transparent" x="390" y="16" width="93" height="12" backcolor="#EDECEC"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -55,12 +55,12 @@
 						<rightPen lineWidth="0.5"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Total]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="483" y="21" width="70" height="17" backcolor="#EDECEC"/>
+					<reportElement mode="Transparent" x="483" y="16" width="70" height="12" backcolor="#EDECEC"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -69,12 +69,12 @@
 						<rightPen lineWidth="0.5"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Saldos]]></text>
 				</staticText>
 				<textField>
-					<reportElement mode="Opaque" x="8" y="5" width="545" height="16" backcolor="#EDECEC"/>
+					<reportElement mode="Opaque" x="8" y="0" width="545" height="16" backcolor="#EDECEC"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -83,12 +83,12 @@
 						<rightPen lineWidth="0.5"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{cliente}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="8" y="21" width="31" height="17" backcolor="#EDECEC"/>
+					<reportElement mode="Transparent" x="8" y="16" width="31" height="12" backcolor="#EDECEC"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -102,7 +102,7 @@
 					<text><![CDATA[No.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="39" y="21" width="276" height="17" backcolor="#EDECEC"/>
+					<reportElement mode="Transparent" x="39" y="16" width="276" height="12" backcolor="#EDECEC"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -118,9 +118,9 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="20">
-				<staticText>
-					<reportElement mode="Opaque" x="390" y="0" width="93" height="20" backcolor="#EDECEC"/>
+			<band height="17">
+				<textField>
+					<reportElement mode="Opaque" x="483" y="0" width="70" height="17" backcolor="#EDECEC"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -130,20 +130,6 @@
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font isBold="true" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<text><![CDATA[Valor x Cobrar: ]]></text>
-				</staticText>
-				<textField>
-					<reportElement mode="Opaque" x="483" y="0" width="70" height="20" backcolor="#EDECEC"/>
-					<box leftPadding="3" rightPadding="3">
-						<pen lineWidth="0.5"/>
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{saldo_1}]]></textFieldExpression>
 				</textField>
@@ -200,9 +186,9 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="16" splitType="Stretch">
+		<band height="13" splitType="Stretch">
 			<textField pattern="MMM &apos;de&apos; yyyy">
-				<reportElement x="315" y="0" width="75" height="16"/>
+				<reportElement x="315" y="0" width="75" height="13"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -214,7 +200,7 @@
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{mes}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="390" y="0" width="93" height="16"/>
+				<reportElement x="390" y="0" width="93" height="13"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -226,7 +212,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valor}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="483" y="0" width="70" height="16"/>
+				<reportElement x="483" y="0" width="70" height="13"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -238,7 +224,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="0" width="31" height="16"/>
+				<reportElement x="8" y="0" width="31" height="13"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -252,7 +238,7 @@
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{variable1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="39" y="0" width="276" height="16"/>
+				<reportElement x="39" y="0" width="276" height="13"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -260,7 +246,9 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{direccioncontrato}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -272,9 +260,9 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="20" splitType="Stretch">
+		<band height="18" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="483" height="20" backcolor="#EDECEC"/>
+				<reportElement mode="Opaque" x="0" y="0" width="483" height="18" backcolor="#EDECEC"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -288,7 +276,7 @@
 				<text><![CDATA[Total  X Cobrar: ]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="483" y="0" width="70" height="20" backcolor="#EDECEC"/>
+				<reportElement mode="Opaque" x="483" y="0" width="70" height="18" backcolor="#EDECEC"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>

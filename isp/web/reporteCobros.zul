@@ -68,7 +68,7 @@ List cantones = adm.query("Select o from Canton as o  ");
                 }else{
                         cclientev = -1;
                 }
-                   datasource = reportes.facturasPendientes(new Clientes(cclientev));
+                   datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value);
                     report.setSrc(directorioReportes+"cxcclientes.jasper");
             }else if(tipo.equals("PORSECTOR")){
                                 datasource = reportes.facturasPendientes(sectorList.selectedItem.value);
@@ -84,7 +84,7 @@ List cantones = adm.query("Select o from Canton as o  ");
                 }else{
                         cclientev = -1;
                 }
-                   datasource = reportes.facturasCobradas(new Clientes(cclientev), desde.value, hasta.value);
+                   datasource = reportes.facturasCobradas(new Clientes(cclientev), desde.value, hasta.value,sectorList.selectedItem.value);
                     report.setSrc(directorioReportes+"cpclientes.jasper");
             }else  if(tipo.equals("ARQUEO")){
                    datasource = reportes.reporteCaja(desde.value, hasta.value);
@@ -109,20 +109,29 @@ void campos(String valor){
     filaclientes1.visible=false;
     filafechas.visible=false;
       filacanton.visible=false;
-            filasector.visible=false;
+      filasector.visible=false;
+      Date fec = adm.Date();
+      
+      fec.setDate(1);
         if(valor.equals("CXCLI")){
             titulo.value= "Cuentas por Pagar";
             filaclientes.visible=true;
             filaclientes1.visible=true;
-             
+            filacanton.visible=true;
+            filasector.visible=true;      
+            desde.value = fec; 
         }else if(valor.equals("COBROS")){
             titulo.value= "Cobros Realizados";
             filaclientes.visible=true;
             filaclientes1.visible=true;
             filafechas.visible=true;
+            filacanton.visible=true;
+            filasector.visible=true;    
+            desde.value = fec;
         }else if(valor.equals("ARQUEO")){
             titulo.value= "Cobros Diarios";
-           filafechas.visible=true;
+            filafechas.visible=true;
+            desde.value = adm.Date();
         }else if(valor.equals("PORSECTOR")){
             titulo.value= "X Cobrar";
             filacanton.visible=true;
@@ -187,12 +196,12 @@ void campos(String valor){
                             <span>
                                 <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="400px"  mold="select" >
                                     <listitem label="[Seleccione]" value="-1" selected="true" />
-                                    <listitem id="CXCLI" label="Cuentas x Cobrar" value="CXCLI" />
-                                    <listitem id="COBROS"  label="Historial de Cobros por Cliente " value="COBROS" />
-                                    <listitem id="ARQUEO" label="Reporte de Caja" value="ARQUEO" />
+                                    <listitem id="CXCLI" label="Cuentas x Cobrar - Clientes" value="CXCLI" />
+                                    <listitem id="COBROS"  label="Cuentas Cobradas por Clientes " value="COBROS" />
+                                    <listitem id="ARQUEO" label="Reporte Diario de Caja o Fechas" value="ARQUEO" />
                                     <listitem id="linea" label="=========================" value="linea" />
-                                    <listitem id="PORSECTOR" label="X Cobrar por Sectores" value="PORSECTOR" />
-                                    <listitem id="PORSECTORCLI" label="Reporte de Clientes por Sector " value="PORSECTORCLI" />
+                                    <listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" />
+                                    <listitem id="PORSECTORCLI" label="Reporte de Contratos de Clientes por Sector " value="PORSECTORCLI" />
                                     <listitem id="linea2" label="=========================" value="linea2" />
            
                                 </listbox>
@@ -263,7 +272,7 @@ void campos(String valor){
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="cant" width="250px"
-                                                     onSelect="bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();">
+                                                     onSelect='bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();bdSector.value = "" ;'>
                         
                                             <listitem forEach="${cantones}" value="${each}">
                                                 <listcell label="${each.nombre}" />
