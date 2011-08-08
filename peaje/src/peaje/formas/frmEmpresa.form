@@ -209,7 +209,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="0" width="450" height="40"/>
+          <AbsoluteConstraints x="0" y="0" width="440" height="40"/>
         </Constraint>
       </Constraints>
 
@@ -488,6 +488,7 @@
             <Component class="javax.swing.JFormattedTextField" name="codigo">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <BindingProperties>
                 <BindingProperty name="value" source="Form" sourcePath="${usuarioObj.ruc}" target="codigo" targetPath="value" updateStrategy="0" immediately="false"/>

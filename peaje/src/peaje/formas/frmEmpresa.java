@@ -488,7 +488,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Catálogo de Empresas ..::..");
         jPanel3.add(jLabel8);
@@ -501,7 +501,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel10.setBounds(10, 20, 250, 13);
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 450, 40);
+        jPanel3.setBounds(0, 0, 440, 40);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -653,6 +653,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel12.setBounds(10, 30, 100, 14);
 
         codigo.setEditable(false);
+        codigo.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.ruc}"), codigo, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
