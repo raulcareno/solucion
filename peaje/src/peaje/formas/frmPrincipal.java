@@ -31,8 +31,6 @@ import hibernate.cargar.UsuarioActivo;
 import hibernate.cargar.WorkingDirectory;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -44,17 +42,13 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
-import javax.imageio.ImageIO;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -63,6 +57,7 @@ import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.MediaPrintableArea;
 import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.MediaSizeName;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.ListModel;
 import javax.swing.table.TableCellRenderer;
@@ -417,6 +412,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         tarifas = new javax.swing.JList();
         txtValor = new javax.swing.JTextField();
         btnLote = new javax.swing.JButton();
+        btnLote1 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -426,6 +422,61 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel6 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        frmLoteTarjetas = new javax.swing.JInternalFrame();
+        panelencontrados = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        encontrados = new javax.swing.JList();
+        nombres1 = new javax.swing.JFormattedTextField();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tablaTarjetas = new javax.swing.JTable(){
+            public Component prepareRenderer(TableCellRenderer renderer, int
+                row, int column){
+                Component returnComp = super.prepareRenderer(renderer, row,
+                    column);
+                returnComp.setForeground(Color.BLACK);
+                returnComp.setBackground(Color.WHITE);
+                try{
+                    String tipo= getValueAt(row,0).toString();
+                    if(tipo.contains("false")){
+                        returnComp.setForeground(Color.WHITE);
+                        returnComp.setBackground(Color.GRAY);
+                    }else{
+                        returnComp.setForeground(Color.BLACK);
+                        returnComp.setBackground(Color.WHITE);
+                    }
+                }catch(Exception e){}
+                return returnComp;
+            }
+        };
+        diasHabiles2 = new javax.swing.JPanel();
+        lunes2 = new javax.swing.JCheckBox();
+        martes2 = new javax.swing.JCheckBox();
+        miercoles2 = new javax.swing.JCheckBox();
+        jueves2 = new javax.swing.JCheckBox();
+        viernes2 = new javax.swing.JCheckBox();
+        sabado2 = new javax.swing.JCheckBox();
+        domingo2 = new javax.swing.JCheckBox();
+        todos2 = new javax.swing.JCheckBox();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel43 = new javax.swing.JLabel();
+        jLabel44 = new javax.swing.JLabel();
+        horaDesde2 = new javax.swing.JSpinner();
+        horaHasta2 = new javax.swing.JSpinner();
+        panelHoras2 = new javax.swing.JPanel();
+        jLabel45 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
+        fechaDesde2 = new com.toedter.calendar.JDateChooser();
+        fechaHasta2 = new com.toedter.calendar.JDateChooser();
+        btnGuardarCambios1 = new javax.swing.JButton();
+        jLabel48 = new javax.swing.JLabel();
+        jLabel49 = new javax.swing.JLabel();
+        activa2 = new javax.swing.JCheckBox();
+        jButton12 = new javax.swing.JButton();
+        noTarjeta2 = new javax.swing.JFormattedTextField();
+        btnAnadirTarjeta = new javax.swing.JButton();
+        clienteCod = new javax.swing.JFormattedTextField();
+        jLabel50 = new javax.swing.JLabel();
+        nombresCliente = new javax.swing.JFormattedTextField();
         frmRespaldarBase = new javax.swing.JInternalFrame();
         btnRespaldoWindows = new javax.swing.JButton();
         btnRespaldoLinux = new javax.swing.JButton();
@@ -1186,11 +1237,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jScrollPane5.setViewportView(tablaCambios);
         tablaCambios.getColumnModel().getColumn(0).setResizable(false);
         tablaCambios.getColumnModel().getColumn(0).setPreferredWidth(5);
+        tablaCambios.getColumnModel().getColumn(0).setHeaderValue("ESTADO");
         tablaCambios.getColumnModel().getColumn(1).setResizable(false);
         tablaCambios.getColumnModel().getColumn(1).setPreferredWidth(250);
+        tablaCambios.getColumnModel().getColumn(1).setHeaderValue("CLIENTE");
         tablaCambios.getColumnModel().getColumn(2).setResizable(false);
         tablaCambios.getColumnModel().getColumn(3).setResizable(false);
         tablaCambios.getColumnModel().getColumn(3).setPreferredWidth(10);
+        tablaCambios.getColumnModel().getColumn(3).setHeaderValue("Desde");
 
         diasHabiles1.setBorder(javax.swing.BorderFactory.createTitledBorder("Días Habiles"));
         diasHabiles1.setLayout(null);
@@ -1633,7 +1687,21 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         jPanel4.add(btnLote);
-        btnLote.setBounds(180, 150, 160, 30);
+        btnLote.setBounds(290, 150, 110, 30);
+
+        btnLote1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/todo.gif"))); // NOI18N
+        btnLote1.setMnemonic('B');
+        btnLote1.setText("Añadir X Lote");
+        btnLote1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnLote1.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnLote1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLote1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLote1ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnLote1);
+        btnLote1.setBounds(180, 150, 110, 30);
 
         frmClientes1.getContentPane().add(jPanel4);
         jPanel4.setBounds(10, 50, 400, 280);
@@ -1740,6 +1808,279 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         frmClientes1.setBounds(40, 20, 440, 450);
         contenedor.add(frmClientes1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        frmLoteTarjetas.setMaximizable(true);
+        frmLoteTarjetas.setTitle("Ingreso de Tarjetas por Lotes");
+        frmLoteTarjetas.setVisible(true);
+        frmLoteTarjetas.getContentPane().setLayout(null);
+
+        panelencontrados.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
+        panelencontrados.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelencontrados.setLayout(null);
+
+        encontrados.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Lista Clientes" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        encontrados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        encontrados.setAlignmentX(0.2F);
+        encontrados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                encontradosMouseClicked(evt);
+            }
+        });
+        encontrados.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                encontradosKeyPressed(evt);
+            }
+        });
+        jScrollPane7.setViewportView(encontrados);
+
+        panelencontrados.add(jScrollPane7);
+        jScrollPane7.setBounds(10, 10, 240, 90);
+
+        frmLoteTarjetas.getContentPane().add(panelencontrados);
+        panelencontrados.setBounds(180, 30, 260, 110);
+
+        nombres1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombres1KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nombres1KeyReleased(evt);
+            }
+        });
+        frmLoteTarjetas.getContentPane().add(nombres1);
+        nombres1.setBounds(180, 10, 260, 20);
+
+        tablaTarjetas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "NO.TARJETA"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane6.setViewportView(tablaTarjetas);
+        tablaTarjetas.getColumnModel().getColumn(0).setResizable(false);
+
+        frmLoteTarjetas.getContentPane().add(jScrollPane6);
+        jScrollPane6.setBounds(20, 90, 150, 300);
+
+        diasHabiles2.setBorder(javax.swing.BorderFactory.createTitledBorder("Días Habiles"));
+        diasHabiles2.setLayout(null);
+
+        lunes2.setText("Lunes");
+        lunes2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lunes2ActionPerformed(evt);
+            }
+        });
+        lunes2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                lunes2KeyPressed(evt);
+            }
+        });
+        diasHabiles2.add(lunes2);
+        lunes2.setBounds(70, 20, 55, 23);
+
+        martes2.setText("Martes");
+        martes2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                martes2KeyPressed(evt);
+            }
+        });
+        diasHabiles2.add(martes2);
+        martes2.setBounds(130, 20, 60, 23);
+
+        miercoles2.setText("Miércoles");
+        miercoles2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                miercoles2KeyPressed(evt);
+            }
+        });
+        diasHabiles2.add(miercoles2);
+        miercoles2.setBounds(200, 20, 70, 23);
+
+        jueves2.setText("Jueves");
+        jueves2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jueves2ActionPerformed(evt);
+            }
+        });
+        jueves2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jueves2KeyPressed(evt);
+            }
+        });
+        diasHabiles2.add(jueves2);
+        jueves2.setBounds(10, 60, 60, 23);
+
+        viernes2.setText("Viernes");
+        viernes2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                viernes2KeyPressed(evt);
+            }
+        });
+        diasHabiles2.add(viernes2);
+        viernes2.setBounds(70, 60, 62, 23);
+
+        sabado2.setText("Sábado");
+        sabado2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                sabado2KeyPressed(evt);
+            }
+        });
+        diasHabiles2.add(sabado2);
+        sabado2.setBounds(130, 60, 63, 23);
+
+        domingo2.setText("Domingo");
+        domingo2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                domingo2KeyPressed(evt);
+            }
+        });
+        diasHabiles2.add(domingo2);
+        domingo2.setBounds(200, 60, 70, 23);
+
+        todos2.setText("Todos");
+        todos2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                todos2ActionPerformed(evt);
+            }
+        });
+        todos2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                todos2KeyPressed(evt);
+            }
+        });
+        diasHabiles2.add(todos2);
+        todos2.setBounds(10, 20, 55, 23);
+
+        frmLoteTarjetas.getContentPane().add(diasHabiles2);
+        diasHabiles2.setBounds(200, 230, 310, 100);
+
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Horas de ingreso"));
+        jPanel11.setLayout(null);
+
+        jLabel43.setText("Hasta: ");
+        jPanel11.add(jLabel43);
+        jLabel43.setBounds(140, 20, 40, 14);
+
+        jLabel44.setText("Desde:");
+        jPanel11.add(jLabel44);
+        jLabel44.setBounds(10, 20, 50, 14);
+
+        horaDesde2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaDesde2KeyPressed(evt);
+            }
+        });
+        jPanel11.add(horaDesde2);
+        horaDesde2.setBounds(50, 20, 80, 20);
+
+        horaHasta2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaHasta2KeyPressed(evt);
+            }
+        });
+        jPanel11.add(horaHasta2);
+        horaHasta2.setBounds(180, 20, 80, 20);
+
+        frmLoteTarjetas.getContentPane().add(jPanel11);
+        jPanel11.setBounds(200, 160, 310, 48);
+
+        panelHoras2.setBorder(javax.swing.BorderFactory.createTitledBorder("Fechas de Validez"));
+        panelHoras2.setLayout(null);
+
+        jLabel45.setText("Hasta: ");
+        panelHoras2.add(jLabel45);
+        jLabel45.setBounds(160, 20, 40, 14);
+
+        jLabel46.setText("Desde:");
+        panelHoras2.add(jLabel46);
+        jLabel46.setBounds(10, 20, 40, 14);
+
+        fechaDesde2.setDateFormatString("dd/MMM/yyyy");
+        panelHoras2.add(fechaDesde2);
+        fechaDesde2.setBounds(50, 20, 95, 20);
+
+        fechaHasta2.setDateFormatString("dd/MMM/yyyy");
+        panelHoras2.add(fechaHasta2);
+        fechaHasta2.setBounds(200, 20, 95, 20);
+
+        frmLoteTarjetas.getContentPane().add(panelHoras2);
+        panelHoras2.setBounds(200, 90, 309, 48);
+
+        btnGuardarCambios1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
+        btnGuardarCambios1.setText("GUARDAR");
+        btnGuardarCambios1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarCambios1ActionPerformed(evt);
+            }
+        });
+        frmLoteTarjetas.getContentPane().add(btnGuardarCambios1);
+        btnGuardarCambios1.setBounds(190, 340, 99, 40);
+
+        jLabel48.setForeground(new java.awt.Color(0, 51, 255));
+        jLabel48.setText("Se aplicará el horario y fechas a todos las tarjetas que estén en la lista ");
+        frmLoteTarjetas.getContentPane().add(jLabel48);
+        jLabel48.setBounds(190, 390, 370, 14);
+
+        jLabel49.setText("Tarjeta Leída:");
+        frmLoteTarjetas.getContentPane().add(jLabel49);
+        jLabel49.setBounds(30, 40, 80, 14);
+
+        activa2.setSelected(true);
+        activa2.setText("Tarjetas Habilitadas");
+        frmLoteTarjetas.getContentPane().add(activa2);
+        activa2.setBounds(200, 70, 140, 23);
+
+        jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
+        jButton12.setText("Salir");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+        frmLoteTarjetas.getContentPane().add(jButton12);
+        jButton12.setBounds(360, 340, 92, 40);
+        frmLoteTarjetas.getContentPane().add(noTarjeta2);
+        noTarjeta2.setBounds(20, 62, 150, 20);
+
+        btnAnadirTarjeta.setText("Añadir");
+        btnAnadirTarjeta.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnAnadirTarjeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnadirTarjetaActionPerformed(evt);
+            }
+        });
+        frmLoteTarjetas.getContentPane().add(btnAnadirTarjeta);
+        btnAnadirTarjeta.setBounds(100, 40, 70, 20);
+
+        clienteCod.setEditable(false);
+        frmLoteTarjetas.getContentPane().add(clienteCod);
+        clienteCod.setBounds(180, 30, 30, 20);
+
+        jLabel50.setText("Búsque primero el Cliente: ");
+        frmLoteTarjetas.getContentPane().add(jLabel50);
+        jLabel50.setBounds(39, 10, 140, 14);
+
+        nombresCliente.setEditable(false);
+        frmLoteTarjetas.getContentPane().add(nombresCliente);
+        nombresCliente.setBounds(210, 30, 300, 20);
+
+        frmLoteTarjetas.setBounds(20, 10, 570, 460);
+        contenedor.add(frmLoteTarjetas, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         frmRespaldarBase.setTitle("Respaldo de Información");
         frmRespaldarBase.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edittrash.gif"))); // NOI18N
@@ -2066,7 +2407,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar1.setFloatable(false);
-            jToolBar1.setOrientation(1);
+            jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar1.setRollover(true);
 
             btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
@@ -2134,7 +2475,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar2.setFloatable(false);
-            jToolBar2.setOrientation(1);
+            jToolBar2.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar2.setRollover(true);
 
             btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
@@ -2238,7 +2579,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar3.setFloatable(false);
-            jToolBar3.setOrientation(1);
+            jToolBar3.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar3.setRollover(true);
 
             btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/help.gif"))); // NOI18N
@@ -2937,6 +3278,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
                 if (tarje == null) {//SI LA TARJETA NO ESTÁ REGISTRADA, LE CARGO AL CLIENTE
                     noTarjeta.setText(tarjetatxt.getText());
+                    noTarjeta2.setText(tarjetatxt.getText());
                     errores.setText("");
                 } else {
                     verPanel();
@@ -5257,6 +5599,242 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         };
         cargar.start();
     }//GEN-LAST:event_jButton11ActionPerformed
+
+private void lunes2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lunes2ActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_lunes2ActionPerformed
+
+private void lunes2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lunes2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_lunes2KeyPressed
+
+private void martes2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_martes2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_martes2KeyPressed
+
+private void miercoles2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_miercoles2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_miercoles2KeyPressed
+
+private void jueves2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jueves2ActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_jueves2ActionPerformed
+
+private void jueves2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jueves2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_jueves2KeyPressed
+
+private void viernes2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_viernes2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_viernes2KeyPressed
+
+private void sabado2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sabado2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_sabado2KeyPressed
+
+private void domingo2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_domingo2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_domingo2KeyPressed
+
+private void todos2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todos2ActionPerformed
+// TODO add your handling code here:
+        lunes2.setSelected(todos2.isSelected());
+        martes2.setSelected(todos2.isSelected());
+        miercoles2.setSelected(todos2.isSelected());
+        jueves2.setSelected(todos2.isSelected());
+        viernes2.setSelected(todos2.isSelected());
+        sabado2.setSelected(todos2.isSelected());
+        domingo2.setSelected(todos2.isSelected());
+}//GEN-LAST:event_todos2ActionPerformed
+
+private void todos2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_todos2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_todos2KeyPressed
+
+private void horaDesde2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaDesde2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_horaDesde2KeyPressed
+
+private void horaHasta2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaHasta2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_horaHasta2KeyPressed
+
+private void btnGuardarCambios1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambios1ActionPerformed
+// TODO add your handling code here:
+    if(clienteCod.getText() == null || clienteCod.getText().isEmpty()){
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un Cliente, \n si es para ingreso en vez de Tickets, seleccione el CONSUMIDOR FINAL...! ","JCINFORM",JOptionPane.ERROR_MESSAGE);
+        return;
+    } 
+    int filas = tablaTarjetas.getRowCount();
+        for (int i = 0; i < filas; i++) {
+            String tarjeta = (String) tablaTarjetas.getValueAt(i, 0);
+                 try {
+                    Tarjetas tarActu =  new Tarjetas(tarjeta);
+                    Date fechaDes = fechaDesde2.getDate();
+                    fechaDes.setHours(0);
+                    fechaDes.setMinutes(01);
+                    fechaDes.setSeconds(01);
+                    tarActu.setDesde(fechaDes);
+                    Date fechaHas = fechaHasta2.getDate();
+                    fechaHas.setHours(23);
+                    fechaHas.setMinutes(59);
+                    fechaHas.setSeconds(59);
+                    tarActu.setHasta(fechaHas);
+                    tarActu.setDomingo(domingo2.isSelected());
+                    tarActu.setLunes(lunes2.isSelected());
+                    tarActu.setMartes(martes2.isSelected());
+                    tarActu.setMiercoles(miercoles2.isSelected());
+                    tarActu.setJueves(jueves2.isSelected());
+                    tarActu.setViernes(viernes2.isSelected());
+                    tarActu.setSabado(sabado2.isSelected());
+                    tarActu.setHorainicio((Date) horaDesde2.getValue());
+                    tarActu.setHorafin((Date) horaHasta2.getValue());
+                    tarActu.setHabilitada(activa2.isSelected());
+                    tarActu.setClientes(new Clientes(new Integer(clienteCod.getText())));
+                    adm.guardar(tarActu);
+                } catch (Exception ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+
+                }
+ 
+
+        }
+    
+}//GEN-LAST:event_btnGuardarCambios1ActionPerformed
+
+private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+// TODO add your handling code here:
+    frmLoteTarjetas.setVisible(false);
+}//GEN-LAST:event_jButton12ActionPerformed
+
+private void encontradosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encontradosMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            this.panelencontrados.setVisible(false);
+            Clientes est = (Clientes) this.encontrados.getSelectedValue();
+            llenarCliente(est);
+        }
+}//GEN-LAST:event_encontradosMouseClicked
+
+    public void llenarCliente(Clientes nCliente) {
+        clienteCod.setText("" + nCliente.getCodigo());
+        
+//        identificacion.setText(nCliente.getIdentificacion());
+        nombres1.setText(nCliente.getNombres());
+        nombresCliente.setText(nCliente.getNombres());
+//        direccion.setText(nCliente.getDireccion());
+//        telefono.setText(nCliente.getTelefono());
+    }
+private void encontradosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontradosKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            this.panelencontrados.setVisible(false);
+            Clientes est = (Clientes) this.encontrados.getSelectedValue();
+            llenarCliente(est);
+
+
+        }
+        if (evt.getKeyCode() == evt.VK_UP && encontrados.getSelectedIndex() == 0) {
+            this.nombres.requestFocusInWindow();
+        }
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            this.panelencontrados.setVisible(false);
+
+        }
+        tecla(evt.getKeyCode());
+}//GEN-LAST:event_encontradosKeyPressed
+
+private void nombres1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_DOWN) {
+            encontrados.setSelectedIndex(0);
+            encontrados.requestFocusInWindow();
+        }
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            panelencontrados.setVisible(false);
+        }
+}//GEN-LAST:event_nombres1KeyPressed
+
+private void nombres1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyReleased
+        // TODO add your handling code here:
+        if (!nombres1.getText().isEmpty()) {
+
+            List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres1.getText().trim() + "%' order by o.nombres ", 0, 10);
+            if (encon.size() > 0) {
+                DefaultListModel dtm = new DefaultListModel();
+                dtm.removeAllElements();
+                encontrados.setModel(dtm);
+                int j = 0;
+                for (Clientes est : encon) {
+                    dtm.add(j, est);
+                    j++;
+                }
+                encontrados.setModel(dtm);
+                this.panelencontrados.setVisible(true);
+            } else {
+                DefaultListModel dtm = new DefaultListModel();
+                dtm.removeAllElements();
+                encontrados.setModel(dtm);
+                this.panelencontrados.setVisible(false);
+            }
+
+        } else {
+            DefaultListModel dtm = new DefaultListModel();
+            dtm.removeAllElements();
+            encontrados.setModel(dtm);
+            this.panelencontrados.setVisible(false);
+        }
+}//GEN-LAST:event_nombres1KeyReleased
+
+private void btnAnadirTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirTarjetaActionPerformed
+// TODO add your handling code here:
+    if(noTarjeta2.getText() == null || noTarjeta2.getText().isEmpty()){
+        JOptionPane.showMessageDialog(this, "Pase la tarjeta por la Lectora y vuelva a intentarlo...! ","JCINFORM",JOptionPane.ERROR_MESSAGE);
+        return;
+    }else{
+                        Object[] obj = new Object[2];
+                        DefaultTableModel dtm = (DefaultTableModel) tablaTarjetas.getModel();
+                        //dtm.getDataVector().removeAllElements();
+                        obj[0] = noTarjeta2.getText();
+                        dtm.addRow(obj);
+                        tablaTarjetas.setModel(dtm);
+                        
+    }
+    
+}//GEN-LAST:event_btnAnadirTarjetaActionPerformed
+
+private void btnLote1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLote1ActionPerformed
+// TODO add your handling code here:
+     if (permisos.getModificar()) {
+         panelencontrados.setVisible(false);
+            SpinnerDateModel sm = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner = new JSpinner(sm);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm");
+            
+            horaDesde2.setModel(sm);
+            horaDesde2.setEditor(de);
+
+            SpinnerDateModel sm2 = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner2 = new JSpinner(sm2);
+            JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm");
+
+            horaHasta2.setEditor(de2);
+            horaHasta2.setModel(sm2);
+            fechaDesde2.setDate(new Date());
+            fechaHasta2.setDate(new Date());
+            frmLoteTarjetas.setVisible(true);
+            
+            DefaultTableModel dtm = (DefaultTableModel) tablaTarjetas.getModel();
+            tablaTarjetas.setModel(dtm);
+            clienteCod.setText("");
+            nombres1.setText("");
+            nombresCliente.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+        }
+
+
+}//GEN-LAST:event_btnLote1ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -5358,6 +5936,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox activa;
     private javax.swing.JCheckBox activa1;
+    private javax.swing.JCheckBox activa2;
     private javax.swing.JToolBar barraHerramients;
     private javax.swing.JButton barrera1;
     private javax.swing.JButton barrera2;
@@ -5369,6 +5948,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JButton btnAccesos;
     private javax.swing.JButton btnAcerca;
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnAnadirTarjeta;
     private javax.swing.JButton btnAuditoria;
     private javax.swing.JButton btnAuditoria1;
     private javax.swing.JButton btnAyuda;
@@ -5380,9 +5960,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JButton btnEliminar1;
     private javax.swing.JButton btnEmpresa;
     private javax.swing.JButton btnGuardarCambios;
+    private javax.swing.JButton btnGuardarCambios1;
     private javax.swing.JButton btnGuardarTarjeta;
     private javax.swing.JButton btnIngresar;
     private javax.swing.JButton btnLote;
+    private javax.swing.JButton btnLote1;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNuevaTarjeta;
     private javax.swing.JButton btnReconfigurar;
@@ -5402,6 +5984,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JPasswordField clave;
     private javax.swing.JPasswordField claveActual;
     private javax.swing.JFormattedTextField cliente;
+    private javax.swing.JFormattedTextField clienteCod;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JLabel cons;
@@ -5412,31 +5995,40 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JTextArea descripcionTarjeta;
     private javax.swing.JPanel diasHabiles;
     private javax.swing.JPanel diasHabiles1;
+    private javax.swing.JPanel diasHabiles2;
     private javax.swing.JFormattedTextField direccion;
     private javax.swing.JLabel disponibles;
     private javax.swing.JCheckBox domingo;
     private javax.swing.JCheckBox domingo1;
+    private javax.swing.JCheckBox domingo2;
+    private javax.swing.JList encontrados;
     private javax.swing.JLabel errores;
     private com.toedter.calendar.JDateChooser fechaDesde;
     private com.toedter.calendar.JDateChooser fechaDesde1;
+    private com.toedter.calendar.JDateChooser fechaDesde2;
     private com.toedter.calendar.JDateChooser fechaHasta;
     private com.toedter.calendar.JDateChooser fechaHasta1;
+    private com.toedter.calendar.JDateChooser fechaHasta2;
     private javax.swing.JInternalFrame formaTarjetas1;
     private javax.swing.JInternalFrame frmClientes1;
     private javax.swing.JInternalFrame frmIngresarSistema;
     private javax.swing.JInternalFrame frmLote;
+    private javax.swing.JInternalFrame frmLoteTarjetas;
     private javax.swing.JInternalFrame frmRespaldarBase;
     private javax.swing.JButton guardarCambioClave;
     private javax.swing.JSpinner horaDesde;
     private javax.swing.JSpinner horaDesde1;
+    private javax.swing.JSpinner horaDesde2;
     private javax.swing.JSpinner horaHasta;
     private javax.swing.JSpinner horaHasta1;
+    private javax.swing.JSpinner horaHasta2;
     private javax.swing.JLabel imAviso;
     private javax.swing.JLabel ingre;
     private javax.swing.JSpinner ingresos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -5482,13 +6074,21 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -5502,6 +6102,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
@@ -5512,40 +6114,52 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private org.jdesktop.swingx.JXTaskPaneContainer jXTaskPaneContainer1;
     private javax.swing.JCheckBox jueves;
     private javax.swing.JCheckBox jueves1;
+    private javax.swing.JCheckBox jueves2;
     private javax.swing.JLabel labelPartner;
     private javax.swing.JCheckBox lunes;
     private javax.swing.JCheckBox lunes1;
+    private javax.swing.JCheckBox lunes2;
     private javax.swing.JCheckBox martes;
     private javax.swing.JCheckBox martes1;
+    private javax.swing.JCheckBox martes2;
     private javax.swing.JCheckBox miercoles;
     private javax.swing.JCheckBox miercoles1;
+    private javax.swing.JCheckBox miercoles2;
     public javax.swing.JFormattedTextField noTarjeta;
+    private javax.swing.JFormattedTextField noTarjeta2;
     private javax.swing.JTextField nombreArchivo;
     private javax.swing.JFormattedTextField nombreBuscar;
     private javax.swing.JFormattedTextField nombres;
+    private javax.swing.JFormattedTextField nombres1;
+    private javax.swing.JFormattedTextField nombresCliente;
     private javax.swing.JPasswordField nuevaClave;
     private javax.swing.JLabel ocupados;
     private javax.swing.JPanel panelCambiar;
     private javax.swing.JPanel panelHoras;
     private javax.swing.JPanel panelHoras1;
+    private javax.swing.JPanel panelHoras2;
     private javax.swing.JPanel panelIngreso;
+    private javax.swing.JPanel panelencontrados;
     private javax.swing.JFormattedTextField placa;
     private javax.swing.JFormattedTextField placa1;
     public javax.swing.JButton procesando;
     private javax.swing.JPasswordField repiteClave;
     private javax.swing.JCheckBox sabado;
     private javax.swing.JCheckBox sabado1;
+    private javax.swing.JCheckBox sabado2;
     private javax.swing.JLabel salid;
     private javax.swing.JSpinner spConsumo;
     private javax.swing.JSpinner spIngreso;
     private javax.swing.JSpinner spSalida;
     private javax.swing.JTable tablaCambios;
+    private javax.swing.JTable tablaTarjetas;
     private javax.swing.JList tarifas;
     private javax.swing.JTable tarjetas;
     public javax.swing.JFormattedTextField tarjetatxt;
     private javax.swing.JFormattedTextField telefono;
     private javax.swing.JCheckBox todos;
     private javax.swing.JCheckBox todos1;
+    private javax.swing.JCheckBox todos2;
     private javax.swing.JLabel totales;
     private javax.swing.JTextField txtValor;
     private javax.swing.JTextField ubicacionArchivo;
@@ -5553,6 +6167,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     private javax.swing.JFormattedTextField usuariot;
     private javax.swing.JCheckBox viernes;
     private javax.swing.JCheckBox viernes1;
+    private javax.swing.JCheckBox viernes2;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     public static Accesos permisos;
