@@ -1,0 +1,20 @@
+INFO peaje.formas.frmPrincipal,line 41,08.08.2011/00:04:15,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,08.08.2011/00:04:23,OK
+INFO peaje.formas.frmPrincipal,line 41,08.08.2011/00:06:00,javax.persistence.RollbackException: Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0.1 (Build b09d-fcs (12/06/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException: Duplicate entry '0987654321' for key 'PRIMARY'
+Error Code: 1062
+Call: INSERT INTO tarjetas (tarjeta, horainicio, horafin, Lunes, desde, Miercoles, hasta, Viernes, dias, Domingo, habilitada, Martes, ingresos, Sabado, placa, Jueves, descripcion, cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	bind => [0987654321, 06:04:00, 00:04:31, true, 2011-08-08 00:01:01.125, true, 2011-08-17 23:59:59.141, true, null, true, true, true, null, true, null, true, null, 1]
+Query: InsertObjectQuery(hibernate.Tarjetas[tarjeta=0987654321])
+INFO peaje.formas.frmPrincipal,line 41,08.08.2011/00:06:00,javax.persistence.RollbackException: Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0.1 (Build b09d-fcs (12/06/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException: Duplicate entry '0987654322' for key 'PRIMARY'
+Error Code: 1062
+Call: INSERT INTO tarjetas (tarjeta, horainicio, horafin, Lunes, desde, Miercoles, hasta, Viernes, dias, Domingo, habilitada, Martes, ingresos, Sabado, placa, Jueves, descripcion, cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	bind => [0987654322, 06:04:00, 00:04:31, true, 2011-08-08 00:01:01.125, true, 2011-08-17 23:59:59.141, true, null, true, true, true, null, true, null, true, null, 1]
+Query: InsertObjectQuery(hibernate.Tarjetas[tarjeta=0987654322])
+INFO peaje.formas.frmPrincipal,line 41,08.08.2011/00:08:48,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,08.08.2011/00:09:03,OK
+INFO peaje.formas.frmPrincipal,line 41,08.08.2011/00:13:14,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,08.08.2011/00:13:23,OK
+INFO peaje.formas.frmPrincipal,line 41,08.08.2011/00:15:39,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,08.08.2011/00:15:53,OK

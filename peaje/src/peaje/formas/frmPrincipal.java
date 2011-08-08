@@ -1450,10 +1450,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
                 .addGap(35, 35, 35))
             .addGroup(frmLoteLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
-                .addGap(35, 35, 35))
-            .addGroup(frmLoteLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(btnGuardarCambios)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1463,6 +1459,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel35))
                 .addContainerGap(34, Short.MAX_VALUE))
+            .addGroup(frmLoteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
+                .addContainerGap())
         );
         frmLoteLayout.setVerticalGroup(
             frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1811,7 +1811,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         frmLoteTarjetas.setMaximizable(true);
         frmLoteTarjetas.setTitle("Ingreso de Tarjetas por Lotes");
-        frmLoteTarjetas.setVisible(true);
+        frmLoteTarjetas.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/File3.gif"))); // NOI18N
         frmLoteTarjetas.getContentPane().setLayout(null);
 
         panelencontrados.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
@@ -1843,6 +1843,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmLoteTarjetas.getContentPane().add(panelencontrados);
         panelencontrados.setBounds(180, 30, 260, 110);
 
+        nombres1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                nombres1FocusLost(evt);
+            }
+        });
         nombres1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 nombres1KeyPressed(evt);
@@ -1868,6 +1873,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        tablaTarjetas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tablaTarjetasKeyPressed(evt);
             }
         });
         jScrollPane6.setViewportView(tablaTarjetas);
@@ -2054,6 +2064,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         frmLoteTarjetas.getContentPane().add(jButton12);
         jButton12.setBounds(360, 340, 92, 40);
+
+        noTarjeta2.setEditable(false);
         frmLoteTarjetas.getContentPane().add(noTarjeta2);
         noTarjeta2.setBounds(20, 62, 150, 20);
 
@@ -3279,6 +3291,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 if (tarje == null) {//SI LA TARJETA NO ESTÁ REGISTRADA, LE CARGO AL CLIENTE
                     noTarjeta.setText(tarjetatxt.getText());
                     noTarjeta2.setText(tarjetatxt.getText());
+                    if(frmLoteTarjetas.isVisible()){
+                        noTarjeta2.setText(tarjetatxt.getText()); 
+                        btnAnadirTarjeta.doClick();
+                    }
                     errores.setText("");
                 } else {
                     verPanel();
@@ -5666,6 +5682,10 @@ private void btnGuardarCambios1ActionPerformed(java.awt.event.ActionEvent evt) {
         return;
     } 
     int filas = tablaTarjetas.getRowCount();
+    if(filas <=0){
+    JOptionPane.showMessageDialog(this, "No hay nada que guardar...! ","JCINFORM",JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         for (int i = 0; i < filas; i++) {
             String tarjeta = (String) tablaTarjetas.getValueAt(i, 0);
                  try {
@@ -5696,10 +5716,9 @@ private void btnGuardarCambios1ActionPerformed(java.awt.event.ActionEvent evt) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
 
                 }
- 
-
-        }
-    
+         }
+         JOptionPane.showMessageDialog(this, "Tarjetas Registradas con Éxito...! ");   
+         frmLoteTarjetas.setVisible(false);
 }//GEN-LAST:event_btnGuardarCambios1ActionPerformed
 
 private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
@@ -5720,7 +5739,7 @@ private void encontradosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
         clienteCod.setText("" + nCliente.getCodigo());
         
 //        identificacion.setText(nCliente.getIdentificacion());
-        nombres1.setText(nCliente.getNombres());
+        //nombres1.setText(nCliente.getNombres());
         nombresCliente.setText(nCliente.getNombres());
 //        direccion.setText(nCliente.getDireccion());
 //        telefono.setText(nCliente.getTelefono());
@@ -5731,11 +5750,11 @@ private void encontradosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:eve
             this.panelencontrados.setVisible(false);
             Clientes est = (Clientes) this.encontrados.getSelectedValue();
             llenarCliente(est);
-
+this.btnAnadirTarjeta.requestFocusInWindow();
 
         }
         if (evt.getKeyCode() == evt.VK_UP && encontrados.getSelectedIndex() == 0) {
-            this.nombres.requestFocusInWindow();
+            this.btnAnadirTarjeta.requestFocusInWindow();
         }
         if (evt.getKeyCode() == evt.VK_ESCAPE) {
             this.panelencontrados.setVisible(false);
@@ -5788,6 +5807,8 @@ private void nombres1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
 
 private void btnAnadirTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirTarjetaActionPerformed
 // TODO add your handling code here:
+
+
     if(noTarjeta2.getText() == null || noTarjeta2.getText().isEmpty()){
         JOptionPane.showMessageDialog(this, "Pase la tarjeta por la Lectora y vuelva a intentarlo...! ","JCINFORM",JOptionPane.ERROR_MESSAGE);
         return;
@@ -5798,9 +5819,13 @@ private void btnAnadirTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//
                         obj[0] = noTarjeta2.getText();
                         dtm.addRow(obj);
                         tablaTarjetas.setModel(dtm);
+                        noTarjeta2.setText("");
                         
     }
-    
+    if(tablaTarjetas.getRowCount()>0)
+    btnGuardarCambios1.setEnabled(true);
+else
+    btnGuardarCambios1.setEnabled(false);
 }//GEN-LAST:event_btnAnadirTarjetaActionPerformed
 
 private void btnLote1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLote1ActionPerformed
@@ -5825,6 +5850,7 @@ private void btnLote1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             frmLoteTarjetas.setVisible(true);
             
             DefaultTableModel dtm = (DefaultTableModel) tablaTarjetas.getModel();
+            dtm.getDataVector().removeAllElements();
             tablaTarjetas.setModel(dtm);
             clienteCod.setText("");
             nombres1.setText("");
@@ -5835,6 +5861,23 @@ private void btnLote1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
 
 }//GEN-LAST:event_btnLote1ActionPerformed
+
+private void nombres1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nombres1FocusLost
+// TODO add your handling code here:
+    
+     
+}//GEN-LAST:event_nombres1FocusLost
+
+private void tablaTarjetasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaTarjetasKeyPressed
+// TODO add your handling code here:
+      if (evt.getKeyCode() == evt.VK_DELETE) {
+            int fil = tablaTarjetas.getSelectedRow();
+            DefaultTableModel dtm = (DefaultTableModel) tablaTarjetas.getModel();
+            dtm.removeRow(fil);
+            tablaTarjetas.setModel(dtm);
+
+        }
+}//GEN-LAST:event_tablaTarjetasKeyPressed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
