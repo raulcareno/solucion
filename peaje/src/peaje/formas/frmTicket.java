@@ -253,7 +253,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(noTicket);
-        noTicket.setBounds(90, 10, 20, 20);
+        noTicket.setBounds(90, 10, 40, 20);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
         jLabel3.setText("Digite y luego Enter");
@@ -317,7 +317,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnSalir);
-        btnSalir.setBounds(210, 10, 60, 50);
+        btnSalir.setBounds(230, 10, 60, 50);
 
         getContentPane().add(jPanel4);
         jPanel4.setBounds(10, 130, 300, 70);

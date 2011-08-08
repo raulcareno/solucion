@@ -225,7 +225,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             }
             this.setIconImage(im);
-            panelIngreso.setVisible(false);
+           // panelIngreso.setVisible(false);
             panelCambiar.setVisible(false);
             habilitarBotones(false);
             if (comprobar()) {
@@ -3452,7 +3452,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                         noDisponibles();
                     } else {//EN EL CASO DE QUE SEA CONSUMIDOR FINAL Y PARA TARJETAS DE USUARIOS ESPORADICOS
-                        //CLIENTES QUE NO TIENEN TARJETA **********************************************************************************************
+                        //CLIENTES QUE TIENEN TARJETA **********************************************************************************************
 
                         errores.setText("OK");
                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
