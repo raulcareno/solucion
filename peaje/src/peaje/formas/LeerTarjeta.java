@@ -204,7 +204,9 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         //System.out.println(""+tarjeta);
 
         if (tarjeta.length() >= 10) {
-
+        if (tarjeta.length() > 10) {
+            tarjeta = tarjeta.substring(0,10);
+        }
             //System.out.println("" + tarjeta);
             if ("AEIOUAEIOU".equals(tarjeta)) {
 
