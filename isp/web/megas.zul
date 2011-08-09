@@ -20,18 +20,22 @@
  
    void buscar(){
         total.value = "";
-       List val = adm.queryNativo("SELECT SUM(pvp4) FROM Contratos c, Plan p WHERE estado = 'Activo' AND c.plan = p.codigo");
+       List val = adm.queryNativo("SELECT SUM(pvp4),count(*) FROM Contratos c, Plan p WHERE estado = 'Activo' AND c.plan = p.codigo");
        Vector v = val.get(0);
         total.value = (""+v.get(0));
+        totalC.value = (""+v.get(1));
     }
     void buscar(Plan p){
         total.value = "";
-       List val = adm.queryNativo("SELECT SUM(pvp4) FROM Contratos c, Plan p " + 
+        totalC.value = "";
+       List val = adm.queryNativo("SELECT SUM(pvp4),count(*) FROM Contratos c, Plan p " + 
        " WHERE estado = 'Activo' AND c.plan = p.codigo and p.codigo = '"+p.getCodigo()+"' ");
        Vector v = val.get(0);
         total.value = (""+v.get(0)).replace("[","").replace("]","");
         if(total.value.equals("null"))
                 total.value ="0";
+                
+       totalC.value = (""+v.get(1));
     }
      void buscarTotal(){
         datos = new Listbox();
@@ -40,24 +44,28 @@
                     datos.getItems().remove(a);
                 }
         Double valorTotal = 0.0;
-     
+     Long  totalContratos = 0L;
             for (Object item : perf.getItems()) {
                 String i = "";
                 Plan p = ((Listitem) item).getValue();
                        total.value = "";
-                       List val = adm.queryNativo("SELECT SUM(pvp4) FROM Contratos c, Plan p " + 
+                       List val = adm.queryNativo("SELECT SUM(pvp4),count(*) FROM Contratos c, Plan p " + 
                        " WHERE estado = 'Activo' AND c.plan = p.codigo and p.codigo = '"+p.getCodigo()+"' ");
                       Vector v = val.get(0);
                       Listitem li = new Listitem();
                       li.appendChild(new Listcell(p+""));
                       li.appendChild(new Listcell((v.get(0)+" ").replace("null","0.0")));
+                      li.appendChild(new Listcell((v.get(1)+" ").replace("null","0.0")));
                       Double vl = v.get(0);
+                      Long n1 = v.get(1);
                       if(vl!=null)
                         valorTotal +=vl;
+                        totalContratos +=n1;
                       datos.appendChild(li);
                      
             }
         total.value =""+valorTotal;
+        totalC.value =""+totalContratos;
     }
     
     </zscript>
@@ -65,7 +73,7 @@
         <caption label="Total de Megas Ocupados" />
         <groupbox id="gb" mold="3d" width="350px">
             <radiogroup >
-                <radio onCheck='total.value = "";plan.visible = true; planesList.visible= false; ' label="PLAN INDIVIDUAL"/>
+                <radio onCheck='total.value = "";plan.visible = true; planesList.visible= false;    totalC.value = "";' label="PLAN INDIVIDUAL"/>
                 <radio onCheck='total.value = "";plan.visible = false;buscarTotal(); planesList.visible= true;' label="PLAN TOTALIZADO"/>
                 <radio onCheck='total.value = ""; plan.visible = false;buscar();planesList.visible= false;'  label="TOTAL"/>
             </radiogroup>
@@ -99,13 +107,16 @@
                 <listhead>
                     <listheader label="Plan"/>
                     <listheader label="Mbps"/>
+                    <listheader label="No.Cont."/>
 
                 </listhead>
             </listbox>
         </groupbox>   
         <groupbox id="valor" mold="3d" width="350px">
-            <label value="Total Megas Ocupados: " />
-            <textbox id="total" style="text-align:center; float:center; font-size:20px;color:blue" readonly="true" cols="10"/>
+            <label value="Megas: " />
+            <textbox id="total" style="text-align:center; float:center; font-size:20px;color:blue" readonly="true" cols="7"/>
+            <label value="Contratos: " />
+            <textbox id="totalC" style="text-align:center; float:center; font-size:20px;color:blue" readonly="true" cols="5"/>
         </groupbox>   
            
         
