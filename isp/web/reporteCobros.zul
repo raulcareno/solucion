@@ -57,8 +57,11 @@ List cantones = adm.query("Select o from Canton as o  ");
             parametros.put("telefono", empresa.getTelefono());
             parametros.put("desde", desde.value);
             parametros.put("hasta", hasta.value);
-            parametros.put("canton", cant.selectedItem.value+"");
-            parametros.put("sector", sectorList.selectedItem.value+"");
+            try{
+                parametros.put("canton", cant.selectedItem.value+"");
+                parametros.put("sector", sectorList.selectedItem.value+"");
+            }catch(Exception e){
+            }
             
            String directorioReportes = empresa.getReportes();
             JRDataSource datasource = null;
@@ -66,10 +69,16 @@ List cantones = adm.query("Select o from Canton as o  ");
                 Integer cclientev = ccliente.value;
                 if(cclientev != null ){
                 }else{
-                        cclientev = -1;
+                        cclientev = -1; //TODOS LOS CLIENTES
                 }
-                   datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value);
-                    report.setSrc(directorioReportes+"cxcclientes.jasper");
+                if(cclientev.equals(-1)){
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value);
+                }else{
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),null);
+                }
+                
+                
+                report.setSrc(directorioReportes+"cxcclientes.jasper");
             }else if(tipo.equals("PORSECTOR")){
                                 datasource = reportes.facturasPendientes(sectorList.selectedItem.value);
                    report.setSrc(directorioReportes+"cxcclientesxzona.jasper");
@@ -84,7 +93,13 @@ List cantones = adm.query("Select o from Canton as o  ");
                 }else{
                         cclientev = -1;
                 }
-                   datasource = reportes.facturasCobradas(new Clientes(cclientev), desde.value, hasta.value,sectorList.selectedItem.value);
+                
+                  if(cclientev.equals(-1)){
+                        datasource = reportes.facturasCobradas(new Clientes(cclientev), desde.value, hasta.value,sectorList.selectedItem.value);
+                }else{
+                        datasource = reportes.facturasCobradas(new Clientes(cclientev), desde.value, hasta.value,null);
+                }
+                   
                     report.setSrc(directorioReportes+"cpclientes.jasper");
             }else  if(tipo.equals("ARQUEO")){
                    datasource = reportes.reporteCaja(desde.value, hasta.value);
@@ -216,7 +231,7 @@ void campos(String valor){
                                 <intbox cols="1" disabled="true" id ="ccliente" />
                                 <textbox cols="50" onOK ="btcliente.value = ncliente.value; buscar(btcliente.value); bcliente.open(ccliente);btcliente.focus()" id="ncliente" />
                                 <button  image="/images/auditoria.gif" onClick="bcliente.open(ccliente);btcliente.focus();"  />
-                                <button   image="/images/eliminar.gif" onClick='ccliente.value = null; ncliente.value = null; ' /> 
+                                <button   image="/images/eliminar.gif" onClick='ccliente.value = null; ncliente.value = null; filacanton.visible = true; filasector.visible = true;' /> 
                                 
                         
                                 <popup    id="bcliente" width="580px">
@@ -228,7 +243,7 @@ void campos(String valor){
                                                 <button id="buscar"   label="Buscar" onClick="buscar(btcliente.getValue());"/>
                                             </hbox>
                                             <hbox>
-                                                <listbox onSelect='ccliente.value = ((Clientes)self.selectedItem.value).getCodigo(); ncliente.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); bcliente.close()' id="lcliente" width="400px">
+                                                <listbox onSelect='ccliente.value = ((Clientes)self.selectedItem.value).getCodigo(); ncliente.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); bcliente.close(); filacanton.visible = false; filasector.visible = false;' id="lcliente" width="400px">
                                                     <listhead>
                                                         <listheader label="Nombres"/>
                                                         <listheader label="Dirección"/>
@@ -267,7 +282,7 @@ void campos(String valor){
                             </span>
                         </row>
                         <row visible = "false" id="filacanton">
-                            <span style="float:right"> Seleccione un Cantón(*):</span>
+                            <span style="float:right"> Cantón(*):</span>
                             <bandbox  width="200px" readonly="true"  id="bdCanton">
                                 <bandpopup>
                                     <vbox>
@@ -285,7 +300,7 @@ void campos(String valor){
 
                         </row>
                         <row visible = "false" id="filasector">
-                            <span style="float:right"> Seleccione un Sector(*):</span>
+                            <span style="float:right"> Sector(*):</span>
                             <bandbox  width="200px" readonly="true"  id="bdSector">
                                 <bandpopup>
                                     <vbox>
