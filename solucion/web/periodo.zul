@@ -82,6 +82,16 @@
                                     <datebox id="hasta"  value="@{inobjeto.fechaf}"  format="dd/MM/yyyy"   onChange="update();"  readonly="true"  />
                                 </span>
                             </row>
+                             <row>
+
+                                <span style="float:right"> Habilitar Matriculas:</span>
+                                <span>
+                                    Desde:
+                                    <datebox id="desdema"  value="@{inobjeto.fechamai}" format="dd/MM/yyyy"  onChange="update();"  readonly="true"  />
+                                    Hasta:
+                                    <datebox id="hastama"  value="@{inobjeto.fechamaf}"  format="dd/MM/yyyy"   onChange="update();"  readonly="true"  />
+                                </span>
+                            </row>
  
                         </rows>
                     </grid>

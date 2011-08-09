@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page   id="loginjx" title="Administrador Educativo" ?>
+<?link rel="shortcut icon" type="image/icono" href="/images/icono.jpg"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style>
+.MyGridRowHeight tr.z-row td.z-row-inner
+{
+      background: white;
+      border-top: none;
+      border-left: 0px solid white;
+      border-right: 0px solid #CCC;
+      border-bottom: 0px solid #DDD;
+
+}
+/*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+  background: #F8F8F8;
+} */
+.MyGridRowHeight td.z-row-inner
+{
+    padding: 0px;
+    //overflow: hidden;
+}
+     
+
+    .barra {
+           scrollbar-3dlight-color:;
+           scrollbar-arrow-color:;
+           scrollbar-base-color:;
+           scrollbar-darkshadow-color:;
+           scrollbar-face-color:;
+           scrollbar-highlight-color:;
+           scrollbar-shadow-color:
+          }
+          .texto{
+                color:black;
+                font-size:11px;
+          }
+    </style>
+    <div align="center">
+
+        <window   onCreonCreate="timer.stop();"  width="75%">
+            <style dynamic="true">
+            .z-label.focus {
+                color:red;
+                font-weight:bold;
+                font-size:11px;
+
+            }
+            </style>
+            <zscript>
+            void changeStyle(Label text) {
+            if ("focus".equals(text.sclass)) {
+            text.sclass = "";
+            } else {
+            text.sclass = "focus";
+            }
+            }
+            </zscript>
+            <zscript>
+            <![CDATA[
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.util.logging.Level;
+  import java.util.logging.Logger;
+import java.util.Vector;
+import bean.matriculasBean;
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.notas;
+import bean.secuencial;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import bean.verificarLetras;
+
+
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+import bean.email;
+            int contador = 0;
+            Boolean guardando = false;
+                Administrador adm = new Administrador();
+                 secuencial sec = new secuencial();
+                 email ema = new email();
+              List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
+              static Inscripciones estudent = new Inscripciones();
+              static Representante representante0 = new Representante();
+              static Matriculas matricula = new Matriculas();
+             Session ses = Sessions.getCurrent();
+             java.util.Date fecha = new java.util.Date();
+             String fechaString = (fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+(fecha.getDate());
+             List periodosListadod = adm.queryNativo("Select o.* from Periodo as o where '"+fechaString+"' between o.fechamai and o.fechamaf order by o.descripcion",Periodo.class);
+             String letrasparaHoy ="";
+             try{
+                    List letrasHoy = adm.queryNativo("SELECT letras FROM letras WHERE NOW() BETWEEN desde AND hasta ");
+                    letrasparaHoy = "HOY SOLO APELLIDOS QUE EMPIEZAN CON: "+letrasHoy.get(0);
+                    letrasparaHoy = letrasparaHoy.replace(";"," , ");
+
+             }catch(Exception err1){
+                    letrasparaHoy = "  No se puede matricular el día de hoy, no existen, cierre y vuelva a intentar en otro día, o verifique su horario";
+                    //Executions.sendRedirect("/inscripciones.zul");
+
+             }
+if(periodosListadod.size()<= 0)
+    Executions.sendRedirect("592981728937491234.zul");
+
+ Permisos permiso = new Permisos();
+    Object media = null;
+
+void cargar(Global g){
+    estudent.setPerfil(g);
+}
+
+void seleccionPeriodo(){
+
+     Session ses = Sessions.getCurrent();
+        ses.setAttribute("periodo",periodosListado.selectedItem.value);
+        Executions.sendRedirect("matriculacionEstudiantes2de2.zul");
+            
+}
+  ]]>
+            </zscript>
+
+            <window mode="modal" width="50%" id="informacion" >
+                <grid  id="datosGrid" >
+                    <rows>
+
+                        <row align="left"  style="background:#6699CC;border:0px;color:red" >
+                            <div style="color:white;font-size:15px;font-weight:bold">IMPORTANTE LEER ANTES DE CONTINUAR: </div>
+                            
+                        </row>
+                        <row align="left"    spans="2" style="background:#E4EDF6;border:0px;color:blue" >
+                            <span style="font-size:15px">
+    
+                                <div style="color:black;font-size:15px">Recuerde que la información proporcionada debe ser REAL,  su información será verificada y  de no cumplir con los requisitos se ANULARÁ  su matriculación, también se ANULARÁ  a quienes se hayan inscrito más de una vez. </div>
+                                <separator/>
+                                <div style="color:black;font-size:15px">Usted tendrá un máximo de 30 minutos para completar la información después de este tiempo se cerrará la sesión y tendrá que volver a ingresar para registrar sus datos, el tiempo empieza cuando Ud. selecciona el periodo.</div>
+                                <div align="center" style="color:red;font-size:15px">CAMPOS CON (*) SON OBLIGATORIOS</div>
+                                <div align="center" style="color:red;font-size:15px"> Haz click sobre
+                                    <image src="/images/information.png" height="16px" width="16px"  /> para recibir ayuda
+                                </div>
+                               
+                            </span>
+                        </row>
+                        <row align="center"    spans="2" style="background:#E4EDF6;border:0px;color:blue" >
+                            <span style="font-size:11px">
+                                <button onClick="panel.visible=true;periodosListado.focus();informacion.detach();" orient="vertical" image="/images/ok.gif" height="50px" label="He Leído y Estoy de acuerdo con las condiciones" />
+                            </span>
+                        </row>
+                    </rows>
+                </grid>
+                                
+            </window>
+            <html>
+                    &lt;a name=&quot;ancla&quot; id=&quot;ancla&quot;&gt;&lt;/a&gt;
+            </html>
+            <panel  style="border-color:blue" id="panel" visible="false" width="100%" height="1200px"  >
+                <panelchildren>
+                    <grid  sclass="MyGridRowHeight"  id="seleccionGrid" >
+                        <rows>
+                            <row align="left"  spans="2" style="background:#6699CC;border:0px;color:blue" >
+                                <span>
+                                    <listbox id="periodosListado" mold="select" style="font-size:15px"  onSelect="seleccionPeriodo();" >
+                                        <listitem  label="* S E L E C C I O N E  *  E L  *  P E R I O D O  *  P A R A  *  C O N T I N U A R *  " value="-1"/>
+                                        <listitem forEach="${periodosListadod}" value="${each}">
+                                            <listcell   label="**${each.institucion.tipo}** [${each.seccion}]  ${each.descripcion} ${each.institucion} " />
+                                        </listitem>
+                                    </listbox>
+                                    <image src="/images/selec.png" />
+                                </span>
+
+                            </row>
+                        </rows>
+                    </grid>
+                 
+                </panelchildren>
+            </panel>
+
+ 
+        
+        </window>
+   
+    </div>
+</zk>
