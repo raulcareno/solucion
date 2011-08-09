@@ -1,0 +1,119 @@
+
+<window   border="normal"
+ >
+
+    <zscript>
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Marcas as o");
+    static Marcas equi = new Marcas();
+    Permisos permiso = new Permisos();
+    //SimpleTreeModel stm = new SimpleTreeModel(root);
+   List planes = adm.query("Select o from Plan as o ");
+ 
+   void buscar(){
+        total.value = "";
+       List val = adm.queryNativo("SELECT SUM(pvp4) FROM Contratos c, Plan p WHERE estado = 'Activo' AND c.plan = p.codigo");
+       Vector v = val.get(0);
+        total.value = (""+v.get(0));
+    }
+    void buscar(Plan p){
+        total.value = "";
+       List val = adm.queryNativo("SELECT SUM(pvp4) FROM Contratos c, Plan p " + 
+       " WHERE estado = 'Activo' AND c.plan = p.codigo and p.codigo = '"+p.getCodigo()+"' ");
+       Vector v = val.get(0);
+        total.value = (""+v.get(0)).replace("[","").replace("]","");
+        if(total.value.equals("null"))
+                total.value ="0";
+    }
+     void buscarTotal(){
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+        Double valorTotal = 0.0;
+     
+            for (Object item : perf.getItems()) {
+                String i = "";
+                Plan p = ((Listitem) item).getValue();
+                       total.value = "";
+                       List val = adm.queryNativo("SELECT SUM(pvp4) FROM Contratos c, Plan p " + 
+                       " WHERE estado = 'Activo' AND c.plan = p.codigo and p.codigo = '"+p.getCodigo()+"' ");
+                      Vector v = val.get(0);
+                      Listitem li = new Listitem();
+                      li.appendChild(new Listcell(p+""));
+                      li.appendChild(new Listcell((v.get(0)+" ").replace("null","0.0")));
+                      Double vl = v.get(0);
+                      if(vl!=null)
+                        valorTotal +=vl;
+                      datos.appendChild(li);
+                     
+            }
+        total.value =""+valorTotal;
+    }
+    
+    </zscript>
+    <groupbox mold="3d"  width="400px">
+        <caption label="Total de Megas Ocupados" />
+        <groupbox id="gb" mold="3d" width="350px">
+            <radiogroup >
+                <radio onCheck='total.value = "";plan.visible = true; planesList.visible= false; ' label="PLAN INDIVIDUAL"/>
+                <radio onCheck='total.value = "";plan.visible = false;buscarTotal(); planesList.visible= true;' label="PLAN TOTALIZADO"/>
+                <radio onCheck='total.value = ""; plan.visible = false;buscar();planesList.visible= false;'  label="TOTAL"/>
+            </radiogroup>
+        </groupbox>
+        <groupbox visible="false" id="plan" mold="3d" width="350px">
+            <span>
+                <label style="font-weight:bold2" value=" Planes (*): " />
+            </span>
+            <bandbox style="background-color:transparent"   readonly="true" width="240px"  id="bd">
+                <bandpopup>
+                    <vbox>
+                        <listbox id="perf" width="450px"  onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();buscar(self.selectedItem.value)">
+                            <listhead>
+                                <listheader label="Descripción"/>
+                                <listheader label="Tipo"/>
+                                <listheader label="valor"/>
+                            </listhead>
+                            <listitem forEach="${planes}" value="${each}">
+                                <listcell label="${each.nombre}" />
+                                <listcell label="${each.tipo}" />
+                                <listcell label="${each.valor}" />
+
+                            </listitem>
+                        </listbox>
+                    </vbox>
+                </bandpopup>
+            </bandbox>
+           
+                  
+        </groupbox>
+        <groupbox id="planesList" visible="false">
+            <listbox id="datos" width="100%">
+                <listhead>
+                    <listheader label="Plan"/>
+                    <listheader label="Mbps"/>
+
+                </listhead>
+            </listbox>
+        </groupbox>   
+        <groupbox id="valor" mold="3d" width="350px">
+            <label value="Total Megas Ocupados: " />
+            <textbox id="total" style="text-align:center; float:center; font-size:20px;color:blue" readonly="true" cols="10"/>
+        </groupbox>   
+           
+        
+
+    </groupbox>
+  
+	
+
+</window>

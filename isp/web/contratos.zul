@@ -1232,7 +1232,7 @@ void verificarCedula(String valor){
                 
         //BUSQUEDA DE CLIENTES
   void buscarCli(String p){
-        List ClientesEncontrados = adm.query("Select o from Clientes as o where o.apellidos like '"+p+"%' order by o.apellidos",0,5);
+        List ClientesEncontrados = adm.query("Select o from Clientes as o where o.apellidos like '"+p+"%' order by o.apellidos",0,10);
         lcliente = new Listbox();
         int a=0;
             for (Iterator it = lcliente.getItems().iterator(); it.hasNext();) {
