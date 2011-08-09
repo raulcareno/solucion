@@ -77,7 +77,7 @@
             <bandbox style="background-color:transparent"   readonly="true" width="240px"  id="bd">
                 <bandpopup>
                     <vbox>
-                        <listbox id="perf" width="450px"  onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();buscar(self.selectedItem.value)">
+                        <listbox id="perf" width="350px"  onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();buscar(self.selectedItem.value)">
                             <listhead>
                                 <listheader label="Descripción"/>
                                 <listheader label="Tipo"/>
@@ -85,8 +85,6 @@
                             </listhead>
                             <listitem forEach="${planes}" value="${each}">
                                 <listcell label="${each.nombre}" />
-                                <listcell label="${each.tipo}" />
-                                <listcell label="${each.valor}" />
 
                             </listitem>
                         </listbox>
