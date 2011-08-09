@@ -29,20 +29,24 @@ import org.zkoss.zul.Decimalbox;
  * @author Familia Jadan Cahueñ jcinform.bean.generarFacturas.convertiraString
  */
 public class generarFacturas {
-     Administrador adm;
+
+    Administrador adm;
+
     public generarFacturas() {
         adm = new Administrador();
     }
-    public void generacionAutomatico(Sucursal suc){
-        if(adm == null)
+
+    public void generacionAutomatico(Sucursal suc) {
+        if (adm == null) {
             adm = new Administrador();
+        }
         Date fecha = adm.Date();
-        String fechaSql = suc.getCodigo()+""+(fecha.getYear() + 1900) +  (fecha.getMonth() + 1)+"";
-        List procesosList = adm.query("Select o from Procesos as o where o.fechastring = '"+fechaSql+"'  ");
-        if(procesosList.size()>0){
+        String fechaSql = suc.getCodigo() + "" + (fecha.getYear() + 1900) + (fecha.getMonth() + 1) + "";
+        List procesosList = adm.query("Select o from Procesos as o where o.fechastring = '" + fechaSql + "'  ");
+        if (procesosList.size() > 0) {
             //Messagebox.show("Proceso ya realizado en éste mes", "Alerta", Messagebox.OK, Messagebox.INFORMATION);
             System.out.println("Proceso para éste mes ya realizado");
-        }else{
+        } else {
             Procesos pro = new Procesos(fechaSql);
             pro.setFecha(fecha);
             pro.setFechaejecutado(fecha);
@@ -50,10 +54,10 @@ public class generarFacturas {
             //pro.setProblemas(fechaSql);
             adm.guardar(pro);
             empezarGenerar(fecha, 0, suc);
-            System.out.println("SE EJECUTO PROCESO PARA FECHA"+ fecha);
+            System.out.println("SE EJECUTO PROCESO PARA FECHA" + fecha);
         }
     }
-    
+
     public String empezarGenerar(Date fecha, Integer numero, Sucursal suc) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         Date fecha2 = fecha;
@@ -65,14 +69,14 @@ public class generarFacturas {
 //                if(existe.size()>0){
 //                        return " "+ "EL NÚMERO DE FACTURA INICIAL YA EXISTE EN SUCURSAL: "+suc.getDescripcion();
 //                }
-        
+
         List facturasHechas = adm.queryNativo("Select o.* from Contratos  as o "
                 + "where o.clientes not in (Select f.clientes from Factura as f "
                 + "where f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "') "
                 + "and  o.estado in ('Activo','Terminado')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ", Contratos.class);
         try {
-            
-            
+
+
             for (Iterator it = facturasHechas.iterator(); it.hasNext();) {
                 Contratos object = (Contratos) it.next();
                 Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
@@ -90,7 +94,7 @@ public class generarFacturas {
                 fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
                 adm.guardar(fac);
                 Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                det.setTotal(new BigDecimal(object.getPlan().getValor()));
+                det.setTotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
                 det.setPlan(object.getPlan());
                 det.setCantidad(1);
                 det.setMes(fecha.getMonth() + 1);
@@ -121,15 +125,15 @@ public class generarFacturas {
 
         //generar en facturas con el número y también en cxc.
         Date fechas = adm.Date();
-        String fechaSql = suc.getCodigo()+""+ (fechas.getYear() + 1900) +  (fechas.getMonth() + 1);
-        try{
-        
-         Procesos pro = new Procesos(fechaSql);
+        String fechaSql = suc.getCodigo() + "" + (fechas.getYear() + 1900) + (fechas.getMonth() + 1);
+        try {
+
+            Procesos pro = new Procesos(fechaSql);
             pro.setFecha(fecha);
             pro.setFechaejecutado(fecha);
             pro.setEjecutado(true);
             adm.guardar(pro);
-        }catch(Exception er){
+        } catch (Exception er) {
             Procesos pro = new Procesos(fechaSql);
             pro.setFecha(fecha);
             pro.setFechaejecutado(fecha);
@@ -138,16 +142,16 @@ public class generarFacturas {
             adm.actualizar(pro);
             System.out.println("PROCESO YA EJECUTADO");
         }
-        
-        
+
+
 
         return "OK";
     }
-    
+
     public String empezarGenerarIndividual(Date fecha, Integer numero, Sucursal suc) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         Button b = new Button();
-        
+
         Administrador adm = new Administrador();
         Date fecha2 = fecha;
         fecha2.setDate(1);
@@ -168,15 +172,15 @@ public class generarFacturas {
                 fac.setFecha(fecha);
                 fac.setContratos(object);
                 fac.setSucursal(suc);
-                fac.setSubtotal(new BigDecimal(object.getPlan().getValor()));
+                fac.setSubtotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
                 fac.setDescuento(new BigDecimal(0));
-                fac.setBaseiva(new BigDecimal(object.getPlan().getValor()));
+                fac.setBaseiva(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
                 fac.setPorcentajeiva(suc.getEmpresa().getIva());
-                fac.setValoriva((new BigDecimal(object.getPlan().getValor())).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
+                fac.setValoriva((new BigDecimal(object.getPlan().getValor())).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
                 fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
                 adm.guardar(fac);
                 Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                det.setTotal(new BigDecimal(object.getPlan().getValor()));
+                det.setTotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
                 det.setPlan(object.getPlan());
                 det.setCantidad(1);
                 det.setMes(fecha.getMonth() + 1);
@@ -197,9 +201,9 @@ public class generarFacturas {
                 cuenta.setNocheque("");
                 cuenta.setTotal(fac.getTotal());
                 adm.guardar(cuenta);
-                
-                
-                
+
+
+
                 numero++;
             }
         } catch (Exception e) {
@@ -211,17 +215,16 @@ public class generarFacturas {
         //generar en facturas con el número y también en cxc.
 
         return "OK";
-    }    
+    }
 
     public String anadirCobros(Sucursal suc, Contratos con) { //ESTO ES PARA AÑADIR COBROS PENDIENTES
         //seleccionar todos los que no tenga deuda en éste més o periodo
-        Button b = new Button();
-        
         Administrador adm = new Administrador();
-        Date fecha2 = con.getFecha();
+        con = (Contratos) adm.buscarClave(con.getCodigo(), Contratos.class);
+        Date fecha2 = adm.Date();
         fecha2.setDate(1);
         try {
-            
+
             Contratos object = con;
             Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
             //fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
@@ -232,15 +235,15 @@ public class generarFacturas {
             fac.setFecha(fecha2);
             fac.setSucursal(suc);
             fac.setDescuento(BigDecimal.ZERO);
-            fac.setSubtotal(new BigDecimal(con.getPlan().getValor()));
+            fac.setSubtotal(new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento()));
             fac.setDescuento(new BigDecimal(0));
-            fac.setBaseiva(new BigDecimal(con.getPlan().getValor()));
+            fac.setBaseiva(new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento()));
             fac.setPorcentajeiva(suc.getEmpresa().getIva());
-            fac.setValoriva((new BigDecimal(con.getPlan().getValor())).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
+            fac.setValoriva((new BigDecimal(con.getPlan().getValor())).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
             fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
             adm.guardar(fac);
             Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-            det.setTotal(new BigDecimal(object.getPlan().getValor()));
+            det.setTotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
             det.setPlan(object.getPlan());
             det.setCantidad(1);
             det.setMes(fecha2.getMonth() + 1);
@@ -261,8 +264,9 @@ public class generarFacturas {
             cuenta.setNocheque("");
             cuenta.setTotal(fac.getTotal());
             adm.guardar(cuenta);
-            
+
         } catch (Exception e) {
+            System.out.println("" + e);
             System.out.println("DUPLICADO: " + e.hashCode());
             return e.hashCode() + "";
         }
@@ -297,9 +301,9 @@ public class generarFacturas {
                 Logger.getLogger(generarFacturas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         try {
-            
+
             Contratos object = con;
             Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
             fac.setNumero(null);
@@ -310,16 +314,21 @@ public class generarFacturas {
             fac.setFecha(fechaInstalacion);
             fac.setSucursal(suc);
             fac.setDescuento(BigDecimal.ZERO);
-            BigDecimal valor = new BigDecimal(con.getPlan().getValor());
+            BigDecimal valor = new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento());
             if (fechaInstalacion.getDate() > 1) {
                 int noDias = object.getPlan().getDias() - fechaInstalacion.getDate();
-                if(noDias > 0)
-                    valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(object.getPlan().getDias()));
-                else
-                       return "";
-              
-            }else{
-                valor = new BigDecimal(con.getPlan().getValor());
+                if (noDias > 0) {
+                    if ((fechaInstalacion.getMonth() == adm.Date().getMonth())) {
+                        valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(object.getPlan().getDias()));
+                    } else {
+                        valor = new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento());
+                    }
+                } else {
+                    return "";
+                }
+
+            } else {
+                valor = new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento());
             }
             fac.setSubtotal(valor);
             fac.setDescuento(new BigDecimal(0));
@@ -329,7 +338,7 @@ public class generarFacturas {
             fac.setTotal(fac.getValoriva().add(valor));
             adm.guardar(fac);
             Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-            det.setTotal(new BigDecimal(object.getPlan().getValor()));
+            det.setTotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
             det.setPlan(object.getPlan());
             det.setCantidad(1);
             det.setMes(fechaInstalacion.getMonth() + 1);
@@ -350,7 +359,7 @@ public class generarFacturas {
             cuenta.setNocheque("");
             cuenta.setTotal(fac.getTotal());
             adm.guardar(cuenta);
-            
+
         } catch (Exception e) {
             System.out.println("DUPLICADO: " + e.hashCode());
             return e.hashCode() + "";
@@ -363,20 +372,20 @@ public class generarFacturas {
     }
 
     public static String convertiraString(Date fecha) {
-        
+
         return (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
-        
+
     }
-    
+
     String llenarCeros(String numero) {
-        
+
         while (numero.length() < 7) {
             numero = "0" + numero;
-        }        
+        }
         return numero;
-        
+
     }
-    
+
     public static Date ultimoDia(Date fecha) {
         //Calendar calInicio = Calendar.getInstance();
         Calendar calFin = Calendar.getInstance();
@@ -387,9 +396,9 @@ public class generarFacturas {
         Date fechaFin = calFin.getTime();
         System.out.println("ULTIMO: " + fechaFin.toLocaleString());
         return fechaFin;
-        
+
     }
-    
+
     public static Date primerDia(Date fecha) {
         //Calendar calInicio = Calendar.getInstance();
         Calendar calFin = Calendar.getInstance();
@@ -400,39 +409,35 @@ public class generarFacturas {
         Date fechaFin = calFin.getTime();
         System.out.println("PRIMER: " + fechaFin.toLocaleString());
         return fechaFin;
-        
+
     }
-    
-  
-    
-   //BUSCAR PARA ASIGNAR FACTURA 
-        
-    public List buscar(Sucursal suc,Sector uno, Sector dos) {
+
+    //BUSCAR PARA ASIGNAR FACTURA 
+    public List buscar(Sucursal suc, Sector uno, Sector dos) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
-         List<Contratos> contratos = adm.query("Select o from Contratos as o where o.radios.nodos.sector.numero between  "+uno.getNumero()+"  and  "+dos.getNumero()+"  ");
-         String contraString = "";
-         for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
+        List<Contratos> contratos = adm.query("Select o from Contratos as o where o.radios.nodos.sector.numero between  " + uno.getNumero() + "  and  " + dos.getNumero() + "  ");
+        String contraString = "";
+        for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
             Contratos contratos1 = itContratos.next();
-            contraString = ""+contratos1.getCodigo()+","+contraString+"";
-            
+            contraString = "" + contratos1.getCodigo() + "," + contraString + "";
+
         }
-         if(contraString.length()>0){
-             contraString = contraString.substring(0,contraString.length()-1);
-         }
-         String quer = "SELECT fa.codigo, fa.numero, fa.fecha, c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
-                     + "FROM cxcobrar cx, factura  fa, contratos c "   +
-                        " WHERE fa.contratos in ("+ contraString  +")  and c.codigo = fa.contratos  " + 
-                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
-                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
-         List deudas = adm.queryNativo(quer);
- 
+        if (contraString.length() > 0) {
+            contraString = contraString.substring(0, contraString.length() - 1);
+        }
+        String quer = "SELECT fa.codigo, fa.numero, fa.fecha, c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
+                + "FROM cxcobrar cx, factura  fa, contratos c "
+                + " WHERE fa.contratos in (" + contraString + ")  and c.codigo = fa.contratos  "
+                + "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
+        List deudas = adm.queryNativo(quer);
+
         return deudas;
     }
 
-
-     public List buscar(Sucursal suc,Empleados emp, Date fecha) {
-         //seleccionar todos los que no tenga deuda en éste més o periodo
-         String fec = convertiraString(fecha);
+    public List buscar(Sucursal suc, Empleados emp, Date fecha) {
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+        String fec = convertiraString(fecha);
 //         List<Factura> facturasLista = adm.queryNativo("Select o.factura from Empleadosfacturas as o "
 //                 + "where o.empleados.codigo = "+emp.getCodigo()+"  "
 //                 + "and  o.fecha = '"+fec+"'  ",Factura.class);
@@ -445,14 +450,13 @@ public class generarFacturas {
 //         if(facturaString.length()>0){
 //             facturaString = facturaString.substring(0,facturaString.length()-1);
 //         }
-         String quer = "SELECT fa.codigo, fa.numero, fa.fecha, c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
-                     + "FROM cxcobrar cx, factura  fa, contratos c "   +
-                        " WHERE fa.codigo in ( Select x.factura from Empleadosfacturas as x where x.empleados = '"+emp.getCodigo()+"' and Date(x.fecha) = '"+fec+"' )  and c.codigo = fa.contratos  " +
-                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
-                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
-         List deudas = adm.queryNativo(quer);
+        String quer = "SELECT fa.codigo, fa.numero, fa.fecha, c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
+                + "FROM cxcobrar cx, factura  fa, contratos c "
+                + " WHERE fa.codigo in ( Select x.factura from Empleadosfacturas as x where x.empleados = '" + emp.getCodigo() + "' and Date(x.fecha) = '" + fec + "' )  and c.codigo = fa.contratos  "
+                + "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
+        List deudas = adm.queryNativo(quer);
 
         return deudas;
     }
-   
 }

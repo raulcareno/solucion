@@ -1182,13 +1182,16 @@ void verificarCedula(String valor){
                             aButtonEli.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
                                  if(verificar2("Eliminar")){
+                                 registro.setSelected(true);
                                  int valor0 = Messagebox.show("Seguro que desea Eliminar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
                                   seriespanel.visible = false;
+                                   
                                    if(valor0 == 16){
-                                      registro.setSelected(true);
+                                     
                                       Integer facCodi = new Integer(aButtonEli.getId().replace("eli",""));
                                       List siEx = adm.query("Select o from Cxcobrar as o where o.factura.codigo = '"+facCodi+"'");
                                       if(siEx.size()>1){
+                                               
                                                 Messagebox.show("No se puede eliminar, ya tiene pagos realizados...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
                                       }else{
                                               //adm.ejecutaSql("Delete from Cabeceracompra where factura.codigo = '"+facCodi +"' ");
@@ -1202,7 +1205,7 @@ void verificarCedula(String valor){
                                       
                                     }
                                      
-                                      
+                                    facturas.setSelected(true);  
                                       
                                 }else{
                                         Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
