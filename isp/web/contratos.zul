@@ -1,24 +1,24 @@
 <?page id="contratospage"?>
 <window id="contratosventana"  border="normal" >
     <style>
-.MyGridRowHeight tr.z-row td.z-row-inner  
-{
-      background: white;
-      border-top: none;
-      border-left: 1px solid white;
-      border-right: 1px solid #CCC;
-      //border-bottom: 1px solid #DDD;
-      border-bottom: none;
- 
-}
-/*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
-  background: #F8F8F8;
-} */
-.MyGridRowHeight td.z-row-inner
-{
-    padding: 0px;
-    //overflow: hidden;
-}
+            .MyGridRowHeight tr.z-row td.z-row-inner  
+            {
+                  background: white;
+                  border-top: none;
+                  border-left: 1px solid white;
+                  border-right: 1px solid #CCC;
+                  //border-bottom: 1px solid #DDD;
+                  border-bottom: none;
+
+            }
+            /*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+              background: #F8F8F8;
+            } */
+            .MyGridRowHeight td.z-row-inner
+            {
+                padding: 0px;
+                //overflow: hidden;
+            }
     </style>
     <zscript>   <![CDATA[
     
