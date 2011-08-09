@@ -21,6 +21,7 @@ void llenar(Plan equi2){
     equi = equi2;
     nombre.value = equi.getNombre();
     valor.value = equi.getValor();
+    pvp4.value = equi.getPvp4();
     tipo.value = equi.getTipo(); //home, corporativo
     dias.value = equi.getDias();
 }
@@ -30,6 +31,7 @@ void estado(Boolean estado,Boolean modificar){
     }
     nombre.readonly = estado;
     valor.readonly = estado;
+    pvp4.readonly = estado;
     tipo.disabled = estado;
     dias.readonly = estado;
  
@@ -46,6 +48,7 @@ void estado(Boolean estado,Boolean modificar){
         equi.setValor(valor.value);
         equi.setTipo(tipo.value);
         equi.setDias(dias.value);
+        equi.setPvp4(pvp4.value);
         
         if((!equi.getCodigo().equals(0)) ){
              adm.actualizar(equi);
@@ -146,6 +149,10 @@ equi.setPerfil(g);
                 <row>
                     <span style="float:right"> Valor(*):</span>
                     <doublebox id="valor"  maxlength="100" cols="40" readonly="true"   />
+                </row>
+               <row>
+                    <span style="float:right"> Mbps(*):</span>
+                    <doublebox id="pvp4"  maxlength="100" cols="40" readonly="true"   />
                 </row>
                 <row>
                     <span style="float:right"> Tipo(*):</span>

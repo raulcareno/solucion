@@ -93,6 +93,7 @@ void llenar(Contratos  equi2){
     tipocuenta.value  = equi.getTipocuenta();
     direccioni.value = equi.getDireccion();
     referenciai.value = equi.getReferencia();
+    descuento.value = equi.getDescuento();
     telefonoi.value = equi.getTelefono();
     try{
         if(equi.getDiapago() == null){
@@ -247,6 +248,7 @@ void estado(Boolean estado,Boolean modificar){
     diapago.disabled = estado;
     direccioni.readonly = estado;
     referenciai.readonly = estado;
+    descuento.readonly = estado;
     telefonoi.readonly = estado;
     fechainstalacion.disabled = estado;
     autorizado.disabled = estado;
@@ -401,6 +403,7 @@ Boolean validar(){
     
     equi.setDireccion(direccioni.value);
     equi.setReferencia(referenciai.value);
+    equi.setDescuento(descuento.value);
     equi.setTelefono(telefonoi.value);
     equi.setFormapago(new Integer(formapago.selectedItem.value)); //integer
     equi.setNocuenta(nocuenta.value); //varchar
@@ -1850,8 +1853,8 @@ void llamar(){
                                                               
                                                         </span>
                                                         <textbox id="referenciai" rows="2" cols="40" readonly="true"  />
-                                                        <span style="float:right"> </span>
-                                                        <span style="float:right"> </span>
+                                                        <span style="float:right"> Descuento </span>
+                                                        <span > <decimalbox id="descuento" format="#00.00" /> USD </span>
                                                     </row>
                                                    
                                                            

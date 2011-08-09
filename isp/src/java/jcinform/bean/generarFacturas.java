@@ -82,11 +82,11 @@ public class generarFacturas {
                 fac.setFecha(fecha);
                 fac.setSucursal(suc);
                 fac.setContratos(object);
-             fac.setSubtotal(new BigDecimal(object.getPlan().getValor()));
+                fac.setSubtotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
                 fac.setDescuento(new BigDecimal(0));
-                fac.setBaseiva(new BigDecimal(object.getPlan().getValor()));
+                fac.setBaseiva(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
                 fac.setPorcentajeiva(suc.getEmpresa().getIva());
-                fac.setValoriva((new BigDecimal(object.getPlan().getValor())).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
+                fac.setValoriva((new BigDecimal(object.getPlan().getValor())).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
                 fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
                 adm.guardar(fac);
                 Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
@@ -111,9 +111,6 @@ public class generarFacturas {
                 cuenta.setDescuento(BigDecimal.ZERO);
                 cuenta.setTotal(fac.getTotal());
                 adm.guardar(cuenta);
-                
-                
-                
                 numero++;
             }
         } catch (Exception e) {

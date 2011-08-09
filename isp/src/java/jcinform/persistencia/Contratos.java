@@ -6,6 +6,7 @@
 package jcinform.persistencia;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -67,6 +67,8 @@ public class Contratos implements Serializable {
     private String clave;
     @Column(name = "autorizado")
     private Boolean autorizado = true;
+    @Column(name = "descuento")
+    private BigDecimal descuento;
     @Column(name = "fechainstalacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainstalacion = new Date();
@@ -372,6 +374,14 @@ public class Contratos implements Serializable {
 
     public void setBancos(Bancos bancos) {
         this.bancos = bancos;
+    }
+
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
     }
 
     @Override
