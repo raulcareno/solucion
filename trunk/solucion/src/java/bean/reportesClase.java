@@ -2000,7 +2000,22 @@ public class reportesClase {
         } catch (InterruptedException ex) {
             Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+     List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notas.get(0).getSistema());
+        String codigosPerdidos ="";
+        ArrayList perdidos = new ArrayList();
+        for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
+            Matriculas matriculas = it.next();
+            codigosPerdidos = matriculas.getCodigomat()+","+codigosPerdidos;
+            perdidos.add(matriculas.getCodigomat());
+            
+        }
+        String complemento ="";
+        if(codigosPerdidos.length()>0){
+                codigosPerdidos = codigosPerdidos.substring(0,codigosPerdidos.length()-1);
+                complemento = " and o.codigomat not in ("+codigosPerdidos+") ";
+        }else{
+                complemento = "";
+        }
         ArrayList listaMatriculados = new ArrayList();
 //        List<Nota> lisNotas = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
@@ -2133,6 +2148,9 @@ public class reportesClase {
                             estadoEstudiante = false;
                         }
                         not.setEstado(estadoEstudiante);
+                        if(perdidos.contains(matriculas1.getCodigomat())){
+                            not.setEstadoMateria("REPROBADO");
+                        }
                         if (cuantitativa == false) {
                             not.setNota(equivalencia(dos, equivalencias));
                         }
