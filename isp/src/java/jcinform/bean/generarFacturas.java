@@ -220,9 +220,10 @@ public class generarFacturas {
     public String anadirCobros(Sucursal suc, Contratos con) { //ESTO ES PARA AÑADIR COBROS PENDIENTES
         //seleccionar todos los que no tenga deuda en éste més o periodo
         Administrador adm = new Administrador();
-        con = (Contratos) adm.buscarClave(con.getCodigo(), Contratos.class);
-        Date fecha2 = adm.Date();
+        Date fecha2 = con.getFecha();
         fecha2.setDate(1);
+        con = (Contratos) adm.buscarClave(con.getCodigo(), Contratos.class);
+        
         try {
 
             Contratos object = con;
