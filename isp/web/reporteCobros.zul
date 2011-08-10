@@ -87,6 +87,14 @@ List cantones = adm.query("Select o from Canton as o  ");
                   datasource = reportes.clientesxsector(sectorList.selectedItem.value);
                    report.setSrc(directorioReportes+"listacontratos.jasper");
                    
+            }else if(tipo.equals("INVNORMAL")){
+                  datasource = reportes.inventarioNormal();
+                   report.setSrc(directorioReportes+"inventarioNormal.jasper");
+                   
+            }else if(tipo.equals("INVTRAN")){
+                  datasource = reportes.inventarioTransito();
+                   report.setSrc(directorioReportes+"inventarioTransito.jasper");
+                   
             }else  if(tipo.equals("COBROS")){
                 Integer cclientev = ccliente.value;
                 if(cclientev != null ){
@@ -217,7 +225,12 @@ void campos(String valor){
                                     <listitem id="linea" label="=========================" value="linea" />
                                     <listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" />
                                     <listitem id="PORSECTORCLI" label="Reporte de Contratos de Clientes por Sector " value="PORSECTORCLI" />
+                                    <listitem id="linea3" label="========INVENTARIOS=================" value="linea2" />
+                                    <listitem id="INVNORMAL" label="Inventario E/S" value="INVNORMAL" />
+                                    <listitem id="INVTRAN" label="Inventario Transito" value="INVTRAN" />
+                                    <listitem id="INVAJU" label="Inventario Transito" value="INVAJU" />
                                     <listitem id="linea2" label="=========================" value="linea2" />
+                                    
            
                                 </listbox>
     

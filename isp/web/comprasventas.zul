@@ -129,7 +129,8 @@ filas.getChildren().clear();
                             filas.appendChild(row);
 
                             }catch(Exception e){
-                                alert("YA SE HA AGREGADO ESTE PRODUCTO");
+                            
+                                alert("YA SE HA AGREGADO ESTE PRODUCTO \n"+e);
                             }                    
         }
     

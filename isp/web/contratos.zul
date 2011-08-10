@@ -1360,7 +1360,7 @@ void verificarCedula(String valor){
                                                     filas.appendChild(row);
                                                     sumar();
                                                     }catch(Exception e){
-                                                        Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                                                        Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                                                     }
                                                 
                                                 seriebuscar.value="";

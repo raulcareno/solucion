@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import jcinform.bean.sources.clasestmp.InventarioNormal;
 import jcinform.bean.sources.clasestmp.Pendientes;
 import jcinform.conexion.Administrador;
 import jcinform.persistencia.Clientes;
@@ -281,4 +282,54 @@ public class ReportesClase {
         ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
         return ds;
     }
+    
+    //INVENTARIOS
+    
+    public JRDataSource inventarioNormal() {
+        Administrador adm = new Administrador();
+        ArrayList detalles = new ArrayList();
+        List contra = adm.queryNativo("SELECT concat(e.nombre,' ', e.modelo,' ', m.nombre), SUM(IF(d.cantidad>0,d.cantidad,0)) entrada, "
+                + "SUM(IF(d.cantidad<0,d.cantidad,0)) salida, (SUM(IF(d.cantidad>0,d.cantidad,0))+SUM(IF(d.cantidad<0,d.cantidad,0))) total "
+                + "FROM cabeceracompra c, detallecompra d, equipos e, marcas m WHERE e.codigo = d.equipos AND m.codigo = e.marcas "
+                + "AND c.codigo = d.compra  AND c.documento IN ('COM','VEN') "
+                + "GROUP BY d.equipos "
+                + " order by 1");
+      
+        for (Iterator it = contra.iterator(); it.hasNext();) {
+                    Vector vec = (Vector) it.next();
+                    InventarioNormal inv = new InventarioNormal();              
+                    inv.setProducto(vec.get(0)+"");
+                    inv.setEntrada(new Integer(vec.get(1)+""));
+                    inv.setSalida(new Integer(vec.get(2)+""));
+                    inv.setTotal(new Integer(vec.get(3)+""));
+                    detalles.add(inv);
+            
+        }
+         
+        ReporteInventarioNormalDataSource ds = new ReporteInventarioNormalDataSource(detalles);
+        return ds;
+    }
+    public JRDataSource inventarioTransito() {
+        Administrador adm = new Administrador();
+        ArrayList detalles = new ArrayList();
+        List contra = adm.queryNativo("SELECT concat(e.nombre,' ', e.modelo,' ', m.nombre),   "
+                + "SUM(IF(d.cantidad<0,d.cantidad,0)) salida"
+                + "FROM cabeceracompra c, detallecompra d, equipos e, marcas m WHERE e.codigo = d.equipos AND m.codigo = e.marcas "
+                + "AND c.codigo = d.compra  AND c.documento IN ('PRE') "
+                + "GROUP BY d.equipos "
+                + " order by 1");
+      
+        for (Iterator it = contra.iterator(); it.hasNext();) {
+                    Vector vec = (Vector) it.next();
+                    InventarioNormal inv = new InventarioNormal();              
+                    inv.setProducto(vec.get(0)+"");
+                    inv.setTotal(new Integer(vec.get(1)+""));
+                    detalles.add(inv);
+            
+        }
+         
+        ReporteInventarioNormalDataSource ds = new ReporteInventarioNormalDataSource(detalles);
+        return ds;
+    }
+    
 }

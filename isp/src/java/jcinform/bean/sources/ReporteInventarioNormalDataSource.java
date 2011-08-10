@@ -1,0 +1,60 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package jcinform.bean.sources;
+
+import java.util.Iterator;
+import java.util.List;
+import jcinform.bean.sources.clasestmp.InventarioNormal;
+import jcinform.bean.sources.clasestmp.Pendientes;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
+
+/**
+ *
+ * @author GEOVANNY
+ */
+public class ReporteInventarioNormalDataSource implements JRDataSource {
+
+    private Iterator itrAlumnos;
+    private Iterator itrNodos;
+    private Object valorAtual;
+    private boolean irParaProximoAlumno = true;
+
+    public ReporteInventarioNormalDataSource(List lista) {
+        super();
+        this.itrNodos = lista.iterator();
+    }
+
+    public boolean next() throws JRException {
+        itrAlumnos = itrNodos;
+        valorAtual = itrAlumnos.hasNext() ? itrAlumnos.next() : null;
+        irParaProximoAlumno = (valorAtual != null);
+        return irParaProximoAlumno;
+    }
+
+    public Object getFieldValue(JRField campo) throws JRException {
+        Object valor = null;
+         InventarioNormal nodo = (InventarioNormal) valorAtual;
+        String fieldName = campo.getName();
+
+        try {
+            if ("producto".equals(fieldName)) {
+                valor = nodo.getProducto();
+            } else if ("entrada".equals(fieldName)) {
+                valor = nodo.getEntrada();
+            }  else if ("salida".equals(fieldName)) {
+                valor = nodo.getSalida();
+            } else if ("total".equals(fieldName)) {
+                valor = nodo.getTotal();
+            } 
+        } catch (Exception e) {
+            System.out.println("en datasource Acta " + e);
+        }
+
+        return valor;
+    }
+
+}
