@@ -95,6 +95,10 @@ List cantones = adm.query("Select o from Canton as o  ");
                   datasource = reportes.inventarioTransito();
                    report.setSrc(directorioReportes+"inventarioTransito.jasper");
                    
+            }else if(tipo.equals("INVAJU")){
+                  datasource = reportes.inventarioAjuste();
+                   report.setSrc(directorioReportes+"inventarioAjuste.jasper");
+                   
             }else  if(tipo.equals("COBROS")){
                 Integer cclientev = ccliente.value;
                 if(cclientev != null ){
@@ -228,7 +232,7 @@ void campos(String valor){
                                     <listitem id="linea3" label="========INVENTARIOS=================" value="linea2" />
                                     <listitem id="INVNORMAL" label="Inventario E/S" value="INVNORMAL" />
                                     <listitem id="INVTRAN" label="Inventario Transito" value="INVTRAN" />
-                                    <listitem id="INVAJU" label="Inventario Transito" value="INVAJU" />
+                                    <listitem id="INVAJU" label="Inventario Ajuste" value="INVAJU" />
                                     <listitem id="linea2" label="=========================" value="linea2" />
                                     
            

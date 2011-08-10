@@ -313,9 +313,31 @@ public class ReportesClase {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         List contra = adm.queryNativo("SELECT concat(e.nombre,' ', e.modelo,' ', m.nombre),   "
-                + "SUM(IF(d.cantidad<0,d.cantidad,0)) salida"
+                + "SUM(IF(d.cantidad<0,d.cantidad,0)) salida "
                 + "FROM cabeceracompra c, detallecompra d, equipos e, marcas m WHERE e.codigo = d.equipos AND m.codigo = e.marcas "
                 + "AND c.codigo = d.compra  AND c.documento IN ('PRE') "
+                + "GROUP BY d.equipos "
+                + " order by 1");
+      
+        for (Iterator it = contra.iterator(); it.hasNext();) {
+                    Vector vec = (Vector) it.next();
+                    InventarioNormal inv = new InventarioNormal();              
+                    inv.setProducto(vec.get(0)+"");
+                    inv.setTotal(new Integer(vec.get(1)+""));
+                    detalles.add(inv);
+            
+        }
+         
+        ReporteInventarioNormalDataSource ds = new ReporteInventarioNormalDataSource(detalles);
+        return ds;
+    }
+    public JRDataSource inventarioAjuste() {
+        Administrador adm = new Administrador();
+        ArrayList detalles = new ArrayList();
+        List contra = adm.queryNativo("SELECT concat(e.nombre,' ', e.modelo,' ', m.nombre),   "
+                + "SUM(IF(d.cantidad<0,d.cantidad,0)) salida "
+                + "FROM cabeceracompra c, detallecompra d, equipos e, marcas m WHERE e.codigo = d.equipos AND m.codigo = e.marcas "
+                + "AND c.codigo = d.compra  AND c.documento IN ('AJU') "
                 + "GROUP BY d.equipos "
                 + " order by 1");
       
