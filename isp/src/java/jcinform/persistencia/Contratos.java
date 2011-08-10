@@ -112,6 +112,11 @@ public class Contratos implements Serializable {
     @JoinColumn(name = "bancos", referencedColumnName = "codigo")
     @ManyToOne
     private Bancos bancos;
+    
+    @JoinColumn(name = "sector", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sector sector;
+    
 
     public Contratos() {
     }
@@ -382,6 +387,14 @@ public class Contratos implements Serializable {
 
     public void setDescuento(BigDecimal descuento) {
         this.descuento = descuento;
+    }
+
+    public Sector getSector() {
+        return sector;
+    }
+
+    public void setSector(Sector sector) {
+        this.sector = sector;
     }
 
     @Override

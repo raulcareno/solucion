@@ -39,7 +39,7 @@ public class ReportesClase {
         List<Clientes> clientes = new ArrayList<Clientes>();
         if (cli.getCodigo().equals(-1)) {
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + "where o.radios.nodos.sector.codigo = '"+sec.getCodigo()+"' "
+                    + "where o.sector.codigo = '"+sec.getCodigo()+"' "
                     + "order by o.clientes.apellidos");
         }else{
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
@@ -88,7 +88,7 @@ public class ReportesClase {
 //        if (cli.getCodigo().equals(-1)) {
         //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
         clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + "where o.radios.nodos.sector.codigo = '"+sec.getCodigo()+"' "
+                    + "where o.sector.codigo = '"+sec.getCodigo()+"' "
                     + "order by o.clientes.apellidos");
 //        } else {
 //            cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
@@ -135,7 +135,7 @@ public class ReportesClase {
         if (cli.getCodigo().equals(-1)) {
             //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + "where o.radios.nodos.sector.codigo = '"+sec.getCodigo()+"' "
+                    + "where o.sector.codigo = '"+sec.getCodigo()+"' "
                     + "order by o.clientes.apellidos");
         } else {
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
@@ -270,7 +270,7 @@ public class ReportesClase {
     public JRDataSource clientesxsector(Sector sec) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-        List<Contratos> contra = adm.query("Select o from Contratos as o where o.radios.nodos.sector.codigo =  '" + sec.getCodigo() + "'"
+        List<Contratos> contra = adm.query("Select o from Contratos as o where o.sector.codigo =  '" + sec.getCodigo() + "'"
                 + " order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();

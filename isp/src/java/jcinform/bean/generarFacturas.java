@@ -416,7 +416,7 @@ public class generarFacturas {
     //BUSCAR PARA ASIGNAR FACTURA 
     public List buscar(Sucursal suc, Sector uno, Sector dos) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
-        List<Contratos> contratos = adm.query("Select o from Contratos as o where o.radios.nodos.sector.numero between  " + uno.getNumero() + "  and  " + dos.getNumero() + "  ");
+        List<Contratos> contratos = adm.query("Select o from Contratos as o where o.sector.numero between  " + uno.getNumero() + "  and  " + dos.getNumero() + "  ");
         String contraString = "";
         for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
             Contratos contratos1 = itContratos.next();

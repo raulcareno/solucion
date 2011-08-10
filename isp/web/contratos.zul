@@ -151,27 +151,27 @@ void llenar(Contratos  equi2){
                               for (int i = 0; i <= cantones.getItems().size(); i++) {
                                     Canton tr0 = ((Canton)((Listitem)cantones.getItems().get(i)).getValue());
                                     int primero = tr0.getCodigo();
-                                    int segundo = equi.getRadios().getNodos().getSector().getCanton().getCodigo();
+                                    int segundo = equi.getSector().getCanton().getCodigo();
                                     if(primero == segundo){
                                         cantones.setSelectedItem((Listitem)cantones.getItems().get(i));
-                                        bdCanton.value = equi.getRadios().getNodos().getSector().getCanton().getNombre()+"";
+                                        bdCanton.value = equi.getSector().getCanton().getNombre()+"";
                                         break;
                                     }
                            }
-                   buscarSectores(equi.getRadios().getNodos().getSector().getCanton().getCodigo());
-                    
-                    for (int i = 0; i <= sectores.getItems().size(); i++) {
-                                    Sector tr0 = ((Sector)((Listitem)sectores.getItems().get(i)).getValue());
-                                    int primero = tr0.getCodigo();
-                                    int segundo = equi.getRadios().getNodos().getSector().getCodigo();
-                                    if(primero == segundo){
-                                        sectores.setSelectedItem((Listitem)sectores.getItems().get(i));
-                                        bdSector.value = equi.getRadios().getNodos().getSector().getNombre();
-                                        break;
-                                    }
-                    }
+                           buscarSectores(equi.getRadios().getNodos().getSector().getCanton().getCodigo());
+
+                            for (int i = 0; i <= sectores.getItems().size(); i++) {
+                                            Sector tr0 = ((Sector)((Listitem)sectores.getItems().get(i)).getValue());
+                                            int primero = tr0.getCodigo();
+                                            int segundo = equi.getSector().getCodigo();
+                                            if(primero == segundo){
+                                                sectores.setSelectedItem((Listitem)sectores.getItems().get(i));
+                                                bdSector.value = equi.getSector().getNombre();
+                                                break;
+                                            }
+                            }
                            
-                      buscarNodos(equi.getRadios().getNodos().getSector().getCodigo());
+                      buscarNodos(equi.getRadios().getNodos().getSector().getCanton().getCodigo());
                     
                     for (int i = 0; i <= nodos.getItems().size(); i++) {
                                     Nodos tr0 = ((Nodos)((Listitem)nodos.getItems().get(i)).getValue());
@@ -419,6 +419,11 @@ Boolean validar(){
     }
     try{
         equi.setRadios(radio.getSelectedItem().getValue());
+    }catch(Exception e){
+    }
+    
+    try{
+        equi.setSector(sectores.getSelectedItem().getValue());
     }catch(Exception e){
     }
     
@@ -1571,7 +1576,7 @@ void llamar(){
     
       void buscarNodos(Integer codigo){
           bdNodo.value = "";
-        List NodosEncontrados = adm.query("Select o from Nodos as o where o.sector.codigo = '"+codigo+"'  order by o.nombre");
+        List NodosEncontrados = adm.query("Select o from Nodos as o where o.sector.canton.codigo = '"+codigo+"'  order by o.nombre");
         nodos = new Listbox();
         int a=0;
             for (Iterator it = nodos.getItems().iterator(); it.hasNext();) {
@@ -1867,7 +1872,7 @@ void llamar(){
                                                             <bandpopup>
                                                                 <vbox>
                                                                     <listbox id="cantones" width="250px" rows="10"
-                                                                                                                         onSelect="bdCanton.value=self.selectedItem.label;bdCanton.closeDropdown(); buscarSectores(((Canton)self.selectedItem.value).getCodigo());">
+                                                                                                                         onSelect="bdCanton.value=self.selectedItem.label;bdCanton.closeDropdown(); buscarSectores(((Canton)self.selectedItem.value).getCodigo()); buscarNodos(((Canton)self.selectedItem.value).getCodigo());">
                                                                         <listitem   forEach="${cantonesList}" value="${each}">
                                                                             <listcell label="${each.nombre}" />
                                                                         </listitem>
@@ -1881,22 +1886,20 @@ void llamar(){
                                                             <bandpopup>
                                                                 <vbox>
                                                                     <listbox id="nodos" width="250px" rows="10"
-                                                                        onSelect="bdNodo.value=self.selectedItem.label;bdNodo.closeDropdown();buscarRadios(((Nodos)self.selectedItem.value).getCodigo());">
+                                                                        onSelect="bdNodo.value=self.selectedItem.label;bdNodo.closeDropdown(); buscarRadios(((Nodos)self.selectedItem.value).getCodigo());">
 
                                                                     </listbox>
                                                                 </vbox>
                                                             </bandpopup>
                                                         </bandbox>
                                                     </row>
-                                                    
-                                               
                                                     <row style="background:#F8FFE1">
                                                         <span style="float:right"> Sector(*):</span>
                                                         <bandbox  width="200px" readonly="true"  id="bdSector">
                                                             <bandpopup>
                                                                 <vbox>
                                                                     <listbox id="sectores" width="250px" rows="10"
-                                                                  onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown(); buscarNodos(((Sector)self.selectedItem.value).getCodigo());">
+                                                                  onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
                                     
                                                                     </listbox>
                                                                 </vbox>
