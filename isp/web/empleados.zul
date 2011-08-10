@@ -5,10 +5,6 @@
    
  
     <window onCreate="cargar()" id="crearEmpleados">
-        <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
-        <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
-        <script type="text/javascript" src="/js/masks.js"/>
-        <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
         <zscript>
             <![CDATA[
   import jcinform.persistencia.*;
@@ -160,8 +156,6 @@ cargarEmpleado(Empleados emple){
     if(verificar("Agregar")){
           
           guardar.disabled=false; llenar(new Empleados(0));estado(false,false);
-          String command = "applyTelefono('"+telefono.getUuid()+"');applyCelular('"+movil.getUuid()+"');";
-          Clients.evalJavaScript(command);
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
