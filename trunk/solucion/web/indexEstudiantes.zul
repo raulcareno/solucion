@@ -13,7 +13,7 @@ import java.io.FileInputStream;
     import java.io.InputStream;
   import java.io.IOException;
 
-
+         Administrador adm = new Administrador();
 Session a = Sessions.getCurrent();
     
     Estudiantes emp = a.getAttribute("userEstudiante");
@@ -48,18 +48,24 @@ Session a = Sessions.getCurrent();
                                 Messagebox.show("Proceso bloqueado por la Administración, acerquese a las oficinas para solucionar los procesos pendientes que tiene con la Institución..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                                 return;
                             }
-                          /*  if(emp.getMatriculado()){
+                             try{
+                               List matricula = adm.query("Select o from Matriculas as o " +
+                                  " where o.estudiante.codigoest =  '"+ emp.getCodigoest()+"' order by o.fechamat desc");
+                                   a.setAttribute("matriculaActual",((Matriculas)matricula.get(0)));
+                               } catch (Exception ex) {
+                               
+                               }
+                          
+                             /* if(emp.getMatriculado()){
                                 Messagebox.show("Usted ya se ha encuentra MATRICULADO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                                 return;
                             }*/
                         Executions.sendRedirect("/matriculacionEstudiantes1de2.zul");
  
-                  
-
-
+ 
   }
     cargando(){
-         Administrador adm = new Administrador();
+
           Session a = Sessions.getCurrent();
             Estudiantes peri =  (Estudiantes) a.getAttribute("userEstudiante");
             try{
