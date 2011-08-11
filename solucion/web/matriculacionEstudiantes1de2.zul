@@ -100,7 +100,15 @@ void seleccionPeriodo(){
                         if(val == 16){
                             Executions.sendRedirect("/592981728937491235M.zul?AASL2KSO348934934="+(""+matActual.getCodigomat())+"&TP=pdf");
                             return; 
-                    }
+                        }else{
+                            Representante repre = ses.getAttribute("userRepresentante");
+                             if(repre==null){
+                                Executions.sendRedirect("indexEstudiantes.zul");
+                             }else{
+                                Executions.sendRedirect("indexRepresentantes.zul");
+                             }
+                             return;
+                        }
         }
      ses.setAttribute("periodo",periodosListado.selectedItem.value);
      Executions.sendRedirect("matriculacionEstudiantes2de2.zul");
