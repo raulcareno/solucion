@@ -40,6 +40,24 @@ Session a = Sessions.getCurrent();
         Include inc = (Include) xcontents;
         inc.setSrc(valor);
  }
+ 
+     void ingresarMatriculas(){
+                    
+                  
+                            if(emp.getPendientes()){
+                                Messagebox.show("Proceso bloqueado por la Administración, acerquese a las oficinas para solucionar los procesos pendientes que tiene con la Institución..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                return;
+                            }
+                          /*  if(emp.getMatriculado()){
+                                Messagebox.show("Usted ya se ha encuentra MATRICULADO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                return;
+                            }*/
+                        Executions.sendRedirect("/matriculacionEstudiantes1de2.zul");
+ 
+                  
+
+
+  }
     cargando(){
          Administrador adm = new Administrador();
           Session a = Sessions.getCurrent();
@@ -97,7 +115,7 @@ Session a = Sessions.getCurrent();
                             <fisheye image="/images/correo.png" onClick='ingresar("/correos/comunicadoEstudianteIndex.zul")' />
                             <fisheye image="/images/comentario1.png" onClick='ingresar("/comentariosEstudiantes.zul")' />
                             <fisheye image="/images/mistareas.png" onClick='ingresar("/tareasEstudiante.zul")' />
-                            <fisheye image="/images/pensum.png" onClick='ingresar("/matriculacionEstudiantes1de2.zul")' />
+                            <fisheye image="/images/pensum.png" onClick='ingresarMatriculas()' />
                             <fisheye image="/images/ayuda2.png" onClick='ingresar("/ayudafuera.zul")' />
                             <fisheye image="/images/salida.png" onClick="salir()" />
 
