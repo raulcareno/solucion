@@ -71,100 +71,100 @@ import org.zkoss.zul.Listbox;
         void cargarVacio(){
           //foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
         }
-       Integer nuevaMatricula() {
-       Administrador adm = new Administrador();
+Integer nuevaMatricula() {
+                   Administrador adm = new Administrador();
 
-        List NoActualMatricula = adm.query("Select o from ParametrosGlobales as o " +
-                "where o.variable = 'MATRICULA' and o.periodo.codigoper = '" + periodo.getCodigoper() + "'");
-        ParametrosGlobales parametros = new ParametrosGlobales();
-        if(NoActualMatricula.size()<=0){
-            alert("Falta copiar los parámetros a este Año Lectivo");
-        }
-        parametros = (ParametrosGlobales) NoActualMatricula.get(0);
-        int noMatri = 0;
-        Double decs = parametros.getNvalor();
-        Long val = java.lang.Math.round(decs);
-        noMatri = Integer.valueOf(val.toString());
-        noMatri += 1;
-        List  numeroYa = adm.query("Select o from Matriculas as o " +
-                "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
-                "and o.numero = '" + noMatri + "'");
-        if (numeroYa.size() > 0) {
-            Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o " +
-                    "where o.curso.periodo.codigoper= '" + periodo.getCodigoper() + "'"  );
-            parametros.setNvalor(new Double(nClave + 1));
-            adm.actualizar(parametros);
-            return nClave + 1;
-        } else {
-            parametros.setNvalor(new Double(noMatri));
-            adm.actualizar(parametros);
-            return noMatri;
-        }
+                    List NoActualMatricula = adm.query("Select o from ParametrosGlobales as o " +
+                            "where o.variable = 'MATRICULA' and o.periodo.codigoper = '" + periodo.getCodigoper() + "'");
+                    ParametrosGlobales parametros = new ParametrosGlobales();
+                    if(NoActualMatricula.size()<=0){
+                        alert("Falta copiar los parámetros a este Año Lectivo");
+                    }
+                    parametros = (ParametrosGlobales) NoActualMatricula.get(0);
+                    int noMatri = 0;
+                    Double decs = parametros.getNvalor();
+                    Long val = java.lang.Math.round(decs);
+                    noMatri = Integer.valueOf(val.toString());
+                    noMatri += 1;
+                    List  numeroYa = adm.query("Select o from Matriculas as o " +
+                            "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                            "and o.numero = '" + noMatri + "'");
+                    if (numeroYa.size() > 0) {
+                        Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o " +
+                                "where o.curso.periodo.codigoper= '" + periodo.getCodigoper() + "'"  );
+                        parametros.setNvalor(new Double(nClave + 1));
+                        adm.actualizar(parametros);
+                        return nClave + 1;
+                    } else {
+                        parametros.setNvalor(new Double(noMatri));
+                        adm.actualizar(parametros);
+                        return noMatri;
+                    }
     }
 
     void generarClave(Boolean boton){
-    try{
-    String uss = usuario.value;
-    if(boton==false){
-        if(uss.trim() != ""){
-                return;
-        }
-    }
-        String user ="";
-        String caracter="JCINFORM";
-        caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
-        int numero_caracteres=10;
-        int total=caracter.length();
-        String  clave2="";
-        for(int a=0;a<numero_caracteres;a++){
-            clave2+=caracter.charAt(((Double)(total*Math.random())).intValue());
-        }
+                try{
+                String uss = usuario.value;
+                if(boton==false){
+                    if(uss.trim() != ""){
+                            return;
+                    }
+                }
+                    String user ="";
+                    String caracter="JCINFORM";
+                    caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
+                    int numero_caracteres=10;
+                    int total=caracter.length();
+                    String  clave2="";
+                    for(int a=0;a<numero_caracteres;a++){
+                        clave2+=caracter.charAt(((Double)(total*Math.random())).intValue());
+                    }
 
-            clave.value = clave2.toUpperCase();
-             caracter=""+apellidos.value.trim().replace(" ","");
-            caracter+="JC"+nombres.value.trim().replace(" ","");
-            numero_caracteres=6;
-            total=caracter.length();
-            user ="";
-            for(int a=0;a<numero_caracteres;a++){
-                user+=caracter.charAt(((Double)(total*Math.random())).intValue());
-            }
-            usuario.value = user.toUpperCase();
-            }catch(Exception e){
-            System.out.println("ERROR EN GENERAR CLAVE"+e);
-            }
+                        clave.value = clave2.toUpperCase();
+                         caracter=""+apellidos.value.trim().replace(" ","");
+                        caracter+="JC"+nombres.value.trim().replace(" ","");
+                        numero_caracteres=6;
+                        total=caracter.length();
+                        user ="";
+                        for(int a=0;a<numero_caracteres;a++){
+                            user+=caracter.charAt(((Double)(total*Math.random())).intValue());
+                        }
+                        usuario.value = user.toUpperCase();
+                        }catch(Exception e){
+                        System.out.println("ERROR EN GENERAR CLAVE"+e);
+                        }
     }
-       void generarClaveRep(Boolean boton){
-    try{
-    String uss = usuarior.value;
-    if(boton==false){
-        if(uss.trim() != ""){
-                return;
-        }
-    }
-        String user ="";
-        String caracter="JCINFORM";
-        caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
-        int numero_caracteres=10;
-        int total=caracter.length();
-        String  clave2="";
-        for(int a=0;a<numero_caracteres;a++){
-            clave2+=caracter.charAt(((Double)(total*Math.random())).intValue());
-        }
+ void generarClaveRep(Boolean boton){
+                try{
+                String uss = usuarior.value;
+                if(boton==false){
+                    if(uss.trim() != ""){
+                            return;
+                    }
+                }
+                    String user ="";
+                    String caracter="JCINFORM";
+                    caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
+                    int numero_caracteres=10;
+                    int total=caracter.length();
+                    String  clave2="";
+                    for(int a=0;a<numero_caracteres;a++){
+                        clave2+=caracter.charAt(((Double)(total*Math.random())).intValue());
+                    }
 
-            claver.value = clave2.toUpperCase();
-             caracter=""+apellidosre.value.trim().replace(" ","");
-            caracter+="JC"+nombresre.value.trim().replace(" ","");
-            numero_caracteres=6;
-            total=caracter.length();
-            user ="";
-            for(int a=0;a<numero_caracteres;a++){
-                user+=caracter.charAt(((Double)(total*Math.random())).intValue());
-            }
-            usuarior.value = user.toUpperCase();
-            }catch(Exception e){
-            System.out.println("ERROR EN GENERAR CLAVE"+e);
-            }
+                        claver.value = clave2.toUpperCase();
+                         caracter=""+apellidosre.value.trim().replace(" ","");
+                        caracter+="JC"+nombresre.value.trim().replace(" ","");
+                        numero_caracteres=6;
+                        total=caracter.length();
+                        user ="";
+                        for(int a=0;a<numero_caracteres;a++){
+                            user+=caracter.charAt(((Double)(total*Math.random())).intValue());
+                        }
+                        usuarior.value = user.toUpperCase();
+                        }catch(Exception e){
+                        System.out.println("ERROR EN GENERAR CLAVE"+e);
+                        }
     }
 
 void llenar(Estudiantes estudent){
@@ -225,7 +225,9 @@ void llenar(Estudiantes estudent){
             if(estudent.getTransporte()!=null){
                 transporte.checked = estudent.getTransporte();
             }
-
+            if(estudent.getAplico()!=null){
+                aplico.checked = estudent.getAplico();
+            }
 
 
  
@@ -461,10 +463,9 @@ void estado(Boolean estado,Boolean modificar){
         btnguardar.disabled=false;
         return;
  }
+ 
         Messagebox.show("Recuerde que toda la información será verificada y validada en secretaria...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
         btnguardar.disabled=true;
-
-  
         representante0.setCodigorep(codigore.value);
         representante0.setIdentificacionrepre(cedulare.value);
         representante0.setNombres(nombresre.value);
@@ -499,7 +500,6 @@ void estado(Boolean estado,Boolean modificar){
         representante0.setOcupacionmadre(ocupacionma.value);
         representante0.setUsuario(usuarior.value);
         representante0.setClave(permiso.encriptar(claver.value));
-
          Boolean repreNuevo = false;
          Boolean estuNuevo = false;
 
@@ -511,7 +511,7 @@ void estado(Boolean estado,Boolean modificar){
             repreNuevo = true;
          }
 
- 
+
  //GUARDO EL ESTUDIANTE
         estudent.setRepresentante(representante0);
         estudent.setCodigoest(codigo.value);
@@ -525,6 +525,7 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setEstado(true);
         estudent.setAdventista(false);
         estudent.setTransporte(transporte.checked);
+        estudent.setAplico(aplico.checked);
         estudent.setNobus(nobus.value);
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
@@ -549,7 +550,7 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setInternet(internet.checked);
         estudent.setCodigo(codigoclave.value);
         estudent.setMatriculado(true);
-  
+
         if((!estudent.getCodigoest().equals(0))){
              adm.actualizar(estudent);
    
@@ -563,13 +564,15 @@ void estado(Boolean estado,Boolean modificar){
         matricula.setCodigomat(codigomat.value);
         matricula.setEstudiante(estudent);
         matricula.setObservacion("Matricula por Internet "+ new Date().toLocaleString());
-        matricula.setFechamat(new Date());
+       
+        matricula.setFechamat(new Date());   
         matricula.setCurso(curso.selectedItem.value);
+        
         matricula.setNumero(numero.value);
-        matricula.setEstado("Matriculado");
-        matricula.setNuevo(nuevo.checked);
-        matricula.setRepite(repite.checked);
-        matricula.setInstitucion(institucion.value);
+        matricula.setEstado("Matriculado"); 
+        matricula.setNuevo(nuevo.checked);  
+        matricula.setRepite(new Integer(repite.selectedItem.value));  
+        matricula.setInstitucion(institucion.value);  
 
         try{
             matricula.setBeca(0.0);
@@ -843,7 +846,10 @@ boolean validarRepresentante(){
   ]]>
             </zscript>
       
-       
+       <groupbox id="gb" mold="3d" >
+	    			EL CURSO ACTUAL ES: <textbox value=""/>
+	    		 
+	      </groupbox>
             <panel title="DATOS DEL ESTUDIANTE (Paso 1 de 5)" id="destudiante"   style="margin-bottom:10px" framable="true" >
                 <panelchildren>
                     <div id="viewer" style="overflow:auto;">
@@ -1043,8 +1049,8 @@ boolean validarRepresentante(){
 
                                 
                             </row>
-                            <row>
-                                <span style="float:right"> Curso/Grado
+                            <row style="background-color:yellow">
+                                <span style="float:right"> <label value="PASA A:" style="font-weight:bold;color:blue;font-size:14px"/>
                                     <span style="color:blue"> (*)</span>:
                                 </span>
 
@@ -1080,6 +1086,7 @@ boolean validarRepresentante(){
                                 <span style="float:right"> Toma Transporte:</span>
                                 <span>
                                     <checkbox id="transporte" />
+                                    <checkbox visible="false" id="aplico" />
                                     <textbox id="nobus" maxlength="100" cols="40"   />
                                 </span>
                             </row>
@@ -1092,7 +1099,12 @@ boolean validarRepresentante(){
                                     <span style="color:blue;weight:bold"> (*)</span>:
                                     <intbox id="hermanos"  />
                                 Repite el Año:
-                                    <checkbox id="repite" />
+                                 <radiogroup Id="repite" >
+                                    <radio selected="true"  value="0" label="1ra."/>
+                                    <radio value="1"  label="2da."/>
+                                    <radio value="2"  label="3ra."/>
+                                    <radio value="3"  label="4ta."/>
+                                </radiogroup>
                                 </span>
                             </row>
 
