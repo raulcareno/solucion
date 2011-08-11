@@ -14,12 +14,6 @@
 	<field name="entrada" class="java.lang.String"/>
 	<field name="salida" class="java.lang.String"/>
 	<field name="total" class="java.lang.String"/>
-	<variable name="contrato_1" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{contrato}]]></variableExpression>
-	</variable>
-	<variable name="valor_1" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
-	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
