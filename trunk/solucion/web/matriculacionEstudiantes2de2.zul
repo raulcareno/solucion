@@ -7,8 +7,9 @@
     background-image: url(./images/fondo.jpg);
     background-repeat: repeat-y;
     background-repeat: repeat-x;
+       background-color:#004669;
 }
-    </style>
+     </style>
 
     <div  class="estil" >
         <window  position="center"  width="700px" mode="overlapped" id="principales" >
