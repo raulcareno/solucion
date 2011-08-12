@@ -19,7 +19,9 @@ Session a = Sessions.getCurrent();
      if(emp==null){
         Executions.sendRedirect("login.zul");
      }
+     Estudiantes emp2 =  (Estudiantes) a.getAttribute("userEstudiante");
      
+           Administrador adm = new Administrador();
  void salir(){
         Executions.sendRedirect("loginEstudiantes.zul");
         Session a = Sessions.getCurrent();
@@ -39,7 +41,7 @@ Session a = Sessions.getCurrent();
         inc.setSrc(valor);
  }
     cargando(){
-         Administrador adm = new Administrador();
+   
           Session a = Sessions.getCurrent();
             Representante peri =  (Representante) a.getAttribute("userRepresentante");
             Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
@@ -69,6 +71,30 @@ Session a = Sessions.getCurrent();
 
 
         }
+        
+         void ingresarMatriculas(){
+                    
+                  
+                            if(emp2.getPendientes()){
+                                Messagebox.show("Proceso bloqueado por la Administración, acerquese a las oficinas para solucionar los procesos pendientes que tiene con la Institución..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                return;
+                            }
+                             try{
+                               List matricula = adm.query("Select o from Matriculas as o " +
+                                  " where o.estudiante.codigoest =  '"+ emp2.getCodigoest()+"' order by o.fechamat desc");
+                                   a.setAttribute("matriculaActual",((Matriculas)matricula.get(0)));
+                               } catch (Exception ex) {
+                               
+                               }
+                          
+                             /* if(emp2.getMatriculado()){
+                                Messagebox.show("Usted ya se ha encuentra MATRICULADO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                return;
+                            }*/
+                        Executions.sendRedirect("/matriculacionEstudiantes1de2.zul");
+ 
+ 
+  } 
 
     </zscript>
     <north style="background-image: url(./images/cabefondo1.png)"  size="85px" >
@@ -93,8 +119,10 @@ Session a = Sessions.getCurrent();
                     <fisheye image="/images/calendarioacademico.png"  onClick='ingresar("/calendar_1.zul")' />
                     <fisheye image="/images/cambioclave.png" onClick='ingresar("/cambioClaveRepresentante.zul")' />
                     <fisheye image="/images/correo.png" onClick='ingresar("/correosr/comunicadoEstudianteIndex.zul")' />
+                                        <fisheye image="/images/matriculacion.png" onClick='ingresarMatriculas()' />
                     <fisheye image="/images/comentario1.png"  onClick='ingresar("/comentariosEstudiantes.zul")'  />
                     <fisheye image="/images/mistareas.png" onClick='ingresar("/tareasEstudiante.zul")' />
+
                     <fisheye image="/images/ayuda2.png" onClick='ingresar("/ayudafuera.zul")' />
                     <fisheye image="/images/salida.png" onClick="salir()" />
                 </fisheyebar>
