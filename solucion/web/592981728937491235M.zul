@@ -14,6 +14,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import sources.*;
 import java.util.ArrayList;
+ String directorioReportes = "";
 //PARA REPORTES
 String codigo = "";
 pdf(){
@@ -36,6 +37,7 @@ public ArrayList certificados(Matriculas matricula,String tipo){
             Matriculas elem = (Matriculas) it.next();
             detalle.add(elem);
             per = elem.getCurso().getPeriodo();
+             directorioReportes = per.getInstitucion().getReportes();
         }
             Institucion insts = per.getInstitucion();
             Map parametros = new HashMap();
@@ -62,7 +64,8 @@ void notasd(){
                     Map parametros = (HashMap) arreglo.get(1);
                      
                     parametros.put("titulo", "Comprobante de Matricula");
-                    report.setSrc("WEB-INF/reportes/actaMatricula2.jasper");
+                     
+                    report.setSrc(directorioReportes+"actaMatricula2.jasper");
                     report.setParameters(parametros);
                     report.setDatasource(datasource);
                     report.setType(tipo);
