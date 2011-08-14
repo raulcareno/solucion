@@ -32,7 +32,7 @@ void cargarVacio(){
     </zscript>
     <hbox>
         <groupbox mold="3d" >
-            <caption label="Agregar" />
+             
             <grid width="100%">
                 <rows>
                     <row>
@@ -111,6 +111,13 @@ void cargarVacio(){
                         <textbox  id="puerto" onChange="update();" width="30px"/>
 
                     </row>
+                    </rows>
+                    </grid>
+                     </groupbox>
+                    <groupbox width="100%" mold="3d" >
+                    <grid>
+                    <rows>    
+                    
                     <row>
                         <span style="float:right">Ubicación Fotos: </span>
                         
@@ -138,6 +145,40 @@ void cargarVacio(){
                             </attribute>
                         </button>
 </span>
+                    </row>
+                     <row>
+                        <span style="float:right">RUC: </span>
+                        <a:bind value="inobjeto.ruc"/>
+                        <textbox  id="ruc" onChange="update();"  />
+
+                    </row>
+                    <row>
+                        <span style="float:right">Ministro Actual: </span>
+                        <a:bind value="inobjeto.ministronombre"/>
+                        <textbox  id="ministronombre" onChange="update();"  />
+
+                    </row>
+                     <row>
+                        <span style="float:right">Código Institución: </span>
+                    <span>
+                   <a:bind value="inobjeto.codigo"/>
+                        <textbox  id="codigo" onChange="update();" width="30px"/>
+  
+                        <span >IVA: </span>
+                        <a:bind value="inobjeto.iva"/>
+                        <decimalbox  id="iva" onChange="update();" width="30px"/>
+                        </span>
+                    </row>
+                    <row>
+                        <span style="float:right">Serie1: </span>
+                    <span>
+                    <a:bind value="inobjeto.serie1"/>
+                        <textbox  id="serie1" onChange="update();" width="30px"/>
+                    
+                        <span >Serie2: </span>
+                        <a:bind value="inobjeto.serie2"/>
+                        <textbox  id="serie2" onChange="update();" width="30px"/>
+                        </span>
                     </row>
                     <row>
                         <button label="Subir Imagen" id="ima">
@@ -168,6 +209,7 @@ void cargarVacio(){
             </vbox>
 
         </groupbox>
+            </hbox>
         <groupbox width="100%" mold="3d" >
 
             <caption label="Busquedas" />
@@ -195,7 +237,7 @@ void cargarVacio(){
 
 
         </groupbox>
-    </hbox>
+
     <zscript>
     AnnotateDataBinder binder = new AnnotateDataBinder(ventana);
     binder.bindBean("inobjeto", inobjeto);
