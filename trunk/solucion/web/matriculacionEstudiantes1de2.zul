@@ -120,9 +120,9 @@ void seleccionPeriodo(){
           
          
        
-            <panel  id="panel" style="position:absolute; top:25%;left:15%"  visible="true" height="80px"  width="800px"  >
+            <panel  id="panel" style="position:absolute; top:25%;left:15%"  visible="true" height="500px"  width="800px"  >
                 <panelchildren>
-                    <grid  sclass="MyGridRowHeight" height="100%"  id="seleccionGrid" >
+                    <grid  sclass="MyGridRowHeight" height="500px"  id="seleccionGrid" >
                         <rows>
                           
                             <row align="left"  spans="2" style="background:#6699CC;border:0px;color:blue" >
@@ -131,7 +131,7 @@ void seleccionPeriodo(){
                             <row align="left"  spans="2" style="background:#6699CC;border:0px;color:blue" >
                                 <span>
                                  
-                                    <listbox id="periodosListado" style="font-size:15px"  onSelect="bd1.value=self.selectedItem.label;seleccionPeriodo();" >
+                                    <listbox id="periodosListado" style="font-size:15px" height="400px"  onSelect="bd1.value=self.selectedItem.label;seleccionPeriodo();" >
                                         <listhead sizable="true">
                                             <listheader width="40px" label="SECCION"/>
                                             <listheader width="40px" label="JORNADA"/>
