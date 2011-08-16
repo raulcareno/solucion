@@ -359,6 +359,10 @@ Boolean validar(){
            combov.focus();
             return;
     } 
+    if( bd.value == ""  ){
+           Messagebox.show("Seleccione el Plan para poder continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    } 
      if(codigocli.value.equals("0")){
         Clientes empa = new Clientes();
             empa.setIdentificacion(""+identificacion2.value);
