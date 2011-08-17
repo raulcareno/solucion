@@ -735,6 +735,7 @@ if(sihay==0){
        
         llenar(new Contratos(0));
         estado(false,false);
+        eliminar.disabled = true;
         productos.getRows().getChildren().clear();
         identificacion2.focus();
      bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
@@ -751,16 +752,10 @@ if(sihay==0){
             Messagebox.show("No se han creado planes, cierre esta pantalla e ingresse nuevos Planes  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             return;
         }
-      /* if(bancos.size()<=0){
-        Messagebox.show("No se han creado Bancos, cierre esta pantalla e ingrese nuevos Bancos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-         return;
-      }
-    if(radios.size()<=0){
-        Messagebox.show("No se han creado Nodos, cierre esta pantalla e ingrese nuevos Nodos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-         return;
-      } */
+   
        
         llenar(new Contratos(0));
+        eliminar.disabled = true;
         estado(false,false);
         efe.selected = true;
         efe.checked = true;
@@ -830,6 +825,7 @@ void verificarCedula(String valor){
                                           contratosPanel.visible = false; 
                                           llenarCliente(empa);
                                           llenar(ControlequiposEncontrados.get(0));
+                                          eliminar.disabled = false;
                                           numerocontrato.focus();
                                           modificar.disabled = false;
                                           anadir.disabled = false;
@@ -1616,6 +1612,23 @@ void llamar(){
              }
 
     }
+    void eliminar(){
+            if((equi.getCodigo().equals(0)) ){
+                    Messagebox.show("El presente contrato aún no ha sido guardado...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
+                    permiso.auditar("Contratos","Actualizar",""+equi.getContrato()+" - "+equi.getClientes());
+                    return;
+             } 
+           
+        int valor0 = Messagebox.show("Seguro que desea Eliminar este Contrato, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+           if(valor0 == 16){
+                try{
+                        adm.eliminarObjeto(Contratos.class, equi.getCodigo());
+                        llenar(new Contratos(0));
+                }catch(Exception ax){
+                        Messagebox.show("No se puede eliminar, ya tiene pagos realizados, o facturas Emitidas...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
+                }
+            }
+    }
   ]]>
     </zscript>
     <div>
@@ -1866,7 +1879,9 @@ void llamar(){
                                                         </span>
                                                         <textbox id="referenciai" rows="2" cols="40" readonly="true"  />
                                                         <span style="float:right"> Descuento </span>
-                                                        <span > <decimalbox id="descuento" format="#00.00" /> USD </span>
+                                                        <span > 
+                                                            <decimalbox id="descuento" format="#00.00" /> USD 
+                                                        </span>
                                                     </row>
                                                    
                                                            
@@ -2285,7 +2300,7 @@ void llamar(){
         </tabbox>
         <panel framable="true" visible="false" id="contratosPanel" title="CONTRATOS CON ÉSTE CLIENTE" style="position:absolute; top:5%; left:5%" width="600px">
             <panelchildren>
-                <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;anadir.disabled = false;" id="contratosCliente" width="100%">
+                <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;anadir.disabled = false;  eliminar.disabled = false;" id="contratosCliente" width="100%">
                     <listhead>
                         <listheader label="Contra."/>
                         <listheader label="Plan"/>
