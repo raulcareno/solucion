@@ -233,8 +233,8 @@ void campos(String valor){
                                     <listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" />
                                     <listitem id="PORSECTORCLI" label="Reporte de Contratos de Clientes por Sector " value="PORSECTORCLI" />
                                     <listitem id="linea3" label="========INVENTARIOS=================" value="linea2" />
-                                    <listitem id="INVNORMAL" label="Inventario E/S" value="INVNORMAL" />
-                                    <listitem id="INVGEN" label="Inventario con Series" value="INVGEN" />
+                                    <listitem id="INVNORMAL" label="Inventario Totales x Producto E/S/Aju./Prest." value="INVNORMAL" />
+                                    <listitem id="INVGEN" label="Inventario con Series x Compras" value="INVGEN" />
                                     <listitem id="INVTRAN" label="Inventario Transito" value="INVTRAN" />
                                     <listitem id="INVAJU" label="Inventario Ajuste" value="INVAJU" />
                                     <listitem id="linea2" label="=========================" value="linea2" />
