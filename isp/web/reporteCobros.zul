@@ -91,6 +91,9 @@ List cantones = adm.query("Select o from Canton as o  ");
                   datasource = reportes.inventarioNormal();
                    report.setSrc(directorioReportes+"inventarioNormal.jasper");
                    
+            }else if(tipo.equals("INVGEN")){
+                  datasource = reportes.inventarioGeneral();
+                   report.setSrc(directorioReportes+"inventarioNorTranAju.jasper");
             }else if(tipo.equals("INVTRAN")){
                   datasource = reportes.inventarioTransito();
                    report.setSrc(directorioReportes+"inventarioTransito.jasper");
@@ -231,6 +234,7 @@ void campos(String valor){
                                     <listitem id="PORSECTORCLI" label="Reporte de Contratos de Clientes por Sector " value="PORSECTORCLI" />
                                     <listitem id="linea3" label="========INVENTARIOS=================" value="linea2" />
                                     <listitem id="INVNORMAL" label="Inventario E/S" value="INVNORMAL" />
+                                    <listitem id="INVGEN" label="Inventario con Series" value="INVGEN" />
                                     <listitem id="INVTRAN" label="Inventario Transito" value="INVTRAN" />
                                     <listitem id="INVAJU" label="Inventario Ajuste" value="INVAJU" />
                                     <listitem id="linea2" label="=========================" value="linea2" />
@@ -401,6 +405,7 @@ void campos(String valor){
                                 <button  image="/images/eliminar.gif" id="cerrar"   label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
                                 <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
                                 <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
+                                      <button label="Refrescar...!" image="/images/actualizar.png" onClick='showReport();'/>
                             </span>
 
                         </row>

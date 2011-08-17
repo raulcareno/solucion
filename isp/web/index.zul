@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="ISP Sistema"?>
 <zk onCreate="verificar()" xmlns="http://www.zkoss.org/2005/zul">
-    <style>
+  
+  <style>
 .estil{
 	height:100%;
     background-image: url(./images/cabecera.png)   ;
@@ -14,15 +15,17 @@
     background-color:#FFC66F;
 }
     </style>
-    <zscript>
+   <borderlayout onCreate="verificar();"  width="100%" style="float:center"  height="100%">
+       
+  <zscript>
     <![CDATA[
             import jcinform.conexion.*;
             import jcinform.persistencia.*;
  
     ]]>
     </zscript>
-    <div height="110%" class="estilo2" >
-        <window onOpen="verificar()"  onCreate="verificar()" style="padding-top:1px;padding-left:60px;padding-right:60px;border:4px">
+     
+   
             <zscript>
                      Session a = Sessions.getCurrent();
              
@@ -81,8 +84,8 @@
             }
 
             </zscript>
-
-            <div height="35px" class="estil" >
+    <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="55px" >
+                   <div height="35px" class="estil" >
 
                 <label  style="padding-left:10px;color:white;font-size:17px;font-weight:bold" value="${sessionScope.empresa.razonsocial}"  />
                 <separator orient="vertical"/>
@@ -94,8 +97,7 @@
                 <separator height="5px"  orient="vertical"/>
                 <!--toolbarbutton style="padding-left:10px;color:white;font-size:9px;"  onClick="salir()" label="Cerrar Sesión"/-->
 
-            </div>
-
+ 
 
             <panel style="left:10%" >
                 <panelchildren>
@@ -156,8 +158,12 @@
                     </menubar>
                 </panelchildren>
             </panel>
-
-            <panel>
+            
+            </div>
+  </north>
+        <center  flex="true" >
+            <div>
+             <panel>
                 <panelchildren>
                     <tabbox context="derecho" id="mytab" width="100%" height="600px">
                         <tabs id="tbs">
@@ -171,6 +177,8 @@
                     </tabbox>
                 </panelchildren>
             </panel>
+              </div>
+            </center>
 
 <zscript>
     void verificar(){
@@ -181,7 +189,7 @@
             }    
             }
 </zscript>
-        </window>
-    </div>
+        </borderlayout>
+   
  
 </zk>

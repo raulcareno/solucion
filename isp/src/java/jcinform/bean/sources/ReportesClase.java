@@ -14,14 +14,15 @@ import java.util.Vector;
 import jcinform.bean.sources.clasestmp.InventarioNormal;
 import jcinform.bean.sources.clasestmp.Pendientes;
 import jcinform.conexion.Administrador;
+import jcinform.persistencia.Cabeceracompra;
 import jcinform.persistencia.Clientes;
 import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
+import jcinform.persistencia.Detallecompra;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Empleadosfacturas;
-import jcinform.persistencia.Radios;
 import jcinform.persistencia.Sector;
-import jcinform.persistencia.Sucursal;
+import jcinform.persistencia.Series;
 import net.sf.jasperreports.engine.JRDataSource;
 
 /**
@@ -35,29 +36,29 @@ public class ReportesClase {
         a.compareTo(a);
     }
 
-    public JRDataSource facturasPendientes(Clientes cli,Sector sec) {
+    public JRDataSource facturasPendientes(Clientes cli, Sector sec) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         if (cli.getCodigo().equals(-1)) {
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + "where o.sector.codigo = '"+sec.getCodigo()+"' "
+                    + "where o.sector.codigo = '" + sec.getCodigo() + "' "
                     + "order by o.clientes.apellidos");
-        }else{
+        } else {
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
             clientes.add(cli);
         }
         ArrayList detalles = new ArrayList();
-        String quer ="";
+        String quer = "";
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
             Clientes clientes1 = itCli.next();
-             quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
+            quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
                     + "FROM cxcobrar cx, factura  fa "
                     + " WHERE fa.clientes  =  " + clientes1.getCodigo() + "  "
                     + "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
 
             List facEncontradas = adm.queryNativo(quer);
-            
+
             if (facEncontradas.size() > 0) {
                 Pendientes pendi = null;
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
@@ -89,8 +90,8 @@ public class ReportesClase {
 //        if (cli.getCodigo().equals(-1)) {
         //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
         clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + "where o.sector.codigo = '"+sec.getCodigo()+"' "
-                    + "order by o.clientes.apellidos");
+                + "where o.sector.codigo = '" + sec.getCodigo() + "' "
+                + "order by o.clientes.apellidos");
 //        } else {
 //            cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
 //            clientes.add(cli);
@@ -130,13 +131,13 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource facturasCobradas(Clientes cli, Date desde, Date hasta,Sector sec) {
+    public JRDataSource facturasCobradas(Clientes cli, Date desde, Date hasta, Sector sec) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         if (cli.getCodigo().equals(-1)) {
             //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + "where o.sector.codigo = '"+sec.getCodigo()+"' "
+                    + "where o.sector.codigo = '" + sec.getCodigo() + "' "
                     + "order by o.clientes.apellidos");
         } else {
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
@@ -282,9 +283,8 @@ public class ReportesClase {
         ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
         return ds;
     }
-    
+
     //INVENTARIOS
-    
     public JRDataSource inventarioNormal() {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
@@ -294,21 +294,22 @@ public class ReportesClase {
                 + "AND c.codigo = d.compra  AND c.documento IN ('COM','VEN') "
                 + "GROUP BY d.equipos "
                 + " order by 1");
-      
+
         for (Iterator it = contra.iterator(); it.hasNext();) {
-                    Vector vec = (Vector) it.next();
-                    InventarioNormal inv = new InventarioNormal();              
-                    inv.setProducto(vec.get(0)+"");
-                    inv.setEntrada(new Integer(vec.get(1)+""));
-                    inv.setSalida(new Integer(vec.get(2)+""));
-                    inv.setTotal(new Integer(vec.get(3)+""));
-                    detalles.add(inv);
-            
+            Vector vec = (Vector) it.next();
+            InventarioNormal inv = new InventarioNormal();
+            inv.setProducto(vec.get(0) + "");
+            inv.setEntrada(new Integer(vec.get(1) + ""));
+            inv.setSalida(new Integer(vec.get(2) + ""));
+            inv.setTotal(new Integer(vec.get(3) + ""));
+            detalles.add(inv);
+
         }
-         
+
         ReporteInventarioNormalDataSource ds = new ReporteInventarioNormalDataSource(detalles);
         return ds;
     }
+
     public JRDataSource inventarioTransito() {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
@@ -318,19 +319,20 @@ public class ReportesClase {
                 + "AND c.codigo = d.compra  AND c.documento IN ('PRE') "
                 + "GROUP BY d.equipos "
                 + " order by 1");
-      
+
         for (Iterator it = contra.iterator(); it.hasNext();) {
-                    Vector vec = (Vector) it.next();
-                    InventarioNormal inv = new InventarioNormal();              
-                    inv.setProducto(vec.get(0)+"");
-                    inv.setTotal(new Integer(vec.get(1)+""));
-                    detalles.add(inv);
-            
+            Vector vec = (Vector) it.next();
+            InventarioNormal inv = new InventarioNormal();
+            inv.setProducto(vec.get(0) + "");
+            inv.setTotal(new Integer(vec.get(1) + ""));
+            detalles.add(inv);
+
         }
-         
+
         ReporteInventarioNormalDataSource ds = new ReporteInventarioNormalDataSource(detalles);
         return ds;
     }
+
     public JRDataSource inventarioAjuste() {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
@@ -340,18 +342,86 @@ public class ReportesClase {
                 + "AND c.codigo = d.compra  AND c.documento IN ('AJU') "
                 + "GROUP BY d.equipos "
                 + " order by 1");
-      
+
         for (Iterator it = contra.iterator(); it.hasNext();) {
-                    Vector vec = (Vector) it.next();
-                    InventarioNormal inv = new InventarioNormal();              
-                    inv.setProducto(vec.get(0)+"");
-                    inv.setTotal(new Integer(vec.get(1)+""));
-                    detalles.add(inv);
-            
+            Vector vec = (Vector) it.next();
+            InventarioNormal inv = new InventarioNormal();
+            inv.setProducto(vec.get(0) + "");
+            inv.setTotal(new Integer(vec.get(1) + ""));
+            detalles.add(inv);
+
         }
-         
+
         ReporteInventarioNormalDataSource ds = new ReporteInventarioNormalDataSource(detalles);
         return ds;
     }
-    
+
+    public JRDataSource inventarioGeneral() {
+        Administrador adm = new Administrador();
+        ArrayList detalles = new ArrayList();
+        List<Cabeceracompra> compras = adm.query("Select o from Cabeceracompra as o where o.documento = 'COM' ");
+        for (Iterator<Cabeceracompra> it = compras.iterator(); it.hasNext();) {
+            Cabeceracompra cabeceracompra = it.next();
+            List<Detallecompra> detallesC = adm.query("Select o from Detallecompra as o "
+                    + " where o.cabeceracompra.codigo = '" + cabeceracompra.getCodigo() + "'");
+            for (Iterator<Detallecompra> it1 = detallesC.iterator(); it1.hasNext();) {
+                Detallecompra detallecompra = it1.next();
+                List<Series> seriesPrestadas = adm.query("Select s from Series as s where s.estado in('P','V','A')  "
+                        + "and s.serie in (Select o.serie from Series as o "
+                        + "where o.detallecompra.codigo = '" + detallecompra.getCodigo() + "' ) order by s.estado  ");
+                for (Iterator<Series> it2 = seriesPrestadas.iterator(); it2.hasNext();) {
+                    Series series = it2.next();
+                    InventarioNormal inv = new InventarioNormal();
+                    inv.setProducto(series.getDetallecompra().getEquipos() + "");
+                    inv.setCantidadpro(detallecompra.getCantidad());
+                    inv.setEntrada(cabeceracompra.getCantidad());
+                    inv.setCompra(cabeceracompra.getCodigo() + "");
+                    inv.setFactura(cabeceracompra.getFactura() + "");
+                    inv.setSerie(series.getSerie());
+                    inv.setProveedor(cabeceracompra.getProveedores().getRazonsocial() + "");
+                    inv.setFecha(cabeceracompra.getFecha());
+                    if (series.getEstado().equals("A")) { //POR AJUSTE
+                        inv.setDocumento(series.getDetallecompra().getCabeceracompra().getSeries());
+                        inv.setTipo("AJUSTE");
+                        inv.setCantidad(1);
+                    } else if (series.getEstado().equals("P")) { //POR PRESTAMO TRANSITO
+                        inv.setDocumento(series.getDetallecompra().getContratos().getClientes() + "");
+                        inv.setTipo("PRESTAMO");
+                        inv.setCantidad(1);
+                    } else if (series.getEstado().equals("V")) { //POR VENTA
+                        inv.setDocumento(series.getDetallecompra().getContratos().getClientes() + "");
+                        inv.setTipo("VENTA");
+                        inv.setCantidad(1);
+                    }
+
+                    detalles.add(inv);
+                }
+                 
+                    List<Series> seriesCompradas = adm.query("Select s from Series as s "
+                            + "where s.estado in ('C') "
+                            + "and s.detallecompra.codigo  = '" + detallecompra.getCodigo() + "'  and s.serie "
+                            + " not in (Select o.serie from Series as o "
+                        + "where o.estado in ('P','V','A')  )  ");
+                    for (Iterator<Series> it2 = seriesCompradas.iterator(); it2.hasNext();) {
+                        Series series = it2.next();
+                        InventarioNormal inv = new InventarioNormal();
+                        inv.setCantidadpro(detallecompra.getCantidad());
+                        inv.setProducto(series.getDetallecompra().getEquipos() + "");
+                        inv.setEntrada(cabeceracompra.getCantidad());
+                        inv.setCompra(cabeceracompra.getCodigo() + "");
+                        inv.setFactura(cabeceracompra.getFactura() + "");
+                        inv.setSerie(series.getSerie());
+                        inv.setProveedor(cabeceracompra.getProveedores().getRazonsocial() + "");
+                        inv.setDocumento("Bodega");
+                        inv.setTipo("STOCK");
+                        inv.setCantidad(1);
+                        inv.setFecha(cabeceracompra.getFecha());
+                        detalles.add(inv);
+                    }
+                 
+            }
+        }
+        ReporteInventarioNormalDataSource ds = new ReporteInventarioNormalDataSource(detalles);
+        return ds;
+    }
 }
