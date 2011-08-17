@@ -17,7 +17,7 @@ public class InventarioNormal {
     
     String producto;
     Date fecha;
-    Integer entrada,salida,total,cantidad,cantidadpro;
+    Integer entrada,salida,total,cantidad,cantidadpro,ajuste,prestamo;
     String factura,compra,tipo,proveedor,serie,documento;
     
 
@@ -123,6 +123,22 @@ public class InventarioNormal {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public Integer getAjuste() {
+        return ajuste;
+    }
+
+    public void setAjuste(Integer ajuste) {
+        this.ajuste = ajuste;
+    }
+
+    public Integer getPrestamo() {
+        return prestamo;
+    }
+
+    public void setPrestamo(Integer prestamo) {
+        this.prestamo = prestamo;
     }
     
     

@@ -288,20 +288,23 @@ public class ReportesClase {
     public JRDataSource inventarioNormal() {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-        List contra = adm.queryNativo("SELECT concat(e.nombre,' ', e.modelo,' ', m.nombre), SUM(IF(d.cantidad>0,d.cantidad,0)) entrada, "
-                + "SUM(IF(d.cantidad<0,d.cantidad,0)) salida, (SUM(IF(d.cantidad>0,d.cantidad,0))+SUM(IF(d.cantidad<0,d.cantidad,0))) total "
+        String quer = "SELECT concat(e.nombre,' ', e.modelo,' ', m.nombre), SUM(IF(d.cantidad>0,d.cantidad,0)) entrada, "
+                + " SUM(IF(d.cantidad<0 AND c.documento = 'VEN' ,d.cantidad,0)) salida, SUM(IF(d.cantidad<0 AND c.documento = 'AJU' ,d.cantidad,0)) AJUSTE, SUM(IF(d.cantidad<0 AND c.documento = 'PRE' ,d.cantidad,0)) PRESTAMO, (SUM(IF(d.cantidad>0,d.cantidad,0))+SUM(IF(d.cantidad<0,d.cantidad,0))) total "
                 + "FROM cabeceracompra c, detallecompra d, equipos e, marcas m WHERE e.codigo = d.equipos AND m.codigo = e.marcas "
-                + "AND c.codigo = d.compra  AND c.documento IN ('COM','VEN') "
+                + "AND c.codigo = d.compra  AND e.bien = TRUE AND c.documento IN ('COM','VEN','AJU','PRE')  "
                 + "GROUP BY d.equipos "
-                + " order by 1");
-
+                + " order by 1";
+        List contra = adm.queryNativo(quer);
+        System.out.println(""+quer);
         for (Iterator it = contra.iterator(); it.hasNext();) {
             Vector vec = (Vector) it.next();
             InventarioNormal inv = new InventarioNormal();
             inv.setProducto(vec.get(0) + "");
             inv.setEntrada(new Integer(vec.get(1) + ""));
             inv.setSalida(new Integer(vec.get(2) + ""));
-            inv.setTotal(new Integer(vec.get(3) + ""));
+            inv.setAjuste(new Integer(vec.get(3) + ""));
+            inv.setPrestamo(new Integer(vec.get(4) + ""));
+            inv.setTotal(new Integer(vec.get(5) + ""));
             detalles.add(inv);
 
         }
