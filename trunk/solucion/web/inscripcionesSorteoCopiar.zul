@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+    <window   apply="bean.Sorteo"  id="updateMyEntry"    width="60%"  border="normal" height="100%" >
+        <style dynamic="true">
+            .z-label.focus {
+            color:#006699;
+            font-weight:bold;
+
+            }
+        </style>
+        <zscript>
+            void changeStyle(Label text) {
+            if ("focus".equals(text.sclass)) {
+            text.sclass = "";
+            } else {
+            text.sclass = "focus";
+            }
+            }
+        </zscript>
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.util.logging.Level;
+  import java.util.logging.Logger;
+import java.util.Vector;
+import bean.matriculasBean;
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.notas;
+import bean.Sorteo;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+
+    Administrador adm = new Administrador();
+    List periodosListadod = adm.queryNativo("Select o.* from Periodo as o where o.web = true  order by o.descripcion",Periodo.class);
+    List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
+    static Inscripciones estudent = new Inscripciones();
+    static Representante representante0 = new Representante();
+    static Matriculas matricula = new Matriculas();
+ Session ses = Sessions.getCurrent();
+
+
+
+ Permisos permiso = new Permisos();
+  
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Matricular",accion);
+
+    }
+ 
+
+void modificar(){
+    if(verificar("Modificar")){
+       guardar.disabled=false;
+        estado(false,false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+
+
+ 
+
+void buscar2(Periodo cur){
+        List empleadosEncontrados = adm.query("Select o from Cursos as o where o.periodo.codigoper  = '"+cur.codigoper+"' order by o.secuencia");
+        //bd2.getItems().clear();
+        cursosListado.getChildren().clear();
+        Cursos se = new Cursos();
+        Global g = new Global(); g.setDescripcion("");
+        se.setParalelo(g);
+        se.setEspecialidad(g);
+        se.setDescripcion("[Seleccione]");
+          empleadosEncontrados.add(0,se);
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Cursos estudent = (Cursos) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent+""));
+                        cursosListado.appendChild(item);
+             }
+
+    }
+   
+void cargar(Global g){
+    estudent.setPerfil(g);
+}
+
+ 
+
+//PARA REPORTES
+public JRDataSource certificados(Matriculas matricula,String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        String query = "SELECT mat FROM Matriculas AS mat " +
+                "WHERE  mat.estado like '%Matriculado%' " +
+                "and mat.codigomat = '" + matricula.getCodigomat() + "' order by mat.estudiante.apellido, mat.estudiante.nombre";
+        List hoy = adm.query(query);
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            Matriculas elem = (Matriculas) it.next();
+            detalle.add(elem);
+        }
+        JRDataSource ds = null;
+        if(tipo.equals("CM")){
+             ds = new ReporteCertificadoDataSource(detalle);
+        }else{
+              ds = new ReporteActaDataSource(detalle);
+        }
+        return ds;
+
+}
+        void showReport(String tipo) {
+            //Preparing parameters
+
+            Institucion insts = periodo.getInstitucion();
+
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            JRDataSource datasource = null;
+           String directorioReportes = insts.getReportes();
+            if(tipo.equals("CM")){
+                    datasource = certificados(new Matriculas(codigomat.value),tipo);
+                    report.setSrc(directorioReportes+"certificadoMatricula.jasper");
+                    parametros.put("titulo", "Certificado de Matricula");
+            } else if(tipo.equals("AM")){
+                    datasource = certificados(new Matriculas(codigomat.value),tipo);
+                    parametros.put("titulo", "Acta de Matricula");
+                    report.setSrc(directorioReportes+"actaMatricula.jasper");
+
+            } else if(tipo.equals("CL")){
+                    datasource = certificados(new Matriculas(codigomat.value),tipo);
+                    parametros.put("titulo", "Acta de Matricula");
+                    report.setSrc(directorioReportes+"clavePersonal.jasper");
+
+            }
+            if(!tipo.equals("-1")){
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+                 reportes.setSelected(true);
+            }
+        }
+
+
+public sorti(){
+       filas.sortear();
+
+}
+  ]]>
+        </zscript>
+
+
+
+        <tabbox width="100%" height="100%">
+            <tabs>
+                <tab id="registro" label="Datos del Estudiante" />
+                <tab id="reportes" label="Impresión" />
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <panel id="panel"   width="100%" height="98%"  >
+                        <panelchildren>
+ 
+                            <grid>
+                                <rows  >
+                                    <row spans="2">
+                                        <span>
+                                            PERIODO EN EL QUE SE INSCRIBIERON:
+                                            <listbox id="periodosListado" mold="select" onSelect="buscar2(self.selectedItem.value)" style="font-size:15px"   >
+                                                <listitem  label="[SELECCIONE UN PERIODO PARA CONTINUAR]" value="-1"/>
+                                                <listitem forEach="${periodosListadod}" value="${each}">
+                                                    <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
+                                                </listitem>
+                                            </listbox>
+                                     
+
+
+                                        </span>
+                                    </row>
+                                    <row spans="2">
+                                        <span>
+                                            CURSO O NIVEL AL QUE VAN LOS ESTUDIANTES:
+                                            <listbox id="cursosListado" mold="select" style="font-size:15px"   >
+                                                <listitem  label="[SELECCIONE UN CURSO]" value="-1"/>
+                                                <listitem forEach="${cursosListadod}" value="${each}">
+                                             
+                                                </listitem>
+                                            </listbox>
+                                     
+
+
+                                        </span>
+                                    </row>
+
+                                    <row  visible="false" style="background:transparent;border:0px" >
+                                        <span style="float:right">
+                                            <div style="color:red">
+                                                <label value="# DE ESTUDIANTES A SER MATRICULADOS" id="t1"/> 
+                                            </div>
+                                        </span>
+                                        <span> 
+                                            <intbox value="500" cols="4" id="estudiantes"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero" />
+                                       Esto incluye a todos los etudiantes (abanderados y no abanderados)
+                                        </span>
+                                         
+                                    </row>
+                                    <row  visible="false"  style="background:transparent;border:0px" >
+                                        <span style="float:right">
+                                            <div style="color:red">
+                                                <label value="Nota Base para matriculación automática" id="t8"/> 
+                                            </div>
+                                        </span>
+                                        <span> 
+                                            <decimalbox value="999" cols="4" id="base"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero" />
+                                      Estos se matricularán automáticamente sin sorteo
+                                        </span>
+                                    </row>
+                                    <row  visible="false" >
+                                        <span style="float:right">    
+                                            <label value="Estudiantes solo entre: " id="tA"/>
+                                        </span>
+                                        <span>
+                                            <decimalbox value="0" cols="4" id="desde"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative" /> y
+                                            <decimalbox value="20" cols="4" id="hasta"   onBlur="changeStyle(tA) " onFocus="changeStyle(tA)"  constraint="no negative,no zero" />
+                                        </span>
+                                    </row>
+                                    <row align="center"  spans="2" style="background:transparent;border:0px">
+                                        <button  id="btnUpdateNews"  forward="onClick=onCopiarTask" disabled="false" label="COPIAR ESTUDIANTES VALIDADOS Y VERIFICADOS" width="190px" height="40px"/>
+                                    </row>
+                                    <row spans="2">
+                                        <listbox id="datos" width="100%"  rows="8" >
+                                            <listhead>
+                                                <listheader label="Cod."/>
+                                                <listheader label="Nombres"/>
+                                                <listheader label="Aprovechamiento"/>
+                                            </listhead>
+			 
+                                        </listbox>
+                                    </row>
+
+                                    <row  visible="false"    style="background:transparent;border:0px">
+                                        <span style="float:right">
+                                            <label  style="color:red"  value="ABANDERADOS:" />
+                                        </span>
+                                        <intbox  readonly ="true" cols="4"
+                                                id="totalAbanderados" style="font-size:15px"  value="0"/>
+                                    </row>
+                                    <row visible="false"  style="background:transparent;border:0px">
+                                        <span style="float:right">
+                                            <label style="color:blue" value="NO ABANDERADOS:" />
+                                        </span>
+                                        <intbox id="totalOtros" readonly ="true" cols="4" style="font-size:15px"  value="0"/>
+                                    </row>
+                                    <row  style="background:transparent;border:0px"> 
+                                        <span style="float:right">
+                                            <label  style="color:green" value="TOTAL ESTUDIANTES:" />
+                                        </span>
+                                        <intbox id="total" readonly ="true" cols="4" style="font-size:15px" value="0"/>
+                                    </row>
+                                </rows>
+                            </grid>
+                           
+  
+        
+        
+
+
+        <!--grid  id="datos" height="100%">
+                    <columns>
+                        <column width="300px" label ="Estudiante"/>
+                    </columns>
+                    <rows id="filas" use="bean.Sorteo">
+                    </rows>
+                </grid-->
+ 
+
+                        </panelchildren>
+                    </panel>
+
+                </tabpanel>
+
+
+
+                <tabpanel>
+
+                    <panel height="370px" style="margin-bottom:10px">
+
+                        <panelchildren>
+                            <jasperreport id="report" />
+                        </panelchildren>
+                    </panel>
+
+                </tabpanel>
+
+            </tabpanels>
+        </tabbox>
+
+    </window>
+
+
+</zk>
