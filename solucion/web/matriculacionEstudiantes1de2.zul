@@ -95,6 +95,16 @@ void cargar(Global g){
 
 void seleccionPeriodo(){
 
+        if(matActual.getCurso().getPeriodo().getCodigoper().equals(((Periodo)periodosListado.selectedItem.value).getCodigoper())
+        && matActual.getEstado().equals("Inscrito") ){
+                matActual.setEstado("Matriculado");
+                Integer valor = nuevaMatricula();
+                matActual.setNumero(valor);
+                matActual.setFolio(valor);
+                adm.actualizar(matActual);
+                Executions.sendRedirect("/592981728937491235M.zul?AASL2KSO348934934="+(""+matActual.getCodigomat())+"&TP=pdf");
+                return;
+        }
         if(matActual.getCurso().getPeriodo().getCodigoper().equals(((Periodo)periodosListado.selectedItem.value).getCodigoper())){
                           int val = Messagebox.show("¿Ud. ya se ha matriculado en éste periodo...!, \n Desea imprimir el Comprobante de Matriculación?", "Seguridad",  Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
                         if(val == 16){
@@ -114,6 +124,37 @@ void seleccionPeriodo(){
      Executions.sendRedirect("matriculacionEstudiantes2de2.zul");
             
 }
+
+Integer nuevaMatricula() {
+                   Administrador adm = new Administrador();
+
+                    List NoActualMatricula = adm.query("Select o from ParametrosGlobales as o " +
+                            "where o.variable = 'MATRICULA' and o.periodo.codigoper = '" + ((Periodo)periodosListado.selectedItem.value).getCodigoper()+ "'");
+                    ParametrosGlobales parametros = new ParametrosGlobales();
+                    if(NoActualMatricula.size()<=0){
+                        alert("Falta copiar los parámetros a este Año Lectivo");
+                    }
+                    parametros = (ParametrosGlobales) NoActualMatricula.get(0);
+                    int noMatri = 0;
+                    Double decs = parametros.getNvalor();
+                    Long val = java.lang.Math.round(decs);
+                    noMatri = Integer.valueOf(val.toString());
+                    noMatri += 1;
+                    List  numeroYa = adm.query("Select o from Matriculas as o " +
+                            "where o.curso.periodo.codigoper = '" + ((Periodo)periodosListado.selectedItem.value).getCodigoper() + "' " +
+                            "and o.numero = '" + noMatri + "'");
+                    if (numeroYa.size() > 0) {
+                        Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o " +
+                                "where o.curso.periodo.codigoper= '" + ((Periodo)periodosListado.selectedItem.value).getCodigoper() + "'"  );
+                        parametros.setNvalor(new Double(nClave + 1));
+                        adm.actualizar(parametros);
+                        return nClave + 1;
+                    } else {
+                        parametros.setNvalor(new Double(noMatri));
+                        adm.actualizar(parametros);
+                        return noMatri;
+                    }
+    }
   ]]>
             </zscript>
 

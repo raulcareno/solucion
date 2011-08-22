@@ -444,6 +444,39 @@ String query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOB
 
 }
 
+public JRDataSource certificadosInsc(ArrayList listadodeCursos,String tipo){
+    String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+    String query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                    + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                    + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                    + " AND c.codigocur IN ("+curso+") "
+                     + " AND o.estado IN ('Inscrito') "
+                     + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+            List hoy = adm.queryNativo(query,Matriculas.class);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = null;
+               
+                      ds = new ReporteActaDataSource(detalle);
+               
+
+            return ds;
+
+}
+
 public JRDataSource pases(ArrayList listadodeCursos,String tipo){
 
   String curso =  "";
@@ -776,6 +809,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LCLA2");
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc(directorioReportes+"clavesRepre.jasper");
+            }else if(tipo.equals("LCLA33")){
+                    datasource = certificadosInsc(listadoCursos,"LCLA3");
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"clavesRepre.jasper");
             }else if(tipo.equals("LCLA4")){
                     datasource = certificados(listadoCursos,"LCLA2");
                     parametros.put("titulo",titulo.getValue());
@@ -917,6 +954,7 @@ void campos(String valor){
                                 <listitem  id="INS6" label="Listado de Pre-aprobados(Inf. Verificada)" value="INS6" />
                                 <listitem  id="INS7" label="Listado de Pre-aprobados(Impresión Ficha Individual)" value="INS7" />
                                 <listitem  id="INS8" label="Listado de NO-aprobados " value="INS8" />
+                                <listitem  id="LCLA33" label="Claves de Inscritos para Matriculación" value="LCLA33"/>
                                 <listitem disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
                                 <listitem  id="LMAT" label="Matriculados" value="LMAT" />
