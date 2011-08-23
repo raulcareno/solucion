@@ -849,12 +849,13 @@ public class notas extends Rows {
     public void generarNumeros(String tipo) {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
-//        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
         List<Global> especial = adm.query("Select o from Global as o where o.grupo = 'ESP' ");
         for (Iterator<Global> it = especial.iterator(); it.hasNext();) {
             Global especialidad = it.next();
-            List<Cursos> curs = adm.query("Select o from Cursos as o where o.secuencia  = 6  and o.especialidad.codigo = '" + especialidad.getCodigo() + "'");
-            String codigosCursos = "0";
+            List<Cursos> curs = adm.query("Select o from Cursos as o where o.secuencia  = 6  "
+                    + "and o.especialidad.codigo = '" + especialidad.getCodigo() + "' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+            String codigosCursos = "(";
             for (Iterator<Cursos> itCursos = curs.iterator(); itCursos.hasNext();) {
                 Cursos cursos = itCursos.next();
                 codigosCursos += cursos.getCodigocur() + ",";
@@ -863,16 +864,21 @@ public class notas extends Rows {
                 codigosCursos = codigosCursos.substring(0, codigosCursos.length() - 1);
             }
             if (tipo.contains("all")) {
-                List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
+                try{
+                  List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
                         + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false and o.matricula.suspenso = false "
-                        + "and  o.matricula.curso.codigocur  in (" + codigosCursos + ") "
+                        + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
                         + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
-                int i = 1;
-                for (Notasacta acta : matriculas) {
-                    acta.setNumeroacta(i);
-                    i++;
-                    adm.actualizar(acta);
+                    int i = 1;
+                    for (Notasacta acta : matriculas) {
+                        acta.setNumeroacta(i);
+                        i++;
+                        adm.actualizar(acta);
+                    }
+                }catch(Exception e){
+                    System.out.println("NO EXISTEN CURSOS CON CODIGOS: "+codigosCursos);
                 }
+                
             } else {
                 List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
                         + "where o.matricula.curso.secuencia = 6 and o.matricula.suspenso = true "

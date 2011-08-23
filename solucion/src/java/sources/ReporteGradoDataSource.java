@@ -67,8 +67,11 @@ public class ReporteGradoDataSource implements JRDataSource{
             valor = nodo.getMatriculas().getCodigomat();
         }else if ("estudiante".equals(fieldName)) {
             valor = nodo.getMatriculas().getEstudiante().getCodigoest()+"";
-        }
-        else if ("cabecera1".equals(fieldName)) {
+        }else if ("estudiantenombre".equals(fieldName)) {
+            valor = nodo.getEstudiante();
+        }else if ("genero".equals(fieldName)) {
+            valor = nodo.getMatriculas().getEstudiante().getGenero();
+        }else if ("cabecera1".equals(fieldName)) {
             valor = nodo.getCabecera1();
         }else if ("cabecera2".equals(fieldName)) {
             valor = nodo.getCabecera2();

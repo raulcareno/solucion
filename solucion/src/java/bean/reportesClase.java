@@ -2718,10 +2718,6 @@ public class reportesClase {
         String nom6 = regresaVariable("NOM6", variablesVarias);
         String nom7 = regresaVariable("NOM7", variablesVarias);
         String nom8 = regresaVariable("NOM8", variablesVarias);
-
-
-
-
         String query = "";
         String query2 = "";
 //        notas.get(0).getSistema().getOrden()
@@ -2743,7 +2739,8 @@ public class reportesClase {
             complemento = "o.curso.codigocur = '" + curso.getCodigocur() + "' and ";
         }
         matriculas = adm.query("Select o from Matriculas as o "
-                + "where " + complemento + " o.perdio = false and o.suspenso = false and o.curso.secuencia = '6' "
+                + "where " + complemento + " o.perdio = false and o.suspenso = false "
+                + "and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.curso.secuencia = '6' "
                 + " order by o.estudiante.apellido,  o.estudiante.nombre  ");
 
         for (Matriculas matriculas1 : matriculas) {
@@ -2788,17 +2785,18 @@ public class reportesClase {
                         coll.setMatricula("" + matriculaNo.getCodigomat());
                         coll.setEstudiante(matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
                         coll.setMatriculas(matriculas1);
-
                         coll.setMateria(ac.getNombre());
                         coll.setNoActa(noActa + "");
-
-
-                        coll.setCabecera1(cabecera1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()));
-                        coll.setCabecera1(cabecera1.replace("[fecha]", convertir(new Date()) + ""));
-                        coll.setCabecera2(cabecera2.replace("[fecha]", convertir(new Date()) + ""));
-                        coll.setCabecera2(cabecera2.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()));
-                        coll.setPie1(pi1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa()));
-                        coll.setPie2(pi2.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa()));
+                        String cabecera1tmp = cabecera1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[fecha]", convertir(new Date()) + "");
+                        String cabecera2tmp = cabecera2.replace("[fecha]", convertir(new Date()) + "").replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
+                        coll.setCabecera1(cabecera1tmp);
+                        coll.setCabecera1(cabecera1tmp);
+                        coll.setCabecera2(cabecera2tmp);
+                        coll.setCabecera2(cabecera2tmp);
+                        String pie1tmp = pi1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa());
+                        coll.setPie1(pie1tmp);
+                        String pie2tmp = pi2.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa());
+                        coll.setPie2(pie2tmp);
                         coll.setCar1(car1);
                         coll.setCar2(car2);
                         coll.setCar3(car3);
