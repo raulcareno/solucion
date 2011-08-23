@@ -472,6 +472,12 @@ void recalcular(){
             }else if(tipo.equals("CAG")){
                     datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"copia");
                     report.setSrc(directorioReportes+"copiaactaGrado.jasper");
+            }else if(tipo.equals("AG2")){
+                    datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"original");
+                    report.setSrc(directorioReportes+"actaGrado.jasper");
+            }else if(tipo.equals("CAG2")){
+                    datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"copia");
+                    report.setSrc(directorioReportes+"copiaactaGrado.jasper");
             }else if(tipo.equals("LAG")){
                     ArrayList arreglo = noti.actaGradoTodos(curs.getSelectedItem().getValue());
                     datasource = (ActaGeneralDataSource) arreglo.get(0);
@@ -661,7 +667,9 @@ void campos(String valor){
                                     
                                     <listitem  id="EST" label="Estadístico por Curso" value="EST" />
                                     <listitem  id="AG" label="Acta de Grado" value="AG"/>
+                                    <listitem  id="AG2" label="Acta de Grado(Suspendidos)" value="AG2"/>
                                     <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
+                                    <listitem  id="CAG2" label="Copia de Acta de Grado(Suspendidos)" value="CAG2"/>
                                     <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
                                     <listitem  id="CERT2" label="Certificado de Promoción(con decimales en notas)" value="CERT2"/>
