@@ -47,7 +47,7 @@ public class Factura implements Serializable {
     @Column(name = "placa")
     private String placa;
     @Column(name = "fecha")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date fecha;
     @Column(name = "subtotal")
     private BigDecimal subtotal;

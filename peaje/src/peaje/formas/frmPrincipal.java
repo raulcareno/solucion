@@ -518,6 +518,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel42 = new javax.swing.JLabel();
         camaraVista1 = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
+        notarjetaTemp = new javax.swing.JTextField();
+        puertoText = new javax.swing.JTextField();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -2264,17 +2267,17 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(placa);
             placa.setBounds(20, 70, 180, 20);
 
-            errores.setFont(new java.awt.Font("Tahoma", 1, 12));
+            errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             errores.setForeground(new java.awt.Color(255, 0, 0));
             errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             panelIngreso.add(errores);
-            errores.setBounds(20, 100, 360, 20);
+            errores.setBounds(20, 100, 430, 50);
 
             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
             panelIngreso.add(imAviso);
             imAviso.setBounds(382, 20, 70, 70);
 
-            panelIngreso.setBounds(10, 480, 470, 130);
+            panelIngreso.setBounds(10, 440, 470, 170);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
@@ -2357,27 +2360,27 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     camaraVistaKeyPressed(evt);
                 }
             });
-            camaraVista.setBounds(10, 30, 670, 440);
+            camaraVista.setBounds(10, 30, 670, 350);
             contenedor.add(camaraVista, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             labelPartner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.JPG"))); // NOI18N
-            labelPartner.setBounds(510, 500, 170, 70);
+            labelPartner.setBounds(510, 470, 170, 70);
             contenedor.add(labelPartner, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jLabel38.setForeground(new java.awt.Color(0, 51, 204));
             jLabel38.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jLabel38.setText("www.tekatronic.com.ec");
-            jLabel38.setBounds(510, 580, 140, 14);
+            jLabel38.setBounds(520, 550, 140, 14);
             contenedor.add(jLabel38, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12));
+            jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             jLabel37.setForeground(new java.awt.Color(102, 102, 102));
             jLabel37.setText("PARTNERS");
-            jLabel37.setBounds(500, 480, 160, 20);
+            jLabel37.setBounds(500, 450, 160, 20);
             contenedor.add(jLabel37, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jLabel42.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-            jLabel42.setBounds(490, 480, 190, 130);
+            jLabel42.setBounds(490, 440, 190, 170);
             contenedor.add(jLabel42, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             camaraVista1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -2387,7 +2390,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     camaraVista1KeyPressed(evt);
                 }
             });
-            camaraVista1.setBounds(10, 30, 670, 440);
+            camaraVista1.setBounds(10, 30, 670, 350);
             contenedor.add(camaraVista1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jButton11.setText("Ver Instantanea");
@@ -2398,6 +2401,21 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             jButton11.setBounds(290, 0, 120, 23);
             contenedor.add(jButton11, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+            jButton13.setText("jButton13");
+            jButton13.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton13ActionPerformed(evt);
+                }
+            });
+            jButton13.setBounds(410, 0, 79, 23);
+            contenedor.add(jButton13, javax.swing.JLayeredPane.DEFAULT_LAYER);
+            notarjetaTemp.setBounds(500, 0, 70, 30);
+            contenedor.add(notarjetaTemp, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+            puertoText.setText("COM2");
+            puertoText.setBounds(580, 10, 35, 20);
+            contenedor.add(puertoText, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
 
@@ -3275,6 +3293,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         if (puertoViene.length() > 10) {
             puertoViene = puertoViene.substring(0, 10);
         }
+        String tipoIngreso = entradaosalida(puertoViene);
         try {
 
             try {
@@ -3309,6 +3328,20 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         DateTime fechaAct = new DateTime(fechaActual);
                         Boolean continua = false;
                         if (habilitada) {
+                            //primero valido si no ha ingresado ya otro con la misma tarjeta
+                            if(tipoIngreso.equals("e")){
+                                List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
+//                                    List<Factura> facturas = adm.queryNativo("Select o.* from Factura as o "
+//                                            + "where o.tarjeta = '" + tarje.getTarjeta() + "' "
+//                                            + " and date(o.fecha)  = '"+convertiraString(fechaActual)+"'",Factura.class);
+                                        if(facturas.size() >= tarje.getIngresos().intValue()){
+                                           System.out.println("YA  HA INGRESADO EN EL RANGO DE FECHAS");
+                                           errores.setText("ERROR: TARJETA YA HA SIDO USADA, ALGUIEN YA HA INGRESADO CON ESA TARJETA...!");
+                                           imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                                           return;
+                                        }
+                            }
+                            
                             if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
                                 System.out.println("EN EL RANGO DE FECHAS");
 
@@ -3389,7 +3422,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         }
                         errores.setText("OK");
                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                        String tipoIngreso = entradaosalida(puertoViene);
+                        
 //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
                         List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
                                 + "and o.fechafin is null  ");
@@ -3456,7 +3489,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                         errores.setText("OK");
                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                        String tipoIngreso = entradaosalida(puertoViene);
+//                        String tipoIngreso = entradaosalida(puertoViene);
                         Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
                         //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
                         List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
@@ -5878,6 +5911,12 @@ private void tablaTarjetasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:e
 
         }
 }//GEN-LAST:event_tablaTarjetasKeyPressed
+
+private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+// TODO add your handling code here:
+    tarjetatxt.setText(notarjetaTemp.getText());
+    buscarTarjeta(puertoText.getText());
+}//GEN-LAST:event_jButton13ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -6072,6 +6111,7 @@ private void tablaTarjetasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:e
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -6175,6 +6215,7 @@ private void tablaTarjetasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:e
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField nombres1;
     private javax.swing.JFormattedTextField nombresCliente;
+    private javax.swing.JTextField notarjetaTemp;
     private javax.swing.JPasswordField nuevaClave;
     private javax.swing.JLabel ocupados;
     private javax.swing.JPanel panelCambiar;
@@ -6186,6 +6227,7 @@ private void tablaTarjetasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:e
     private javax.swing.JFormattedTextField placa;
     private javax.swing.JFormattedTextField placa1;
     public javax.swing.JButton procesando;
+    private javax.swing.JTextField puertoText;
     private javax.swing.JPasswordField repiteClave;
     private javax.swing.JCheckBox sabado;
     private javax.swing.JCheckBox sabado1;
@@ -6305,5 +6347,10 @@ private void tablaTarjetasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:e
 
     public void windowDeactivated(WindowEvent e) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+        public static String convertiraString(Date fecha) {
+
+        return (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+
     }
 }

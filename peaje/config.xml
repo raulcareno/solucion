@@ -6,7 +6,7 @@
     <BARRA2/>
     <SALE1>1</SALE1>
     <SALE2>2</SALE2>
-    <ENTRADA1/>
+    <ENTRADA1>COM1</ENTRADA1>
     <ENTRADA2/>
     <ENTRADA3/>
     <ENTRADA4/>
@@ -14,7 +14,7 @@
     <ENTRADA6/>
     <ENTRADA7/>
     <SALIDA1/>
-    <SALIDA2/>
+    <SALIDA2>COM2</SALIDA2>
     <SALIDA3/>
     <SALIDA4/>
     <SALIDA5/>
@@ -34,11 +34,11 @@
     <ACTIVA5>false</ACTIVA5>
     <ACTIVA6>false</ACTIVA6>
     <ACTIVA7>false</ACTIVA7>
-    <WEBCAM>false</WEBCAM>
+    <WEBCAM>true</WEBCAM>
     <SEABREFAC>true</SEABREFAC>
     <SEABRETIC>true</SEABRETIC>
     <MULTA>10.0</MULTA>
-    <IPCAM>true</IPCAM>
+    <IPCAM>false</IPCAM>
     <URL>http://192.168.10.3/cgi-bin/viewer/video.jpg</URL>
     <ENTRA1>1</ENTRA1>
     <ENTRA2>2</ENTRA2>

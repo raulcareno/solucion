@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import hibernate.Usuarios;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.Query;
@@ -108,6 +109,14 @@ public class Administrador {
         em.getTransaction().begin();
 
         return em.createQuery(query).getResultList();
+
+    }
+    public List query(Date fecha, String tarjeta) throws Exception {
+        EntityManager em = getEMF().createEntityManager();
+        em.getTransaction().begin();
+
+        return em.createQuery("Select o from Factura as o "
+                + "where o.tarjetas.tarjeta = '"+tarjeta+"' and  o.fecha =:feca ").setParameter("feca", fecha).getResultList();
 
     }
 
