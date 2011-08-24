@@ -53,6 +53,8 @@ public class ClientesSource implements JRDataSource{
             valor = nodo.getDireccion();
         }  else if ("telefono".equals(fieldName)) {
             valor = nodo.getTelefono();
+        } else if ("fechaingreso".equals(fieldName)) {
+            valor = nodo.getTelefono();
         }
 
         return valor;

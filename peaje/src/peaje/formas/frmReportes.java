@@ -191,7 +191,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel1.setBounds(190, 60, 60, 14);
 
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas Tickest y Tarjetas", "Facturas de Tickets", "Facturas de Tarjetas", "Consolidado por Mes", "Clientes mas frecuentes", "Listado clientes" }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas Tickest y Tarjetas", "Facturas de Tickets", "Facturas de Tarjetas", "Consolidado por Mes", "Clientes mas frecuentes", "Listado clientes", "No. de Ingresos x Cliente" }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -315,7 +315,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
                 .addGap(17, 17, 17))
         );
 
@@ -337,7 +337,46 @@ public class frmReportes extends javax.swing.JInternalFrame {
         empresaObj = null;
         System.gc();
 }//GEN-LAST:event_btnSalirActionPerformed
+ public void noingresos(String dirreporte, String query, String titulo) {
+        try {
+            System.out.println("QUERY: "+query);
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(dirreporte);
+            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
 
+            List<Factura> fac = adm.queryNativo(query,Factura.class);
+            ArrayList detalle = new ArrayList();
+            for (Iterator<Factura> it = fac.iterator(); it.hasNext();) {
+                Factura factura = it.next();
+//                if (cmbTipoReporte.getSelectedIndex() > 0) {
+//                    factura.setFecha(factura.getFechafin());
+//                }
+                detalle.add(factura);
+            }
+            FacturaSource ds = new FacturaSource(detalle);
+            Map parametros = new HashMap();
+            parametros.put("empresa", emp.getRazon());
+            parametros.put("direccion", emp.getDireccion());
+            parametros.put("telefono", emp.getTelefonos());
+            parametros.put("titulo", titulo);
+            parametros.put("parqueaderos", emp.getParqueaderos());
+            parametros.put("desde",desde.getDate());
+            parametros.put("hasta",hasta.getDate());
+
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+            JRViewer reporte = new JRViewer(masterPrint); //PARA VER EL REPORTE ANTES DE IMPRIMIR
+            panelReportes.removeAll();
+            reporte.repaint();
+            reporte.setLocation(0, 0);
+            reporte.setSize(723, 557);
+            reporte.setVisible(true);
+            panelReportes.add(reporte);
+            panelReportes.repaint();
+            this.repaint();
+        } catch (Exception ex) {
+            Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
     public void tickets(String dirreporte, String query, String titulo) {
         try {
             System.out.println("QUERY: "+query);
@@ -451,6 +490,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
             parametros.put("telefono", emp.getTelefonos());
             parametros.put("titulo", titulo);
             parametros.put("parqueaderos", emp.getParqueaderos());
+            parametros.put("desde", desde.getDate());
+            parametros.put("hasta", hasta.getDate());
             if (cmbTipoReporte.getSelectedIndex() == 2) {
                 Object con = adm.querySimple("Select count(o) from Factura as o" +
                         " where  o.fechafin is null  ");
@@ -697,11 +738,24 @@ public class frmReportes extends javax.swing.JInternalFrame {
             titulo = " ";
             clientes(dirreporte, query, titulo);
 
+        }else if (cmbTipoReporte.getSelectedIndex() == 9) {//no de ingresos por cliente
+            query = "SELECT * FROM Factura f, Tarjetas t, Clientes c WHERE  t.cliente = c.codigo "
+                    + " AND t.tarjeta = f.tarjeta AND "
+                    + "f.fecha BETWEEN '"+convertiraString(desde.getDate())+"' "
+                    + "AND  '"+convertiraString(hasta.getDate())+"'  ORDER BY c.nombres ";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"noingresos.jasper";
+            titulo = " ";
+            noingresos(dirreporte, query, titulo);
+
         }
            principal.contenedor.requestFocus();
 
     }//GEN-LAST:event_btnBuscarActionPerformed
+        public static String convertiraString(Date fecha) {
 
+        return (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+
+    }
     private void cmbTipoReporteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTipoReporteItemStateChanged
         // TODO add your handling code here:
         if(cmbTipoReporte.getSelectedIndex() == 3){

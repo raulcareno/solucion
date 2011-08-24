@@ -16,6 +16,7 @@
 	<field name="ruc" class="java.lang.String"/>
 	<field name="direccion" class="java.lang.String"/>
 	<field name="telefono" class="java.lang.String"/>
+	<field name="fechaingreso" class="java.util.Date"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

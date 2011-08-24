@@ -59,6 +59,12 @@ public class FacturaSource implements JRDataSource {
                 } catch (Exception e) {
                     System.out.println("ERROR EN FECHA" + e);
                 }
+            } else if ("fechaingreso".equals(fieldName)) {
+                try {
+                    valor = nodo.getFechaini();
+                } catch (Exception e) {
+                    System.out.println("ERROR EN FECHA" + e);
+                }
             }else if ("fecha2".equals(fieldName)) {
                 try {
                     valor = meses(nodo.getFecha().getMonth())+ (nodo.getFecha().getYear()+1900);
@@ -78,6 +84,12 @@ public class FacturaSource implements JRDataSource {
 
             } else if ("cliente".equals(fieldName)) {
                 valor = nodo.getClientes().getNombres();
+            } else if ("clientenombre".equals(fieldName)) {
+                try {
+                        valor = nodo.getTarjetas().getClientes().getNombres();    
+                } catch (Exception e) {
+                }
+                
             } else if ("ruc".equals(fieldName)) {
                 valor = nodo.getClientes().getIdentificacion();
             } else if ("ingreso".equals(fieldName)) {

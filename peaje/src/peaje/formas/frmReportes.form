@@ -46,7 +46,7 @@
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" pref="90" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelReportes" pref="466" max="32767" attributes="0"/>
+              <Component id="panelReportes" pref="470" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -134,7 +134,7 @@
           <Properties>
             <Property name="maximumRowCount" type="int" value="12"/>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="9">
+              <StringArray count="10">
                 <StringItem index="0" value="Tickets por cobrar"/>
                 <StringItem index="1" value="Tickets cobrados"/>
                 <StringItem index="2" value="Puestos ocupados"/>
@@ -144,6 +144,7 @@
                 <StringItem index="6" value="Consolidado por Mes"/>
                 <StringItem index="7" value="Clientes mas frecuentes"/>
                 <StringItem index="8" value="Listado clientes"/>
+                <StringItem index="9" value="No. de Ingresos x Cliente"/>
               </StringArray>
             </Property>
           </Properties>

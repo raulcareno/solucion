@@ -343,6 +343,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jScrollPane2 = new javax.swing.JScrollPane();
         descripcionTarjeta = new javax.swing.JTextArea();
         btnEliminar1 = new javax.swing.JButton();
+        facturar = new javax.swing.JCheckBox();
         frmLote = new javax.swing.JInternalFrame();
         jScrollPane5 = new javax.swing.JScrollPane();
         tablaCambios = new javax.swing.JTable(){
@@ -614,7 +615,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel9.setBounds(10, 60, 510, 180);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Sistema de control de parqueaderos");
+        setTitle("Sistema de Control");
         setName("miForma"); // NOI18N
 
         barraHerramients.setBorder(null);
@@ -946,6 +947,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         formaTarjetas1.setTitle("Registro y Modificación de Tarjetas");
+        formaTarjetas1.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nuevo.gif"))); // NOI18N
         formaTarjetas1.getContentPane().setLayout(null);
 
         jLabel14.setText("No. Tarjeta: ");
@@ -972,7 +974,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         fechaHasta.setBounds(60, 40, 95, 20);
 
         formaTarjetas1.getContentPane().add(panelHoras);
-        panelHoras.setBounds(30, 100, 160, 70);
+        panelHoras.setBounds(30, 70, 160, 70);
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Horas de ingreso"));
         jPanel7.setLayout(null);
@@ -1002,7 +1004,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         horaHasta.setBounds(50, 40, 80, 20);
 
         formaTarjetas1.getContentPane().add(jPanel7);
-        jPanel7.setBounds(200, 100, 150, 70);
+        jPanel7.setBounds(200, 70, 150, 70);
 
         diasHabiles.setBorder(javax.swing.BorderFactory.createTitledBorder("Días Habiles"));
         diasHabiles.setLayout(null);
@@ -1095,7 +1097,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         todos.setBounds(30, 40, 55, 23);
 
         formaTarjetas1.getContentPane().add(diasHabiles);
-        diasHabiles.setBounds(30, 170, 320, 110);
+        diasHabiles.setBounds(30, 140, 320, 100);
 
         noTarjeta.setEditable(false);
         noTarjeta.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1112,11 +1114,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         formaTarjetas1.getContentPane().add(ingresos);
-        ingresos.setBounds(290, 30, 40, 20);
+        ingresos.setBounds(90, 40, 40, 17);
 
         jLabel20.setText("No. Ingresos: ");
         formaTarjetas1.getContentPane().add(jLabel20);
-        jLabel20.setBounds(214, 30, 70, 14);
+        jLabel20.setBounds(20, 40, 70, 14);
 
         btnGuardarTarjeta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
         btnGuardarTarjeta.setMnemonic('N');
@@ -1146,7 +1148,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         formaTarjetas1.getContentPane().add(btnSalirTarjetas);
         btnSalirTarjetas.setBounds(290, 290, 60, 50);
 
-        activa.setText("Tarjeta Activa:   ");
+        activa.setSelected(true);
+        activa.setText("Tarjeta Activa");
         activa.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         activa.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         activa.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1155,7 +1158,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         formaTarjetas1.getContentPane().add(activa);
-        activa.setBounds(210, 10, 110, 23);
+        activa.setBounds(220, 40, 120, 16);
 
         placa1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1163,16 +1166,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         formaTarjetas1.getContentPane().add(placa1);
-        placa1.setBounds(90, 30, 110, 20);
+        placa1.setBounds(270, 10, 80, 20);
 
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel21.setText("Placa:");
         formaTarjetas1.getContentPane().add(jLabel21);
-        jLabel21.setBounds(20, 30, 60, 14);
+        jLabel21.setBounds(200, 10, 60, 14);
 
         jLabel22.setText("Descripción:");
         formaTarjetas1.getContentPane().add(jLabel22);
-        jLabel22.setBounds(20, 50, 70, 14);
+        jLabel22.setBounds(30, 250, 70, 14);
 
         descripcionTarjeta.setColumns(20);
         descripcionTarjeta.setRows(5);
@@ -1184,7 +1187,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jScrollPane2.setViewportView(descripcionTarjeta);
 
         formaTarjetas1.getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(90, 50, 240, 40);
+        jScrollPane2.setBounds(90, 250, 260, 30);
 
         btnEliminar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
         btnEliminar1.setMnemonic('E');
@@ -1204,6 +1207,17 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         formaTarjetas1.getContentPane().add(btnEliminar1);
         btnEliminar1.setBounds(170, 290, 60, 50);
+
+        facturar.setText("Facturar");
+        facturar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        facturar.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        facturar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                facturarKeyPressed(evt);
+            }
+        });
+        formaTarjetas1.getContentPane().add(facturar);
+        facturar.setBounds(140, 40, 70, 16);
 
         formaTarjetas1.setBounds(80, 0, 380, 380);
         contenedor.add(formaTarjetas1, javax.swing.JLayeredPane.MODAL_LAYER);
@@ -2267,7 +2281,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(placa);
             placa.setBounds(20, 70, 180, 20);
 
-            errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+            errores.setFont(new java.awt.Font("Tahoma", 1, 12));
             errores.setForeground(new java.awt.Color(255, 0, 0));
             errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             panelIngreso.add(errores);
@@ -2373,7 +2387,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             jLabel38.setBounds(520, 550, 140, 14);
             contenedor.add(jLabel38, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+            jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12));
             jLabel37.setForeground(new java.awt.Color(102, 102, 102));
             jLabel37.setText("PARTNERS");
             jLabel37.setBounds(500, 450, 160, 20);
@@ -4244,6 +4258,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         sabado.setSelected(tarjeta.getSabado());
         domingo.setSelected(tarjeta.getDomingo());
         activa.setSelected(tarjeta.getHabilitada());
+        facturar.setSelected(tarjeta.getFacturar());
         //AQUI CARGO LAS HORAS
 
         SpinnerDateModel sm = new SpinnerDateModel(tarjeta.getHorainicio(), null, null, Calendar.HOUR_OF_DAY);
@@ -4298,6 +4313,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         tarjeta.setHorafin(new Date());
         tarjeta.setDesde(new Date());
         tarjeta.setHasta(new Date());
+        tarjeta.setFacturar(false);
         llenarTarjeta();
 //        formaTarjetas.setModal(true);
 //        formaTarjetas.setSize(400, 388);
@@ -4529,6 +4545,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             tarjeta.setHorafin((Date) horaHasta.getValue());
             tarjeta.setHabilitada(activa.isSelected());
             tarjeta.setPlaca(placa1.getText());
+            tarjeta.setFacturar(facturar.isSelected());
             adm.actualizar(tarjeta);
             formaTarjetas1.setVisible(false);
             llenarTabla(clienteObj.getCodigo());
@@ -5917,6 +5934,10 @@ private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     tarjetatxt.setText(notarjetaTemp.getText());
     buscarTarjeta(puertoText.getText());
 }//GEN-LAST:event_jButton13ActionPerformed
+
+private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_facturarKeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_facturarKeyPressed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -6085,6 +6106,7 @@ private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     private javax.swing.JCheckBox domingo2;
     private javax.swing.JList encontrados;
     private javax.swing.JLabel errores;
+    private javax.swing.JCheckBox facturar;
     private com.toedter.calendar.JDateChooser fechaDesde;
     private com.toedter.calendar.JDateChooser fechaDesde1;
     private com.toedter.calendar.JDateChooser fechaDesde2;
