@@ -871,6 +871,7 @@ public class notas extends Rows {
                         + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
                     int i = 1;
                     for (Notasacta acta : matriculas) {
+                        System.out.println(""+acta.getMatricula().getEstudiante()+" : "+i);
                         acta.setNumeroacta(i);
                         i++;
                         adm.actualizar(acta);
