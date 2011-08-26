@@ -65,6 +65,20 @@ if(empa.getParalelo()!=null){
            }
  
     }
+    
+    if(empa.getTitulo()!=null){
+
+            for (int i = 0; i <= tituloL.getItems().size(); i++) {
+                    Global tr0 = ((Global)((Listitem)tituloL.getItems().get(i)).getValue());
+                    int primero = tr0.getCodigo();
+                    int segundo = empa.getTitulo().getCodigo();
+                    if(primero == segundo){
+                        tituloL.setSelectedItem((Listitem)tituloL.getItems().get(i));
+                        break;
+                    }
+           }
+ 
+    }
  
 
 }
@@ -85,6 +99,7 @@ void estado(Boolean estado,Boolean modificar){
         cedulaiden.readonly= estado;
         paralelosL.disabled= estado;
         especialidadesL.disabled= estado;
+        tituloL.disabled= estado;
 
 }
 
@@ -114,6 +129,7 @@ guardando = true;
 
         empa.setEspecialidad(especialidadesL.selectedItem.value);
         empa.setParalelo(paralelosL.selectedItem.value);
+        empa.setTitulo(tituloL.selectedItem.value);
         empa.setActa(acta.value);
  
         empa.setInicial(desde.value);
@@ -235,6 +251,9 @@ void eliminar(){
 void cargarEspe(Global g){
     empa.setEspecialidad(g);
 }
+void cargarTitu(Global g){
+    empa.setTitulo(g);
+}
 void cargarSec(Global g){
     empa.setSeccion(g);
 }
@@ -343,7 +362,16 @@ void cargarPar(Global g){
                 <row>
                     <span style="float:right"> Titulo:</span>
                     <span>
-                        <textbox id="acta" maxlength="200" cols="40"  readonly="true"  />
+                        <listbox disabled="true" id="tituloL" width="300px" mold="select" onSelect="cargarTitu(((Global)self.selectedItem.value));">
+                            <listhead>
+                                <listheader label="Titulo"/>
+                            </listhead>
+                            <listitem selected="true"  forEach="${especialidades}" value="${each}">
+                                <listcell label="${each.descripcion}" />
+
+                            </listitem>
+                        </listbox>
+                        Nombre Acta G.<textbox id="acta" maxlength="200" cols="40"  readonly="true"  />
 
                     </span>
                 </row>

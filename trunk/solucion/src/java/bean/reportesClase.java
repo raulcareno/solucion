@@ -2678,7 +2678,7 @@ public class reportesClase {
 
     }
 
-    public JRDataSource actaGrado(Cursos curso, String tipo) {
+    public JRDataSource actaGrado(String tipo,Matriculas mat,Global esp) {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -2734,14 +2734,14 @@ public class reportesClase {
 
         ArrayList lisNotasC = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
-        String complemento = "";
-        if (!curso.getCodigocur().equals(-2)) {
-            complemento = "o.curso.codigocur = '" + curso.getCodigocur() + "' and ";
+        if(mat.getCodigomat().equals(-2)){
+            matriculas = adm.query("Select o from Matriculas as o "
+                        + "where  o.perdio = false and o.suspenso = false "
+                        + "and o.curso.especialidad.codigo = '"+esp.getCodigo()+"' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.curso.secuencia = '6' "
+                        + " order by o.estudiante.apellido,  o.estudiante.nombre  ");
+        }else{
+            matriculas.add(mat); 
         }
-        matriculas = adm.query("Select o from Matriculas as o "
-                + "where " + complemento + " o.perdio = false and o.suspenso = false "
-                + "and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.curso.secuencia = '6' "
-                + " order by o.estudiante.apellido,  o.estudiante.nombre  ");
 
         for (Matriculas matriculas1 : matriculas) {
             //Matriculas matriculas1 = itm.next();
@@ -2782,6 +2782,7 @@ public class reportesClase {
                         if (ac.getFormula().toUpperCase().contains("EQUIVAL") || ac.getFormula().toUpperCase().contains("equival")) {
                             coll.setNota(equivalencia2(redondear(val, 0), equivalencias));
                         }
+                        coll.setTitulo(matriculaNo.getCurso().getActa());
                         coll.setMatricula("" + matriculaNo.getCodigomat());
                         coll.setEstudiante(matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
                         coll.setMatriculas(matriculas1);

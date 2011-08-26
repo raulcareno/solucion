@@ -113,6 +113,8 @@ public class ReporteGradoDataSource implements JRDataSource{
             valor = nodo.getNom7();
         }else if ("nom8".equals(fieldName)) {
             valor = nodo.getNom8();
+        }else if ("titulo".equals(fieldName)) {
+            valor = nodo.getTitulo();
         }
 
         return valor;
