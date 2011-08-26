@@ -29,13 +29,15 @@ disciplina discipli = new disciplina();
 
 Empleados user = (Empleados)ses.getAttribute("user");
     List cursos = null;
-
     if(user.getTipo().equals("Interna")){
         cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia, o.especialidad.descripcion, o.paralelo.descripcion ");
     }else{
         cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
     }
-
+    List especialidades = adm.query("SELECT o  FROM Global AS o WHERE o.grupo = 'ESP'");
+    Global glob = new Global(-1);
+    glob.setDescripcion("[Seleccione]");
+    especialidades.add(0,glob);
 
 List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
 List sistemas = new ArrayList();
@@ -131,6 +133,35 @@ materiasCombo.setSelectedIndex(0);
 }
         
         
+    }
+    void buscar22(Global cur){
+        List empleadosEncontrados = adm.query("Select o from Matriculas as o " + 
+        " where o.curso.especialidad.codigo = '"+cur.getCodigo()+"' "+ 
+        " and o.curso.periodo.codigoper = '"+ periodo.getCodigoper()+"' "+
+        " and o.curso.secuencia = 6  order by o.estudiante.apellido");
+        
+        estudiantesCombo.getChildren().clear();
+        
+        Matriculas matri = new Matriculas(-1);
+        Estudiantes es = new Estudiantes(-1);
+                    es.setApellido("[Seleccione]");
+                    es.setNombre("");
+        matri.setEstudiante(es);
+        empleadosEncontrados.add(0,matri);
+        
+                         for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                                  Matriculas estudent = (Matriculas) it.next();
+                                    Listitem item = new Listitem();
+                                    item.setValue(estudent);
+                                    item.appendChild(new Listcell(estudent.estudiante.apellido+" "+estudent.estudiante.nombre));
+                                    estudiantesCombo.appendChild(item);
+                         }
+                            matri = new Matriculas(-2);
+                            matri.setEstudiante(es);
+                                    Listitem item = new Listitem();
+                                    item.setValue(matri);
+                                    item.appendChild(new Listcell("[TODOS]"));
+                                    estudiantesCombo.appendChild(item);
     }
 
  
@@ -467,10 +498,10 @@ void recalcular(){
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc(directorioReportes+"estadistico.jasper");
             }else if(tipo.equals("AG")){
-                    datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"original");
+                    datasource = noti.actaGrado("original",estudiantesCombo.getSelectedItem().getValue(),especialidad.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"actaGrado.jasper");
             }else if(tipo.equals("CAG")){
-                    datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"copia");
+                    datasource = noti.actaGrado("copia",estudiantesCombo.getSelectedItem().getValue(),especialidad.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"copiaactaGrado.jasper");
             }else if(tipo.equals("AG2")){
                     datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"original");
@@ -539,34 +570,54 @@ void campos(String valor){
       filamodalidad.visible = false;
       sistemasCombo.setSelectedIndex(0);
       curs.setSelectedIndex(0);
-
+     especialidad.disabled = true;
+     filacursos.visible = false;
+    filaespecialidad.visible = false;
+    filaestudiantes.visible = false;
+    filamodalidad.visible = false;
+    filamaterias.visible = false;
+    filaaportes.visible = false;
+     
         if(valor.equals("DIS")){
             curs.disabled = false;
+            filacursos.visible = true;
             titulo.value= "Distributivo";
         }else if(valor.equals("DIS2") || valor.equals("CDIS")){
             curs.disabled = false;
-            titulo.value= "Lista de profesores por Curso";
             sistemasCombo.disabled = false;
+            titulo.value= "Lista de profesores por Curso";
+            filacursos.visible = true;
+            filaaportes.visible = true;
+            
         }else if(valor.equals("PCUR")){
              titulo.value= "Promedios por Curso";
             sistemasCombo.disabled = false;
+            
+            filaaportes.visible = true;
+            
         }else if(valor.equals("ENC2")){
              titulo.value= "Promedios por Curso";
              sistemasCombo.disabled = true;
              curs.disabled = false;
              estudiantesCombo.disabled = false;
+             filacursos.visible = true;
+             filaaportes.visible = true;
+             filaestudiantes.visible = true;
+             
         }else if(valor.equals("ENC3") || valor.equals("ENC4")){
              titulo.value= "RESULTADO DE LA INVESTIGACIÓN SOCIO-ECONÓMICA";
              curs.disabled = false;
+             filacursos.visible = true;
         }else if(valor.equals("ENC5") || valor.equals("ENC6")){
              titulo.value= "RESULTADO DE LA INVESTIGACIÓN SOCIO-ECONÓMICA";
-             //curs.disabled = false;
         }else if(valor.equals("MEJ")){
              titulo.value= "Mejores por Curso";
-            sistemasCombo.disabled = false;
+             sistemasCombo.disabled = false;
+             filaaportes.visible = true;
         }else if(valor.equals("MEJE")){
              titulo.value= "Mejores Estudiantes";
              curs.disabled = false;
+             filacursos.visible = true;
         }else if(valor.equals("NMAT") || valor.equals("NMATD") || valor.equals("CCAL5") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
@@ -576,61 +627,91 @@ void campos(String valor){
                 titulo.value= "Cuadro de Notas por Materia Disciplina";
             materiasCombo.setSelectedIndex(-1);
             curs.setSelectedIndex(0);
+            filacursos.visible = true;
+            filaaportes.visible = true;
+            filamaterias.visible = true;
+            
         }else if(valor.equals("LIBF") || valor.equals("LIB") || valor.equals("LIB2") || valor.equals("LIB3")){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
             sistemasCombo.disabled = false;
              titulo.value= "Libreta de Calificaciones";
             estudiantesCombo.setSelectedIndex(-1);
+            filaestudiantes.visible = true;
+            filacursos.visible = true;
+            filaaportes.visible = true;
+             
         }else if(valor.equals("APRO")){
             curs.disabled = false;
             sistemasCombo.disabled = false;
-             titulo.value= "Listado de Estudiantes Aprobados/Reprobados";
+            titulo.value= "Listado de Estudiantes Aprobados/Reprobados";
+            filaestudiantes.visible = true;
+            filacursos.visible = true;
+            filaaportes.visible = true;
 
         }else if(valor.equals("CERT") || valor.equals("CERT2")   ){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
              titulo.value= "Certificado de Promocion";
+             filacursos.visible = true;
+            filamaterias.visible = true;
  
         }else if(valor.equals("CERD")  ){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
              titulo.value= "Certificado de Conducta";
              filamodalidad.visible = true;
+             filacursos.visible = true;
+             filaestudiantes.visible = true;
         }else if(valor.equals("CCAL") || valor.equals("CCAL2") || valor.equals("CCAL3")){
-            curs.disabled = false;
-            sistemasCombo.disabled = false;
+             curs.disabled = false;
+             sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Calificaciones";
              fila.visible = true;
-             
+             filacursos.visible = true;
+            filaaportes.visible = true;
+            
         }else if(valor.equals("CSUP")){
             curs.disabled = false;
             sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Calificaciones";
              fila.visible = true;
              hasta.value = new java.math.BigDecimal(40);
+             filacursos.visible = true;
+            filaaportes.visible = true;
+             
         }else if(valor.equals("AG") ){
-            curs.disabled = false;
+            especialidad.disabled = false;
             titulo.value= "Acta de Grado";
+            filaespecialidad.visible = true;
+            filaestudiantes.visible = true;
         }else if(valor.equals("EXAM")){
             curs.disabled = false;
             titulo.value= "Examenes de Grado";
+            filacursos.visible = true;
         }else if(valor.equals("CAG")){
-            curs.disabled = false;
+            especialidad.disabled = false;
+            filaespecialidad.visible = true;
+            filaestudiantes.visible = true;
             titulo.value= "Copia de Acta de Grado";
         }else if(valor.equals("LAG")){
             curs.disabled = false;
             titulo.value= "Listado de Actas de Grado";
+             filacursos.visible = true;
         }else if(valor.equals("CNF") || valor.equals("CNF2") || valor.equals("CNF3") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
             titulo.value= "Cuadro de Calificaciones";
             fila.visible = true;
+             filacursos.visible = true;
+            filaaportes.visible = true;
         }else if(valor.equals("EST")){
             curs.disabled = false;
             sistemasCombo.disabled = false;
             titulo.value= "Cuadro de Estadístico";
             fila.visible = true;
+            filacursos.visible = true;
+            filaaportes.visible = true;
         }else{
             titulo.value= " ";
         }
@@ -710,7 +791,7 @@ void campos(String valor){
                         </row>
 
 
-                        <row  style="background:transparent;border:0px">
+                        <row id="filacursos" style="background:transparent;border:0px">
                             <span style="float:right"> Curso:</span>
                             <span>
                             <listbox id="curs" width="450px"  mold="select" onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
@@ -719,20 +800,28 @@ void campos(String valor){
                                 <button label="RECALCULAR(30s.)"  onClick="recalcular()"/>
                             </span>
                         </row>
-                        <row  style="background:transparent;border:0px">
+                       <row  id="filaespecialidad"  style="background:transparent;border:0px">
+                            <span style="float:right"> Especialidad:</span>
+                            <span>
+                            <listbox id="especialidad" width="450px"  mold="select" onSelect="buscar22(((Global)self.selectedItem.value)); estudiantesCombo.disabled = false; ">
+                                <listitem   forEach="${especialidades}" value="${each}" label="${each.descripcion}"/>
+                            </listbox>
+                           </span>
+                        </row>
+                        <row   id="filaestudiantes"   style="background:transparent;border:0px">
                             <span style="float:right"> Estudiantes: </span>
                             <listbox id="estudiantesCombo" width="450px"  mold="select" >
                                 <listitem    forEach="${estudiantes}" value="${each}" label="${each.apellidos}" />
 
                             </listbox>
                         </row>
-                        <row  style="background:transparent;border:0px" id="filamodalidad" visible="false">
+                        <row   style="background:transparent;border:0px" id="filamodalidad" visible="false">
                             <span style="float:right;color:blue"> MODALIDAD:</span>
                             <span style="color:blue">
                                 <textbox id="modalidad" value="BÁSICA"  cols="20" />
                             </span>
                         </row>
-                        <row  style="background:transparent;border:0px">
+                        <row   id="filamaterias"   style="background:transparent;border:0px">
                             <span style="float:right"> Materias: </span>
                             <listbox id="materiasCombo" width="450px"  mold="select" >
                                 <listitem forEach="${materias}" value="${each}">
@@ -741,7 +830,7 @@ void campos(String valor){
                                 </listitem>
                             </listbox>
                         </row>
-                        <row  style="background:transparent;border:0px" >
+                        <row   id="filaaportes"   style="background:transparent;border:0px" >
                             <span style="float:right"> Aporte: </span>
 
                             <listbox id="sistemasCombo" width="450px"  mold="select" >
@@ -836,6 +925,12 @@ void campos(String valor){
 import bean.Permisos;
 Permisos per = new Permisos();
 void cargando(){
+filacursos.visible = false;
+    filaespecialidad.visible = false;
+    filaestudiantes.visible = false;
+    filamodalidad.visible = false;
+    filamaterias.visible = false;
+    filaaportes.visible = false;
         NMAT.visible = per.verificarPermisoReporte("NMAT", "Ingresar");
         NMATD.visible = per.verificarPermisoReporte("NMATD", "Ingresar");
         LIB.visible = per.verificarPermisoReporte("LIB", "Ingresar");

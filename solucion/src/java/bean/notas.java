@@ -854,7 +854,7 @@ public class notas extends Rows {
         for (Iterator<Global> it = especial.iterator(); it.hasNext();) {
             Global especialidad = it.next();
             List<Cursos> curs = adm.query("Select o from Cursos as o where o.secuencia  = 6  "
-                    + "and o.especialidad.codigo = '" + especialidad.getCodigo() + "' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+                    + "and o.titulo.codigo = '" + especialidad.getCodigo() + "' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
             String codigosCursos = "(";
             for (Iterator<Cursos> itCursos = curs.iterator(); itCursos.hasNext();) {
                 Cursos cursos = itCursos.next();
@@ -870,6 +870,7 @@ public class notas extends Rows {
                         + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
                         + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
                     int i = 1;
+                    System.out.println("__________________________________________________ ESPECIALIDAD: "+especialidad);
                     for (Notasacta acta : matriculas) {
                         System.out.println(""+acta.getMatricula().getEstudiante()+" : "+i);
                         acta.setNumeroacta(i);
