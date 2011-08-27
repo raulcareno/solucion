@@ -18,3 +18,17 @@ INFO peaje.formas.frmPrincipal,line 41,24.08.2011/00:47:47,javax.media.NoPlayerE
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.08.2011/00:47:55,OK
 INFO peaje.formas.frmPrincipal,line 41,24.08.2011/00:52:39,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.08.2011/00:52:47,OK
+INFO peaje.formas.frmPrincipal,line 41,24.08.2011/11:00:31,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.08.2011/11:00:59,OK
+INFO peaje.formas.frmPrincipal,line 41,24.08.2011/11:07:25,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.08.2011/11:07:38,OK
+INFO peaje.formas.frmPrincipal,line 41,24.08.2011/11:08:13,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.08.2011/11:08:38,OK
+INFO peaje.formas.frmPrincipal,line 41,24.08.2011/11:09:57,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.08.2011/11:10:09,OK
+INFO peaje.formas.frmPrincipal,line 41,24.08.2011/11:10:57,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.08.2011/11:11:09,OK
+INFO peaje.formas.frmPrincipal,line 41,24.08.2011/11:12:48,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.08.2011/11:12:59,OK
+INFO peaje.formas.frmPrincipal,line 41,24.08.2011/11:19:19,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.08.2011/11:20:24,OK
