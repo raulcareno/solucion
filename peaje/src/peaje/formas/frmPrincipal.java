@@ -2256,7 +2256,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             panelIngreso.setLayout(null);
 
-            imAviso.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+            imAviso.setFont(new java.awt.Font("Tahoma", 0, 24));
             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
             imAviso.setText(".....");
             panelIngreso.add(imAviso);
@@ -2270,7 +2270,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(cliente);
             cliente.setBounds(20, 20, 690, 80);
 
-            errores.setFont(new java.awt.Font("Tahoma", 1, 42)); // NOI18N
+            errores.setFont(new java.awt.Font("Tahoma", 1, 42));
             errores.setForeground(new java.awt.Color(255, 0, 0));
             errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             errores.setText("ok..!");
@@ -2393,13 +2393,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(cuadroJcinform);
             cuadroJcinform.setBounds(520, 440, 190, 100);
 
-            webTeka.setForeground(new java.awt.Color(0, 51, 204));
             webTeka.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             webTeka.setText("www.tekatronic.com.ec");
             panelIngreso.add(webTeka);
             webTeka.setBounds(740, 510, 140, 14);
 
-            logoTeka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.JPG"))); // NOI18N
+            logoTeka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.png"))); // NOI18N
             panelIngreso.add(logoTeka);
             logoTeka.setBounds(725, 440, 160, 70);
 
