@@ -64,7 +64,7 @@ public class notasGrado extends Rows {
         String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas "
                 + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                 + "left join notasgrado on matriculas.codigomat = notasgrado.matricula "
-                + "where matriculas.curso = '" + curso.getCodigocur() + "' "
+                + "where matriculas.curso = '" + curso.getCodigocur() + "' and  matriculas.estado in ('Matriculado','Recibir Pase') "
                 + "order by estudiantes.apellido";
         ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1), ParametrosGlobales.class);
         if (para.getCvalor().equals("P")) {

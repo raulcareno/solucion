@@ -52,7 +52,7 @@ String columnaExamen ="";
         String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas " +
                 "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
                 "left join notasacta on matriculas.codigomat = notasacta.matricula " +
-                 "where matriculas.curso = '" + curso.getCodigocur() + "' " +
+                 "where matriculas.curso = '" + curso.getCodigocur() + "' and matriculas.estado in ('Matriculado','Recibir Pase') " +
                 "order by estudiantes.apellido";
         ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1),ParametrosGlobales.class);
         if(para.getCvalor().equals("P")){

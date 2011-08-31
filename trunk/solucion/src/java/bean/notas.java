@@ -866,7 +866,7 @@ public class notas extends Rows {
             if (tipo.contains("all")) {
                 try{
                   List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
-                        + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false and o.matricula.suspenso = false "
+                        + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false and o.matricula.estado in ('Matriculado','Recibir Pase') and o.matricula.suspenso = false "
                         + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
                         + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
                     int i = 1;

@@ -655,7 +655,7 @@ void campos(String valor){
              titulo.value= "Certificado de Promocion";
              filacursos.visible = true;
             filamaterias.visible = true;
- 
+ filaestudiantes.visible = true;
         }else if(valor.equals("CERD")  ){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
