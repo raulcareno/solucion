@@ -2020,7 +2020,7 @@ public class reportesClase {
 //        List<Nota> lisNotas = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
         if (matri.getCodigomat().equals(-2)) {
-            matriculas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '" + curso.getCodigocur() + "'");
+            matriculas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '" + curso.getCodigocur() + "' order by o.estudiante.apellido ");
         } else {
             matriculas.add(matri);
         }
