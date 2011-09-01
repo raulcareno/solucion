@@ -2270,7 +2270,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(cliente);
             cliente.setBounds(20, 20, 690, 80);
 
-            errores.setFont(new java.awt.Font("Tahoma", 1, 42));
+            errores.setFont(new java.awt.Font("Tahoma", 1, 42)); // NOI18N
             errores.setForeground(new java.awt.Color(255, 0, 0));
             errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             errores.setText("ok..!");
@@ -3375,7 +3375,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //                                            + "where o.tarjeta = '" + tarje.getTarjeta() + "' "
 //                                            + " and date(o.fecha)  = '"+convertiraString(fechaActual)+"'",Factura.class);
                                         if(facturas.size() >= tarje.getIngresos().intValue()){
-                                           System.out.println("YA  HA INGRESADO EN EL RANGO DE FECHAS");
+                                            System.out.println("YA  HA INGRESADO EN EL RANGO DE FECHAS");
                                            errores.setText("<html>ERROR: TARJETA YA HA SIDO USADA HOY...!         VALIDA POR #["+tarje.getIngresos()+"] INGRESO</html>");
                                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                                            return;
@@ -3463,16 +3463,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         errores.setText("<html>OK</html>");
                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
                         
-//EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
-                        List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
-                                + "and o.fechafin is null  ");
+
+        List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
                         Factura fac = new Factura();
                         if (tipoIngreso.equals("e")) {//ENTRANDO
                             if (facturas.size() > 0) {
                                 errores.setText("<html>ERROR: TARJETA YA HA SIDO USADA...!</html>");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                                 return;
-                            } else {
+                            }else{
                                 fac.setPlaca("CLIENTE TARJETA");
                                 fac.setFechaini(new Date());
                                 fac.setFecha(new Date());
@@ -4348,6 +4347,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         tarjeta.setDesde(new Date());
         tarjeta.setHasta(new Date());
         tarjeta.setFacturar(false);
+        tarjeta.setIngresos(1);
         llenarTarjeta();
 //        formaTarjetas.setModal(true);
 //        formaTarjetas.setSize(400, 388);
@@ -4455,6 +4455,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             tarjeta.setHorafin(new Date());
                             tarjeta.setDesde(new Date());
                             tarjeta.setHasta(new Date());
+                            tarjeta.setIngresos(1);
                             llenarTarjeta();
                             formaTarjetas1.setVisible(true);
                         } catch (Exception ex) {
