@@ -178,7 +178,8 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
     @Override
     public void serialEvent(SerialPortEvent event) {
-        System.out.println("" + tarjeta);
+
+        //        System.out.println("" + tarjeta);
         switch (event.getEventType()) {
             case SerialPortEvent.BI:
             case SerialPortEvent.OE:
@@ -191,65 +192,114 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             case SerialPortEvent.OUTPUT_BUFFER_EMPTY:
                 break;
             case SerialPortEvent.DATA_AVAILABLE:
-                byte[] readBuffer = new byte[8];
+                byte[] readBuffer = new byte[10];
                 try {
+//                                tarjeta = "";
                     while (inputStream.available() > 0) {
-                            int numBytes = inputStream.read(readBuffer);
-                            tarjeta += new String(readBuffer).trim();
+                        int numBytes = inputStream.read(readBuffer);
+                        System.out.println("#bytes: " + numBytes);
+                        tarjeta = tarjeta + new String(readBuffer).trim();
                     }
+
                 } catch (Exception e) {
                 }
                 break;
         }
         //System.out.println(""+tarjeta);
+        System.out.println("LECTURA: " + tarjeta);
 
         if (tarjeta.length() >= 10) {
-        if (tarjeta.length() > 10) {
-            tarjeta = tarjeta.substring(0,10);
-        }
+            if (tarjeta.length() > 10) {
+                tarjeta = tarjeta.substring(0, 10);
+            }
+            //System.out.println("VAL: TARJETA: " + tarjeta);
+
+
             //System.out.println("" + tarjeta);
-            if ("AEIOUAEIOU".equals(tarjeta)) {
+            if (tarjeta.contains("AEIOU")) {
+//                            tarjeta = tarjeta.replace("00", "");
+                System.out.println(tarjeta + " " + new Date());
+                tarjeta = "";
+                imprimir("");
+                abrirPuerta(princip.empresaObj.getEntra1());
+                System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra1());
 
-                System.out.println(tarjeta+" " + new Date());
-                    tarjeta = "";
-                    imprimir("");
-                    abrirPuerta(princip.empresaObj.getEntra1());
-                    System.out.println("ABRIO PUERTA: "+princip.empresaObj.getEntra1());
+                return;
 
-                    return;
-
-            } 
-            if ("AEIOUAEIOU2".equals(tarjeta)) {
+            }
+            if (tarjeta.contains("AEIOU2")) {
+                tarjeta = tarjeta.replace("00", "");
                 System.out.println("AEIOUAEIOU2" + new Date());
                 tarjeta = "";
                 imprimir("2");
-                  abrirPuerta(princip.empresaObj.getEntra1());
-                  System.out.println("ABRIO PUERTA: "+princip.empresaObj.getEntra2());
+                abrirPuerta(princip.empresaObj.getEntra1());
+                System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra2());
                 tarjeta = "";
                 return;
-            } 
+            }
             if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
                 princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
                 tarjeta = "";
+                //                inputStream = null;
                 return;
-            }  
-                //BUSCAR TARJETA 
-                princip.tarjetatxt.setText("");
-                princip.tarjetatxt.setText(tarjeta);
-                princip.buscarTarjeta(puertoId.getName());
+            }
+            //BUSCAR TARJETA 
+            princip.tarjetatxt.setText("");
+            princip.tarjetatxt.setText(tarjeta);
+            princip.buscarTarjeta(puertoId.getName());
+            tarjeta = "";
+            //peaje.formas.SimpleWrite.llamar("COM3");
+            return;
+
+        } else {
+            System.out.println("< 10 : " + tarjeta);
+            if (tarjeta.contains("AEI")) {
+//             tarjeta = tarjeta.replace("00", "");
+                System.out.println(tarjeta + " " + new Date());
                 tarjeta = "";
-                //peaje.formas.SimpleWrite.llamar("COM3");
+                imprimir("");
+                abrirPuerta(princip.empresaObj.getEntra1());
+                System.out.println("ABRIO PUERTA aeiou1: " + princip.empresaObj.getEntra1());
                 return;
-            
+
+            }
+            Long valor = null;
+            try {
+                valor = new Long(tarjeta);
+            } catch (Exception e) {
+                return;
+
+            }
+            tarjeta = valor + "";
+            for (int i = tarjeta.length(); i < 10; i++) {
+                tarjeta = "0" + tarjeta;
+            }
+            if (tarjeta.length() > 10) {
+                tarjeta = tarjeta.substring(0, 10);
+            }
+            System.out.println("ABRIO BARRAS: " + tarjeta);
+            if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
+                princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
+                tarjeta = "";
+                //                inputStream = null;
+                return;
+            }
+
         }
+
 
 
     }
 
     public void abrirPuerta(String puerta) {
+        System.out.println("local puerta: " + puerta);
         try {
+            if (puerta == null) {
+                puerta = "1";
+            }
+
             LeerTarjeta ta = (LeerTarjeta) princip.puertoListo.get(0);
-            ta.outputSream.write(puerta.getBytes());
+            ta.outputSream.write(puerta.trim().getBytes());
         } catch (IOException ex) {
             Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -335,14 +385,14 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                     JOptionPane.showMessageDialog(null, "Error en la Fotografia");
                 }
 
-            }else if (princip.empresaObj.getIpcam()) {
-                   if (ubicacionDirectorio.contains("build")) {
-                            ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
-                        }
-                        
-                        fotografiarIp(""+fac.getCodigo()+".jpg", ubicacionDirectorio+"\\fotos");
-                        
-                
+            } else if (princip.empresaObj.getIpcam()) {
+                if (ubicacionDirectorio.contains("build")) {
+                    ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                }
+
+                fotografiarIp("" + fac.getCodigo() + ".jpg", ubicacionDirectorio + "\\fotos");
+
+
             }
 
 
@@ -361,11 +411,11 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //            ex.printStackTrace();
 //        }
     }
-    
-    public void fotografiarIp(String nombre,String direccion){
-                princip.verIp.tomarFotoIp(direccion+separador+nombre,princip);
+
+    public void fotografiarIp(String nombre, String direccion) {
+        princip.verIp.tomarFotoIp(direccion + separador + nombre, princip);
 //        if (resultado == 0) {
 //            JOptionPane.showMessageDialog(null, "Error en la Fotografia");
 //        }
-}
+    }
 }

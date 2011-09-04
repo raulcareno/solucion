@@ -1450,9 +1450,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addContainerGap()
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frmLoteLayout.createSequentialGroup()
-                        .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                        .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                         .addGap(4, 4, 4))
                     .addGroup(frmLoteLayout.createSequentialGroup()
                         .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1465,7 +1465,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         .addComponent(jLabel34)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(activa1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
                         .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(noingresodiarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1473,7 +1473,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGap(23, 23, 23))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
                 .addGap(35, 35, 35))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
@@ -1484,10 +1484,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel35))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
                 .addContainerGap())
         );
         frmLoteLayout.setVerticalGroup(
@@ -2256,11 +2256,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             panelIngreso.setLayout(null);
 
-            imAviso.setFont(new java.awt.Font("Tahoma", 0, 24));
+            imAviso.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
             imAviso.setText(".....");
             panelIngreso.add(imAviso);
-            imAviso.setBounds(690, 60, 205, 210);
+            imAviso.setBounds(540, 50, 210, 210);
 
             cliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             cliente.setEditable(false);
@@ -2268,9 +2268,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             cliente.setText("CLIENTE ACTUAL");
             cliente.setFont(new java.awt.Font("Bernard MT Condensed", 1, 42));
             panelIngreso.add(cliente);
-            cliente.setBounds(20, 20, 690, 80);
+            cliente.setBounds(20, 20, 520, 80);
 
-            errores.setFont(new java.awt.Font("Tahoma", 1, 42)); // NOI18N
+            errores.setFont(new java.awt.Font("Tahoma", 1, 42));
             errores.setForeground(new java.awt.Color(255, 0, 0));
             errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             errores.setText("ok..!");
@@ -2298,7 +2298,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             panelIngreso.add(tarjetatxt);
-            tarjetatxt.setBounds(520, 320, 160, 50);
+            tarjetatxt.setBounds(370, 320, 160, 50);
 
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
             jPanel1.setLayout(jPanel1Layout);
@@ -2314,50 +2314,50 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(jPanel1);
             jPanel1.setBounds(360, 10, 20, 70);
 
-            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
+            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
             spIngreso.setBorder(null);
             spIngreso.setEnabled(false);
             spIngreso.setFocusable(false);
             panelIngreso.add(spIngreso);
-            spIngreso.setBounds(750, 290, 90, 20);
+            spIngreso.setBounds(640, 290, 90, 20);
 
-            ingre.setFont(new java.awt.Font("Tahoma", 1, 11));
+            ingre.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             ingre.setForeground(new java.awt.Color(153, 153, 153));
             ingre.setText("INGRESO:");
             panelIngreso.add(ingre);
-            ingre.setBounds(680, 290, 60, 20);
+            ingre.setBounds(570, 290, 60, 20);
 
-            spSalida.setFont(new java.awt.Font("Tahoma", 0, 14));
+            spSalida.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
             spSalida.setBorder(null);
             spSalida.setEnabled(false);
             spSalida.setFocusable(false);
             panelIngreso.add(spSalida);
-            spSalida.setBounds(750, 320, 90, 20);
+            spSalida.setBounds(640, 320, 90, 20);
 
-            salid.setFont(new java.awt.Font("Tahoma", 1, 11));
+            salid.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             salid.setForeground(new java.awt.Color(153, 153, 153));
             salid.setText("SALIDA:");
             panelIngreso.add(salid);
-            salid.setBounds(680, 320, 60, 20);
+            salid.setBounds(570, 320, 60, 20);
 
-            spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
+            spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
             spConsumo.setBorder(null);
             spConsumo.setEnabled(false);
             spConsumo.setFocusable(false);
             panelIngreso.add(spConsumo);
-            spConsumo.setBounds(750, 350, 90, 20);
+            spConsumo.setBounds(640, 350, 90, 20);
 
             cons.setFont(new java.awt.Font("Tahoma", 1, 11));
             cons.setForeground(new java.awt.Color(153, 153, 153));
             cons.setText("CONSUMO:");
             panelIngreso.add(cons);
-            cons.setBounds(680, 350, 60, 20);
+            cons.setBounds(570, 350, 60, 20);
 
             placa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             placa.setEditable(false);
             placa.setText(".");
             panelIngreso.add(placa);
-            placa.setBounds(520, 350, 160, 50);
+            placa.setBounds(370, 380, 160, 50);
 
             camaraVista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             camaraVista.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 204), 1, true));
@@ -2367,7 +2367,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             panelIngreso.add(camaraVista);
-            camaraVista.setBounds(30, 270, 480, 270);
+            camaraVista.setBounds(30, 270, 330, 270);
 
             camaraVista1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             camaraVista1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 204), 1, true));
@@ -2377,7 +2377,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             panelIngreso.add(camaraVista1);
-            camaraVista1.setBounds(30, 270, 480, 270);
+            camaraVista1.setBounds(30, 270, 330, 270);
 
             logoJci.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
             logoJci.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -2387,26 +2387,26 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             panelIngreso.add(logoJci);
-            logoJci.setBounds(520, 440, 190, 100);
+            logoJci.setBounds(370, 440, 190, 100);
 
             cuadroJcinform.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
             panelIngreso.add(cuadroJcinform);
-            cuadroJcinform.setBounds(520, 440, 190, 100);
+            cuadroJcinform.setBounds(370, 440, 190, 100);
 
             webTeka.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             webTeka.setText("www.tekatronic.com.ec");
             panelIngreso.add(webTeka);
-            webTeka.setBounds(740, 510, 140, 14);
+            webTeka.setBounds(580, 510, 140, 14);
 
             logoTeka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.png"))); // NOI18N
             panelIngreso.add(logoTeka);
-            logoTeka.setBounds(725, 440, 160, 70);
+            logoTeka.setBounds(570, 440, 160, 70);
 
             cuadroTeka.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
             panelIngreso.add(cuadroTeka);
-            cuadroTeka.setBounds(720, 440, 170, 100);
+            cuadroTeka.setBounds(560, 440, 170, 100);
 
-            panelIngreso.setBounds(0, 30, 900, 590);
+            panelIngreso.setBounds(0, 30, 770, 590);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
@@ -2477,7 +2477,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar1.setFloatable(false);
-            jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+            jToolBar1.setOrientation(1);
             jToolBar1.setRollover(true);
 
             btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
@@ -2545,7 +2545,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar2.setFloatable(false);
-            jToolBar2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+            jToolBar2.setOrientation(1);
             jToolBar2.setRollover(true);
 
             btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
@@ -2649,7 +2649,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar3.setFloatable(false);
-            jToolBar3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+            jToolBar3.setOrientation(1);
             jToolBar3.setRollover(true);
 
             btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/help.gif"))); // NOI18N
@@ -3369,18 +3369,18 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         Boolean continua = false;
                         if (habilitada) {
                             //primero valido si no ha ingresado ya otro con la misma tarjeta
-                            if(tipoIngreso.equals("e")){
-                                List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
-//                                    List<Factura> facturas = adm.queryNativo("Select o.* from Factura as o "
-//                                            + "where o.tarjeta = '" + tarje.getTarjeta() + "' "
-//                                            + " and date(o.fecha)  = '"+convertiraString(fechaActual)+"'",Factura.class);
-                                        if(facturas.size() >= tarje.getIngresos().intValue()){
-                                            System.out.println("YA  HA INGRESADO EN EL RANGO DE FECHAS");
-                                           errores.setText("<html>ERROR: TARJETA YA HA SIDO USADA HOY...!         VALIDA POR #["+tarje.getIngresos()+"] INGRESO</html>");
-                                           imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                                           return;
-                                        }
-                            }
+//                            if(tipoIngreso.equals("e")){
+//                                List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
+////                                    List<Factura> facturas = adm.queryNativo("Select o.* from Factura as o "
+////                                            + "where o.tarjeta = '" + tarje.getTarjeta() + "' "
+////                                            + " and date(o.fecha)  = '"+convertiraString(fechaActual)+"'",Factura.class);
+//                                        if(facturas.size() >= tarje.getIngresos().intValue()){
+//                                            System.out.println("YA  HA INGRESADO EN EL RANGO DE FECHAS");
+//                                           errores.setText("<html>ERROR: TARJETA YA HA SIDO USADA HOY...!         VALIDA POR #["+tarje.getIngresos()+"] INGRESO</html>");
+//                                           imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+//                                           return;
+//                                        }
+//                            }
                             
                             if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
                                 System.out.println("EN EL RANGO DE FECHAS");
@@ -3679,7 +3679,20 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
         }
     }
-
+ public void abrirPush(String puerta) {
+        try {
+            //        final frmPrincipal pra = this;
+                 if(puerta == null){
+                        puerta = "1";
+                 }
+                            LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                            ta.outputSream.write(puerta.getBytes());
+                            noDisponibles();
+        } catch (IOException ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+ 
+    }
     public void imprimir(int cod, Empresa emp, int dias, Boolean mensual, Clientes cli) {
 
 //                    viewer.show();
@@ -5977,7 +5990,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 }//GEN-LAST:event_facturarKeyPressed
 
 private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_logoJciKeyPressed
-// TODO add your handling code here:
+    // TODO add your handling code here:
 }//GEN-LAST:event_logoJciKeyPressed
     public void verPanel() {
         panelIngreso.setVisible(true);
