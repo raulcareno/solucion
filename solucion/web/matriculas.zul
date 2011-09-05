@@ -361,7 +361,7 @@ void llenarMatricula(Matriculas matri){
                         fin.read(buffer);
                         fin.close();
                         foto0.setContent(new org.zkoss.image.AImage("fotito", buffer));
-
+                        foto0.visible = true;
                     } catch (FileNotFoundException ex) {
                     cargarVacio();
                         Logger.getLogger("ERROR EN MATRICULAS: ").log(Level.SEVERE, null, ex);
@@ -870,6 +870,7 @@ valor = valor.substring(ini+1, fin);
            certificado.disabled = false;
            certificado2.disabled = false;
            claveprint.disabled = false;
+           eliminar.disabled=false;
             }else{
                 estudent = new Estudiantes(0);
             }
@@ -1299,12 +1300,12 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                             Object media = Fileupload.get();
 
                                                                             if (media instanceof org.zkoss.image.Image) {
-                                                                            foto0.setContent(media);
-
+                                                                                         foto0.setContent(media);
+                                                                                          foto0.visible = true;    
 
                                                                             } else if (media != null)
-                                                                            Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
-                                                                            media = null;
+                                                                                    Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+                                                                                    media = null;
                                                                             }
                                                                                     </attribute>
                                                                                 </button>
@@ -1666,9 +1667,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                            title="Búsquedas" border="normal">
                         <panelchildren>
                             <vbox width="100%">
-                                <hbox >  Estudiantes:
-                                    <textbox id="buscarText"  maxlength="60" cols="40" />
-                                    <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                                <hbox > INGRESE UN APELLIDO:
+                                    <textbox id="buscarText"   onOK="buscar(self.getValue());"   maxlength="60" cols="40" />
+                                    <button id="buscar" label="Buscar" onClick="buscar(buscarText.getValue());"/>
                                 </hbox>
                                 <hbox width="100%">
                                     <listbox mold="paging"  rows="15"   pageSize="15" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
@@ -1739,7 +1740,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 cargandoFoto = true;
                 combo.value="";nuevo();
             }else{
-                foto0.visible = false;
+                //foto0.visible = false;
                 camara.visible = true;
                 btomar.visible = false;
                 bcorrecto.visible = false;
