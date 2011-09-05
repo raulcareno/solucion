@@ -1,0 +1,18 @@
+INFO peaje.formas.frmPrincipal,line 41,27.08.2011/10:55:13,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,27.08.2011/10:55:42,OK
+INFO peaje.formas.frmPrincipal,line 41,27.08.2011/10:59:55,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,27.08.2011/11:00:15,OK
+INFO peaje.formas.frmPrincipal,line 41,27.08.2011/11:00:30,java.lang.ArrayIndexOutOfBoundsException: -1
+INFO peaje.formas.frmPrincipal,line 41,27.08.2011/11:00:33,java.lang.NullPointerException
+INFO peaje.formas.frmPrincipal,line 41,27.08.2011/11:00:53,java.lang.NullPointerException
+INFO peaje.formas.frmPrincipal,line 41,27.08.2011/11:04:32,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,27.08.2011/11:04:47,OK
+INFO peaje.formas.frmPrincipal,line 41,27.08.2011/11:05:38,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,27.08.2011/11:05:51,OK
+INFO peaje.formas.frmPrincipal,line 41,27.08.2011/11:07:07,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,27.08.2011/11:07:19,OK
+INFO peaje.formas.frmPrincipal,line 41,27.08.2011/11:10:03,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,27.08.2011/11:31:55,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,27.08.2011/11:32:08,OK
+INFO peaje.formas.frmPrincipal,line 41,27.08.2011/20:25:39,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,27.08.2011/20:26:42,OK
