@@ -69,11 +69,12 @@ public class generarFacturas {
 //                if(existe.size()>0){
 //                        return " "+ "EL NÚMERO DE FACTURA INICIAL YA EXISTE EN SUCURSAL: "+suc.getDescripcion();
 //                }
-
-        List facturasHechas = adm.queryNativo("Select o.* from Contratos  as o "
-                + "where o.clientes not in (Select f.clientes from Factura as f "
+        String query = "Select o.* from Contratos  as o "
+                + "where o.codigo not in (Select f.contratos from Factura as f "
                 + "where f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "') "
-                + "and  o.estado in ('Activo','Terminado')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ", Contratos.class);
+                + "and  o.estado in ('Activo','Terminado')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ";
+        System.out.println(""+query);
+        List facturasHechas = adm.queryNativo(query, Contratos.class);
         try {
 
 
@@ -86,6 +87,9 @@ public class generarFacturas {
                 fac.setFecha(fecha);
                 fac.setSucursal(suc);
                 fac.setContratos(object);
+                if(object.getDescuento()==null){
+                    object.setDescuento(BigDecimal.ZERO);
+                }
                 fac.setSubtotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
                 fac.setDescuento(new BigDecimal(0));
                 fac.setBaseiva(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
@@ -118,7 +122,7 @@ public class generarFacturas {
                 numero++;
             }
         } catch (Exception e) {
-            System.out.println("DUPLICADO: " + e.hashCode());
+            System.out.println("DUPLICADO: "+e +" " + e.hashCode());
             return e.hashCode() + "";
         }
         //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
@@ -158,7 +162,7 @@ public class generarFacturas {
         String mesActualIni = convertiraString(fecha2);
         String mesActualFin = convertiraString(ultimoDia(fecha));
         List facturasHechas = adm.queryNativo("Select o.* from Contratos  as o "
-                + "where o.clientes not in (Select f.clientes from Factura as f "
+                + "where o.codigo not in (Select f.contratos from Factura as f "
                 + "where f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "') "
                 + "and  o.estado in ('Activo')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ", Contratos.class);
         try {
