@@ -18,6 +18,7 @@ import jcinform.procesos.Administrador;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Decimalbox;
+import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
@@ -47,9 +48,10 @@ String columnaExamen ="";
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         getChildren().clear();
-     Decimalbox label = null;
+     Decimalbox txtNota = null;
+     Intbox txtNumero  = null;
         Label label3 = null;
-        String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas " +
+        String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + ", numeroacta  from matriculas " +
                 "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
                 "left join notasacta on matriculas.codigomat = notasacta.matricula " +
                  "where matriculas.curso = '" + curso.getCodigocur() + "' and matriculas.estado in ('Matriculado','Recibir Pase') " +
@@ -65,13 +67,15 @@ String columnaExamen ="";
         
         List nativo = adm.queryNativo(q);
         Row row = new Row();
+        System.out.println(" ....... ");
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             row = new Row();
             Matriculas matricula = null;
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
-                label = new Decimalbox();
+                txtNota = new Decimalbox();
+                txtNumero = new Intbox();
                 label3 = new Label();
                 try {
                     if (dos.equals(null)) {
@@ -81,28 +85,40 @@ String columnaExamen ="";
                     dos = new Double(0.0);
                 }
                 
-                if (j >= 2) {
-
+                 if(j == (vec.size()-1)) {
+                     System.out.println("NUMERO ACTA:"+dos);
+                     try{
+                         if( dos!= null){
+                        txtNumero.setValue((Integer)dos);
+                     }else{
+                         txtNumero.setValue(null);
+                     }
+                     }catch(Exception ex){
+                     txtNumero.setValue(null);
+                     }
+                     txtNumero.setReadonly(true);
+                     txtNumero.setStyle("float:right; text-align:right;");
+                     txtNumero.setCols(1);
+                     
+                    //label3.setValue("" + dos);
+                    
+                }else if (j >= 2) {
                     Double valor = (Double) dos;
                     if (valor.equals(0.0)) {
-                        label.setValue(new BigDecimal(0));
+                        txtNota.setValue(new BigDecimal(0));
                     } else {
-                        label.setValue(new BigDecimal(redondear((Double) dos, 3)));
+                        txtNota.setValue(new BigDecimal(redondear((Double) dos, 3)));
                     }
-
                     String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
-                    if(formula.contains("primero")
-                            || formula.contains("segundo")
-                            || formula.contains("tercero")
-                            || formula.contains("cuarto")
-                            || formula.contains("sexto")){
+                    if(formula.contains("primero") || formula.contains("segundo") || formula.contains("tercero")
+                            || formula.contains("cuarto") || formula.contains("sexto")){
                          
                         List rec =  adm.queryNativo("Select ("+formula+") from Notasrecord " +
                                  "where estudiante = '"+matricula.getEstudiante().getCodigoest()+"' ");
                               if(rec==null || rec.size()<=0){
-                                  label.setValue(new BigDecimal(0));
+                                  txtNota.setValue(new BigDecimal(0));
                               }else{
-                                 label.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) ,3)));
+                                 txtNota.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) ,3)));
 
                               }
                         
@@ -111,9 +127,9 @@ String columnaExamen ="";
                          List rec =  adm.queryNativo("Select ("+columnaExamen+") from Notasgrado " +
                                  "where matricula = '"+matricula.getCodigomat()+"' ");
                               if(rec==null){
-                                  label.setValue(new BigDecimal(0));
+                                  txtNota.setValue(new BigDecimal(0));
                               }else{
-                                 label.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) , 3)));
+                                 txtNota.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) , 3)));
 
                               }
                         }catch(Exception e){
@@ -139,8 +155,10 @@ String columnaExamen ="";
                 }else if(j==1){
                     label3.setStyle("width:300px;font-size:11px;font:arial; ");
                     row.appendChild(label3);
+                }else if(j == (vec.size()-1)) {
+                    row.appendChild(txtNumero);
                 }else{
-                     row.appendChild(label);
+                     row.appendChild(txtNota);
                 }
 
                 //row.appendChild(label);
@@ -193,12 +211,13 @@ String columnaExamen ="";
                     List labels = object.getChildren();
                     nota.setMatricula(new Matriculas(new Integer(((Label) labels.get(0)).getValue())));
                     nota.setFecha(new Date());
+                    nota.setNumeroacta((((Intbox) labels.get(labels.size()-1)).getValue()));
                     inter.set("nota", nota);
                      inter.eval(" public Double equivalencia(Double n){" +
                                 "return n;" +
                                 "}");
                    
-                    for (int j = 2; j < labels.size(); j++) {
+                    for (int j = 2; j < labels.size()-1; j++) {
                         Decimalbox object1 = (Decimalbox) labels.get(j);
                         String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
                         String formula0 = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA

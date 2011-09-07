@@ -80,6 +80,7 @@ public class notas extends Rows {
     }
 
     public void addRow(Cursos curso, MateriaProfesor materia) {
+         System.out.println("TOP INI; "+new Date());
         int tamanio = 0;
         Session ses = Sessions.getCurrent();
         Empleados empleado = (Empleados) ses.getAttribute("user");
@@ -402,6 +403,7 @@ public class notas extends Rows {
             row.setParent(this);
         }
         nativo = null;
+        System.out.println("TOP FIN; "+new Date());
     }
 
     public Equivalencias devolverNombre(List<Equivalencias> equiva, Integer codigo) {
