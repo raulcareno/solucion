@@ -455,10 +455,11 @@ public class generarFacturas {
 //         if(facturaString.length()>0){
 //             facturaString = facturaString.substring(0,facturaString.length()-1);
 //         }
-        String quer = "SELECT fa.codigo, fa.numero, fa.fecha, c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
-                + "FROM cxcobrar cx, factura  fa, contratos c "
+        String quer = "SELECT fa.codigo, fa.numero, fa.fecha,  CONCAT(cli.apellidos,' ',cli.nombres), c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
+                + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli  "
                 + " WHERE fa.codigo in ( Select x.factura from Empleadosfacturas as x where x.empleados = '" + emp.getCodigo() + "' and Date(x.fecha) = '" + fec + "' )  and c.codigo = fa.contratos  "
-                + "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
+                + "  AND cx.factura = fa.codigo "
+                + "   AND cli.codigo = fa.clientes  GROUP BY fa.codigo  "
                 + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
         List deudas = adm.queryNativo(quer);
 

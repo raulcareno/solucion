@@ -348,7 +348,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                   empf.setFactura(new Factura(facCodigo));
                                                   empf.setFecha(fechaAc);
                                                   empf.setEmpleados(empleados.selectedItem.value);
-                                                  empf.setSaldo(new BigDecimal(labels.get(5).getValue()));
+                                                  empf.setSaldo(new BigDecimal(labels.get(6).getValue()));
                                                   empf.setEfectivo(new BigDecimal(0));
                                                   empf.setDebito(new BigDecimal(0));
                                                   empf.setCheque(new BigDecimal(0));
@@ -645,10 +645,10 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                             <checkbox id="todos" label="Selección" onCheck="seleccionarTodos(self,0)" />
                                         </column>
                                         <column visible="false"  label="Cod."/>
-                                        <column   width="68px" label="# Fac."/>
-                                        <column   width="85px"   label="Fecha"/>
-                                        <column  width="150px"   label="Cliente "/>
-                                        <column  width="150px"   label="Dirección "/>
+                                        <column sort="auto"    width="68px" label="# Fac."/>
+                                        <column sort="auto"    width="85px"   label="Fecha"/>
+                                        <column sort="auto" width="150px"   label="Cliente "/>
+                                        <column sort="auto"   width="150px"   label="Dirección "/>
                                         <column   width="45px"   label="Total"/>
                                         <column    width="45px"  label="Saldo"/>
                                         <column  width="45px" label=""/>
@@ -721,9 +721,10 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                             <checkbox id="todos2" label="Selección" onCheck="seleccionarTodos(self,1)" />
                                         </column>
                                         <column visible="false" label="Cod."/>
-                                        <column   width="68px" label="# Fac."/>
-                                        <column   width="85px"   label="Fecha"/>
-                                        <column  width="150px" label="Dirección "/>
+                                        <column   sort="auto"  width="68px" label="# Fac."/>
+                                        <column   sort="auto"  width="85px"   label="Fecha"/>
+                                        <column  sort="auto"  width="150px" label="Clientes"/>
+                                        <column  sort="auto"  width="150px" label="Dirección "/>
                                         <column   width="45px"   label="Total"/>
                                         <column    width="45px"  label="Saldo"/>
                                         <column  width="45px" label=""/>
