@@ -1,8 +1,10 @@
  
 package sources;
 import bean.NotaCollection;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import jcinform.persistencia.Cursos;
+import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Global;
 import jcinform.persistencia.MateriaProfesor;
 import jcinform.persistencia.Matriculas;
@@ -15,6 +17,7 @@ public class Nota {
 public Nota(){}
 
 private Matriculas matricula;
+private Estudiantes estudiante;
 private Global materia;
 private MateriaProfesor mprofesor;
 private Sistemacalificacion sistema;
@@ -35,6 +38,20 @@ private String profesor;
 private String firma1,firma2,firma3;
 private String cargo1,cargo2,cargo3;
 private Integer contador;
+private BigDecimal p1;
+private BigDecimal p2;
+private BigDecimal p3;
+private BigDecimal p4;
+private BigDecimal p5;
+private BigDecimal p6;
+private BigDecimal d1;
+private BigDecimal d2;
+private BigDecimal d3;
+private BigDecimal d4;
+private BigDecimal d5;
+private BigDecimal d6;
+private BigDecimal promedio2;
+private BigDecimal disciplina2;
 
     public MateriaProfesor getMprofesor() {
         return mprofesor;
@@ -213,7 +230,126 @@ private Integer contador;
         this.promedioFinal = promedioFinal;
     }
 
+    public BigDecimal getD1() {
+        return d1;
+    }
 
+    public void setD1(BigDecimal d1) {
+        this.d1 = d1;
+    }
+
+    public BigDecimal getD2() {
+        return d2;
+    }
+
+    public void setD2(BigDecimal d2) {
+        this.d2 = d2;
+    }
+
+    public BigDecimal getD3() {
+        return d3;
+    }
+
+    public void setD3(BigDecimal d3) {
+        this.d3 = d3;
+    }
+
+    public BigDecimal getD4() {
+        return d4;
+    }
+
+    public void setD4(BigDecimal d4) {
+        this.d4 = d4;
+    }
+
+    public BigDecimal getD5() {
+        return d5;
+    }
+
+    public void setD5(BigDecimal d5) {
+        this.d5 = d5;
+    }
+
+    public BigDecimal getD6() {
+        return d6;
+    }
+
+    public void setD6(BigDecimal d6) {
+        this.d6 = d6;
+    }
+
+    public BigDecimal getP1() {
+        return p1;
+    }
+
+    public void setP1(BigDecimal p1) {
+        this.p1 = p1;
+    }
+
+    public BigDecimal getP2() {
+        return p2;
+    }
+
+    public void setP2(BigDecimal p2) {
+        this.p2 = p2;
+    }
+
+    public BigDecimal getP3() {
+        return p3;
+    }
+
+    public void setP3(BigDecimal p3) {
+        this.p3 = p3;
+    }
+
+    public BigDecimal getP4() {
+        return p4;
+    }
+
+    public void setP4(BigDecimal p4) {
+        this.p4 = p4;
+    }
+
+    public BigDecimal getP5() {
+        return p5;
+    }
+
+    public void setP5(BigDecimal p5) {
+        this.p5 = p5;
+    }
+
+    public BigDecimal getP6() {
+        return p6;
+    }
+
+    public void setP6(BigDecimal p6) {
+        this.p6 = p6;
+    }
+
+    public Estudiantes getEstudiante() {
+        return estudiante;
+    }
+
+    public void setEstudiante(Estudiantes estudiante) {
+        this.estudiante = estudiante;
+    }
+
+    public BigDecimal getDisciplina2() {
+        return disciplina2;
+    }
+
+    public void setDisciplina2(BigDecimal disciplina2) {
+        this.disciplina2 = disciplina2;
+    }
+
+    public BigDecimal getPromedio2() {
+        return promedio2;
+    }
+
+    public void setPromedio2(BigDecimal promedio2) {
+        this.promedio2 = promedio2;
+    }
+ 
     
      
 
