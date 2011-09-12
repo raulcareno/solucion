@@ -35,7 +35,7 @@ void verPantall(){
             <row spans="2">Ingresa tu cedula de identidad para proceder a recuperar tu clave</row>
             <row>
                 <span style="float:right">Cedula:(*):</span>
-                <textbox onOK="clave.focus()" id="usuario" constraint="no empty: Cedula de Identidad necesaria para recuperar" maxlength="20" cols="15"  />
+                <textbox onOK="verPantall();" id="usuario" constraint="no empty: Cedula de Identidad necesaria para recuperar" maxlength="20" cols="15"  />
             </row>
 		
         </rows>
