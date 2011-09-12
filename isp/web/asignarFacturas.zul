@@ -647,6 +647,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                         <column visible="false"  label="Cod."/>
                                         <column   width="68px" label="# Fac."/>
                                         <column   width="85px"   label="Fecha"/>
+                                        <column  width="150px"   label="Cliente "/>
                                         <column  width="150px"   label="Dirección "/>
                                         <column   width="45px"   label="Total"/>
                                         <column    width="45px"  label="Saldo"/>
