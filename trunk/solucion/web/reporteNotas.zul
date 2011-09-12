@@ -135,6 +135,11 @@ materiasCombo.setSelectedIndex(0);
         
     }
     void buscar22(Global cur){
+    
+     String tipo = reporte.getSelectedItem().getValue();
+           if(tipo.equals("RECE")){
+                return;
+           }
         List empleadosEncontrados = adm.query("Select o from Matriculas as o " + 
         " where o.curso.especialidad.codigo = '"+cur.getCodigo()+"' "+ 
         " and o.curso.periodo.codigoper = '"+ periodo.getCodigoper()+"' "+
@@ -427,6 +432,15 @@ void recalcular(){
             }else if(tipo.equals("MEJ")){
                     datasource = noti.mejoresporcurso(sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"mejoresporcurso.jasper");
+            }else if(tipo.equals("RECC")){
+                    datasource = noti.recordporcurso(curs.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"record.jasper");
+            }else if(tipo.equals("RECC1")){
+                    datasource = noti.recordporcurso1(new Integer(secuencia.selectedItem.value));
+                    report.setSrc(directorioReportes+"record.jasper");
+            }else if(tipo.equals("RECE")){
+                    datasource = noti.recordporespecialidad(especialidad.getSelectedItem().getValue(),new Integer(secuencia.selectedItem.value));
+                    report.setSrc(directorioReportes+"record.jasper");
             }else if(tipo.equals("NMAT")){
                     
                     ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
@@ -577,7 +591,7 @@ void campos(String valor){
     filamodalidad.visible = false;
     filamaterias.visible = false;
     filaaportes.visible = false;
-     
+     filasecuencia.visible = false;
         if(valor.equals("DIS")){
             curs.disabled = false;
             filacursos.visible = true;
@@ -685,6 +699,18 @@ void campos(String valor){
             titulo.value= "Acta de Grado";
             filaespecialidad.visible = true;
             filaestudiantes.visible = true;
+        }else if(valor.equals("RECC") ){
+           curs.disabled = false;
+           filacursos.visible = true;
+           titulo.value= "Record Académico";
+         }else if(valor.equals("RECC1") ){
+           filasecuencia.visible = true;
+           titulo.value= "Record Académico";
+         }else if(valor.equals("RECE") ){
+            especialidad.disabled = false;
+            titulo.value= "Record Académico";
+            filaespecialidad.visible = true;
+            filasecuencia.visible = true;
         }else if(valor.equals("EXAM")){
             curs.disabled = false;
             titulo.value= "Examenes de Grado";
@@ -758,6 +784,12 @@ void campos(String valor){
                                     <listitem  id="CERD" label="Certificado de Disciplina" value="CERD"/>
                                     <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
                                     <listitem  label="Mejor egresado(*)" value="MEJE"/>
+                                    <listitem  id="linea001" label="=========================" value="linea" />
+                                    <listitem  id="RECC" label="Record Académico por Paralelos" value="RECC"/>
+                                    <listitem  id="RECE" label="Record Académico por Especialidad" value="RECE"/>
+                                    <listitem  id="RECC1" label="Record Académico por Cursos" value="RECC1"/>
+                                    <listitem  id="linea002" label="=========================" value="linea" />
+                                    
                                     <listitem  id="linea" label="=========================" value="linea" />
                                     <listitem  id="ENC2" label="Resultados por Estudiantes" value="ENC2"/>
                                     <listitem  id="ENC3" label="Resumen y Resultados de Encuesta" value="ENC3"/>
@@ -805,6 +837,20 @@ void campos(String valor){
                             <span>
                             <listbox id="especialidad" width="450px"  mold="select" onSelect="buscar22(((Global)self.selectedItem.value)); estudiantesCombo.disabled = false; ">
                                 <listitem   forEach="${especialidades}" value="${each}" label="${each.descripcion}"/>
+                            </listbox>
+                           </span>
+                        </row>
+                          <row  id="filasecuencia"  style="background:transparent;border:0px">
+                            <span style="float:right"> Cursos:</span>
+                            <span>
+                            <listbox id="secuencia" width="450px"  mold="select" >
+                                <listitem selected="true"  value="1" label="Octavo"/>
+                                <listitem   value="2" label="Noveno"/>
+                                <listitem   value="3" label="Décimo"/>
+                                <listitem   value="4" label="Primero Bachillerato"/>
+                                <listitem   value="5" label="Segundo Bachillerato"/>
+                                <listitem   value="6" label="Tercero Bachillerato"/>
+
                             </listbox>
                            </span>
                         </row>
