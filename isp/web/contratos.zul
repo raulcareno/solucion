@@ -797,7 +797,7 @@ llenarCliente(Clientes clienteEn){
 
 }
 void verificarCedula(String valor){
-      if(valor.length()>9){
+      if(valor.length()>6){
             List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
             if(empleados.size()>0){
             

@@ -2,7 +2,7 @@
 <?page title="ISP Sistema"?>
 <zk onCreate="verificar()" xmlns="http://www.zkoss.org/2005/zul">
   
-  <style>
+    <style>
 .estil{
 	height:100%;
     background-image: url(./images/cabecera.png)   ;
@@ -15,26 +15,28 @@
     background-color:#FFC66F;
 }
     </style>
-   <borderlayout onCreate="verificar();"  width="100%" style="float:center"  height="100%">
+    <borderlayout onCreate="verificar();"  width="100%" style="float:center"  height="100%">
        
-  <zscript>
+        <zscript>
     <![CDATA[
             import jcinform.conexion.*;
             import jcinform.persistencia.*;
- 
-    ]]>
-    </zscript>
-     
-   
-            <zscript>
-                     Session a = Sessions.getCurrent();
-             
-            Empleados emp = a.getAttribute("user");
+                Permisos permiso = new Permisos();
+    Boolean verificar(String accion,String menu){
+        return permiso.verificarPermiso(menu,accion);
+
+    }
+ Session a = Sessions.getCurrent();
+ Empleados emp = a.getAttribute("user");
             if(emp==null){
                 Executions.sendRedirect("login.zul");
             }
 
-                    void ingresar(Menuitem item ){
+void ingresar(Menuitem item,String pantalla ){
+                if(!verificar("Ingresar",pantalla) && !pantalla.equals("Respaldar")){
+                        Messagebox.show("No tiene permisos para ingresar a ésta pantalla...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        return;
+                }
             try{
 
 
@@ -58,7 +60,7 @@
                                 Messagebox.show("VENTANA YA ABIERTA", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
 
                         }
-            }
+}
 
                public Boolean buscar(String id){
                     List tabes = tbs.getChildren();
@@ -82,10 +84,10 @@
                     a.invalidate();
                     Executions.sendRedirect("login.zul");
             }
-
-            </zscript>
-    <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="55px" >
-                   <div height="35px" class="estil" >
+    ]]>
+        </zscript>
+        <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="55px" >
+            <div height="35px" class="estil" >
 
                 <label  style="padding-left:10px;color:white;font-size:17px;font-weight:bold" value="${sessionScope.empresa.razonsocial}"  />
                 <separator orient="vertical"/>
@@ -99,88 +101,88 @@
 
  
 
-            <panel style="left:10%" >
-                <panelchildren>
+                <panel style="left:10%" >
+                    <panelchildren>
 
-                    <menubar id="menubar" width="100%">
-                        <menu label="Administración"  image="/images/administracion1.png"  >
-                            <menupopup>
-                                <menuitem  value="/accesos.zul"  image="/images/key.png"  label="Accesos" onClick="ingresar(self)" />
-                                <menuitem  value="/auditoria.zul"  image="/images/auditoria.gif" label="Auditoria" onClick="ingresar(self)" />
-                                <menuitem  value="/empresa.zul"  image="/images/institucion.png" label="Empresas" onClick="ingresar(self)" />
-                                <menuitem  value="/cantonesysectores.zul"  image="/images/cantones.png" label="Cantones-Sectores" onClick="ingresar(self)" />
-                                <menuitem value="/perfiles.zul" image="/images/perfiles.png" label="Perfiles" onClick="ingresar(self)" />
-                                <menuseparator />
-                                <menuitem   value="/nodos.zul"  image="/images/nodos.png" label="Nodos" onClick="ingresar(self)" />
-                                <menuitem   value="/radios.zul"  image="/images/radio.png" label="Radios" onClick="ingresar(self)" />
-                                <menuitem   value="/bancos.zul"  image="/images/bancos.png" label="Bancos" onClick="ingresar(self)" />
-                                <menuseparator />
-                                <menuitem value="/respaldos.zul" image="/images/base.gif"   label="Respaldar BD Sistema"  onClick="ingresar(self)" />
-                                <menuitem label="Salir" image="/images/exit.gif"  onClick="salir()" />
-                            </menupopup>
-                        </menu>
-                        <menu label="Personas"   image="/images/personas.png" >
-                            <menupopup>
-                                <menuitem   value="/proveedores.zul"  image="/images/proveedor.png" label="Proveedores" onClick="ingresar(self)" />
-                                <!--menuitem    value="/clientes.zul" image="/images/clientes.png" label="Clientes" onClick="ingresar(self)" /-->
-                                <menuseparator />
-                                <menuitem    value="/empleados.zul" image="/images/empleados.png" label="Empleados" onClick="ingresar(self)" />
-                                <menuitem    value="/comisiones.zul" image="/images/comision.png" label="Comisión-Empleados" onClick="ingresar(self)" />
-                                <menuitem    value="/empleadosector.zul" image="/images/sectores.png" label="Sucursal-Empleados" onClick="ingresar(self)" />
+                        <menubar id="menubar" width="100%">
+                            <menu label="Administración"  image="/images/administracion1.png"  >
+                                <menupopup>
+                                    <menuitem  value="/accesos.zul"  image="/images/key.png"  label="Accesos" onClick='ingresar(self,"Accesos")' />
+                                    <menuitem  value="/auditoria.zul"  image="/images/auditoria.gif" label="Auditoria" onClick='ingresar(self,"Auditoria")' />
+                                    <menuitem  value="/empresa.zul"  image="/images/institucion.png" label="Empresas" onClick='ingresar(self,"Empresa")' />
+                                    <menuitem  value="/cantonesysectores.zul"  image="/images/cantones.png" label="Cantones-Sectores" onClick='ingresar(self,"Cantones")' />
+                                    <menuitem value="/perfiles.zul" image="/images/perfiles.png" label="Perfiles" onClick='ingresar(self,"Perfiles")' />
+                                    <menuseparator />
+                                    <menuitem   value="/nodos.zul"  image="/images/nodos.png" label="Nodos" onClick='ingresar(self,"Nodos")' />
+                                    <menuitem   value="/radios.zul"  image="/images/radio.png" label="Radios" onClick='ingresar(self,"Radios")' />
+                                    <menuitem   value="/bancos.zul"  image="/images/bancos.png" label="Bancos" onClick='ingresar(self,"Bancos")' />
+                                    <menuseparator />
+                                    <menuitem value="/respaldos.zul" image="/images/base.gif"   label="Respaldar BD Sistema"  onClick='ingresar(self,"Respaldar")' />
+                                    <menuitem label="Salir" image="/images/exit.gif"  onClick="salir()" />
+                                </menupopup>
+                            </menu>
+                            <menu label="Personas"   image="/images/personas.png" >
+                                <menupopup>
+                                    <menuitem   value="/proveedores.zul"  image="/images/proveedor.png" label="Proveedores" onClick='ingresar(self,"Proveedores")' />
+                                <!--menuitem    value="/clientes.zul" image="/images/clientes.png" label="Clientes" onClick='ingresar(self,"")' /-->
+                                    <menuseparator />
+                                    <menuitem    value="/empleados.zul" image="/images/empleados.png" label="Empleados" onClick='ingresar(self,"Empleados")' />
+                                    <menuitem    value="/comisiones.zul" image="/images/comision.png" label="Comisión-Empleados" onClick='ingresar(self,"Comisiones")' />
+                                    <menuitem    value="/empleadosector.zul" image="/images/sectores.png" label="Sucursal-Empleados" onClick='ingresar(self,"EmpleadosSectores")' />
 
-                            </menupopup>
-                        </menu>
+                                </menupopup>
+                            </menu>
 
-                        <menu label="Control" image="/images/control.png" >
-                            <menupopup>
+                            <menu label="Control" image="/images/control.png" >
+                                <menupopup>
                                 
-                                <menuitem value="/comprasventas.zul" image="/images/equipos.png" label="Compras/Ventas" onClick="ingresar(self)" />
-                            <menuseparator />
-                                <menuitem   value="/marcas.zul"  image="/images/marcas.png" label="Marcas" onClick="ingresar(self)" />
-                                <menuitem  value="/equipos.zul"   image="/images/equipos2.png" label="Equipos" onClick="ingresar(self)" />
-                            </menupopup>
-                        </menu>
-                        <menu label="Cobros" image="/images/cobros.png" >
-                            <menupopup>
-                                <menuitem image="/images/contratos.png" value="/contratos.zul"  label="Contratos" onClick="ingresar(self)" />
-                                <menuitem image="/images/soporte.png" value="/soporte.zul"  label="Soporte" onClick="ingresar(self)" />
-                                <!--menuitem image="/images/facturacion.png" value="/facturacion.zul"  label="Facturación" onClick="ingresar(self)" /-->
-                                <menuseparator />
-                                <menuitem image="/images/facturacion.png" value="/asignarFacturas.zul"  label="Asignar Facturas" onClick="ingresar(self)" />
-                                <menuitem image="/images/tarjeta.png" value="/registroFacturas.zul"  label="Registrar Cobros" onClick="ingresar(self)" />
-                                <menuitem image="/images/calendario.png" value="/generarFacturas.zul"  label="Generación Facturas" onClick="ingresar(self)" />
-                                <menuseparator />
-                                <menuitem  value="/planes.zul"    image="/images/planes.png" label="Planes Productos" onClick="ingresar(self)" />
-                                <menuitem value="/reporteCobros.zul"  image="/images/reportes.png" label="Reportes" onClick="ingresar(self)" />
-                                <menuitem value="/megas.zul"  image="/images/mb.png" label="Megas Ocupados" onClick="ingresar(self)" />
-                            </menupopup>
-                        </menu>
-                    </menubar>
-                </panelchildren>
-            </panel>
+                                    <menuitem value="/comprasventas.zul" image="/images/equipos.png" label="Compras/Ventas" onClick='ingresar(self,"Compras")' />
+                                    <menuseparator />
+                                    <menuitem   value="/marcas.zul"  image="/images/marcas.png" label="Marcas" onClick='ingresar(self,"Marcas")' />
+                                    <menuitem  value="/equipos.zul"   image="/images/equipos2.png" label="Equipos" onClick='ingresar(self,"Equipos")' />
+                                </menupopup>
+                            </menu>
+                            <menu label="Cobros" image="/images/cobros.png" >
+                                <menupopup>
+                                    <menuitem image="/images/contratos.png" value="/contratos.zul"  label="Contratos" onClick='ingresar(self,"Contratos")' />
+                                    <menuitem image="/images/soporte.png" value="/soporte.zul"  label="Soporte" onClick='ingresar(self,"Soporte")' />
+                                <!--menuitem image="/images/facturacion.png" value="/facturacion.zul"  label="Facturación" onClick='ingresar(self,"")' /-->
+                                    <menuseparator />
+                                    <menuitem image="/images/facturacion.png" value="/asignarFacturas.zul"  label="Asignar Facturas" onClick='ingresar(self,"Facturacion")' />
+                                    <menuitem image="/images/tarjeta.png" value="/registroFacturas.zul"  label="Registrar Cobros" onClick='ingresar(self,"Registro de Cobros")' />
+                                    <menuitem image="/images/calendario.png" value="/generarFacturas.zul"  label="Generación Facturas" onClick='ingresar(self,"Generacion Cobros")' />
+                                    <menuseparator />
+                                    <menuitem  value="/planes.zul"    image="/images/planes.png" label="Planes Productos" onClick='ingresar(self,"Planes")' />
+                                    <menuitem value="/reporteCobros.zul"  image="/images/reportes.png" label="Reportes" onClick='ingresar(self,"Reportes")' />
+                                    <menuitem value="/megas.zul"  image="/images/mb.png" label="Megas Ocupados" onClick='ingresar(self,"Reportes")' />
+                                </menupopup>
+                            </menu>
+                        </menubar>
+                    </panelchildren>
+                </panel>
             
             </div>
-  </north>
+        </north>
         <center  flex="true" >
             <div>
-             <panel>
-                <panelchildren>
-                    <tabbox context="derecho" id="mytab" width="100%" height="600px">
-                        <tabs id="tbs">
-                            <tab label="Inicio" image="/images/inicio.png"  id="blanco" Closable="true" />
-                        </tabs>
-                        <tabpanels id="tps" >
-                            <tabpanel>
-                                <iframe scrolling="false" width="100%" height="100%" src="/blanco.zul" />
-                            </tabpanel>
-                        </tabpanels>
-                    </tabbox>
-                </panelchildren>
-            </panel>
-              </div>
-            </center>
+                <panel>
+                    <panelchildren>
+                        <tabbox context="derecho" id="mytab" width="100%" height="600px">
+                            <tabs id="tbs">
+                                <tab label="Inicio" image="/images/inicio.png"  id="blanco" Closable="true" />
+                            </tabs>
+                            <tabpanels id="tps" >
+                                <tabpanel>
+                                    <iframe scrolling="false" width="100%" height="100%" src="/blanco.zul" />
+                                </tabpanel>
+                            </tabpanels>
+                        </tabbox>
+                    </panelchildren>
+                </panel>
+            </div>
+        </center>
 
-<zscript>
+        <zscript>
     void verificar(){
             Session a = Sessions.getCurrent();
             Empleados emp = a.getAttribute("user");
@@ -188,8 +190,8 @@
                 Executions.sendRedirect("login.zul");
             }    
             }
-</zscript>
-        </borderlayout>
+        </zscript>
+    </borderlayout>
    
  
 </zk>
