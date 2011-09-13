@@ -13,17 +13,17 @@
   <!--script type="text/javascript" src="/widgets/effects/login_effect/jquery-ui-1.8.6.custom.min.js" /-->
   <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
     <style>
-.estil{
-	height:99%;
-    background-image: url(./images/fondo.jpg)   ;
-    background-color:#004669;
-     background-repeat: no-repeat; 
-    
-    
-}
-.estilo2{
-    background-image: url(./images/mensajes.gif)   ;
-}
+        .estil{
+                height:99%;
+            background-image: url(./images/fondo.jpg)   ;
+            background-color:#004669;
+             background-repeat: no-repeat; 
+
+
+        }
+        .estilo2{
+            background-image: url(./images/mensajes.gif)   ;
+        }
     </style>
  
     <div  class="estil" >
