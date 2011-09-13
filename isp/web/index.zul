@@ -104,7 +104,7 @@ void ingresar(Menuitem item,String pantalla ){
                 <panel style="left:10%" >
                     <panelchildren>
 
-                        <menubar id="menubar" width="100%">
+                        <menubar id="menubar" autodrop="true"  width="100%">
                             <menu label="Administración"  image="/images/administracion1.png"  >
                                 <menupopup>
                                     <menuitem  value="/accesos.zul"  image="/images/key.png"  label="Accesos" onClick='ingresar(self,"Accesos")' />
