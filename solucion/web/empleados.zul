@@ -251,7 +251,9 @@ void eliminar(){
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getIdentificacion()+""));
                       li.appendChild(new Listcell(acceIt.getApellidos()+" "+acceIt.getNombres()));
+                      li.appendChild(new Listcell(acceIt.getTelefono1()+""));
                       li.appendChild(new Listcell(acceIt.getDireccion()+""));
+                      li.appendChild(new Listcell(acceIt.getPerfil()+""));
                       datos.appendChild(li);
              }
 
@@ -424,7 +426,10 @@ empa.setPerfil(g);
                                     <listhead>
                                         <listheader label="Cod."/>
                                         <listheader label="Nombres"/>
+                                        <listheader label="Teléfono"/>
                                         <listheader label="Dirección"/>
+                                        
+                                        <listheader label="Perfil"/>
 
                                     </listhead>
                                     <listitem forEach="${allEvents}" value="${each}">
