@@ -37,7 +37,6 @@ void llenar(Empleados empa){
     direccion.value = empa.getDireccion();
     telefono.value = empa.getTelefono();
     email.value = empa.getEmail();
-
     usuario.value = empa.getUsuario();
     clave.value = permiso.decriptar(empa.getClave());
 
@@ -57,9 +56,19 @@ void llenar(Empleados empa){
                                 break;
                             }
                    }
-
-
-                    
+                }
+                
+              if(empa.getTipo()!=null){
+                  for (int i = 0; i <= tipo.getItems().size(); i++) {
+                            String tr0 = ((String)((Listitem)tipo.getItems().get(i)).getValue());
+                            String primero = tr0;
+                            String segundo = empa.getTipo();
+                            if(primero.equals(segundo)){
+                                tipo.setSelectedItem((Listitem)tipo.getItems().get(i));
+                                tipob.value = tipo.selectedItem.label+"";
+                                break;
+                            }
+                   }
                 }
 
 }
@@ -101,6 +110,7 @@ void estado(Boolean estado,Boolean modificar){
         empa.setPerfil(perf.selectedItem.value);
         empa.setEstado(estadoe.checked);
         empa.setUsuario(usuario.value);
+        empa.setTipo(tipo.selectedItem.value);
 
         empa.setClave(permiso.encriptar(clave.value));
  
@@ -163,7 +173,7 @@ cargarEmpleado(Empleados emple){
  void move(){
         llenar((Empleados)datos.selectedItem.value);
         modificar.disabled = false;
-        registro.setSelected(true);
+     
   }
 void modificar(){
   if(verificar("Modificar")){
@@ -236,13 +246,7 @@ empa.setPerfil(g);
 }
 ]]>
         </zscript>
-        <tabbox width="100%">
-            <tabs>
-                <tab id="registro" label="Registro" />
-                <tab id="busqueda" label="Busquedas" />
-            </tabs>
-            <tabpanels>
-                <tabpanel>
+
 
 
                     <grid width="100%">
@@ -250,7 +254,20 @@ empa.setPerfil(g);
                             <row>
                                 <span style="float:right"> Identificación(*):</span>
                                 <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="identificacion"  />
-                                <span>
+                                <span style="float:right"> Tipo:</span>
+                                <span>     
+                                    <bandbox  readonly="true"  id="tipob">
+                                        <bandpopup>
+                                            <vbox>
+                                                <listbox  onSelect="tipob.value = self.selectedItem.label;tipob.close()" id="tipo" width="250px">
+                                                  <listitem label="Registra Facturas de Otros Usuarios" value="OTRO"/>
+                                                    <listitem label="Solo Registra sus Facturas" value="SOLO"/>
+
+                                                </listbox>
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
+                            
                                     <intbox id="codigo" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
                                 </span>
                                 <span></span>
@@ -319,10 +336,7 @@ empa.setPerfil(g);
                     </vbox>
 
 
-                </tabpanel>
-
-                <tabpanel>
-
+        
                     <groupbox  width="100%" mold="3d" >
 
                         <caption label="Busquedas" />
@@ -353,13 +367,7 @@ empa.setPerfil(g);
 
 
 
-                </tabpanel>
-
-            </tabpanels>
-
-
-        </tabbox>
-<zscript>
+        <zscript>
             void cargar(){
             try{
                     instanciadaContratos = crearEmpleados.getAttribute("nuevo");
@@ -368,6 +376,6 @@ empa.setPerfil(g);
              }
                     
             }
-</zscript>
+        </zscript>
     </window>
 </zk>

@@ -46,7 +46,12 @@ import bean.reportesClase;
       
        ReportesClase reportes = new ReportesClase();
 List cantonesList = adm.query("Select o from Canton as o ");
-List empleadosList = adm.query("Select o from Empleados as o ");
+List empleadosList = new ArrayList();
+if(usuarioActual.getTipo().equals("OTRO")){
+        empleadosList = adm.query("Select o from Empleados as o ");
+}else{
+        empleadosList.add(usuarioActual);
+}
  
     void seleccionarTodos(Checkbox estado,Integer tipo){
                 if(tipo == 0){
