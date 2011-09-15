@@ -68,7 +68,7 @@ public class Contratos implements Serializable {
     @Column(name = "autorizado")
     private Boolean autorizado = true;
     @Column(name = "descuento")
-    private BigDecimal descuento;
+    private BigDecimal descuento= new BigDecimal(0);
     @Column(name = "fechainstalacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainstalacion = new Date();

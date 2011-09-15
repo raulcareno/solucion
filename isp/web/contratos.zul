@@ -142,12 +142,9 @@ void llenar(Contratos  equi2){
                bdRadio.value = "";
                 radio.setSelectedItem(null);
     }
-    if(equi.getRadios() != null){
  
+ if(equi.getSector() != null){   
         try{
-        
-                
-                      
                               for (int i = 0; i <= cantones.getItems().size(); i++) {
                                     Canton tr0 = ((Canton)((Listitem)cantones.getItems().get(i)).getValue());
                                     int primero = tr0.getCodigo();
@@ -158,7 +155,7 @@ void llenar(Contratos  equi2){
                                         break;
                                     }
                            }
-                           buscarSectores(equi.getRadios().getNodos().getSector().getCanton().getCodigo());
+                           buscarSectores(equi.getSector().getCanton().getCodigo());
 
                             for (int i = 0; i <= sectores.getItems().size(); i++) {
                                             Sector tr0 = ((Sector)((Listitem)sectores.getItems().get(i)).getValue());
@@ -170,7 +167,16 @@ void llenar(Contratos  equi2){
                                                 break;
                                             }
                             }
-                           
+                            if(equi.getRadios() != null){
+                                
+                            }else{
+                                    buscarNodos(equi.getSector().getCanton().getCodigo());
+                            }
+                            
+                             }catch(Exception err){System.out.println("ERROR no tiene Radios asignados COMBO radio "+err);}
+                    }       
+    if(equi.getRadios() != null){
+    try{
                       buscarNodos(equi.getRadios().getNodos().getSector().getCanton().getCodigo());
                     
                     for (int i = 0; i <= nodos.getItems().size(); i++) {
@@ -183,9 +189,7 @@ void llenar(Contratos  equi2){
                                         break;
                                     }
                            }
-                        
-                        
-                        
+                       
                         buscarRadios(equi.getRadios().getNodos().getCodigo());
         
                       for (int i = 0; i <= radio.getItems().size(); i++) {
