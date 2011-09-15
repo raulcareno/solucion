@@ -466,6 +466,14 @@ public class reportesClase {
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalenciasSuple = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'SU' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        if(equivalenciasSuple.size()<=0){
+            try {
+                Messagebox.show("No existen los rangos de Supletorio, ingrese a Equivalencias > Supletorios y verifique que esté lleno...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                return null;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+        }
 
         String query = "";
         for (Notanotas notass : notas) {
@@ -614,7 +622,14 @@ public class reportesClase {
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalenciasSuple = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'SU' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-
+  if(equivalenciasSuple.size()<=0){
+            try {
+                Messagebox.show("No existen los rangos de Supletorio, ingrese a Equivalencias > Supletorios y verifique que esté lleno...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                return null;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+        }
 //Sistemacalificacion sd;
 //sd.getTrimestre().getCodigotrim();
 
