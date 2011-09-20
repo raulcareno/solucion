@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <JCINFORMEMPRESA>
     <PUERTOPRINCIPAL>COM3</PUERTOPRINCIPAL>
-    <LED/>
+    <LED>null</LED>
     <BARRA1>COM1</BARRA1>
     <BARRA2/>
     <SALE1>2</SALE1>
@@ -39,9 +39,9 @@
     <SEABRETIC>false</SEABRETIC>
     <MULTA>0.0</MULTA>
     <IPCAM>false</IPCAM>
-    <URL/>
+    <URL>http://</URL>
     <ENTRA1>1</ENTRA1>
     <ENTRA2>2</ENTRA2>
-    <PUERTATIC>null</PUERTATIC>
-    <PUERTAFAC>null</PUERTAFAC>
+    <PUERTATIC>1</PUERTATIC>
+    <PUERTAFAC>1</PUERTAFAC>
 </JCINFORMEMPRESA>

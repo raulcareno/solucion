@@ -186,7 +186,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     //JOptionPane.showMessageDialog(getContentPane(), "JCINFORM ");
                     acerca ac = new acerca();
                     //ac.setModal(true);
-                    ac.setLocation(250, 250);
+                    ac.setLocation(0, 0);
                     contenedor.add(ac);
                     ac.show();
 
@@ -811,7 +811,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         getContentPane().add(barraHerramients, java.awt.BorderLayout.PAGE_START);
 
         jSplitPane1.setBorder(null);
-        jSplitPane1.setDividerLocation(240);
+        jSplitPane1.setDividerLocation(202);
         jSplitPane1.setDividerSize(0);
         jSplitPane1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -947,7 +947,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmIngresarSistema.getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 380, 40);
 
-        frmIngresarSistema.setBounds(170, 150, 390, 220);
+        frmIngresarSistema.setBounds(100, 100, 390, 220);
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         formaTarjetas1.setTitle("Registro y Modificación de Tarjetas");
@@ -1223,7 +1223,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         formaTarjetas1.getContentPane().add(facturar);
         facturar.setBounds(140, 40, 70, 16);
 
-        formaTarjetas1.setBounds(80, 0, 380, 380);
+        formaTarjetas1.setBounds(5, 5, 380, 380);
         contenedor.add(formaTarjetas1, javax.swing.JLayeredPane.MODAL_LAYER);
 
         frmLote.setMaximizable(true);
@@ -1450,9 +1450,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addContainerGap()
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frmLoteLayout.createSequentialGroup()
-                        .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                        .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                         .addGap(4, 4, 4))
                     .addGroup(frmLoteLayout.createSequentialGroup()
                         .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1465,7 +1465,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         .addComponent(jLabel34)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(activa1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
                         .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(noingresodiarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1473,7 +1473,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGap(23, 23, 23))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
+                .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
                 .addGap(35, 35, 35))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
@@ -1484,10 +1484,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel35))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
                 .addContainerGap())
         );
         frmLoteLayout.setVerticalGroup(
@@ -1524,7 +1524,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGap(47, 47, 47))
         );
 
-        frmLote.setBounds(20, 10, 650, 540);
+        frmLote.setBounds(5, 5, 650, 540);
         contenedor.add(frmLote, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         frmClientes1.setTitle("Registro y Modifación de Clientes");
@@ -1835,7 +1835,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmClientes1.getContentPane().add(jPanel6);
         jPanel6.setBounds(0, 0, 430, 40);
 
-        frmClientes1.setBounds(40, 20, 440, 450);
+        frmClientes1.setBounds(5, 5, 440, 450);
         contenedor.add(frmClientes1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         frmLoteTarjetas.setMaximizable(true);
@@ -2120,7 +2120,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmLoteTarjetas.getContentPane().add(nombresCliente);
         nombresCliente.setBounds(210, 30, 300, 20);
 
-        frmLoteTarjetas.setBounds(20, 10, 570, 460);
+        frmLoteTarjetas.setBounds(5, 5, 570, 460);
         contenedor.add(frmLoteTarjetas, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         frmRespaldarBase.setTitle("Respaldo de Información");
@@ -2192,7 +2192,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             frmRespaldarBase.getContentPane().add(jButton6);
             jButton6.setBounds(350, 120, 140, 40);
 
-            frmRespaldarBase.setBounds(50, 120, 520, 210);
+            frmRespaldarBase.setBounds(5, 5, 520, 210);
             contenedor.add(frmRespaldarBase, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             panelCambiar.setBackground(new java.awt.Color(227, 240, 254));
@@ -2256,7 +2256,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             panelIngreso.setLayout(null);
 
-            imAviso.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+            imAviso.setFont(new java.awt.Font("Tahoma", 0, 24));
             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
             imAviso.setText(".....");
             panelIngreso.add(imAviso);
@@ -2298,7 +2298,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             panelIngreso.add(tarjetatxt);
-            tarjetatxt.setBounds(370, 320, 160, 50);
+            tarjetatxt.setBounds(370, 380, 160, 50);
 
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
             jPanel1.setLayout(jPanel1Layout);
@@ -2314,50 +2314,50 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(jPanel1);
             jPanel1.setBounds(360, 10, 20, 70);
 
-            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
             spIngreso.setBorder(null);
             spIngreso.setEnabled(false);
             spIngreso.setFocusable(false);
             panelIngreso.add(spIngreso);
-            spIngreso.setBounds(640, 290, 90, 20);
+            spIngreso.setBounds(440, 300, 90, 20);
 
-            ingre.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+            ingre.setFont(new java.awt.Font("Tahoma", 1, 11));
             ingre.setForeground(new java.awt.Color(153, 153, 153));
             ingre.setText("INGRESO:");
             panelIngreso.add(ingre);
-            ingre.setBounds(570, 290, 60, 20);
+            ingre.setBounds(370, 300, 60, 20);
 
-            spSalida.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+            spSalida.setFont(new java.awt.Font("Tahoma", 0, 14));
             spSalida.setBorder(null);
             spSalida.setEnabled(false);
             spSalida.setFocusable(false);
             panelIngreso.add(spSalida);
-            spSalida.setBounds(640, 320, 90, 20);
+            spSalida.setBounds(440, 330, 90, 20);
 
-            salid.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+            salid.setFont(new java.awt.Font("Tahoma", 1, 11));
             salid.setForeground(new java.awt.Color(153, 153, 153));
             salid.setText("SALIDA:");
             panelIngreso.add(salid);
-            salid.setBounds(570, 320, 60, 20);
+            salid.setBounds(370, 330, 60, 20);
 
-            spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+            spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
             spConsumo.setBorder(null);
             spConsumo.setEnabled(false);
             spConsumo.setFocusable(false);
             panelIngreso.add(spConsumo);
-            spConsumo.setBounds(640, 350, 90, 20);
+            spConsumo.setBounds(440, 360, 90, 20);
 
             cons.setFont(new java.awt.Font("Tahoma", 1, 11));
             cons.setForeground(new java.awt.Color(153, 153, 153));
             cons.setText("CONSUMO:");
             panelIngreso.add(cons);
-            cons.setBounds(570, 350, 60, 20);
+            cons.setBounds(370, 360, 60, 20);
 
             placa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             placa.setEditable(false);
             placa.setText(".");
             panelIngreso.add(placa);
-            placa.setBounds(370, 380, 160, 50);
+            placa.setBounds(580, 290, 160, 50);
 
             camaraVista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             camaraVista.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 204), 1, true));
@@ -2477,7 +2477,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar1.setFloatable(false);
-            jToolBar1.setOrientation(1);
+            jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar1.setRollover(true);
 
             btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
@@ -2545,7 +2545,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar2.setFloatable(false);
-            jToolBar2.setOrientation(1);
+            jToolBar2.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar2.setRollover(true);
 
             btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
@@ -2649,7 +2649,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar3.setFloatable(false);
-            jToolBar3.setOrientation(1);
+            jToolBar3.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar3.setRollover(true);
 
             btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/help.gif"))); // NOI18N
@@ -2723,17 +2723,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     .addContainerGap()
                     .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel32)
-                        .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                        .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                        .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
+                        .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                        .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                        .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
                     .addContainerGap())
             );
             jXTaskPaneContainer1Layout.setVerticalGroup(
                 jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
-                    .addContainerGap()
                     .addComponent(contenedor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGap(22, 22, 22)
                     .addComponent(contenedor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -4074,7 +4073,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             frmOperadores usu = new frmOperadores(this, true, this, adm);
             usu.setSize(441, 445);
-            usu.setLocation(240, 100);
+            usu.setLocation(0, 0);
             contenedor.add(usu);
             usu.show();
             contenedor.requestFocus();
@@ -4095,7 +4094,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
             frmEmpresa usu = new frmEmpresa(this, true, this, adm);
             usu.setSize(462, 496);
-            usu.setLocation(240, 80);
+            usu.setLocation(0, 0);
             contenedor.add(usu);
 
             usu.show();
@@ -4118,7 +4117,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
             frmTarifas usu = new frmTarifas(this, true, this, adm);
             usu.setSize(409, 460);
-            usu.setLocation(240, 100);
+            usu.setLocation(0, 0);
             contenedor.add(usu);
             usu.show();
             contenedor.requestFocus();
@@ -4144,7 +4143,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             frmTicket usu = new frmTicket(this, true, this, adm);
             usu.setSize(334, 238);
-            usu.setLocation(240, 100);
+            usu.setLocation(0, 0);
 //            usu.setMaximizable(true);
             contenedor.add(usu);
             usu.placa.requestFocusInWindow();
@@ -4185,7 +4184,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
             usu.setSize(669, 507);
-            usu.setLocation(80, 10);
+            usu.setLocation(0, 0);
             contenedor.add(usu);
 
             usu.show();
@@ -4233,7 +4232,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
             acerca usu = new acerca(this, true, empresaObj);
             usu.setSize(458, 239);
-            usu.setLocation(260, 220);
+            usu.setLocation(0, 0);
             usu.show();
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
@@ -4331,7 +4330,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 llenarTarjeta();
 //                formaTarjetas1.setModal(true);
 //                formaTarjetas1.setSize(400, 388);
-                formaTarjetas1.setLocation(250, 70);
+                formaTarjetas1.setLocation(0, 0);
                 formaTarjetas1.show();
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
@@ -4374,7 +4373,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         buscarClientes.setModal(true);
         buscarClientes.setSize(533, 300);
-        buscarClientes.setLocation(250, 70);
+        buscarClientes.setLocation(0, 0);
         buscarClientes.show();
 
         DefaultTableModel dtm = (DefaultTableModel) busquedaTabla.getModel();
@@ -4759,7 +4758,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             frmPrivilegios usu = new frmPrivilegios(this, true, this, adm);
             usu.setSize(457, 449);
 
-            usu.setLocation(240, 100);
+            usu.setLocation(0, 0);
             contenedor.add(usu);
             usu.show();
 //              contenedor.add(usu);
@@ -5366,7 +5365,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             frmAuditoria usu = new frmAuditoria(this, true, this, adm);
             usu.setSize(747, 539);
-            usu.setLocation(200, 40);
+            usu.setLocation(0, 0);
             contenedor.add(usu);
             usu.show();
             contenedor.requestFocus();

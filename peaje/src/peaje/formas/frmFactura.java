@@ -688,16 +688,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
         total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         total.setText("0.0");
         total.setCaretColor(new java.awt.Color(0, 204, 0));
-        total.setFont(new java.awt.Font("Tahoma", 1, 36));
+        total.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jPanel4.add(total);
-        total.setBounds(130, 60, 150, 50);
+        total.setBounds(10, 60, 240, 50);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24));
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
         jLabel2.setLabelFor(total);
         jLabel2.setText("A PAGAR:");
         jPanel4.add(jLabel2);
-        jLabel2.setBounds(10, 70, 120, 30);
+        jLabel2.setBounds(20, 10, 120, 30);
 
         btnMulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/perdida.png"))); // NOI18N
         btnMulta.setMnemonic('G');
