@@ -1,0 +1,138 @@
+INFO peaje.formas.frmPrincipal,line 41,19.09.2011/15:16:06,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,19.09.2011/15:16:42,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,19.09.2011/15:16:47,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,19.09.2011/15:16:47,OK
+INFO peaje.formas.frmPrincipal,line 41,19.09.2011/15:17:50,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,19.09.2011/15:18:03,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,19.09.2011/15:18:03,OK
+INFO peaje.formas.frmPrincipal,line 41,19.09.2011/15:19:16,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,19.09.2011/15:19:30,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,19.09.2011/15:19:30,OK
+INFO peaje.formas.frmPrincipal,line 41,19.09.2011/15:25:18,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,19.09.2011/15:25:26,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,19.09.2011/15:25:26,OK
+INFO peaje.formas.frmPrincipal,line 41,19.09.2011/15:26:48,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,19.09.2011/15:26:56,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,19.09.2011/15:26:56,OK
+INFO peaje.formas.frmPrincipal,line 41,19.09.2011/15:27:18,java.lang.ArithmeticException: Rounding necessary
+INFO peaje.formas.frmPrincipal,line 41,19.09.2011/15:28:31,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO NO SE ABRIÓ: INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,19.09.2011/15:28:42,ERROR
+INFO NO SE ABRIÓ: INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,19.09.2011/15:28:44,ERROR
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,19.09.2011/15:28:44,OK
+INFO peaje.formas.frmTicket,line 41,19.09.2011/15:28:55,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterException: El servidor RPC no está disponible.
+
+INFO peaje.formas.frmTicket,line 41,19.09.2011/15:28:55,
+INFO peaje.formas.frmPrincipal,line 41,19.09.2011/15:31:53,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,19.09.2011/15:32:01,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,19.09.2011/15:32:01,OK
+INFO peaje.formas.frmPrincipal,line 41,19.09.2011/15:42:38,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,19.09.2011/15:42:56,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,19.09.2011/15:42:56,OK
+INFO peaje.formas.frmPrincipal,line 41,19.09.2011/15:45:43,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,19.09.2011/15:45:52,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,19.09.2011/15:45:52,OK
+INFO peaje.formas.frmPrincipal,line 41,19.09.2011/16:25:01,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,19.09.2011/16:25:08,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,19.09.2011/16:25:08,OK
+INFO peaje.formas.frmTicket,line 41,19.09.2011/16:25:18,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterException: El servidor RPC no está disponible.
+
+INFO peaje.formas.frmTicket,line 41,19.09.2011/16:25:18,
+INFO peaje.formas.frmTicket,line 41,19.09.2011/16:26:36,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterException: El servidor RPC no está disponible.
+
+INFO peaje.formas.frmTicket,line 41,19.09.2011/16:26:36,
+INFO peaje.formas.frmPrincipal,line 41,20.09.2011/14:38:16,javax.persistence.RollbackException: Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0.1 (Build b09d-fcs (12/06/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.CommunicationsException: Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.net.SocketException
+MESSAGE: Software caused connection abort: recv failed
+
+STACKTRACE:
+
+java.net.SocketException: Software caused connection abort: recv failed
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.read(SocketInputStream.java:150)
+	at java.net.SocketInputStream.read(SocketInputStream.java:121)
+	at com.mysql.jdbc.util.ReadAheadInputStream.fill(ReadAheadInputStream.java:113)
+	at com.mysql.jdbc.util.ReadAheadInputStream.readFromUnderlyingStreamIfNecessary(ReadAheadInputStream.java:160)
+	at com.mysql.jdbc.util.ReadAheadInputStream.read(ReadAheadInputStream.java:188)
+	at com.mysql.jdbc.MysqlIO.readFully(MysqlIO.java:1953)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:2368)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:2867)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:1616)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:1708)
+	at com.mysql.jdbc.Connection.execSQL(Connection.java:3255)
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:1293)
+	at com.mysql.jdbc.PreparedStatement.executeQuery(PreparedStatement.java:1428)
+	at oracle.toplink.essentials.internal.databaseaccess.DatabaseAccessor.executeSelect(DatabaseAccessor.java:726)
+	at oracle.toplink.essentials.internal.databaseaccess.DatabaseAccessor.basicExecuteCall(DatabaseAccessor.java:501)
+	at oracle.toplink.essentials.internal.databaseaccess.DatabaseAccessor.executeCall(DatabaseAccessor.java:452)
+	at oracle.toplink.essentials.threetier.ServerSession.executeCall(ServerSession.java:473)
+	at oracle.toplink.essentials.internal.queryframework.DatasourceCallQueryMechanism.executeCall(DatasourceCallQueryMechanism.java:228)
+	at oracle.toplink.essentials.internal.queryframework.DatasourceCallQueryMechanism.executeCall(DatasourceCallQueryMechanism.java:214)
+	at oracle.toplink.essentials.internal.queryframework.DatasourceCallQueryMechanism.selectRowForDoesExist(DatasourceCallQueryMechanism.java:657)
+	at oracle.toplink.essentials.queryframework.DoesExistQuery.executeDatabaseQuery(DoesExistQuery.java:260)
+	at oracle.toplink.essentials.queryframework.DatabaseQuery.execute(DatabaseQuery.java:628)
+	at oracle.toplink.essentials.queryframework.DatabaseQuery.executeInUnitOfWork(DatabaseQuery.java:555)
+	at oracle.toplink.essentials.internal.sessions.UnitOfWorkImpl.internalExecuteQuery(UnitOfWorkImpl.java:2233)
+	at oracle.toplink.essentials.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:952)
+	at oracle.toplink.essentials.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:909)
+	at oracle.toplink.essentials.internal.sessions.UnitOfWorkImpl.checkForUnregisteredExistingObject(UnitOfWorkImpl.java:530)
+	at oracle.toplink.essentials.internal.ejb.cmp3.base.RepeatableWriteUnitOfWork$1.iterate(RepeatableWriteUnitOfWork.java:139)
+	at oracle.toplink.essentials.internal.descriptors.DescriptorIterator.internalIterateReferenceObject(DescriptorIterator.java:189)
+	at oracle.toplink.essentials.internal.descriptors.DescriptorIterator.iterateReferenceObjectForMapping(DescriptorIterator.java:296)
+	at oracle.toplink.essentials.mappings.ObjectReferenceMapping.iterateOnRealAttributeValue(ObjectReferenceMapping.java:269)
+	at oracle.toplink.essentials.internal.indirection.IndirectionPolicy.iterateOnAttributeValue(IndirectionPolicy.java:222)
+	at oracle.toplink.essentials.mappings.ForeignReferenceMapping.iterate(ForeignReferenceMapping.java:587)
+	at oracle.toplink.essentials.internal.descriptors.ObjectBuilder.iterate(ObjectBuilder.java:2099)
+	at oracle.toplink.essentials.internal.descriptors.DescriptorIterator.iterateReferenceObjects(DescriptorIterator.java:311)
+	at oracle.toplink.essentials.internal.descriptors.DescriptorIterator.startIterationOn(DescriptorIterator.java:484)
+	at oracle.toplink.essentials.internal.ejb.cmp3.base.RepeatableWriteUnitOfWork.discoverUnregisteredNewObjects(RepeatableWriteUnitOfWork.java:161)
+	at oracle.toplink.essentials.internal.sessions.UnitOfWorkImpl.discoverAllUnregisteredNewObjects(UnitOfWorkImpl.java:1292)
+	at oracle.toplink.essentials.internal.sessions.UnitOfWorkImpl.assignSequenceNumbers(UnitOfWorkImpl.java:382)
+	at oracle.toplink.essentials.internal.sessions.UnitOfWorkImpl.collectAndPrepareObjectsForCommit(UnitOfWorkImpl.java:721)
+	at oracle.toplink.essentials.internal.sessions.UnitOfWorkImpl.commitToDatabaseWithChangeSet(UnitOfWorkImpl.java:1112)
+	at oracle.toplink.essentials.internal.ejb.cmp3.base.RepeatableWriteUnitOfWork.commitRootUnitOfWork(RepeatableWriteUnitOfWork.java:107)
+	at oracle.toplink.essentials.internal.sessions.UnitOfWorkImpl.commitAndResume(UnitOfWorkImpl.java:856)
+	at oracle.toplink.essentials.internal.ejb.cmp3.transaction.base.EntityTransactionImpl.commit(EntityTransactionImpl.java:102)
+	at oracle.toplink.essentials.internal.ejb.cmp3.transaction.EntityTransactionImpl.commit(EntityTransactionImpl.java:60)
+	at hibernate.cargar.Administrador.guardar(Administrador.java:94)
+	at peaje.formas.frmPrincipal.auditar(frmPrincipal.java:6395)
+	at peaje.formas.frmPrincipal$1.windowClosing(frmPrincipal.java:159)
+	at java.awt.Window.processWindowEvent(Window.java:2045)
+	at javax.swing.JFrame.processWindowEvent(JFrame.java:296)
+	at java.awt.Window.processEvent(Window.java:2003)
+	at java.awt.Component.dispatchEventImpl(Component.java:4860)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Window.dispatchEventImpl(Window.java:2713)
+	at java.awt.Component.dispatchEvent(Component.java:4686)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:707)
+	at java.awt.EventQueue.access$000(EventQueue.java:101)
+	at java.awt.EventQueue$3.run(EventQueue.java:666)
+	at java.awt.EventQueue$3.run(EventQueue.java:664)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:680)
+	at java.awt.EventQueue$4.run(EventQueue.java:678)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:677)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:211)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:128)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:117)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:113)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+
+** END NESTED EXCEPTION **
+
+
+
+Last packet sent to the server was 61 ms ago.
+Error Code: 0
+Call: SELECT codigo FROM usuarios WHERE (codigo = ?)
+	bind => [1]
+Query: DoesExistQuery()

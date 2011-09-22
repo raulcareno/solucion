@@ -263,7 +263,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jPanel1.add(btnSalir);
         btnSalir.setBounds(480, 30, 60, 50);
 
-        hastahora2.setDateFormatString("hh:mm:ss");
+        hastahora2.setDateFormatString("HH:mm:ss");
         hastahora2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 hastahora2KeyPressed(evt);
@@ -272,7 +272,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jPanel1.add(hastahora2);
         hastahora2.setBounds(260, 60, 100, 20);
 
-        desdehora2.setDateFormatString("hh:mm:ss");
+        desdehora2.setDateFormatString("HH:mm:ss");
         desdehora2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 desdehora2KeyPressed(evt);
@@ -315,7 +315,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
                 .addGap(17, 17, 17))
         );
 

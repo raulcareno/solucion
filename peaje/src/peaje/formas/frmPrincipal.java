@@ -144,7 +144,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //       
 //     
 //    }
-    
+
     /** Creates new form frmPrincipal */
     public frmPrincipal() {
 //        super("frmPrincipal");
@@ -225,7 +225,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             }
             this.setIconImage(im);
-           // panelIngreso.setVisible(false);
+            // panelIngreso.setVisible(false);
             panelCambiar.setVisible(false);
             habilitarBotones(false);
             if (comprobar()) {
@@ -245,14 +245,18 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
-            lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         } catch (InstantiationException ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 
         usuariot.requestFocusInWindow();
@@ -2785,12 +2789,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                     puertoListo.add(reader);
                                     System.out.println("PUERTO INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto());
                                     interfaz = false;
-                                    lger.logger("PUERTO INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto(),"OK");
-                                    
+                                    lger.logger("PUERTO INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto(), "OK");
+
                                 }
                             } catch (Exception e) {
                                 System.out.println("NO SE ABRIÓ: INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto());
-                                 lger.logger("NO SE ABRIÓ: INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto(),"ERROR");
+                                lger.logger("NO SE ABRIÓ: INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto(), "ERROR");
                             }
 
                         }
@@ -2802,12 +2806,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                     puertoListo.add(reader);
                                     leds = false;
                                     System.out.println("PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed());
-                                    lger.logger("PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed(),"OK");
-                                    
+                                    lger.logger("PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed(), "OK");
+
                                 }
                             } catch (Exception e) {
                                 System.out.println("NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed());
-                                lger.logger("NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed(),"ERROR");
+                                lger.logger("NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed(), "ERROR");
                             }
                         }
                         //(2)  //PUERTO DE CODIGO DE BARRAS
@@ -2818,12 +2822,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                     puertoListo.add(reader);
                                     barras1 = false;
                                     System.out.println("PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras());
-                                    lger.logger("PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras(),"OK");
-                                    
+                                    lger.logger("PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras(), "OK");
+
                                 }
                             } catch (Exception e) {
                                 System.out.println("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras());
-                                lger.logger("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras(),"ERROR");
+                                lger.logger("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras(), "ERROR");
                             }
                         }
                         //(3)  //PUERTO DE CODIGO DE BARRAS 2
@@ -2835,12 +2839,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                     puertoListo.add(reader);
                                     System.out.println("PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2());
                                     barras2 = false;
-                                    lger.logger("PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2(),"OK");
-                                    
+                                    lger.logger("PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2(), "OK");
+
                                 }
                             } catch (Exception e) {
                                 System.out.println("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2());
-                                lger.logger("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2(),"ERROR");
+                                lger.logger("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2(), "ERROR");
                             }
 
                         }
@@ -2926,7 +2930,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
             portList = null;
             System.out.println("# PUERTOS PRINCIPALES INICIADOS: " + puertoListo.size());
-            lger.logger("# PUERTOS PRINCIPALES INICIADOS: " + puertoListo.size(),"OK");
+            lger.logger("# PUERTOS PRINCIPALES INICIADOS: " + puertoListo.size(), "OK");
         } catch (Exception ex) {
             Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -3019,7 +3023,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             barrera1.setEnabled(true);
                         } catch (IOException ex) {
                             System.out.println("ERROR EN ENVIAR NO. DE DISPONIBLES ");
-                            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                            lger.logger(frmPrincipal.class.getName(), ex + "");
                             System.out.println("FIN ERROR EN ENVIAR");
                         }
                     }
@@ -3028,7 +3033,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 
     }
@@ -3313,7 +3319,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
             } catch (Exception ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                lger.logger(frmPrincipal.class.getName(), ex + "");
             }
         } else {
             clave.setEditable(true);
@@ -3349,8 +3356,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 if (tarje == null) {//SI LA TARJETA NO ESTÁ REGISTRADA, LE CARGO AL CLIENTE
                     noTarjeta.setText(tarjetatxt.getText());
                     noTarjeta2.setText(tarjetatxt.getText());
-                    if(frmLoteTarjetas.isVisible()){
-                        noTarjeta2.setText(tarjetatxt.getText()); 
+                    if (frmLoteTarjetas.isVisible()) {
+                        noTarjeta2.setText(tarjetatxt.getText());
                         btnAnadirTarjeta.doClick();
                     }
                     errores.setText("");
@@ -3366,7 +3373,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         DateTime hasta = new DateTime(tarje.getHasta());
                         DateTime fechaAct = new DateTime(fechaActual);
                         Boolean continua = false;
+                        List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
                         if (habilitada) {
+                                       if (tipoIngreso.equals("e")) {//ENTRANDO
+                                            if (facturas.size() >= tarje.getIngresos().intValue()) {
+                                                errores.setText("<html>ERROR: TARJETA YA HA SIDO USADA...!</html>");
+                                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                                                return;
+                                            }
+                                        }
                             //primero valido si no ha ingresado ya otro con la misma tarjeta
 //                            if(tipoIngreso.equals("e")){
 //                                List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
@@ -3380,7 +3395,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //                                           return;
 //                                        }
 //                            }
-                            
+
                             if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
                                 System.out.println("EN EL RANGO DE FECHAS");
 
@@ -3429,7 +3444,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                 if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
                                     System.out.println("EN EL RANGO DE HORA");
                                     try {
-
+                                        
                                         abrirPuerta(puertoViene);
 
                                     } catch (Exception e) {
@@ -3461,16 +3476,17 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         }
                         errores.setText("<html>OK</html>");
                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                        
 
-        List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
+
+
                         Factura fac = new Factura();
                         if (tipoIngreso.equals("e")) {//ENTRANDO
-                            if (facturas.size() > 0) {
+                            //if (facturas.size() > 0) {
+                            if (facturas.size() >= tarje.getIngresos().intValue()) {
                                 errores.setText("<html>ERROR: TARJETA YA HA SIDO USADA...!</html>");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                                 return;
-                            }else{
+                            } else {
                                 fac.setPlaca("CLIENTE TARJETA");
                                 fac.setFechaini(new Date());
                                 fac.setFecha(new Date());
@@ -3502,13 +3518,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             } else {
                                 String mensaje = "";
                                 List<Factura> facturasCompro = adm.query(fechaActual, tarje.getTarjeta());
-                                        if(facturasCompro.size() >= tarje.getIngresos().intValue()){
-                                           System.out.println("SALE SIN MARCAR ENTRADA CON TARJETA YA USADA POR OTRA PERSONA");
-                                           mensaje = "<html>ERROR: NO REGISTRÓ LA ENTRADA, Y LA TARJETA YA HA SIDO USADA HOY, ...!</html>";
-                                           errores.setText(mensaje);
-                                           imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                                          // return;
-                                        }
+                                if (facturasCompro.size() >= tarje.getIngresos().intValue()) {
+                                    System.out.println("SALE SIN MARCAR ENTRADA CON TARJETA YA USADA POR OTRA PERSONA");
+                                    mensaje = "<html>ERROR: NO REGISTRÓ LA ENTRADA, Y LA TARJETA YA HA SIDO USADA HOY, ...!</html>";
+                                    errores.setText(mensaje);
+                                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                                    // return;
+                                }
                                 fac.setPlaca("CLIENTE TARJETA");
                                 fac.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
                                 fac.setFechafin(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
@@ -3518,10 +3534,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //                                fac.set
                                 adm.guardar(fac);
                                 llenarFechayHora(fac, "no");
-                                if(mensaje.equals(""))
-                                 errores.setText("<html>OK...!  (NO PASO ANTES POR EL INGRESO)</html>");
-                                if(mensaje.equals(""))
+                                if (mensaje.equals("")) {
+                                    errores.setText("<html>OK...!  (NO PASO ANTES POR EL INGRESO)</html>");
+                                }
+                                if (mensaje.equals("")) {
                                     imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+                                }
                             }
                         }
 
@@ -3611,14 +3629,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     }
                 }
             } catch (Exception ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                lger.logger(frmPrincipal.class.getName(), ex + "");
             }
 
             procesando.setVisible(false);
 
 //            taskTarjeta.setCollapsed(true);
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
     }
 
@@ -3671,27 +3691,31 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
             } catch (Exception ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                lger.logger(frmPrincipal.class.getName(), ex + "");
             }
             procesando.setVisible(false);
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
     }
- public void abrirPush(String puerta) {
+
+    public void abrirPush(String puerta) {
         try {
             //        final frmPrincipal pra = this;
-                 if(puerta == null){
-                        puerta = "1";
-                 }
-                            LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
-                            ta.outputSream.write(puerta.getBytes());
-                            noDisponibles();
+            if (puerta == null) {
+                puerta = "1";
+            }
+            LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+            ta.outputSream.write(puerta.getBytes());
+            noDisponibles();
         } catch (IOException ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
- 
+
     }
+
     public void imprimir(int cod, Empresa emp, int dias, Boolean mensual, Clientes cli) {
 
 //                    viewer.show();
@@ -3881,7 +3905,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
             return new BigDecimal(0);
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
         return new BigDecimal(0);
 
@@ -4020,7 +4045,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
             barrera1.setEnabled(true);
         } catch (IOException ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
         System.out.println("FIN: " + (new Date()));
 
@@ -4052,7 +4078,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             frmClientes1.setVisible(true);
             contenedor.requestFocus();
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 
 //        contenedor.requestFocus();
@@ -4078,7 +4105,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             usu.show();
             contenedor.requestFocus();
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 //        contenedor.requestFocus();
     }//GEN-LAST:event_btnUsuariosActionPerformed
@@ -4100,7 +4128,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             usu.show();
             contenedor.requestFocus();
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 //        contenedor.requestFocus();
     }//GEN-LAST:event_btnEmpresaActionPerformed
@@ -4122,7 +4151,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             usu.show();
             contenedor.requestFocus();
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 //        contenedor.requestFocus();
     }//GEN-LAST:event_btnTarifasActionPerformed
@@ -4151,7 +4181,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             usu.placa.requestFocusInWindow();
 
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 //        contenedor.requestFocus();
     }//GEN-LAST:event_btnTicketActionPerformed
@@ -4192,7 +4223,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 //        contenedor.requestFocus();
 
@@ -4215,7 +4247,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             contenedor.add(usu);
             usu.show();
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 //        contenedor.requestFocus();
     }//GEN-LAST:event_btnReportesActionPerformed
@@ -4235,7 +4268,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             usu.setLocation(0, 0);
             usu.show();
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 
     }//GEN-LAST:event_mnAcercaActionPerformed
@@ -4333,7 +4367,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 formaTarjetas1.setLocation(0, 0);
                 formaTarjetas1.show();
             } catch (Exception ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                lger.logger(frmPrincipal.class.getName(), ex + "");
             }
 
         }
@@ -4444,7 +4479,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                            lger.logger(frmPrincipal.class.getName(), ex + "");
                             return;
                         }
                     } else {
@@ -4472,7 +4508,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             formaTarjetas1.setVisible(true);
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                            lger.logger(frmPrincipal.class.getName(), ex + "");
                             return;
                         }
                     }
@@ -4547,7 +4584,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     adm.eliminarObjeto(Clientes.class, clienteObj.getCodigo());
                     this.limpiar();
                 } catch (Exception ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    lger.logger(frmPrincipal.class.getName(), ex + "");
                 }
             }
 
@@ -4639,7 +4677,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             codigoBuscar.requestFocusInWindow();
                         }
                     } catch (Exception ex) {
-                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                        lger.logger(frmPrincipal.class.getName(), ex + "");
                     }
 
                     procesando.setVisible(false);
@@ -4677,7 +4716,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 txtValor.setText(clienteObj.getValor().setScale(2) + "");
 
             } catch (Exception ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                lger.logger(frmPrincipal.class.getName(), ex + "");
             }
         }
         //        JOptionPane.showMessageDialog(this, usuarioObj);
@@ -4698,7 +4738,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
             tarjetas.setModel(dtm);
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
     }
 
@@ -4725,7 +4766,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
                 txtValor.setText(clienteObj.getValor().setScale(2) + "");
             } catch (Exception ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                lger.logger(frmPrincipal.class.getName(), ex + "");
             }
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             buscarClientes.dispose();
@@ -4764,7 +4806,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //              contenedor.add(usu);
 
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
         contenedor.requestFocus();
     }//GEN-LAST:event_btnAccesosActionPerformed
@@ -4854,7 +4897,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
         contenedor.requestFocus();
 
@@ -4881,7 +4925,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera1.setEnabled(true);
                 } catch (IOException ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    lger.logger(frmPrincipal.class.getName(), ex + "");
                 }
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "7");
                 barrera7.setEnabled(true);
@@ -4902,7 +4947,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera1.setEnabled(true);
                 } catch (IOException ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    lger.logger(frmPrincipal.class.getName(), ex + "");
                 }
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "6");
                 barrera6.setEnabled(true);
@@ -4923,7 +4969,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera1.setEnabled(true);
                 } catch (IOException ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    lger.logger(frmPrincipal.class.getName(), ex + "");
                 }
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
                 barrera5.setEnabled(true);
@@ -4945,7 +4992,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera1.setEnabled(true);
                 } catch (IOException ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    lger.logger(frmPrincipal.class.getName(), ex + "");
                 }
                 barrera4.setEnabled(true);
             }
@@ -4969,7 +5017,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera1.setEnabled(true);
                 } catch (IOException ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    lger.logger(frmPrincipal.class.getName(), ex + "");
                 }
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
                 barrera3.setEnabled(true);
@@ -4995,7 +5044,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
 
                 } catch (IOException ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    lger.logger(frmPrincipal.class.getName(), ex + "");
                 }
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
                 barrera2.setEnabled(true);
@@ -5021,7 +5071,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     }
                     barrera1.setEnabled(true);
                 } catch (IOException ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    lger.logger(frmPrincipal.class.getName(), ex + "");
                 }
             }
         };
@@ -5077,7 +5128,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 }//GEN-LAST:event_tarjetatxtCaretUpdate
 
@@ -5116,7 +5168,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             System.exit(0);
 
         } catch (Throwable ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 }//GEN-LAST:event_jButton9ActionPerformed
 
@@ -5370,7 +5423,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             usu.show();
             contenedor.requestFocus();
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
     }//GEN-LAST:event_btnAuditoriaActionPerformed
 
@@ -5540,7 +5594,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             codigoBuscar.requestFocusInWindow();
                         }
                     } catch (Exception ex) {
-                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                        lger.logger(frmPrincipal.class.getName(), ex + "");
                     }
 
                     procesando.setVisible(false);
@@ -5590,12 +5645,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     tarActu.setHorainicio((Date) horaDesde1.getValue());
                     tarActu.setHorafin((Date) horaHasta1.getValue());
                     tarActu.setHabilitada(activa1.isSelected());
-                    tarActu.setIngresos((Integer)noingresodiarios.getValue());
+                    tarActu.setIngresos((Integer) noingresodiarios.getValue());
                     System.out.println("CORRECTO" + tarActu.getClientes().getNombres());
                     adm.actualizar(tarActu);
 
                 } catch (Exception ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    lger.logger(frmPrincipal.class.getName(), ex + "");
 
                 }
 
@@ -5641,7 +5697,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     nuevaClave.setText("");
 
                 } catch (Exception ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    lger.logger(frmPrincipal.class.getName(), ex + "");
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "No coinciden las claves nueva y repeticion...!");
@@ -5704,11 +5761,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     private void botoninstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoninstActionPerformed
         // TODO add your handling code here:
-        
-          Thread cargar = new Thread() {
+
+        Thread cargar = new Thread() {
 
             public void run() {
-                verIp.mostrarFotop(camaraVista1,empresaObj.getUrl());         
+                verIp.mostrarFotop(camaraVista1, empresaObj.getUrl());
 
             }
         };
@@ -5753,13 +5810,13 @@ private void domingo2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
 private void todos2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todos2ActionPerformed
 // TODO add your handling code here:
-        lunes2.setSelected(todos2.isSelected());
-        martes2.setSelected(todos2.isSelected());
-        miercoles2.setSelected(todos2.isSelected());
-        jueves2.setSelected(todos2.isSelected());
-        viernes2.setSelected(todos2.isSelected());
-        sabado2.setSelected(todos2.isSelected());
-        domingo2.setSelected(todos2.isSelected());
+    lunes2.setSelected(todos2.isSelected());
+    martes2.setSelected(todos2.isSelected());
+    miercoles2.setSelected(todos2.isSelected());
+    jueves2.setSelected(todos2.isSelected());
+    viernes2.setSelected(todos2.isSelected());
+    sabado2.setSelected(todos2.isSelected());
+    domingo2.setSelected(todos2.isSelected());
 }//GEN-LAST:event_todos2ActionPerformed
 
 private void todos2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_todos2KeyPressed
@@ -5776,48 +5833,49 @@ private void horaHasta2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
 
 private void btnGuardarCambios1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambios1ActionPerformed
 // TODO add your handling code here:
-    if(clienteCod.getText() == null || clienteCod.getText().isEmpty()){
-        JOptionPane.showMessageDialog(this, "Debe seleccionar un Cliente, \n si es para ingreso en vez de Tickets, seleccione el CONSUMIDOR FINAL...! ","JCINFORM",JOptionPane.ERROR_MESSAGE);
-        return;
-    } 
-    int filas = tablaTarjetas.getRowCount();
-    if(filas <=0){
-    JOptionPane.showMessageDialog(this, "No hay nada que guardar...! ","JCINFORM",JOptionPane.ERROR_MESSAGE);
+    if (clienteCod.getText() == null || clienteCod.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un Cliente, \n si es para ingreso en vez de Tickets, seleccione el CONSUMIDOR FINAL...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
         return;
     }
-        for (int i = 0; i < filas; i++) {
-            String tarjeta = (String) tablaTarjetas.getValueAt(i, 0);
-                 try {
-                    Tarjetas tarActu =  new Tarjetas(tarjeta);
-                    Date fechaDes = fechaDesde2.getDate();
-                    fechaDes.setHours(0);
-                    fechaDes.setMinutes(01);
-                    fechaDes.setSeconds(01);
-                    tarActu.setDesde(fechaDes);
-                    Date fechaHas = fechaHasta2.getDate();
-                    fechaHas.setHours(23);
-                    fechaHas.setMinutes(59);
-                    fechaHas.setSeconds(59);
-                    tarActu.setHasta(fechaHas);
-                    tarActu.setDomingo(domingo2.isSelected());
-                    tarActu.setLunes(lunes2.isSelected());
-                    tarActu.setMartes(martes2.isSelected());
-                    tarActu.setMiercoles(miercoles2.isSelected());
-                    tarActu.setJueves(jueves2.isSelected());
-                    tarActu.setViernes(viernes2.isSelected());
-                    tarActu.setSabado(sabado2.isSelected());
-                    tarActu.setHorainicio((Date) horaDesde2.getValue());
-                    tarActu.setHorafin((Date) horaHasta2.getValue());
-                    tarActu.setHabilitada(activa2.isSelected());
-                    tarActu.setClientes(new Clientes(new Integer(clienteCod.getText())));
-                    adm.guardar(tarActu);
-                } catch (Exception ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+    int filas = tablaTarjetas.getRowCount();
+    if (filas <= 0) {
+        JOptionPane.showMessageDialog(this, "No hay nada que guardar...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    for (int i = 0; i < filas; i++) {
+        String tarjeta = (String) tablaTarjetas.getValueAt(i, 0);
+        try {
+            Tarjetas tarActu = new Tarjetas(tarjeta);
+            Date fechaDes = fechaDesde2.getDate();
+            fechaDes.setHours(0);
+            fechaDes.setMinutes(01);
+            fechaDes.setSeconds(01);
+            tarActu.setDesde(fechaDes);
+            Date fechaHas = fechaHasta2.getDate();
+            fechaHas.setHours(23);
+            fechaHas.setMinutes(59);
+            fechaHas.setSeconds(59);
+            tarActu.setHasta(fechaHas);
+            tarActu.setDomingo(domingo2.isSelected());
+            tarActu.setLunes(lunes2.isSelected());
+            tarActu.setMartes(martes2.isSelected());
+            tarActu.setMiercoles(miercoles2.isSelected());
+            tarActu.setJueves(jueves2.isSelected());
+            tarActu.setViernes(viernes2.isSelected());
+            tarActu.setSabado(sabado2.isSelected());
+            tarActu.setHorainicio((Date) horaDesde2.getValue());
+            tarActu.setHorafin((Date) horaHasta2.getValue());
+            tarActu.setHabilitada(activa2.isSelected());
+            tarActu.setClientes(new Clientes(new Integer(clienteCod.getText())));
+            adm.guardar(tarActu);
+        } catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
 
-                }
-         }
-         JOptionPane.showMessageDialog(this, "Tarjetas Registradas con Éxito...! ");   
-         frmLoteTarjetas.setVisible(false);
+        }
+    }
+    JOptionPane.showMessageDialog(this, "Tarjetas Registradas con Éxito...! ");
+    frmLoteTarjetas.setVisible(false);
 }//GEN-LAST:event_btnGuardarCambios1ActionPerformed
 
 private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
@@ -5826,17 +5884,17 @@ private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 }//GEN-LAST:event_jButton12ActionPerformed
 
 private void encontradosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encontradosMouseClicked
-        // TODO add your handling code here:
-        if (evt.getClickCount() == 2) {
-            this.panelencontrados.setVisible(false);
-            Clientes est = (Clientes) this.encontrados.getSelectedValue();
-            llenarCliente(est);
-        }
+    // TODO add your handling code here:
+    if (evt.getClickCount() == 2) {
+        this.panelencontrados.setVisible(false);
+        Clientes est = (Clientes) this.encontrados.getSelectedValue();
+        llenarCliente(est);
+    }
 }//GEN-LAST:event_encontradosMouseClicked
 
     public void llenarCliente(Clientes nCliente) {
         clienteCod.setText("" + nCliente.getCodigo());
-        
+
 //        identificacion.setText(nCliente.getIdentificacion());
         //nombres1.setText(nCliente.getNombres());
         nombresCliente.setText(nCliente.getNombres());
@@ -5844,138 +5902,137 @@ private void encontradosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
 //        telefono.setText(nCliente.getTelefono());
     }
 private void encontradosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontradosKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_ENTER) {
-            this.panelencontrados.setVisible(false);
-            Clientes est = (Clientes) this.encontrados.getSelectedValue();
-            llenarCliente(est);
-this.btnAnadirTarjeta.requestFocusInWindow();
+    // TODO add your handling code here:
+    if (evt.getKeyCode() == evt.VK_ENTER) {
+        this.panelencontrados.setVisible(false);
+        Clientes est = (Clientes) this.encontrados.getSelectedValue();
+        llenarCliente(est);
+        this.btnAnadirTarjeta.requestFocusInWindow();
 
-        }
-        if (evt.getKeyCode() == evt.VK_UP && encontrados.getSelectedIndex() == 0) {
-            this.btnAnadirTarjeta.requestFocusInWindow();
-        }
-        if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            this.panelencontrados.setVisible(false);
+    }
+    if (evt.getKeyCode() == evt.VK_UP && encontrados.getSelectedIndex() == 0) {
+        this.btnAnadirTarjeta.requestFocusInWindow();
+    }
+    if (evt.getKeyCode() == evt.VK_ESCAPE) {
+        this.panelencontrados.setVisible(false);
 
-        }
-        tecla(evt.getKeyCode());
+    }
+    tecla(evt.getKeyCode());
 }//GEN-LAST:event_encontradosKeyPressed
 
 private void nombres1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_DOWN) {
-            encontrados.setSelectedIndex(0);
-            encontrados.requestFocusInWindow();
-        }
-        if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            panelencontrados.setVisible(false);
-        }
+    // TODO add your handling code here:
+    if (evt.getKeyCode() == evt.VK_DOWN) {
+        encontrados.setSelectedIndex(0);
+        encontrados.requestFocusInWindow();
+    }
+    if (evt.getKeyCode() == evt.VK_ESCAPE) {
+        panelencontrados.setVisible(false);
+    }
 }//GEN-LAST:event_nombres1KeyPressed
 
 private void nombres1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyReleased
-        // TODO add your handling code here:
-        if (!nombres1.getText().isEmpty()) {
+    // TODO add your handling code here:
+    if (!nombres1.getText().isEmpty()) {
 
-            List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres1.getText().trim() + "%' order by o.nombres ", 0, 10);
-            if (encon.size() > 0) {
-                DefaultListModel dtm = new DefaultListModel();
-                dtm.removeAllElements();
-                encontrados.setModel(dtm);
-                int j = 0;
-                for (Clientes est : encon) {
-                    dtm.add(j, est);
-                    j++;
-                }
-                encontrados.setModel(dtm);
-                this.panelencontrados.setVisible(true);
-            } else {
-                DefaultListModel dtm = new DefaultListModel();
-                dtm.removeAllElements();
-                encontrados.setModel(dtm);
-                this.panelencontrados.setVisible(false);
+        List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres1.getText().trim() + "%' order by o.nombres ", 0, 10);
+        if (encon.size() > 0) {
+            DefaultListModel dtm = new DefaultListModel();
+            dtm.removeAllElements();
+            encontrados.setModel(dtm);
+            int j = 0;
+            for (Clientes est : encon) {
+                dtm.add(j, est);
+                j++;
             }
-
+            encontrados.setModel(dtm);
+            this.panelencontrados.setVisible(true);
         } else {
             DefaultListModel dtm = new DefaultListModel();
             dtm.removeAllElements();
             encontrados.setModel(dtm);
             this.panelencontrados.setVisible(false);
         }
+
+    } else {
+        DefaultListModel dtm = new DefaultListModel();
+        dtm.removeAllElements();
+        encontrados.setModel(dtm);
+        this.panelencontrados.setVisible(false);
+    }
 }//GEN-LAST:event_nombres1KeyReleased
 
 private void btnAnadirTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirTarjetaActionPerformed
 // TODO add your handling code here:
 
 
-    if(noTarjeta2.getText() == null || noTarjeta2.getText().isEmpty()){
-        JOptionPane.showMessageDialog(this, "Pase la tarjeta por la Lectora y vuelva a intentarlo...! ","JCINFORM",JOptionPane.ERROR_MESSAGE);
+    if (noTarjeta2.getText() == null || noTarjeta2.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Pase la tarjeta por la Lectora y vuelva a intentarlo...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
         return;
-    }else{
-                        Object[] obj = new Object[2];
-                        DefaultTableModel dtm = (DefaultTableModel) tablaTarjetas.getModel();
-                        //dtm.getDataVector().removeAllElements();
-                        obj[0] = noTarjeta2.getText();
-                        dtm.addRow(obj);
-                        tablaTarjetas.setModel(dtm);
-                        noTarjeta2.setText("");
-                        
+    } else {
+        Object[] obj = new Object[2];
+        DefaultTableModel dtm = (DefaultTableModel) tablaTarjetas.getModel();
+        //dtm.getDataVector().removeAllElements();
+        obj[0] = noTarjeta2.getText();
+        dtm.addRow(obj);
+        tablaTarjetas.setModel(dtm);
+        noTarjeta2.setText("");
+
     }
-    if(tablaTarjetas.getRowCount()>0)
-    btnGuardarCambios1.setEnabled(true);
-else
-    btnGuardarCambios1.setEnabled(false);
+    if (tablaTarjetas.getRowCount() > 0) {
+        btnGuardarCambios1.setEnabled(true);
+    } else {
+        btnGuardarCambios1.setEnabled(false);
+    }
 }//GEN-LAST:event_btnAnadirTarjetaActionPerformed
 
 private void btnLote1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLote1ActionPerformed
 // TODO add your handling code here:
-     if (permisos.getModificar()) {
-         panelencontrados.setVisible(false);
-            SpinnerDateModel sm = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
-            JSpinner spinner = new JSpinner(sm);
-            JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm");
-            
-            horaDesde2.setModel(sm);
-            horaDesde2.setEditor(de);
+    if (permisos.getModificar()) {
+        panelencontrados.setVisible(false);
+        SpinnerDateModel sm = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+        JSpinner spinner = new JSpinner(sm);
+        JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm");
 
-            SpinnerDateModel sm2 = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
-            JSpinner spinner2 = new JSpinner(sm2);
-            JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm");
+        horaDesde2.setModel(sm);
+        horaDesde2.setEditor(de);
 
-            horaHasta2.setEditor(de2);
-            horaHasta2.setModel(sm2);
-            fechaDesde2.setDate(new Date());
-            fechaHasta2.setDate(new Date());
-            frmLoteTarjetas.setVisible(true);
-            
-            DefaultTableModel dtm = (DefaultTableModel) tablaTarjetas.getModel();
-            dtm.getDataVector().removeAllElements();
-            tablaTarjetas.setModel(dtm);
-            clienteCod.setText("");
-            nombres1.setText("");
-            nombresCliente.setText("");
-        } else {
-            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
-        }
+        SpinnerDateModel sm2 = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+        JSpinner spinner2 = new JSpinner(sm2);
+        JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm");
+
+        horaHasta2.setEditor(de2);
+        horaHasta2.setModel(sm2);
+        fechaDesde2.setDate(new Date());
+        fechaHasta2.setDate(new Date());
+        frmLoteTarjetas.setVisible(true);
+
+        DefaultTableModel dtm = (DefaultTableModel) tablaTarjetas.getModel();
+        dtm.getDataVector().removeAllElements();
+        tablaTarjetas.setModel(dtm);
+        clienteCod.setText("");
+        nombres1.setText("");
+        nombresCliente.setText("");
+    } else {
+        JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+    }
 
 
 }//GEN-LAST:event_btnLote1ActionPerformed
 
 private void nombres1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nombres1FocusLost
 // TODO add your handling code here:
-    
-     
 }//GEN-LAST:event_nombres1FocusLost
 
 private void tablaTarjetasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaTarjetasKeyPressed
 // TODO add your handling code here:
-      if (evt.getKeyCode() == evt.VK_DELETE) {
-            int fil = tablaTarjetas.getSelectedRow();
-            DefaultTableModel dtm = (DefaultTableModel) tablaTarjetas.getModel();
-            dtm.removeRow(fil);
-            tablaTarjetas.setModel(dtm);
+    if (evt.getKeyCode() == evt.VK_DELETE) {
+        int fil = tablaTarjetas.getSelectedRow();
+        DefaultTableModel dtm = (DefaultTableModel) tablaTarjetas.getModel();
+        dtm.removeRow(fil);
+        tablaTarjetas.setModel(dtm);
 
-        }
+    }
 }//GEN-LAST:event_tablaTarjetasKeyPressed
 
 private void tempjButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempjButton13ActionPerformed
@@ -6394,8 +6451,8 @@ private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_l
             aud.setUsuarios(usuarioActual);
             adm.guardar(aud);
         } catch (Exception ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             
-            lger.logger(frmPrincipal.class.getName(), ex+"");
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 
     }
@@ -6427,7 +6484,8 @@ private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_l
     public void windowDeactivated(WindowEvent e) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-        public static String convertiraString(Date fecha) {
+
+    public static String convertiraString(Date fecha) {
 
         return (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
 
