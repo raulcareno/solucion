@@ -774,16 +774,14 @@ void campos(String valor){
                                     
                                     <listitem  id="EST" label="Estadístico por Curso" value="EST" />
                                     <listitem  id="AG" label="Acta de Grado" value="AG"/>
-                                    <listitem  id="AG2" label="Acta de Grado(Suspendidos)" value="AG2"/>
                                     <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
-                                    <listitem  id="CAG2" label="Copia de Acta de Grado(Suspendidos)" value="CAG2"/>
                                     <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
                                     <listitem  id="CERT2" label="Certificado de Promoción(con decimales en notas)" value="CERT2"/>
                                     <listitem  id="APRO" label="Listado de Estudiantes Aprobados" value="APRO"/>
                                     <listitem  id="CERD" label="Certificado de Disciplina" value="CERD"/>
                                     <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
-                                    <listitem  label="Mejor egresado(*)" value="MEJE"/>
+                                    <listitem  id="MEJE" label="Mejor egresado(*)" value="MEJE"/>
                                     <listitem  id="linea001" label="=========================" value="linea" />
                                     <listitem  id="RECC" label="Record Académico por Paralelos" value="RECC"/>
                                     <listitem  id="RECE" label="Record Académico por Especialidad" value="RECE"/>
@@ -989,15 +987,18 @@ filacursos.visible = false;
 		CNF.visible = per.verificarPermisoReporte("CNF", "Ingresar");
         CNF2.visible = per.verificarPermisoReporte("CNF", "Ingresar");
         CNF3.visible = per.verificarPermisoReporte("CNF", "Ingresar");
-        
+        CSUP.visible = per.verificarPermisoReporte("CSUP", "Ingresar");
 		CDIS.visible = per.verificarPermisoReporte("CDIS", "Ingresar");
+        APRO.visible = per.verificarPermisoReporte("APRO", "Ingresar");
+        EST.visible = per.verificarPermisoReporte("EST", "Ingresar");
         AG.visible = per.verificarPermisoReporte("AG", "Ingresar");
         CAG.visible = per.verificarPermisoReporte("CAG", "Ingresar");
         LAG.visible = per.verificarPermisoReporte("AG", "Ingresar");
         CERT.visible = per.verificarPermisoReporte("CERT", "Ingresar");
+        CERT2.visible = per.verificarPermisoReporte("CERT", "Ingresar");
         CERD.visible = per.verificarPermisoReporte("CERD", "Ingresar");
         EXAM.visible = per.verificarPermisoReporte("EXAM", "Ingresar");
-        MEJE.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
+        MEJE.visible = per.verificarPermisoReporte("MEJE", "Ingresar");
         DIS.visible = per.verificarPermisoReporte("DIS", "Ingresar");
         DIS2.visible = per.verificarPermisoReporte("DIS2", "Ingresar");
         PROF.visible = per.verificarPermisoReporte("PROF", "Ingresar");
@@ -1010,6 +1011,9 @@ filacursos.visible = false;
         ENC4.visible = per.verificarPermisoReporte("ETD", "Ingresar");
         ENC5.visible = per.verificarPermisoReporte("ETD", "Ingresar");
         ENC6.visible = per.verificarPermisoReporte("ETD", "Ingresar");
+        RECC.visible = per.verificarPermisoReporte("RECC", "Ingresar");
+        RECE.visible = per.verificarPermisoReporte("RECC", "Ingresar");
+        RECC1.visible = per.verificarPermisoReporte("RECC", "Ingresar");
 
 }
         </zscript>

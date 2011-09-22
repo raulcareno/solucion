@@ -29,7 +29,8 @@ Empleados user = (Empleados)ses.getAttribute("user");
     if(user.getTipo().equals("Interna")){
         cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia,o.especialidad.descripcion,o.paralelo.descripcion ");
     }else{
-        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  order by o.secuencia,o.especialidad.descripcion,o.paralelo.descripcion  ");
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  order by o.curso.secuencia,o.curso.especialidad.descripcion,o.curso.paralelo.descripcion  ");
+        System.out.println("CURSO: +cursos");
     }
 
 Cursos selec = new Cursos(-1);
@@ -1229,6 +1230,9 @@ void campos(String valor){
             INS4.visible = per.verificarPermisoReporte("INS", "Ingresar");
             INS5.visible = per.verificarPermisoReporte("INS", "Ingresar");
             INS8.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            INS7.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            INS6.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            LINSF.visible = per.verificarPermisoReporte("INS", "Ingresar");
             MAT.visible = per.verificarPermisoReporte("MAT", "Ingresar");
             RET.visible = per.verificarPermisoReporte("RET", "Ingresar");
             LMAT.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
@@ -1260,7 +1264,7 @@ void campos(String valor){
             LINT2.visible = per.verificarPermisoReporte("LINT", "Ingresar");
             LREL.visible = per.verificarPermisoReporte("LINT", "Ingresar");
             LREL2.visible = per.verificarPermisoReporte("LINT", "Ingresar");
-
+            LCLA33.visible = per.verificarPermisoReporte("LCLA33", "Ingresar");
             }
         </zscript>
 
