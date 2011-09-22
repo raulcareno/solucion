@@ -96,6 +96,9 @@ public class ReporteCertificadoDataSource implements JRDataSource{
                 men = men.replace("[paralelo]",nodo.getCurso().getParalelo().getDescripcion());
                 men = men.replace("[matricula]",nodo.getNumero()+"");
                 men = men.replace("[folio]",nodo.getFolio()+"");
+                men = men.replace("[provincia]",nodo.getEstudiante().getProvincia()+"");
+                men = men.replace("[canton]",nodo.getEstudiante().getCanton()+"");
+                men = men.replace("[parroquia]",nodo.getEstudiante().getLugarnacimiento()+"");
                 men = men.replace("[fecha]",convertir(nodo.getFechamat()));
                 men = men.replace("[institucion]",nodo.getCurso().getPeriodo().getInstitucion().getDenominacion()+" "+nodo.getCurso().getPeriodo().getInstitucion().getNombre());
                 valor = men;
