@@ -198,6 +198,8 @@ void llenar(Estudiantes estudent){
     mail.value = estudent.getMail();
     usuario.value = estudent.getUsuario();
     nobus.value = estudent.getNobus();
+            provincia.value = estudent.getProvincia();
+            canton.value = estudent.getCanton();
             lugarnacimiento.value = estudent.getLugarnacimiento();
             nacionalidad.value = estudent.getNacionalidad();
             hermanos.value = estudent.getHermanos();
@@ -638,6 +640,8 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setHermanos(hermanos.value);
         estudent.setLugar(lugar.value);
         estudent.setLugarnacimiento(lugarnacimiento.value);
+        estudent.setProvincia(provincia.value);
+        estudent.setCanton(canton.value);
         estudent.setNacionalidad(nacionalidad.value);
         estudent.setDiscapacidad(discapacidad.checked);
         estudent.setTipodiscapacidad(tipodiscapacidad.value);
@@ -1571,7 +1575,12 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                         <span style="float:right">Lugar de Nacimiento (*)
                                         </span>
                                         <span>
-                                            <textbox id="lugarnacimiento"  />
+                                            Provincia:
+                                            <textbox cols="20" id="provincia"  />
+                                            Canton:
+                                            <textbox cols="20"  id="canton"  />
+                                            Parroquia:
+                                            <textbox  cols="20" id="lugarnacimiento"  />
                                     Nacionalidad
                                             <span style="color:blue;weight:bold"> (*)</span>:
                                             <textbox id="nacionalidad"  />
