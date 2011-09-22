@@ -909,7 +909,7 @@ public JRDataSource certificados(){
                                 <rows>
                                     <row>
                                         
-                                        <span>Fecha: <intbox id="codigovisita"  /></span>
+                                        <span>Fecha: <intbox visible="false" id="codigovisita"  /></span>
                                         <datebox id="fecha"/>
                                     </row>
                                     <row>
