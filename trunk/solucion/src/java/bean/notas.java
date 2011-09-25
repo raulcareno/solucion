@@ -865,18 +865,27 @@ public class notas extends Rows {
                 codigosCursos = codigosCursos.substring(0, codigosCursos.length() - 1);
             }
             if (tipo.contains("all")) {
+
                 try {
-                    List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
-                            + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false and o.matricula.estado in ('Matriculado','Recibir Pase') and o.matricula.suspenso = false "
-                            + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
-                            + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
-                    int i = 1;
-                    System.out.println("__________________________________________________ ESPECIALIDAD: " + especialidad);
-                    for (Notasacta acta : matriculas) {
-                        System.out.println("" + acta.getMatricula().getEstudiante() + " : " + i);
-                        acta.setNumeroacta(i);
-                        i++;
-                        adm.actualizar(acta);
+                    if (codigosCursos.length() > 1) {
+                        
+                        List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
+                                + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false "
+                                + "and o.matricula.estado in ('Matriculado','Recibir Pase') and o.matricula.suspenso = false "
+                                + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
+                                + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
+                        System.out.println("GENERADOS CURSOS: " + especialidad+" NO GRADUADOS:"+matriculas.size());
+                        int i = 1;
+                        System.out.println("__________________________________________________ ESPECIALIDAD: " + especialidad);
+                        for (Notasacta acta : matriculas) {
+                            System.out.println("" + acta.getMatricula().getEstudiante() + " : " + i);
+                            acta.setNumeroacta(i);
+                            i++;
+                            adm.actualizar(acta);
+                        }
+                    } else {
+                        System.out.println("NO HAY CODIGOSCURSOS: "+especialidad);
+
                     }
                 } catch (Exception e) {
                     System.out.println("NO EXISTEN CURSOS CON CODIGOS: " + codigosCursos);
@@ -884,22 +893,38 @@ public class notas extends Rows {
 
             } else {
                 try {
-                    List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
-                            + "where o.matricula.curso.secuencia = 6 and o.matricula.suspenso = true "
-                            + "and  o.matricula.curso.codigocur  in (" + codigosCursos + ")  "
-                            + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
-                    if (matriculas.size() > 0) {
+                    if (codigosCursos.length() > 1) {
+                          
 
-                        List numeroFinal = adm.query("Select max(o.numeroacta) from Notasacta as o "
-                                + "where o.matricula.suspenso = false  "
-                                + "and  o.matricula.curso.codigocur  in (" + codigosCursos + ")  ");
-                        Integer ultimo = (Integer) numeroFinal.get(0);
-                        int i = ultimo + 1;
-                        for (Notasacta acta : matriculas) {
-                            acta.setNumeroacta(i);
-                            i++;
-                            adm.actualizar(acta);
+//                        String q = "Select o from Notasacta as o "
+//                                + "where o.matricula.curso.secuencia = 6 and o.matricula.suspenso = true "
+//                                + "and  o.matricula.curso.codigocur  in " + codigosCursos + ")  "
+//                                + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ";
+//                        System.out.println("" + q);
+//                        List<Notasacta> matriculas = adm.query(q);
+                         List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
+                                + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false "
+                                + "and o.matricula.estado in ('Matriculado','Recibir Pase') and o.matricula.suspenso = true "
+                                + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
+                                + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
+                        System.out.println("GENERADOS CURSOS: " + especialidad+" # SUSPENDIDOS:"+matriculas.size());
+                        if (matriculas.size() > 0) {
+
+                            List numeroFinal = adm.query("Select max(o.numeroacta) from Notasacta as o "
+                                    + "where o.matricula.suspenso = false  "
+                                    + "and  o.matricula.curso.codigocur  in " + codigosCursos + ")  ");
+                            Integer ultimo = (Integer) numeroFinal.get(0);
+                            int i = ultimo + 1;
+                            for (Notasacta acta : matriculas) {
+                                acta.setNumeroacta(i);
+                                i++;
+                                adm.actualizar(acta);
+                            }
+
                         }
+
+                    } else {
+                      System.out.println("NO HAY CODIGOSCURSOS: "+especialidad);
 
                     }
                 } catch (Exception e) {

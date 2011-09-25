@@ -466,13 +466,13 @@ public class reportesClase {
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalenciasSuple = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'SU' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        if(equivalenciasSuple.size()<=0){
+        if (equivalenciasSuple.size() <= 0) {
             try {
                 Messagebox.show("No existen los rangos de Supletorio, ingrese a Equivalencias > Supletorios y verifique que esté lleno...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
                 return null;
             } catch (InterruptedException ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
-            } 
+            }
         }
 
         String query = "";
@@ -565,15 +565,15 @@ public class reportesClase {
                     }
                 }
             }
-            if(matricula.contains("HERMIDA")){
-                    System.out.println("cambios ");
+            if (matricula.contains("HERMIDA")) {
+                System.out.println("cambios ");
             }
-            
+
             if (obs1 > 0) {
                 if (!aprobadMatriculas.contains(matriculaNo)) {
                     aprobadMatriculas.add(matriculaNo);
                 }
-            } 
+            }
         }
         nativo = null;
         return aprobadMatriculas;
@@ -622,13 +622,13 @@ public class reportesClase {
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalenciasSuple = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'SU' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-  if(equivalenciasSuple.size()<=0){
+        if (equivalenciasSuple.size() <= 0) {
             try {
                 Messagebox.show("No existen los rangos de Supletorio, ingrese a Equivalencias > Supletorios y verifique que esté lleno...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
                 return null;
             } catch (InterruptedException ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
-            } 
+            }
         }
 //Sistemacalificacion sd;
 //sd.getTrimestre().getCodigotrim();
@@ -2017,21 +2017,21 @@ public class reportesClase {
         } catch (InterruptedException ex) {
             Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
         }
-     List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notas.get(0).getSistema());
-        String codigosPerdidos ="";
+        List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notas.get(0).getSistema());
+        String codigosPerdidos = "";
         ArrayList perdidos = new ArrayList();
         for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
             Matriculas matriculas = it.next();
-            codigosPerdidos = matriculas.getCodigomat()+","+codigosPerdidos;
+            codigosPerdidos = matriculas.getCodigomat() + "," + codigosPerdidos;
             perdidos.add(matriculas.getCodigomat());
-            
+
         }
-        String complemento ="";
-        if(codigosPerdidos.length()>0){
-                codigosPerdidos = codigosPerdidos.substring(0,codigosPerdidos.length()-1);
-                complemento = " and o.codigomat not in ("+codigosPerdidos+") ";
-        }else{
-                complemento = "";
+        String complemento = "";
+        if (codigosPerdidos.length() > 0) {
+            codigosPerdidos = codigosPerdidos.substring(0, codigosPerdidos.length() - 1);
+            complemento = " and o.codigomat not in (" + codigosPerdidos + ") ";
+        } else {
+            complemento = "";
         }
         ArrayList listaMatriculados = new ArrayList();
 //        List<Nota> lisNotas = new ArrayList();
@@ -2165,7 +2165,7 @@ public class reportesClase {
                             estadoEstudiante = false;
                         }
                         not.setEstado(estadoEstudiante);
-                        if(perdidos.contains(matriculas1.getCodigomat())){
+                        if (perdidos.contains(matriculas1.getCodigomat())) {
                             not.setEstadoMateria("REPROBADO");
                         }
                         if (cuantitativa == false) {
@@ -2217,18 +2217,18 @@ public class reportesClase {
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
                 + "and o.sistema.promediofinal = 'PF' ");
         List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notas.get(0).getSistema());
-        String codigosPerdidos ="";
+        String codigosPerdidos = "";
         for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
             Matriculas matriculas = it.next();
-            codigosPerdidos = matriculas.getCodigomat()+","+codigosPerdidos;
-            
+            codigosPerdidos = matriculas.getCodigomat() + "," + codigosPerdidos;
+
         }
-        String complemento ="";
-        if(codigosPerdidos.length()>0){
-                codigosPerdidos = codigosPerdidos.substring(0,codigosPerdidos.length()-1);
-                complemento = " and o.codigomat not in ("+codigosPerdidos+") ";
-        }else{
-                complemento = "";
+        String complemento = "";
+        if (codigosPerdidos.length() > 0) {
+            codigosPerdidos = codigosPerdidos.substring(0, codigosPerdidos.length() - 1);
+            complemento = " and o.codigomat not in (" + codigosPerdidos + ") ";
+        } else {
+            complemento = "";
         }
         Integer noDecimales = 3;
         try {
@@ -2251,20 +2251,20 @@ public class reportesClase {
         List<Matriculas> matriculas = new ArrayList();
         if (matri.getCodigomat().equals(-2)) {
             matriculas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '" + curso.getCodigocur() + "'"
-                    + complemento +"  order by o.estudiante.apellido, o.estudiante.nombre ");
+                    + complemento + "  order by o.estudiante.apellido, o.estudiante.nombre ");
         } else {
             for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
-                    Matriculas matriculaA = it.next();
-                    if(matri.getCodigomat().equals(matriculaA.getCodigomat())){
+                Matriculas matriculaA = it.next();
+                if (matri.getCodigomat().equals(matriculaA.getCodigomat())) {
                     try {
-                        Messagebox.show("EL ESTUDIANTE "+ matri.getEstudiante() +" ESTA REPROBADO, ESCOJA OTRO ESTUDIANTE", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                        Messagebox.show("EL ESTUDIANTE " + matri.getEstudiante() + " ESTA REPROBADO, ESCOJA OTRO ESTUDIANTE", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
                         return null;
                     } catch (InterruptedException ex) {
                         Logger.getLogger(reportesClase.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    }
-              }
-            
+                }
+            }
+
             matriculas.add(matri);
         }
         for (Matriculas matriculas1 : matriculas) {
@@ -2695,7 +2695,7 @@ public class reportesClase {
 
     }
 
-    public JRDataSource actaGrado(String tipo,Matriculas mat,Global esp) {
+    public JRDataSource actaGrado(String tipo, Matriculas mat, Global esp, Boolean suspendidos) {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -2751,13 +2751,18 @@ public class reportesClase {
 
         ArrayList lisNotasC = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
-        if(mat.getCodigomat().equals(-2)){
+        if (mat.getCodigomat().equals(-2)) {
+
+            String complem = " o.suspenso = false ";
+            if (suspendidos) {
+                complem = " o.suspenso = true ";
+            }
             matriculas = adm.query("Select o from Matriculas as o "
-                        + "where  o.perdio = false and o.suspenso = false "
-                        + "and o.curso.especialidad.codigo = '"+esp.getCodigo()+"' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.curso.secuencia = '6' "
-                        + " order by o.estudiante.apellido,  o.estudiante.nombre  ");
-        }else{
-            matriculas.add(mat); 
+                    + "where  o.perdio = false and " + complem + " "
+                    + "and o.curso.especialidad.codigo = '" + esp.getCodigo() + "' and o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.curso.secuencia = '6' "
+                    + " order by o.estudiante.apellido,  o.estudiante.nombre  ");
+        } else {
+            matriculas.add(mat);
         }
 
         for (Matriculas matriculas1 : matriculas) {
@@ -3295,151 +3300,162 @@ public class reportesClase {
 
 
     }
- public JRDataSource recordporcurso(Cursos cursoLlega) {
+
+    public JRDataSource recordporcurso(Cursos cursoLlega) {
         Administrador adm = new Administrador();
 //        Session ses = Sessions.getCurrent();
 //        Periodo periodo = (Periodo) ses.getAttribute("periodo");
         ArrayList listaResultados = new ArrayList();
         List<Notasrecord> notas = adm.query("Select o from Notasrecord as o"
                 + " where o.estudiante.codigoest "
-                + " in (Select m.estudiante.codigoest from Matriculas as m where m.curso.codigocur = '"+cursoLlega.getCodigocur()+"' ) order by o.estudiante.apellido");
-                 for (Iterator<Notasrecord> it = notas.iterator(); it.hasNext();) {
-                     Notasrecord n = it.next();
-                     Nota n1 = new Nota();
-                     n1.setCurso(cursoLlega);
-                     n1.setEstudiante(n.getEstudiante());
-                     n1.setP1(new BigDecimal(n.getPrimero()==null?0:n.getPrimero()));
-                     n1.setP2(new BigDecimal(n.getSegundo()==null?0:n.getSegundo()));
-                     n1.setP3(new BigDecimal(n.getTercero()==null?0:n.getTercero()));
-                     n1.setP4(new BigDecimal(n.getCuarto()==null?0:n.getCuarto()));
-                     n1.setP5(new BigDecimal(n.getQuinto()==null?0:n.getQuinto()));
-                     n1.setP6(new BigDecimal(n.getSexto()==null?0:n.getSexto()));
-                     try {
-                         n1.setPromedio2((promedio(n1.getP1(),n1.getP2(),n1.getP3(),n1.getP4(),n1.getP5(),n1.getP6())));
-                     } catch (Exception e) {
-                     }
-                     n1.setD1(new BigDecimal(n.getPrimerod()==null?0:n.getPrimerod()));
-                     n1.setD2(new BigDecimal(n.getSegundod()==null?0:n.getSegundod()));
-                     n1.setD3(new BigDecimal(n.getTercerd()==null?0:n.getTercerd()));
-                     n1.setD4(new BigDecimal(n.getCuartod()==null?0:n.getCuartod()));
-                     n1.setD5(new BigDecimal(n.getQuintod()==null?0:n.getQuintod()));
-                     n1.setD6(new BigDecimal(n.getSextod()==null?0:n.getSextod()));
-                      try {
-                          n1.setDisciplina2((promedio(n1.getD1(),n1.getD2(),n1.getD3(),n1.getD4(),n1.getD5(),n1.getD6())));
-                     } catch (Exception e) {
-                     }
-                     listaResultados.add(n1);
-                 }
+                + " in (Select m.estudiante.codigoest from Matriculas as m where m.curso.codigocur = '" + cursoLlega.getCodigocur() + "' ) order by o.estudiante.apellido");
+        for (Iterator<Notasrecord> it = notas.iterator(); it.hasNext();) {
+            Notasrecord n = it.next();
+            Nota n1 = new Nota();
+            n1.setCurso(cursoLlega);
+            n1.setEstudiante(n.getEstudiante());
+            n1.setP1(new BigDecimal(n.getPrimero() == null ? 0 : n.getPrimero()));
+            n1.setP2(new BigDecimal(n.getSegundo() == null ? 0 : n.getSegundo()));
+            n1.setP3(new BigDecimal(n.getTercero() == null ? 0 : n.getTercero()));
+            n1.setP4(new BigDecimal(n.getCuarto() == null ? 0 : n.getCuarto()));
+            n1.setP5(new BigDecimal(n.getQuinto() == null ? 0 : n.getQuinto()));
+            n1.setP6(new BigDecimal(n.getSexto() == null ? 0 : n.getSexto()));
+            try {
+                n1.setPromedio2((promedio(n1.getP1(), n1.getP2(), n1.getP3(), n1.getP4(), n1.getP5(), n1.getP6())));
+            } catch (Exception e) {
+            }
+            n1.setD1(new BigDecimal(n.getPrimerod() == null ? 0 : n.getPrimerod()));
+            n1.setD2(new BigDecimal(n.getSegundod() == null ? 0 : n.getSegundod()));
+            n1.setD3(new BigDecimal(n.getTercerd() == null ? 0 : n.getTercerd()));
+            n1.setD4(new BigDecimal(n.getCuartod() == null ? 0 : n.getCuartod()));
+            n1.setD5(new BigDecimal(n.getQuintod() == null ? 0 : n.getQuintod()));
+            n1.setD6(new BigDecimal(n.getSextod() == null ? 0 : n.getSextod()));
+            try {
+                n1.setDisciplina2((promedio(n1.getD1(), n1.getD2(), n1.getD3(), n1.getD4(), n1.getD5(), n1.getD6())));
+            } catch (Exception e) {
+            }
+            listaResultados.add(n1);
+        }
         ReporteRecordDataSource ds = new ReporteRecordDataSource(listaResultados);
         return ds;
     }
- public JRDataSource recordporcurso1(Integer secuencia) {
+
+    public JRDataSource recordporcurso1(Integer secuencia) {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         ArrayList listaResultados = new ArrayList();
         List<Notasrecord> notas = adm.query("Select o from Notasrecord as o"
                 + " where o.estudiante.codigoest "
-                + " in (Select m.estudiante.codigoest from Matriculas as m where m.curso.secuencia= '"+secuencia+"' "
-                + "and m.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ) order by o.estudiante.apellido");
-                 for (Iterator<Notasrecord> it = notas.iterator(); it.hasNext();) {
-                     Notasrecord n = it.next();
-                     Nota n1 = new Nota();
-                     //n1.setCurso("");
-    
-                     n1.setEstudiante(n.getEstudiante());
-                     n1.setP1(new BigDecimal(n.getPrimero()==null?0:n.getPrimero()));
-                     n1.setP2(new BigDecimal(n.getSegundo()==null?0:n.getSegundo()));
-                     n1.setP3(new BigDecimal(n.getTercero()==null?0:n.getTercero()));
-                     n1.setP4(new BigDecimal(n.getCuarto()==null?0:n.getCuarto()));
-                     n1.setP5(new BigDecimal(n.getQuinto()==null?0:n.getQuinto()));
-                     n1.setP6(new BigDecimal(n.getSexto()==null?0:n.getSexto()));
-                     try {
-                      n1.setPromedio2((promedio(n1.getP1(),n1.getP2(),n1.getP3(),n1.getP4(),n1.getP5(),n1.getP6())));
-                     } catch (Exception e) {
-                         System.out.println("ERRO FORMUAL"+e);
-                     }
-                     n1.setD1(new BigDecimal(n.getPrimerod()==null?0:n.getPrimerod()));
-                     n1.setD2(new BigDecimal(n.getSegundod()==null?0:n.getSegundod()));
-                     n1.setD3(new BigDecimal(n.getTercerd()==null?0:n.getTercerd()));
-                     n1.setD4(new BigDecimal(n.getCuartod()==null?0:n.getCuartod()));
-                     n1.setD5(new BigDecimal(n.getQuintod()==null?0:n.getQuintod()));
-                     n1.setD6(new BigDecimal(n.getSextod()==null?0:n.getSextod()));
-                      try {
-                        n1.setDisciplina2((promedio(n1.getD1(),n1.getD2(),n1.getD3(),n1.getD4(),n1.getD5(),n1.getD6())));
-                     } catch (Exception e) {
-                     }
-                     listaResultados.add(n1);
-                 }
+                + " in (Select m.estudiante.codigoest from Matriculas as m where m.curso.secuencia= '" + secuencia + "' "
+                + "and m.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' ) order by o.estudiante.apellido");
+        for (Iterator<Notasrecord> it = notas.iterator(); it.hasNext();) {
+            Notasrecord n = it.next();
+            Nota n1 = new Nota();
+            //n1.setCurso("");
+
+            n1.setEstudiante(n.getEstudiante());
+            n1.setP1(new BigDecimal(n.getPrimero() == null ? 0 : n.getPrimero()));
+            n1.setP2(new BigDecimal(n.getSegundo() == null ? 0 : n.getSegundo()));
+            n1.setP3(new BigDecimal(n.getTercero() == null ? 0 : n.getTercero()));
+            n1.setP4(new BigDecimal(n.getCuarto() == null ? 0 : n.getCuarto()));
+            n1.setP5(new BigDecimal(n.getQuinto() == null ? 0 : n.getQuinto()));
+            n1.setP6(new BigDecimal(n.getSexto() == null ? 0 : n.getSexto()));
+            try {
+                n1.setPromedio2((promedio(n1.getP1(), n1.getP2(), n1.getP3(), n1.getP4(), n1.getP5(), n1.getP6())));
+            } catch (Exception e) {
+                System.out.println("ERRO FORMUAL" + e);
+            }
+            n1.setD1(new BigDecimal(n.getPrimerod() == null ? 0 : n.getPrimerod()));
+            n1.setD2(new BigDecimal(n.getSegundod() == null ? 0 : n.getSegundod()));
+            n1.setD3(new BigDecimal(n.getTercerd() == null ? 0 : n.getTercerd()));
+            n1.setD4(new BigDecimal(n.getCuartod() == null ? 0 : n.getCuartod()));
+            n1.setD5(new BigDecimal(n.getQuintod() == null ? 0 : n.getQuintod()));
+            n1.setD6(new BigDecimal(n.getSextod() == null ? 0 : n.getSextod()));
+            try {
+                n1.setDisciplina2((promedio(n1.getD1(), n1.getD2(), n1.getD3(), n1.getD4(), n1.getD5(), n1.getD6())));
+            } catch (Exception e) {
+            }
+            listaResultados.add(n1);
+        }
         ReporteRecordDataSource ds = new ReporteRecordDataSource(listaResultados);
         return ds;
     }
-public JRDataSource recordporespecialidad(Global especialidad,Integer secuencia) {
+
+    public JRDataSource recordporespecialidad(Global especialidad, Integer secuencia) {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         ArrayList listaResultados = new ArrayList();
         List<Notasrecord> notas = adm.query("Select o from Notasrecord as o"
                 + " where o.estudiante.codigoest "
-                + " in (Select  m.estudiante.codigoest from Matriculas as m where m.curso.especialidad.codigo = '"+especialidad.getCodigo()+"' "
-                + "and m.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' and m.curso.secuencia = '"+secuencia+"' ) "
+                + " in (Select  m.estudiante.codigoest from Matriculas as m where m.curso.especialidad.codigo = '" + especialidad.getCodigo() + "' "
+                + "and m.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and m.curso.secuencia = '" + secuencia + "' ) "
                 + "order by o.estudiante.apellido ");
-                 for (Iterator<Notasrecord> it = notas.iterator(); it.hasNext();) {
-                     Notasrecord n = it.next();
-                     Nota n1 = new Nota();
-                  
-                     n1.setEstudiante(n.getEstudiante());
-                    n1.setP1(new BigDecimal(n.getPrimero()==null?0:n.getPrimero()));
-                     n1.setP2(new BigDecimal(n.getSegundo()==null?0:n.getSegundo()));
-                     n1.setP3(new BigDecimal(n.getTercero()==null?0:n.getTercero()));
-                     n1.setP4(new BigDecimal(n.getCuarto()==null?0:n.getCuarto()));
-                     n1.setP5(new BigDecimal(n.getQuinto()==null?0:n.getQuinto()));
-                     n1.setP6(new BigDecimal(n.getSexto()==null?0:n.getSexto()));
-                     try {
-                            n1.setPromedio2((promedio(n1.getP1(),n1.getP2(),n1.getP3(),n1.getP4(),n1.getP5(),n1.getP6())));
-                     } catch (Exception e) {
-                     }
-                     n1.setD1(new BigDecimal(n.getPrimerod()==null?0:n.getPrimerod()));
-                     n1.setD2(new BigDecimal(n.getSegundod()==null?0:n.getSegundod()));
-                     n1.setD3(new BigDecimal(n.getTercerd()==null?0:n.getTercerd()));
-                     n1.setD4(new BigDecimal(n.getCuartod()==null?0:n.getCuartod()));
-                     n1.setD5(new BigDecimal(n.getQuintod()==null?0:n.getQuintod()));
-                     n1.setD6(new BigDecimal(n.getSextod()==null?0:n.getSextod()));
-                      try {
-                       n1.setDisciplina2((promedio(n1.getD1(),n1.getD2(),n1.getD3(),n1.getD4(),n1.getD5(),n1.getD6())));
-                       
-                     } catch (Exception e) {
-                     }
-                     listaResultados.add(n1);
-                 }
+        for (Iterator<Notasrecord> it = notas.iterator(); it.hasNext();) {
+            Notasrecord n = it.next();
+            Nota n1 = new Nota();
+
+            n1.setEstudiante(n.getEstudiante());
+            n1.setP1(new BigDecimal(n.getPrimero() == null ? 0 : n.getPrimero()));
+            n1.setP2(new BigDecimal(n.getSegundo() == null ? 0 : n.getSegundo()));
+            n1.setP3(new BigDecimal(n.getTercero() == null ? 0 : n.getTercero()));
+            n1.setP4(new BigDecimal(n.getCuarto() == null ? 0 : n.getCuarto()));
+            n1.setP5(new BigDecimal(n.getQuinto() == null ? 0 : n.getQuinto()));
+            n1.setP6(new BigDecimal(n.getSexto() == null ? 0 : n.getSexto()));
+            try {
+                n1.setPromedio2((promedio(n1.getP1(), n1.getP2(), n1.getP3(), n1.getP4(), n1.getP5(), n1.getP6())));
+            } catch (Exception e) {
+            }
+            n1.setD1(new BigDecimal(n.getPrimerod() == null ? 0 : n.getPrimerod()));
+            n1.setD2(new BigDecimal(n.getSegundod() == null ? 0 : n.getSegundod()));
+            n1.setD3(new BigDecimal(n.getTercerd() == null ? 0 : n.getTercerd()));
+            n1.setD4(new BigDecimal(n.getCuartod() == null ? 0 : n.getCuartod()));
+            n1.setD5(new BigDecimal(n.getQuintod() == null ? 0 : n.getQuintod()));
+            n1.setD6(new BigDecimal(n.getSextod() == null ? 0 : n.getSextod()));
+            try {
+                n1.setDisciplina2((promedio(n1.getD1(), n1.getD2(), n1.getD3(), n1.getD4(), n1.getD5(), n1.getD6())));
+
+            } catch (Exception e) {
+            }
+            listaResultados.add(n1);
+        }
         ReporteRecordDataSource ds = new ReporteRecordDataSource(listaResultados);
         return ds;
     }
-    public BigDecimal promedio(BigDecimal n1,BigDecimal n2,BigDecimal n3,BigDecimal n4,BigDecimal n5,BigDecimal n6) {
+
+    public BigDecimal promedio(BigDecimal n1, BigDecimal n2, BigDecimal n3, BigDecimal n4, BigDecimal n5, BigDecimal n6) {
         Integer dividendo = 0;
         try {
-        if(n1.doubleValue()>0)
-            dividendo+=1;
-        if(n2.doubleValue()>0)
-            dividendo+=1;
-        if(n3.doubleValue()>0)
-            dividendo+=1;
-        if(n4.doubleValue()>0)
-            dividendo+=1;
-        if(n5.doubleValue()>0)
-            dividendo+=1;
-        if(n6.doubleValue()>0)
-            dividendo+=1;
+            if (n1.doubleValue() > 0) {
+                dividendo += 1;
+            }
+            if (n2.doubleValue() > 0) {
+                dividendo += 1;
+            }
+            if (n3.doubleValue() > 0) {
+                dividendo += 1;
+            }
+            if (n4.doubleValue() > 0) {
+                dividendo += 1;
+            }
+            if (n5.doubleValue() > 0) {
+                dividendo += 1;
+            }
+            if (n6.doubleValue() > 0) {
+                dividendo += 1;
+            }
 
             BigDecimal total = n1.add(n2).add(n3).add(n4).add(n5).add(n6);
-            total  = total.divide(new BigDecimal(dividendo), 3, RoundingMode.HALF_UP);
+            total = total.divide(new BigDecimal(dividendo), 3, RoundingMode.HALF_UP);
             return total;
         } catch (Exception e) {
-            System.out.println(""+e);
+            System.out.println("" + e);
             return new BigDecimal(0.0);
         }
-    }  
-public Double redondear(Double numero, int decimales) {
+    }
+
+    public Double redondear(Double numero, int decimales) {
         try {
 
             BigDecimal d = new BigDecimal(numero);
