@@ -140,10 +140,17 @@ materiasCombo.setSelectedIndex(0);
            if(tipo.equals("RECE")){
                 return;
            }
+          String comple = " ";
+           if(tipo.equals("AG") || tipo.equals("CAG")){
+                comple = " and o.suspenso = false ";
+           }else if(tipo.equals("AG2") || tipo.equals("CAG2")){
+                comple = " and o.suspenso = true ";
+           }
         List empleadosEncontrados = adm.query("Select o from Matriculas as o " + 
-        " where o.curso.especialidad.codigo = '"+cur.getCodigo()+"' "+ 
-        " and o.curso.periodo.codigoper = '"+ periodo.getCodigoper()+"' "+
-        " and o.curso.secuencia = 6  order by o.estudiante.apellido");
+                    " where o.curso.especialidad.codigo = '"+cur.getCodigo()+"' "+
+                    " "+ comple +" "+
+                    " and o.curso.periodo.codigoper = '"+ periodo.getCodigoper()+"' "+
+                    " and o.curso.secuencia = 6  order by o.estudiante.apellido");
         
         estudiantesCombo.getChildren().clear();
         
@@ -165,7 +172,7 @@ materiasCombo.setSelectedIndex(0);
                             matri.setEstudiante(es);
                                     Listitem item = new Listitem();
                                     item.setValue(matri);
-                                    item.appendChild(new Listcell("[TODOS]"));
+                                    item.appendChild(new Listcell("[TODOS] [- - "+empleadosEncontrados.size()+" - - ]" ));
                                     estudiantesCombo.appendChild(item);
     }
 
@@ -512,16 +519,16 @@ void recalcular(){
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc(directorioReportes+"estadistico.jasper");
             }else if(tipo.equals("AG")){
-                    datasource = noti.actaGrado("original",estudiantesCombo.getSelectedItem().getValue(),especialidad.getSelectedItem().getValue());
+                    datasource = noti.actaGrado("original",estudiantesCombo.getSelectedItem().getValue(),especialidad.getSelectedItem().getValue(),false);
                     report.setSrc(directorioReportes+"actaGrado.jasper");
             }else if(tipo.equals("CAG")){
-                    datasource = noti.actaGrado("copia",estudiantesCombo.getSelectedItem().getValue(),especialidad.getSelectedItem().getValue());
+                    datasource = noti.actaGrado("copia",estudiantesCombo.getSelectedItem().getValue(),especialidad.getSelectedItem().getValue(),false);
                     report.setSrc(directorioReportes+"copiaactaGrado.jasper");
             }else if(tipo.equals("AG2")){
-                    datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"original");
+                    datasource = noti.actaGrado("original",estudiantesCombo.getSelectedItem().getValue(),especialidad.getSelectedItem().getValue(),true);
                     report.setSrc(directorioReportes+"actaGrado.jasper");
             }else if(tipo.equals("CAG2")){
-                    datasource = noti.actaGrado(curs.getSelectedItem().getValue(),"copia");
+                    datasource = noti.actaGrado("copia",estudiantesCombo.getSelectedItem().getValue(),especialidad.getSelectedItem().getValue(),true);
                     report.setSrc(directorioReportes+"copiaactaGrado.jasper");
             }else if(tipo.equals("LAG")){
                     ArrayList arreglo = noti.actaGradoTodos(curs.getSelectedItem().getValue());
@@ -694,11 +701,18 @@ void campos(String valor){
              filacursos.visible = true;
             filaaportes.visible = true;
              
-        }else if(valor.equals("AG") ){
+        }else if(valor.equals("AG") || valor.equals("AG2") ){
             especialidad.disabled = false;
             titulo.value= "Acta de Grado";
             filaespecialidad.visible = true;
             filaestudiantes.visible = true;
+            estudiantesCombo.disabled = false;
+        }else if(valor.equals("CAG") || valor.equals("CAG2")){
+            especialidad.disabled = false;
+            filaespecialidad.visible = true;
+            filaestudiantes.visible = true;
+            titulo.value= "Copia de Acta de Grado";
+            estudiantesCombo.disabled = false;
         }else if(valor.equals("RECC") ){
            curs.disabled = false;
            filacursos.visible = true;
@@ -715,11 +729,6 @@ void campos(String valor){
             curs.disabled = false;
             titulo.value= "Examenes de Grado";
             filacursos.visible = true;
-        }else if(valor.equals("CAG")){
-            especialidad.disabled = false;
-            filaespecialidad.visible = true;
-            filaestudiantes.visible = true;
-            titulo.value= "Copia de Acta de Grado";
         }else if(valor.equals("LAG")){
             curs.disabled = false;
             titulo.value= "Listado de Actas de Grado";
@@ -774,7 +783,10 @@ void campos(String valor){
                                     
                                     <listitem  id="EST" label="Estadístico por Curso" value="EST" />
                                     <listitem  id="AG" label="Acta de Grado" value="AG"/>
+                                    <listitem  id="AG2" label="Acta de Grado(Suspendidos)" value="AG2"/>
                                     <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
+                                    <listitem  id="CAG2" label="Copia de Acta de Grado(Suspendidos)" value="CAG2"/>
+                                    
                                     <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
                                     <listitem  id="CERT2" label="Certificado de Promoción(con decimales en notas)" value="CERT2"/>
@@ -993,6 +1005,8 @@ filacursos.visible = false;
         EST.visible = per.verificarPermisoReporte("EST", "Ingresar");
         AG.visible = per.verificarPermisoReporte("AG", "Ingresar");
         CAG.visible = per.verificarPermisoReporte("CAG", "Ingresar");
+        AG2.visible = per.verificarPermisoReporte("AG", "Ingresar");
+        CAG2.visible = per.verificarPermisoReporte("CAG", "Ingresar");
         LAG.visible = per.verificarPermisoReporte("AG", "Ingresar");
         CERT.visible = per.verificarPermisoReporte("CERT", "Ingresar");
         CERT2.visible = per.verificarPermisoReporte("CERT", "Ingresar");
