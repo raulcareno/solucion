@@ -49,11 +49,13 @@ public class notasGrado extends Rows {
           estados.add(false);
         for (Materiasgrado notass : notas) {
             query += notass.getColumna() + ",";
-                    if(!notass.getProfesor().getCodigoemp().equals(user.getCodigoemp())){
+                    if(!notass.getProfesor().getCodigoemp().equals(user.getCodigoemp()) && !user.getTipo().equals("Interna")){
                         estados.add(true);
                      }else if(notass.getEspromedio()){
                         estados.add(true); 
-                     }else{
+                    }else if(user.getTipo().equals("Interna")){
+                        estados.add(false);
+                    }else{
                         estados.add(false);
                     }
         }
