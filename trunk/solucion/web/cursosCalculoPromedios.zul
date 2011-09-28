@@ -11,6 +11,7 @@ import jcinform.procesos.Administrador;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
+import bean.notasActa;
 
  Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
@@ -53,13 +54,37 @@ void aprovechamiento(){
 							for (Iterator it = al.iterator(); it.hasNext();) {
 								Listitem li = (Listitem)it.next();
                                     Cursos curses = li.getValue();
-                                        pro.aprovechamiento2(curses,materiasList.selectedItem.value);
+                                    if(incluir.checked){
+                                        recalcular(curses);
+                                    }
+                                    pro.aprovechamiento2(curses,materiasList.selectedItem.value);
+                                        if(curses.getSecuencia().equals(6)){
+                                            //GUARDO NOTAS DEL ACTA DE UNA VEZ
+                                                filasActa.addRow(curses);
+                                                notasActa notasAc = new notasActa();
+                                                notasActa rAc = (notasActa) datosActa.getRows();
+                                                String resultado = notasAc.guardar(rAc.getChildren(),curses);
+                                                filasActa.getChildren().clear();
+                                            //GUARDO NOTAS DEL ACTA DE UNA VEZ 2 
+                                       }
                                     
 							}
 						}
     
         Messagebox.show("Proceso terminado...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
   }
+  void recalcular(Cursos curso){
+   List hoy = adm.query("SELECT o FROM MateriaProfesor AS  o " +
+                " where o.curso.codigocur = '"+curso.getCodigocur()+"'  order by o.orden ");
+        System.out.println("FecI REC:"+new Date());
+                        bean.notas n = new bean.notas();
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+                MateriaProfesor materia = (MateriaProfesor) it.next();
+                n.recalculoNotas(materia, curso);
+        }
+    System.out.println("FecF REC:"+new Date());
+}
+  
   public void aprobados(){
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
@@ -235,7 +260,7 @@ void generar(String tipo){
                 </panelchildren>
 
             </panel>
-             <panel  framable="true" style="margin-bottom:10px" title="RECALCULO DE ACTAS DE GRADO">
+            <panel  framable="true" style="margin-bottom:10px" title="RECALCULO DE ACTAS DE GRADO">
                 <panelchildren>
                     <grid>
                         <rows>
@@ -270,14 +295,14 @@ void generar(String tipo){
                             </row>
                             <row>
                                 <span style="float:right"> Materias(*):</span>
-                              <listbox   id="materiasList" mold="select" width="420px" >
-                                        <listhead>
-                                            <listheader label="Seleccionar Todos"/>    
-                                        </listhead>
-                                        <listitem forEach="${materias}" value="${each}">
-                                            <listcell label="${each.descripcion}" />
-                                        </listitem>
-                                    </listbox>    
+                                <listbox   id="materiasList" mold="select" width="420px" >
+                                    <listhead>
+                                        <listheader label="Seleccionar Todos"/>    
+                                    </listhead>
+                                    <listitem forEach="${materias}" value="${each}">
+                                        <listcell label="${each.descripcion}" />
+                                    </listitem>
+                                </listbox>    
                             </row>
                             <row style="background:transparent" >
                                 <span style="float:right"> Curso(*):</span>
@@ -290,11 +315,11 @@ void generar(String tipo){
                                             <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
                                         </listitem>
                                     </listbox>
-                                  
+                                  <checkbox id="incluir" style="font-weight:bold" label="PREVIO RECALCULO?"  />
                                     <button label="Aprovechamiento"   image="/images/run.gif" onClick="aprovechamiento2();"/>
                                     <button label="Disciplina"   image="/images/run.gif" onClick="disciplina()"/>
                                  
-                              </span>
+                                </span>
                             </row>
                         </rows>
                     </grid>
@@ -329,7 +354,7 @@ void generar(String tipo){
                                     
                                     <button label="Calcular Aprobados/Reprobados"   image="/images/run.gif" onClick="aprobados();"/>
                                     Este proceso puede tardar un poco.
-                              </span>
+                                </span>
                             </row>
                         </rows>
                     </grid>
@@ -356,5 +381,15 @@ void generar(String tipo){
             </panel>
         </portalchildren>
     </portallayout>
+    <grid  id="datosActa" >
+        <columns>
+            <column width="15px"   label ="Mat."/>
+            <column width="300px" label ="Estudiante"/>
+            <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+            <column label ="ACTA"/>
+        </columns>
+        <rows id="filasActa" use="bean.notasActa">
+        </rows>
+    </grid>
 </zk>
 

@@ -1,12 +1,12 @@
 
 <?page id="main-page"?>
 <window onClose="liberar()" title="Registro de Notas de Exámenes de Grado" onCreate="notas()"    mode="overlapped"
-        sizable="true"  closable="true" border="normal" width="80%" id="principalGrado">
+        sizable="true"  closable="true" border="normal" width="80%" id="ingresoexamenesGrado">
     <zscript>
         <![CDATA[
 import bean.notasGrado;
 import java.math.BigDecimal;
-
+import bean.notasActa;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
  
@@ -44,14 +44,23 @@ String[][] values = new String[sistemas.size()][2];
 guardar(){
     notasGrado nso = new notasGrado();
     notasGrado r = (notasGrado) datos.getRows();
-     Cursos mat = principalGrado.getAttribute("curso");
+     Cursos mat = ingresoexamenesGrado.getAttribute("curso");
     String resultado = nso.guardar(r.getChildren(),mat);
     if(resultado.equals("ok")){
         Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
      }else{
         Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
      }
-liberar();
+        liberar();
+  
+     //GUARDO NOTAS DEL ACTA DE UNA VEZ
+            filasActa.addRow(mat);
+        notasActa notasAc = new notasActa();
+        notasActa rAc = (notasActa) datosActa.getRows();
+        String resultado = notasAc.guardar(rAc.getChildren(),mat);
+    //GUARDO NOTAS DEL ACTA DE UNA VEZ 2 
+      
+                
 }
 
 
@@ -67,13 +76,24 @@ liberar();
         <rows id="filas" use="bean.notasGrado">
         </rows>
     </grid>
+    <button label="Guardar"  image="/images/guardar.gif" onClick="guardar(); ingresoexamenesGrado.detach();"/>
+    <grid  id="datosActa" >
+        <columns>
+            <column width="15px"   label ="Mat."/>
+            <column width="300px" label ="Estudiante"/>
+            <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+            <column label ="ACTA"/>
+        </columns>
+        <rows id="filasActa" use="bean.notasActa">
+        </rows>
+    </grid>
 
 
-    <button label="Guardar"  image="/images/guardar.gif" onClick="guardar(); principalGrado.detach();"/>
+    
     <zscript><![CDATA[
 
 void notas(){
-        Cursos mat = principalGrado.getAttribute("curso");
+        Cursos mat = ingresoexamenesGrado.getAttribute("curso");
         filas.addRow(mat);
 }
 
