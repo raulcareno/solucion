@@ -1,0 +1,130 @@
+
+<window id="main" title="Working Thread">
+    <zscript>
+              <![CDATA[ 
+         import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.util.logging.Level;
+  import java.util.logging.Logger;
+import java.util.Vector;
+import bean.matriculasBean;
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.notas;
+import bean.secuencial;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import bean.verificarLetras;
+
+    Administrador adm = new Administrador();
+    java.util.Date fecha = new java.util.Date();    
+    int contador = 0;
+        
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o from Cursos as o where o.descripcion like '%"+p+"%' and o.periodo.codigoper = '1'  order by o.secuencia,o.paralelo.descripcion, o.descripcion");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Cursos acceIt = (Cursos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigocur()+" "));
+                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "+acceIt.getEspecialidad().getDescripcion()+" "+acceIt.getParalelo() ));
+                      datos.appendChild(li);
+             }
+
+    }
+         ]]>
+    </zscript>
+    <button label="Start Working Thread">
+        <attribute name="onClick">
+                   <![CDATA[ 
+      
+      timer.start();
+            for(int i= 10; i<100; i++){
+               Label label = bean.WorkingThread.asyncCreate(desktop);
+               // main.appendChild(label);
+                buscar("");
+            }
+           timer.stop();
+           ]]>
+        </attribute>
+    </button>
+    <button label="STOP  ">
+        <attribute name="onClick">
+                   <![CDATA[ 
+       timer.stop();
+           ]]>
+        </attribute>
+    </button>
+    <progressmeter id="progreso" value="0" width="300px" />    
+    <label  id="now2" value=" Ud lleva:" />
+    <label id="now3" value=" Ud lleva:" />
+    <timer id="timer" running="false" delay="1000" repeats="true">
+        <attribute name="onTimer">
+                                            <![CDATA[
+                                      Date fechaFinal = new Date();
+                                      
+                                        String minutos = fechaFinal.getMinutes()+"";
+                                        if(minutos.length()<2)
+                                                minutos = "0"+minutos;
+                                        String segundos = fechaFinal.getSeconds()+"";
+                                        if(segundos.length()<2)
+                                            segundos="0"+segundos;
+                                        now3.setValue("Hora: "+fechaFinal.getHours()+":"+minutos+":"+segundos+" * ");
+                                             long tiempoInicial=fecha.getTime();
+                                            long tiempoFinal=fechaFinal.getTime();
+                                            long resta=tiempoFinal - tiempoInicial;
+                                            //el metodo getTime te devuelve en mili segundos para saberlo en mins debes hacer
+                                            resta=resta /(1000*60);
+                                            String Resta = resta+"";
+                                            if(Resta.length()<2)
+                                                Resta="0"+Resta;
+                                            now2.setValue(" Ud. lleva: "+Resta+" minutos ");
+                            
+                                             contador++;
+                                             progreso.setValue(contador);
+                                            if(Resta.equals("30")){
+                                                Executions.sendRedirect("inscripciones.zul");
+                                            }
+                                          ]]>
+        </attribute>
+    </timer>
+    <groupbox width="100%" mold="3d" >
+        <caption label="Busquedas" />
+        <vbox>
+            <hbox> Curso:
+                <textbox id="buscarText"  maxlength="60" cols="40" />
+                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+            </hbox>
+            <hbox width="100%">
+                <listbox mold="paging" rows="10" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                    <listhead>
+                        <listheader label="Cod."/>
+                        <listheader label="Nombres"/>
+                    </listhead>
+                    <listitem  forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.codigocur}" />
+                        <listcell label="${each.especialidad}" />
+                    </listitem>
+                </listbox>
+            </hbox>
+        </vbox>
+    </groupbox>
+ 
+</window>

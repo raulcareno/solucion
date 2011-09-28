@@ -11,6 +11,7 @@ import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Representante;
 import jcinform.procesos.Administrador;
 import org.zkoss.zhtml.Messagebox;
+import org.zkoss.zk.ui.util.Clients;
 
 /**
  *
@@ -22,7 +23,7 @@ public class generaClaves {
      * @param args the command line arguments
      */
     public static void main(String[] args){
-        
+        Clients.showBusy("Procediendo", true);
 //        int val = Messagebox.show("¿Seguro de eliminar, puede causar la pérdida de notas, si ya tiene registrado?", "Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
         // TODO code application logic here
         String tipo = "EST";
