@@ -9,6 +9,8 @@ import jcinform.conexion.Administrador;
 import jcinform.persistencia.*;
 
 
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
@@ -25,7 +27,8 @@ Textbox a;
     }
 
     public void addRow(Perfil p) {
-
+Session ses = Sessions.getCurrent();
+Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
          String complemento = "";
 //        if (!tipo.equals("TODOS")) {
 //            complemento = " AND grupo = '"+tipo+"'";
@@ -35,10 +38,10 @@ Textbox a;
 //            complemento2 = " and o.grupo = '"+tipo+"'";
 //        }
         Administrador adm = new Administrador();
-        String query = "SELECT * FROM accesos WHERE perfil =  '" + p.getCodigo() + "' "+ complemento +"  "
+        String query = "SELECT * FROM accesos WHERE perfil =  '" + p.getCodigo() + "' and sucursal = '"+sucursalEmp.getSucursal().getCodigo()+"' "+ complemento +"  "
                 + " UNION SELECT * FROM accesos WHERE (perfil IS NULL  OR perfil = 0) "+ complemento +"  "
                 + "AND modulo NOT IN "
-                + " (SELECT modulo FROM accesos WHERE perfil =  '" + p.getCodigo() + "'  )";
+                + " (SELECT modulo FROM accesos WHERE perfil =  '" + p.getCodigo() + "' and sucursal = '"+sucursalEmp.getSucursal().getCodigo()+"'  )";
         System.out.println(""+query);
         List accesosList = adm.queryNativo(query, Accesos.class);
         for (Iterator it = accesosList.iterator(); it.hasNext();) {
@@ -123,7 +126,8 @@ public void seleccionar(String tipo,Boolean seleccionar){
 }
     @SuppressWarnings("static-access")
     public String guardar(List col, Perfil g) {
-
+Session ses = Sessions.getCurrent();
+Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
         Administrador adm = new Administrador();
         for (int i = 0; i < col.size(); i++) {
             try {
@@ -143,6 +147,7 @@ public void seleccionar(String tipo,Boolean seleccionar){
                 nota.setGuardar(((Checkbox) labels.get(3)).isChecked());
                 nota.setActualizar(((Checkbox) labels.get(4)).isChecked());
                 nota.setEliminar(((Checkbox) labels.get(5)).isChecked());
+                nota.setSucursal(sucursalEmp.getSucursal());
 //                nota.setGrupo(((Label) labels.get(6)).getValue());
                 nota.setGrupo("");
 //                System.out.println(nota.getModulo()+"---"+nota.getCodigoacc());

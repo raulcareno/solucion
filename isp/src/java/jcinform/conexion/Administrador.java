@@ -22,7 +22,7 @@ import jcinform.persistencia.*;
 public class Administrador {
 
     Map prop = new HashMap();
-
+static String baseActual = "isp";
     public Administrador() {
     }
     static EntityManagerFactory emf = null;
@@ -33,7 +33,7 @@ public class Administrador {
             prop.put("toplink.jdbc.user", "root");
             prop.put("toplink.jdbc.password", "jcinform@2020");
             prop.put("toplink.cache.type.default","NONE");
-            prop.put("toplink.jdbc.url", "jdbc:mysql://localhost:3306/isp?zeroDateTimeBehavior=convertToNull");
+            prop.put("toplink.jdbc.url", "jdbc:mysql://localhost:3306/"+baseActual+"?zeroDateTimeBehavior=convertToNull");
         } catch (Exception e) {
             System.out.println("ERROR EN ADMINISTRADOR LINEA 31;" + e);
         }

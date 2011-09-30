@@ -9,10 +9,10 @@
   import jcinform.conexion.*;
   import jcinform.bean.*;
   import java.math.BigDecimal;
-
+Administrador adm = new Administrador();
   Session ses = Sessions.getCurrent();
-    Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Sector as o");
+  Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+  List allEvents = adm.query("Select o from Sector as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
     static Sector equi = new Sector();
     Permisos permiso = new Permisos();
     //SimpleTreeModel stm = new SimpleTreeModel(root);
@@ -64,6 +64,7 @@ void estado(Boolean estado,Boolean modificar){
         equi.setNombre(nombre.value);
         equi.setCanton(cantones.selectedItem.value);
         equi.setNumero(numero.value);
+        equi.setSucursal(sucursalEmp.getSucursal());
         
         if((!equi.getCodigo().equals(0)) ){
              adm.actualizar(equi);
@@ -125,7 +126,7 @@ void eliminar(){
    void buscar(String p){
 
       
-        List equivaEncontrados = adm.query("Select o from Sector as o");
+        List equivaEncontrados = adm.query("Select o from Sector as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -159,7 +160,7 @@ equi.setPerfil(g);
                         <bandpopup>
                             <vbox>
                                 <listbox id="cantones" width="660px" rows="10"
-                                                                                     onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
+                                  onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
                                     <listitem selected="true" forEach="${cantones2}" value="${each}">
                                         <listcell label="${each.nombre}" />
                                     </listitem>

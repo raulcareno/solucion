@@ -12,7 +12,10 @@
 
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Plan as o");
+      Session ses = Sessions.getCurrent();
+  Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+  
+    List allEvents = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
     static Plan equi = new Plan();
     Permisos permiso = new Permisos();
     //SimpleTreeModel stm = new SimpleTreeModel(root);
@@ -49,6 +52,7 @@ void estado(Boolean estado,Boolean modificar){
         equi.setTipo(tipo.value);
         equi.setDias(dias.value);
         equi.setPvp4(pvp4.value);
+        equi.setSucursal(sucursalEmp.getSucursal());
         
         if((!equi.getCodigo().equals(0)) ){
              adm.actualizar(equi);
@@ -112,7 +116,7 @@ void eliminar(){
    void buscar(String p){
 
       
-        List equivaEncontrados = adm.query("Select o from Plan as o   order by o.nombre");
+        List equivaEncontrados = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  order by o.nombre");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -190,7 +194,7 @@ equi.setPerfil(g);
         <vbox>
    
             <hbox width="100%">
-                <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos"  rows="10" mold="paging" pageSize="15"   width="100%">
                     <listhead>
                         <listheader label="Código"/>
                         <listheader label="Nombre"/>

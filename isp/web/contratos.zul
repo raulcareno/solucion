@@ -31,6 +31,7 @@
 import java.text.SimpleDateFormat;
   import jcinform.bean.generarFacturas;
 
+
   Session ses = Sessions.getCurrent();
   //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
     Administrador adm = new Administrador();
@@ -375,6 +376,7 @@ Boolean validar(){
             empa.setDireccion(direccion.value);
             empa.setTelefono(telefono.value);
             empa.setEmail(email.value);
+            empa.setSucursal(sucursalEmp.getSucursal());
             adm.guardar(empa);
             codigocli.value = empa.getCodigo()+"";
      }else{
@@ -385,6 +387,7 @@ Boolean validar(){
             empa.setDireccion(direccion.value);
             empa.setTelefono(telefono.value);
             empa.setEmail(email.value);
+            empa.setSucursal(sucursalEmp.getSucursal());
             adm.actualizar(empa);
             
      }
@@ -1241,7 +1244,9 @@ void verificarCedula(String valor){
                 
         //BUSQUEDA DE CLIENTES
   void buscarCli(String p){
-        List ClientesEncontrados = adm.query("Select o from Clientes as o where o.apellidos like '"+p+"%' order by o.apellidos",0,10);
+        List ClientesEncontrados = adm.query("Select o from Clientes as o "+ 
+        " where o.apellidos like '"+p+"%'  and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' " + 
+        " order by o.apellidos",0,10);
         lcliente = new Listbox();
         int a=0;
             for (Iterator it = lcliente.getItems().iterator(); it.hasNext();) {
@@ -1264,7 +1269,8 @@ void verificarCedula(String valor){
     }
       void buscarCliCed(String p){
       if(p.length() > 3){
-        List ClientesEncontrados = adm.query("Select o from Clientes as o where o.identificacion like '"+p+"%' order by o.identificacion");
+        List ClientesEncontrados = adm.query("Select o from Clientes as o " + 
+        " where o.identificacion like '"+p+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.identificacion");
         lclienteced = new Listbox();
         int a=0;
             for (Iterator it = lclienteced.getItems().iterator(); it.hasNext();) {

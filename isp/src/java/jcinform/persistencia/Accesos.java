@@ -48,6 +48,9 @@ public class Accesos implements Serializable {
     @JoinColumn(name = "perfil", referencedColumnName = "codigo")
     @ManyToOne
     private Perfil perfil;
+    @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sucursal sucursal;
 
     public Accesos() {
     }
@@ -118,6 +121,14 @@ public class Accesos implements Serializable {
 
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     @Override

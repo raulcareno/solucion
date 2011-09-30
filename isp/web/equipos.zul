@@ -17,9 +17,12 @@
   import java.util.ArrayList;
   import org.zkoss.image.AImage;
   import org.zkoss.image.Image;
-    Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Equipos as o where o.nombre = 0");
-    static Equipos empa = new Equipos();
+  
+  Session ses = Sessions.getCurrent();
+  Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+  Administrador adm = new Administrador();
+  List allEvents = adm.query("Select o from Equipos as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+  static Equipos empa = new Equipos();
     Permisos permiso = new Permisos();
     List perfiles = adm.query("Select o from Marcas as o  ");
     Object media = null;
@@ -101,6 +104,7 @@ void estado(Boolean estado,Boolean modificar){
         empa.setNombre(nombre.value);
         empa.setMarcas(perf.selectedItem.value);
         empa.setModelo(modelo.value);
+        empa.setSucursal(sucursalEmp.getSucursal());
         empa.setPvp1(pvp.value);
          if((!empa.getCodigo().equals(0)) ){
              adm.actualizar(empa);
@@ -163,7 +167,8 @@ void eliminar(){
 }
  
   void buscar(String p){
-        List EquiposEncontrados = adm.query("Select o from Equipos as o where o.nombre like '%"+p+"%' order by o.nombre");
+        List EquiposEncontrados = adm.query("Select o from Equipos as o " + 
+        " where o.nombre like '%"+p+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.nombre");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -280,8 +285,8 @@ empa.setMarcas(g);
                                     </listhead>
                                     <listitem forEach="${allEvents}" value="${each}">
                                         <listcell label="${each.codigo}" />
-                                        <listcell label="${each.ip}" />
-                                        <listcell label="${each.ssid}" />
+                                        <listcell label="${each.nombre}" />
+                                        <listcell label="${each.modelo}" />
                                     </listitem>
                                 </listbox>
 

@@ -18,6 +18,8 @@
   import org.zkoss.image.AImage;
   import org.zkoss.image.Image;
     Administrador adm = new Administrador();
+    Session ses = Sessions.getCurrent();
+    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
     List allEvents = adm.query("Select o from Nodos as o where o.nombre = 0");
     static Nodos empa = new Nodos();
     Permisos permiso = new Permisos();
@@ -167,7 +169,8 @@ void eliminar(){
 }
  
   void buscar(String p){
-        List NodosEncontrados = adm.query("Select o from Nodos as o where o.nombre like '%"+p+"%' ");
+        List NodosEncontrados = adm.query("Select o from Nodos as o "+ 
+        " where o.nombre like '%"+p+"%' and o.sector.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -190,7 +193,8 @@ void eliminar(){
     
      void buscarSectores(Integer codigo){
           bd.value = "";
-        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"' ");
+        List NodosEncontrados = adm.query("Select o from Sector as o "  + 
+        " where o.canton.codigo = '"+codigo+"' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
         perf = new Listbox();
         int a=0;
             for (Iterator it = perf.getItems().iterator(); it.hasNext();) {

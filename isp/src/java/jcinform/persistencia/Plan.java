@@ -157,6 +157,7 @@ public class Plan implements Serializable {
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
     }
+    
 
     public Collection<Comisiones> getComisionesCollection() {
         return comisionesCollection;

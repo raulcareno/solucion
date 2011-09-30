@@ -11,8 +11,11 @@
   import java.math.BigDecimal;
 
   Session ses = Sessions.getCurrent();
-    Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Radios as o");
+  
+  Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+ Administrador adm = new Administrador();
+    
+    List allEvents = adm.query("Select o from Radios as o where o.nodos.sector.sucursal.codigo = '"+ sucursalEmp.getSucursal().getCodigo() +"' ");
     static Radios equi = new Radios();
     Permisos permiso = new Permisos();
     //SimpleTreeModel stm = new SimpleTreeModel(root);
@@ -172,7 +175,8 @@ void eliminar(){
    void buscar(String p){
 
       
-        List equivaEncontrados = adm.query("Select o from Radios as o order by o.nombre");
+        List equivaEncontrados = adm.query("Select o from Radios as o where o.nodos.sector.sucursal.codigo  = '"+ sucursalEmp.getSucursal().getCodigo() +"'  order by o.nombre");
+             
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -200,7 +204,8 @@ void eliminar(){
     
      void buscarSectores(Integer codigo){
           bdSector.value = "";
-        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.nombre");
+        List NodosEncontrados = adm.query("Select o from Sector as o "+ 
+        "where o.canton.codigo = '"+codigo+"' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  order by o.nombre");
         sectores = new Listbox();
         int a=0;
             for (Iterator it = sectores.getItems().iterator(); it.hasNext();) {

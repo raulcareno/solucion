@@ -18,7 +18,10 @@
   import org.zkoss.image.Image;
 
   Administrador adm = new Administrador();
-  List allEvents = adm.query("Select o from Proveedores as o where o.identificacion = 0");
+  Session ses = Sessions.getCurrent();
+  Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+ 
+  List allEvents = adm.query("Select o from Proveedores as o where  o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
     static Proveedores empa = new Proveedores();
     Permisos permiso = new Permisos();
     List perfiles = adm.query("Select o from Global as o where o.grupo = 'PER'");
@@ -69,6 +72,7 @@ void estado(Boolean estado,Boolean modificar){
         empa.setTelefono(telefono.value);
         empa.setRepresentante(representante.value);
         empa.setEmail(email.value);
+        empa.setSucursal(sucursalEmp.getSucursal());
         
         if((!empa.getCodigo().equals(0)) ){
              adm.actualizar(empa);
@@ -141,10 +145,10 @@ void eliminar(){
 }
   void verificarCedula(String valor){
       if(valor.length()>9){
-            List empleados = adm.query("Select o from Proveedores as o where o.identificacion = '"+valor+"' ");
+            List empleados = adm.query("Select o from Proveedores as o "+ 
+            " where o.identificacion = '"+valor+"' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
             if(empleados.size()>0){
                 Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-
                 for(Iterator it = empleados.iterator(); it.hasNext();) {
                       Proveedores object = (Proveedores)it.next();
                         empa = object;
@@ -160,7 +164,8 @@ void eliminar(){
  
     }
   void buscar(String p){
-        List empleadosEncontrados = adm.query("Select o from Proveedores as o where o.razonsocial like '%"+p+"%' order by o.razonsocial");
+        List empleadosEncontrados = adm.query("Select o from Proveedores as o " + 
+        " where o.razonsocial like '%"+p+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.razonsocial");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {

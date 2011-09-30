@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jcinform>
+	<empresa>
+	    <id>1</id>
+	    <base>isp</base>
+	    <nombre>PRINCIPAL</nombre>
+	</empresa>
+	<empresa>
+	    <id>2</id>
+	    <base>sociedad</base>
+	    <nombre>SOCIEDAD</nombre>
+	</empresa>
+
+</jcinform>

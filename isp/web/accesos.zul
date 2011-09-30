@@ -21,8 +21,8 @@ List accesos = new ArrayList();
 int w = 0;
  ListModel model = new SimpleListModel(accesos.toArray());
 //globales
-    void guardar(){
- if(verificar("Agregar")){
+void guardar(){
+   if(verificar("Agregar")){
           accesos nso = new accesos();
         accesos r = (accesos) datos.getRows();
         String resultado = nso.guardar(r.getChildren(),((Perfil)perfilesCombo.selectedItem.value));
