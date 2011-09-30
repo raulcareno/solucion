@@ -182,9 +182,9 @@ void recalculo(){
     
 
 }
-void generar(String tipo){
+void generar(String tipo,Date fecha,Boolean empi){
     notas nso = new notas();
-    nso.generarNumeros(tipo);
+    nso.generarNumeros(tipo,fecha,empi);
 
 }
 ]]>
@@ -271,7 +271,11 @@ void generar(String tipo){
                             </row>
 
                             <row style="background:transparent"  spans="2">
-                                <button label="Generar Números de Actas"      onClick='generar("all")' />
+                                 <span>
+                                    <button label="Generar Números de Actas"      onClick='generar("all",fechaacta.value,false)' />
+                                    <datebox id="fechaacta" onCreate="self.value = new Date()"/>
+                                    
+                                </span>
                             </row>
                         </rows>
                     </grid>
@@ -373,7 +377,12 @@ void generar(String tipo){
                                 Generar Actas de Grado Suspensos
                             </row>
                             <row  style="background:transparent" spans="2">
-                                <button label="Generar Números de Actas"   onClick='generar("sus")' />
+                                <span>
+                                    <button label="Generar Números de Actas"   onClick='generar("sus",fechasuspenso.value,empezar.checked)' />
+                                    <datebox id="fechasuspenso" onCreate="self.value = new Date()"/>
+                                    <checkbox style="font-weight:bold" id="empezar" label="Empezar en 1" />
+                                </span>
+                                
                             </row>
                         </rows>
                     </grid>

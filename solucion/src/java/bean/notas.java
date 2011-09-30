@@ -847,7 +847,7 @@ public class notas extends Rows {
         return false;
     }
 
-    public void generarNumeros(String tipo) {
+    public void generarNumeros(String tipo, Date fecha, Boolean empezar) {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -879,6 +879,7 @@ public class notas extends Rows {
                         System.out.println("__________________________________________________ ESPECIALIDAD: " + especialidad);
                         for (Notasacta acta : matriculas) {
                             System.out.println("" + acta.getMatricula().getEstudiante() + " : " + i);
+                            acta.setFecha(fecha);
                             acta.setNumeroacta(i);
                             i++;
                             adm.actualizar(acta);
@@ -909,13 +910,20 @@ public class notas extends Rows {
                                 + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
                         System.out.println("GENERADOS CURSOS: " + especialidad+" # SUSPENDIDOS:"+matriculas.size());
                         if (matriculas.size() > 0) {
-
-                            List numeroFinal = adm.query("Select max(o.numeroacta) from Notasacta as o "
+                            Integer ultimo = 0;
+                            if(empezar){
+                                ultimo = 0;
+                            }else{
+                                List numeroFinal = adm.query("Select max(o.numeroacta) from Notasacta as o "
                                     + "where o.matricula.suspenso = false  "
                                     + "and  o.matricula.curso.codigocur  in " + codigosCursos + ")  ");
-                            Integer ultimo = (Integer) numeroFinal.get(0);
+                                ultimo = (Integer) numeroFinal.get(0);
+                            
+                            }
+                            
                             int i = ultimo + 1;
                             for (Notasacta acta : matriculas) {
+                                acta.setFecha(fecha);
                                 acta.setNumeroacta(i);
                                 i++;
                                 adm.actualizar(acta);
