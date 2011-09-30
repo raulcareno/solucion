@@ -13,9 +13,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -45,14 +46,24 @@ public class Proveedores implements Serializable {
     private String telefono;
     @Column(name = "email")
     private String email;
-    @OneToMany(mappedBy = "proveedores")
-    private Collection<Cabeceracompra> cabeceracompraCollection;
+       @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sucursal sucursal;
+    
 
     public Proveedores() {
     }
 
     public Proveedores(Integer codigo) {
         this.codigo = codigo;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     public Integer getCodigo() {
@@ -110,14 +121,7 @@ public class Proveedores implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public Collection<Cabeceracompra> getCabeceracompraCollection() {
-        return cabeceracompraCollection;
-    }
-
-    public void setCabeceracompraCollection(Collection<Cabeceracompra> cabeceracompraCollection) {
-        this.cabeceracompraCollection = cabeceracompraCollection;
-    }
+ 
 
     @Override
     public int hashCode() {

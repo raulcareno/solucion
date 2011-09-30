@@ -41,6 +41,20 @@ public class Comisiones implements Serializable {
     @JoinColumn(name = "plan", referencedColumnName = "codigo")
     @ManyToOne
     private Plan plan;
+    
+      @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sucursal sucursal;
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+      
+      
 
     public Comisiones() {
     }

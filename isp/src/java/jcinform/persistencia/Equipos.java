@@ -60,6 +60,9 @@ public class Equipos implements Serializable {
     @JoinColumn(name = "marcas", referencedColumnName = "codigo")
     @ManyToOne
     private Marcas marcas;
+      @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sucursal sucursal;
 //    @OneToMany(mappedBy = "equipos")
 //    private Collection<Detalle> detalleCollection;
 //    @OneToMany(mappedBy = "equipos")
@@ -70,6 +73,14 @@ public class Equipos implements Serializable {
 //    private Collection<Contratos> contratosCollection2;
 
     public Equipos() {
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     public Equipos(Integer codigo) {

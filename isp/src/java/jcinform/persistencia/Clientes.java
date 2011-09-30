@@ -53,16 +53,14 @@ public class Clientes implements Serializable {
     private String clave;
     @Column(name = "formapago")
     private String formapago;
-    @OneToMany(mappedBy = "clientes")
-    private Collection<Factura> facturaCollection;
+
     @JoinColumn(name = "sector", referencedColumnName = "codigo")
     @ManyToOne
     private Sector sector;
-    @OneToMany(mappedBy = "clientes")
-    private Collection<Soporte> soporteCollection;
-    @OneToMany(mappedBy = "clientes")
-    private Collection<Contratos> contratosCollection;
-
+  @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sucursal sucursal;
+    
     public Clientes() {
     }
 
@@ -150,13 +148,7 @@ public class Clientes implements Serializable {
         this.formapago = formapago;
     }
 
-    public Collection<Factura> getFacturaCollection() {
-        return facturaCollection;
-    }
-
-    public void setFacturaCollection(Collection<Factura> facturaCollection) {
-        this.facturaCollection = facturaCollection;
-    }
+ 
 
     public Sector getSector() {
         return sector;
@@ -166,21 +158,15 @@ public class Clientes implements Serializable {
         this.sector = sector;
     }
 
-    public Collection<Soporte> getSoporteCollection() {
-        return soporteCollection;
+    public Sucursal getSucursal() {
+        return sucursal;
     }
 
-    public void setSoporteCollection(Collection<Soporte> soporteCollection) {
-        this.soporteCollection = soporteCollection;
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
-    public Collection<Contratos> getContratosCollection() {
-        return contratosCollection;
-    }
-
-    public void setContratosCollection(Collection<Contratos> contratosCollection) {
-        this.contratosCollection = contratosCollection;
-    }
+     
 
     @Override
     public int hashCode() {

@@ -42,13 +42,10 @@ public class Sector implements Serializable {
     @JoinColumn(name = "canton", referencedColumnName = "codigo")
     @ManyToOne
     private Canton canton;
-    @OneToMany(mappedBy = "sector")
-    private Collection<Factura> facturaCollection;
-    @OneToMany(mappedBy = "sector")
-    private Collection<Clientes> clientesCollection;
-    @OneToMany(mappedBy = "sector")
-    private Collection<Nodos> nodosCollection;
-
+     
+    @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sucursal sucursal;
     public Sector() {
     }
 
@@ -88,30 +85,14 @@ public class Sector implements Serializable {
         this.numero = numero;
     }
 
-    public Collection<Factura> getFacturaCollection() {
-        return facturaCollection;
+    public Sucursal getSucursal() {
+        return sucursal;
     }
 
-    public void setFacturaCollection(Collection<Factura> facturaCollection) {
-        this.facturaCollection = facturaCollection;
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
-
-    public Collection<Clientes> getClientesCollection() {
-        return clientesCollection;
-    }
-
-    public void setClientesCollection(Collection<Clientes> clientesCollection) {
-        this.clientesCollection = clientesCollection;
-    }
-
-    public Collection<Nodos> getNodosCollection() {
-        return nodosCollection;
-    }
-
-    public void setNodosCollection(Collection<Nodos> nodosCollection) {
-        this.nodosCollection = nodosCollection;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
