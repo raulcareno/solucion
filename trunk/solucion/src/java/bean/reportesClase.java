@@ -43,6 +43,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Messagebox;
 import sources.ActaGeneralDataSource;
+import sources.ConvertirNumeros;
 import sources.DisciplinaDataSource;
 import sources.Nota;
 import sources.NotasClaseTemp;
@@ -67,7 +68,7 @@ public class reportesClase {
 
     public reportesClase() {
     }
-
+public ConvertirNumeros c = new ConvertirNumeros();
     public JRDataSource evaluacion(Cursos curso, Matriculas matricula) {
         Administrador adm = new Administrador();
 //        Session ses = Sessions.getCurrent();
@@ -2767,7 +2768,7 @@ public class reportesClase {
 
         for (Matriculas matriculas1 : matriculas) {
             //Matriculas matriculas1 = itm.next();
-            String q = "Select matriculas.codigomat,numeroacta, " + query + "   from matriculas "
+            String q = "Select matriculas.codigomat,numeroacta,fecha, " + query + "   from matriculas "
                     + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest  "
                     + "left join notasacta on matriculas.codigomat = notasacta.matricula "
                     + "where  matriculas.codigomat = '" + matriculas1.getCodigomat() + "' "
@@ -2782,6 +2783,7 @@ public class reportesClase {
                 Matriculas matriculaNo = null;
                 Integer noActa = null;
                 Boolean cuantitativa = false;
+                Date fecha = null;
                 int ksis = 0;
                 for (int j = 0; j < vec.size(); j++) {
                     Object dos = vec.get(j);
@@ -2795,7 +2797,7 @@ public class reportesClase {
                         dos = new Double(0.0);
 //                        System.out.println(""+e);
                     }
-                    if (j >= 2) {
+                    if (j >= 3) {
                         val = (Double) dos;
                         String s1 = decimalFormat.format(val);
                         coll.setNota(s1);
@@ -2810,15 +2812,15 @@ public class reportesClase {
                         coll.setMatriculas(matriculas1);
                         coll.setMateria(ac.getNombre());
                         coll.setNoActa(noActa + "");
-                        String cabecera1tmp = cabecera1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[fecha]", convertir(new Date()) + "");
-                        String cabecera2tmp = cabecera2.replace("[fecha]", convertir(new Date()) + "").replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
+                        String cabecera1tmp = cabecera1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[mes]", convertir(fecha)).replace("[dia]",fecha.getDate()+"").replace("[anio]",(fecha.getYear()+1900)+"").replace("[anioletras]",c.convertNumberToLetter((fecha.getYear()+1900)).toLowerCase()+"");
+                        String cabecera2tmp = cabecera2.replace("[fecha]", convertir(new Date()) + "").replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[mes]", convertir(fecha)).replace("[dia]",fecha.getDate()+"").replace("[anio]",(fecha.getYear()+1900)+"").replace("[anioletras]",c.convertNumberToLetter((fecha.getYear()+1900)).toLowerCase()+"");
                         coll.setCabecera1(cabecera1tmp);
                         coll.setCabecera1(cabecera1tmp);
                         coll.setCabecera2(cabecera2tmp);
                         coll.setCabecera2(cabecera2tmp);
-                        String pie1tmp = pi1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa());
+                        String pie1tmp = pi1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa()).replace("[mes]", convertir(fecha)).replace("[dia]",fecha.getDate()+"").replace("[anio]",(fecha.getYear()+1900)+"").replace("[anioletras]",c.convertNumberToLetter((fecha.getYear()+1900)).toLowerCase()+"");
                         coll.setPie1(pie1tmp);
-                        String pie2tmp = pi2.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa());
+                        String pie2tmp = pi2.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa()).replace("[mes]", convertir(fecha)).replace("[dia]",fecha.getDate()+"").replace("[anio]",(fecha.getYear()+1900)+"").replace("[anioletras]",c.convertNumberToLetter((fecha.getYear()+1900)).toLowerCase()+"");
                         coll.setPie2(pie2tmp);
                         coll.setCar1(car1);
                         coll.setCar2(car2);
@@ -2848,14 +2850,13 @@ public class reportesClase {
                             noActa = ((Integer) dos);
                         } catch (Exception e) {
                             noActa = 0;
-//                            try {
-//                                Messagebox.show("No ha GENERADO LOS NÚMEROS DE ACTAS EN: Grados > Calculo de Promedios > ACTAS DE GRADO \n NO SE MOSTRARA LAS ACTAS DE GRADO", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-//                                return null;
-//                            } catch (InterruptedException ex) {
-//                                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
                         }
-
+                    } else if (j == 2) {
+                        try {
+                            fecha = ((Date) dos);
+                        } catch (Exception e) {
+                            fecha = new Date();
+                        }
                     }
 
                 }
@@ -3632,6 +3633,6 @@ public class reportesClase {
                 break;
         }
 
-        return fecha.getDate() + " de " + mes + " del " + (fecha.getYear() + 1900);
+        return  mes ;
     }
 }
