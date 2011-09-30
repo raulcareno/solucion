@@ -201,7 +201,7 @@ equi.setPerfil(g);
         <vbox>
    
             <hbox width="100%">
-                <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="400px">
                     <listhead>
                         <listheader  label="Número"/>
                         <listheader sort="auto" label="Sector"/>

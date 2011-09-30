@@ -461,6 +461,7 @@ Boolean validar(){
        cabeCompra.setSeries(null);
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
+       cabeCompra.setSucural(sucursalEmp.getSucursal());
        cabeCompra.setDocumento("VEN");
        adm.guardar(cabeCompra);
         List col = productos.getRows().getChildren();
@@ -560,6 +561,7 @@ if(sihay==0){
        cabeCompra.setSeries(null);
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
+       cabeCompra.setSucural(sucursalEmp.getSucursal());
        cabeCompra.setDocumento("PRE");
        adm.guardar(cabeCompra);
         List col = productos.getRows().getChildren();
@@ -805,7 +807,8 @@ llenarCliente(Clientes clienteEn){
 }
 void verificarCedula(String valor){
       if(valor.length()>6){
-            List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
+            List empleados = adm.query("Select o from Clientes as o  " + 
+            " where o.identificacion like '"+valor+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
             if(empleados.size()>0){
             
                 for(Iterator it = empleados.iterator(); it.hasNext();) {
@@ -885,7 +888,7 @@ void verificarCedula(String valor){
 
         }else{
                 if(valor.contains("999")){
-                    List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
+                    List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%'   and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
                      if(empleados.size()>0){
                         for(Iterator it = empleados.iterator(); it.hasNext();) {
                               Clientes object = (Clientes)it.next();
@@ -906,7 +909,8 @@ void verificarCedula(String valor){
     void verificarContrato(Integer valor){
                       nuevo2();
                    estado(true,false);
-                   List  ControlequiposEncontrados = adm.query("Select o from Contratos as o where o.contrato = '"+valor+"'  ");
+                   List  ControlequiposEncontrados = adm.query("Select o from Contratos as o " + 
+                   " where o.contrato = '"+valor+"'  and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
                    if(ControlequiposEncontrados.size()>0){
                   contratosPanel.visible = false; 
                   llenarCliente(ControlequiposEncontrados.get(0).getClientes());
@@ -1566,7 +1570,8 @@ void llamar(){
 }
    void buscarSectores(Integer codigo){
           bdSector.value = "";
-        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.nombre");
+        List NodosEncontrados = adm.query("Select o from Sector as o  " + 
+        " where o.canton.codigo = '"+codigo+"' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.nombre");
         sectores = new Listbox();
         int a=0;
             for (Iterator it = sectores.getItems().iterator(); it.hasNext();) {
@@ -1586,7 +1591,8 @@ void llamar(){
     
       void buscarNodos(Integer codigo){
           bdNodo.value = "";
-        List NodosEncontrados = adm.query("Select o from Nodos as o where o.sector.canton.codigo = '"+codigo+"'  order by o.nombre");
+        List NodosEncontrados = adm.query("Select o from Nodos as o " + 
+        " where o.sector.canton.codigo = '"+codigo+"' and o.sector.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo() +"'  order by o.nombre");
         nodos = new Listbox();
         int a=0;
             for (Iterator it = nodos.getItems().iterator(); it.hasNext();) {
@@ -1772,7 +1778,7 @@ void llamar(){
                                                         <span>
                                                             <textbox id="identificacion2"  readonly="true"   cols="13" />
                                                             <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
-                                                            <button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/>
+                                                            <!--button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/-->
                                                         </span>
                                                         
                                                         <span style="float:right">
@@ -2177,7 +2183,7 @@ void llamar(){
                     </groupbox>
                     <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
                     <button  image="/images/nuevo.gif" id="agregar" label="Nuevo Cliente y Contrato" onClick="nuevo();" />
-                    <button  image="/images/nuevo.gif" id="agregar2" label="Nuevo Contrato" onClick="nuevo2();" />
+                    <!--button  image="/images/nuevo.gif" id="agregar2" label="Nuevo Contrato" onClick="nuevo2();" /-->
                     <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
                     <button label="Añadir Pendientes" disabled="true" id="anadir" image="/images/empleados.png" >

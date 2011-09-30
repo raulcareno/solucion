@@ -13,11 +13,11 @@
   import org.zkoss.image.AImage;
   import org.zkoss.image.Image;
     Administrador adm = new Administrador();
- //  List allEvents = adm.query("Select o from Cabeceracompra as o ");
-    //static Cabeceracompra empa = new Cabeceracompra();
+ Session ses = Sessions.getCurrent();
+  Empleadossucursal sucursalEmp = ses.getAttribute("sector");
     Permisos permiso = new Permisos();
     List perfiles = adm.query("Select o from Equipos as o order by o.nombre, o.modelo ");
-    List proveedoresList = adm.query("Select o from Proveedores as o order by o.razonsocial ");
+    //List proveedoresList = adm.query("Select o from Proveedores as o order by o.razonsocial ");
     Object media = null;
 
 //FUNCIONES
@@ -305,6 +305,7 @@ Boolean validarSeriesAju(){
        cabeCompra.setSeries(observacion.value);
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
+       cabeCompra.setSucursal(sucursalEmp.getSucursal());
        cabeCompra.setDocumento(documento.selectedItem.value);
        adm.guardar(cabeCompra);
             List col = opciones.getRows().getChildren();
@@ -838,9 +839,11 @@ void tipoDocumento(String tipo){
                                   void buscar(String p){
                                     String fechaDe = jcinform.bean.generarFacturas.convertiraString(desde.value);
                                     String fechaHa = jcinform.bean.generarFacturas.convertiraString(hasta.value);
-                                        List CabeceracompraEncontrados = adm.queryNativo("Select o.* from Cabeceracompra as o, Proveedores prov " 
+                                    String q = "Select o.* from Cabeceracompra as o, Proveedores prov " 
                                         +" where prov.codigo = o.proveedores and prov.razonsocial like '%" + proveedor.value + "%' and o.factura like '"+ p +"%' and o.fecha between '"+fechaDe+"' and  '"+fechaHa+"'  "  + 
-                                        "order by o.factura",Cabeceracompra.class);
+                                        " and o.sucursal = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.factura";
+                                    System.out.println(q);
+                                        List CabeceracompraEncontrados = adm.queryNativo(q,Cabeceracompra.class);
                                         datos = new Listbox();
                                         int a=0;
                                             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {

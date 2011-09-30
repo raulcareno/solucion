@@ -23,6 +23,8 @@
     Permisos permiso = new Permisos();
     List perfiles = adm.query("Select o from Sector as o  ");
     Object media = null;
+    Session ses = Sessions.getCurrent();
+  Empleadossucursal sucursalEmp = ses.getAttribute("sector");
 Boolean instanciadaContratos = false;
  
  
@@ -37,7 +39,9 @@ Boolean instanciadaContratos = false;
   
  
   void buscar(String p){
-        List ProveedoresEncontrados = adm.query("Select o from Proveedores as o where o.razonsocial like '"+p+"%' order by o.razonsocial");
+        List ProveedoresEncontrados = adm.query("Select o from Proveedores as o " + 
+        " where o.razonsocial like '"+p+"%' " + 
+        " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.razonsocial");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
