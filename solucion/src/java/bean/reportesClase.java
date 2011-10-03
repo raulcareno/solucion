@@ -2838,6 +2838,7 @@ public ConvertirNumeros c = new ConvertirNumeros();
                         coll.setNom6(nom6);
                         coll.setNom7(nom7);
                         coll.setNom8(nom8);
+                        coll.setFecha(fecha);
 
 //                        coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion());
                         lisNotasC.add(coll);

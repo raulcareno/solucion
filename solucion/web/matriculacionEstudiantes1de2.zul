@@ -82,8 +82,10 @@ import bean.email;
                     " where '"+fechaString+"' between o.fechamai and o.fechamaf order by o.descripcion",Periodo.class);
           
             if(periodosListadod.size()<= 0){
-                    Messagebox.show("No existe Periodos Habilitados para Matricularse  \n revise el calendario de Matriculación...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                    Executions.sendRedirect("loginEtudiantes.zul");
+             //       Messagebox.show("No existe Periodos Habilitados para Matricularse  \n revise el calendario de Matriculación...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    mensaje.value = "No existe Periodos Habilitados para Matricularse  \n revise el calendario de Matriculación...!";
+                    //Executions.sendRedirect("loginEtudiantes.zul");
+                    Executions.sendRedirect("/592981728937491235M.zul?AASL2KSO348934934="+(""+matActual.getCodigomat())+"&TP=pdf");
             }
 
  Permisos permiso = new Permisos();
@@ -159,7 +161,7 @@ Integer nuevaMatricula() {
             </zscript>
 
           
-         
+         <label id="mensaje"  style="color:red; font-size:18px"/>
        
             <panel  id="panel" style="position:absolute; top:25%;left:15%"  visible="true" height="500px"  width="800px"  >
                 <panelchildren>
