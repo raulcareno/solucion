@@ -47,7 +47,8 @@ fec.setDate(1);
         List facturaExistente = adm.query("Select f from Factura as f "
                 + "where f.contratos.codigo = '"+ contrato.value +"' " 
                 + "and f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "' "
-                + "and f.clientes.codigo = '"+ clienteid.value +"' ");
+                + "and f.clientes.codigo = '"+ clienteid.value +"' " + 
+                " and f.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  ");
         if(facturaExistente.size()>0){
               int valor0 = Messagebox.show("Ya se ha añadido una Deuda para éste mes, desea continuar añadiendolo?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
                         if(valor0 == 16){
@@ -59,8 +60,12 @@ fec.setDate(1);
                             Row row = new Row();
                                     Label plan = new Label(plan.value);
                                     row.appendChild(plan);
-                                    Label valor2 = new Label(valor.value+"");
-                                    row.appendChild(valor2);
+                                    //Label valor2 = new Label(valor.value+"");
+                                    Decimalbox val = new Decimalbox();
+                                    val.setReadonly(true);
+                                    val.setStyle("float:right;text-align:right;background-color:white; border:0px");
+                                    val.setValue(valor.value);
+                                    row.appendChild(val);
                                     
                                     SimpleDateFormat d1 = new SimpleDateFormat("dd-MMMM-yyyy");
                                     Date d =  fecha.value;
@@ -157,7 +162,7 @@ fec.setDate(1);
             <hbox>
                     
                         
-                <grid height="200px"  width="540" id="opciones">
+                <grid height="200px"  width="540px" id="opciones">
                     <columns sizable="true">
                         <column label="Plan"  />
                         <column label="Valor" width="80px"  />

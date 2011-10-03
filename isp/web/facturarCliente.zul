@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk  xmlns="http://www.zkoss.org/2005/zul">
-    <window  onClose="cerrar()" onCreate="cargar()" width="410px" id="facturarCliente">
+    <window  onClose="cerrar()" onCreate="cargar()" width="550px" id="facturarCliente">
         <zscript>
             <![CDATA[
   import jcinform.persistencia.*;
@@ -22,8 +22,8 @@
     Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
     String directorioReportes = empresa.getReportes();
-   ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
-       
+    ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
+    Sucursal suc = new Sucursal();
     cargarCliente(){
         boton = Path.getComponent("//controlequipospage/controlventana/facturas");
         boton.doClick();
@@ -104,20 +104,31 @@ String llenarCeros(String numero){
             
         }
         void actualFactura(){
-                String nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"FAC"+llenarCeros(""+nofactura.value);        
-                List siExiste = adm.query("Select o from Factura as o where o.numero = '"+nn+"' and o.codigo not in ("+ codigofac.value +") ");
-                if(siExiste.size()>0){
-                    Messagebox.show("Número de factura ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                    nofactura.focus();
-                    return;        
-                }
-                    Factura fac = adm.buscarClave(codigofac.value,Factura.class);
-                    fac.setNumero(nn+"");
-                    adm.actualizar(fac);
-                    facturaPanel.visible=false;
-                   imprimir();
-                   impresion.setSelected(true); 
-                   registrofactura.visible= false;
+        String nn = "";
+                if(esRecibo.checked){
+                       nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"REC"+llenarCeros(""+nofactura.value);        
+                }else{
+                      nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"FAC"+llenarCeros(""+nofactura.value);        
+              }
+                        List siExiste = adm.query("Select o from Factura as o where o.numero = '"+nn+"' and o.codigo not in ("+ codigofac.value +") ");
+                        if(siExiste.size()>0){
+                            Messagebox.show("Número de Factura/Recibo ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            nofactura.focus();
+                            return;        
+                        }
+                        
+                      
+                            Factura fac = adm.buscarClave(codigofac.value,Factura.class);
+                            fac.setNumero(nn+"");
+                            adm.actualizar(fac);
+                            facturaPanel.visible=false;
+                           imprimir();
+                           impresion.setSelected(true); 
+                           registrofactura.visible= false;
+                        if(esRecibo.checked){
+                                suc.setSecrecibos(nofactura.value);
+                                adm.actualizar(suc);
+                        }
         }
         
         public void imprimir(){
@@ -196,6 +207,13 @@ String llenarCeros(String numero){
                 totalCobros.setValue(total);
 }
 
+
+void ultimoRecibo(){
+    suc = adm.buscarClave(sucursalEmp.getSucursal().getCodigo(), Sucursal.class);
+    Integer valor = suc.getSecrecibos()+1;
+    nofactura.value = valor;
+}
+
 ]]>
         </zscript>
        
@@ -207,13 +225,14 @@ String llenarCeros(String numero){
             </tabs>
             <tabpanels>
                 <tabpanel>
-                    <panel framable="true" title="Ingrese el Número de Factura" visible="false" style="position:absolute; top:20%; left:15%" id="facturaPanel"  width="200px" >
+                    <panel framable="true" title="Ingrese el Número de Factura" visible="false" style="position:absolute; top:20%; left:15%" id="facturaPanel"  width="330px" >
                         <panelchildren>
                             <span >
                                 <label style="font-weight:bold;color:red" value="No.Factura" /> 
                             </span>
                             <span> 
                                 <intbox onOK="nofactura.getValue();actualFactura();" style="text-align:center; font-weight:bold; color:blue; font-size:14px"  constraint="no empty: Ingrese el No. de Factura" id="nofactura" /> 
+                                <checkbox id="esRecibo" label="Es Recibo??" style="font-weight:bold" onCheck="ultimoRecibo()" />
                             </span>
                             <button label="Continuar" onClick='nofactura.getValue();actualFactura();'/>
                         </panelchildren>

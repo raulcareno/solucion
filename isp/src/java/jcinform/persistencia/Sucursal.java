@@ -44,6 +44,8 @@ public class Sucursal implements Serializable {
     private Integer seccontrato;
     @Column(name = "seccompras")
     private Integer seccompras;
+    @Column(name = "secrecibos")
+    private Integer secrecibos;
     @JoinColumn(name = "empresa", referencedColumnName = "ruc")
     @ManyToOne
     private Empresa empresa;
@@ -158,6 +160,16 @@ public class Sucursal implements Serializable {
     public void setContratosCollection(Collection<Contratos> contratosCollection) {
         this.contratosCollection = contratosCollection;
     }
+
+    public Integer getSecrecibos() {
+        return secrecibos;
+    }
+
+    public void setSecrecibos(Integer secrecibos) {
+        this.secrecibos = secrecibos;
+    }
+    
+    
 
     @Override
     public int hashCode() {
