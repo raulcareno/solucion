@@ -62,7 +62,8 @@ filas.getChildren().clear();
                                     row.appendChild(prod);
                                     row.appendChild(dou);
                                     //SELECCIONO LAS SERIES INGRESADAS A ÉSTE DETALLE
-                                    List series = adm.query("Select o from Series as o where o.detallecompra.codigo = '"+acceIt.getCodigo()+"' ");
+                                    List series = adm.query("Select o from Series as o  " + 
+                                    " where o.detallecompra.codigo = '"+acceIt.getCodigo()+"' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
                                     ArrayList seriesA = new ArrayList();
                                     for (Iterator it = series.iterator(); it.hasNext();) {
                                             Series serIt = (Series) it.next();
@@ -190,7 +191,8 @@ Boolean validarSeries(){
                 seriesTodas = seriesTodas.substring(0,seriesTodas.length()-1);
               } 
              
-             List encontradas =  adm.query("Select o from Series as o where o.serie in ("+ seriesTodas+")");
+             List encontradas =  adm.query("Select o from Series as o "+ 
+             " where o.serie in ("+ seriesTodas+") and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
              String sencontradas="";
               for (Iterator it = encontradas.iterator(); it.hasNext();) {
                         Series object = it.next();
@@ -240,7 +242,7 @@ Boolean validarSeriesAju(){
                 seriesTodas = seriesTodas.substring(0,seriesTodas.length()-1);
               } 
              
-             List encontradas =  adm.query("Select o from Series as o where o.serie in ("+ seriesTodas+")");
+             List encontradas =  adm.query("Select o from Series as o where o.serie in ("+ seriesTodas+") and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'");
              String sencontradas="";
              ArrayList encontradasActualizar = new ArrayList();
              if(encontradas.size() <= 0){
@@ -335,6 +337,7 @@ Boolean validarSeriesAju(){
                                       ser.setCodigo(adm.getNuevaClave("Series","codigo"));
                                     ser.setSerie(object);
                                     ser.setDetallecompra(det);
+                                    ser.setSucursal(sucursalEmp.getSucursal());
                                     
                                     if(documento.selectedItem.value.equals("COM")){
                                         ser.setEstado("C");//CREADA
@@ -342,7 +345,7 @@ Boolean validarSeriesAju(){
                                     }else{
                                         ser.setEstado("A");//CREADA
                                         adm.guardar(ser);
-                                        //adm.ejecutaSql("Update Series set estado = 'A' where serie = '"+ser.getSerie()+"'");
+                                        //adm.ejecutaSql("Update Series set estado = 'A' where serie = '"+ser.getSerie()+"' and sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
                                     }
                                      
                           }

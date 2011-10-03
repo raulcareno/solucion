@@ -52,14 +52,17 @@ List cantonesList = adm.query("Select o from Canton as o ");
 //FUNCIONES
 
 void llenarCliente(Clientes cli){
-            identificacion.value = cli.getIdentificacion();
-            identificacion2.value = cli.getIdentificacion();
+            //identificacion.value = cli.getIdentificacion();
+            //direccion.value = cli.getDireccion();
+            //telefono.value = cli.getTelefono()+"";
+            //combo.value = cli.getApellidos()+" "+cli.getNombres();//cliente
+            //identificacion2.value = cli.getIdentificacion();
             codigocli.value = cli.getCodigo()+"";
-            direccion.value = cli.getDireccion();
-            telefono.value = cli.getTelefono()+"";
+            
             email.value = cli.getEmail()+"";
-            combo.value = cli.getApellidos()+" "+cli.getNombres();//cliente
+            
             apellidos.value = cli.getApellidos()+" "+cli.getNombres();//cliente
+       
 
 }
 void llenar(Contratos  equi2){
@@ -391,6 +394,8 @@ Boolean validar(){
             adm.actualizar(empa);
             
      }
+     equi.setDireccionf(direccion.value);
+    equi.setTelefonof(telefono.value);
     equi.setClientes(new Clientes(new Integer(codigocli.value)));
     equi.setFecha(fecha.value);
     equi.setFechainstalacion(fechainstalacion.value);
@@ -789,22 +794,54 @@ void modificar(){
  
  
 llenarCliente(Clientes clienteEn){
-    identificacion.value = clienteEn.getIdentificacion();
-    identificacion2.value = clienteEn.getIdentificacion();
+    //identificacion.value = clienteEn.getIdentificacion();
+     identificacion2.value = clienteEn.getIdentificacion();
      codigocli.value = clienteEn.getCodigo()+"";
-     direccion.value  = clienteEn.getDireccion();
      email.value  = clienteEn.getEmail();
-     telefono.value  = clienteEn.getTelefono();
      String espacio = "";
      if(!clienteEn.getApellidos().trim().equals("")){
-     espacio = " ";
+          espacio = " ";
      }
-     combo.value = clienteEn.getApellidos()+espacio+clienteEn.getNombres() ;
      apellidos.value = clienteEn.getApellidos();
      nombres.value = clienteEn.getNombres() ;
      
 
 }
+
+void buscarCedula(String valor){
+ 
+      if(valor.length()>6){
+         List empleados = adm.query("Select o from Clientes as o  " + 
+            " where o.identificacion like '"+valor+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+            if(empleados.size()>0){
+ 
+            
+                Clientes cli =(empleados.get(0));
+                codigocli.value = cli.getCodigo()+"";
+                email.value = cli.getEmail()+"";
+                apellidos.value = cli.getApellidos();//cliente
+                nombres.value = cli.getNombres();
+ 
+            } 
+
+        }else{
+                if(valor.contains("999")){
+                    List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%'   and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+                     if(empleados.size()>0){
+                        for(Iterator it = empleados.iterator(); it.hasNext();) {
+                              Clientes object = (Clientes)it.next();
+                              empa = object;
+
+                         }
+                        llenarCliente(empa);
+                         numerocontrato.focus();
+                    }
+                }
+        
+        }
+ 
+    }
+    
 void verificarCedula(String valor){
       if(valor.length()>6){
             List empleados = adm.query("Select o from Clientes as o  " + 
@@ -835,6 +872,8 @@ void verificarCedula(String valor){
                                           contratosPanel.visible = false; 
                                           llenarCliente(empa);
                                           llenar(ControlequiposEncontrados.get(0));
+                                          direccion.value = ControlequiposEncontrados.get(0).getDireccionf();
+                                          telefono.value = ControlequiposEncontrados.get(0).getTelefonof();
                                           eliminar.disabled = false;
                                           numerocontrato.focus();
                                           modificar.disabled = false;
@@ -877,13 +916,7 @@ void verificarCedula(String valor){
                              
               
             }else{
-                    /*Window win = (Window) Executions.createComponents("clientes.zul", null, null);
-                    win.setMaximizable(true);
-                    win.setClosable(true);
-                    win.setAttribute("nuevo", true);
-                    win.setAttribute("cedula", valor);
-                    win.setTitle("Nuevo Cliente");
-                    win.doModal();*/
+                  
            }
 
         }else{
@@ -912,12 +945,14 @@ void verificarCedula(String valor){
                    List  ControlequiposEncontrados = adm.query("Select o from Contratos as o " + 
                    " where o.contrato = '"+valor+"'  and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
                    if(ControlequiposEncontrados.size()>0){
-                  contratosPanel.visible = false; 
-                  llenarCliente(ControlequiposEncontrados.get(0).getClientes());
-                  llenar(ControlequiposEncontrados.get(0));
-                  numerocontrato.focus();
-                  modificar.disabled = false;
-                  anadir.disabled = false;
+                              contratosPanel.visible = false; 
+                              llenarCliente(ControlequiposEncontrados.get(0).getClientes());
+                              llenar(ControlequiposEncontrados.get(0));
+                              direccion.value = ControlequiposEncontrados.get(0).getDireccionf();
+                              telefono.value = ControlequiposEncontrados.get(0).getTelefonof();
+                              numerocontrato.focus();
+                              modificar.disabled = false;
+                              anadir.disabled = false;
                   }else{
                         Messagebox.show("No. de Contrato no Existente ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                   }
@@ -925,30 +960,7 @@ void verificarCedula(String valor){
     
     
      
-  void buscar(String p,String tipo){
-        List ControlequiposEncontrados = null;
-        if(tipo.equals("contrato")){
-            ControlequiposEncontrados  = adm.query("Select o from Contratos as o where o.contrato like '"+p+"%'");
-        }else{
-            ControlequiposEncontrados  = adm.query("Select o from Contratos as o where o.clientes.apellidos like '"+p+"%' order by o.clientes.apellidos");
-        }
-        datos = new Listbox();
-        int a=0;
-            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
-                    datos.getItems().remove(a);
-                }
-
-
-               for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
-                      Contratos acceIt = (Contratos) it.next();
-                      Listitem li = new Listitem();
-                      li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
-                      li.appendChild(new Listcell(acceIt.getClientes().getApellidos()+" "+acceIt.getClientes().getNombres()));
-                      datos.appendChild(li);
-             }
-
-    }
+ 
       
      nuevos(Soporte sop){
                 
@@ -1740,7 +1752,7 @@ void llamar(){
                                                                 <groupbox closable="true" style="position: absolute;background:#E2EDFE; display: none;" visible="false" id="bcliente">
                                                                     <vbox>
                                                                         <hbox>
-                                                                            <listbox style="background:white" onSelect='identificacion.value= ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";  identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos()+""; nombres.value = ((Clientes)self.selectedItem.value).getNombres()+""; bcliente.visible =false; verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion());' id="lcliente" width="400px">
+                                                                            <listbox style="background:white" onSelect='identificacion.value= ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";  identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos()+""; nombres.value = ((Clientes)self.selectedItem.value).getNombres()+""; bcliente.visible =false; verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion());' id="lcliente" width="400px">
                                                                                 <listhead>
                                                                                     <listheader label="Nombres"/>
                                                                                     <listheader label="Dirección"/>
@@ -1776,15 +1788,12 @@ void llamar(){
                                                     <row>
                                                         <span  style="float:right" >Identificación(*):</span>
                                                         <span>
-                                                            <textbox id="identificacion2"  readonly="true"   cols="13" />
+                                                            <textbox id="identificacion2" onBlur="buscarCedula(self.value)" readonly="true"   cols="13" />
                                                             <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
                                                             <!--button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/-->
                                                         </span>
                                                         
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Dirección(*): " />
-                                                        </span>
-                                                        <textbox id="direccion" cols="32"  rows="2" readonly="true"  />
+                                                     <span></span>
                                                     </row>
                                                     <row>
                                                         <span style="float:right">
@@ -1804,13 +1813,20 @@ void llamar(){
                                                     
                                                     <row>
                                                         <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Teléfono(*):" />
+                                                            <label style="font-weight:bold2" value=" Teléfono Fac.(*):" />
                                                         </span>
                                                         <textbox id="telefono" cols="32" readonly="true"  />
                                                         <span style="float:right">
                                                             <label style="font-weight:bold2" value=" Email: " />
                                                         </span>
                                                         <textbox id="email" cols="32" readonly="true"  />
+                                                    </row>
+                                                    <row>
+                                                       <span style="float:right">
+                                                            <label style="font-weight:bold2" value=" Dirección Fac.(*): " />
+                                                        </span>
+                                                        <textbox id="direccion" cols="32"  rows="2" readonly="true"  />    
+                                                        <span></span><span></span>
                                                     </row>
                     
                                                     <row>
@@ -2227,32 +2243,6 @@ void llamar(){
                         </rows>
                     </grid>
                 </tabpanel>
-                <!--tabpanel>
-                    <groupbox  width="100%" mold="3d" >
-                        <caption label="Busquedas" />
-                        <vbox>
-                            <hbox>  No.Contrato:
-                                <textbox id="buscarTextNo"  onOK='buscar(self.value,"contrato")' maxlength="60" cols="10" />
-                                <button id="buscarno"  label="Buscar" onClick='buscar(buscarTextNo.getValue(),"contrato");'/>
-                                Cliente:
-                                <textbox id="buscarTextCliente"  onChanging='buscar(buscarTextCliente.getValue(),"otro");'  onOK='buscar(buscarTextCliente.getValue(),"otro");' maxlength="60" cols="25" />
-                                <button id="buscar"  label="Buscar" onClick='buscar(buscarTextCliente.getValue(),"otro");'/>
-                            </hbox>
-                            <hbox>
-                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();" id="datos" width="100%">
-                                    <listhead>
-                                        <listheader label="Contrato"/>
-                                        <listheader label="Clientes"/>
-                                    </listhead>
-                                    <listitem forEach="${allEvents}" value="${each}">
-                                        <listcell label="${each.codigo}" />
-                                        <listcell label="${each.apellidos}" />
-                                    </listitem>
-                                </listbox>
-                            </hbox>
-                        </vbox>
-                    </groupbox>
-                </tabpanel-->  
                 <tabpanel>
              
                     <grid>

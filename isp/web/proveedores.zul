@@ -24,7 +24,7 @@
   List allEvents = adm.query("Select o from Proveedores as o where  o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
     static Proveedores empa = new Proveedores();
     Permisos permiso = new Permisos();
-    List perfiles = adm.query("Select o from Global as o where o.grupo = 'PER'");
+    //List perfiles = adm.query("Select o from Global as o where o.grupo = 'PER'");
     Object media = null;
 
 //FUNCIONES

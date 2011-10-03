@@ -45,6 +45,10 @@ public class Contratos implements Serializable {
     private String referencia;
     @Column(name = "telefono")
     private String telefono;
+    @Column(name = "direccionf")
+    private String direccionf;
+    @Column(name = "telefonof")
+    private String telefonof;
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha = new Date();
@@ -396,6 +400,24 @@ public class Contratos implements Serializable {
     public void setSector(Sector sector) {
         this.sector = sector;
     }
+
+    public String getDireccionf() {
+        return direccionf;
+    }
+
+    public void setDireccionf(String direccionf) {
+        this.direccionf = direccionf;
+    }
+
+    public String getTelefonof() {
+        return telefonof;
+    }
+
+    public void setTelefonof(String telefonof) {
+        this.telefonof = telefonof;
+    }
+    
+    
 
     @Override
     public int hashCode() {
