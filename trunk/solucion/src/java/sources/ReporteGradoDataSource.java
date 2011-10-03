@@ -56,7 +56,7 @@ public class ReporteGradoDataSource implements JRDataSource{
             valor = codigo;
             
         }else if ("fecha".equals(fieldName)) {
-            valor =new Date();
+            valor =nodo.getFecha();
         }else if ("materia".equals(fieldName)){
             valor =nodo.getMateria();
         }else if ("valor".equals(fieldName)) {

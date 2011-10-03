@@ -1,6 +1,7 @@
  
 package bean;
 
+import java.util.Date;
 import jcinform.persistencia.Matriculas;
 
 public class NotaCollection {
@@ -11,6 +12,7 @@ private Object nota;
 private String sistema;
 private String materia;
 private String estudiante;
+private Date fecha;
 private String tipo;
 private String cabecera1;
 private String cabecera2;
@@ -49,6 +51,14 @@ private Matriculas matriculas;
 
     public void setNota(Object nota) {
         this.nota = nota;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public String getSistema() {
