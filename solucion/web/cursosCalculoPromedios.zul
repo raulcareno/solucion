@@ -396,6 +396,7 @@ void generar(String tipo,Date fecha,Boolean empi){
             <column width="300px" label ="Estudiante"/>
             <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
             <column label ="ACTA"/>
+            <column label ="Fecha"/>
         </columns>
         <rows id="filasActa" use="bean.notasActa">
         </rows>
