@@ -17,6 +17,7 @@ import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
@@ -50,8 +51,10 @@ String columnaExamen ="";
         getChildren().clear();
      Decimalbox txtNota = null;
      Intbox txtNumero  = null;
+     String estilonotas = "width:55px;text-align:center";
+     Datebox txtFecha = null;
         Label label3 = null;
-        String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + ", numeroacta  from matriculas " +
+        String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + ", numeroacta, fecha  from matriculas " +
                 "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest " +
                 "left join notasacta on matriculas.codigomat = notasacta.matricula " +
                  "where matriculas.curso = '" + curso.getCodigocur() + "' and matriculas.estado in ('Matriculado','Recibir Pase') " +
@@ -85,7 +88,7 @@ String columnaExamen ="";
                     dos = new Double(0.0);
                 }
                 
-                 if(j == (vec.size()-1)) {
+                 if(j == (vec.size()-2)) {
                      System.out.println("NUMERO ACTA:"+dos);
                      try{
                          if( dos!= null){
@@ -96,9 +99,27 @@ String columnaExamen ="";
                      }catch(Exception ex){
                      txtNumero.setValue(null);
                      }
-                     txtNumero.setReadonly(true);
+                     txtNumero.setReadonly(false);
                      txtNumero.setStyle("float:right; text-align:right;");
                      txtNumero.setCols(1);
+                     
+                    //label3.setValue("" + dos);
+                    
+                }else if(j == (vec.size()-1)) {
+                     System.out.println("FECHA ACTA:"+dos);
+                     txtFecha = new Datebox();
+                     try{
+                   if( dos!= null){
+                        txtFecha.setValue((Date)dos);
+                     }else{
+                         txtFecha.setValue(null);
+                     }
+                     }catch(Exception ex){
+                         txtFecha.setValue(null);
+                     }
+//                     txtFecha.setReadonly(true);
+                     txtFecha.setStyle("float:right; text-align:right;");
+                     txtFecha.setCols(7);
                      
                     //label3.setValue("" + dos);
                     
@@ -156,8 +177,12 @@ String columnaExamen ="";
                     label3.setStyle("width:300px;font-size:11px;font:arial; ");
                     row.appendChild(label3);
                 }else if(j == (vec.size()-1)) {
+                    row.appendChild(txtFecha);
+                }else if(j == (vec.size()-2)) {
+                    txtNumero.setStyle("float:right;text-align:right");
                     row.appendChild(txtNumero);
                 }else{
+                    txtNota.setStyle(estilonotas);
                      row.appendChild(txtNota);
                 }
 
@@ -210,14 +235,15 @@ String columnaExamen ="";
                     nota.setCodigo(sec.generarClave());
                     List labels = object.getChildren();
                     nota.setMatricula(new Matriculas(new Integer(((Label) labels.get(0)).getValue())));
-                    nota.setFecha(new Date());
-                    nota.setNumeroacta((((Intbox) labels.get(labels.size()-1)).getValue()));
+//                    nota.setFecha(new Date());
+                    nota.setNumeroacta((((Intbox) labels.get(labels.size()-2)).getValue()));
+                    nota.setFecha((((Datebox) labels.get(labels.size()-1)).getValue()));
                     inter.set("nota", nota);
                      inter.eval(" public Double equivalencia(Double n){" +
                                 "return n;" +
                                 "}");
                    
-                    for (int j = 2; j < labels.size()-1; j++) {
+                    for (int j = 2; j < labels.size()-2; j++) {
                         Decimalbox object1 = (Decimalbox) labels.get(j);
                         String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
                         String formula0 = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
