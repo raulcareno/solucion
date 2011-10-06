@@ -40,10 +40,8 @@ import java.text.SimpleDateFormat;
     Empleados usuarioActual = ses.getAttribute("user");
    Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
-      List planes = adm.query("Select o from Plan as o ");
+      List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
       List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
-      //List radios = adm.query("Select o from Radios as o");
-      //List nodos = adm.query("Select o from Nodos as o");
       generarFacturas gen = new generarFacturas();
 List cantonesList = adm.query("Select o from Canton as o ");
     Boolean modificare = false;
@@ -1692,7 +1690,7 @@ void llamar(){
             </tabs>
             <tabpanels>
                 <tabpanel>
-         <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
                     <button  image="/images/nuevo.gif" id="agregar" label="Nuevo Cliente y Contrato" onClick="nuevo();" />
                     <!--button  image="/images/nuevo.gif" id="agregar2" label="Nuevo Contrato" onClick="nuevo2();" /-->
                     <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
@@ -1877,14 +1875,13 @@ void llamar(){
                                                 <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" id="numerocontrato" cols="16" />
                                                 <button label="Contratos"  image="/images/contratos.png"  id="vercontratos" onClick="contratosPanel.visible = true; "/>
                                             </span>
-                                           <span style="float:right">
+                                            <span style="float:right">
                                                 <label style="font-weight:bold2" value=" Planes (*): " />
                                             </span>
                                             <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
                                                 <bandpopup>
                                                     <vbox>
-                                                        <listbox id="perf" width="450px"
-                                                     onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();">
+                                                        <listbox id="perf" width="450px" onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();">
                                                             <listhead>
                                                                 <listheader label="Descripción"/>
                                                                 <listheader label="Tipo"/>
@@ -2011,7 +2008,7 @@ void llamar(){
                                             <checkbox id="autorizado" disabled="true"  />
                                                            
                                         </row>
-                                                            <row>
+                                        <row>
                                             <span style="float:right">
                                                 <label style="font-weight:bold2" value=" Vendido por(*): " />
                                                 <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
@@ -2033,85 +2030,86 @@ void llamar(){
 
                                             </span>
                                             <span style="float:right">   Usuario:</span>
-                                              <span style="float:right">   
-                                                    <textbox cols="15" readonly="true"   id="usuario" />
-                                                    Clave:<textbox cols="15" readonly="true"   id="clave" />
-                                                </span>
+                                            <span style="float:right">   
+                                                <textbox cols="15" readonly="true"   id="usuario" />
+                                                    Clave:
+                                                <textbox cols="15" readonly="true"   id="clave" />
+                                            </span>
                                         </row>
-                                         <row spans="4">
+                                        <row spans="4">
                                             <groupbox style="background:#FFE7D7" mold="3d" width="100%">
                                                 
                                             
-                                            <span>
-                                                <label style="font-weight:bold2" value=" Pago en(*): " />
-                                            </span>
-                                            <radiogroup Id="formapago" onCheck="">
-                                                <radio disabled="true" id="efe" selected="true" value="1" onCheck="bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;" label="Efectivo"/>
-                                                <radio disabled="true" id="deb"   value="2" onCheck="bd22.disabled=false;tipocuenta.disabled= false;nocuenta.disabled = false;diapago.disabled = false;  " label="Débito"/>
-                                            </radiogroup>
-                                            <span>
-                                                <label style="font-weight:bold2" value="Banco:" />
-                                            </span>
-                                            <bandbox disabled="true" readonly="true" width="100px"  id="bd22">
-                                                <bandpopup>
-                                                    <vbox>
-                                                        <listbox  id="bancosList" width="250px"
-                                                                    onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
-                                                            <listhead>
-                                                                <listheader label="Seleccione un Banco"/>
-                                                            </listhead>
-                                                            <listitem forEach="${bancos}" value="${each}">
-                                                                <listcell label="${each.nombre}" />
-
-                                                            </listitem>
-                                                        </listbox>
-                                                    </vbox>
-                                                </bandpopup>
-                                            </bandbox>
-                                             <span>
-                                                <label style="font-weight:bold2" value="No.Cuen: " />
-                                            </span>
-                                                 <span>
-                                                <textbox id="nocuenta" cols="10"  readonly="true"  />
-                                                <combobox   style="background-color:transparent" disabled="true" width="29px" id="tipocuenta">
-                                                    <comboitem label="AHO"/>
-                                                    <comboitem label="COR"/>
-                                                </combobox>
-                                            </span>
                                                 <span>
-                                                <label style="font-weight:bold2" value="Día Pago(*): " />
-                                            </span>
-                                            <combobox disabled="true" width="17px"  id="diapago">
-                                                <comboitem label="1"/>
-                                                <comboitem label="2"/>
-                                                <comboitem label="3"/>
-                                                <comboitem label="4"/>
-                                                <comboitem label="5"/>
-                                                <comboitem label="6"/>
-                                                <comboitem label="7"/>
-                                                <comboitem label="8"/>
-                                                <comboitem label="9"/>
-                                                <comboitem label="10"/>
-                                                <comboitem label="11"/>
-                                                <comboitem label="12"/>
-                                                <comboitem label="13"/>
-                                                <comboitem label="14"/>
-                                                <comboitem label="15"/>
-                                                <comboitem label="16"/>
-                                                <comboitem label="17"/>
-                                                <comboitem label="18"/>
-                                                <comboitem label="19"/>
-                                                <comboitem label="20"/>
-                                                <comboitem label="23"/>
-                                                <comboitem label="22"/>
-                                                <comboitem label="25"/>
-                                                <comboitem label="24"/>
-                                                <comboitem label="27"/>
-                                                <comboitem label="26"/>
-                                                <comboitem label="29"/>
-                                                <comboitem label="28"/>
-                                                <comboitem label="30"/>
-                                            </combobox>
+                                                    <label style="font-weight:bold2" value=" Pago en(*): " />
+                                                </span>
+                                                <radiogroup Id="formapago" onCheck="">
+                                                    <radio disabled="true" id="efe" selected="true" value="1" onCheck="bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;" label="Efectivo"/>
+                                                    <radio disabled="true" id="deb"   value="2" onCheck="bd22.disabled=false;tipocuenta.disabled= false;nocuenta.disabled = false;diapago.disabled = false;  " label="Débito"/>
+                                                </radiogroup>
+                                                <span>
+                                                    <label style="font-weight:bold2" value="Banco:" />
+                                                </span>
+                                                <bandbox disabled="true" readonly="true" width="100px"  id="bd22">
+                                                    <bandpopup>
+                                                        <vbox>
+                                                            <listbox  id="bancosList" width="250px"
+                                                                    onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
+                                                                <listhead>
+                                                                    <listheader label="Seleccione un Banco"/>
+                                                                </listhead>
+                                                                <listitem forEach="${bancos}" value="${each}">
+                                                                    <listcell label="${each.nombre}" />
+
+                                                                </listitem>
+                                                            </listbox>
+                                                        </vbox>
+                                                    </bandpopup>
+                                                </bandbox>
+                                                <span>
+                                                    <label style="font-weight:bold2" value="No.Cuen: " />
+                                                </span>
+                                                <span>
+                                                    <textbox id="nocuenta" cols="10"  readonly="true"  />
+                                                    <combobox   style="background-color:transparent" disabled="true" width="29px" id="tipocuenta">
+                                                        <comboitem label="AHO"/>
+                                                        <comboitem label="COR"/>
+                                                    </combobox>
+                                                </span>
+                                                <span>
+                                                    <label style="font-weight:bold2" value="Día Pago(*): " />
+                                                </span>
+                                                <combobox disabled="true" width="17px"  id="diapago">
+                                                    <comboitem label="1"/>
+                                                    <comboitem label="2"/>
+                                                    <comboitem label="3"/>
+                                                    <comboitem label="4"/>
+                                                    <comboitem label="5"/>
+                                                    <comboitem label="6"/>
+                                                    <comboitem label="7"/>
+                                                    <comboitem label="8"/>
+                                                    <comboitem label="9"/>
+                                                    <comboitem label="10"/>
+                                                    <comboitem label="11"/>
+                                                    <comboitem label="12"/>
+                                                    <comboitem label="13"/>
+                                                    <comboitem label="14"/>
+                                                    <comboitem label="15"/>
+                                                    <comboitem label="16"/>
+                                                    <comboitem label="17"/>
+                                                    <comboitem label="18"/>
+                                                    <comboitem label="19"/>
+                                                    <comboitem label="20"/>
+                                                    <comboitem label="23"/>
+                                                    <comboitem label="22"/>
+                                                    <comboitem label="25"/>
+                                                    <comboitem label="24"/>
+                                                    <comboitem label="27"/>
+                                                    <comboitem label="26"/>
+                                                    <comboitem label="29"/>
+                                                    <comboitem label="28"/>
+                                                    <comboitem label="30"/>
+                                                </combobox>
                                             </groupbox> 
                                         </row>
                                         
@@ -2134,17 +2132,17 @@ void llamar(){
                                       
                                 <groupbox  style="background:#D6E3F6"  id="gb" mold="3d" width="100%">
                              
-                                     <label value="Digite la Serie" style="font-weight:bold;size:14px" />
-                                     <span> 
+                                    <label value="Digite la Serie" style="font-weight:bold;size:14px" />
+                                    <span> 
                                         <textbox onOK="buscarSeries(self.value)" id="seriebuscar" value=""/>
-                                        <image  src="/images/enter.png"  height="12px"/>
-                                     </span>
-                                     <separator orient="vertical"/>
-                                     <separator orient="vertical"/>
-                                     <separator orient="vertical"/>
-                                     <span>
-                                           <checkbox style="font-weight:bold;size:14px" id="genFactura" label="¿GENERAR COBRO PARA ÉSTE MES?" />
-                                      </span>
+                                        <image  src="/images/enter.png"  height="14px"/>
+                                    </span>
+                                    <separator orient="vertical"/>
+                                    <separator orient="vertical"/>
+                                    <separator orient="vertical"/>
+                                    <span>
+                                        <checkbox style="font-weight:bold;size:14px" id="genFactura" label="¿GENERAR COBRO PARA ÉSTE MES?" />
+                                    </span>
                                 
                                    
                                 </groupbox>
