@@ -67,7 +67,7 @@ fec.setDate(1);
                                     val.setValue(valor.value);
                                     row.appendChild(val);
                                     
-                                    SimpleDateFormat d1 = new SimpleDateFormat("dd-MMMM-yyyy");
+                                    SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy");
                                     Date d =  fecha.value;
                                     d.setDate(1);
                                     row.appendChild(new Label(d1.format(d)+""));
@@ -165,8 +165,8 @@ fec.setDate(1);
                 <grid height="200px"  width="540px" id="opciones">
                     <columns sizable="true">
                         <column label="Plan"  />
-                        <column label="Valor" width="80px"  />
-                        <column label="Mes" width="80px"/>
+                        <column label="Valor" width="60px"  />
+                        <column label="Mes" width="110px"/>
                         <column label="OPCION" width="80px"  />
                     </columns>
                     <rows id="filas">

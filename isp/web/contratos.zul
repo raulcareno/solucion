@@ -466,7 +466,7 @@ Boolean validar(){
        cabeCompra.setSeries(null);
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
-       cabeCompra.setSucural(sucursalEmp.getSucursal());
+       cabeCompra.setSucursal(sucursalEmp.getSucursal());
        cabeCompra.setDocumento("VEN");
        adm.guardar(cabeCompra);
         List col = productos.getRows().getChildren();
@@ -566,7 +566,7 @@ if(sihay==0){
        cabeCompra.setSeries(null);
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
-       cabeCompra.setSucural(sucursalEmp.getSucursal());
+       cabeCompra.setSucursal(sucursalEmp.getSucursal());
        cabeCompra.setDocumento("PRE");
        adm.guardar(cabeCompra);
         List col = productos.getRows().getChildren();
@@ -618,6 +618,7 @@ if(sihay==0){
                                   ser.setSerie(serieDet.getSerie());
                                   ser.setDetallecompra(det);
                                   ser.setContratos(equi);
+                                  ser.setSucursal(sucursalEmp.getSucursal());
                                   ser.setEstado("P");//PRESTAMO
                                   if(serieDet.getDetallecompra().getEquipos().getBien())
                                   adm.guardar(ser);
@@ -1327,9 +1328,10 @@ void verificarCedula(String valor){
 
                                     }
       void buscarSeries(String serie){
-           List seriesEn = adm.query("Select o from Series as o where o.estado = 'C'  and o.serie = '"+serie+"'" + 
-                                           "and o.serie not in (Select a.serie from Series as a where a.estado IN ( 'A','P','V') )  ");
-                                           if(seriesEn.size()>0){
+                            List seriesEn = adm.query("Select o from Series as o where o.estado = 'C'  and o.serie = '"+serie+"'" + 
+                                    " and o.serie not in (Select a.serie from Series as a where a.estado IN ( 'A','P','V') ) " + 
+                                    " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo() +"'  ");
+                               if(seriesEn.size()>0){
                                            
                                            try{
                                                     Row row = new Row();
@@ -1393,7 +1395,8 @@ void verificarCedula(String valor){
                                                 seriebuscar.focus();
                                                 
                                            }else{
-                                            List equipos = adm.query("Select o from Equipos as o where o.tipo = '"+serie+"' and o.bien = false ");
+                                               List equipos = adm.query("Select o from Equipos as o " + 
+                                                    " where o.tipo = '"+serie+"' and o.bien = false and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo() +"' ");
                                                        if(equipos.size()>0){
                                                                        try{
                                                                                     Row row = new Row();
@@ -1682,7 +1685,7 @@ void llamar(){
                 <tab id="registro" label="Contratos"/>
                 <tab label="Facturas Pendientes" id="facturas" onSelect="facturasPendientes()"/>
                 <tab onSelect="buscarSoportes()" label="Historia Técnica" />
-                <tab label="Impresión" />
+               
             </tabs>
             <tabpanels>
                 <tabpanel>
@@ -1690,505 +1693,476 @@ void llamar(){
                     <groupbox id="panel" mold="3d" width="830px">
                         <panel id="equiposcontrol"  width="100%" >
                             <panelchildren>
-                                <tabbox id="tb2"  >
-                                    <tabs  >
-                                        <tab label="DATOS CONTRATO"/>
-                                        <tab label="EQUIPOS OCUPADOS Y VENDIDOS"/>
-                                    </tabs>
-                                    <tabpanels>
-                                        <tabpanel height="100%">
-                                            <grid  sclass="MyGridRowHeight" width="100%">
-                                                <rows>
-                                                    <row spans="2">
+                               
+                                <grid  sclass="MyGridRowHeight" width="100%">
+                                    <rows>
+                                        <row spans="2">
                             
-                                                    </row>
-                                                    <row spans="4">
-                                                        <groupbox id="busqueda" style="background:#D6E3F6" mold="3d" width="100%">
-                                                            <span>
+                                        </row>
+                                        <row spans="4">
+                                            <groupbox id="busqueda" style="background:#D6E3F6" mold="3d" width="100%">
+                                                <span>
                                                                 
-                                                                <label style="font-weight:bold2" value="Identificación:" />
-                                                            </span>
-                                                            <span>
-                                                                <textbox id="identificacion"  readonly="false"   onChanging="buscarCliCed(event.value); "  cols="13"   onOK="verificarCedula(self.value); bclientei.visible = false;"  />
-                                                                <image  tooltip="autompletar" popup="autompletar"  src="/images/keyboard.png"  />
-                                                                <popup id="autompletar" width="300px">
-                                                                    <html>
+                                                    <label style="font-weight:bold2" value="Identificación:" />
+                                                </span>
+                                                <span>
+                                                    <textbox id="identificacion"  readonly="false"   onChanging="buscarCliCed(event.value); "  cols="13"   onOK="verificarCedula(self.value); bclientei.visible = false;"  />
+                                                    <image  tooltip="autompletar" popup="autompletar"  src="/images/keyboard.png"  />
+                                                    <popup id="autompletar" width="300px">
+                                                        <html>
                                                                         Ingrese un número de cédula, ruc o pasaporte, para buscar Ejemplo: 1709700548, luego presione ENTER o seleccione uno de los del listado de búsqueda
-                                                                    </html>
-                                                                </popup>
-                                                                <groupbox closable="true" style="position: absolute;background:#E2EDFE;" visible="false" id="bclientei">
-                                                                    <vbox>
-                                                                        <hbox>
-                                                                            <listbox onSelect='combo.value = ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+"";  telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; apellidos.value = ((Clientes)self.selectedItem.value).getApellidos(); nombres.value = ((Clientes)self.selectedItem.value).getNombres();  bclientei.visible =false; verificarCedula(identificacion.value);' id="lclienteced" width="400px">
-                                                                                <listhead>
-                                                                                    <listheader label="Nombres"/>
-                                                                                    <listheader label="Dirección"/>
-                                                                                </listhead>
-                                                                                <listitem forEach="${allEvents}" value="${each}">
-                                                                                    <listcell label="${each.apellidos}" />
-                                                                                    <listcell label="${each.direccion}" />
-                                                                                </listitem>
-                                                                            </listbox>
-                                                                        </hbox>
-                                                                        <button label="CERRAR" onClick="bclientei.visible = false;"/>
-                                                                    </vbox>
+                                                        </html>
+                                                    </popup>
+                                                    <groupbox closable="true" style="position: absolute;background:#E2EDFE;" visible="false" id="bclientei">
+                                                        <vbox>
+                                                            <hbox>
+                                                                <listbox onSelect='combo.value = ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+"";  telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; apellidos.value = ((Clientes)self.selectedItem.value).getApellidos(); nombres.value = ((Clientes)self.selectedItem.value).getNombres();  bclientei.visible =false; verificarCedula(identificacion.value);' id="lclienteced" width="400px">
+                                                                    <listhead>
+                                                                        <listheader label="Nombres"/>
+                                                                        <listheader label="Dirección"/>
+                                                                    </listhead>
+                                                                    <listitem forEach="${allEvents}" value="${each}">
+                                                                        <listcell label="${each.apellidos}" />
+                                                                        <listcell label="${each.direccion}" />
+                                                                    </listitem>
+                                                                </listbox>
+                                                            </hbox>
+                                                            <button label="CERRAR" onClick="bclientei.visible = false;"/>
+                                                        </vbox>
                                                                 
-                                                                </groupbox>
+                                                    </groupbox>
                                     
                                                             
-                                                            </span>
+                                                </span>
                                                   
-                                                            <span>
-                                                                <label style="font-weight:bold2" id="labelnombre" value="Apellidos: " />
-                                                            </span>
-                                                            <span>
-                                                                <textbox readonly="false" cols="25"   onChanging="buscarCli(event.value);"   onOK ="btcliente.value = combo.value; buscarCli(btcliente.value); bcliente.visible = true"   id="combo" />
-                                                                <image  tooltip="autompletar2" popup="autompletar2"  src="/images/keyboard.png"  />
-                                                                <popup id="autompletar2" width="300px">
-                                                                    <html>
+                                                <span>
+                                                    <label style="font-weight:bold2" id="labelnombre" value="Apellidos: " />
+                                                </span>
+                                                <span>
+                                                    <textbox readonly="false" cols="25"   onChanging="buscarCli(event.value);"   onOK ="btcliente.value = combo.value; buscarCli(btcliente.value); bcliente.visible = true"   id="combo" />
+                                                    <image  tooltip="autompletar2" popup="autompletar2"  src="/images/keyboard.png"  />
+                                                    <popup id="autompletar2" width="300px">
+                                                        <html>
                                                                             Ingrese un Apellido del Cliente Ejemplo: AGUIRRE y seleccione uno de los del listado de búsqueda, si es que existe.
-                                                                    </html>
-                                                                </popup>
-                                                                <groupbox closable="true" style="position: absolute;background:#E2EDFE; display: none;" visible="false" id="bcliente">
-                                                                    <vbox>
-                                                                        <hbox>
-                                                                            <listbox style="background:white" onSelect='identificacion.value= ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";  identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos()+""; nombres.value = ((Clientes)self.selectedItem.value).getNombres()+""; bcliente.visible =false; verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion());' id="lcliente" width="400px">
-                                                                                <listhead>
-                                                                                    <listheader label="Nombres"/>
-                                                                                    <listheader label="Dirección"/>
-                                                                                </listhead>
-                                                                                <listitem forEach="${allEvents}" value="${each}">
-                                                                                    <listcell label="${each.apellidos}" />
-                                                                                    <listcell label="${each.direccion}" />
-                                                                                </listitem>
-                                                                            </listbox>
-                                                                        </hbox>
-                                                                        <button label="CERRAR" onClick="bcliente.visible = false;"/>
+                                                        </html>
+                                                    </popup>
+                                                    <groupbox closable="true" style="position: absolute;background:#E2EDFE; display: none;" visible="false" id="bcliente">
+                                                        <vbox>
+                                                            <hbox>
+                                                                <listbox style="background:white" onSelect='identificacion.value= ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";  identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos()+""; nombres.value = ((Clientes)self.selectedItem.value).getNombres()+""; bcliente.visible =false; verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion());' id="lcliente" width="400px">
+                                                                    <listhead>
+                                                                        <listheader label="Nombres"/>
+                                                                        <listheader label="Dirección"/>
+                                                                    </listhead>
+                                                                    <listitem forEach="${allEvents}" value="${each}">
+                                                                        <listcell label="${each.apellidos}" />
+                                                                        <listcell label="${each.direccion}" />
+                                                                    </listitem>
+                                                                </listbox>
+                                                            </hbox>
+                                                            <button label="CERRAR" onClick="bcliente.visible = false;"/>
                                                                    
-                                                                    </vbox>
+                                                        </vbox>
                                                                 
-                                                                </groupbox>
-                                                                <label style="font-weight:bold2" id="labelcontrato" value="No.Contrato" />
-                                                                <intbox readonly="false" cols="5"   onOK ="verificarContrato(self.value)"   id="buscarContrato" />
-                                                                <image  tooltip="autompletarNo" popup="autompletarNo"  src="/images/keyboard.png"  />
-                                                                <popup id="autompletarNo" width="300px">
-                                                                    <html>
+                                                    </groupbox>
+                                                    <label style="font-weight:bold2" id="labelcontrato" value="No.Contrato" />
+                                                    <intbox readonly="false" cols="5"   onOK ="verificarContrato(self.value)"   id="buscarContrato" />
+                                                    <image  tooltip="autompletarNo" popup="autompletarNo"  src="/images/keyboard.png"  />
+                                                    <popup id="autompletarNo" width="300px">
+                                                        <html>
                                                                             Digite el No de Contrato y Presione Enter
-                                                                    </html>
-                                                                </popup>
+                                                        </html>
+                                                    </popup>
                                
                     
                        
                       
-                                                            </span>
+                                                </span>
                                                    
 	    			 
-                                                        </groupbox>
-                                                    </row>
-                                                    <row>
-                                                        <span  style="float:right" >Identificación(*):</span>
-                                                        <span>
-                                                            <textbox id="identificacion2" onBlur="buscarCedula(self.value)" readonly="true"   cols="13" />
-                                                            <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
+                                            </groupbox>
+                                        </row>
+                                        <row>
+                                            <span  style="float:right" >Identificación(*):</span>
+                                            <span>
+                                                <textbox id="identificacion2" onBlur="buscarCedula(self.value)" readonly="true"   cols="13" />
+                                                <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
                                                             <!--button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/-->
-                                                        </span>
+                                            </span>
                                                         
-                                                     <span></span>
-                                                    </row>
-                                                    <row>
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" id="labelnombre2" value="Apellidos(*): " />
-                                                        </span>
-                                                        <span>
-                                                            <textbox readonly="true" cols="25"  id="apellidos" />
-                                                        </span>
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" id="labelnombre332" value="Nombres(*): " />
-                                                        </span>
-                                                        <span>
-                                                            <textbox readonly="true" cols="25"  id="nombres" />
-                                                        </span>
+                                            <span></span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" id="labelnombre2" value="Apellidos(*): " />
+                                            </span>
+                                            <span>
+                                                <textbox readonly="true" cols="25"  id="apellidos" />
+                                            </span>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" id="labelnombre332" value="Nombres(*): " />
+                                            </span>
+                                            <span>
+                                                <textbox readonly="true" cols="25"  id="nombres" />
+                                            </span>
                                                       
-                                                    </row>
+                                        </row>
                                                     
-                                                    <row>
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Teléfono Fac.(*):" />
-                                                        </span>
-                                                        <textbox id="telefono" cols="32" readonly="true"  />
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Email: " />
-                                                        </span>
-                                                        <textbox id="email" cols="32" readonly="true"  />
-                                                    </row>
-                                                    <row>
-                                                       <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Dirección Fac.(*): " />
-                                                        </span>
-                                                        <textbox id="direccion" cols="32"  rows="2" readonly="true"  />    
-                                                        <span></span><span></span>
-                                                    </row>
+                                        <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Teléfono Fac.(*):" />
+                                            </span>
+                                            <textbox id="telefono" cols="32" readonly="true"  />
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Email: " />
+                                            </span>
+                                            <textbox id="email" cols="32" readonly="true"  />
+                                        </row>
+                                        <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Dirección Fac.(*): " />
+                                            </span>
+                                            <textbox id="direccion" cols="32"  rows="2" readonly="true"  />    
+                                            <span></span>
+                                            <span></span>
+                                        </row>
                     
-                                                    <row>
+                                        <row>
                                                          
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Estado: " />
-                                                        </span>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Estado: " />
+                                            </span>
                                                                 
-                                                        <radiogroup id="estadoContrato" >
-                                                            <radio disabled="true" id="eactivo" selected="true" value="Activo" label="ACTIVO" style="font-weight:bold2" />
-                                                            <radio disabled="true"  id="esuspendido"  value="Suspendido"  label="CORTADO" style="font-weight:bold2" />
-                                                            <radio  disabled="true"  id="eterminado" value="Terminado"  label="TERMINADO" style="font-weight:bold2" />
+                                            <radiogroup id="estadoContrato" >
+                                                <radio disabled="true" id="eactivo" selected="true" value="Activo" label="ACTIVO" style="font-weight:bold2" />
+                                                <radio disabled="true"  id="esuspendido"  value="Suspendido"  label="CORTADO" style="font-weight:bold2" />
+                                                <radio  disabled="true"  id="eterminado" value="Terminado"  label="TERMINADO" style="font-weight:bold2" />
                                          
-                                                        </radiogroup>
-                                                        <span></span>
-                                                        <span></span>
-                                                    </row>
-                                                    <row>
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" No.Contrato: " />
-                                                        </span>
-                                                        <span>
-                                                            <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" id="numerocontrato" cols="16" />
-                                                            <button label="Contratos"  image="/images/contratos.png"  id="vercontratos" onClick="contratosPanel.visible = true; "/>
-                                                        </span>
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Fecha: " />
-                                                        </span>
-                                                        <datebox id="fecha" disabled="true" onCreate="self.value = adm.Date()"/>
-                                                    </row>
-                                                    <row>
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Planes (*): " />
-                                                        </span>
-                                                        <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
-                                                            <bandpopup>
-                                                                <vbox>
-                                                                    <listbox id="perf" width="450px"
-                                                     onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();">
-                                                                        <listhead>
-                                                                            <listheader label="Descripción"/>
-                                                                            <listheader label="Tipo"/>
-                                                                            <listheader label="valor"/>
+                                            </radiogroup>
+                                            <span style="float:right">
+                                                <label visible="false" style="font-weight:bold2" value=" Fecha: " />
+                                                <datebox id="fecha" visible="false" disabled="true" onCreate="self.value = adm.Date()"/>
+                                                <label style="font-weight:bold2" value=" Instalación (*): " />
+                                            </span>
+                                            <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = adm.Date()"/>
                                             
-                                                                        </listhead>
-                                                                        <listitem forEach="${planes}" value="${each}">
-                                                                            <listcell label="${each.nombre}" />
-                                                                            <listcell label="${each.tipo}" />
-                                                                            <listcell label="${each.valor}" />
+                                        </row>
+                                        <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" No.Contrato: " />
+                                            </span>
+                                            <span>
+                                                <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" id="numerocontrato" cols="16" />
+                                                <button label="Contratos"  image="/images/contratos.png"  id="vercontratos" onClick="contratosPanel.visible = true; "/>
+                                            </span>
+                                           <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Planes (*): " />
+                                            </span>
+                                            <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="perf" width="450px"
+                                                     onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();">
+                                                            <listhead>
+                                                                <listheader label="Descripción"/>
+                                                                <listheader label="Tipo"/>
+                                                                <listheader label="valor"/>
+                                            
+                                                            </listhead>
+                                                            <listitem forEach="${planes}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
+                                                                <listcell label="${each.tipo}" />
+                                                                <listcell label="${each.valor}" />
 
-                                                                        </listitem>
-                                                                    </listbox>
-                                                                </vbox>
-                                                            </bandpopup>
-                                                        </bandbox>
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Instalación (*): " />
-                                                        </span>
-                                                        <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = adm.Date()"/>
-                                 
-                                                    </row>
-                                                    <row style="background:#F8FFE1">
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Dir.Instalar: " />
-                                                        </span>
-                                                        <span>
-                                                            <textbox id="direccioni" cols="40" readonly="true"  />
-                                                            <button image="/images/copiar.png"   onClick="direccioni.value=direccion.value;"/>
-                                                        </span>
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Telf.Instalar: " />
-                                                        </span>
-                                                        <span>
-                                                            <textbox id="telefonoi" readonly="true"  />
-                                                            <button  image="/images/copiar.png"   onClick="telefonoi.value=telefono.value;"/>
-                                                        </span>
-                                                    </row>
-                                                    <row style="background:#F8FFE1" >
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Referencia: " />
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                        </row>
+                                     
+                                        <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Dir.Instalar: " />
+                                            </span>
+                                            <span>
+                                                <textbox id="direccioni" cols="40" readonly="true"  />
+                                                <button image="/images/copiar.png"   onClick="direccioni.value=direccion.value;"/>
+                                            </span>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Telf.Instalar: " />
+                                            </span>
+                                            <span>
+                                                <textbox id="telefonoi" readonly="true"  />
+                                                <button  image="/images/copiar.png"   onClick="telefonoi.value=telefono.value;"/>
+                                            </span>
+                                        </row>
+                                        <row  >
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Referencia: " />
                                                               
-                                                        </span>
-                                                        <textbox id="referenciai" rows="2" cols="40" readonly="true"  />
-                                                        <span style="float:right"> Descuento </span>
-                                                        <span > 
-                                                            <decimalbox id="descuento" format="#00.00" /> USD 
-                                                        </span>
-                                                    </row>
+                                            </span>
+                                            <textbox id="referenciai" rows="2" cols="40" readonly="true"  />
+                                            <span style="float:right"> Descuento </span>
+                                            <span > 
+                                                <decimalbox id="descuento" format="#00.00" /> USD 
+                                            </span>
+                                        </row>
                                                    
                                                            
-                                                    <row style="background:#F8FFE1">
-                                                        <span style="float:right"> Canton(*):</span>
-                                                        <bandbox  width="200px" readonly="true"  id="bdCanton">
-                                                            <bandpopup>
-                                                                <vbox>
-                                                                    <listbox id="cantones" width="250px" rows="10"
+                                        <row>
+                                            <span style="float:right"> Canton(*):</span>
+                                            <bandbox  width="200px" readonly="true"  id="bdCanton">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="cantones" width="250px" rows="10"
                                                                                                                          onSelect="bdCanton.value=self.selectedItem.label;bdCanton.closeDropdown(); buscarSectores(((Canton)self.selectedItem.value).getCodigo()); buscarNodos(((Canton)self.selectedItem.value).getCodigo());">
-                                                                        <listitem   forEach="${cantonesList}" value="${each}">
-                                                                            <listcell label="${each.nombre}" />
-                                                                        </listitem>
-                                                                    </listbox>
-                                                                </vbox>
-                                                            </bandpopup>
-                                                        </bandbox>
-                                                        <span style="float:right"> Nodos(*):</span>
+                                                            <listitem   forEach="${cantonesList}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                            <span style="float:right"> Nodos(*):</span>
                                                            
-                                                        <bandbox  width="200px" readonly="true"  id="bdNodo">
-                                                            <bandpopup>
-                                                                <vbox>
-                                                                    <listbox id="nodos" width="250px" rows="10"
+                                            <bandbox  width="200px" readonly="true"  id="bdNodo">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="nodos" width="250px" rows="10"
                                                                         onSelect="bdNodo.value=self.selectedItem.label;bdNodo.closeDropdown(); buscarRadios(((Nodos)self.selectedItem.value).getCodigo());">
 
-                                                                    </listbox>
-                                                                </vbox>
-                                                            </bandpopup>
-                                                        </bandbox>
-                                                    </row>
-                                                    <row style="background:#F8FFE1">
-                                                        <span style="float:right"> Sector(*):</span>
-                                                        <bandbox  width="200px" readonly="true"  id="bdSector">
-                                                            <bandpopup>
-                                                                <vbox>
-                                                                    <listbox id="sectores" width="250px" rows="10"
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Sector(*):</span>
+                                            <bandbox  width="200px" readonly="true"  id="bdSector">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="sectores" width="250px" rows="10"
                                                                   onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
                                     
-                                                                    </listbox>
-                                                                </vbox>
-                                                            </bandpopup>
-                                                        </bandbox>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
                                                         
                                                     
                                                         
                                                      
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value="Radio(*): " />
-                                                        </span>
-                                                        <bandbox  disabled="true"  readonly="true"  id="bdRadio">
-                                                            <bandpopup>
-                                                                <vbox>
-                                                                    <listbox id="radio" width="450px"
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value="Radio(*): " />
+                                            </span>
+                                            <bandbox  disabled="true"  readonly="true"  id="bdRadio">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="radio" width="450px"
                                                      onSelect="bdRadio.value=self.selectedItem.label;bdRadio.closeDropdown();">
-                                                                        <listhead>
-                                                                            <listheader label="Nombre"/>
-                                                                            <listheader label="Sector"/>
-                                                                            <listheader label="Radio"/>
-                                                                            <listheader label="Ip"/>
+                                                            <listhead>
+                                                                <listheader label="Nombre"/>
+                                                                <listheader label="Sector"/>
+                                                                <listheader label="Radio"/>
+                                                                <listheader label="Ip"/>
                                             
-                                                                        </listhead>
-                                                                        <listitem forEach="${radios}" value="${each}">
-                                                                            <listcell label="${each.nombre}" />
-                                                                            <listcell label="${each.nodos.sector}" />
-                                                                            <listcell label="${each.nodos.nombre}" />
-                                                                            <listcell label="${each.ip}" />
-                                                                        </listitem>
-                                                                    </listbox>
-                                                                </vbox>
-                                                            </bandpopup>
-                                                        </bandbox>
+                                                            </listhead>
+                                                            <listitem forEach="${radios}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
+                                                                <listcell label="${each.nodos.sector}" />
+                                                                <listcell label="${each.nodos.nombre}" />
+                                                                <listcell label="${each.ip}" />
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
                                                       
                                                        
                                                        
-                                                    </row>
-                                                    <row visible="false">
-                                                        <span style="float:right">   IP(*):</span>
-                                                        <textbox cols="15" readonly="true" id="ip" />
-                                                        <span style="float:right"> Autorizado a Inst(*):</span>
-                                                        <checkbox id="autorizado" disabled="true"  />
+                                        </row>
+                                        <row visible="false">
+                                            <span style="float:right">   IP(*):</span>
+                                            <textbox cols="15" readonly="true" id="ip" />
+                                            <span style="float:right"> Autorizado a Inst(*):</span>
+                                            <checkbox id="autorizado" disabled="true"  />
                                                            
-                                                    </row>
-                                                    <row>
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Pago en(*): " />
-                                                        </span>
-                                                        <radiogroup Id="formapago" onCheck="">
-                                                            <radio disabled="true" id="efe" selected="true" value="1" onCheck="bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;" label="Efectivo"/>
-                                                            <radio disabled="true" id="deb"   value="2" onCheck="bd22.disabled=false;tipocuenta.disabled= false;nocuenta.disabled = false;diapago.disabled = false;  " label="Débito"/>
-                                                        </radiogroup>
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value="Banco:" />
-                                                        </span>
-                                                        <bandbox disabled="true" readonly="true" width="100px"  id="bd22">
-                                                            <bandpopup>
-                                                                <vbox>
-                                                                    <listbox  id="bancosList" width="250px"
+                                        </row>
+                                                            <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Vendido por(*): " />
+                                                <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                            </span>
+                                            <span>
+                                                <textbox  readonly="true"  cols="32"   id="combov" />
+
+                                                <button label=""  id="buscarE" disabled="true" image="/images/auditoria.gif">
+                                                    <attribute name="onClick">{
+                                                            final Window win = (Window) Executions.createComponents("buscarEmpleados.zul", null, null);
+                                                            win.setMaximizable(true);
+                                                            win.setClosable(true);
+                                                            win.setAttribute("nuevo", true);
+                                                            win.setTitle("Buscar Empleados");
+                                                            win.doModal();
+                                                        }                            
+                                                    </attribute>
+                                                </button>
+
+                                            </span>
+                                            <span style="float:right">   Usuario:</span>
+                                              <span style="float:right">   
+                                                    <textbox cols="15" readonly="true"   id="usuario" />
+                                                    Clave:<textbox cols="15" readonly="true"   id="clave" />
+                                                </span>
+                                        </row>
+                                         <row spans="4">
+                                            <groupbox style="background:#FFE7D7" mold="3d" width="100%">
+                                                
+                                            
+                                            <span>
+                                                <label style="font-weight:bold2" value=" Pago en(*): " />
+                                            </span>
+                                            <radiogroup Id="formapago" onCheck="">
+                                                <radio disabled="true" id="efe" selected="true" value="1" onCheck="bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;" label="Efectivo"/>
+                                                <radio disabled="true" id="deb"   value="2" onCheck="bd22.disabled=false;tipocuenta.disabled= false;nocuenta.disabled = false;diapago.disabled = false;  " label="Débito"/>
+                                            </radiogroup>
+                                            <span>
+                                                <label style="font-weight:bold2" value="Banco:" />
+                                            </span>
+                                            <bandbox disabled="true" readonly="true" width="100px"  id="bd22">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox  id="bancosList" width="250px"
                                                                     onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
-                                                                        <listhead>
-                                                                            <listheader label="Seleccione un Banco"/>
-                                                                        </listhead>
-                                                                        <listitem forEach="${bancos}" value="${each}">
-                                                                            <listcell label="${each.nombre}" />
+                                                            <listhead>
+                                                                <listheader label="Seleccione un Banco"/>
+                                                            </listhead>
+                                                            <listitem forEach="${bancos}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
 
-                                                                        </listitem>
-                                                                    </listbox>
-                                                                </vbox>
-                                                            </bandpopup>
-                                                        </bandbox>
-                                                    </row>
-                                                    <row>
-                                       
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value="No.Cuen: " />
-                                                        </span>
-                                                        <span>
-                                                            <textbox id="nocuenta" cols="10"  readonly="true"  />
-                                                            <combobox   style="background-color:transparent" disabled="true" width="29px" id="tipocuenta">
-                                                                <comboitem label="AHO"/>
-                                                                <comboitem label="COR"/>
-                                                            </combobox>
-                                                        </span>
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value="Día Pago(*): " />
-                                                        </span>
-                                                        <combobox disabled="true" width="17px"  id="diapago">
-                                                            <comboitem label="1"/>
-                                                            <comboitem label="2"/>
-                                                            <comboitem label="3"/>
-                                                            <comboitem label="4"/>
-                                                            <comboitem label="5"/>
-                                                            <comboitem label="6"/>
-                                                            <comboitem label="7"/>
-                                                            <comboitem label="8"/>
-                                                            <comboitem label="9"/>
-                                                            <comboitem label="10"/>
-                                                            <comboitem label="11"/>
-                                                            <comboitem label="12"/>
-                                                            <comboitem label="13"/>
-                                                            <comboitem label="14"/>
-                                                            <comboitem label="15"/>
-                                                            <comboitem label="16"/>
-                                                            <comboitem label="17"/>
-                                                            <comboitem label="18"/>
-                                                            <comboitem label="19"/>
-                                                            <comboitem label="20"/>
-                                                            <comboitem label="23"/>
-                                                            <comboitem label="22"/>
-                                                            <comboitem label="25"/>
-                                                            <comboitem label="24"/>
-                                                            <comboitem label="27"/>
-                                                            <comboitem label="26"/>
-                                                            <comboitem label="29"/>
-                                                            <comboitem label="28"/>
-                                                            <comboitem label="30"/>
-                                                        </combobox>
-                                                                           			
-	    		 
-                                                    </row>
-                                                    
-                                                    <row>
-                                                           
-                                                           
-                                                        <span style="float:right">   Usuario:</span>
-                                                        <textbox cols="15" readonly="true"   id="usuario" />
-                                                        <span style="float:right">   Clave:</span>
-                                                        <textbox cols="15" readonly="true"   id="clave" />
-                                                            
-                                                    </row>
-                                                    <row>
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Vendido por(*): " />
-                                                        </span>
-                                                        <span>
-                                                            <textbox  readonly="true"  cols="32"   id="combov" />
-
-                                                            <button label=""  id="buscarE" disabled="true" image="/images/auditoria.gif">
-                                                                <attribute name="onClick">{
-                                            final Window win = (Window) Executions.createComponents("buscarEmpleados.zul", null, null);
-                                            win.setMaximizable(true);
-                                            win.setClosable(true);
-                                            win.setAttribute("nuevo", true);
-                                            win.setTitle("Buscar Empleados");
-                                            win.doModal();
-                                            }                            
-                                                                </attribute>
-                                                            </button>
-                                                            <button label="" disabled="true" id="nuevoE" image="/images/empleados.png" >
-                                                                <attribute name="onClick">{
-                                            final Window win = (Window) Executions.createComponents("empleados.zul", null, null);
-                                            win.setMaximizable(true);
-                                            win.setClosable(true);
-                                            win.setAttribute("nuevo", true);
-                                            win.setTitle("Nuevo Empleado");
-                                            win.doModal();
-                                            }                            
-                                                                </attribute>
-                                                            </button>
-                     
-                              
-                                                            <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                             <span>
+                                                <label style="font-weight:bold2" value="No.Cuen: " />
+                                            </span>
+                                                 <span>
+                                                <textbox id="nocuenta" cols="10"  readonly="true"  />
+                                                <combobox   style="background-color:transparent" disabled="true" width="29px" id="tipocuenta">
+                                                    <comboitem label="AHO"/>
+                                                    <comboitem label="COR"/>
+                                                </combobox>
+                                            </span>
+                                                <span>
+                                                <label style="font-weight:bold2" value="Día Pago(*): " />
+                                            </span>
+                                            <combobox disabled="true" width="17px"  id="diapago">
+                                                <comboitem label="1"/>
+                                                <comboitem label="2"/>
+                                                <comboitem label="3"/>
+                                                <comboitem label="4"/>
+                                                <comboitem label="5"/>
+                                                <comboitem label="6"/>
+                                                <comboitem label="7"/>
+                                                <comboitem label="8"/>
+                                                <comboitem label="9"/>
+                                                <comboitem label="10"/>
+                                                <comboitem label="11"/>
+                                                <comboitem label="12"/>
+                                                <comboitem label="13"/>
+                                                <comboitem label="14"/>
+                                                <comboitem label="15"/>
+                                                <comboitem label="16"/>
+                                                <comboitem label="17"/>
+                                                <comboitem label="18"/>
+                                                <comboitem label="19"/>
+                                                <comboitem label="20"/>
+                                                <comboitem label="23"/>
+                                                <comboitem label="22"/>
+                                                <comboitem label="25"/>
+                                                <comboitem label="24"/>
+                                                <comboitem label="27"/>
+                                                <comboitem label="26"/>
+                                                <comboitem label="29"/>
+                                                <comboitem label="28"/>
+                                                <comboitem label="30"/>
+                                            </combobox>
+                                            </groupbox> 
+                                        </row>
                                         
                     
-                       
-                      
-                                                        </span>
-                                                    </row>
-                                                    <row visible="false">
-                                                        <span style="float:right">
-                                                            <label style="font-weight:bold2" value=" Registrado por(*): " />
-                                                        </span>
-                                                        <span>
-                                                            <textbox id="registrado" readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
-                                                            <textbox id="registradoU"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
-                                                        </span>
-                                                        <span></span>
-                                                        <span></span>
-                                                    </row>
-                                                    <row style="background:#D6E3F6" spans="4" align="center">
-                                                        <span >
-                                                            <checkbox style="font-weight:bold;size:14px" id="genFactura" label="¿GENERAR COBRO PARA ÉSTE MES?" />
-                                                        </span>
-                                                         
-                                                    </row>
-                                                </rows>
-                                            </grid>
+                                        <row visible="false">
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Registrado por(*): " />
+                                            </span>
+                                            <span>
+                                                <textbox id="registrado" readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
+                                                <textbox id="registradoU"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                            </span>
+                                            <span></span>
+                                            <span></span>
+                                        </row>
+                                      
+                                    </rows>
+                                </grid>
                                                         
-                                        </tabpanel>
-                                       
-                                        <tabpanel>
-                                            <groupbox id="gb" mold="3d" width="100%">
-                                                        Digite la Serie: 
-                                                <textbox onOK="buscarSeries(self.value)" id="seriebuscar" value=""/>
-                                            </groupbox>
-                                            <grid id="productos">
-                                                <columns sizable="true">
-                                                    <column label="Cod." width="5px" />
-                                                    <column label="Equipo"  width="280px" />
-                                                    <column label="Valor"  width="80px" />
-                                                    <column align="center"  label="Series"  width="80px" />
-                                                    <column align="center" label="Opción" width="10px"  />
-                                                    <column align="center" label="Facturado/Prestado" width="110px"  />
-                                                </columns>
-                                                <rows id="filas">
-                                                </rows>
-                                                <foot style="background:#E1E1E1">
-                                                    <footer/>
-                                                    <footer>
-                                                        <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="VALOR A FACTURAR: "/>
-                                                    </footer>
-                                                    <footer>
-                                                        <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />
-                                                    </footer>
-                                                    <footer width="10px">
-                                                        <label style="font:14px;font-weight:bold;background:#E1E1E1;border:0px" value=" "/>
-                                                        <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotaliva"  value="0.0"  readonly="true"   />
-                                                    </footer>
-                                                    <footer>
-                                                        <label style="float:center;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="# "/>
-                                                        <intbox cols="3"  style="float:center;text-align:left;font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="cantidadtotal" readonly="true" value="0"    />
-                                                    </footer>
-                                                    <footer>
-                                                        <label style="text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="#"/>
-                                                        <intbox cols="3"  style=";font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="facturadostotal" readonly="true" value="0"    />
-                                                        <label style="text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="#"/>
-                                                        <intbox cols="3"  style=";font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="prestadostotal" readonly="true" value="0"    />
-                                                    </footer>
-                                                </foot>
+                                      
+                                <groupbox  style="background:#D6E3F6"  id="gb" mold="3d" width="100%">
+                             
+                                     <label value="Digite la Serie" style="font-weight:bold;size:14px" />
+                                     <span> 
+                                        <textbox onOK="buscarSeries(self.value)" id="seriebuscar" value=""/>
+                                        <image  src="/images/enter.png"  height="12px"/>
+                                     </span>
+                                     <separator orient="vertical"/>
+                                     <separator orient="vertical"/>
+                                     <separator orient="vertical"/>
+                                     <span>
+                                           <checkbox style="font-weight:bold;size:14px" id="genFactura" label="¿GENERAR COBRO PARA ÉSTE MES?" />
+                                      </span>
+                                
+                                   
+                                </groupbox>
+                                <grid id="productos">
+                                    <columns sizable="true">
+                                        <column label="Cod." width="5px" />
+                                        <column label="Equipo"  width="280px" />
+                                        <column label="Valor"  width="80px" />
+                                        <column align="center"  label="Series"  width="80px" />
+                                        <column align="center" label="Opción" width="10px"  />
+                                        <column align="center" label="Facturado/Prestado" width="110px"  />
+                                    </columns>
+                                    <rows id="filas">
+                                    </rows>
+                                    <foot style="background:#D6E3F6">
+                                        <footer/>
+                                        <footer>
+                                            <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="VALOR A FACTURAR: "/>
+                                        </footer>
+                                        <footer>
+                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />
+                                        </footer>
+                                        <footer width="10px">
+                                            <label style="font:14px;font-weight:bold;background:#E1E1E1;border:0px" value=" "/>
+                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotaliva"  value="0.0"  readonly="true"   />
+                                        </footer>
+                                        <footer>
+                                            <label style="float:center;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="# "/>
+                                            <intbox cols="3"  style="float:center;text-align:left;font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="cantidadtotal" readonly="true" value="0"    />
+                                        </footer>
+                                        <footer>
+                                            <label style="text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="#"/>
+                                            <intbox cols="3"  style=";font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="facturadostotal" readonly="true" value="0"    />
+                                            <label style="text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="#"/>
+                                            <intbox cols="3"  style=";font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="prestadostotal" readonly="true" value="0"    />
+                                        </footer>
+                                    </foot>
                                                
-                                            </grid>
-                                        </tabpanel>
-
-                                    </tabpanels>
-                                </tabbox>
-                          
+                                </grid>
+                                       
                                      
                               
                             </panelchildren>

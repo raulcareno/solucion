@@ -228,8 +228,6 @@ Boolean validarSeriesAju(){
                                      }else{
                                             seriesAcumuladasDuplicadas += object+"," ;
                                             sihay++;
-                                            
-                                            
                                      }
                           }
              }
@@ -271,10 +269,10 @@ Boolean validarSeriesAju(){
 
  void guardar(){
    List colValida = opciones.getRows().getChildren();
-  if(colValida.size() <= 0){
-      Messagebox.show("No ha ingresado productos...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-        return;  
-  }
+      if(colValida.size() <= 0){
+          Messagebox.show("No ha ingresado productos...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+          return;  
+      }
 
      if(documento.selectedItem.value.equals("COM")){
          if(validarSeries()){
