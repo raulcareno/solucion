@@ -532,6 +532,7 @@ Boolean validar(){
                                   ser.setSerie(serieDet.getSerie());
                                   ser.setDetallecompra(det);
                                   ser.setContratos(equi);
+                                  ser.setSucursal(sucursalEmp.getSucursal());
                                   ser.setEstado("V");//VENTA
                                   
                                if(serieDet.getDetallecompra().getEquipos().getBien())
@@ -943,8 +944,10 @@ void verificarCedula(String valor){
     void verificarContrato(Integer valor){
                       nuevo2();
                    estado(true,false);
-                   List  ControlequiposEncontrados = adm.query("Select o from Contratos as o " + 
-                   " where o.contrato = '"+valor+"'  and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+                   String q = "Select o from Contratos as o " + 
+                        " where o.contrato = '"+valor+"'  "  + 
+                        " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ";
+                   List  ControlequiposEncontrados = adm.query(q);
                    if(ControlequiposEncontrados.size()>0){
                               contratosPanel.visible = false; 
                               llenarCliente(ControlequiposEncontrados.get(0).getClientes());
@@ -1680,16 +1683,35 @@ void llamar(){
 			Eliminar el cobro seleccionado
             </vbox>
         </popup>
-        <tabbox width="100%"  >
-            <tabs>
+        <tabbox width="100%"  height="600px" orient="vertical"  >
+            <tabs  width="150px">
                 <tab id="registro" label="Contratos"/>
-                <tab label="Facturas Pendientes" id="facturas" onSelect="facturasPendientes()"/>
-                <tab onSelect="buscarSoportes()" label="Historia Técnica" />
+                <tab label="Pendientes" id="facturas" onSelect="facturasPendientes()"/>
+                <tab onSelect="buscarSoportes()" label="Historia Tec." />
                
             </tabs>
             <tabpanels>
                 <tabpanel>
-       
+         <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Nuevo Cliente y Contrato" onClick="nuevo();" />
+                    <!--button  image="/images/nuevo.gif" id="agregar2" label="Nuevo Contrato" onClick="nuevo2();" /-->
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    <button label="Añadir Pendientes" disabled="true" id="anadir" image="/images/empleados.png" >
+                        <attribute name="onClick">{
+                                                    final Window win = (Window) Executions.createComponents("generarIndividual.zul", null, null);
+                                                    win.setMaximizable(true);
+                                                    win.setClosable(true);
+                                                    win.setAttribute("plan", equi.getPlan()+"");
+                                                    win.setAttribute("planid", equi.getPlan().getCodigo());
+                                                    win.setAttribute("planvalor", new BigDecimal(equi.getPlan().getValor()));
+                                                    win.setAttribute("contrato", equi.getCodigo());
+                                                    win.setAttribute("clienteid", equi.getClientes().getCodigo());
+                                                    win.setTitle("Asignar rubros por cobrar");
+                                                    win.doModal();
+                                            }                            
+                        </attribute>
+                    </button>
                     <groupbox id="panel" mold="3d" width="830px">
                         <panel id="equiposcontrol"  width="100%" >
                             <panelchildren>
@@ -2140,24 +2162,24 @@ void llamar(){
                                     <foot style="background:#D6E3F6">
                                         <footer/>
                                         <footer>
-                                            <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="VALOR A FACTURAR: "/>
+                                            <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="VALOR A FACTURAR: "/>
                                         </footer>
                                         <footer>
-                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />
+                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" id="valortotal"  value="0.0"  readonly="true"   />
                                         </footer>
                                         <footer width="10px">
                                             <label style="font:14px;font-weight:bold;background:#E1E1E1;border:0px" value=" "/>
-                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotaliva"  value="0.0"  readonly="true"   />
+                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" id="valortotaliva"  value="0.0"  readonly="true"   />
                                         </footer>
                                         <footer>
-                                            <label style="float:center;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="# "/>
-                                            <intbox cols="3"  style="float:center;text-align:left;font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="cantidadtotal" readonly="true" value="0"    />
+                                            <label style="float:center;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="# "/>
+                                            <intbox cols="3"  style="float:center;text-align:left;font:14px;font-weight:bold;background:#D6E3F6;border:0px"  id="cantidadtotal" readonly="true" value="0"    />
                                         </footer>
                                         <footer>
-                                            <label style="text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="#"/>
-                                            <intbox cols="3"  style=";font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="facturadostotal" readonly="true" value="0"    />
-                                            <label style="text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" value="#"/>
-                                            <intbox cols="3"  style=";font:14px;font-weight:bold;background:#E1E1E1;border:0px"  id="prestadostotal" readonly="true" value="0"    />
+                                            <label style="text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="#"/>
+                                            <intbox cols="3"  style=";font:14px;font-weight:bold;background:#D6E3F6;border:0px"  id="facturadostotal" readonly="true" value="0"    />
+                                            <label style="text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="#"/>
+                                            <intbox cols="3"  style=";font:14px;font-weight:bold;background:#D6E3F6;border:0px"  id="prestadostotal" readonly="true" value="0"    />
                                         </footer>
                                     </foot>
                                                
@@ -2171,26 +2193,7 @@ void llamar(){
                    		
 	    		
                     </groupbox>
-                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                    <button  image="/images/nuevo.gif" id="agregar" label="Nuevo Cliente y Contrato" onClick="nuevo();" />
-                    <!--button  image="/images/nuevo.gif" id="agregar2" label="Nuevo Contrato" onClick="nuevo2();" /-->
-                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                    <button label="Añadir Pendientes" disabled="true" id="anadir" image="/images/empleados.png" >
-                        <attribute name="onClick">{
-                                                    final Window win = (Window) Executions.createComponents("generarIndividual.zul", null, null);
-                                                    win.setMaximizable(true);
-                                                    win.setClosable(true);
-                                                    win.setAttribute("plan", equi.getPlan()+"");
-                                                    win.setAttribute("planid", equi.getPlan().getCodigo());
-                                                    win.setAttribute("planvalor", new BigDecimal(equi.getPlan().getValor()));
-                                                    win.setAttribute("contrato", equi.getCodigo());
-                                                    win.setAttribute("clienteid", equi.getClientes().getCodigo());
-                                                    win.setTitle("Asignar rubros por cobrar");
-                                                    win.doModal();
-                                            }                            
-                        </attribute>
-                    </button>
+                  
                 </tabpanel>
                 <tabpanel>
                     <!--listbox mold="paging" rows="10" pageSize="10"   id="facturasDatos" width="100%">
