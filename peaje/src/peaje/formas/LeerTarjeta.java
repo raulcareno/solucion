@@ -270,12 +270,14 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 return;
 
             }
-            tarjeta = valor + "";
-            for (int i = tarjeta.length(); i < 10; i++) {
-                tarjeta = "0" + tarjeta;
-            }
-            if (tarjeta.length() > 10) {
-                tarjeta = tarjeta.substring(0, 10);
+            if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
+                    tarjeta = valor + "";
+                    for (int i = tarjeta.length(); i < 10; i++) {
+                        tarjeta = "0" + tarjeta;
+                    }
+                    if (tarjeta.length() > 10) {
+                        tarjeta = tarjeta.substring(0, 10);
+                    }
             }
             System.out.println("ABRIO BARRAS: " + tarjeta);
             if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
