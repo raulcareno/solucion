@@ -420,12 +420,13 @@ public class generarFacturas {
     //BUSCAR PARA ASIGNAR FACTURA 
     public List buscar(Sucursal suc, Sector uno, Sector dos) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
-        List<Contratos> contratos = adm.query("Select o from Contratos as o where o.sector.numero between  " + uno.getNumero() + "  and  " + dos.getNumero() + "  ");
+        List<Contratos> contratos = adm.query("Select o from Contratos as o "
+                + "where o.sector.numero between  " + uno.getNumero() + "  and  " + dos.getNumero() + " "
+                + "and  o.sucursal.codigo =  '"+suc.getCodigo()+"' ");
         String contraString = "";
         for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
             Contratos contratos1 = itContratos.next();
             contraString = "" + contratos1.getCodigo() + "," + contraString + "";
-
         }
         if (contraString.length() > 0) {
             contraString = contraString.substring(0, contraString.length() - 1);
@@ -433,7 +434,7 @@ public class generarFacturas {
         String quer = "SELECT fa.codigo, fa.numero, fa.fecha, CONCAT(cli.apellidos,' ',cli.nombres), c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
                 + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli "
                 + " WHERE fa.contratos in (" + contraString + ")  and c.codigo = fa.contratos  "
-                + "  AND cx.factura = fa.codigo  AND cli.codigo = fa.clientes GROUP BY fa.codigo "
+                + "  AND cx.factura = fa.codigo  AND cli.codigo = fa.clientes and fa.sucursal = '"+suc.getCodigo()+"'  GROUP BY fa.codigo "
                 + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
         List deudas = adm.queryNativo(quer);
 
@@ -459,7 +460,7 @@ public class generarFacturas {
                 + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli  "
                 + " WHERE fa.codigo in ( Select x.factura from Empleadosfacturas as x where x.empleados = '" + emp.getCodigo() + "' and Date(x.fecha) = '" + fec + "' )  and c.codigo = fa.contratos  "
                 + "  AND cx.factura = fa.codigo "
-                + "   AND cli.codigo = fa.clientes  GROUP BY fa.codigo  "
+                + "   AND cli.codigo = fa.clientes AND fa.sucursal = '"+suc.getCodigo()+"'  GROUP BY fa.codigo  "
                 + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
         List deudas = adm.queryNativo(quer);
 

@@ -148,7 +148,8 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                 
  void buscarSectores(Integer codigo){
           bd.value = "";
-        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.numero" );
+        List NodosEncontrados = adm.query("Select o from Sector as o " + 
+        " where o.canton.codigo = '"+codigo+"' and o.sucursal.codigo = '"+ sucursalEmp.getSucursal().getCodigo() +"'  order by o.numero" );
         sect = new Listbox();
         int a=0;
             for (Iterator it = sect.getItems().iterator(); it.hasNext();) {
