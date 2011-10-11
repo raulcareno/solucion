@@ -3016,9 +3016,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                     public void run() {
                         try {
-
                             LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
-                            ta.outputSream.write((("" + dispo).getBytes()));
+                            ta.outputSream.write((("XYinforma" + dispo).getBytes()));
                             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                             barrera1.setEnabled(true);
                         } catch (IOException ex) {
