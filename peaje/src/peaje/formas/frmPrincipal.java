@@ -2481,7 +2481,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar1.setFloatable(false);
-            jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+            jToolBar1.setOrientation(1);
             jToolBar1.setRollover(true);
 
             btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
@@ -2549,7 +2549,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar2.setFloatable(false);
-            jToolBar2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+            jToolBar2.setOrientation(1);
             jToolBar2.setRollover(true);
 
             btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
@@ -2653,7 +2653,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar3.setFloatable(false);
-            jToolBar3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+            jToolBar3.setOrientation(1);
             jToolBar3.setRollover(true);
 
             btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/help.gif"))); // NOI18N
@@ -3016,8 +3016,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                     public void run() {
                         try {
+                            String valor = "";
+                            if(dispo<10){
+                                valor = "0"+dispo;
+                            }else{
+                                    valor = ""+dispo;
+                            }
                             LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
-                            ta.outputSream.write((("XYinforma" + dispo).getBytes()));
+                            ta.outputSream.write((("XYinforma" + valor).getBytes()));
                             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                             barrera1.setEnabled(true);
                         } catch (IOException ex) {
