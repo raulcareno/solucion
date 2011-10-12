@@ -3714,6 +3714,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
             LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
             ta.outputSream.write(puerta.getBytes());
+            //TEMPORAL
+            ta.outputSream.write(puerta.getBytes());
+            ta.outputSream.write(puerta.getBytes());
+            //TEMPORAL
             noDisponibles();
         } catch (IOException ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -4043,6 +4047,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
             ta.outputSream.write(lapuertaaAbrir.getBytes());
+            //TEMPORAL
+                    ta.outputSream.write(lapuertaaAbrir.getBytes());
+                    ta.outputSream.write(lapuertaaAbrir.getBytes());
+            //TEMPORAL
+            
 //             try {
 //                            Thread.sleep(1000);  // Me aseguro que es transmitido correctamente antes de cerrar
 //                        } catch (Exception e) {
@@ -5015,6 +5024,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 try {
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("3".getBytes());
+                    //TEMPORAL
+                        ta.outputSream.write("3".getBytes());
+                        ta.outputSream.write("3".getBytes());
+                    //TEMPORAL
                     try {
                         Thread.sleep(500);
                     } catch (Exception e) {
@@ -5041,6 +5054,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 try {
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("2".getBytes());
+                    //TEMPORAL
+                        ta.outputSream.write("2".getBytes());
+                        ta.outputSream.write("2".getBytes());
+                    //TEMPORAL
                     System.out.println("ABRIR PUERTA 2" + new Date());
                     try {
                         Thread.sleep(500);
@@ -5068,6 +5085,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 try {
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("1".getBytes());
+                    //TEMPORAL
+                        ta.outputSream.write("1".getBytes());
+                        ta.outputSream.write("1".getBytes());
+                    //TEMPORAL
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     System.out.println("ABRIR PUERTA 1" + new Date());
                     try {

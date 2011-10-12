@@ -1132,6 +1132,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     try {
                         LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
                         ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                        //TEMPORAL
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                        
+                        //TEMPORAL
                     } catch (Exception ex) {
                         Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     }
