@@ -718,7 +718,8 @@ try {
 
 
                     try {
-                        List<Usuarios> usuarios = adm.query("Select o from Usuarios as o where o.nombres like '" + codigoBuscar.getText().trim() + "%' ");
+                        List<Usuarios> usuarios = adm.query("Select o from Usuarios as o where o.nombres like '" + codigoBuscar.getText().trim() + "%' "
+                                + "and o.codigo > 1 ");
                         Object[] obj = new Object[4];
                         DefaultTableModel dtm = (DefaultTableModel) busquedaTabla.getModel();
                         dtm.getDataVector().removeAllElements();

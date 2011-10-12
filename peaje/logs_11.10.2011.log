@@ -190,3 +190,5 @@ INFO peaje.formas.frmTicket,line 41,11.10.2011/13:16:38,net.sf.jasperreports.eng
 INFO peaje.formas.frmTicket,line 41,11.10.2011/13:16:38,
 INFO peaje.formas.frmTicket,line 41,11.10.2011/13:16:59,java.awt.print.PrinterException: Invalid name of PrintService.
 INFO peaje.formas.frmTicket,line 41,11.10.2011/13:16:59,
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,11.10.2011/20:48:55,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,11.10.2011/20:48:55,OK
