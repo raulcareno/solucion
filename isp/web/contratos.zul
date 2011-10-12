@@ -1258,6 +1258,89 @@ void verificarCedula(String valor){
                         }
                 
  }
+ 
+   void facturasPagadas(){
+                try{
+                List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.numero, fa.fecha, " + 
+                    "  fa.total, cx.fecha, cx.debe, cx.haber,IF(cx.haber < fa.total && cx.haber >0,'ABONO',IF(cx.haber = fa.total,'PAGADO','')) FROM cxcobrar cx, factura  fa "   +
+                    "   WHERE fa.clientes  =  "+codigocli.value+"  " + 
+                    "  AND cx.factura = fa.codigo GROUP BY cx.codigo " + 
+                    " order by fa.codigo desc, fa.fecha desc, cx.fecha "); 
+                
+                facturasPag.getRows().getChildren().clear();
+                  int i =0;
+                  ArrayList facturasAnadidos = new ArrayList();
+                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                            Vector vec = (Vector) itna.next();
+                                SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy");
+                                Date d = (Date)vec.get(2);
+                             String cabe = vec.get(0)+"";
+                               Group grupo = new Group(" MES: "+d1.format(d));
+                               // grupo.setStyle("background-color:#FFDDAA");
+   
+                               if(i == 0){
+                                    grupo.setParent(filasPag);
+                                    facturasAnadidos.add(cabe+"");
+                              }else{
+                                if(!facturasAnadidos.contains(cabe+"")){
+                                      grupo.setParent(filasPag);
+                                      facturasAnadidos.add(cabe+"");
+                                  }
+                              }
+                              i++;
+                            Row row = new Row();
+                                   if(row == null){
+                                    row = new Row();
+                                   }
+                            for (int j = 0; j < vec.size(); j++) {
+                                Object dos = vec.get(j);
+                                if(row == null){
+                                    row = new Row();
+                                   }
+                                    if(dos instanceof Integer){
+                                       row.setValue(dos);
+                                        //row.appendChild(new Label(dos+""));
+                                    }else if(dos instanceof Date){
+                                         SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy");
+                                         Date d = (Date)dos;
+                                          row.appendChild(new Label(d1.format(d)+""));
+                                    }else if(dos instanceof java.math.BigDecimal){
+                                           java.math.BigDecimal val = (java.math.BigDecimal)dos;
+                                            if(val.doubleValue()<=0){
+                                                row.appendChild(new Label(""));
+                                            }else{
+                                                row.appendChild(new Label(val+""));
+                                            }
+                                    }else if(dos instanceof String){
+                                           String val = dos+"";
+                                            if(val.length()>9){
+                                                row.appendChild(new Label(val.substring(6)+""));
+                                            }else if(val.equals("ABONO") ||val.equals("PAGADO") ){
+                                                Label la = new Label(val+"");
+                                                la.setStyle("color:blue; font-weight:bold");
+                                                row.appendChild(la);
+                                            }else{
+                                                row.appendChild(new Label(""));
+                                            }
+                                    }else{
+                                        if(dos!=null){
+                                            row.appendChild(new Label(dos+""));
+                                        }else{
+                                            row.appendChild(new Label(""));
+                                       }
+                                    }
+                            }
+    
+                            filasPag.appendChild(row);
+                }
+            
+                   }catch(Exception e){
+                            Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            System.out.println("ERROR: "+e);
+                            registro.setSelected(true);
+                        }
+                
+ }
                 
                 
         //BUSQUEDA DE CLIENTES
@@ -1494,7 +1577,8 @@ void verificarCedula(String valor){
     
 void buscarSeries(Contratos contratos){
 productos.getRows().getChildren().clear();
-           List seriesEn = adm.query("Select o from Series as o where o.estado = 'P' and o.contratos.codigo = '"+contratos.getCodigo()+"' ");
+           List seriesEn = adm.query("Select o from Series as o where o.estado = 'P' " +
+           " and o.contratos.codigo = '"+contratos.getCodigo()+"' ");
                   if(seriesEn.size()>0){
                   for(Iterator it = seriesEn.iterator(); it.hasNext();) {
                       Series object = (Series)it.next();
@@ -1684,8 +1768,9 @@ void llamar(){
         <tabbox width="100%"  height="600px" orient="vertical"  >
             <tabs  width="150px">
                 <tab id="registro" label="Contratos"/>
-                <tab label="Pendientes" id="facturas" onSelect="facturasPendientes()"/>
-                <tab onSelect="buscarSoportes()" label="Historia Tec." />
+                <tab onSelect="facturasPendientes()" label="Pendientes" id="facturas"/>
+                <tab onSelect="buscarSoportes()" label="Hist. Técnica" />
+                <tab onSelect="facturasPagadas()" label="Hist. Pagos" />
                
             </tabs>
             <tabpanels>
@@ -2266,8 +2351,23 @@ void llamar(){
                         </listitem>
                     </listbox>
                 </tabpanel>
+                  <tabpanel>
+                    <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasPag" >
+                        <columns>
+                            <column  sort="auto"  label="No."/>
+                            <column  label="Emisión"/>
+                            <column   label="Total"/>
+                            <column sort="auto"  label="Fec.Pago"/>
+                            <column   label="Debe"/>
+                            <column   label="Haber"/>
+                            <column   label="Observación"/>
+                        </columns>
+                        <rows id="filasPag">
+                        </rows>
+                    </grid>
+                </tabpanel>
                 <tabpanel>
-                    <panel height="370px" style="margin-bottom:10px"
+                    <panel height="470px" style="margin-bottom:10px"
                            title="Reporte" border="normal">
                         <panelchildren>
                             <jasperreport id="reportelocal" />
