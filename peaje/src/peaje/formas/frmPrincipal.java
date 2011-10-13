@@ -530,7 +530,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         botoninst = new javax.swing.JButton();
         tempjButton13 = new javax.swing.JButton();
         tempnotarjetaTemp = new javax.swing.JTextField();
-        temppuertoText = new javax.swing.JTextField();
+        temppuertoText = new javax.swing.JComboBox();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -2260,7 +2260,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             panelIngreso.setLayout(null);
 
-            errores.setFont(new java.awt.Font("Tahoma", 1, 39)); // NOI18N
+            errores.setFont(new java.awt.Font("Tahoma", 1, 39));
             errores.setForeground(new java.awt.Color(255, 0, 0));
             errores.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
             errores.setText("ok..!");
@@ -2275,7 +2275,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(cliente);
             cliente.setBounds(20, 20, 520, 80);
 
-            imAviso.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+            imAviso.setFont(new java.awt.Font("Tahoma", 0, 24));
             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
             imAviso.setText(".....");
             panelIngreso.add(imAviso);
@@ -2318,27 +2318,27 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(jPanel1);
             jPanel1.setBounds(360, 10, 20, 70);
 
-            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
             spIngreso.setBorder(null);
             spIngreso.setEnabled(false);
             spIngreso.setFocusable(false);
             panelIngreso.add(spIngreso);
             spIngreso.setBounds(370, 290, 90, 20);
 
-            ingre.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+            ingre.setFont(new java.awt.Font("Tahoma", 1, 11));
             ingre.setForeground(new java.awt.Color(153, 153, 153));
             ingre.setText("INGRESO:");
             panelIngreso.add(ingre);
             ingre.setBounds(370, 270, 60, 20);
 
-            spSalida.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+            spSalida.setFont(new java.awt.Font("Tahoma", 0, 14));
             spSalida.setBorder(null);
             spSalida.setEnabled(false);
             spSalida.setFocusable(false);
             panelIngreso.add(spSalida);
             spSalida.setBounds(470, 290, 90, 20);
 
-            salid.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+            salid.setFont(new java.awt.Font("Tahoma", 1, 11));
             salid.setForeground(new java.awt.Color(153, 153, 153));
             salid.setText("SALIDA:");
             panelIngreso.add(salid);
@@ -2397,9 +2397,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(miBotonImagen);
             miBotonImagen.setBounds(370, 360, 230, 180);
 
+            ultimoIngreso.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
             ultimoIngreso.setText("Ultimo Ingreso");
             panelIngreso.add(ultimoIngreso);
-            ultimoIngreso.setBounds(380, 340, 210, 14);
+            ultimoIngreso.setBounds(370, 340, 230, 13);
 
             panelIngreso.setBounds(0, 30, 770, 590);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -2439,17 +2440,19 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             botoninst.setBounds(290, 0, 120, 23);
             contenedor.add(botoninst, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            tempjButton13.setText("...");
+            tempjButton13.setText("Tarjeta");
             tempjButton13.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     tempjButton13ActionPerformed(evt);
                 }
             });
-            tempjButton13.setBounds(410, 0, 40, 23);
+            tempjButton13.setBounds(410, 0, 80, 23);
             contenedor.add(tempjButton13, javax.swing.JLayeredPane.DEFAULT_LAYER);
-            tempnotarjetaTemp.setBounds(470, 0, 60, 30);
+            tempnotarjetaTemp.setBounds(510, 0, 110, 22);
             contenedor.add(tempnotarjetaTemp, javax.swing.JLayeredPane.DEFAULT_LAYER);
-            temppuertoText.setBounds(550, 0, 60, 30);
+
+            temppuertoText.setEditable(true);
+            temppuertoText.setBounds(630, 0, 50, 20);
             contenedor.add(temppuertoText, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
@@ -2472,7 +2475,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar1.setFloatable(false);
-            jToolBar1.setOrientation(1);
+            jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar1.setRollover(true);
 
             btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
@@ -2540,7 +2543,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar2.setFloatable(false);
-            jToolBar2.setOrientation(1);
+            jToolBar2.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar2.setRollover(true);
 
             btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
@@ -2644,7 +2647,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar3.setFloatable(false);
-            jToolBar3.setOrientation(1);
+            jToolBar3.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar3.setRollover(true);
 
             btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/help.gif"))); // NOI18N
@@ -2765,6 +2768,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             Boolean leds = true;
             Boolean barras1 = true;
             Boolean barras2 = true;
+            temppuertoText.removeAllItems();
             while (portList.hasMoreElements()) {
                 try {
                     portId = (CommPortIdentifier) portList.nextElement();
@@ -2878,16 +2882,19 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         if (portId.getName().equals(empresaObj.getSalida1()) && empresaObj.getActiva1()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getSalida1());
+                            temppuertoText.addItem(empresaObj.getSalida1());
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida2()) && empresaObj.getActiva2()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getSalida2());
+                            temppuertoText.addItem(empresaObj.getSalida2());
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida3()) && empresaObj.getActiva3()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getSalida3());
+                            temppuertoText.addItem(empresaObj.getSalida3());
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida4()) && empresaObj.getActiva4()) {
@@ -3647,9 +3654,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
     }
-
+ 
     public void buscarTarjeta(String puertoViene) {
 //        final frmPrincipal pra = this;
+         miBotonImagen.setIcon(null);
         if (puertoViene.length() > 10) {
             puertoViene = puertoViene.substring(0, 10);
         }
@@ -3677,15 +3685,31 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     errores.setText("");
                 } else if (tipoIngreso.equals("e")) {
                     if (funcionValida(tarje)) {
+                     //BUSCO SI YA HA INGRESADO PRIMERO
+                     List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
+                                + "and o.fechafin is null  ");
+                     if(facturas.size()>0){
+                         ultimoIngreso.setText("Vehiculo Ingreso:"+facturas.get(facturas.size()-1).getFechaini().toLocaleString()+"");
+                         cargarFoto(facturas.get(facturas.size()-1).getCodigo());
+                         errores.setText("<html>Tarjeta Usada, Tiene que marcar la salida para volver a Ingresar...!</html>");
+                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
+                         return;
+                     }
                         funcionSiEntra(tarje, puertoViene);
                     } else {
                         return;
                     }
                 } else if (tipoIngreso.equals("s")) {
                     if (tarje.getSalida()) {
-                        funcionSiSale(tarje, puertoViene, "e");
-
-
+                             List<Factura> facturas = adm.query("Select o from Factura as o"
+                                     + " where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
+                                + "and o.fechafin is null  ");
+                                 if(facturas.size()>0){
+                                    funcionSiSale(tarje, puertoViene, "s"); 
+                                 }else{
+                                     funcionSiSale(tarje, puertoViene, "e"); 
+                                 }
+                        
                     } else {
                         funcionSiSale(tarje, puertoViene, "s");
                     }
@@ -6129,7 +6153,7 @@ private void tablaTarjetasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:e
 private void tempjButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempjButton13ActionPerformed
 // TODO add your handling code here:
     tarjetatxt.setText(tempnotarjetaTemp.getText());
-    buscarTarjeta(temppuertoText.getText());
+    buscarTarjeta(temppuertoText.getSelectedItem().toString());
 }//GEN-LAST:event_tempjButton13ActionPerformed
 
 private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_facturarKeyPressed
@@ -6462,7 +6486,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JFormattedTextField telefono;
     private javax.swing.JButton tempjButton13;
     private javax.swing.JTextField tempnotarjetaTemp;
-    private javax.swing.JTextField temppuertoText;
+    private javax.swing.JComboBox temppuertoText;
     private javax.swing.JCheckBox todos;
     private javax.swing.JCheckBox todos1;
     private javax.swing.JCheckBox todos2;
