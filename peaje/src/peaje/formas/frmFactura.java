@@ -1568,6 +1568,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
         dias2.setVisible(false);
         if (fac.getFechafin() != null) {
 
+            if(fac.getAnulado()){
+                JOptionPane.showMessageDialog(this, "EL TICKET INGRESADO YA HA SIDO ANULADO...","",JOptionPane.ERROR);
+                noTicket.setText("");
+                noTicket.requestFocusInWindow();
+                return;
+            }
 //                        int valor = JOptionPane.showConfirmDialog(this, ,"JCINFORM",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "opcion 1", "opcion 2", "opcion 3" },"opcion 1" );
             int seleccion = JOptionPane.showOptionDialog(this, "TICKET YA FACTURADO \n ¿Desea volver a imprimir la factura?",
                     "JCINFORM",
@@ -2399,7 +2405,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 facActual.setSubtotal(BigDecimal.ZERO);        
                 facActual.setIva(BigDecimal.ZERO);
                 facActual.setTotal(BigDecimal.ZERO);
-                adm.actualizar(true);
+                adm.actualizar(facActual);
             } catch (Exception ex) {
                 Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
             }
