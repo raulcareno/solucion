@@ -348,6 +348,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         descripcionTarjeta = new javax.swing.JTextArea();
         btnEliminar1 = new javax.swing.JButton();
         facturar = new javax.swing.JCheckBox();
+        salida = new javax.swing.JCheckBox();
         frmLote = new javax.swing.JInternalFrame();
         jScrollPane5 = new javax.swing.JScrollPane();
         tablaCambios = new javax.swing.JTable(){
@@ -982,7 +983,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         fechaHasta.setBounds(60, 40, 95, 20);
 
         formaTarjetas1.getContentPane().add(panelHoras);
-        panelHoras.setBounds(30, 70, 160, 70);
+        panelHoras.setBounds(30, 90, 160, 70);
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Horas de ingreso"));
         jPanel7.setLayout(null);
@@ -1012,7 +1013,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         horaHasta.setBounds(50, 40, 80, 20);
 
         formaTarjetas1.getContentPane().add(jPanel7);
-        jPanel7.setBounds(200, 70, 150, 70);
+        jPanel7.setBounds(200, 90, 150, 70);
 
         diasHabiles.setBorder(javax.swing.BorderFactory.createTitledBorder("Días Habiles"));
         diasHabiles.setLayout(null);
@@ -1105,9 +1106,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         todos.setBounds(30, 40, 55, 23);
 
         formaTarjetas1.getContentPane().add(diasHabiles);
-        diasHabiles.setBounds(30, 140, 320, 100);
+        diasHabiles.setBounds(30, 160, 320, 100);
 
-        noTarjeta.setEditable(false);
         noTarjeta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 noTarjetaKeyPressed(evt);
@@ -1158,15 +1158,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         activa.setSelected(true);
         activa.setText("Tarjeta Activa");
-        activa.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        activa.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         activa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 activaKeyPressed(evt);
             }
         });
         formaTarjetas1.getContentPane().add(activa);
-        activa.setBounds(220, 40, 120, 16);
+        activa.setBounds(250, 40, 100, 16);
 
         placa1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1183,7 +1181,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         jLabel22.setText("Descripción:");
         formaTarjetas1.getContentPane().add(jLabel22);
-        jLabel22.setBounds(30, 250, 70, 14);
+        jLabel22.setBounds(30, 260, 70, 14);
 
         descripcionTarjeta.setColumns(20);
         descripcionTarjeta.setRows(5);
@@ -1195,7 +1193,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jScrollPane2.setViewportView(descripcionTarjeta);
 
         formaTarjetas1.getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(90, 250, 260, 30);
+        jScrollPane2.setBounds(30, 280, 140, 60);
 
         btnEliminar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
         btnEliminar1.setMnemonic('E');
@@ -1217,8 +1215,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         btnEliminar1.setBounds(170, 290, 60, 50);
 
         facturar.setText("Facturar");
-        facturar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        facturar.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         facturar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 facturarKeyPressed(evt);
@@ -1226,6 +1222,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         formaTarjetas1.getContentPane().add(facturar);
         facturar.setBounds(140, 40, 70, 16);
+
+        salida.setText("Ingresa por la Salida");
+        formaTarjetas1.getContentPane().add(salida);
+        salida.setBounds(140, 60, 150, 23);
 
         formaTarjetas1.setBounds(5, 5, 380, 380);
         contenedor.add(formaTarjetas1, javax.swing.JLayeredPane.MODAL_LAYER);
@@ -2274,7 +2274,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(cliente);
             cliente.setBounds(20, 20, 520, 80);
 
-            errores.setFont(new java.awt.Font("Tahoma", 1, 42));
+            errores.setFont(new java.awt.Font("Tahoma", 1, 42)); // NOI18N
             errores.setForeground(new java.awt.Color(255, 0, 0));
             errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             errores.setText("ok..!");
@@ -2456,9 +2456,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             tempjButton13.setBounds(410, 0, 40, 23);
             contenedor.add(tempjButton13, javax.swing.JLayeredPane.DEFAULT_LAYER);
-            tempnotarjetaTemp.setBounds(500, 0, 30, 30);
+            tempnotarjetaTemp.setBounds(470, 0, 60, 30);
             contenedor.add(tempnotarjetaTemp, javax.swing.JLayeredPane.DEFAULT_LAYER);
-            temppuertoText.setBounds(580, 0, 30, 30);
+            temppuertoText.setBounds(550, 0, 60, 30);
             contenedor.add(temppuertoText, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
@@ -3017,10 +3017,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     public void run() {
                         try {
                             String valor = "";
-                            if(dispo<10){
-                                valor = "0"+dispo;
-                            }else{
-                                    valor = ""+dispo;
+                            if (dispo < 10) {
+                                valor = "0" + dispo;
+                            } else {
+                                valor = "" + dispo;
                             }
                             LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
                             ta.outputSream.write((("XYinforma" + valor).getBytes()));
@@ -3052,6 +3052,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setLed(emp.getLed());
         empresaObj.setSale(emp.getSale());
         empresaObj.setSale2(emp.getSale2());
+        empresaObj.setBloquear(emp.getBloquear());
 
         empresaObj.setActiva1(emp.getActiva1());
         empresaObj.setActiva2(emp.getActiva2());
@@ -3339,6 +3340,204 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         }
     }
 
+      public Boolean funcionValida(Tarjetas tarje) {
+            verPanel();
+            //VALIDO LA TARJETA QUE ESTE´HABILITADA Y ESTE EN LAS FECHAS ESTABELCIDAS
+            Date fechaActual = new Date();
+            Boolean habilitada = tarje.getHabilitada();
+            int diaActual = fechaActual.getDay(); //1=Domingo, 2=Lunes 3=Martes,4=Miercoles,5=Jueves,6=Viernes
+            DateTime desde = new DateTime(tarje.getDesde());  DateTime hasta = new DateTime(tarje.getHasta()); DateTime fechaAct = new DateTime(fechaActual);
+            Boolean continua = false;
+            if (habilitada) {
+                if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
+                    System.out.println("EN EL RANGO DE FECHAS");
+                    if (diaActual == 0) {
+                        if (tarje.getDomingo()) {
+                            continua = true;
+                        }
+                    } else if (diaActual == 1) {
+                        if (tarje.getLunes()) {
+                            continua = true;
+                        }
+                    } else if (diaActual == 2) {
+                        if (tarje.getMartes()) {
+                            continua = true;
+                        }
+                    } else if (diaActual == 3) {
+                        if (tarje.getMiercoles()) {
+                            continua = true;
+                        }
+                    } else if (diaActual == 4) {
+                        if (tarje.getJueves()) {
+                            continua = true;
+                        }
+                    } else if (diaActual == 5) {
+                        if (tarje.getViernes()) {
+                            continua = true;
+                        }
+                    } else if (diaActual == 6) {
+                        if (tarje.getSabado()) {
+                            continua = true;
+                        }
+                    }
+                    if (continua == false) {
+                        //JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                        errores.setText("<html>NO PUEDE INGRESAR EN ÉSTE DÌA</html>");
+                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                        return false;
+                    }
+
+                    Date fecIn = tarje.getHorainicio();
+                    Date fecIn3 = tarje.getHorafin();
+                    LocalTime horaIni = new LocalTime(new DateTime(fecIn));
+                    LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
+                    LocalTime ahora = new LocalTime(new DateTime(new Date()));
+                    if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
+                        System.out.println("EN EL RANGO DE HORA");
+                        try {
+                            return true;
+                        } catch (Exception e) {
+                            System.out.println("ERROR AL ABRIR PUERTA: " + e);
+                        }
+
+                    } else {
+                        //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                        errores.setText("<html>NO PUEDE INGRESAR EN ESTE HORARIO </html>");
+                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                        return false;
+                    }
+                } else {
+                    //JOptionPane.showMessageDialog(getContentPane(), "Su Fecha de tarjeta expiró...! \n Cliente: ", "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                    errores.setText("<html>TARJETA EXPIRADA</html>");
+                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                    return false;
+                }
+                cliente.setText(tarje.getClientes().getNombres());
+            } else {
+                //JOptionPane.showMessageDialog(getContentPane(), "Tarjeta INHABILITADA ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                errores.setText("<html>TARJETA DESHABILITADA</html>");
+                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                return false;
+            }
+            errores.setText("<html>OK</html>");
+            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+            return true;
+    }
+
+    void funcionSiEntra(Tarjetas tarje,String puertoViene) {
+        verPanel();
+            try {
+                //VALIDO LA TARJETA QUE ESTE´HABILITADA Y ESTE EN LAS FECHAS ESTABELCIDAS
+                Date fechaActual = new Date();
+                // List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
+                //  + "and o.fechafin is null  ");
+                //VALIDO EL NO DE INGRESOS DIARIOS
+                List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
+                Factura fac = new Factura();
+                        if (facturas.size() >= tarje.getIngresos().intValue()) {
+                            errores.setText("<html>ERROR: Tarjeta ya ha sido USADA...! <p>Solo Válida para: ("+tarje.getIngresos().intValue()+") ingreso(s)</p></html>");
+                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                            return;
+                        } else {
+                            fac.setPlaca("CLIENTE TARJETA");
+                            fac.setFechaini(new Date());
+                            fac.setFecha(new Date());
+                            fac.setTarjetas(tarje);
+                            fac.setTicket(null);
+                            adm.guardar(fac);
+                            llenarFechayHora(fac, "no");
+                            errores.setText("<html>ENTRADA OK...!</html>");
+                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+                        }
+                    abrirPuerta(puertoViene);
+                    procesando.setVisible(true);
+                    cliente.setText(tarje.getClientes().getNombres());
+                noDisponibles();
+            } catch (Exception ex) {
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+
+    
+    void funcionSiSale(Tarjetas tarje, String puertoViene,String tipoIngreso) {
+        try {
+            verPanel();
+               //Date fechaActual = new Date();
+               //List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
+                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
+                        + "and o.fechafin is null  ");
+                Factura fac = new Factura();
+              if(tipoIngreso.equals("e")){//ESTA ENTRANDO
+                        if(facturas.size() >= tarje.getIngresos().intValue()) {
+                            errores.setText("<html>ERROR: Tarjeta ya ha sido USADA...! <p>Solo Válida para: ("+tarje.getIngresos().intValue()+") ingreso(s)</p></html>");
+                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                            return;
+                        }else {
+                        fac.setFechaini(new Date());
+                        fac.setFecha(new Date());
+                        fac.setTarjetas(tarje);
+                        fac.setPlaca("CLIENTE TARJETA");
+                        fac.setTicket(null);
+                        fac.setClientes(tarje.getClientes());
+                        adm.guardar(fac);
+                        llenarFechayHora(fac, "no");
+                        errores.setText("<html>ENTRADA OK...!</html>");
+                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+                        imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+                    }
+             }else{//ESTA SALIENDO
+                    if (facturas.size() > 0) {
+                        fac = facturas.get(0);
+                        fac.setPlaca("NO CLIENTE TARJETA");
+                        fac.setClientes(tarje.getClientes());//CARGO EL CONSUMIDOR FINAL
+                        fac.setFechafin(new Date());
+                        fac.setTarjetas(tarje);
+                        fac = calcularTiempo(fac);
+                        fac.setNumero(emp.getDocumentofac());
+                        adm.actualizar(fac);
+                        Integer numero = new Integer(emp.getDocumentofac());
+                        emp.setDocumentofac((numero + 1) + "");
+                        adm.actualizar(emp);
+
+                        llenarFechayHora(fac, "nuevo");
+                        errores.setText("<html>SALIDA OK...!</html>");
+                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+                        if(tarje.getFacturar())
+                            imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+
+                    } else {
+                        fac.setPlaca(placa.getText());
+                        fac.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+                        fac.setFechafin(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+                        fac.setPlaca("NO CLIENTE TARJETA");
+                        fac.setFecha(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+                        fac.setTarjetas(tarje);
+                        fac = calcularTiempo(fac);
+                        fac.setClientes(tarje.getClientes());
+                        fac.setTicket(null);
+                        fac.setNumero(emp.getDocumentofac());
+                        adm.guardar(fac);
+                        Integer numero = new Integer(emp.getDocumentofac());
+                        emp.setDocumentofac((numero + 1) + "");
+                        adm.actualizar(emp);
+                        llenarFechayHora(fac, "no");
+                        errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO)");
+                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+                        if(tarje.getFacturar())
+                            imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+                    }
+                }
+                noDisponibles();
+        } catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+ 
+
+    }
+
+    
     public void buscarTarjeta(String puertoViene) {
 //        final frmPrincipal pra = this;
         if (puertoViene.length() > 10) {
@@ -3366,271 +3565,17 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         btnAnadirTarjeta.doClick();
                     }
                     errores.setText("");
-                } else {
-                    verPanel();
-                    if (tarje.getClientes().getCodigo().intValue() > 1) {
-
-                        //VALIDO LA TARJETA QUE ESTE´HABILITADA Y ESTE EN LAS FECHAS ESTABELCIDAS
-                        Date fechaActual = new Date();
-                        Boolean habilitada = tarje.getHabilitada();
-                        int diaActual = fechaActual.getDay(); //1=Domingo, 2=Lunes 3=Martes,4=Miercoles,5=Jueves,6=Viernes
-                        DateTime desde = new DateTime(tarje.getDesde());
-                        DateTime hasta = new DateTime(tarje.getHasta());
-                        DateTime fechaAct = new DateTime(fechaActual);
-                        Boolean continua = false;
-                        List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
-                        if (habilitada) {
-                                       if (tipoIngreso.equals("e")) {//ENTRANDO
-                                            if (facturas.size() >= tarje.getIngresos().intValue()) {
-                                                errores.setText("<html>ERROR: TARJETA YA HA SIDO USADA...!</html>");
-                                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                                                return;
-                                            }
-                                        }
-                            //primero valido si no ha ingresado ya otro con la misma tarjeta
-//                            if(tipoIngreso.equals("e")){
-//                                List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
-////                                    List<Factura> facturas = adm.queryNativo("Select o.* from Factura as o "
-////                                            + "where o.tarjeta = '" + tarje.getTarjeta() + "' "
-////                                            + " and date(o.fecha)  = '"+convertiraString(fechaActual)+"'",Factura.class);
-//                                        if(facturas.size() >= tarje.getIngresos().intValue()){
-//                                            System.out.println("YA  HA INGRESADO EN EL RANGO DE FECHAS");
-//                                           errores.setText("<html>ERROR: TARJETA YA HA SIDO USADA HOY...!         VALIDA POR #["+tarje.getIngresos()+"] INGRESO</html>");
-//                                           imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-//                                           return;
-//                                        }
-//                            }
-
-                            if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
-                                System.out.println("EN EL RANGO DE FECHAS");
-
-                                if (diaActual == 0) {
-                                    if (tarje.getDomingo()) {
-                                        continua = true;
-                                    }
-                                } else if (diaActual == 1) {
-                                    if (tarje.getLunes()) {
-                                        continua = true;
-                                    }
-                                } else if (diaActual == 2) {
-                                    if (tarje.getMartes()) {
-                                        continua = true;
-                                    }
-                                } else if (diaActual == 3) {
-                                    if (tarje.getMiercoles()) {
-                                        continua = true;
-                                    }
-                                } else if (diaActual == 4) {
-                                    if (tarje.getJueves()) {
-                                        continua = true;
-                                    }
-                                } else if (diaActual == 5) {
-                                    if (tarje.getViernes()) {
-                                        continua = true;
-                                    }
-                                } else if (diaActual == 6) {
-                                    if (tarje.getSabado()) {
-                                        continua = true;
-                                    }
-                                }
-                                if (continua == false) {
-                                    //JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                                    errores.setText("<html>NO PUEDE INGRESAR EN ÉSTE DÌA</html>");
-                                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                                    return;
-                                }
-
-
-                                Date fecIn = tarje.getHorainicio();
-                                Date fecIn3 = tarje.getHorafin();
-                                LocalTime horaIni = new LocalTime(new DateTime(fecIn));
-                                LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
-                                LocalTime ahora = new LocalTime(new DateTime(new Date()));
-                                if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
-                                    System.out.println("EN EL RANGO DE HORA");
-                                    try {
-                                        
-                                        abrirPuerta(puertoViene);
-
-                                    } catch (Exception e) {
-                                        System.out.println("PUERTO:" + puertoViene);
-                                        System.out.println("ERROR AL ABRIR PUERTA: " + e);
-                                    }
-
-                                } else {
-                                    //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                                    errores.setText("<html>NO PUEDE INGRESAR EN ESTE HORARIO </html>");
-                                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                                    return;
-                                }
-
-                            } else {
-                                //JOptionPane.showMessageDialog(getContentPane(), "Su Fecha de tarjeta expiró...! \n Cliente: ", "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                                errores.setText("<html>TARJETA EXPIRADA</html>");
-                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                                return;
-                            }
-
-//                        taskTarjeta.setCollapsed(false);
-                            procesando.setVisible(true);
-                            cliente.setText(tarje.getClientes().getNombres());
-                        } else {
-                            //JOptionPane.showMessageDialog(getContentPane(), "Tarjeta INHABILITADA ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                            errores.setText("<html>TARJETA DESHABILITADA</html>");
-                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                        }
-                        errores.setText("<html>OK</html>");
-                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-
-
-
-                        Factura fac = new Factura();
-                        if (tipoIngreso.equals("e")) {//ENTRANDO
-                            //if (facturas.size() > 0) {
-                            if (facturas.size() >= tarje.getIngresos().intValue()) {
-                                errores.setText("<html>ERROR: TARJETA YA HA SIDO USADA...!</html>");
-                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                                return;
-                            } else {
-                                fac.setPlaca("CLIENTE TARJETA");
-                                fac.setFechaini(new Date());
-                                fac.setFecha(new Date());
-                                fac.setTarjetas(tarje);
-                                fac.setTicket(null);
-                                adm.guardar(fac);
-                                llenarFechayHora(fac, "no");
-                                errores.setText("<html>ENTRADA OK...!</html>");
-                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                            }
-                        } else {        //SALIENDO
-
-                            if (facturas.size() > 0) {
-                                fac = facturas.get(0);
-                                fac.setTarjetas(tarje);
-                                fac.setPlaca("CLIENTE TARJETA");
-                                fac.setFechafin(new Date());
-                                fac = calcularTiempo(fac);
-                                fac.setSubtotal(new BigDecimal(0));
-                                fac.setTotal(new BigDecimal(0));
-                                fac.setIva(new BigDecimal(0));
-                                fac.setClientes(tarje.getClientes());
-                                adm.actualizar(fac);
-
-                                llenarFechayHora(fac, "nuevo");
-                                errores.setText("<html>SALIDA OK...!</html>)");
-                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-
-                            } else {
-                                String mensaje = "";
-                                List<Factura> facturasCompro = adm.query(fechaActual, tarje.getTarjeta());
-                                if (facturasCompro.size() >= tarje.getIngresos().intValue()) {
-                                    System.out.println("SALE SIN MARCAR ENTRADA CON TARJETA YA USADA POR OTRA PERSONA");
-                                    mensaje = "<html>ERROR: NO REGISTRÓ LA ENTRADA, Y LA TARJETA YA HA SIDO USADA HOY, ...!</html>";
-                                    errores.setText(mensaje);
-                                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                                    // return;
-                                }
-                                fac.setPlaca("CLIENTE TARJETA");
-                                fac.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
-                                fac.setFechafin(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
-                                fac.setFecha(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
-                                fac.setTarjetas(tarje);
-                                fac.setTicket(null);
-//                                fac.set
-                                adm.guardar(fac);
-                                llenarFechayHora(fac, "no");
-                                if (mensaje.equals("")) {
-                                    errores.setText("<html>OK...!  (NO PASO ANTES POR EL INGRESO)</html>");
-                                }
-                                if (mensaje.equals("")) {
-                                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                                }
-                            }
-                        }
-
-
-
-
-                        noDisponibles();
-                    } else {//EN EL CASO DE QUE SEA CONSUMIDOR FINAL Y PARA TARJETAS DE USUARIOS ESPORADICOS
-                        //CLIENTES QUE TIENEN TARJETA **********************************************************************************************
-
-                        errores.setText("<html>OK</html>");
-                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-//                        String tipoIngreso = entradaosalida(puertoViene);
-                        Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                        //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
-                        List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
-                                + "and o.fechafin is null  ");
-                        Factura fac = new Factura();
-                        if (tipoIngreso.equals("e")) {//ESTA ENTRANDO
-                            if (facturas.size() > 0) {
-                                errores.setText("<html>ERROR: OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!</html>");
-                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                                return;
-                            } else {
-                                fac.setFechaini(new Date());
-                                fac.setFecha(new Date());
-                                fac.setTarjetas(tarje);
-                                fac.setPlaca("NO CLIENTE TARJETA");
-                                fac.setTicket(null);
-                                fac.setClientes(new Clientes(1));
-                                adm.guardar(fac);
-                                llenarFechayHora(fac, "no");
-                                errores.setText("<html>ENTRADA OK...!</html>");
-                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                                imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
-                            }
-                        } else {//ESTA SALIENDO
-
-                            if (facturas.size() > 0) {
-
-                                fac = facturas.get(0);
-                                fac.setPlaca("NO CLIENTE TARJETA");
-                                fac.setClientes(new Clientes(1));//CARGO EL CONSUMIDOR FINAL
-                                fac.setFechafin(new Date());
-                                fac.setTarjetas(tarje);
-                                fac = calcularTiempo(fac);
-                                fac.setNumero(emp.getDocumentofac());
-//                                fac.setClientes(new Clientes(1));
-                                adm.actualizar(fac);
-                                Integer numero = new Integer(emp.getDocumentofac());
-                                emp.setDocumentofac((numero + 1) + "");
-                                adm.actualizar(emp);
-
-                                llenarFechayHora(fac, "nuevo");
-                                errores.setText("<html>SALIDA OK...!</html>");
-                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                                imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
-
-                            } else {
-                                fac.setPlaca(placa.getText());
-                                fac.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
-                                fac.setFechafin(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
-                                fac.setPlaca("NO CLIENTE TARJETA");
-                                fac.setFecha(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
-                                fac.setTarjetas(tarje);
-                                fac = calcularTiempo(fac);
-                                fac.setClientes(new Clientes(1));
-                                fac.setTicket(null);
-                                fac.setNumero(emp.getDocumentofac());
-//                                fac.set
-                                adm.guardar(fac);
-
-                                Integer numero = new Integer(emp.getDocumentofac());
-                                emp.setDocumentofac((numero + 1) + "");
-                                adm.actualizar(emp);
-
-                                llenarFechayHora(fac, "no");
-                                errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO)");
-                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                                imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
-                            }
-                        }
-                        noDisponibles();
-
-
-
+                }else if(tipoIngreso.equals("e")){
+                    if(funcionValida(tarje)){
+                        funcionSiEntra(tarje,puertoViene); 
+                    }else{
+                            return; 
+                    }
+                }else if(tipoIngreso.equals("s")){
+                    if(tarje.getSalida()){
+                        funcionSiSale(tarje,puertoViene,"e");
+                    } else{
+                        funcionSiSale(tarje,puertoViene,"s");
                     }
                 }
             } catch (Exception ex) {
@@ -3647,7 +3592,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         }
     }
 
-    public void buscarTarjetaValidarSalida(String puertoViene, String noticket) {
+    public void buscarTarjetaValidarSalida(String puertoViene, String noticket) {//VALIDO LA SALIDA CON CODIGO DE  BARRAS
 //        final frmPrincipal pra = this;
         if (puertoViene.length() > 10) {
             puertoViene = puertoViene.substring(0, 10);
@@ -4048,16 +3993,20 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
             ta.outputSream.write(lapuertaaAbrir.getBytes());
             //TEMPORAL
-                    ta.outputSream.write(lapuertaaAbrir.getBytes());
-                    ta.outputSream.write(lapuertaaAbrir.getBytes());
+            Thread.sleep(20);
+            ta.outputSream.write(lapuertaaAbrir.getBytes());
+            Thread.sleep(20);
+            ta.outputSream.write(lapuertaaAbrir.getBytes());
             //TEMPORAL
-            
+
 //             try {
 //                            Thread.sleep(1000);  // Me aseguro que es transmitido correctamente antes de cerrar
 //                        } catch (Exception e) {
 //                        } //ESPERO UN POCO
             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
             barrera1.setEnabled(true);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -4350,6 +4299,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         sabado.setSelected(tarjeta.getSabado());
         domingo.setSelected(tarjeta.getDomingo());
         activa.setSelected(tarjeta.getHabilitada());
+        salida.setSelected(tarjeta.getSalida());
         facturar.setSelected(tarjeta.getFacturar());
         ingresos.setValue(tarjeta.getIngresos());
         //AQUI CARGO LAS HORAS
@@ -4409,6 +4359,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         tarjeta.setHasta(new Date());
         tarjeta.setFacturar(false);
         tarjeta.setIngresos(1);
+        tarjeta.setSalida(false);
         llenarTarjeta();
 //        formaTarjetas.setModal(true);
 //        formaTarjetas.setSize(400, 388);
@@ -4644,6 +4595,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             tarjeta.setHorainicio((Date) horaDesde.getValue());
             tarjeta.setHorafin((Date) horaHasta.getValue());
             tarjeta.setHabilitada(activa.isSelected());
+            tarjeta.setSalida(salida.isSelected());
             tarjeta.setPlaca(placa1.getText());
             tarjeta.setFacturar(facturar.isSelected());
             adm.actualizar(tarjeta);
@@ -5025,8 +4977,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("3".getBytes());
                     //TEMPORAL
-                        ta.outputSream.write("3".getBytes());
-                        ta.outputSream.write("3".getBytes());
+                    ta.outputSream.write("3".getBytes());
+                    ta.outputSream.write("3".getBytes());
                     //TEMPORAL
                     try {
                         Thread.sleep(500);
@@ -5055,8 +5007,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("2".getBytes());
                     //TEMPORAL
-                        ta.outputSream.write("2".getBytes());
-                        ta.outputSream.write("2".getBytes());
+                    ta.outputSream.write("2".getBytes());
+                    ta.outputSream.write("2".getBytes());
                     //TEMPORAL
                     System.out.println("ABRIR PUERTA 2" + new Date());
                     try {
@@ -5086,8 +5038,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("1".getBytes());
                     //TEMPORAL
-                        ta.outputSream.write("1".getBytes());
-                        ta.outputSream.write("1".getBytes());
+                    ta.outputSream.write("1".getBytes());
+                    ta.outputSream.write("1".getBytes());
                     //TEMPORAL
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     System.out.println("ABRIR PUERTA 1" + new Date());
@@ -6223,7 +6175,7 @@ private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_l
     public javax.swing.JLabel camaraVista1;
     private javax.swing.JPasswordField clave;
     private javax.swing.JPasswordField claveActual;
-    private javax.swing.JFormattedTextField cliente;
+    public javax.swing.JFormattedTextField cliente;
     private javax.swing.JFormattedTextField clienteCod;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
@@ -6244,7 +6196,7 @@ private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_l
     private javax.swing.JCheckBox domingo1;
     private javax.swing.JCheckBox domingo2;
     private javax.swing.JList encontrados;
-    private javax.swing.JLabel errores;
+    public javax.swing.JLabel errores;
     private javax.swing.JCheckBox facturar;
     private com.toedter.calendar.JDateChooser fechaDesde;
     private com.toedter.calendar.JDateChooser fechaDesde1;
@@ -6391,6 +6343,7 @@ private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_l
     private javax.swing.JCheckBox sabado1;
     private javax.swing.JCheckBox sabado2;
     private javax.swing.JLabel salid;
+    private javax.swing.JCheckBox salida;
     private javax.swing.JSpinner spConsumo;
     private javax.swing.JSpinner spIngreso;
     private javax.swing.JSpinner spSalida;
@@ -6516,4 +6469,266 @@ private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_l
         return (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
 
     }
+    
+//       
+//    void funcionSiSale(Tarjetas tarje, String puertoViene) {
+//
+//        verPanel();
+//        if (tarje.getClientes().getCodigo().intValue() > 1) {
+//            try {
+//                //VALIDO LA TARJETA QUE ESTE´HABILITADA Y ESTE EN LAS FECHAS ESTABELCIDAS
+//                Date fechaActual = new Date();
+//                Boolean habilitada = tarje.getHabilitada();
+//                int diaActual = fechaActual.getDay(); //1=Domingo, 2=Lunes 3=Martes,4=Miercoles,5=Jueves,6=Viernes
+//                DateTime desde = new DateTime(tarje.getDesde());
+//                DateTime hasta = new DateTime(tarje.getHasta());
+//                DateTime fechaAct = new DateTime(fechaActual);
+//                Boolean continua = false;
+//                List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
+//                if (habilitada) {
+//                    if (tipoIngreso.equals("e")) {//ENTRANDO
+//                        if (facturas.size() >= tarje.getIngresos().intValue()) {
+//                            errores.setText("<html>ERROR: TARJETA YA HA SIDO USADA...!</html>");
+//                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+//                            return;
+//                        }
+//                    }
+//                    if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
+//                        System.out.println("EN EL RANGO DE FECHAS");
+//
+//                        if (diaActual == 0) {
+//                            if (tarje.getDomingo()) {
+//                                continua = true;
+//                            }
+//                        } else if (diaActual == 1) {
+//                            if (tarje.getLunes()) {
+//                                continua = true;
+//                            }
+//                        } else if (diaActual == 2) {
+//                            if (tarje.getMartes()) {
+//                                continua = true;
+//                            }
+//                        } else if (diaActual == 3) {
+//                            if (tarje.getMiercoles()) {
+//                                continua = true;
+//                            }
+//                        } else if (diaActual == 4) {
+//                            if (tarje.getJueves()) {
+//                                continua = true;
+//                            }
+//                        } else if (diaActual == 5) {
+//                            if (tarje.getViernes()) {
+//                                continua = true;
+//                            }
+//                        } else if (diaActual == 6) {
+//                            if (tarje.getSabado()) {
+//                                continua = true;
+//                            }
+//                        }
+//                        if (continua == false) {
+//                            //JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+//                            errores.setText("<html>NO PUEDE INGRESAR EN ÉSTE DÌA</html>");
+//                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+//                            return;
+//                        }
+//
+//
+//                        Date fecIn = tarje.getHorainicio();
+//                        Date fecIn3 = tarje.getHorafin();
+//                        LocalTime horaIni = new LocalTime(new DateTime(fecIn));
+//                        LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
+//                        LocalTime ahora = new LocalTime(new DateTime(new Date()));
+//                        if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
+//                            System.out.println("EN EL RANGO DE HORA");
+//                            try {
+//
+//                                abrirPuerta(puertoViene);
+//
+//                            } catch (Exception e) {
+//                                System.out.println("PUERTO:" + puertoViene);
+//                                System.out.println("ERROR AL ABRIR PUERTA: " + e);
+//                            }
+//
+//                        } else {
+//                            //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+//                            errores.setText("<html>NO PUEDE INGRESAR EN ESTE HORARIO </html>");
+//                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+//                            return;
+//                        }
+//
+//                    } else {
+//                        //JOptionPane.showMessageDialog(getContentPane(), "Su Fecha de tarjeta expiró...! \n Cliente: ", "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+//                        errores.setText("<html>TARJETA EXPIRADA</html>");
+//                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+//                        return;
+//                    }
+//
+//    //                        taskTarjeta.setCollapsed(false);
+//                    procesando.setVisible(true);
+//                    cliente.setText(tarje.getClientes().getNombres());
+//                } else {
+//                    //JOptionPane.showMessageDialog(getContentPane(), "Tarjeta INHABILITADA ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+//                    errores.setText("<html>TARJETA DESHABILITADA</html>");
+//                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+//                }
+//                errores.setText("<html>OK</html>");
+//                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+//
+//
+//
+//                Factura fac = new Factura();
+//                if (tipoIngreso.equals("e")) {//ENTRANDO
+//                    //if (facturas.size() > 0) {
+//                    if (facturas.size() >= tarje.getIngresos().intValue()) {
+//                        errores.setText("<html>ERROR: TARJETA YA HA SIDO USADA...!</html>");
+//                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+//                        return;
+//                    } else {
+//                        fac.setPlaca("CLIENTE TARJETA");
+//                        fac.setFechaini(new Date());
+//                        fac.setFecha(new Date());
+//                        fac.setTarjetas(tarje);
+//                        fac.setTicket(null);
+//                        adm.guardar(fac);
+//                        llenarFechayHora(fac, "no");
+//                        errores.setText("<html>ENTRADA OK...!</html>");
+//                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+//                    }
+//                } else {        //SALIENDO
+//
+//                    if (facturas.size() > 0) {
+//                        fac = facturas.get(0);
+//                        fac.setTarjetas(tarje);
+//                        fac.setPlaca("CLIENTE TARJETA");
+//                        fac.setFechafin(new Date());
+//                        fac = calcularTiempo(fac);
+//                        fac.setSubtotal(new BigDecimal(0));
+//                        fac.setTotal(new BigDecimal(0));
+//                        fac.setIva(new BigDecimal(0));
+//                        fac.setClientes(tarje.getClientes());
+//                        adm.actualizar(fac);
+//
+//                        llenarFechayHora(fac, "nuevo");
+//                        errores.setText("<html>SALIDA OK...!</html>)");
+//                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+//
+//                    } else {
+//                        String mensaje = "";
+//                        List<Factura> facturasCompro = adm.query(fechaActual, tarje.getTarjeta());
+//                        if (facturasCompro.size() >= tarje.getIngresos().intValue()) {
+//                            System.out.println("SALE SIN MARCAR ENTRADA CON TARJETA YA USADA POR OTRA PERSONA");
+//                            mensaje = "<html>ERROR: NO REGISTRÓ LA ENTRADA, Y LA TARJETA YA HA SIDO USADA HOY, ...!</html>";
+//                            errores.setText(mensaje);
+//                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+//                            // return;
+//                        }
+//                        fac.setPlaca("CLIENTE TARJETA");
+//                        fac.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+//                        fac.setFechafin(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+//                        fac.setFecha(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+//                        fac.setTarjetas(tarje);
+//
+//    //                                fac.set       fac.setTicket(null);
+//                        adm.guardar(fac);
+//                        llenarFechayHora(fac, "no");
+//                        if (mensaje.equals("")) {
+//                            errores.setText("<html>OK...!  (No paso antes por el ingreso)</html>");
+//                        }
+//                        if (mensaje.equals("")) {
+//                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+//                        }
+//                    }
+//                }
+//
+//
+//
+//
+//                noDisponibles();
+//            } catch (Exception ex) {
+//                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        } else {//EN EL CASO DE QUE SEA CONSUMIDOR FINAL Y PARA TARJETAS DE USUARIOS ESPORADICOS
+//            //CLIENTES QUE TIENEN TARJETA **********************************************************************************************
+//
+//            errores.setText("<html>OK</html>");
+//            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+////                        String tipoIngreso = entradaosalida(puertoViene);
+//            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+//            //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
+//            List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
+//                    + "and o.fechafin is null  ");
+//            Factura fac = new Factura();
+//            if (tipoIngreso.equals("e")) {//ESTA ENTRANDO
+//                if (facturas.size() > 0) {
+//                    errores.setText("<html>ERROR: OTRO VEHÍCULO YA HA INGRESADO CON ESA TARJETA...!</html>");
+//                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+//                    return;
+//                } else {
+//                    fac.setFechaini(new Date());
+//                    fac.setFecha(new Date());
+//                    fac.setTarjetas(tarje);
+//                    fac.setPlaca("NO CLIENTE TARJETA");
+//                    fac.setTicket(null);
+//                    fac.setClientes(new Clientes(1));
+//                    adm.guardar(fac);
+//                    llenarFechayHora(fac, "no");
+//                    errores.setText("<html>ENTRADA OK...!</html>");
+//                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+//                    imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+//                }
+//            } else {//ESTA SALIENDO
+//
+//                if (facturas.size() > 0) {
+//
+//                    fac = facturas.get(0);
+//                    fac.setPlaca("NO CLIENTE TARJETA");
+//                    fac.setClientes(new Clientes(1));//CARGO EL CONSUMIDOR FINAL
+//                    fac.setFechafin(new Date());
+//                    fac.setTarjetas(tarje);
+//                    fac = calcularTiempo(fac);
+//                    fac.setNumero(emp.getDocumentofac());
+////                                fac.setClientes(new Clientes(1));
+//                    adm.actualizar(fac);
+//                    Integer numero = new Integer(emp.getDocumentofac());
+//                    emp.setDocumentofac((numero + 1) + "");
+//                    adm.actualizar(emp);
+//
+//                    llenarFechayHora(fac, "nuevo");
+//                    errores.setText("<html>SALIDA OK...!</html>");
+//                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+//                    imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+//
+//                } else {
+//                    fac.setPlaca(placa.getText());
+//                    fac.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+//                    fac.setFechafin(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+//                    fac.setPlaca("NO CLIENTE TARJETA");
+//                    fac.setFecha(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
+//                    fac.setTarjetas(tarje);
+//                    fac = calcularTiempo(fac);
+//                    fac.setClientes(new Clientes(1));
+//                    fac.setTicket(null);
+//                    fac.setNumero(emp.getDocumentofac());
+////                                fac.set
+//                    adm.guardar(fac);
+//
+//                    Integer numero = new Integer(emp.getDocumentofac());
+//                    emp.setDocumentofac((numero + 1) + "");
+//                    adm.actualizar(emp);
+//
+//                    llenarFechayHora(fac, "no");
+//                    errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO)");
+//                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+//                    imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+//                }
+//            }
+//            noDisponibles();
+//
+//
+//
+//        }
+//
+//    }
+
+    
 }

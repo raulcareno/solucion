@@ -93,6 +93,7 @@ public class EmpresaPuertos {
     public Boolean seabrefac;
     public Boolean seabretic;
     public Double multa;
+    public Boolean bloquear;
 
     public String getEntra1() {
         return entra1;
@@ -601,6 +602,14 @@ public class EmpresaPuertos {
 
     public void setPuertatic(String puertatic) {
         this.puertatic = puertatic;
+    }
+
+    public Boolean getBloquear() {
+        return bloquear;
+    }
+
+    public void setBloquear(Boolean bloquear) {
+        this.bloquear = bloquear;
     }
      
      

@@ -731,11 +731,21 @@ public class Empresa implements Serializable {
     public Boolean seabrefac = false;
     @Transient
     public Double multa;
+    @Transient
+    public Boolean bloquear = false;
     
     @Transient
     public String puertatic;
     @Transient
     public String puertafac;
+
+    public Boolean getBloquear() {
+        return bloquear;
+    }
+
+    public void setBloquear(Boolean bloquear) {
+        this.bloquear = bloquear;
+    }
 
     public Boolean getSeabrefac() {
         return seabrefac;

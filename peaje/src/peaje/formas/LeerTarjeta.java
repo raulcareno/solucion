@@ -288,18 +288,29 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             }
 
         }
-
-
-
     }
 
     public void abrirPuerta(String puerta) {
         System.out.println("local puerta: " + puerta);
         try {
+            if(princip.empresaObj.bloquear){
+                    if(noDisponibles()==0){
+                        try {
+                                System.out.println("PARQUEADERO LLENO...!");
+                                
+                                princip.cliente.setText("<html>PARQUEADERO LLENO...!</html>");
+                                //princip.errores.setText("<html>PARQUEADERO LLENO...!</html>");
+                                return;    
+                            } catch (Exception e) {
+                            return;
+                        }
+                        
+                        
+                    }
+            }
             if (puerta == null) {
                 puerta = "1";
             }
-
             LeerTarjeta ta = (LeerTarjeta) princip.puertoListo.get(0);
             ta.outputSream.write(puerta.trim().getBytes());
             //TEMPORAL
@@ -310,6 +321,22 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public int noDisponibles() {
+        try {
+            Object con = adm.querySimple("Select count(o) from Factura as o" + " where  o.fechafin is null  ");
+            Long val2 = (Long) con;
+            int disponibles = (princip.empresaObj.getParqueaderos() - val2.intValue());
+            if(disponibles < 0){
+            return 0;
+            }
+            return  disponibles;
+         } catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        return 0;
+
+    }
+
 
     public void imprimir(String impresoraLlega) {
         try {
@@ -326,6 +353,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             fac.setPlaca("CLIENTE BOTON");
             fac.setFechaini(new Date());
             fac.setFecha(new Date());
+            fac.setUsuario(princip.getUsuario());
             Boolean pasar = true;
             Integer numero = new Integer(emp.getDocumentoticket()) + 1;
             while (pasar) {
@@ -344,8 +372,6 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
             }
 
-
-//            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
             ArrayList detalle = new ArrayList();
             detalle.add(fac);
             FacturaSource ds = new FacturaSource(detalle);

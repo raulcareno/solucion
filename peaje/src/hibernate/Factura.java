@@ -72,6 +72,12 @@ public class Factura implements Serializable {
     @JoinColumn(name = "cliente", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
+    @JoinColumn(name = "usuario", referencedColumnName = "codigo")
+    @ManyToOne
+    private Usuarios usuario;
+    @JoinColumn(name = "usuarioc", referencedColumnName = "codigo")
+    @ManyToOne
+    private Usuarios usuarioc;
 //    @OneToMany(mappedBy = "factura")
 //    private Collection<Detalle> detalleCollection;
 
@@ -200,6 +206,22 @@ public class Factura implements Serializable {
 
     public void setDias(Integer dias) {
         this.dias = dias;
+    }
+
+    public Usuarios getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuarios usuario) {
+        this.usuario = usuario;
+    }
+
+    public Usuarios getUsuarioc() {
+        return usuarioc;
+    }
+
+    public void setUsuarioc(Usuarios usuarioc) {
+        this.usuarioc = usuarioc;
     }
 
     

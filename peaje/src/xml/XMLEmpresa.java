@@ -90,6 +90,7 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String ACTIVA5 = "ACTIVA5";
     private static final String ACTIVA6 = "ACTIVA6";
     private static final String ACTIVA7 = "ACTIVA7";
+    private static final String BLOQUEAR = "BLOQUEAR";
 
      private static final String PUERTA1 = "PUERTA1";
     private static final String PUERTA2 = "PUERTA2";
@@ -288,6 +289,9 @@ public static UsuarioActivo user = new UsuarioActivo();
         item = xmlDoc.createElement(PUERTAFAC);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getPuertafac()+""));
         personal.appendChild(item);
+        item = xmlDoc.createElement(BLOQUEAR);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBloquear()+""));
+        personal.appendChild(item);
         
     }
 
@@ -431,6 +435,7 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setUrl(emp.getUrl()); 
         beanEmpleado.setEntra1(emp.getEntra1()); 
         beanEmpleado.setEntra2(emp.getEntra2()); 
+        beanEmpleado.setBloquear(emp.getBloquear()); 
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
         //obtenemos el documento XML en cadena de texto
@@ -658,7 +663,18 @@ public static UsuarioActivo user = new UsuarioActivo();
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
+                      
+                    //------
+                    try {
                       //------
+                    NodeList BLOQUEAR2outList = firstPersonElement.getElementsByTagName("BLOQUEAR");
+                    Element BLOQUEAR2outElement = (Element) BLOQUEAR2outList.item(0);
+                    NodeList BLOQUEAR2outAgeList = BLOQUEAR2outElement.getChildNodes();
+                    user.setBloquear(new Boolean(((Node) BLOQUEAR2outAgeList.item(0)).getNodeValue().trim()));
+                      } catch (Exception parserConfigurationException) {
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    //------
                     try {
 
                         NodeList ACTIVA1outList = firstPersonElement.getElementsByTagName("ACTIVA1");

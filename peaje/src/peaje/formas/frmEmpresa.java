@@ -303,7 +303,6 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         razonsocial = new javax.swing.JFormattedTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         telefono = new javax.swing.JFormattedTextField();
         parqueaderos = new javax.swing.JFormattedTextField();
         cmbFactura = new javax.swing.JComboBox();
@@ -330,6 +329,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         url = new javax.swing.JFormattedTextField();
         cmbPuertaFac = new javax.swing.JComboBox();
         cmbPuertaTicket = new javax.swing.JComboBox();
+        jLabel50 = new javax.swing.JLabel();
+        chkBloquear = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -488,7 +489,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Catálogo de Empresas ..::..");
         jPanel3.add(jLabel8);
@@ -691,12 +692,6 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel2.add(jLabel6);
         jLabel6.setBounds(10, 90, 100, 14);
 
-        jLabel7.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("IVA %");
-        jPanel2.add(jLabel7);
-        jLabel7.setBounds(150, 110, 110, 20);
-
         telefono.setEditable(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.telefonos}"), telefono, org.jdesktop.beansbinding.BeanProperty.create("value"));
@@ -797,7 +792,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(iva);
-        iva.setBounds(270, 110, 59, 20);
+        iva.setBounds(319, 110, 40, 20);
 
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel16.setText("Gracia por Hora: ");
@@ -960,6 +955,20 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         });
         jPanel2.add(cmbPuertaTicket);
         cmbPuertaTicket.setBounds(180, 250, 37, 20);
+
+        jLabel50.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel50.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel50.setText("IVA %");
+        jPanel2.add(jLabel50);
+        jLabel50.setBounds(280, 110, 40, 20);
+
+        chkBloquear.setText("Bloquear Ingreso");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.bloquear}"), chkBloquear, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        jPanel2.add(chkBloquear);
+        chkBloquear.setBounds(160, 110, 120, 23);
 
         jTabbedPane1.addTab("DATOS DE LA EMPRESA", new javax.swing.ImageIcon(getClass().getResource("/images/empresa.png")), jPanel2); // NOI18N
 
@@ -1537,6 +1546,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setWebcam(chkWebcam.isSelected());
                     empresaObj.setUrl(url.getText());
                     empresaObj.setIpcam(chkIpcam.isSelected());
+                    empresaObj.setBloquear(chkBloquear.isSelected());
                     empresaObj.setSeabretic(seabreticket.isSelected());
                     empresaObj.setSeabrefac(seabrefactura.isSelected());
                     empresaObj.setPuertatic((String)cmbPuertaTicket.getSelectedItem());
@@ -2085,6 +2095,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JCheckBox chkActivo2;
     private javax.swing.JCheckBox chkActivo3;
     private javax.swing.JCheckBox chkActivo4;
+    private javax.swing.JCheckBox chkBloquear;
     private javax.swing.JCheckBox chkIpcam;
     private javax.swing.JCheckBox chkWebcam;
     private javax.swing.JComboBox cmbEntrada1;
@@ -2167,8 +2178,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;

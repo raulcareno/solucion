@@ -73,6 +73,7 @@ public class EmpresaPuertosStatic {
         public Boolean activa12;
         public Boolean activa13;
         public Boolean activa14;
+                public Boolean bloquear;
         public String puerta1;
         public String puerta2;
         public String puerta3;
@@ -597,6 +598,14 @@ public class EmpresaPuertosStatic {
 
     public void setPuertatic(String puertatic) {
         this.puertatic = puertatic;
+    }
+
+    public Boolean getBloquear() {
+        return bloquear;
+    }
+
+    public void setBloquear(Boolean bloquear) {
+        this.bloquear = bloquear;
     }
         
         
