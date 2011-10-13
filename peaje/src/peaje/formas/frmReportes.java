@@ -91,7 +91,6 @@ public class frmReportes extends javax.swing.JInternalFrame {
 //    }
 
     public void llenarCombo() {
-       
         try {
             cmbUsuarios.removeAllItems();
             Usuarios user = new Usuarios(-1);
@@ -434,6 +433,19 @@ public class frmReportes extends javax.swing.JInternalFrame {
             parametros.put("telefono", emp.getTelefonos());
             parametros.put("titulo", titulo);
             parametros.put("parqueaderos", emp.getParqueaderos());
+            parametros.put("usuario", cmbUsuarios.getSelectedItem().toString());
+            
+            Date des = desde.getDate();
+            Date has = desde.getDate();
+            des.setHours(desdehora2.getDate().getHours());
+            des.setMinutes(desdehora2.getDate().getMinutes());
+            des.setSeconds(desdehora2.getDate().getSeconds());
+            has.setHours(hastahora2.getDate().getHours());
+            has.setMinutes(hastahora2.getDate().getMinutes());
+            has.setSeconds(hastahora2.getDate().getSeconds());
+            parametros.put("desde",des);
+            parametros.put("hasta",has);
+            
             if (cmbTipoReporte.getSelectedIndex() == 2) {
                 Object con = adm.querySimple("Select count(o) from Factura as o" +
                         " where  o.fechafin is null  ");
@@ -720,6 +732,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                     + "  AND (o.anulado IS NULL  OR o.anulado = FALSE)";
+            if(cmbUsuarios.getSelectedIndex()>0){
+                    query = "Select o from Factura as o" +
+                            " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                            + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
+                            + " and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
+                            + "  AND (o.anulado IS NULL  OR o.anulado = FALSE)";
+            }
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketscobrados.jasper";
             titulo = "Tickest Cobrados";
             tickets(dirreporte, query, titulo);
@@ -736,6 +755,15 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null and o.numero is not null  "
                     + "AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+              if(cmbUsuarios.getSelectedIndex()>0){
+                  query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + " and o.fechafin is not null and o.numero is not null  "
+                    + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
+                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+               }
+            
+            
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiarias.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
@@ -745,6 +773,14 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+            if(cmbUsuarios.getSelectedIndex()>0){
+            query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + " and o.fechafin is not null and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
+                    + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
+                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+               }
+            
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariastickets.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
@@ -809,7 +845,14 @@ public class frmReportes extends javax.swing.JInternalFrame {
     }
     private void cmbTipoReporteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTipoReporteItemStateChanged
         // TODO add your handling code here:
-        if(cmbTipoReporte.getSelectedIndex() == 9){
+    cmbUsuarios.setEnabled(false);    
+        if(cmbTipoReporte.getSelectedIndex() == 0 
+                || cmbTipoReporte.getSelectedIndex() == 1
+                || cmbTipoReporte.getSelectedIndex() == 3
+                || cmbTipoReporte.getSelectedIndex() == 4
+                || cmbTipoReporte.getSelectedIndex() == 5){
+    cmbUsuarios.setEnabled(true);    
+    }else if(cmbTipoReporte.getSelectedIndex() == 9){
             try {
                 cmbClientes.setEnabled(true);
                 cmbClientes.removeAllItems();
