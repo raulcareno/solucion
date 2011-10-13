@@ -40,6 +40,10 @@ public class Factura implements Serializable {
     private Integer codigo;
     @Column(name = "numero")
     private String numero;
+    @Column(name = "observacion")
+    private String observacion;
+    @Column(name = "anulado")
+    private Boolean anulado;
     @Column(name = "ticket")
     private String ticket;
     @Column(name = "dias")
@@ -222,6 +226,22 @@ public class Factura implements Serializable {
 
     public void setUsuarioc(Usuarios usuarioc) {
         this.usuarioc = usuarioc;
+    }
+
+    public Boolean getAnulado() {
+        return anulado;
+    }
+
+    public void setAnulado(Boolean anulado) {
+        this.anulado = anulado;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 
     

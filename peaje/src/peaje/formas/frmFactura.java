@@ -35,7 +35,6 @@ import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import hibernate.cargar.Administrador;
-import hibernate.cargar.UsuarioActivo;
 import hibernate.cargar.validaciones;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -242,11 +241,18 @@ public class frmFactura extends javax.swing.JInternalFrame {
         cliente = new javax.swing.JFormattedTextField();
         btnNuevoCliente = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
+        jInternalFrame1 = new javax.swing.JInternalFrame();
+        jLabel28 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        observacion = new javax.swing.JTextArea();
         btnAgregar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         total = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
         btnMulta = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         miBotonImagen = new javax.swing.JLabel();
@@ -644,6 +650,37 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
 
+        jInternalFrame1.setTitle("Anular tickets");
+        jInternalFrame1.setVisible(true);
+        jInternalFrame1.getContentPane().setLayout(null);
+
+        jLabel28.setText("Desea Anular el presente Ticket?, Porqué?");
+        jInternalFrame1.getContentPane().add(jLabel28);
+        jLabel28.setBounds(20, 0, 220, 30);
+
+        jButton1.setText("SI");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jInternalFrame1.getContentPane().add(jButton1);
+        jButton1.setBounds(50, 80, 60, 23);
+
+        jButton2.setText("NO");
+        jInternalFrame1.getContentPane().add(jButton2);
+        jButton2.setBounds(140, 80, 60, 23);
+
+        observacion.setColumns(20);
+        observacion.setRows(5);
+        jScrollPane6.setViewportView(observacion);
+
+        jInternalFrame1.getContentPane().add(jScrollPane6);
+        jScrollPane6.setBounds(20, 30, 220, 40);
+
+        jPanel4.add(jInternalFrame1);
+        jInternalFrame1.setBounds(10, 0, 270, 140);
+
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
         btnAgregar.setMnemonic('G');
         btnAgregar.setText("Guardar");
@@ -661,7 +698,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(160, 130, 60, 50);
+        btnAgregar.setBounds(170, 130, 60, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
@@ -680,7 +717,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnSalir);
-        btnSalir.setBounds(220, 130, 60, 50);
+        btnSalir.setBounds(230, 130, 60, 50);
 
         total.setBorder(null);
         total.setEditable(false);
@@ -688,7 +725,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         total.setText("0.0");
         total.setCaretColor(new java.awt.Color(0, 204, 0));
-        total.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        total.setFont(new java.awt.Font("Tahoma", 1, 36));
         jPanel4.add(total);
         total.setBounds(10, 60, 240, 50);
 
@@ -701,9 +738,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         btnMulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/perdida.png"))); // NOI18N
         btnMulta.setMnemonic('G');
-        btnMulta.setText("Multa por Pérdida");
+        btnMulta.setText("Aplicar Multa");
         btnMulta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnMulta.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnMulta.setMargin(new java.awt.Insets(1, 1, 1, 1));
         btnMulta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnMulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -716,7 +753,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnMulta);
-        btnMulta.setBounds(60, 130, 100, 50);
+        btnMulta.setBounds(90, 130, 80, 50);
+        btnMulta.getAccessibleContext().setAccessibleName("Aplicar Multa");
+
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_cancel.gif"))); // NOI18N
+        btnEliminar.setText("Eliminar Ticket");
+        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEliminar.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jPanel4.add(btnEliminar);
+        btnEliminar.setBounds(10, 130, 80, 50);
 
         jPanel5.add(jPanel4);
         jPanel4.setBounds(310, 170, 300, 190);
@@ -1100,7 +1146,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     fecSalida.setSeconds(salida.getDate().getSeconds());
                     facActual.setFechafin(fecSalida);
 
-                    facActual.setNumero(emp.getDocumentofac());
                     Double ivav = ((empresaObj.getIva() + 100) / 100);
                     Double totalv = Double.parseDouble(total.getText());
                     Double subtotalv = totalv / ivav;
@@ -1114,19 +1159,38 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     fecTiempo.setMinutes(tiempo.getDate().getMinutes());
                     fecTiempo.setSeconds(tiempo.getDate().getSeconds());
                     facActual.setTiempo(fecTiempo);
-
+                    facActual.setUsuarioc(principal.usuarioActual);
 
                     adm.actualizar(facActual);
-                    Integer numero = new Integer(emp.getDocumentofac());
-                    emp.setDocumentofac((numero + 1) + "");
+//                    Integer numero = new Integer(emp.getDocumentofac());
+//                    emp.setDocumentofac((numero + 1) + "");
                     int dia = 0;
                     try {
                         dia = new Integer(dias1.getText());
                     } catch (Exception e) {
                         dia = 0;
                     }
+                    
+                    //adm.actualizar(emp);
+                    
+                    Boolean pasar = true;
+                    Integer numero = new Integer(emp.getDocumentofac())+1;
+                        while(pasar){
+                            List sihay = adm.query("Select o from Factura as o where o.numero = '"+numero+"'"); 
+                            if(sihay.size()<=0){
+                                pasar = false;
+                                facActual.setNumero("" + numero);
+                                emp.setDocumentofac((numero) + "");
+                                adm.actualizar(emp);//GUARDO EMPRESA
+                                adm.actualizar(facActual); // GUARDO FACTURA
+                            }else{
+                                numero++;
+                            }
+
+                        }
                     imprimir(facActual.getCodigo(), emp, dia, false, cli);
-                    adm.actualizar(emp);
+                    
+                    
                  if(empresaObj.getSeabrefac()){
 
                     try {
@@ -2304,10 +2368,29 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private void btnMultaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnMultaKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMultaKeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if(observacion.getText().isEmpty()){
+                JOptionPane.showMessageDialog(this, "Ingrese un motivo por el cuál está anulando el ticket...!");
+                observacion.requestFocusInWindow();
+        }else{
+            try {
+                Factura facActual = (Factura) adm.buscarClave(new Integer(codigo.getText()), Factura.class);
+                facActual.setObservacion(observacion.getText());
+                facActual.setAnulado(true);
+            } catch (Exception ex) {
+                Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
     private javax.swing.JButton btnAnadirProducto;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnMulta;
     private javax.swing.JButton btnNuevoCliente;
     private javax.swing.JButton btnNuevoCliente1;
@@ -2331,6 +2414,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField identificacion;
     private javax.swing.JFormattedTextField identificacion1;
     private com.toedter.calendar.JDateChooser ingreso;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2351,6 +2437,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -2374,11 +2461,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel miBotonImagen;
     public javax.swing.JFormattedTextField noTicket;
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField nombres1;
+    private javax.swing.JTextArea observacion;
     private javax.swing.JPanel panelencontrados;
     private javax.swing.JPanel panelencontrados1;
     private javax.swing.JPanel panelencontrados2;

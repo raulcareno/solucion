@@ -507,9 +507,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         repiteClave = new javax.swing.JPasswordField();
         jButton7 = new javax.swing.JButton();
         panelIngreso = new javax.swing.JPanel();
-        imAviso = new javax.swing.JLabel();
-        cliente = new javax.swing.JFormattedTextField();
         errores = new javax.swing.JLabel();
+        cliente = new javax.swing.JFormattedTextField();
+        imAviso = new javax.swing.JLabel();
         tarjetatxt = new javax.swing.JFormattedTextField();
         jPanel1 = new javax.swing.JPanel();
         spIngreso = new javax.swing.JSpinner();
@@ -2260,11 +2260,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             panelIngreso.setLayout(null);
 
-            imAviso.setFont(new java.awt.Font("Tahoma", 0, 24));
-            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-            imAviso.setText(".....");
-            panelIngreso.add(imAviso);
-            imAviso.setBounds(540, 50, 210, 210);
+            errores.setFont(new java.awt.Font("Tahoma", 1, 39)); // NOI18N
+            errores.setForeground(new java.awt.Color(255, 0, 0));
+            errores.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            errores.setText("ok..!");
+            panelIngreso.add(errores);
+            errores.setBounds(10, 100, 530, 160);
 
             cliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             cliente.setEditable(false);
@@ -2274,12 +2275,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(cliente);
             cliente.setBounds(20, 20, 520, 80);
 
-            errores.setFont(new java.awt.Font("Tahoma", 1, 39)); // NOI18N
-            errores.setForeground(new java.awt.Color(255, 0, 0));
-            errores.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-            errores.setText("ok..!");
-            panelIngreso.add(errores);
-            errores.setBounds(10, 100, 640, 160);
+            imAviso.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+            imAviso.setText(".....");
+            panelIngreso.add(imAviso);
+            imAviso.setBounds(540, 50, 210, 210);
 
             tarjetatxt.setBorder(null);
             tarjetatxt.setEditable(false);
@@ -3457,6 +3457,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 fac.setFecha(new Date());
                 fac.setTarjetas(tarje);
                 fac.setTicket(null);
+                fac.setUsuario(usuarioActual);
                 adm.guardar(fac);
                 llenarFechayHora(fac, "no");
                 errores.setText("<html>ENTRADA OK...!</html>");
@@ -3509,6 +3510,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     fac.setPlaca("CLIENTE TARJETA");
                     fac.setTicket(null);
                     fac.setClientes(tarje.getClientes());
+                    fac.setUsuario(usuarioActual);
+                    //fac.setUsuarioc(usuarioActual);
                     adm.guardar(fac);
                     llenarFechayHora(fac, "no");
                     errores.setText("<html>ENTRADA OK...!</html>");
@@ -3543,18 +3546,46 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     fac.setFechafin(new Date());
                     fac.setTarjetas(tarje);
                     fac = calcularTiempo(fac);
-                    fac.setNumero(emp.getDocumentofac());
-                    adm.actualizar(fac);
-                        cargarFoto(fac.getCodigo());
+//                    fac.setUsuarioc(usuarioActual);
+//                    if (tarje.getFacturar()) {
+//                        fac.setNumero(emp.getDocumentofac());
+//                        fac.setUsuarioc(usuarioActual);
+//                        Integer numero = new Integer(emp.getDocumentofac());
+//                        emp.setDocumentofac((numero + 1) + "");
+//                        adm.actualizar(emp);
+//                        llenarFechayHora(fac, "nuevo");
+//                        imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+//                    }
+//                    adm.actualizar(fac);
+                    
+                    
+                        if (tarje.getFacturar()) {
+                            fac.setUsuario(usuarioActual);
+                            Boolean pasar = true;
+                                Integer numero = new Integer(emp.getDocumentofac())+1;
+                                    while(pasar){
+                                        List sihay = adm.query("Select o from Factura as o where o.numero = '"+numero+"'"); 
+                                        if(sihay.size()<=0){
+                                            pasar = false;
+                                            fac.setNumero("" + numero);
+                                            emp.setDocumentofac((numero) + "");
+                                            adm.actualizar(emp);//GUARDO EMPRESA
+                                            adm.actualizar(fac); // GUARDO FACTURA
+                                        }else{
+                                            numero++;
+                                        }
+
+                                    }
+                            llenarFechayHora(fac, "no");
+                            imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+                        }else{
+                            adm.actualizar(fac);
+                        }
+                    
+                    cargarFoto(fac.getCodigo());
                     errores.setText("<html>SALIDA OK...!</html>");
                     imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                    if (tarje.getFacturar()) {
-                        Integer numero = new Integer(emp.getDocumentofac());
-                        emp.setDocumentofac((numero + 1) + "");
-                        adm.actualizar(emp);
-                        llenarFechayHora(fac, "nuevo");
-                        imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
-                    }
+                    
                     abrirPuerta(puertoViene);
 
                 } else {
@@ -3569,15 +3600,30 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         fac = calcularTiempo(fac);
                         fac.setClientes(tarje.getClientes());
                         fac.setTicket(null);
-                        fac.setNumero(emp.getDocumentofac());
-                        adm.guardar(fac);
+                        fac.setUsuario(usuarioActual);
                         if (tarje.getFacturar()) {
-                            Integer numero = new Integer(emp.getDocumentofac());
-                            emp.setDocumentofac((numero + 1) + "");
-                            adm.actualizar(emp);
+                            fac.setUsuario(usuarioActual);
+                            Boolean pasar = true;
+                                Integer numero = new Integer(emp.getDocumentofac())+1;
+                                    while(pasar){
+                                        List sihay = adm.query("Select o from Factura as o where o.numero = '"+numero+"'"); 
+                                        if(sihay.size()<=0){
+                                            pasar = false;
+                                            fac.setNumero("" + numero);
+                                            emp.setDocumentofac((numero) + "");
+                                            adm.actualizar(emp);//GUARDO EMPRESA
+                                            adm.guardar(fac); // GUARDO FACTURA
+                                        }else{
+                                            numero++;
+                                        }
+
+                                    }
                             llenarFechayHora(fac, "no");
                             imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+                        }else{
+                            adm.guardar(fac);
                         }
+                        
                         errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO)");
                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
 

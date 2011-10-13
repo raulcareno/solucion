@@ -354,6 +354,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             fac.setFechaini(new Date());
             fac.setFecha(new Date());
             fac.setUsuario(princip.getUsuario());
+            fac.setAnulado(false);
             Boolean pasar = true;
             Integer numero = new Integer(emp.getDocumentoticket()) + 1;
             while (pasar) {
