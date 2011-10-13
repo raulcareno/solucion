@@ -61,7 +61,6 @@ public class frmReportes extends javax.swing.JInternalFrame {
         this.principal = lo;
 //          super(parent,modal);
         adm = adm1;
-        llenarCombo();
         initComponents();
         this.setSize(615, 508);
         empresaObj = new Empresa();
@@ -76,7 +75,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             hasta1.setSeconds(59);
             desdehora2.setDate(desde1);
             hastahora2.setDate(hasta1);
-       
+          llenarCombo();
     }
 //
 //    public frmReportes(java.awt.Frame parent, boolean modal,frmPrincipal lo) {
@@ -94,8 +93,21 @@ public class frmReportes extends javax.swing.JInternalFrame {
     public void llenarCombo() {
        
         try {
-            perfilesList = new ArrayList<Global>();
-            perfilesList = adm.query("Select o from Global as o where o.grupo = 'PER'");
+            cmbUsuarios.removeAllItems();
+            Usuarios user = new Usuarios(-1);
+            user.setNombres("[TODOS]");
+            cmbUsuarios.addItem(user);
+             List<Usuarios> us = adm.query("Select o from Usuarios as o ");
+             for (Iterator<Usuarios> it = us.iterator(); it.hasNext();) {
+                    Usuarios usuarios = it.next();
+                    cmbUsuarios.addItem(usuarios);
+                    if(usuarios.getCodigo().equals(principal.usuarioActual.getCodigo())){
+                        if(usuarios.getGlobal().getCodigo()>100)
+                            cmbUsuarios.setSelectedItem(usuarios);
+                    }
+            }
+//            perfilesList = new ArrayList<Global>();
+//            perfilesList = adm.query("Select o from Global as o where o.grupo = 'PER'");
         } catch (Exception ex) {
             Logger.getLogger(frmReportes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -157,6 +169,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         cmbClientes = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
+        cmbUsuarios = new javax.swing.JComboBox();
+        jLabel7 = new javax.swing.JLabel();
         panelReportes = new javax.swing.JPanel();
 
         setTitle("Reportes");
@@ -227,9 +241,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         jLabel2.setForeground(new java.awt.Color(0, 0, 153));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Clientes:");
+        jLabel2.setText("Usuarios:");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(10, 80, 60, 14);
+        jLabel2.setBounds(380, 10, 60, 14);
 
         jLabel3.setForeground(new java.awt.Color(0, 0, 153));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -249,7 +263,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnBuscar);
-        btnBuscar.setBounds(410, 30, 60, 50);
+        btnBuscar.setBounds(410, 50, 60, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
@@ -263,7 +277,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnSalir);
-        btnSalir.setBounds(480, 30, 60, 50);
+        btnSalir.setBounds(470, 50, 60, 50);
 
         hastahora2.setDateFormatString("HH:mm:ss");
         hastahora2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -303,6 +317,16 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel6.setText("Reporte:");
         jPanel1.add(jLabel6);
         jLabel6.setBounds(10, 10, 60, 14);
+
+        cmbUsuarios.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "[TODOS]" }));
+        jPanel1.add(cmbUsuarios);
+        cmbUsuarios.setBounds(446, 10, 230, 20);
+
+        jLabel7.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Clientes:");
+        jPanel1.add(jLabel7);
+        jLabel7.setBounds(10, 80, 60, 14);
 
         panelReportes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelReportes.setLayout(new java.awt.BorderLayout());
@@ -839,6 +863,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox cmbClientes;
     private javax.swing.JComboBox cmbTipoReporte;
+    private javax.swing.JComboBox cmbUsuarios;
     private com.toedter.calendar.JDateChooser desde;
     private com.toedter.calendar.JDateChooser desdehora2;
     private com.toedter.calendar.JDateChooser hasta;
@@ -850,6 +875,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
