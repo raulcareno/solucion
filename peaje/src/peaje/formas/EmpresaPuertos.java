@@ -94,6 +94,7 @@ public class EmpresaPuertos {
     public Boolean seabretic;
     public Double multa;
     public Boolean bloquear;
+    public Boolean bloquearsalida;
 
     public String getEntra1() {
         return entra1;
@@ -610,6 +611,14 @@ public class EmpresaPuertos {
 
     public void setBloquear(Boolean bloquear) {
         this.bloquear = bloquear;
+    }
+
+    public Boolean getBloquearsalida() {
+        return bloquearsalida;
+    }
+
+    public void setBloquearsalida(Boolean bloquearsalida) {
+        this.bloquearsalida = bloquearsalida;
     }
      
      

@@ -35,6 +35,7 @@ import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
+import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -520,11 +521,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         placa = new javax.swing.JFormattedTextField();
         camaraVista = new javax.swing.JLabel();
         camaraVista1 = new javax.swing.JLabel();
-        logoJci = new javax.swing.JLabel();
-        cuadroJcinform = new javax.swing.JLabel();
         webTeka = new javax.swing.JLabel();
         logoTeka = new javax.swing.JLabel();
-        cuadroTeka = new javax.swing.JLabel();
+        miBotonImagen = new javax.swing.JLabel();
+        ultimoIngreso = new javax.swing.JLabel();
         usuarioLogeado = new javax.swing.JButton();
         jLabel37 = new javax.swing.JLabel();
         botoninst = new javax.swing.JButton();
@@ -816,7 +816,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         getContentPane().add(barraHerramients, java.awt.BorderLayout.PAGE_START);
 
         jSplitPane1.setBorder(null);
-        jSplitPane1.setDividerLocation(202);
+        jSplitPane1.setDividerLocation(220);
         jSplitPane1.setDividerSize(0);
         jSplitPane1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -2274,9 +2274,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(cliente);
             cliente.setBounds(20, 20, 520, 80);
 
-            errores.setFont(new java.awt.Font("Tahoma", 1, 42)); // NOI18N
+            errores.setFont(new java.awt.Font("Tahoma", 1, 39)); // NOI18N
             errores.setForeground(new java.awt.Color(255, 0, 0));
-            errores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            errores.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
             errores.setText("ok..!");
             panelIngreso.add(errores);
             errores.setBounds(10, 100, 640, 160);
@@ -2302,7 +2302,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             panelIngreso.add(tarjetatxt);
-            tarjetatxt.setBounds(370, 380, 160, 50);
+            tarjetatxt.setBounds(620, 370, 140, 20);
 
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
             jPanel1.setLayout(jPanel1Layout);
@@ -2318,50 +2318,50 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(jPanel1);
             jPanel1.setBounds(360, 10, 20, 70);
 
-            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
+            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
             spIngreso.setBorder(null);
             spIngreso.setEnabled(false);
             spIngreso.setFocusable(false);
             panelIngreso.add(spIngreso);
-            spIngreso.setBounds(440, 300, 90, 20);
+            spIngreso.setBounds(370, 290, 90, 20);
 
-            ingre.setFont(new java.awt.Font("Tahoma", 1, 11));
+            ingre.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             ingre.setForeground(new java.awt.Color(153, 153, 153));
             ingre.setText("INGRESO:");
             panelIngreso.add(ingre);
-            ingre.setBounds(370, 300, 60, 20);
+            ingre.setBounds(370, 270, 60, 20);
 
-            spSalida.setFont(new java.awt.Font("Tahoma", 0, 14));
+            spSalida.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
             spSalida.setBorder(null);
             spSalida.setEnabled(false);
             spSalida.setFocusable(false);
             panelIngreso.add(spSalida);
-            spSalida.setBounds(440, 330, 90, 20);
+            spSalida.setBounds(470, 290, 90, 20);
 
-            salid.setFont(new java.awt.Font("Tahoma", 1, 11));
+            salid.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             salid.setForeground(new java.awt.Color(153, 153, 153));
             salid.setText("SALIDA:");
             panelIngreso.add(salid);
-            salid.setBounds(370, 330, 60, 20);
+            salid.setBounds(490, 270, 60, 20);
 
             spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
             spConsumo.setBorder(null);
             spConsumo.setEnabled(false);
             spConsumo.setFocusable(false);
             panelIngreso.add(spConsumo);
-            spConsumo.setBounds(440, 360, 90, 20);
+            spConsumo.setBounds(580, 290, 90, 20);
 
             cons.setFont(new java.awt.Font("Tahoma", 1, 11));
             cons.setForeground(new java.awt.Color(153, 153, 153));
             cons.setText("CONSUMO:");
             panelIngreso.add(cons);
-            cons.setBounds(370, 360, 60, 20);
+            cons.setBounds(580, 270, 60, 20);
 
             placa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             placa.setEditable(false);
             placa.setText(".");
             panelIngreso.add(placa);
-            placa.setBounds(580, 290, 160, 50);
+            placa.setBounds(620, 350, 140, 20);
 
             camaraVista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             camaraVista.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 204), 1, true));
@@ -2371,7 +2371,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             panelIngreso.add(camaraVista);
-            camaraVista.setBounds(30, 270, 330, 270);
+            camaraVista.setBounds(10, 270, 350, 270);
 
             camaraVista1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             camaraVista1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 204), 1, true));
@@ -2381,34 +2381,25 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             panelIngreso.add(camaraVista1);
-            camaraVista1.setBounds(30, 270, 330, 270);
-
-            logoJci.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
-            logoJci.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-            logoJci.addKeyListener(new java.awt.event.KeyAdapter() {
-                public void keyPressed(java.awt.event.KeyEvent evt) {
-                    logoJciKeyPressed(evt);
-                }
-            });
-            panelIngreso.add(logoJci);
-            logoJci.setBounds(370, 440, 190, 100);
-
-            cuadroJcinform.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-            panelIngreso.add(cuadroJcinform);
-            cuadroJcinform.setBounds(370, 440, 190, 100);
+            camaraVista1.setBounds(10, 270, 350, 270);
 
             webTeka.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             webTeka.setText("www.tekatronic.com.ec");
             panelIngreso.add(webTeka);
-            webTeka.setBounds(580, 510, 140, 14);
+            webTeka.setBounds(620, 520, 140, 14);
 
             logoTeka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.png"))); // NOI18N
             panelIngreso.add(logoTeka);
-            logoTeka.setBounds(570, 440, 160, 70);
+            logoTeka.setBounds(600, 460, 160, 70);
 
-            cuadroTeka.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-            panelIngreso.add(cuadroTeka);
-            cuadroTeka.setBounds(560, 440, 170, 100);
+            miBotonImagen.setBackground(new java.awt.Color(204, 204, 255));
+            miBotonImagen.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(153, 204, 255)));
+            panelIngreso.add(miBotonImagen);
+            miBotonImagen.setBounds(370, 360, 230, 180);
+
+            ultimoIngreso.setText("Ultimo Ingreso");
+            panelIngreso.add(ultimoIngreso);
+            ultimoIngreso.setBounds(380, 340, 210, 14);
 
             panelIngreso.setBounds(0, 30, 770, 590);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -2727,9 +2718,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     .addContainerGap()
                     .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel32)
-                        .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                        .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                        .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+                        .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                        .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                        .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
                     .addContainerGap())
             );
             jXTaskPaneContainer1Layout.setVerticalGroup(
@@ -3053,6 +3044,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setSale(emp.getSale());
         empresaObj.setSale2(emp.getSale2());
         empresaObj.setBloquear(emp.getBloquear());
+        empresaObj.setBloquearsalida(emp.getBloquearsalida());
 
         empresaObj.setActiva1(emp.getActiva1());
         empresaObj.setActiva2(emp.getActiva2());
@@ -3340,174 +3332,235 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         }
     }
 
-      public Boolean funcionValida(Tarjetas tarje) {
-            verPanel();
-            //VALIDO LA TARJETA QUE ESTE´HABILITADA Y ESTE EN LAS FECHAS ESTABELCIDAS
-            Date fechaActual = new Date();
-            Boolean habilitada = tarje.getHabilitada();
-            int diaActual = fechaActual.getDay(); //1=Domingo, 2=Lunes 3=Martes,4=Miercoles,5=Jueves,6=Viernes
-            DateTime desde = new DateTime(tarje.getDesde());  DateTime hasta = new DateTime(tarje.getHasta()); DateTime fechaAct = new DateTime(fechaActual);
-            Boolean continua = false;
-            if (habilitada) {
-                if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
-                    System.out.println("EN EL RANGO DE FECHAS");
-                    if (diaActual == 0) {
-                        if (tarje.getDomingo()) {
-                            continua = true;
-                        }
-                    } else if (diaActual == 1) {
-                        if (tarje.getLunes()) {
-                            continua = true;
-                        }
-                    } else if (diaActual == 2) {
-                        if (tarje.getMartes()) {
-                            continua = true;
-                        }
-                    } else if (diaActual == 3) {
-                        if (tarje.getMiercoles()) {
-                            continua = true;
-                        }
-                    } else if (diaActual == 4) {
-                        if (tarje.getJueves()) {
-                            continua = true;
-                        }
-                    } else if (diaActual == 5) {
-                        if (tarje.getViernes()) {
-                            continua = true;
-                        }
-                    } else if (diaActual == 6) {
-                        if (tarje.getSabado()) {
-                            continua = true;
-                        }
+    public Boolean funcionValida(Tarjetas tarje) {
+        verPanel();
+        //VALIDO LA TARJETA QUE ESTE´HABILITADA Y ESTE EN LAS FECHAS ESTABELCIDAS
+        Date fechaActual = new Date();
+        Boolean habilitada = tarje.getHabilitada();
+        int diaActual = fechaActual.getDay(); //1=Domingo, 2=Lunes 3=Martes,4=Miercoles,5=Jueves,6=Viernes
+        DateTime desde = new DateTime(tarje.getDesde());
+        DateTime hasta = new DateTime(tarje.getHasta());
+        DateTime fechaAct = new DateTime(fechaActual);
+        Boolean continua = false;
+        if (habilitada) {
+            if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
+                System.out.println("EN EL RANGO DE FECHAS");
+                if (diaActual == 0) {
+                    if (tarje.getDomingo()) {
+                        continua = true;
                     }
-                    if (continua == false) {
-                        //JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                        errores.setText("<html>NO PUEDE INGRESAR EN ÉSTE DÌA</html>");
-                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                        return false;
+                } else if (diaActual == 1) {
+                    if (tarje.getLunes()) {
+                        continua = true;
                     }
-
-                    Date fecIn = tarje.getHorainicio();
-                    Date fecIn3 = tarje.getHorafin();
-                    LocalTime horaIni = new LocalTime(new DateTime(fecIn));
-                    LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
-                    LocalTime ahora = new LocalTime(new DateTime(new Date()));
-                    if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
-                        System.out.println("EN EL RANGO DE HORA");
-                        try {
-                            return true;
-                        } catch (Exception e) {
-                            System.out.println("ERROR AL ABRIR PUERTA: " + e);
-                        }
-
-                    } else {
-                        //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                        errores.setText("<html>NO PUEDE INGRESAR EN ESTE HORARIO </html>");
-                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                        return false;
+                } else if (diaActual == 2) {
+                    if (tarje.getMartes()) {
+                        continua = true;
                     }
-                } else {
-                    //JOptionPane.showMessageDialog(getContentPane(), "Su Fecha de tarjeta expiró...! \n Cliente: ", "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                    errores.setText("<html>TARJETA EXPIRADA</html>");
+                } else if (diaActual == 3) {
+                    if (tarje.getMiercoles()) {
+                        continua = true;
+                    }
+                } else if (diaActual == 4) {
+                    if (tarje.getJueves()) {
+                        continua = true;
+                    }
+                } else if (diaActual == 5) {
+                    if (tarje.getViernes()) {
+                        continua = true;
+                    }
+                } else if (diaActual == 6) {
+                    if (tarje.getSabado()) {
+                        continua = true;
+                    }
+                }
+                if (continua == false) {
+                    //JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                    errores.setText("<html>NO PUEDE INGRESAR EN ÉSTE DÌA</html>");
                     imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                     return false;
                 }
-                cliente.setText(tarje.getClientes().getNombres());
+
+                Date fecIn = tarje.getHorainicio();
+                Date fecIn3 = tarje.getHorafin();
+                LocalTime horaIni = new LocalTime(new DateTime(fecIn));
+                LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
+                LocalTime ahora = new LocalTime(new DateTime(new Date()));
+                if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
+                    System.out.println("EN EL RANGO DE HORA");
+                    try {
+                        return true;
+                    } catch (Exception e) {
+                        System.out.println("ERROR AL ABRIR PUERTA: " + e);
+                    }
+
+                } else {
+                    //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                    errores.setText("<html>NO PUEDE INGRESAR EN ESTE HORARIO </html>");
+                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                    return false;
+                }
             } else {
-                //JOptionPane.showMessageDialog(getContentPane(), "Tarjeta INHABILITADA ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                errores.setText("<html>TARJETA DESHABILITADA</html>");
+                //JOptionPane.showMessageDialog(getContentPane(), "Su Fecha de tarjeta expiró...! \n Cliente: ", "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+                errores.setText("<html>TARJETA EXPIRADA</html>");
                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                 return false;
             }
-            errores.setText("<html>OK</html>");
-            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-            return true;
+            cliente.setText(tarje.getClientes().getNombres());
+        } else {
+            //JOptionPane.showMessageDialog(getContentPane(), "Tarjeta INHABILITADA ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
+            errores.setText("<html>TARJETA DESHABILITADA</html>");
+            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+            return false;
+        }
+        errores.setText("<html>OK</html>");
+        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+        return true;
     }
-
-    void funcionSiEntra(Tarjetas tarje,String puertoViene) {
-        verPanel();
-            try {
-                //VALIDO LA TARJETA QUE ESTE´HABILITADA Y ESTE EN LAS FECHAS ESTABELCIDAS
-                Date fechaActual = new Date();
-                // List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
-                //  + "and o.fechafin is null  ");
-                //VALIDO EL NO DE INGRESOS DIARIOS
-                List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
-                Factura fac = new Factura();
-                        if (facturas.size() >= tarje.getIngresos().intValue()) {
-                            errores.setText("<html>ERROR: Tarjeta ya ha sido USADA...! <p>Solo Válida para: ("+tarje.getIngresos().intValue()+") ingreso(s)</p></html>");
-                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                            return;
-                        } else {
-                            fac.setPlaca("CLIENTE TARJETA");
-                            fac.setFechaini(new Date());
-                            fac.setFecha(new Date());
-                            fac.setTarjetas(tarje);
-                            fac.setTicket(null);
-                            adm.guardar(fac);
-                            llenarFechayHora(fac, "no");
-                            errores.setText("<html>ENTRADA OK...!</html>");
-                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                        }
-                    abrirPuerta(puertoViene);
-                    procesando.setVisible(true);
-                    cliente.setText(tarje.getClientes().getNombres());
-                noDisponibles();
-            } catch (Exception ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+ void cargarFoto(Integer codigoFactura) {
+        try {
+            miBotonImagen.setIcon(null);
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }
+            String ubiv = ubicacionDirectorio + separador + "fotos" + separador + codigoFactura + ".jpg";
+            Image image = Toolkit.getDefaultToolkit().getImage(ubiv);
+            //Icon icon = new ImageIcon(image);
+            ImageIcon tmpIconAux = new ImageIcon(image);
+            ImageIcon tmpIcon = new ImageIcon(tmpIconAux.getImage().getScaledInstance(240, -1, Image.SCALE_DEFAULT));
+            miBotonImagen.setIcon(tmpIcon);
+        } catch (Exception e) {
+            System.out.println("NO SE CARGO LA FOTO...");
+        }
+
+    }
+    void funcionSiEntra(Tarjetas tarje, String puertoViene) {
+        verPanel();
+        try {
+            //VALIDO LA TARJETA QUE ESTE´HABILITADA Y ESTE EN LAS FECHAS ESTABELCIDAS
+            Date fechaActual = new Date();
+            // List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
+            //  + "and o.fechafin is null  ");
+            //VALIDO EL NO DE INGRESOS DIARIOS
+            List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
+            Factura fac = new Factura();
+            if (facturas.size() >= tarje.getIngresos().intValue()) {
+                errores.setText("<html>ERROR: Tarjeta ya  USADA...! <p>Válida para: (" + tarje.getIngresos().intValue() + ")ingresos</p></html>");
+                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                //ultimoIngreso.setText("Último Ingreso: "+facturas.get(facturas.size()-1).getFechaini().getHours()+":"+facturas.get(facturas.size()-1).getFechaini().getMinutes());
+                ultimoIngreso.setText("Último Ingreso: "+facturas.get(facturas.size()-1).getFechaini().toLocaleString());
+                cargarFoto(facturas.get(facturas.size()-1).getCodigo());
+                return;
+            } else {
+                fac.setPlaca("CLIENTE TARJETA");
+                fac.setFechaini(new Date());
+                fac.setFecha(new Date());
+                fac.setTarjetas(tarje);
+                fac.setTicket(null);
+                adm.guardar(fac);
+                llenarFechayHora(fac, "no");
+                errores.setText("<html>ENTRADA OK...!</html>");
+                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+                if (empresaObj.getWebcam()) {
+                    if (ubicacionDirectorio.contains("build")) {
+                        ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                    }
+                    int resultado = ver.Fotografiar(ubicacionDirectorio + "\\fotos", false, fac.getCodigo() + "");
+                    if (resultado == 0) {
+                        JOptionPane.showMessageDialog(null, "Error en la Fotografia");
+                    }
+
+                } else if (empresaObj.getIpcam()) {
+                    if (ubicacionDirectorio.contains("build")) {
+                        ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                    }
+                    verIp.tomarFotoIp(direccion + separador + fac.getCodigo() + ".jpg", this);
+                }
+
+                abrirPuerta(puertoViene);
+                procesando.setVisible(true);
+                cliente.setText(tarje.getClientes().getNombres());
+                noDisponibles();
+                cargarFoto(fac.getCodigo());
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    
-    void funcionSiSale(Tarjetas tarje, String puertoViene,String tipoIngreso) {
+    void funcionSiSale(Tarjetas tarje, String puertoViene, String tipoIngreso) {
         try {
             verPanel();
-               //Date fechaActual = new Date();
-               //List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
-                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
-                        + "and o.fechafin is null  ");
-                Factura fac = new Factura();
-              if(tipoIngreso.equals("e")){//ESTA ENTRANDO
-                        if(facturas.size() >= tarje.getIngresos().intValue()) {
-                            errores.setText("<html>ERROR: Tarjeta ya ha sido USADA...! <p>Solo Válida para: ("+tarje.getIngresos().intValue()+") ingreso(s)</p></html>");
-                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
-                            return;
-                        }else {
-                        fac.setFechaini(new Date());
-                        fac.setFecha(new Date());
-                        fac.setTarjetas(tarje);
-                        fac.setPlaca("CLIENTE TARJETA");
-                        fac.setTicket(null);
-                        fac.setClientes(tarje.getClientes());
-                        adm.guardar(fac);
-                        llenarFechayHora(fac, "no");
-                        errores.setText("<html>ENTRADA OK...!</html>");
-                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+            //Date fechaActual = new Date();
+            //List<Factura> facturas = adm.query(fechaActual, tarje.getTarjeta());
+            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+            List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
+                    + "and o.fechafin is null  ");
+            Factura fac = new Factura();
+            if (tipoIngreso.equals("e")) {//ESTA ENTRANDO
+                if (facturas.size() >= tarje.getIngresos().intValue()) {
+                    errores.setText("<html>ERROR: Tarjeta ya USADA...! <p>Válida para: (" + tarje.getIngresos().intValue() + ") ingresos</p></html>");
+                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                    return;
+                } else {
+                    fac.setFechaini(new Date());
+                    fac.setFecha(new Date());
+                    fac.setTarjetas(tarje);
+                    fac.setPlaca("CLIENTE TARJETA");
+                    fac.setTicket(null);
+                    fac.setClientes(tarje.getClientes());
+                    adm.guardar(fac);
+                    llenarFechayHora(fac, "no");
+                    errores.setText("<html>ENTRADA OK...!</html>");
+                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+                    if (tarje.getFacturar()) {
                         imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
                     }
-             }else{//ESTA SALIENDO
-                    if (facturas.size() > 0) {
-                        fac = facturas.get(0);
-                        fac.setPlaca("NO CLIENTE TARJETA");
-                        fac.setClientes(tarje.getClientes());//CARGO EL CONSUMIDOR FINAL
-                        fac.setFechafin(new Date());
-                        fac.setTarjetas(tarje);
-                        fac = calcularTiempo(fac);
-                        fac.setNumero(emp.getDocumentofac());
-                        adm.actualizar(fac);
+                    abrirPuerta(puertoViene);
+                    if (empresaObj.getWebcam()) {
+                        if (ubicacionDirectorio.contains("build")) {
+                            ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                        }
+                        int resultado = ver.Fotografiar(ubicacionDirectorio + "\\fotos", false, fac.getCodigo() + "");
+                        if (resultado == 0) {
+                            JOptionPane.showMessageDialog(null, "Error en la Fotografia");
+                        }
+
+                    } else if (empresaObj.getIpcam()) {
+                        if (ubicacionDirectorio.contains("build")) {
+                            ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                        }
+                        verIp.tomarFotoIp(direccion + separador + fac.getCodigo() + ".jpg", this);
+                    }
+                    cargarFoto(fac.getCodigo());
+                }
+            } else {//ESTA SALIENDO
+                if (facturas.size() > 0) {
+                    
+                    fac = facturas.get(0);
+                    fac.setPlaca("NO CLIENTE TARJETA");
+                    fac.setClientes(tarje.getClientes());//CARGO EL CONSUMIDOR FINAL
+                    fac.setFechafin(new Date());
+                    fac.setTarjetas(tarje);
+                    fac = calcularTiempo(fac);
+                    fac.setNumero(emp.getDocumentofac());
+                    adm.actualizar(fac);
+                        cargarFoto(fac.getCodigo());
+                    errores.setText("<html>SALIDA OK...!</html>");
+                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+                    if (tarje.getFacturar()) {
                         Integer numero = new Integer(emp.getDocumentofac());
                         emp.setDocumentofac((numero + 1) + "");
                         adm.actualizar(emp);
-
                         llenarFechayHora(fac, "nuevo");
-                        errores.setText("<html>SALIDA OK...!</html>");
-                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                        if(tarje.getFacturar())
-                            imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+                        imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+                    }
+                    abrirPuerta(puertoViene);
 
-                    } else {
-                        fac.setPlaca(placa.getText());
+                } else {
+                    //NO SE HA REGISTRADO EL INGRESO 
+                    // fac.setPlaca(placa.getText());
+                    if (empresaObj.getBloquearsalida() == false) {
                         fac.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
                         fac.setFechafin(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
                         fac.setPlaca("NO CLIENTE TARJETA");
@@ -3518,26 +3571,37 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         fac.setTicket(null);
                         fac.setNumero(emp.getDocumentofac());
                         adm.guardar(fac);
-                        Integer numero = new Integer(emp.getDocumentofac());
-                        emp.setDocumentofac((numero + 1) + "");
-                        adm.actualizar(emp);
-                        llenarFechayHora(fac, "no");
+                        if (tarje.getFacturar()) {
+                            Integer numero = new Integer(emp.getDocumentofac());
+                            emp.setDocumentofac((numero + 1) + "");
+                            adm.actualizar(emp);
+                            llenarFechayHora(fac, "no");
+                            imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+                        }
                         errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO)");
                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                        if(tarje.getFacturar())
-                            imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+
+                        abrirPuerta(puertoViene);
+                    } else {
+                        //cargarFoto(fac.getCodigo());
+                        errores.setText("<html>ERROR: NO ha registrado el ingreso..!");
+                        imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
+                        return;
                     }
+//                      
+
+
                 }
-                noDisponibles();
+            }
+            noDisponibles();
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
- 
+
 
     }
 
-    
     public void buscarTarjeta(String puertoViene) {
 //        final frmPrincipal pra = this;
         if (puertoViene.length() > 10) {
@@ -3565,17 +3629,19 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         btnAnadirTarjeta.doClick();
                     }
                     errores.setText("");
-                }else if(tipoIngreso.equals("e")){
-                    if(funcionValida(tarje)){
-                        funcionSiEntra(tarje,puertoViene); 
-                    }else{
-                            return; 
+                } else if (tipoIngreso.equals("e")) {
+                    if (funcionValida(tarje)) {
+                        funcionSiEntra(tarje, puertoViene);
+                    } else {
+                        return;
                     }
-                }else if(tipoIngreso.equals("s")){
-                    if(tarje.getSalida()){
-                        funcionSiSale(tarje,puertoViene,"e");
-                    } else{
-                        funcionSiSale(tarje,puertoViene,"s");
+                } else if (tipoIngreso.equals("s")) {
+                    if (tarje.getSalida()) {
+                        funcionSiSale(tarje, puertoViene, "e");
+
+
+                    } else {
+                        funcionSiSale(tarje, puertoViene, "s");
                     }
                 }
             } catch (Exception ex) {
@@ -6022,10 +6088,6 @@ private void tempjButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_facturarKeyPressed
 // TODO add your handling code here:
 }//GEN-LAST:event_facturarKeyPressed
-
-private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_logoJciKeyPressed
-    // TODO add your handling code here:
-}//GEN-LAST:event_logoJciKeyPressed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -6184,8 +6246,6 @@ private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_l
     private org.jdesktop.swingx.JXTaskPane contenedor1;
     private org.jdesktop.swingx.JXTaskPane contenedor2;
     private org.jdesktop.swingx.JXTaskPane contenedor3;
-    private javax.swing.JLabel cuadroJcinform;
-    private javax.swing.JLabel cuadroTeka;
     private javax.swing.JTextArea descripcionTarjeta;
     private javax.swing.JPanel diasHabiles;
     private javax.swing.JPanel diasHabiles1;
@@ -6308,7 +6368,6 @@ private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_l
     private javax.swing.JCheckBox jueves;
     private javax.swing.JCheckBox jueves1;
     private javax.swing.JCheckBox jueves2;
-    private javax.swing.JLabel logoJci;
     private javax.swing.JLabel logoTeka;
     private javax.swing.JCheckBox lunes;
     private javax.swing.JCheckBox lunes1;
@@ -6316,6 +6375,7 @@ private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_l
     private javax.swing.JCheckBox martes;
     private javax.swing.JCheckBox martes1;
     private javax.swing.JCheckBox martes2;
+    private javax.swing.JLabel miBotonImagen;
     private javax.swing.JCheckBox miercoles;
     private javax.swing.JCheckBox miercoles1;
     private javax.swing.JCheckBox miercoles2;
@@ -6362,6 +6422,7 @@ private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_l
     private javax.swing.JLabel totales;
     private javax.swing.JTextField txtValor;
     private javax.swing.JTextField ubicacionArchivo;
+    private javax.swing.JLabel ultimoIngreso;
     private javax.swing.JButton usuarioLogeado;
     private javax.swing.JFormattedTextField usuariot;
     private javax.swing.JCheckBox viernes;
@@ -6469,7 +6530,6 @@ private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_l
         return (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
 
     }
-    
 //       
 //    void funcionSiSale(Tarjetas tarje, String puertoViene) {
 //
@@ -6729,6 +6789,4 @@ private void logoJciKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_l
 //        }
 //
 //    }
-
-    
 }

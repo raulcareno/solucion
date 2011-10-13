@@ -412,10 +412,12 @@ if(empresaObj.getSeabretic()){
                         System.out.println("fotografíar: "+e);
                         lger.logger(frmTicket.class.getName(), e.getMessage());   
                     }
+                    principal.cargarFoto(fac.getCodigo());
                     principal = null;
                     empresaObj = null;
                     System.gc();
                     this.dispose();
+                     
                 } catch (Exception ex) {
                     lger.logger(frmTicket.class.getName(), ex.getMessage());
                     

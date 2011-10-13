@@ -91,6 +91,7 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String ACTIVA6 = "ACTIVA6";
     private static final String ACTIVA7 = "ACTIVA7";
     private static final String BLOQUEAR = "BLOQUEAR";
+    private static final String BLOQUEARSALIDA = "BLOQUEARSALIDA";
 
      private static final String PUERTA1 = "PUERTA1";
     private static final String PUERTA2 = "PUERTA2";
@@ -292,6 +293,9 @@ public static UsuarioActivo user = new UsuarioActivo();
         item = xmlDoc.createElement(BLOQUEAR);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBloquear()+""));
         personal.appendChild(item);
+        item = xmlDoc.createElement(BLOQUEARSALIDA);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBloquearsalida()+""));
+        personal.appendChild(item);
         
     }
 
@@ -436,6 +440,7 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setEntra1(emp.getEntra1()); 
         beanEmpleado.setEntra2(emp.getEntra2()); 
         beanEmpleado.setBloquear(emp.getBloquear()); 
+        beanEmpleado.setBloquearsalida(emp.getBloquearsalida()); 
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
         //obtenemos el documento XML en cadena de texto
@@ -671,6 +676,16 @@ public static UsuarioActivo user = new UsuarioActivo();
                     Element BLOQUEAR2outElement = (Element) BLOQUEAR2outList.item(0);
                     NodeList BLOQUEAR2outAgeList = BLOQUEAR2outElement.getChildNodes();
                     user.setBloquear(new Boolean(((Node) BLOQUEAR2outAgeList.item(0)).getNodeValue().trim()));
+                      } catch (Exception parserConfigurationException) {
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                     //------
+                    try {
+                      //------
+                    NodeList BLOQUEARSALIDA2outList = firstPersonElement.getElementsByTagName("BLOQUEARSALIDA");
+                    Element BLOQUEARSALIDA2outElement = (Element) BLOQUEARSALIDA2outList.item(0);
+                    NodeList BLOQUEARSALIDA2outAgeList = BLOQUEARSALIDA2outElement.getChildNodes();
+                    user.setBloquearsalida(new Boolean(((Node) BLOQUEARSALIDA2outAgeList.item(0)).getNodeValue().trim()));
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }

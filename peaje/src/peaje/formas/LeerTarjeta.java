@@ -427,7 +427,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
             }
 
-
+            princip.cargarFoto(fac.getCodigo()); 
 //            JasperViewer viewer = new JasperViewer(masterPrint, false); //PARA VER EL REPORTE ANTES DE IMPRIMIR
 //            viewer.show();
 //            try {
