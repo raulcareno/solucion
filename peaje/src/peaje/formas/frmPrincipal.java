@@ -3460,6 +3460,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 return;
             } else {
                 fac.setPlaca("CLIENTE TARJETA");
+                if(tarje.getFacturar()){
+                    fac.setPlaca("NO CLIENTE");
+                }
                 fac.setFechaini(new Date());
                 fac.setFecha(new Date());
                 fac.setTarjetas(tarje);
@@ -3548,7 +3551,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 if (facturas.size() > 0) {
                     
                     fac = facturas.get(0);
-                    fac.setPlaca("NO CLIENTE TARJETA");
+                    fac.setPlaca("CLIENTE TARJETA");
                     fac.setClientes(tarje.getClientes());//CARGO EL CONSUMIDOR FINAL
                     fac.setFechafin(new Date());
                     fac.setTarjetas(tarje);
@@ -3562,6 +3565,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                         List sihay = adm.query("Select o from Factura as o where o.numero = '"+numero+"'"); 
                                         if(sihay.size()<=0){
                                             pasar = false;
+                                            fac.setPlaca("NO CLIENTE");
                                             fac.setNumero("" + numero);
                                             emp.setDocumentofac((numero) + "");
                                             adm.actualizar(emp);//GUARDO EMPRESA
@@ -3589,7 +3593,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     if (empresaObj.getBloquearsalida() == false) {
                         fac.setFechaini(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
                         fac.setFechafin(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
-                        fac.setPlaca("NO CLIENTE TARJETA");
+                        fac.setPlaca("CLIENTE TARJETA");
                         fac.setFecha(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
                         fac.setTarjetas(tarje);
                         fac = calcularTiempo(fac);
@@ -3604,6 +3608,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                         List sihay = adm.query("Select o from Factura as o where o.numero = '"+numero+"'"); 
                                         if(sihay.size()<=0){
                                             pasar = false;
+                                            fac.setPlaca("NO CLIENTE");
                                             fac.setNumero("" + numero);
                                             emp.setDocumentofac((numero) + "");
                                             adm.actualizar(emp);//GUARDO EMPRESA

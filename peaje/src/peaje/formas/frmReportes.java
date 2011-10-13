@@ -155,6 +155,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
         desdehora2 = new com.toedter.calendar.JDateChooser();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        cmbClientes = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
         panelReportes = new javax.swing.JPanel();
 
         setTitle("Reportes");
@@ -225,9 +227,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         jLabel2.setForeground(new java.awt.Color(0, 0, 153));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Reporte:");
+        jLabel2.setText("Clientes:");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(10, 10, 60, 14);
+        jLabel2.setBounds(10, 80, 60, 14);
 
         jLabel3.setForeground(new java.awt.Color(0, 0, 153));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -293,6 +295,15 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel5);
         jLabel5.setBounds(190, 40, 60, 14);
 
+        jPanel1.add(cmbClientes);
+        cmbClientes.setBounds(80, 80, 300, 20);
+
+        jLabel6.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel6.setText("Reporte:");
+        jPanel1.add(jLabel6);
+        jLabel6.setBounds(10, 10, 60, 14);
+
         panelReportes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelReportes.setLayout(new java.awt.BorderLayout());
 
@@ -304,19 +315,19 @@ public class frmReportes extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE)
-                    .addComponent(panelReportes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE))
+                    .addComponent(panelReportes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE))
                 .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
-                .addGap(17, 17, 17))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                .addGap(19, 19, 19))
         );
 
         pack();
@@ -528,7 +539,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
                  Integer fecha = (Integer) clienteIt.get(0);
                  Long valor = (Long) clienteIt.get(1);
                  cli = (Clientes)adm.buscarClave(fecha, Clientes.class);
-                 cli.setTelefono(""+valor);
+                 cli.setTelefono(""+valor);//CARGO EL NUMERO DE INGRESOS
+                 cli.setUltimoacceso( (Date) clienteIt.get(2));
                 detalle.add(cli);
             }
         
@@ -682,7 +694,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
         } else if (cmbTipoReporte.getSelectedIndex() == 1) {//TICKEST COBRADOS
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + "and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%')  ";
+                    + "and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
+                    + "  AND (o.anulado IS NULL  OR o.anulado = FALSE)";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketscobrados.jasper";
             titulo = "Tickest Cobrados";
             tickets(dirreporte, query, titulo);
@@ -697,7 +710,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
         } else if (cmbTipoReporte.getSelectedIndex() == 3) {//FACTURADO
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + "and o.fechafin is not null and o.numero is not null  ";
+                    + "and o.fechafin is not null and o.numero is not null  "
+                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiarias.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
@@ -705,7 +719,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
         }  else if (cmbTipoReporte.getSelectedIndex() == 4) {//FACTURADO SOLO TICKETS
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + "and o.fechafin is not null and (o.ticket is not null or o.placa like '%NO CLIENTE%') ";
+                    + "and o.fechafin is not null and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
+                   + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariastickets.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
@@ -713,21 +728,27 @@ public class frmReportes extends javax.swing.JInternalFrame {
         }  else if (cmbTipoReporte.getSelectedIndex() == 5) {//FACTURADO SOLO TARJETAS MENSUALES
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + "and o.fechafin is not null  and o.ticket is null and o.tarjetas is null  ";
+                    + "and o.fechafin is not null  and o.ticket is null and o.tarjetas is null "
+                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariastarjetas.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
 
         }else if (cmbTipoReporte.getSelectedIndex() == 6) {//CONSOLIDADO POR MES CLIENTES
             query = "Select date(o.fechafin),sum(o.total) from Factura as o" +
-                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + "  group by month(o.fechafin) ";
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "'  "
+                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                    + "  group by month(o.fechafin)  ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"consolidado.jasper";
             titulo = " ";
             consolidado(dirreporte, query, titulo);
 
         } else if (cmbTipoReporte.getSelectedIndex() == 7) {//CLIENTES MAS FRECUENTS CON TARJETAS
-            query = "SELECT CLIENTE,COUNT(*) FROM FACTURA WHERE CLIENTE > 1 AND FECHA  between '" + desde2 + "' and '" + hasta2 + "' GROUP BY CLIENTE  ORDER BY COUNT(*) desc ";
+        String desde3 = (desde.getDate().getYear() + 1900) + "-" + (desde.getDate().getMonth() + 1) + "-" + (desde.getDate().getDate());
+        String hasta3 = (hasta.getDate().getYear() + 1900) + "-" + (hasta.getDate().getMonth() + 1) + "-" + (hasta.getDate().getDate());
+            
+            query = "SELECT CLIENTE,COUNT(*), MAX(fechaini)  FROM FACTURA WHERE CLIENTE > 1 AND "
+                    + "FECHA  between '" + desde3 + "' and '" + hasta3 + "' GROUP BY CLIENTE  ORDER BY COUNT(*) desc ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes2.jasper";
             titulo = " ";
             clientes2(dirreporte, query, titulo);
@@ -743,6 +764,12 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     + " AND t.tarjeta = f.tarjeta AND "
                     + "f.fecha BETWEEN '"+convertiraString(desde.getDate())+"' "
                     + "AND  '"+convertiraString(hasta.getDate())+"'  ORDER BY c.nombres ";
+            if(cmbClientes.getSelectedIndex()>0){
+                query = "SELECT * FROM Factura f, Tarjetas t, Clientes c WHERE  t.cliente = c.codigo "
+                        + " AND t.tarjeta = f.tarjeta AND "
+                        + "f.fecha BETWEEN '"+convertiraString(desde.getDate())+"' "
+                        + "AND  '"+convertiraString(hasta.getDate())+"' and c.codigo = '"+((Clientes)cmbClientes.getSelectedItem()).getCodigo() +"'  ORDER BY c.nombres ";    
+            }
             dirreporte = ubicacionDirectorio+"reportes"+separador+"noingresos.jasper";
             titulo = " ";
             noingresos(dirreporte, query, titulo);
@@ -758,8 +785,26 @@ public class frmReportes extends javax.swing.JInternalFrame {
     }
     private void cmbTipoReporteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTipoReporteItemStateChanged
         // TODO add your handling code here:
-        if(cmbTipoReporte.getSelectedIndex() == 3){
+        if(cmbTipoReporte.getSelectedIndex() == 9){
+            try {
+                cmbClientes.setEnabled(true);
+                cmbClientes.removeAllItems();
+                Clientes cliE = new Clientes(-1);
+                cliE.setNombres("[TODOS]");
+                cmbClientes.addItem(cliE);
+                List<Clientes> cli = adm.query("Select DISTINCT o.clientes from Tarjetas as o "
+                        + "where o.habilitada = true  order by o.clientes.nombres ");
+                 for (Iterator<Clientes> it = cli.iterator(); it.hasNext();) {
+                     Clientes clientes = it.next();
+                     cmbClientes.addItem(clientes);
+                 }
+            } catch (Exception ex) {
+                Logger.getLogger(frmReportes.class.getName()).log(Level.SEVERE, null, ex);
+            }
            
+        }else{
+            cmbClientes.setEnabled(false);
+            
         }
     }//GEN-LAST:event_cmbTipoReporteItemStateChanged
 
@@ -792,6 +837,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JComboBox cmbClientes;
     private javax.swing.JComboBox cmbTipoReporte;
     private com.toedter.calendar.JDateChooser desde;
     private com.toedter.calendar.JDateChooser desdehora2;
@@ -803,6 +849,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
