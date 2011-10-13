@@ -5317,6 +5317,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             btnTicket.doClick();
         } else if (teclaPresionada == evt.VK_F10) {
             btnCobrar.doClick(); //ABRIR COBROS
+            
 
         }
     }

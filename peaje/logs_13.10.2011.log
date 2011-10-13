@@ -22,3 +22,37 @@ INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,13.10.2011/00:50:38,OK
 INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/00:50:38,ERROR
 INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/00:50:40,ERROR
 INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,13.10.2011/00:50:42,OK
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/07:49:24,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,13.10.2011/07:49:50,OK
+INFO peaje.formas.frmTicket,line 41,13.10.2011/07:50:57,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterAbortException
+INFO peaje.formas.frmTicket,line 41,13.10.2011/07:50:57,
+INFO peaje.formas.frmTicket,line 41,13.10.2011/07:51:03,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterAbortException
+INFO peaje.formas.frmTicket,line 41,13.10.2011/07:51:04,
+INFO peaje.formas.frmTicket,line 41,13.10.2011/07:51:08,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterAbortException
+INFO peaje.formas.frmTicket,line 41,13.10.2011/07:51:08,
+INFO peaje.formas.frmTicket,line 41,13.10.2011/07:51:12,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterAbortException
+INFO peaje.formas.frmTicket,line 41,13.10.2011/07:51:12,
+INFO peaje.formas.frmTicket,line 41,13.10.2011/07:51:16,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterAbortException
+INFO peaje.formas.frmTicket,line 41,13.10.2011/07:51:16,
+INFO peaje.formas.frmTicket,line 41,13.10.2011/07:51:20,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterAbortException
+INFO peaje.formas.frmTicket,line 41,13.10.2011/07:51:20,
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/07:56:15,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,13.10.2011/07:57:08,OK
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/08:05:41,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,13.10.2011/08:05:53,OK
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/08:08:03,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,13.10.2011/08:08:14,OK
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/08:09:20,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,13.10.2011/08:09:29,OK
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/08:11:14,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,13.10.2011/08:11:21,OK
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/08:12:48,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,13.10.2011/08:13:02,OK
+INFO peaje.formas.frmTicket,line 41,13.10.2011/08:14:00,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterAbortException
+INFO peaje.formas.frmTicket,line 41,13.10.2011/08:14:00,
+INFO peaje.formas.frmTicket,line 41,13.10.2011/08:14:05,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterAbortException
+INFO peaje.formas.frmTicket,line 41,13.10.2011/08:14:05,
+INFO peaje.formas.frmTicket,line 41,13.10.2011/08:14:09,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterAbortException
+INFO peaje.formas.frmTicket,line 41,13.10.2011/08:14:09,
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/08:17:44,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,13.10.2011/08:17:55,OK

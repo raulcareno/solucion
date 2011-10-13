@@ -443,6 +443,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 noTicketKeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                noTicketKeyReleased(evt);
+            }
         });
         jPanel1.add(noTicket);
         noTicket.setBounds(70, 10, 90, 21);
@@ -761,7 +764,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
         });
         jPanel4.add(btnMulta);
         btnMulta.setBounds(90, 130, 80, 50);
-        btnMulta.getAccessibleContext().setAccessibleName("Aplicar Multa");
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_cancel.gif"))); // NOI18N
         btnEliminar.setText("Eliminar Ticket");
@@ -1569,7 +1571,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
         if (fac.getFechafin() != null) {
 
             if(fac.getAnulado()){
-                JOptionPane.showMessageDialog(this, "EL TICKET INGRESADO YA HA SIDO ANULADO...","",JOptionPane.ERROR);
+                codigo.setText("");
+                //JOptionPane.showMessageDialog(this, "EL TICKET INGRESADO YA HA SIDO ANULADO...");
+                noTicket.requestFocusInWindow();
+                JOptionPane.showMessageDialog(this, "El No. de Ticket ha sido ANULADO ...!", "", JOptionPane.ERROR_MESSAGE);
                 noTicket.setText("");
                 noTicket.requestFocusInWindow();
                 return;
@@ -1598,7 +1603,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         }
         ingreso.setDate(fac.getFechaini());
         salida.setDate(new Date());
-
+  btnAgregar.requestFocusInWindow();
 
 
         Date act = new Date();
@@ -1735,6 +1740,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
         // TODO add your handling code here:
         System.out.println("" + evt.getKeyChar());
+
         if (evt.getKeyCode() == evt.VK_ENTER) {
             try {
                 ingreso.setDate(null);
@@ -1751,7 +1757,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         System.out.println("NO SE CARGO FOTO");
                     }
 
-                    btnAgregar.requestFocusInWindow();
+                  
                 } else {
                     ingreso.setDate(null);
                     salida.setDate(null);
@@ -1767,9 +1773,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             principal.contenedor.requestFocus();
             principal = null;
-            empresaObj = null;
-            System.gc();
-            this.setVisible(false);
+            empresaObj = null;  System.gc();   this.setVisible(false);
         } else if (evt.getKeyCode() == evt.VK_F1
                 || evt.getKeyCode() == evt.VK_F2
                 || evt.getKeyCode() == evt.VK_F3
@@ -2405,6 +2409,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 facActual.setSubtotal(BigDecimal.ZERO);        
                 facActual.setIva(BigDecimal.ZERO);
                 facActual.setTotal(BigDecimal.ZERO);
+                total.setText("0.0");
+                codigo.setText("");
+                noTicket.setText("");
+                placa.setText("");
+                noTicket.requestFocusInWindow();
+                
                 adm.actualizar(facActual);
             } catch (Exception ex) {
                 Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
@@ -2422,12 +2432,19 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
           if (codigo.getText().isEmpty()) {
+                        codigo.setText("");
                         JOptionPane.showMessageDialog(this, "Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
                         noTicket.requestFocusInWindow();
                         return;
-         }
-        frmEliminar.setVisible(true);
+         }else{
+            observacion.setText("");
+            frmEliminar.setVisible(true);
+          }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void noTicketKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_noTicketKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
