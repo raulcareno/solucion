@@ -820,15 +820,24 @@ public class frmReportes extends javax.swing.JInternalFrame {
             clientes(dirreporte, query, titulo);
 
         }else if (cmbTipoReporte.getSelectedIndex() == 9) {//no de ingresos por cliente
+            String complemento = "";
+            
+            if(cmbUsuarios.getSelectedIndex()>0){
+                complemento = " and  f.usuarioc = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"' ";    
+            }
             query = "SELECT * FROM Factura f, Tarjetas t, Clientes c WHERE  t.cliente = c.codigo "
-                    + " AND t.tarjeta = f.tarjeta AND "
-                    + "f.fecha BETWEEN '"+convertiraString(desde.getDate())+"' "
-                    + "AND  '"+convertiraString(hasta.getDate())+"'  ORDER BY c.nombres ";
+                    + " AND t.tarjeta = f.tarjeta AND f.fecha BETWEEN '"+convertiraString(desde.getDate())+"' "
+                    + "AND  '"+convertiraString(hasta.getDate())+"'  "
+                    +complemento
+                    + "ORDER BY c.nombres ";
             if(cmbClientes.getSelectedIndex()>0){
                 query = "SELECT * FROM Factura f, Tarjetas t, Clientes c WHERE  t.cliente = c.codigo "
-                        + " AND t.tarjeta = f.tarjeta AND "
+                        + " AND t.tarjeta = f.tarjeta AND " 
                         + "f.fecha BETWEEN '"+convertiraString(desde.getDate())+"' "
-                        + "AND  '"+convertiraString(hasta.getDate())+"' and c.codigo = '"+((Clientes)cmbClientes.getSelectedItem()).getCodigo() +"'  ORDER BY c.nombres ";    
+                        + "AND  '"+convertiraString(hasta.getDate())+"' "
+                        + "and c.codigo = '"+((Clientes)cmbClientes.getSelectedItem()).getCodigo() +"'"
+                        + complemento
+                        + "  ORDER BY c.nombres ";    
             }
             
             dirreporte = ubicacionDirectorio+"reportes"+separador+"noingresos.jasper";
@@ -853,10 +862,11 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 || cmbTipoReporte.getSelectedIndex() == 3
                 || cmbTipoReporte.getSelectedIndex() == 4
                 || cmbTipoReporte.getSelectedIndex() == 5){
-    cmbUsuarios.setEnabled(true);    
+                cmbUsuarios.setEnabled(true);    
     }else if(cmbTipoReporte.getSelectedIndex() == 9){
             try {
                 cmbClientes.setEnabled(true);
+                cmbUsuarios.setEnabled(true);   
                 cmbClientes.removeAllItems();
                 Clientes cliE = new Clientes(-1);
                 cliE.setNombres("[TODOS]");
