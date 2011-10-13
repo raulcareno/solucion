@@ -46,6 +46,7 @@ import java.awt.event.WindowListener;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -350,6 +351,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         btnEliminar1 = new javax.swing.JButton();
         facturar = new javax.swing.JCheckBox();
         salida = new javax.swing.JCheckBox();
+        txtGracia = new javax.swing.JFormattedTextField();
+        jLabel38 = new javax.swing.JLabel();
         frmLote = new javax.swing.JInternalFrame();
         jScrollPane5 = new javax.swing.JScrollPane();
         tablaCambios = new javax.swing.JTable(){
@@ -961,7 +964,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         jLabel14.setText("No. Tarjeta: ");
         formaTarjetas1.getContentPane().add(jLabel14);
-        jLabel14.setBounds(30, 10, 70, 14);
+        jLabel14.setBounds(20, 10, 70, 14);
 
         panelHoras.setBorder(javax.swing.BorderFactory.createTitledBorder("Fechas de Validez"));
         panelHoras.setLayout(null);
@@ -1164,7 +1167,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         formaTarjetas1.getContentPane().add(activa);
-        activa.setBounds(250, 40, 100, 16);
+        activa.setBounds(200, 60, 100, 20);
 
         placa1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1215,17 +1218,37 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         btnEliminar1.setBounds(170, 290, 60, 50);
 
         facturar.setText("Facturar");
+        facturar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturarActionPerformed(evt);
+            }
+        });
         facturar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 facturarKeyPressed(evt);
             }
         });
         formaTarjetas1.getContentPane().add(facturar);
-        facturar.setBounds(140, 40, 70, 16);
+        facturar.setBounds(130, 40, 70, 16);
 
         salida.setText("Ingresa por la Salida");
         formaTarjetas1.getContentPane().add(salida);
-        salida.setBounds(140, 60, 150, 23);
+        salida.setBounds(30, 60, 150, 23);
+
+        txtGracia.setEditable(false);
+        txtGracia.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtGracia.setText("0");
+        txtGracia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtGraciaActionPerformed(evt);
+            }
+        });
+        formaTarjetas1.getContentPane().add(txtGracia);
+        txtGracia.setBounds(270, 40, 80, 20);
+
+        jLabel38.setText("Gracia min.");
+        formaTarjetas1.getContentPane().add(jLabel38);
+        jLabel38.setBounds(210, 40, 60, 20);
 
         formaTarjetas1.setBounds(5, 5, 380, 380);
         contenedor.add(formaTarjetas1, javax.swing.JLayeredPane.MODAL_LAYER);
@@ -2397,7 +2420,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(miBotonImagen);
             miBotonImagen.setBounds(370, 360, 230, 180);
 
-            ultimoIngreso.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+            ultimoIngreso.setFont(new java.awt.Font("Tahoma", 1, 10));
             ultimoIngreso.setText("Ultimo Ingreso");
             panelIngreso.add(ultimoIngreso);
             ultimoIngreso.setBounds(370, 340, 230, 13);
@@ -3424,7 +3447,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
         return true;
     }
- void cargarFoto(Integer codigoFactura) {
+
+    void cargarFoto(Integer codigoFactura) {
         try {
             miBotonImagen.setIcon(null);
             if (ubicacionDirectorio.contains("build")) {
@@ -3441,6 +3465,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         }
 
     }
+
     void funcionSiEntra(Tarjetas tarje, String puertoViene) {
         verPanel();
         try {
@@ -3455,12 +3480,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 errores.setText("<html>ERROR: Tarjeta ya  USADA...! <p>Válida para: (" + tarje.getIngresos().intValue() + ")ingresos</p></html>");
                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                 //ultimoIngreso.setText("Último Ingreso: "+facturas.get(facturas.size()-1).getFechaini().getHours()+":"+facturas.get(facturas.size()-1).getFechaini().getMinutes());
-                ultimoIngreso.setText("Último Ingreso: "+facturas.get(facturas.size()-1).getFechaini().toLocaleString());
-                cargarFoto(facturas.get(facturas.size()-1).getCodigo());
+                ultimoIngreso.setText("Último Ingreso: " + facturas.get(facturas.size() - 1).getFechaini().toLocaleString());
+                cargarFoto(facturas.get(facturas.size() - 1).getCodigo());
                 return;
             } else {
                 fac.setPlaca("CLIENTE TARJETA");
-                if(tarje.getFacturar()){
+                if (tarje.getFacturar()) {
                     fac.setPlaca("NO CLIENTE");
                 }
                 fac.setFechaini(new Date());
@@ -3549,42 +3574,49 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             } else {//ESTA SALIENDO REGISTRO EL USUARIO QUE PERMITIÓ EL INGRESO
                 if (facturas.size() > 0) {
-                    
+
                     fac = facturas.get(0);
                     fac.setPlaca("CLIENTE TARJETA");
                     fac.setClientes(tarje.getClientes());//CARGO EL CONSUMIDOR FINAL
                     fac.setFechafin(new Date());
                     fac.setTarjetas(tarje);
-                    fac = calcularTiempo(fac);
+                   
                     fac.setUsuarioc(usuarioActual);
-                         if (tarje.getFacturar()) {
-                            //fac.setUsuarioc(usuarioActual);
-                            Boolean pasar = true;
-                                Integer numero = new Integer(emp.getDocumentofac())+1;
-                                    while(pasar){
-                                        List sihay = adm.query("Select o from Factura as o where o.numero = '"+numero+"'"); 
-                                        if(sihay.size()<=0){
-                                            pasar = false;
-                                            fac.setPlaca("NO CLIENTE");
-                                            fac.setNumero("" + numero);
-                                            emp.setDocumentofac((numero) + "");
-                                            adm.actualizar(emp);//GUARDO EMPRESA
-                                            adm.actualizar(fac); // GUARDO FACTURA
-                                        }else{
-                                            numero++;
-                                        }
-
+                    if (tarje.getFacturar()) {
+                        fac = calcularTiempo(fac, tarje.getGracia());
+                        if(fac.getTotal() != null){
+                                Boolean pasar = true;
+                                Integer numero = new Integer(emp.getDocumentofac()) + 1;
+                                while (pasar) {
+                                    List sihay = adm.query("Select o from Factura as o where o.numero = '" + numero + "'");
+                                    if (sihay.size() <= 0) {
+                                        pasar = false;
+                                        fac.setPlaca("NO CLIENTE");
+                                        fac.setNumero("" + numero);
+                                        emp.setDocumentofac((numero) + "");
+                                        adm.actualizar(emp);//GUARDO EMPRESA
+                                        adm.actualizar(fac); // GUARDO FACTURA
+                                    } else {
+                                        numero++;
                                     }
-                            llenarFechayHora(fac, "no");
-                            imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+
+                                }
+                                llenarFechayHora(fac, "no");
+                                imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
+
                         }else{
-                            adm.actualizar(fac);
+                             fac = calcularTiempo(fac);
+                             adm.actualizar(fac);
                         }
-                    
+                    } else { 
+                        fac = calcularTiempo(fac);
+                        adm.actualizar(fac);
+                    }
+
                     cargarFoto(fac.getCodigo());
                     errores.setText("<html>SALIDA OK...!</html>");
                     imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                    
+
                     abrirPuerta(puertoViene);
 
                 } else {
@@ -3596,34 +3628,41 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         fac.setPlaca("CLIENTE TARJETA");
                         fac.setFecha(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
                         fac.setTarjetas(tarje);
-                        fac = calcularTiempo(fac);
+                     
                         fac.setClientes(tarje.getClientes());
                         fac.setTicket(null);
                         fac.setUsuario(usuarioActual);
                         fac.setUsuarioc(usuarioActual);
                         if (tarje.getFacturar()) {
+                            fac = calcularTiempo(fac, tarje.getGracia());
+                            if(fac.getTotal() != null){
                             Boolean pasar = true;
-                                Integer numero = new Integer(emp.getDocumentofac())+1;
-                                    while(pasar){
-                                        List sihay = adm.query("Select o from Factura as o where o.numero = '"+numero+"'"); 
-                                        if(sihay.size()<=0){
-                                            pasar = false;
-                                            fac.setPlaca("NO CLIENTE");
-                                            fac.setNumero("" + numero);
-                                            emp.setDocumentofac((numero) + "");
-                                            adm.actualizar(emp);//GUARDO EMPRESA
-                                            adm.guardar(fac); // GUARDO FACTURA
-                                        }else{
-                                            numero++;
-                                        }
-
-                                    }
+                            Integer numero = new Integer(emp.getDocumentofac()) + 1;
+                            while (pasar) {
+                                List sihay = adm.query("Select o from Factura as o where o.numero = '" + numero + "'");
+                                if (sihay.size() <= 0) {
+                                    pasar = false;
+                                    fac.setPlaca("NO CLIENTE");
+                                    fac.setNumero("" + numero);
+                                    emp.setDocumentofac((numero) + "");
+                                    adm.actualizar(emp);//GUARDO EMPRESA
+                                    adm.guardar(fac); // GUARDO FACTURA
+                                } else {
+                                    numero++;
+                                }
+                            
+                            }
                             llenarFechayHora(fac, "no");
                             imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
-                        }else{
+                             }else{
+                             fac = calcularTiempo(fac);
+                             adm.actualizar(fac);
+                            }
+                        } else {   
+                            fac = calcularTiempo(fac);
                             adm.guardar(fac);
                         }
-                        
+
                         errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO)");
                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
 
@@ -3647,10 +3686,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
     }
- 
+
     public void buscarTarjeta(String puertoViene) {
 //        final frmPrincipal pra = this;
-         miBotonImagen.setIcon(null);
+        miBotonImagen.setIcon(null);
         if (puertoViene.length() > 10) {
             puertoViene = puertoViene.substring(0, 10);
         }
@@ -3678,31 +3717,31 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     errores.setText("");
                 } else if (tipoIngreso.equals("e")) {
                     if (funcionValida(tarje)) {
-                     //BUSCO SI YA HA INGRESADO PRIMERO
-                     List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
+                        //BUSCO SI YA HA INGRESADO PRIMERO
+                        List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
                                 + "and o.fechafin is null  ");
-                     if(facturas.size()>0){
-                         ultimoIngreso.setText("Vehiculo Ingreso:"+facturas.get(facturas.size()-1).getFechaini().toLocaleString()+"");
-                         cargarFoto(facturas.get(facturas.size()-1).getCodigo());
-                         errores.setText("<html>Tarjeta Usada, Tiene que marcar la salida para volver a Ingresar...!</html>");
-                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
-                         return;
-                     }
+                        if (facturas.size() > 0) {
+                            ultimoIngreso.setText("Vehiculo Ingreso:" + facturas.get(facturas.size() - 1).getFechaini().toLocaleString() + "");
+                            cargarFoto(facturas.get(facturas.size() - 1).getCodigo());
+                            errores.setText("<html>Tarjeta Usada, Tiene que marcar la salida para volver a Ingresar...!</html>");
+                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
+                            return;
+                        }
                         funcionSiEntra(tarje, puertoViene);
                     } else {
                         return;
                     }
                 } else if (tipoIngreso.equals("s")) {
                     if (tarje.getSalida()) {
-                             List<Factura> facturas = adm.query("Select o from Factura as o"
-                                     + " where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
+                        List<Factura> facturas = adm.query("Select o from Factura as o"
+                                + " where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
                                 + "and o.fechafin is null  ");
-                                 if(facturas.size()>0){
-                                    funcionSiSale(tarje, puertoViene, "s"); 
-                                 }else{
-                                     funcionSiSale(tarje, puertoViene, "e"); 
-                                 }
-                        
+                        if (facturas.size() > 0) {
+                            funcionSiSale(tarje, puertoViene, "s");
+                        } else {
+                            funcionSiSale(tarje, puertoViene, "e");
+                        }
+
                     } else {
                         funcionSiSale(tarje, puertoViene, "s");
                     }
@@ -3942,6 +3981,90 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         } else {
             if (valorMinutos > 0) {
                 aCobrar = aCobrar.add(buscar(valorMinutos));
+            } else {
+                aCobrar = aCobrar.add(buscar(1));
+            }
+
+        }
+
+        Double totalv01 = aCobrar.doubleValue();
+        Double iva01 = ((empresaObj.getIva() + 100) / 100);
+        Double subtotalv01 = totalv01 / iva01;
+        Double iva02 = subtotalv01 * ((empresaObj.getIva()) / 100);
+
+        BigDecimal subtotalv = new BigDecimal(subtotalv01);
+        BigDecimal ivav = new BigDecimal(iva02);
+        BigDecimal totalv = new BigDecimal(totalv01);
+
+
+        fac.setSubtotal(subtotalv);
+        fac.setIva(ivav);
+        fac.setTotal(aCobrar);
+        return fac;
+
+    }
+
+    public Factura calcularTiempo(Factura fac, int gracia) {
+        Date act = new Date();
+        Long minutos0 = diferenciaFechas(fac.getFechaini(), new Date());
+        Integer minutos = minutos0.intValue();
+        if(gracia >= minutos.intValue())
+        return fac;
+        Integer horas = minutos / 60;
+        if (minutos.intValue() < 0) {
+            minutos = minutos * -1;
+        }
+        if (horas.intValue() < 0) {
+            horas = horas * -1;
+//            dias.setVisible(true);
+//            dias1.setVisible(true);
+//            dias2.setVisible(true);
+        }
+        if (minutos.intValue() < 0) {
+            horas = 0;
+            minutos = 0;
+//            dias.setVisible(true);
+//            dias1.setVisible(true);
+//            dias2.setVisible(true);
+        }
+        Float min = minutos / 60f;
+        int indice = min.toString().indexOf(".");
+        Float valorf = new Float("0" + min.toString().substring(indice));
+        int valorMinutos = java.lang.Math.round((valorf * 60));
+
+        act.setHours(horas);
+        act.setMinutes(valorMinutos);
+        fac.setTiempo(act);
+        placa.setText(fac.getPlaca());
+        BigDecimal aCobrar = new BigDecimal(0);
+        for (int a = 0; a < horas; a++) {
+            aCobrar = aCobrar.add(buscar(60));
+        }
+        try {
+            int noDias = 0;
+            noDias = (horas / 24);
+            fac.setDias(noDias);
+            //dias1.setText(noDias + "");
+        } catch (Exception e) {
+            //dias1.setText("0");
+            fac.setDias(0);
+        }
+
+        if (horas.intValue() > 0) {
+            if (valorMinutos > 0) {
+                if (valorMinutos > empresaObj.getGracia().intValue()) {
+                    aCobrar = aCobrar.add(buscar(valorMinutos));
+                }
+            } else {
+            }
+        } else {
+            if (valorMinutos > 0) {
+                int otro = valorMinutos - gracia;
+                if (otro > 0) {
+                    aCobrar = aCobrar.add(buscar(valorMinutos));
+                } else {
+                    aCobrar = new BigDecimal(BigInteger.ZERO);
+                }
             } else {
                 aCobrar = aCobrar.add(buscar(1));
             }
@@ -4430,6 +4553,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         activa.setSelected(tarjeta.getHabilitada());
         salida.setSelected(tarjeta.getSalida());
         facturar.setSelected(tarjeta.getFacturar());
+        txtGracia.setText(tarjeta.getGracia() + "");
         ingresos.setValue(tarjeta.getIngresos());
         //AQUI CARGO LAS HORAS
 
@@ -4487,6 +4611,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         tarjeta.setDesde(new Date());
         tarjeta.setHasta(new Date());
         tarjeta.setFacturar(false);
+        tarjeta.setGracia(0);
         tarjeta.setIngresos(1);
         tarjeta.setSalida(false);
         llenarTarjeta();
@@ -4598,6 +4723,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             tarjeta.setDesde(new Date());
                             tarjeta.setHasta(new Date());
                             tarjeta.setIngresos(1);
+                            tarjeta.setGracia(0);
+                            tarjeta.setSalida(false);
                             llenarTarjeta();
                             formaTarjetas1.setVisible(true);
                         } catch (Exception ex) {
@@ -4727,6 +4854,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             tarjeta.setSalida(salida.isSelected());
             tarjeta.setPlaca(placa1.getText());
             tarjeta.setFacturar(facturar.isSelected());
+            if (txtGracia.getText().isEmpty()) {
+                txtGracia.setText("0");
+            }
+            tarjeta.setGracia(Integer.parseInt(txtGracia.getText()));
             adm.actualizar(tarjeta);
             formaTarjetas1.setVisible(false);
             llenarTabla(clienteObj.getCodigo());
@@ -5334,7 +5465,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             btnTicket.doClick();
         } else if (teclaPresionada == evt.VK_F10) {
             btnCobrar.doClick(); //ABRIR COBROS
-            
+
 
         }
     }
@@ -6152,6 +6283,15 @@ private void tempjButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_facturarKeyPressed
 // TODO add your handling code here:
 }//GEN-LAST:event_facturarKeyPressed
+
+    private void txtGraciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGraciaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtGraciaActionPerformed
+
+    private void facturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturarActionPerformed
+        // TODO add your handling code here:
+        txtGracia.setEditable(facturar.isSelected());
+    }//GEN-LAST:event_facturarActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -6386,6 +6526,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
@@ -6484,6 +6625,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JCheckBox todos1;
     private javax.swing.JCheckBox todos2;
     private javax.swing.JLabel totales;
+    private javax.swing.JFormattedTextField txtGracia;
     private javax.swing.JTextField txtValor;
     private javax.swing.JTextField ubicacionArchivo;
     private javax.swing.JLabel ultimoIngreso;
