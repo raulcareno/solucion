@@ -3544,7 +3544,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     }
                     cargarFoto(fac.getCodigo());
                 }
-            } else {//ESTA SALIENDO
+            } else {//ESTA SALIENDO REGISTRO EL USUARIO QUE PERMITIÓ EL INGRESO
                 if (facturas.size() > 0) {
                     
                     fac = facturas.get(0);
@@ -3553,21 +3553,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     fac.setFechafin(new Date());
                     fac.setTarjetas(tarje);
                     fac = calcularTiempo(fac);
-//                    fac.setUsuarioc(usuarioActual);
-//                    if (tarje.getFacturar()) {
-//                        fac.setNumero(emp.getDocumentofac());
-//                        fac.setUsuarioc(usuarioActual);
-//                        Integer numero = new Integer(emp.getDocumentofac());
-//                        emp.setDocumentofac((numero + 1) + "");
-//                        adm.actualizar(emp);
-//                        llenarFechayHora(fac, "nuevo");
-//                        imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
-//                    }
-//                    adm.actualizar(fac);
-                    
-                    
-                        if (tarje.getFacturar()) {
-                            fac.setUsuario(usuarioActual);
+                    fac.setUsuarioc(usuarioActual);
+                         if (tarje.getFacturar()) {
+                            //fac.setUsuarioc(usuarioActual);
                             Boolean pasar = true;
                                 Integer numero = new Integer(emp.getDocumentofac())+1;
                                     while(pasar){
@@ -3608,8 +3596,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         fac.setClientes(tarje.getClientes());
                         fac.setTicket(null);
                         fac.setUsuario(usuarioActual);
+                        fac.setUsuarioc(usuarioActual);
                         if (tarje.getFacturar()) {
-                            fac.setUsuario(usuarioActual);
                             Boolean pasar = true;
                                 Integer numero = new Integer(emp.getDocumentofac())+1;
                                     while(pasar){
