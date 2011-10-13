@@ -5267,7 +5267,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("2".getBytes());
                     //TEMPORAL
+                     Thread.sleep(20);
                     ta.outputSream.write("2".getBytes());
+                     Thread.sleep(20);
                     ta.outputSream.write("2".getBytes());
                     //TEMPORAL
                     System.out.println("ABRIR PUERTA 2" + new Date());
@@ -5277,6 +5279,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     }
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
 
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -5298,7 +5302,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("1".getBytes());
                     //TEMPORAL
+                      Thread.sleep(20);
                     ta.outputSream.write("1".getBytes());
+                      Thread.sleep(20);
                     ta.outputSream.write("1".getBytes());
                     //TEMPORAL
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
@@ -5308,6 +5314,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     } catch (Exception e) {
                     }
                     barrera1.setEnabled(true);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     lger.logger(frmPrincipal.class.getName(), ex + "");

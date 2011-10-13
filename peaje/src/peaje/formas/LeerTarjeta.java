@@ -314,9 +314,13 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             LeerTarjeta ta = (LeerTarjeta) princip.puertoListo.get(0);
             ta.outputSream.write(puerta.trim().getBytes());
             //TEMPORAL
+              Thread.sleep(20);
                 ta.outputSream.write(puerta.trim().getBytes());
+              Thread.sleep(20);
                 ta.outputSream.write(puerta.trim().getBytes());
             //TEMPORAL
+        } catch (InterruptedException ex) {
+            Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         }
