@@ -830,6 +830,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                         + "f.fecha BETWEEN '"+convertiraString(desde.getDate())+"' "
                         + "AND  '"+convertiraString(hasta.getDate())+"' and c.codigo = '"+((Clientes)cmbClientes.getSelectedItem()).getCodigo() +"'  ORDER BY c.nombres ";    
             }
+            
             dirreporte = ubicacionDirectorio+"reportes"+separador+"noingresos.jasper";
             titulo = " ";
             noingresos(dirreporte, query, titulo);
@@ -845,7 +846,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
     }
     private void cmbTipoReporteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTipoReporteItemStateChanged
         // TODO add your handling code here:
-    cmbUsuarios.setEnabled(false);    
+    cmbUsuarios.setEnabled(false);  
+    cmbClientes.setEnabled(false);
         if(cmbTipoReporte.getSelectedIndex() == 0 
                 || cmbTipoReporte.getSelectedIndex() == 1
                 || cmbTipoReporte.getSelectedIndex() == 3
@@ -869,10 +871,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 Logger.getLogger(frmReportes.class.getName()).log(Level.SEVERE, null, ex);
             }
            
-        }else{
-            cmbClientes.setEnabled(false);
-            
-        }
+        } 
     }//GEN-LAST:event_cmbTipoReporteItemStateChanged
 
     private void cmbTipoReporteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbTipoReporteKeyPressed
