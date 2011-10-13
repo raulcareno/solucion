@@ -241,7 +241,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         cliente = new javax.swing.JFormattedTextField();
         btnNuevoCliente = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jInternalFrame1 = new javax.swing.JInternalFrame();
+        frmEliminar = new javax.swing.JInternalFrame();
         jLabel28 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -650,12 +650,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
 
-        jInternalFrame1.setTitle("Anular tickets");
-        jInternalFrame1.setVisible(true);
-        jInternalFrame1.getContentPane().setLayout(null);
+        frmEliminar.setTitle("Anular tickets");
+        frmEliminar.getContentPane().setLayout(null);
 
         jLabel28.setText("Desea Anular el presente Ticket?, Porqué?");
-        jInternalFrame1.getContentPane().add(jLabel28);
+        frmEliminar.getContentPane().add(jLabel28);
         jLabel28.setBounds(20, 0, 220, 30);
 
         jButton1.setText("SI");
@@ -664,28 +663,34 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jInternalFrame1.getContentPane().add(jButton1);
+        frmEliminar.getContentPane().add(jButton1);
         jButton1.setBounds(50, 80, 60, 23);
 
         jButton2.setText("NO");
-        jInternalFrame1.getContentPane().add(jButton2);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        frmEliminar.getContentPane().add(jButton2);
         jButton2.setBounds(140, 80, 60, 23);
 
         observacion.setColumns(20);
         observacion.setRows(5);
         jScrollPane6.setViewportView(observacion);
 
-        jInternalFrame1.getContentPane().add(jScrollPane6);
+        frmEliminar.getContentPane().add(jScrollPane6);
         jScrollPane6.setBounds(20, 30, 220, 40);
 
-        jPanel4.add(jInternalFrame1);
-        jInternalFrame1.setBounds(10, 0, 270, 140);
+        jPanel4.add(frmEliminar);
+        frmEliminar.setBounds(10, 0, 270, 140);
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
         btnAgregar.setMnemonic('G');
         btnAgregar.setText("Guardar");
         btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAgregar.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnAgregar.setOpaque(false);
         btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -705,6 +710,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnSalir.setText("Salir");
         btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalir.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnSalir.setOpaque(false);
         btnSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -741,6 +747,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnMulta.setText("Aplicar Multa");
         btnMulta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnMulta.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnMulta.setOpaque(false);
         btnMulta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnMulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -760,7 +767,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnEliminar.setText("Eliminar Ticket");
         btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEliminar.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnEliminar.setOpaque(false);
         btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
         jPanel4.add(btnEliminar);
         btnEliminar.setBounds(10, 130, 80, 50);
 
@@ -2379,12 +2392,36 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 Factura facActual = (Factura) adm.buscarClave(new Integer(codigo.getText()), Factura.class);
                 facActual.setObservacion(observacion.getText());
                 facActual.setAnulado(true);
+                facActual.setFechafin(new Date());
+                facActual.setTiempo(new Date());
+                facActual.setDias(0);
+                facActual.setUsuarioc(principal.usuarioActual);
+                facActual.setSubtotal(BigDecimal.ZERO);        
+                facActual.setIva(BigDecimal.ZERO);
+                facActual.setTotal(BigDecimal.ZERO);
+                adm.actualizar(true);
             } catch (Exception ex) {
                 Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
             }
+            frmEliminar.setVisible(false);
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        frmEliminar.setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+          if (codigo.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
+                        noTicket.requestFocusInWindow();
+                        return;
+         }
+        frmEliminar.setVisible(true);
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -2411,12 +2448,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JList encontrados1;
     private javax.swing.JList encontrados2;
     private javax.swing.JDialog formaBusqueda;
+    private javax.swing.JInternalFrame frmEliminar;
     private javax.swing.JFormattedTextField identificacion;
     private javax.swing.JFormattedTextField identificacion1;
     private com.toedter.calendar.JDateChooser ingreso;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

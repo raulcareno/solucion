@@ -779,10 +779,9 @@
                 <Property name="useNullLayout" type="boolean" value="true"/>
               </Layout>
               <SubComponents>
-                <Container class="javax.swing.JInternalFrame" name="jInternalFrame1">
+                <Container class="javax.swing.JInternalFrame" name="frmEliminar">
                   <Properties>
                     <Property name="title" type="java.lang.String" value="Anular tickets"/>
-                    <Property name="visible" type="boolean" value="true"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -821,6 +820,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="NO"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+                      </Events>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                           <AbsoluteConstraints x="140" y="80" width="60" height="-1"/>
@@ -860,6 +862,7 @@
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[2, 2, 2, 2]"/>
                     </Property>
+                    <Property name="opaque" type="boolean" value="false"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
                   </Properties>
                   <Events>
@@ -883,6 +886,7 @@
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[2, 2, 2, 2]"/>
                     </Property>
+                    <Property name="opaque" type="boolean" value="false"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
                   </Properties>
                   <Events>
@@ -949,6 +953,7 @@
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[1, 1, 1, 1]"/>
                     </Property>
+                    <Property name="opaque" type="boolean" value="false"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
                   </Properties>
                   <AccessibilityProperties>
@@ -974,8 +979,12 @@
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[1, 1, 1, 1]"/>
                     </Property>
+                    <Property name="opaque" type="boolean" value="false"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarActionPerformed"/>
+                  </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                       <AbsoluteConstraints x="10" y="130" width="80" height="50"/>
