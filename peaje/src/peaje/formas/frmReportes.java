@@ -206,7 +206,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel1.setBounds(190, 60, 60, 14);
 
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas Tickest y Tarjetas", "Facturas de Tickets", "Facturas de Tarjetas", "Consolidado por Mes", "Clientes mas frecuentes", "Listado clientes", "No. de Ingresos x Cliente" }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas Tickest y Tarjetas", "Facturas de Tickets", "Facturas de Tarjetas", "Consolidado por Mes", "Clientes mas frecuentes", "Listado clientes", "No. de Ingresos x Cliente", "Tickets Anulados", "Fotos de Vehiculos", "__________________" }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -349,7 +349,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -844,7 +844,21 @@ public class frmReportes extends javax.swing.JInternalFrame {
             titulo = " ";
             noingresos(dirreporte, query, titulo);
 
-        }
+        } else if (cmbTipoReporte.getSelectedIndex() == 10) {//TICKEST ANULADOS
+            query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and o.anulado = TRUE ";
+            if(cmbUsuarios.getSelectedIndex()>0){
+                    query = "Select o from Factura as o" +
+                            " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                            + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
+                            + "  AND  o.anulado = true ";
+            }
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsanulados.jasper";
+            titulo = "Tickest Anulados";
+            tickets(dirreporte, query, titulo);
+
+        } 
            principal.contenedor.requestFocus();
 
     }//GEN-LAST:event_btnBuscarActionPerformed
