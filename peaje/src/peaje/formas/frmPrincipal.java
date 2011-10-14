@@ -353,6 +353,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         salida = new javax.swing.JCheckBox();
         txtGracia = new javax.swing.JFormattedTextField();
         jLabel38 = new javax.swing.JLabel();
+        nocontar = new javax.swing.JCheckBox();
         frmLote = new javax.swing.JInternalFrame();
         jScrollPane5 = new javax.swing.JScrollPane();
         tablaCambios = new javax.swing.JTable(){
@@ -686,7 +687,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         disponibles.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraHerramients.add(disponibles);
 
-        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11));
+        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         ocupados.setForeground(new java.awt.Color(255, 0, 0));
         ocupados.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ocupados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rojo.png"))); // NOI18N
@@ -697,7 +698,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         barraHerramients.add(ocupados);
         barraHerramients.add(jSeparator1);
 
-        barrera1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera1.setForeground(new java.awt.Color(204, 102, 0));
         barrera1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera1.setText("F1");
@@ -1167,7 +1168,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         formaTarjetas1.getContentPane().add(activa);
-        activa.setBounds(200, 60, 100, 20);
+        activa.setBounds(150, 60, 100, 20);
 
         placa1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1249,6 +1250,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel38.setText("Gracia min.");
         formaTarjetas1.getContentPane().add(jLabel38);
         jLabel38.setBounds(210, 40, 60, 20);
+
+        nocontar.setText("No Contar");
+        formaTarjetas1.getContentPane().add(nocontar);
+        nocontar.setBounds(270, 60, 75, 23);
 
         formaTarjetas1.setBounds(5, 5, 380, 380);
         contenedor.add(formaTarjetas1, javax.swing.JLayeredPane.MODAL_LAYER);
@@ -2428,7 +2433,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.setBounds(0, 30, 770, 590);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
+            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             usuarioLogeado.setForeground(new java.awt.Color(0, 153, 204));
             usuarioLogeado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editPerfil.png"))); // NOI18N
             usuarioLogeado.setText("...");
@@ -2498,7 +2503,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar1.setFloatable(false);
-            jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+            jToolBar1.setOrientation(1);
             jToolBar1.setRollover(true);
 
             btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
@@ -2566,7 +2571,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar2.setFloatable(false);
-            jToolBar2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+            jToolBar2.setOrientation(1);
             jToolBar2.setRollover(true);
 
             btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
@@ -2670,7 +2675,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar3.setFloatable(false);
-            jToolBar3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+            jToolBar3.setOrientation(1);
             jToolBar3.setRollover(true);
 
             btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/help.gif"))); // NOI18N
@@ -3026,7 +3031,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     public void noDisponibles() {
         try {
             totales.setText("Total: " + empresaObj.getParqueaderos());
-            Object con = adm.querySimple("Select count(o) from Factura as o" + " where  o.fechafin is null  ");
+            Object con = adm.querySimple("Select count(o) from Factura as o" 
+                    + " where  o.fechafin is null and o.nocontar = false ");
             Long val2 = (Long) con;
             disponibles.setText("Disponibles: " + (empresaObj.getParqueaderos() - val2.intValue()));
             ocupados.setText("Ocupados: " + val2.intValue());
@@ -3046,7 +3052,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
                             ta.outputSream.write((("XYinforma" + valor).getBytes()));
                             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                            barrera1.setEnabled(true);
+                            //barrera1.setEnabled(true);
                         } catch (IOException ex) {
                             System.out.println("ERROR EN ENVIAR NO. DE DISPONIBLES ");
                             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -3492,6 +3498,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 fac.setFecha(new Date());
                 fac.setTarjetas(tarje);
                 fac.setTicket(null);
+                fac.setNocontar(tarje.getNocontar());
                 fac.setUsuario(usuarioActual);
                 adm.guardar(fac);
                 llenarFechayHora(fac, "no");
@@ -3546,6 +3553,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     fac.setTicket(null);
                     fac.setClientes(tarje.getClientes());
                     fac.setUsuario(usuarioActual);
+                    fac.setNocontar(tarje.getNocontar());
                     //fac.setUsuarioc(usuarioActual);
                     adm.guardar(fac);
                     llenarFechayHora(fac, "no");
@@ -3580,7 +3588,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     fac.setClientes(tarje.getClientes());//CARGO EL CONSUMIDOR FINAL
                     fac.setFechafin(new Date());
                     fac.setTarjetas(tarje);
-                   
+                    fac.setNocontar(tarje.getNocontar());
                     fac.setUsuarioc(usuarioActual);
                     if (tarje.getFacturar()) {
                         fac = calcularTiempo(fac, tarje.getGracia());
@@ -3628,7 +3636,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         fac.setPlaca("CLIENTE TARJETA");
                         fac.setFecha(new Date()); //ENTRTA Y SALE, EN CASO DE NO REGISTRAR
                         fac.setTarjetas(tarje);
-                     
+                        fac.setNocontar(tarje.getNocontar());    
                         fac.setClientes(tarje.getClientes());
                         fac.setTicket(null);
                         fac.setUsuario(usuarioActual);
@@ -4249,6 +4257,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             ta.outputSream.write(lapuertaaAbrir.getBytes());
             Thread.sleep(20);
             ta.outputSream.write(lapuertaaAbrir.getBytes());
+            
+            System.out.println("ABRIR PUERTA TARJETA: "+lapuertaaAbrir);
             //TEMPORAL
 
 //             try {
@@ -4555,6 +4565,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         facturar.setSelected(tarjeta.getFacturar());
         txtGracia.setText(tarjeta.getGracia() + "");
         ingresos.setValue(tarjeta.getIngresos());
+        nocontar.setSelected(tarjeta.getNocontar()); 
         //AQUI CARGO LAS HORAS
 
         SpinnerDateModel sm = new SpinnerDateModel(tarjeta.getHorainicio(), null, null, Calendar.HOUR_OF_DAY);
@@ -4614,6 +4625,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         tarjeta.setGracia(0);
         tarjeta.setIngresos(1);
         tarjeta.setSalida(false);
+        tarjeta.setNocontar(false);
         llenarTarjeta();
 //        formaTarjetas.setModal(true);
 //        formaTarjetas.setSize(400, 388);
@@ -4725,6 +4737,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             tarjeta.setIngresos(1);
                             tarjeta.setGracia(0);
                             tarjeta.setSalida(false);
+                            tarjeta.setNocontar(false);
                             llenarTarjeta();
                             formaTarjetas1.setVisible(true);
                         } catch (Exception ex) {
@@ -4854,6 +4867,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             tarjeta.setSalida(salida.isSelected());
             tarjeta.setPlaca(placa1.getText());
             tarjeta.setFacturar(facturar.isSelected());
+            tarjeta.setNocontar(nocontar.isSelected());
             if (txtGracia.getText().isEmpty()) {
                 txtGracia.setText("0");
             }
@@ -6463,7 +6477,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JPanel diasHabiles1;
     private javax.swing.JPanel diasHabiles2;
     private javax.swing.JFormattedTextField direccion;
-    private javax.swing.JLabel disponibles;
+    public javax.swing.JLabel disponibles;
     private javax.swing.JCheckBox domingo;
     private javax.swing.JCheckBox domingo1;
     private javax.swing.JCheckBox domingo2;
@@ -6594,6 +6608,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JCheckBox miercoles2;
     public javax.swing.JFormattedTextField noTarjeta;
     private javax.swing.JFormattedTextField noTarjeta2;
+    private javax.swing.JCheckBox nocontar;
     private javax.swing.JSpinner noingresodiarios;
     private javax.swing.JTextField nombreArchivo;
     private javax.swing.JFormattedTextField nombreBuscar;
@@ -6601,7 +6616,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JFormattedTextField nombres1;
     private javax.swing.JFormattedTextField nombresCliente;
     private javax.swing.JPasswordField nuevaClave;
-    private javax.swing.JLabel ocupados;
+    public javax.swing.JLabel ocupados;
     private javax.swing.JPanel panelCambiar;
     private javax.swing.JPanel panelHoras;
     private javax.swing.JPanel panelHoras1;

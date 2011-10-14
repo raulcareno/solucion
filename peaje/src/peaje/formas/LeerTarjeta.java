@@ -217,25 +217,35 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
             //System.out.println("" + tarjeta);
             if (tarjeta.contains("AEIOU")) {
-//                            tarjeta = tarjeta.replace("00", "");
-                System.out.println(tarjeta + " " + new Date());
-                tarjeta = "";
-                imprimir("");
-                abrirPuerta(princip.empresaObj.getEntra1());
-                System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra1());
+                try {
+                    //                            tarjeta = tarjeta.replace("00", "");
+                                    System.out.println(tarjeta + " " + new Date());
+                                    tarjeta = "";
+                                    imprimir("");
+                                    Thread.sleep(3000);
+                                    abrirPuerta(princip.empresaObj.getEntra1());
+                                    System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra1());
 
-                return;
+                                    return;
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
             }
             if (tarjeta.contains("AEIOU2")) {
-                tarjeta = tarjeta.replace("00", "");
-                System.out.println("AEIOUAEIOU2" + new Date());
-                tarjeta = "";
-                imprimir("2");
-                abrirPuerta(princip.empresaObj.getEntra1());
-                System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra2());
-                tarjeta = "";
-                return;
+                try {
+                    tarjeta = tarjeta.replace("00", "");
+                    System.out.println("AEIOUAEIOU2" + new Date());
+                    tarjeta = "";
+                    imprimir("2");
+                                       Thread.sleep(3000);
+                    abrirPuerta(princip.empresaObj.getEntra1());
+                    System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra2());
+                    tarjeta = "";
+                    return;
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
                 princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
@@ -246,6 +256,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             //BUSCAR TARJETA 
             princip.tarjetatxt.setText("");
             princip.tarjetatxt.setText(tarjeta);
+            System.out.println("POR LECTORA: "+ tarjeta);
             princip.buscarTarjeta(puertoId.getName());
             tarjeta = "";
             //peaje.formas.SimpleWrite.llamar("COM3");
@@ -293,6 +304,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     public void abrirPuerta(String puerta) {
         System.out.println("local puerta: " + puerta);
         try {
+            noDisponibles();
             if(princip.empresaObj.bloquear){
                     if(noDisponibles()==0){
                         try {
@@ -304,7 +316,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                             } catch (Exception e) {
                             return;
                         }
-                        
+                         
                         
                     }
             }
@@ -327,13 +339,32 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     }
     public int noDisponibles() {
         try {
-            Object con = adm.querySimple("Select count(o) from Factura as o" + " where  o.fechafin is null  ");
+            Object con = adm.querySimple("Select count(o) from Factura as o" + " where  o.fechafin is null  "
+                    + "and o.nocontar = false  ");
             Long val2 = (Long) con;
             int disponibles = (princip.empresaObj.getParqueaderos() - val2.intValue());
+            int regresa = disponibles;
             if(disponibles < 0){
-            return 0;
+                regresa = 0;
             }
-            return  disponibles;
+                        String valor = "";
+                            if (regresa < 10) {
+                                valor = "0" + regresa;
+                            } else {
+                                valor = "" + regresa;
+                            }
+//                            LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
+//                            ta.outputSream.write((("XYinforma" + valor).getBytes()));
+            LeerTarjeta ta = (LeerTarjeta) princip.puertoListo.get(1);
+            ta.outputSream.write((("XYinforma" +valor).getBytes()));
+            try{
+                princip.disponibles.setText("Disponibles: " + disponibles);
+                princip.ocupados.setText("Ocupados: " + val2.intValue());
+            }catch(Exception err){
+                System.out.println("EN CONTAR: "+err);
+            }
+                            //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
+            return  regresa;
          } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
          }
@@ -359,6 +390,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             fac.setFecha(new Date());
             fac.setUsuario(princip.getUsuario());
             fac.setAnulado(false);
+            fac.setNocontar(false);
             Boolean pasar = true;
             Integer numero = new Integer(emp.getDocumentoticket()) + 1;
             while (pasar) {

@@ -50,6 +50,8 @@ public class Tarjetas implements Serializable {
     private Boolean domingo;
     @Column(name = "facturar")
     private Boolean facturar;
+    @Column(name = "nocontar")
+    private Boolean nocontar;
     @Column(name = "horainicio")
     @Temporal(TemporalType.TIME)
     private Date horainicio;
@@ -247,6 +249,14 @@ public class Tarjetas implements Serializable {
 
     public void setGracia(Integer gracia) {
         this.gracia = gracia;
+    }
+
+    public Boolean getNocontar() {
+        return nocontar;
+    }
+
+    public void setNocontar(Boolean nocontar) {
+        this.nocontar = nocontar;
     }
 
 //    public Collection<Factura> getFacturaCollection() {

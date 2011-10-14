@@ -2430,16 +2430,39 @@ public class frmFactura extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-          if (codigo.getText().isEmpty()) {
-                        codigo.setText("");
-                        JOptionPane.showMessageDialog(this, "Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
-                        noTicket.requestFocusInWindow();
-                        return;
-         }else{
-            observacion.setText("");
-            frmEliminar.setVisible(true);
-          }
+        try {
+            // TODO add your handling code here:
+            Accesos permisos = null;
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'AnularTickets' " 
+                    + "and o.global.codigo  = '" + principal.usuarioActual.getGlobal().getCodigo() + "' and o.ingresar = true  ");
+                if (accesosL.size() > 0) {
+                    permisos = accesosL.get(0);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No tiene permisos para ANULAR TICKETS...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            if (permisos.getAgregar()) {
+              if (codigo.getText().isEmpty()) {
+                            codigo.setText("");
+                            JOptionPane.showMessageDialog(this, "Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
+                            noTicket.requestFocusInWindow();
+                            return;
+             }else{
+                observacion.setText("");
+                frmEliminar.setVisible(true);
+              }        
+            
+            }else{
+                System.out.println("NO TIENE PERMISOS");
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ANULAR TICKETS...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                 
+            
+
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void noTicketKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyReleased

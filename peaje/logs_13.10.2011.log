@@ -114,3 +114,57 @@ INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,13.10.2011/12:11:46,OK
 INFO peaje.formas.frmPrincipal,line 41,13.10.2011/12:12:32,java.lang.ArithmeticException: Rounding necessary
 INFO peaje.formas.frmPrincipal,line 41,13.10.2011/12:14:59,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,13.10.2011/12:15:17,OK
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,13.10.2011/12:48:01,OK
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/12:48:01,ERROR
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/12:48:03,ERROR
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,13.10.2011/12:48:05,OK
+INFO peaje.formas.frmTicket,line 41,13.10.2011/12:48:13,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,13.10.2011/14:21:08,OK
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/14:21:08,ERROR
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/14:21:10,ERROR
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,13.10.2011/14:21:12,OK
+INFO peaje.formas.frmTicket,line 41,13.10.2011/14:21:20,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,13.10.2011/14:45:45,OK
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/14:45:45,ERROR
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/14:45:47,ERROR
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,13.10.2011/14:45:49,OK
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/17:36:19,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/17:36:31,java.lang.IllegalArgumentException: An exception occured while creating a query in EntityManager
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,13.10.2011/17:36:31,OK
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/17:36:31,ERROR
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/17:36:33,ERROR
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,13.10.2011/17:36:35,OK
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/17:36:39,java.lang.ArithmeticException: Rounding necessary
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/17:36:58,java.lang.ArrayIndexOutOfBoundsException: 7 >= 2
+INFO peaje.formas.frmTicket,line 41,13.10.2011/17:38:52,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,13.10.2011/17:38:52,
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/17:39:53,java.lang.ArithmeticException: Rounding necessary
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/17:42:27,java.lang.ArithmeticException: Rounding necessary
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/17:42:28,java.lang.ArrayIndexOutOfBoundsException: 5 >= 2
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/17:45:08,java.lang.ArithmeticException: Rounding necessary
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,13.10.2011/17:52:13,OK
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/17:52:13,ERROR
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/17:52:15,ERROR
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,13.10.2011/17:52:17,OK
+INFO peaje.formas.frmTicket,line 41,13.10.2011/17:52:20,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,13.10.2011/17:52:27,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,13.10.2011/17:53:00,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,13.10.2011/17:53:03,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,13.10.2011/17:54:15,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,13.10.2011/17:56:20,OK
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/17:56:20,ERROR
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/17:56:22,ERROR
+INFO peaje.formas.frmTicket,line 41,13.10.2011/17:56:23,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,13.10.2011/17:56:24,OK
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/17:59:05,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,13.10.2011/18:01:25,OK
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/18:01:25,ERROR
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,13.10.2011/18:05:55,OK
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/18:05:55,ERROR
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,13.10.2011/18:05:57,ERROR
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,13.10.2011/18:05:59,OK
+INFO peaje.formas.frmTicket,line 41,13.10.2011/18:06:11,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmPrincipal,line 41,13.10.2011/18:06:26,java.lang.ArithmeticException: Rounding necessary
+INFO peaje.formas.frmTicket,line 41,13.10.2011/18:06:56,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,13.10.2011/18:07:09,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,13.10.2011/18:09:42,java.lang.ArrayIndexOutOfBoundsException: 0
