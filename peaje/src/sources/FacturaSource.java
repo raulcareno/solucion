@@ -110,6 +110,8 @@ public class FacturaSource implements JRDataSource {
                 valor = nodo.getSubtotal();
             } else if ("iva".equals(fieldName)) {
                 valor = nodo.getIva();
+            } else if ("motivo".equals(fieldName)) {
+                valor = nodo.getObservacion();
             }
         } catch (Exception e) {
             Logger.getLogger(FacturaSource.class.getName()).log(Level.SEVERE, null, e);
