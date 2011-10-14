@@ -250,7 +250,7 @@
                                         
                                         <listitem id="Registro de Notas"  image="/images/notas.png"  label="Registro Notas" value="/notasFuera.zul" />
                                         <listitem id="Registro de Disciplina" image="/images/notas.png"  label="Registro Disciplinas" value="/disciplinaFuera.zul" />
-                                        <listitem id="Registro de Faltas" image="/images/notas.png"  label="Faltas" value="/faltas.zul" />
+                                        <listitem id="Registro de Faltas" image="/images/notas.png"  label="Faltas" value="/faltasFuera.zul" />
                                         <listitem id="Registro de Notas Grado"  image="/images/notas.png"  label="Registro Ex.Grado" value="/cursosIngresonotasGradoFuera.zul" />
                                         <listitem id="Calendario" image="/images/calendar.gif"  label="Calendario" value="/calendar.zul" />
                                         <listitem id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correo.zul"/>
