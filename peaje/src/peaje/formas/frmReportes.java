@@ -206,7 +206,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel1.setBounds(190, 60, 60, 14);
 
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas Tickest y Tarjetas", "Facturas de Tickets", "Facturas de Tarjetas", "Consolidado por Mes", "Clientes mas frecuentes", "Listado clientes", "No. de Ingresos x Cliente", "Tickets Anulados", "Fotos de Vehiculos", "__________________" }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas Tickest y Tarjetas", "Facturas de Tickets", "Facturas de Tarjetas", "Consolidado por Mes", "Clientes mas frecuentes", "Listado clientes", "No. de Ingresos x Cliente", "Tickets Anulados", "Fotos de Vehiculos", "CIERRE DE CAJA" }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -880,7 +880,25 @@ public class frmReportes extends javax.swing.JInternalFrame {
             titulo = "Tickest Fotos";
             tickets(dirreporte, query, titulo);
 
-        } 
+        } else if (cmbTipoReporte.getSelectedIndex() == 12) {//FACTURADO
+            query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and o.fechafin is not null and o.numero is not null  "
+                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+              if(cmbUsuarios.getSelectedIndex()>0){
+                  query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + " and o.fechafin is not null and o.numero is not null  "
+                    + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
+                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+               }
+            
+            
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"cierrecaja.jasper";
+            titulo = "Facturas ";
+            tickets(dirreporte, query, titulo);
+
+        }  
            principal.contenedor.requestFocus();
 
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -893,11 +911,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     cmbUsuarios.setEnabled(false);  
     cmbClientes.setEnabled(false);
-        if(cmbTipoReporte.getSelectedIndex() == 0 
-                || cmbTipoReporte.getSelectedIndex() == 1
-                || cmbTipoReporte.getSelectedIndex() == 3
-                || cmbTipoReporte.getSelectedIndex() == 4
-                || cmbTipoReporte.getSelectedIndex() == 5){
+        if(cmbTipoReporte.getSelectedIndex() == 0  || cmbTipoReporte.getSelectedIndex() == 1
+                || cmbTipoReporte.getSelectedIndex() == 3 || cmbTipoReporte.getSelectedIndex() == 4
+                || cmbTipoReporte.getSelectedIndex() == 5 || cmbTipoReporte.getSelectedIndex() == 12){
                 cmbUsuarios.setEnabled(true);    
     }else if(cmbTipoReporte.getSelectedIndex() == 9){
             try {

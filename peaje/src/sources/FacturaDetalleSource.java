@@ -56,6 +56,12 @@ public class FacturaDetalleSource implements JRDataSource {
                 } catch (Exception e) {
                     System.out.println("ERROR EN FECHA" + e);
                 }
+            } else if ("fechafin".equals(fieldName)) {
+                try {
+                    valor = nodo.getFactura().getFechafin();
+                } catch (Exception e) {
+                    System.out.println("ERROR EN FECHA" + e);
+                }
             }  else if ("cliente".equals(fieldName)) {
                 valor = nodo.getFactura().getClientes().getNombres();
             } else if ("telefono".equals(fieldName)) {

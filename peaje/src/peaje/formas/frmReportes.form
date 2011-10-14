@@ -147,7 +147,7 @@
                 <StringItem index="9" value="No. de Ingresos x Cliente"/>
                 <StringItem index="10" value="Tickets Anulados"/>
                 <StringItem index="11" value="Fotos de Vehiculos"/>
-                <StringItem index="12" value="__________________"/>
+                <StringItem index="12" value="CIERRE DE CAJA"/>
               </StringArray>
             </Property>
           </Properties>

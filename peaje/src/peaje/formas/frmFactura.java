@@ -240,6 +240,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         direccion = new javax.swing.JFormattedTextField();
         cliente = new javax.swing.JFormattedTextField();
         btnNuevoCliente = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         frmEliminar = new javax.swing.JInternalFrame();
         jLabel28 = new javax.swing.JLabel();
@@ -632,9 +633,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
         cliente.setEditable(false);
         cliente.setText("1");
         cliente.setEnabled(false);
-        cliente.setFont(new java.awt.Font("Tahoma", 0, 8));
+        cliente.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel2.add(cliente);
-        cliente.setBounds(190, 10, 20, 10);
+        cliente.setBounds(190, 10, 20, 20);
 
         btnNuevoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
         btnNuevoCliente.setText("CREAR O BUSCAR CLIENTE");
@@ -646,6 +647,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnNuevoCliente);
         btnNuevoCliente.setBounds(40, 100, 230, 30);
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nuevo.gif"))); // NOI18N
+        jButton3.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton3);
+        jButton3.setBounds(210, 10, 30, 23);
 
         jPanel5.add(jPanel2);
         jPanel2.setBounds(310, 10, 290, 160);
@@ -766,7 +777,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnMulta.setBounds(90, 130, 80, 50);
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_cancel.gif"))); // NOI18N
-        btnEliminar.setText("Eliminar Ticket");
+        btnEliminar.setText("Anular Ticket");
         btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEliminar.setMargin(new java.awt.Insets(1, 1, 1, 1));
         btnEliminar.setOpaque(false);
@@ -1151,7 +1162,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         cli.setIdentificacion(identificacion.getText());
                         cli.setTelefono(telefono.getText());
                         cli.setNombres(nombres.getText());
-
+                        adm.actualizar(cli);
                     }
 
 
@@ -2416,10 +2427,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 noTicket.requestFocusInWindow();
                 
                 adm.actualizar(facActual);
+                frmEliminar.setVisible(false);
+                principal.noDisponibles();
             } catch (Exception ex) {
                 Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
             }
-            frmEliminar.setVisible(false);
+            
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -2469,6 +2482,15 @@ public class frmFactura extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_noTicketKeyReleased
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        cliente.setText("0");
+        identificacion.setText("");
+        nombres.setText("");
+        direccion.setText("");
+        telefono.setText("");
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
@@ -2500,6 +2522,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser ingreso;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

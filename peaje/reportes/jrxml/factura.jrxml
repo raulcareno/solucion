@@ -26,6 +26,7 @@
 	<field name="vt" class="java.math.BigDecimal"/>
 	<field name="subtotal" class="java.math.BigDecimal"/>
 	<field name="iva" class="java.math.BigDecimal"/>
+	<field name="fechafin" class="java.util.Date"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -58,7 +59,7 @@
 				<textElement>
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fechafin}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField" x="81" y="6" width="84" height="15"/>

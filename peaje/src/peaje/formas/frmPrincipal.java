@@ -406,6 +406,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel36 = new javax.swing.JLabel();
         noingresodiarios = new javax.swing.JSpinner();
         jLabel52 = new javax.swing.JLabel();
+        facturar1 = new javax.swing.JCheckBox();
+        jLabel53 = new javax.swing.JLabel();
+        txtGracia1 = new javax.swing.JFormattedTextField();
+        nocontar1 = new javax.swing.JCheckBox();
         frmClientes1 = new javax.swing.JInternalFrame();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -490,6 +494,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         clienteCod = new javax.swing.JFormattedTextField();
         jLabel50 = new javax.swing.JLabel();
         nombresCliente = new javax.swing.JFormattedTextField();
+        nocontar2 = new javax.swing.JCheckBox();
+        jLabel42 = new javax.swing.JLabel();
+        txtGracia2 = new javax.swing.JFormattedTextField();
+        facturar2 = new javax.swing.JCheckBox();
+        ingresos2 = new javax.swing.JSpinner();
+        jLabel47 = new javax.swing.JLabel();
         frmRespaldarBase = new javax.swing.JInternalFrame();
         btnRespaldoWindows = new javax.swing.JButton();
         btnRespaldoLinux = new javax.swing.JButton();
@@ -687,7 +697,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         disponibles.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraHerramients.add(disponibles);
 
-        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11));
         ocupados.setForeground(new java.awt.Color(255, 0, 0));
         ocupados.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ocupados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rojo.png"))); // NOI18N
@@ -698,7 +708,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         barraHerramients.add(ocupados);
         barraHerramients.add(jSeparator1);
 
-        barrera1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        barrera1.setFont(new java.awt.Font("Tahoma", 1, 11));
         barrera1.setForeground(new java.awt.Color(204, 102, 0));
         barrera1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera1.setText("F1");
@@ -1474,6 +1484,31 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         jLabel52.setText("# de Ingresos Diarios");
 
+        facturar1.setText("Facturar");
+        facturar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturar1ActionPerformed(evt);
+            }
+        });
+        facturar1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                facturar1KeyPressed(evt);
+            }
+        });
+
+        jLabel53.setText("Gracia min.");
+
+        txtGracia1.setEditable(false);
+        txtGracia1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtGracia1.setText("0");
+        txtGracia1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtGracia1ActionPerformed(evt);
+            }
+        });
+
+        nocontar1.setText("No contar");
+
         javax.swing.GroupLayout frmLoteLayout = new javax.swing.GroupLayout(frmLote.getContentPane());
         frmLote.getContentPane().setLayout(frmLoteLayout);
         frmLoteLayout.setHorizontalGroup(
@@ -1497,11 +1532,18 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         .addComponent(jLabel34)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(activa1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(noingresodiarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(171, 171, 171)))
+                        .addGap(18, 18, 18)
+                        .addComponent(facturar1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtGracia1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nocontar1)))
                 .addGap(23, 23, 23))
             .addGroup(frmLoteLayout.createSequentialGroup()
                 .addContainerGap()
@@ -1535,8 +1577,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     .addComponent(jLabel34)
                     .addComponent(activa1)
                     .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel52)
                         .addComponent(noingresodiarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel52)))
+                        .addComponent(facturar1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtGracia1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(nocontar1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -2068,7 +2114,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         horaHasta2.setBounds(180, 20, 80, 20);
 
         frmLoteTarjetas.getContentPane().add(jPanel11);
-        jPanel11.setBounds(200, 160, 310, 48);
+        jPanel11.setBounds(200, 130, 310, 48);
 
         panelHoras2.setBorder(javax.swing.BorderFactory.createTitledBorder("Fechas de Validez"));
         panelHoras2.setLayout(null);
@@ -2090,7 +2136,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         fechaHasta2.setBounds(200, 20, 95, 20);
 
         frmLoteTarjetas.getContentPane().add(panelHoras2);
-        panelHoras2.setBounds(200, 90, 309, 48);
+        panelHoras2.setBounds(200, 80, 309, 48);
 
         btnGuardarCambios1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
         btnGuardarCambios1.setText("GUARDAR");
@@ -2112,9 +2158,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel49.setBounds(30, 40, 80, 14);
 
         activa2.setSelected(true);
-        activa2.setText("Tarjetas Habilitadas");
+        activa2.setText("Tarjetas Activas");
         frmLoteTarjetas.getContentPane().add(activa2);
-        activa2.setBounds(200, 70, 140, 23);
+        activa2.setBounds(200, 60, 140, 23);
 
         jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
         jButton12.setText("Salir");
@@ -2125,8 +2171,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         frmLoteTarjetas.getContentPane().add(jButton12);
         jButton12.setBounds(360, 340, 92, 40);
-
-        noTarjeta2.setEditable(false);
         frmLoteTarjetas.getContentPane().add(noTarjeta2);
         noTarjeta2.setBounds(20, 62, 150, 20);
 
@@ -2151,6 +2195,51 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         nombresCliente.setEditable(false);
         frmLoteTarjetas.getContentPane().add(nombresCliente);
         nombresCliente.setBounds(210, 30, 300, 20);
+
+        nocontar2.setText("No contar");
+        frmLoteTarjetas.getContentPane().add(nocontar2);
+        nocontar2.setBounds(340, 60, 120, 23);
+
+        jLabel42.setText("Gracia min.");
+        frmLoteTarjetas.getContentPane().add(jLabel42);
+        jLabel42.setBounds(280, 180, 60, 20);
+
+        txtGracia2.setEditable(false);
+        txtGracia2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtGracia2.setText("0");
+        txtGracia2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtGracia2ActionPerformed(evt);
+            }
+        });
+        frmLoteTarjetas.getContentPane().add(txtGracia2);
+        txtGracia2.setBounds(340, 180, 80, 20);
+
+        facturar2.setText("Facturar");
+        facturar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturar2ActionPerformed(evt);
+            }
+        });
+        facturar2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                facturar2KeyPressed(evt);
+            }
+        });
+        frmLoteTarjetas.getContentPane().add(facturar2);
+        facturar2.setBounds(200, 180, 70, 16);
+
+        ingresos2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ingresos2KeyPressed(evt);
+            }
+        });
+        frmLoteTarjetas.getContentPane().add(ingresos2);
+        ingresos2.setBounds(280, 210, 40, 17);
+
+        jLabel47.setText("No. Ingresos: ");
+        frmLoteTarjetas.getContentPane().add(jLabel47);
+        jLabel47.setBounds(210, 210, 70, 14);
 
         frmLoteTarjetas.setBounds(5, 5, 570, 460);
         contenedor.add(frmLoteTarjetas, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -2433,7 +2522,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.setBounds(0, 30, 770, 590);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
             usuarioLogeado.setForeground(new java.awt.Color(0, 153, 204));
             usuarioLogeado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editPerfil.png"))); // NOI18N
             usuarioLogeado.setText("...");
@@ -5907,6 +5996,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     tarActu.setHorafin((Date) horaHasta1.getValue());
                     tarActu.setHabilitada(activa1.isSelected());
                     tarActu.setIngresos((Integer) noingresodiarios.getValue());
+                    tarActu.setFacturar(facturar1.isSelected());
+                    tarActu.setNocontar(nocontar1.isSelected());
+                    tarActu.setGracia(Integer.parseInt(txtGracia1.getText()));
+                    tarActu.setSalida(false);
                     System.out.println("CORRECTO" + tarActu.getClientes().getNombres());
                     adm.actualizar(tarActu);
 
@@ -6128,6 +6221,12 @@ private void btnGuardarCambios1ActionPerformed(java.awt.event.ActionEvent evt) {
             tarActu.setHorafin((Date) horaHasta2.getValue());
             tarActu.setHabilitada(activa2.isSelected());
             tarActu.setClientes(new Clientes(new Integer(clienteCod.getText())));
+            tarActu.setFacturar(facturar2.isSelected());
+            tarActu.setNocontar(nocontar2.isSelected());
+            tarActu.setIngresos((Integer)ingresos2.getValue());
+            tarActu.setGracia(Integer.parseInt(txtGracia2.getText()));
+            tarActu.setSalida(false);
+            
             adm.guardar(tarActu);
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -6314,6 +6413,36 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         // TODO add your handling code here:
         txtGracia.setEditable(facturar.isSelected());
     }//GEN-LAST:event_facturarActionPerformed
+
+    private void txtGracia2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGracia2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtGracia2ActionPerformed
+
+    private void facturar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturar2ActionPerformed
+        // TODO add your handling code here:
+        txtGracia2.setEditable(facturar2.isSelected());
+    }//GEN-LAST:event_facturar2ActionPerformed
+
+    private void facturar2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_facturar2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_facturar2KeyPressed
+
+    private void ingresos2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ingresos2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ingresos2KeyPressed
+
+    private void facturar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturar1ActionPerformed
+        // TODO add your handling code here:
+        txtGracia1.setEditable(facturar1.isSelected());
+    }//GEN-LAST:event_facturar1ActionPerformed
+
+    private void facturar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_facturar1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_facturar1KeyPressed
+
+    private void txtGracia1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGracia1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtGracia1ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -6484,6 +6613,8 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JList encontrados;
     public javax.swing.JLabel errores;
     private javax.swing.JCheckBox facturar;
+    private javax.swing.JCheckBox facturar1;
+    private javax.swing.JCheckBox facturar2;
     private com.toedter.calendar.JDateChooser fechaDesde;
     private com.toedter.calendar.JDateChooser fechaDesde1;
     private com.toedter.calendar.JDateChooser fechaDesde2;
@@ -6506,6 +6637,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JLabel imAviso;
     private javax.swing.JLabel ingre;
     private javax.swing.JSpinner ingresos;
+    private javax.swing.JSpinner ingresos2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton12;
@@ -6553,15 +6685,18 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -6609,6 +6744,8 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     public javax.swing.JFormattedTextField noTarjeta;
     private javax.swing.JFormattedTextField noTarjeta2;
     private javax.swing.JCheckBox nocontar;
+    private javax.swing.JCheckBox nocontar1;
+    private javax.swing.JCheckBox nocontar2;
     private javax.swing.JSpinner noingresodiarios;
     private javax.swing.JTextField nombreArchivo;
     private javax.swing.JFormattedTextField nombreBuscar;
@@ -6649,6 +6786,8 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JCheckBox todos2;
     private javax.swing.JLabel totales;
     private javax.swing.JFormattedTextField txtGracia;
+    private javax.swing.JFormattedTextField txtGracia1;
+    private javax.swing.JFormattedTextField txtGracia2;
     private javax.swing.JTextField txtValor;
     private javax.swing.JTextField ubicacionArchivo;
     private javax.swing.JLabel ultimoIngreso;
