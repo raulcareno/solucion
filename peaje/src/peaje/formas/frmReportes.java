@@ -413,6 +413,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
     }
     public void tickets(String dirreporte, String query, String titulo) {
         try {
+            
             System.out.println("QUERY: "+query);
             JasperReport masterReport = (JasperReport) JRLoader.loadObject(dirreporte);
             Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
@@ -433,6 +434,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
             parametros.put("telefono", emp.getTelefonos());
             parametros.put("titulo", titulo);
             parametros.put("parqueaderos", emp.getParqueaderos());
+            WorkingDirectory w = new WorkingDirectory();
+              String ubicacionDirectorio = w.get()+separador;
+                if(ubicacionDirectorio.contains("build"))
+                    ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
+         
+            dirreporte = ubicacionDirectorio+separador+"fotos"+ separador;
+            parametros.put("ubicacion", dirreporte);
             parametros.put("usuario", cmbUsuarios.getSelectedItem().toString());
             
             Date des = desde.getDate();
@@ -856,6 +864,20 @@ public class frmReportes extends javax.swing.JInternalFrame {
             }
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsanulados.jasper";
             titulo = "Tickest Anulados";
+            tickets(dirreporte, query, titulo);
+
+        } else if (cmbTipoReporte.getSelectedIndex() == 11) {//TICKEST FOTOS
+            query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + " ";
+            if(cmbUsuarios.getSelectedIndex()>0){
+                    query = "Select o from Factura as o" +
+                            " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                            + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
+                            + "    ";
+            }
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsfotos.jasper";
+            titulo = "Tickest Fotos";
             tickets(dirreporte, query, titulo);
 
         } 
