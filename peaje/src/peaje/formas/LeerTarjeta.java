@@ -137,6 +137,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             System.out.println("" + e);
         }
         try {
+            inputStream = null;
             inputStream = serialPort.getInputStream();
         } catch (IOException e) {
             System.out.println("LEER TARJETA.CLASS " + e);

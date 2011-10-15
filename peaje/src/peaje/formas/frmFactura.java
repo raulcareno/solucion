@@ -1196,44 +1196,44 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     } catch (Exception e) {
                         dia = 0;
                     }
-                    
+
                     //adm.actualizar(emp);
-                    
+
                     Boolean pasar = true;
-                    Integer numero = new Integer(emp.getDocumentofac())+1;
-                        while(pasar){
-                            List sihay = adm.query("Select o from Factura as o where o.numero = '"+numero+"'"); 
-                            if(sihay.size()<=0){
-                                pasar = false;
-                                facActual.setNumero("" + numero);
-                                emp.setDocumentofac((numero) + "");
-                                adm.actualizar(emp);//GUARDO EMPRESA
-                                adm.actualizar(facActual); // GUARDO FACTURA
-                            }else{
-                                numero++;
-                            }
-
+                    Integer numero = new Integer(emp.getDocumentofac()) + 1;
+                    while (pasar) {
+                        List sihay = adm.query("Select o from Factura as o where o.numero = '" + numero + "'");
+                        if (sihay.size() <= 0) {
+                            pasar = false;
+                            facActual.setNumero("" + numero);
+                            emp.setDocumentofac((numero) + "");
+                            adm.actualizar(emp);//GUARDO EMPRESA
+                            adm.actualizar(facActual); // GUARDO FACTURA
+                        } else {
+                            numero++;
                         }
-                    imprimir(facActual.getCodigo(), emp, dia, false, cli);
-                    
-                    
-                 if(empresaObj.getSeabrefac()){
 
-                    try {
-                        LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
-                        ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                        //TEMPORAL
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                        
-                        //TEMPORAL
-                    } catch (Exception ex) {
-                        Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    System.out.println("ABRIO PUERTA: " + empresaObj.getPuertafac());
-            }else{
-                    System.out.println("NO ABRE BARRERA POR DESHABILITACION DEN FRMEMPRESA " );
-                }
+                    imprimir(facActual.getCodigo(), emp, dia, false, cli);
+
+
+                    if (empresaObj.getSeabrefac()) {
+
+                        try {
+                            LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            //TEMPORAL
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+
+                            //TEMPORAL
+                        } catch (Exception ex) {
+                            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        System.out.println("ABRIO PUERTA: " + empresaObj.getPuertafac());
+                    } else {
+                        System.out.println("NO ABRE BARRERA POR DESHABILITACION DEN FRMEMPRESA ");
+                    }
 
 //                cargar.start();
                     principal.noDisponibles();
@@ -1581,7 +1581,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         dias2.setVisible(false);
         if (fac.getFechafin() != null) {
 
-            if(fac.getAnulado()){
+            if (fac.getAnulado()) {
                 codigo.setText("");
                 //JOptionPane.showMessageDialog(this, "EL TICKET INGRESADO YA HA SIDO ANULADO...");
                 noTicket.requestFocusInWindow();
@@ -1614,7 +1614,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         }
         ingreso.setDate(fac.getFechaini());
         salida.setDate(new Date());
-  btnAgregar.requestFocusInWindow();
+        btnAgregar.requestFocusInWindow();
 
 
         Date act = new Date();
@@ -1645,7 +1645,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         }
         BigDecimal aCobrar = new BigDecimal(0);
         aCobrar = aCobrar.add(buscar(minutos));
-        
+
         Float min = minutos / 60f;
         int indice = min.toString().indexOf(".");
         Float valorf = new Float("0" + min.toString().substring(indice));
@@ -1654,7 +1654,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         act.setMinutes(valorMinutos);
         tiempo.setDate(act);
         placa.setText(fac.getPlaca());
-        if(valorMinutos <= empresaObj.getGracia().intValue()){
+        if (valorMinutos <= empresaObj.getGracia().intValue()) {
             BigDecimal descuento = buscar(valorMinutos);
             aCobrar = aCobrar.subtract(descuento);
         }
@@ -1668,7 +1668,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             dias1.setText("0");
         }
-     
+
 //        if (horas.intValue() > 0) {
 //            if (valorMinutos > 0) {
 //                if (valorMinutos > empresaObj.getGracia().intValue()) {
@@ -1687,10 +1687,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
         total.setText(aCobrar.setScale(2, RoundingMode.UP) + "");
         codigo.setText(fac.getCodigo() + "");
     }
- public BigDecimal buscar(Integer minutos) {
-     BigDecimal valorRegresa= new BigDecimal(0);
-     int ultimo = 0;
-     BigDecimal valorUltimo= new BigDecimal(0);
+
+    public BigDecimal buscar(Integer minutos) {
+        BigDecimal valorRegresa = new BigDecimal(0);
+        int ultimo = 0;
+        BigDecimal valorUltimo = new BigDecimal(0);
         for (Iterator<Tarifas> it = tarifario.iterator(); it.hasNext();) {
             Tarifas tarifas = it.next();
             int desde = tarifas.getDesde();
@@ -1700,16 +1701,17 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 return valorRegresa;
             }
             ultimo = hasta;
-            valorUltimo =tarifas.getValor();
-         
+            valorUltimo = tarifas.getValor();
+
         }
-         valorRegresa = valorRegresa.add(valorUltimo);
-         minutos = minutos - ultimo;
-         valorRegresa = valorRegresa.add(buscar(minutos));
+        valorRegresa = valorRegresa.add(valorUltimo);
+        minutos = minutos - ultimo;
+        valorRegresa = valorRegresa.add(buscar(minutos));
         return valorRegresa;
 
 
     }
+
     public long diferenciaFechas(Date fechai, Date fechaf) {
         fechaf = new Date();
         java.util.GregorianCalendar date1 = new java.util.GregorianCalendar(fechai.getYear(), fechai.getMonth(), fechai.getDate(), fechai.getHours(), fechai.getMinutes(), fechai.getSeconds());
@@ -1768,7 +1770,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         System.out.println("NO SE CARGO FOTO");
                     }
 
-                  
+
                 } else {
                     ingreso.setDate(null);
                     salida.setDate(null);
@@ -1784,7 +1786,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             principal.contenedor.requestFocus();
             principal = null;
-            empresaObj = null;  System.gc();   this.setVisible(false);
+            empresaObj = null;
+            System.gc();
+            this.setVisible(false);
         } else if (evt.getKeyCode() == evt.VK_F1
                 || evt.getKeyCode() == evt.VK_F2
                 || evt.getKeyCode() == evt.VK_F3
@@ -1800,8 +1804,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
             principal.tecla(evt.getKeyCode());
         }
     }//GEN-LAST:event_noTicketKeyPressed
-
-   
 
     public void llenarCliente(Clientes nCliente) {
         cliente.setText("" + nCliente.getCodigo());
@@ -2348,27 +2350,65 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     facActual.setTiempo(new Date());
                     facActual.setTicket("000000000");
 
-                    adm.guardar(facActual);
-                    Integer numero = new Integer(emp.getDocumentofac());
-                    emp.setDocumentofac((numero + 1) + "");
+                    //adm.guardar(facActual);
+                    
+                    
+//                    Integer numero = new Integer(emp.getDocumentofac());
+//                    emp.setDocumentofac((numero + 1) + "");
+                    Boolean pasar = true;
+                    Integer numero = new Integer(emp.getDocumentofac()) + 1;
+                    while (pasar) {
+                        List sihay = adm.query("Select o from Factura as o where o.numero = '" + numero + "'");
+                        if (sihay.size() <= 0) {
+                            pasar = false;
+                            facActual.setNumero("" + numero);
+                            emp.setDocumentofac((numero) + "");
+                            adm.actualizar(emp);//GUARDO EMPRESA
+                            adm.guardar(facActual); // GUARDO FACTURA
+                        } else {
+                            numero++;
+                        }
+
+                    }
+                    
                     int dia = 0;
                     try {
                         dia = new Integer(dias1.getText());
                     } catch (Exception e) {
                         dia = 0;
                     }
+                    
                     imprimir(facActual.getCodigo(), emp, dia, false, nuevoCl);
-                    adm.actualizar(emp);
-                    if (empresaObj.getSeabretic()) {
-                        Thread cargar = new Thread() {
+                    //adm.actualizar(emp);
+//                    if (empresaObj.getSeabretic()) {
+//                        Thread cargar = new Thread() {
+//
+//                            public void run() {
+//                                AbrirPuerta.abrir(empresaObj.getPuerto(), frmPrincipal.out);
+//                                System.out.println("SALIO PUERTA: " + frmPrincipal.out);
+//
+//                            }
+//                        };
+//
+//                    }
+                    if (empresaObj.getSeabrefac()) {
 
-                            public void run() {
-                                AbrirPuerta.abrir(empresaObj.getPuerto(), frmPrincipal.out);
-                                System.out.println("SALIO PUERTA: " + frmPrincipal.out);
+                        try {
+                            LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            //TEMPORAL
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
 
-                            }
-                        };
-
+                            //TEMPORAL
+                        } catch (Exception ex) {
+                            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        System.out.println("ABRIO PUERTA: " + empresaObj.getPuertafac());
+                    } else {
+                        System.out.println("NO ABRE BARRERA POR DESHABILITACION DEN FRMEMPRESA ");
                     }
 
                     principal.noDisponibles();
@@ -2405,10 +2445,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(observacion.getText().isEmpty()){
-                JOptionPane.showMessageDialog(this, "Ingrese un motivo por el cuál está anulando el ticket...!");
-                observacion.requestFocusInWindow();
-        }else{
+        if (observacion.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un motivo por el cuál está anulando el ticket...!");
+            observacion.requestFocusInWindow();
+        } else {
             try {
                 Factura facActual = (Factura) adm.buscarClave(new Integer(codigo.getText()), Factura.class);
                 facActual.setObservacion(observacion.getText());
@@ -2417,7 +2457,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 facActual.setTiempo(new Date());
                 facActual.setDias(0);
                 facActual.setUsuarioc(principal.usuarioActual);
-                facActual.setSubtotal(BigDecimal.ZERO);        
+                facActual.setSubtotal(BigDecimal.ZERO);
                 facActual.setIva(BigDecimal.ZERO);
                 facActual.setTotal(BigDecimal.ZERO);
                 total.setText("0.0");
@@ -2425,16 +2465,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 noTicket.setText("");
                 placa.setText("");
                 noTicket.requestFocusInWindow();
-                
+
                 adm.actualizar(facActual);
                 frmEliminar.setVisible(false);
                 principal.noDisponibles();
             } catch (Exception ex) {
                 Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -2446,26 +2486,26 @@ public class frmFactura extends javax.swing.JInternalFrame {
         try {
             // TODO add your handling code here:
             Accesos permisos = null;
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'AnularTickets' " 
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'AnularTickets' "
                     + "and o.global.codigo  = '" + principal.usuarioActual.getGlobal().getCodigo() + "' and o.ingresar = true  ");
-                if (accesosL.size() > 0) {
-                    permisos = accesosL.get(0);
-                } else {
-                    JOptionPane.showMessageDialog(this, "No tiene permisos para ANULAR TICKETS...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+            if (accesosL.size() > 0) {
+                permisos = accesosL.get(0);
+            } else {
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ANULAR TICKETS...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             if (permisos.getAgregar()) {
-              if (codigo.getText().isEmpty()) {
-                            codigo.setText("");
-                            JOptionPane.showMessageDialog(this, "Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
-                            noTicket.requestFocusInWindow();
-                            return;
-             }else{
-                observacion.setText("");
-                frmEliminar.setVisible(true);
-              }        
-            
-            }else{
+                if (codigo.getText().isEmpty()) {
+                    codigo.setText("");
+                    JOptionPane.showMessageDialog(this, "Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
+                    noTicket.requestFocusInWindow();
+                    return;
+                } else {
+                    observacion.setText("");
+                    frmEliminar.setVisible(true);
+                }
+
+            } else {
                 System.out.println("NO TIENE PERMISOS");
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ANULAR TICKETS...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -2473,8 +2513,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
-                 
-            
+
+
 
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -2490,7 +2530,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
         direccion.setText("");
         telefono.setText("");
     }//GEN-LAST:event_jButton3ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
