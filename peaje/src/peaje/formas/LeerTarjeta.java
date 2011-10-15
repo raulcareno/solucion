@@ -206,9 +206,10 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 break;
         }
         //System.out.println(""+tarjeta);
-        System.out.println("LECTURA: " + tarjeta);
+        
 
         if (tarjeta.length() >= 10) {
+            System.out.println("LECTURA: " + tarjeta);
                         if (tarjeta.length() > 10) {
                             tarjeta = tarjeta.substring(0, 10);
                         }
@@ -263,7 +264,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                         return;
 
         } else {
-                    System.out.println(" MENOR 10 : " + tarjeta);
+                    System.out.println("" + tarjeta);
                     if (tarjeta.contains("AEI")) {
         //             tarjeta = tarjeta.replace("00", "");
                         System.out.println(tarjeta + " " + new Date());
