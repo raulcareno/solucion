@@ -4355,7 +4355,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //                        } catch (Exception e) {
 //                        } //ESPERO UN POCO
             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-            barrera1.setEnabled(true);
+//            barrera1.setEnabled(true);
         } catch (InterruptedException ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -5252,7 +5252,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("7".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                    barrera1.setEnabled(true);
+                    barrera2.setEnabled(true);
                 } catch (IOException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -5274,7 +5274,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("6".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                    barrera1.setEnabled(true);
+                    barrera6.setEnabled(true);
                 } catch (IOException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -5296,7 +5296,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("5".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                    barrera1.setEnabled(true);
+                    barrera5.setEnabled(true);
                 } catch (IOException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -5319,7 +5319,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
                     ta.outputSream.write("4".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                    barrera1.setEnabled(true);
+                    barrera4.setEnabled(true);
                 } catch (IOException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -5348,7 +5348,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     } catch (Exception e) {
                     }
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-                    barrera1.setEnabled(true);
+                    barrera3.setEnabled(true);
                 } catch (IOException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     lger.logger(frmPrincipal.class.getName(), ex + "");
