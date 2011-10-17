@@ -87,6 +87,10 @@ List cantones = adm.query("Select o from Canton as o  ");
                   datasource = reportes.clientesxsector(sectorList.selectedItem.value);
                    report.setSrc(directorioReportes+"listacontratos.jasper");
                    
+            }else if(tipo.equals("PORSECTORCLILETRA")){
+                  datasource = reportes.clientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value);
+                   report.setSrc(directorioReportes+"listacontratosletras.jasper");
+                   
             }else if(tipo.equals("INVNORMAL")){
                   datasource = reportes.inventarioNormal();
                    report.setSrc(directorioReportes+"inventarioNormal.jasper");
@@ -170,6 +174,11 @@ void campos(String valor){
             titulo.value= "X Cobrar";
             filacanton.visible=true;
             filasector.visible=true;
+        }else if(valor.equals("PORSECTORCLILETRA")){
+            titulo.value= "X Cobrar";
+            filacanton.visible=true;
+            filasector.visible=true;
+            filasector2.visible=true;
         }else{
             titulo.value= " ";
         }
@@ -212,6 +221,18 @@ void campos(String valor){
                       li.appendChild(new Listcell(acceIt.getNombre()+" "));
                       sectorList.appendChild(li);
              }
+         sectorList2 = new Listbox();
+            int a=0;
+            for (Iterator it = sectorList2.getItems().iterator(); it.hasNext();) {
+                    sectorList2.getItems().remove(a);
+                }
+            for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      sectorList2.appendChild(li);
+             }
 
     }
 ]]>
@@ -226,12 +247,14 @@ void campos(String valor){
                             <span>
                                 <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="400px"  mold="select" >
                                     <listitem label="[Seleccione]" value="-1" selected="true" />
+                                    <listitem id="linea0" label="========CLIENTES==============" value="linea" />
                                     <listitem id="CXCLI" label="Cuentas x Cobrar - Clientes" value="CXCLI" />
                                     <listitem id="COBROS"  label="Cuentas Cobradas por Clientes " value="COBROS" />
                                     <listitem id="ARQUEO" label="Reporte Diario de Caja o Fechas" value="ARQUEO" />
                                     <listitem id="linea" label="=========================" value="linea" />
                                     <listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" />
                                     <listitem id="PORSECTORCLI" label="Reporte de Contratos de Clientes por Sector " value="PORSECTORCLI" />
+                                    <listitem id="PORSECTORCLILETRA" label="Listado de Contratos" value="PORSECTORCLILETRA" />
                                     <listitem id="linea3" label="========INVENTARIOS=================" value="linea2" />
                                     <listitem id="INVNORMAL" label="Inventario Totales x Producto E/S/Aju./Prest." value="INVNORMAL" />
                                     <listitem id="INVGEN" label="Inventario con Series x Compras" value="INVGEN" />
@@ -337,6 +360,68 @@ void campos(String valor){
                                 </bandpopup>
                             </bandbox>
 
+                        </row>
+                        <row visible = "false" id="filasector2">
+                            <span style="float:right"> Sector 2(*):</span>
+                            <bandbox  width="200px" readonly="true"  id="bdSector2">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="sectorList2" width="250px"
+                                                     onSelect="bdSector2.value=self.selectedItem.label;bdSector2.closeDropdown();">
+                                 
+                                            <listitem forEach="${perfiles}" value="${each}">
+                                                <listcell label="${each.nombre}" />
+
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                        </row>
+                        <row id="letras">
+                            <span style="float:right"> Letras:</span>
+                            <span>
+                             <listbox mold="select" id="desdeletra">
+					<listitem selected="true" value="A" label="A" /> 
+                                        <listitem value="B" label="B" /> 
+                                        <listitem value="C" label="C" />
+                                        <listitem value="D" label="D" /> <listitem value="Ñ" label="Ñ" /> 
+                                        <listitem value="E" label="E" /> <listitem value="O" label="O" /> 
+                                        <listitem value="F" label="F" /> <listitem value="P" label="P" /> 
+                                        <listitem value="G" label="G" /> <listitem value="Q" label="Q" /> 
+                                        <listitem value="H" label="H" /> <listitem value="R" label="R" /> 
+                                        <listitem value="I" label="I" /> <listitem value="S" label="S" /> 
+                                        <listitem value="J" label="J" /> <listitem value="T" label="T" /> 
+                                        <listitem value="K" label="K" /> <listitem value="U" label="U" /> 
+                                        <listitem value="L" label="L" /> <listitem value="V" label="V" /> 
+                                        <listitem value="M" label="M" /> <listitem value="W" label="W" /> 
+                                         <listitem value="N" label="N" />  <listitem value="X" label="X" /> 
+                                                                          <listitem value="Y" label="Y" /> 
+                                                                            <listitem value="Z" label="Z" /> 
+						
+                            </listbox>
+                            Hasta:
+                            
+                            <listbox mold="select" id="hastaletra">
+					<listitem selected="true" value="A" label="A" /> 
+                                        <listitem value="B" label="B" /> 
+                                        <listitem value="C" label="C" />
+                                        <listitem value="D" label="D" /> <listitem value="Ñ" label="Ñ" /> 
+                                        <listitem value="E" label="E" /> <listitem value="O" label="O" /> 
+                                        <listitem value="F" label="F" /> <listitem value="P" label="P" /> 
+                                        <listitem value="G" label="G" /> <listitem value="Q" label="Q" /> 
+                                        <listitem value="H" label="H" /> <listitem value="R" label="R" /> 
+                                        <listitem value="I" label="I" /> <listitem value="S" label="S" /> 
+                                        <listitem value="J" label="J" /> <listitem value="T" label="T" /> 
+                                        <listitem value="K" label="K" /> <listitem value="U" label="U" /> 
+                                        <listitem value="L" label="L" /> <listitem value="V" label="V" /> 
+                                        <listitem value="M" label="M" /> <listitem value="W" label="W" /> 
+                                         <listitem value="N" label="N" />  <listitem value="X" label="X" /> 
+                                                                          <listitem value="Y" label="Y" /> 
+                                                                            <listitem value="Z" label="Z" /> 
+						
+					</listbox>
+                                        </span>
                         </row>
                         <row  style="background:transparent;border:0px">
                             <span style="float:right"> Título:</span>

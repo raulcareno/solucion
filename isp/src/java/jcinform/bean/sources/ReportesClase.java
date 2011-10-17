@@ -36,6 +36,27 @@ public class ReportesClase {
         a.compareTo(a);
     }
 
+    
+    
+    public JRDataSource clientesxsector(Sector ini,Sector fin, String letraini, String letrafin) {
+        Administrador adm = new Administrador();
+        ArrayList detalles = new ArrayList();
+        String  complemento = " and substring(o.clientes.apellidos,1,1) >= '"+letraini+"' "
+                       + " and substring(o.clientes.apellidos,1,1) <= '"+letrafin+"' ";
+  
+        List<Contratos> contra =  adm.query("Select o from Contratos as o "
+                    + "where o.sector.numero "
+                    + "between  '" + ini.getNumero()  + "' and   '" + fin.getNumero()  + "' " +  complemento
+                    + "order by o.clientes.apellidos");
+        for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
+            Contratos contratos = it.next();
+            detalles.add(contratos);
+        }
+        ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
+        return ds;
+    }
+       
+    
     public JRDataSource facturasPendientes(Clientes cli, Sector sec) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
