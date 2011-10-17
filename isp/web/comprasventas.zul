@@ -868,7 +868,39 @@ void tipoDocumento(String tipo){
                                                       datos.appendChild(li);
                                              }
 
-                                    }    
+                                    } 
+                                    
+                                void buscarSerie(String p){
+                                    String fechaDe = jcinform.bean.generarFacturas.convertiraString(desde.value);
+                                    String fechaHa = jcinform.bean.generarFacturas.convertiraString(hasta.value);
+                                     
+                                     
+                                  List CabeceracompraEncontrados = adm.query("Select distinct o.detallecompra.cabeceracompra from Series as o " + 
+                                        " where o.serie like '"+p+"%'");
+                                        datos = new Listbox();
+                                        int a=0;
+                                            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                                                    datos.getItems().remove(a);
+                                                }
+                                               for (Iterator it = CabeceracompraEncontrados.iterator(); it.hasNext();) {
+                                                      Cabeceracompra acceIt = (Cabeceracompra) it.next();
+                                                      Listitem li = new Listitem();
+                                                      li.setValue(acceIt);
+                                                      li.appendChild(new Listcell(acceIt.getFactura()+""));
+                                                      try{
+                                                        li.appendChild(new Listcell(acceIt.getProveedores().getRazonsocial()+""));
+                                                      }catch(Exception err){
+                                                        li.appendChild(new Listcell("* AJUSTE"));
+                                                      }
+                                                      li.appendChild(new Listcell(acceIt.getSeries()+""));
+                                                      li.appendChild(new Listcell(acceIt.getCantidad()+""));
+                                                      li.appendChild(new Listcell(acceIt.getTotal()+""));
+                                                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
+
+                                                      datos.appendChild(li);
+                                             }
+
+                                    } 
                                     ]]>
                             </zscript>
                             
@@ -881,6 +913,10 @@ void tipoDocumento(String tipo){
                             <datebox id="desde" onCreate="Date fec = adm.Date(); fec.setDate(1); self.value = fec;"/> Hasta: 
                             <datebox id="hasta"  onCreate="self.value = adm.Date()"/>
                             <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                        </hbox>
+                        <hbox>
+                        Búsqueda por serie:    <textbox id="buscarSerie"  maxlength="60" cols="10" /> 
+                        <button id="buscarser"  label="Buscar" onClick="buscarSerie(buscarSerie.getValue());"/>
                         </hbox>
                         <hbox>
                             <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
