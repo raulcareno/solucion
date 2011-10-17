@@ -60,6 +60,7 @@ List cantones = adm.query("Select o from Canton as o  ");
             try{
                 parametros.put("canton", cant.selectedItem.value+"");
                 parametros.put("sector", sectorList.selectedItem.value+"");
+                parametros.put("sector2", sectorList2.selectedItem.value+"");
             }catch(Exception e){
             }
             
@@ -90,6 +91,10 @@ List cantones = adm.query("Select o from Canton as o  ");
             }else if(tipo.equals("PORSECTORCLILETRA")){
                   datasource = reportes.clientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value);
                    report.setSrc(directorioReportes+"listacontratosletras.jasper");
+                   
+            }else if(tipo.equals("EQUIPOSPORSECTORCLILETRA")){
+                  datasource = reportes.equiposclientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value);
+                   report.setSrc(directorioReportes+"listacontratosletrasequipos.jasper");
                    
             }else if(tipo.equals("INVNORMAL")){
                   datasource = reportes.inventarioNormal();
@@ -144,6 +149,7 @@ void campos(String valor){
     filafechas.visible=false;
       filacanton.visible=false;
       filasector.visible=false;
+      filaletras.visible=false;
       Date fec = adm.Date();
       
       fec.setDate(1);
@@ -179,6 +185,13 @@ void campos(String valor){
             filacanton.visible=true;
             filasector.visible=true;
             filasector2.visible=true;
+            filaletras.visible=true;
+        }else if(valor.equals("EQUIPOSPORSECTORCLILETRA")){
+            titulo.value= "X Cobrar";
+            filacanton.visible=true;
+            filasector.visible=true;
+            filasector2.visible=true;
+            filaletras.visible=true;
         }else{
             titulo.value= " ";
         }
@@ -246,21 +259,25 @@ void campos(String valor){
                             <span style="float:right"> Reporte:</span>
                             <span>
                                 <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="400px"  mold="select" >
-                                    <listitem label="[Seleccione]" value="-1" selected="true" />
-                                    <listitem id="linea0" label="========CLIENTES==============" value="linea" />
+                                    <listitem disabled="true" label="[Seleccione]" value="-1" selected="true" />
+                                    <listitem disabled="true" label="" />
+                                    <listitem  disabled="true" id="linea0" label="========CLIENTES==============" value="linea" />
                                     <listitem id="CXCLI" label="Cuentas x Cobrar - Clientes" value="CXCLI" />
                                     <listitem id="COBROS"  label="Cuentas Cobradas por Clientes " value="COBROS" />
                                     <listitem id="ARQUEO" label="Reporte Diario de Caja o Fechas" value="ARQUEO" />
-                                    <listitem id="linea" label="=========================" value="linea" />
                                     <listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" />
-                                    <listitem id="PORSECTORCLI" label="Reporte de Contratos de Clientes por Sector " value="PORSECTORCLI" />
-                                    <listitem id="PORSECTORCLILETRA" label="Listado de Contratos" value="PORSECTORCLILETRA" />
-                                    <listitem id="linea3" label="========INVENTARIOS=================" value="linea2" />
+                                    <listitem disabled="true" label="" />
+                                    <listitem  disabled="true" id="linea" label="=========CONTRATOS================" value="linea" />
+                                    <listitem id="PORSECTORCLI" label="Clientes por Sector " value="PORSECTORCLI" />
+                                    <listitem id="PORSECTORCLILETRA" label="Clientes por Sector(Desde-Hasta) [A-Z] " value="PORSECTORCLILETRA" />
+                                    <listitem id="EQUIPOSPORSECTORCLILETRA" label="Clientes por Sector y Equipos[A-Z] " value="EQUIPOSPORSECTORCLILETRA" />
+                                    <listitem disabled="true" label="" />
+                                    <listitem  disabled="true" id="linea3" label="========INVENTARIOS=================" value="linea2" />
                                     <listitem id="INVNORMAL" label="Inventario Totales x Producto E/S/Aju./Prest." value="INVNORMAL" />
                                     <listitem id="INVGEN" label="Inventario con Series x Compras" value="INVGEN" />
                                     <listitem id="INVTRAN" label="Inventario Transito" value="INVTRAN" />
                                     <listitem id="INVAJU" label="Inventario Ajuste" value="INVAJU" />
-                                    <listitem id="linea2" label="=========================" value="linea2" />
+                                    
                                     
            
                                 </listbox>
@@ -378,7 +395,7 @@ void campos(String valor){
                                 </bandpopup>
                             </bandbox>
                         </row>
-                        <row id="letras">
+                        <row id="filaletras" visible="false">
                             <span style="float:right"> Letras:</span>
                             <span>
                              <listbox mold="select" id="desdeletra">
