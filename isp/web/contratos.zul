@@ -509,7 +509,8 @@ Boolean validar(){
                                   }
 //                               alert(""+serieDet.getEstado());
                                //TENGO QUE ELIMINAR TODO EL REGISTRO DE COMPRA EN CASO DE QUE HAYA SOLO UN ITEM
-                               if(serieDet.getEstado().equals("P")){
+                               try{
+                                    if(serieDet.getEstado().equals("P")){
                                             Series serAc = serieDet;
                                             int cant = serAc.getDetallecompra().getCantidad();
                                             if(cant == -1){
@@ -523,7 +524,9 @@ Boolean validar(){
                                                 adm.actualizar(deta);
                                             }
                                         }
-                                            
+                                   }catch(Exception err){
+                                   System.out.println("ERROR AL COMPARAR ESTADO Y ELIMINAR"+err);
+                                   }         
                                
                                   Series ser = new Series();
                                   ser.setCodigo(adm.getNuevaClave("Series","codigo"));
@@ -646,7 +649,7 @@ if(sihay==0){
             fac.setDescuento(new BigDecimal(0));
             fac.setBaseiva(valortotal.value);
             fac.setPorcentajeiva(empresa.getIva());
-            fac.setValoriva((valortotal.value).multiply(empresa.getIva().divide(new BigDecimal(100))));
+            fac.setValoriva((valortotal.value).multiply(empresa.getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
             fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
             fac.setObservacion("V");
             adm.guardar(fac);
@@ -1572,7 +1575,7 @@ void verificarCedula(String valor){
              cantidadtotal.value = cantidad;
              facturadostotal.value = facturados;
              prestadostotal.value = (cantidad - facturados);
-             valortotaliva.value = total.multiply(empresa.getIva().divide(new BigDecimal(100))).add(total);
+             valortotaliva.value = total.multiply(empresa.getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)).add(total);
     }
     
 void buscarSeries(Contratos contratos){

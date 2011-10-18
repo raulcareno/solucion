@@ -5,6 +5,7 @@
 package jcinform.bean;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -22,7 +23,6 @@ import jcinform.persistencia.Sector;
 import jcinform.persistencia.Sucursal;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zul.Button;
-import org.zkoss.zul.Decimalbox;
 
 /**
  *
@@ -91,15 +91,15 @@ public class generarFacturas {
                 if(object.getDescuento()==null){
                     object.setDescuento(BigDecimal.ZERO);
                 }
-                fac.setSubtotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
+                fac.setSubtotal(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
                 fac.setDescuento(new BigDecimal(0));
-                fac.setBaseiva(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
+                fac.setBaseiva(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
                 fac.setPorcentajeiva(suc.getEmpresa().getIva());
-                fac.setValoriva((new BigDecimal(object.getPlan().getValor())).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
+                fac.setValoriva((new BigDecimal(redondear(object.getPlan().getValor(),2))).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
                 fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
                 adm.guardar(fac);
                 Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                det.setTotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
+                det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
                 det.setPlan(object.getPlan());
                 det.setCantidad(1);
                 det.setMes(fecha.getMonth() + 1);
@@ -177,15 +177,15 @@ public class generarFacturas {
                 fac.setFecha(fecha);
                 fac.setContratos(object);
                 fac.setSucursal(suc);
-                fac.setSubtotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
+                fac.setSubtotal(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
                 fac.setDescuento(new BigDecimal(0));
-                fac.setBaseiva(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
+                fac.setBaseiva(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
                 fac.setPorcentajeiva(suc.getEmpresa().getIva());
-                fac.setValoriva((new BigDecimal(object.getPlan().getValor())).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
+                fac.setValoriva((new BigDecimal(redondear(object.getPlan().getValor(),2))).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
                 fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
                 adm.guardar(fac);
                 Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                det.setTotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
+                det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
                 det.setPlan(object.getPlan());
                 det.setCantidad(1);
                 det.setMes(fecha.getMonth() + 1);
@@ -245,11 +245,11 @@ public class generarFacturas {
             fac.setDescuento(new BigDecimal(0));
             fac.setBaseiva(new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento()));
             fac.setPorcentajeiva(suc.getEmpresa().getIva());
-            fac.setValoriva((new BigDecimal(con.getPlan().getValor())).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
+            fac.setValoriva((new BigDecimal(con.getPlan().getValor())).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
             fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
             adm.guardar(fac);
             Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-            det.setTotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
+            det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
             det.setPlan(object.getPlan());
             det.setCantidad(1);
             det.setMes(fecha2.getMonth() + 1);
@@ -320,12 +320,12 @@ public class generarFacturas {
             fac.setFecha(fechaInstalacion);
             fac.setSucursal(suc);
             fac.setDescuento(BigDecimal.ZERO);
-            BigDecimal valor = new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento());
+            BigDecimal valor = new BigDecimal(redondear(con.getPlan().getValor(),2)).subtract(object.getDescuento());
             if (fechaInstalacion.getDate() > 1) {
                 int noDias = object.getPlan().getDias() - fechaInstalacion.getDate();
                 if (noDias > 0) {
                     if ((fechaInstalacion.getMonth() == adm.Date().getMonth())) {
-                        valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(object.getPlan().getDias()));
+                        valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(object.getPlan().getDias()),2, RoundingMode.HALF_UP);
                     } else {
                         valor = new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento());
                     }
@@ -334,17 +334,17 @@ public class generarFacturas {
                 }
 
             } else {
-                valor = new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento());
+                valor = new BigDecimal(redondear(con.getPlan().getValor(),2)).subtract(object.getDescuento());
             }
             fac.setSubtotal(valor);
             fac.setDescuento(new BigDecimal(0));
             fac.setBaseiva(fac.getSubtotal());
             fac.setPorcentajeiva(suc.getEmpresa().getIva());
-            fac.setValoriva((valor).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100))));
+            fac.setValoriva((valor).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
             fac.setTotal(fac.getValoriva().add(valor));
             adm.guardar(fac);
             Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-            det.setTotal(new BigDecimal(object.getPlan().getValor()).subtract(object.getDescuento()));
+            det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
             det.setPlan(object.getPlan());
             det.setCantidad(1);
             det.setMes(fechaInstalacion.getMonth() + 1);
@@ -367,7 +367,7 @@ public class generarFacturas {
             adm.guardar(cuenta);
 
         } catch (Exception e) {
-            System.out.println("DUPLICADO: " + e.hashCode());
+            System.out.println("DUPLICADO: " + e.hashCode()+" .."+e);
             return e.hashCode() + "";
         }
         //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
@@ -466,5 +466,15 @@ public class generarFacturas {
         List deudas = adm.queryNativo(quer);
 
         return deudas;
+    }
+    
+    public Double redondear(Double numero, int decimales) {
+        try {
+            BigDecimal d = new BigDecimal(numero);
+            d = d.setScale(decimales, RoundingMode.HALF_UP);
+            return d.doubleValue();
+        } catch (Exception e) {
+            return 0.0;
+        }
     }
 }
