@@ -28,6 +28,7 @@
   import jcinform.conexion.*;
   import jcinform.bean.*;
   import java.math.BigDecimal;
+  import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
   import jcinform.bean.generarFacturas;
 
