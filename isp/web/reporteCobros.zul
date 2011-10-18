@@ -25,6 +25,7 @@ Empresa empresa = (Empresa) ses.getAttribute("empresa");
 Empleados user = (Empleados)ses.getAttribute("user");
  ReportesClase reportes = new ReportesClase();
 List cantones = adm.query("Select o from Canton as o  ");
+      Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
       
       public Double redondear(Double numero, int decimales) {
                 try{
@@ -219,7 +220,9 @@ void campos(String valor){
     
         void buscarSectores(Integer codigo){
           bd.value = "";
-        List NodosEncontrados = adm.query("Select o from Sector as o where o.canton.codigo = '"+codigo+"'  order by o.nombre");
+        List NodosEncontrados = adm.query("Select o from Sector as o " +
+        " where o.canton.codigo = '"+codigo+"'  " + 
+        " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'   order by o.numero, o.nombre");
         sectorList = new Listbox();
         int a=0;
             for (Iterator it = sectorList.getItems().iterator(); it.hasNext();) {
@@ -231,7 +234,7 @@ void campos(String valor){
                       Sector acceIt = (Sector) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      li.appendChild(new Listcell(acceIt.getNumero()+".- "+acceIt.getNombre()+" "));
                       sectorList.appendChild(li);
              }
          sectorList2 = new Listbox();
@@ -243,7 +246,7 @@ void campos(String valor){
                       Sector acceIt = (Sector) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      li.appendChild(new Listcell(acceIt.getNumero()+".- "+acceIt.getNombre()+" "));
                       sectorList2.appendChild(li);
              }
 
@@ -398,44 +401,66 @@ void campos(String valor){
                         <row id="filaletras" visible="false">
                             <span style="float:right"> Letras:</span>
                             <span>
-                             <listbox mold="select" id="desdeletra">
+                             <listbox  width="50px"  mold="select" id="desdeletra">
 					<listitem selected="true" value="A" label="A" /> 
                                         <listitem value="B" label="B" /> 
                                         <listitem value="C" label="C" />
-                                        <listitem value="D" label="D" /> <listitem value="Ñ" label="Ñ" /> 
-                                        <listitem value="E" label="E" /> <listitem value="O" label="O" /> 
-                                        <listitem value="F" label="F" /> <listitem value="P" label="P" /> 
-                                        <listitem value="G" label="G" /> <listitem value="Q" label="Q" /> 
-                                        <listitem value="H" label="H" /> <listitem value="R" label="R" /> 
-                                        <listitem value="I" label="I" /> <listitem value="S" label="S" /> 
-                                        <listitem value="J" label="J" /> <listitem value="T" label="T" /> 
-                                        <listitem value="K" label="K" /> <listitem value="U" label="U" /> 
-                                        <listitem value="L" label="L" /> <listitem value="V" label="V" /> 
-                                        <listitem value="M" label="M" /> <listitem value="W" label="W" /> 
-                                         <listitem value="N" label="N" />  <listitem value="X" label="X" /> 
-                                                                          <listitem value="Y" label="Y" /> 
-                                                                            <listitem value="Z" label="Z" /> 
+                                        <listitem value="D" label="D" /> 
+                                        <listitem value="E" label="E" /> 
+                                        <listitem value="F" label="F" />  
+                                        <listitem value="G" label="G" />
+                                        <listitem value="H" label="H" />
+                                        <listitem value="I" label="I" />
+                                        <listitem value="J" label="J" /> 
+                                        <listitem value="K" label="K" /> 
+                                        <listitem value="L" label="L" /> 
+                                        <listitem value="M" label="M" /> 
+                                         <listitem value="N" label="N" />  
+                                         <listitem value="Ñ" label="Ñ" />  
+                                         <listitem value="O" label="O" /> 
+                                         <listitem value="P" label="P" /> 
+                                         <listitem value="Q" label="Q" /> 
+                                         <listitem value="R" label="R" /> 
+                                        <listitem value="S" label="S" /> 
+                                        <listitem value="T" label="T" /> 
+                                        <listitem value="U" label="U" /> 
+                                        <listitem value="V" label="V" /> 
+                                        <listitem value="W" label="W" /> 
+                                        <listitem value="X" label="X" /> 
+                                        <listitem value="Y" label="Y" /> 
+                                         <listitem value="Z" label="Z" /> 
 						
                             </listbox>
                             Hasta:
                             
-                            <listbox mold="select" id="hastaletra">
+                            <listbox width="50px" mold="select" id="hastaletra">
 					<listitem selected="true" value="A" label="A" /> 
                                         <listitem value="B" label="B" /> 
                                         <listitem value="C" label="C" />
-                                        <listitem value="D" label="D" /> <listitem value="Ñ" label="Ñ" /> 
-                                        <listitem value="E" label="E" /> <listitem value="O" label="O" /> 
-                                        <listitem value="F" label="F" /> <listitem value="P" label="P" /> 
-                                        <listitem value="G" label="G" /> <listitem value="Q" label="Q" /> 
-                                        <listitem value="H" label="H" /> <listitem value="R" label="R" /> 
-                                        <listitem value="I" label="I" /> <listitem value="S" label="S" /> 
-                                        <listitem value="J" label="J" /> <listitem value="T" label="T" /> 
-                                        <listitem value="K" label="K" /> <listitem value="U" label="U" /> 
-                                        <listitem value="L" label="L" /> <listitem value="V" label="V" /> 
-                                        <listitem value="M" label="M" /> <listitem value="W" label="W" /> 
-                                         <listitem value="N" label="N" />  <listitem value="X" label="X" /> 
-                                                                          <listitem value="Y" label="Y" /> 
-                                                                            <listitem value="Z" label="Z" /> 
+                                        <listitem value="D" label="D" /> 
+                                        <listitem value="E" label="E" /> 
+                                        <listitem value="F" label="F" />  
+                                        <listitem value="G" label="G" />
+                                        <listitem value="H" label="H" />
+                                        <listitem value="I" label="I" />
+                                        <listitem value="J" label="J" /> 
+                                        <listitem value="K" label="K" /> 
+                                        <listitem value="L" label="L" /> 
+                                        <listitem value="M" label="M" /> 
+                                         <listitem value="N" label="N" />  
+                                         <listitem value="Ñ" label="Ñ" />  
+                                         <listitem value="O" label="O" /> 
+                                         <listitem value="P" label="P" /> 
+                                         <listitem value="Q" label="Q" /> 
+                                         <listitem value="R" label="R" /> 
+                                        <listitem value="S" label="S" /> 
+                                        <listitem value="T" label="T" /> 
+                                        <listitem value="U" label="U" /> 
+                                        <listitem value="V" label="V" /> 
+                                        <listitem value="W" label="W" /> 
+                                        <listitem value="X" label="X" /> 
+                                        <listitem value="Y" label="Y" /> 
+                                         <listitem value="Z" label="Z" /> 
 						
 					</listbox>
                                         </span>

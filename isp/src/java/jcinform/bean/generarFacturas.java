@@ -72,7 +72,8 @@ public class generarFacturas {
         String query = "Select o.* from Contratos  as o "
                 + "where o.codigo not in (Select f.contratos from Factura as f "
                 + "where f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "') "
-                + "and  o.estado in ('Activo','Terminado')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ";
+                + "and  o.estado in ('Activo')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ";
+        //+ "and  o.estado in ('Activo','Terminado')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ";
         System.out.println(""+query);
         List facturasHechas = adm.queryNativo(query, Contratos.class);
         try {

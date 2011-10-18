@@ -5,7 +5,6 @@
 package jcinform.bean.sources;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -21,19 +20,24 @@ import jcinform.persistencia.Cxcobrar;
 import jcinform.persistencia.Detallecompra;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Empleadosfacturas;
+import jcinform.persistencia.Empleadossucursal;
 import jcinform.persistencia.Sector;
 import jcinform.persistencia.Series;
+import jcinform.persistencia.Sucursal;
 import net.sf.jasperreports.engine.JRDataSource;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 
 /**
  *
  * @author jcinform
  */
 public class ReportesClase {
-
+Sucursal sucursal = null;
     public ReportesClase() {
-        BigDecimal a = new BigDecimal(BigInteger.ONE);
-        a.compareTo(a);
+      Session ses = Sessions.getCurrent();
+      Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
+      sucursal = sucursalEmp.getSucursal();
     }
 
     
@@ -47,7 +51,7 @@ public class ReportesClase {
         List<Contratos> contra =  adm.query("Select o from Contratos as o "
                     + "where o.sector.numero "
                     + "between  '" + ini.getNumero()  + "' and   '" + fin.getNumero()  + "' " +  complemento
-                    + "order by o.clientes.apellidos");
+                    + " and o.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();
             detalles.add(contratos);
@@ -65,7 +69,7 @@ public class ReportesClase {
         List<Series> contra =  adm.query("Select o from Series as o "
                     + "where o.contratos.sector.numero "
                     + "between  '" + ini.getNumero()  + "' and   '" + fin.getNumero()  + "' " +  complemento
-                    + "and o.estado = 'P' order by o.contratos.clientes.apellidos");
+                    + "and o.estado = 'P' and o.contratos.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.contratos.clientes.apellidos");
         for (Iterator<Series> it = contra.iterator(); it.hasNext();) {
             Series ser = it.next();
             Contratos contratos = ser.getContratos();
@@ -85,7 +89,7 @@ public class ReportesClase {
         if (cli.getCodigo().equals(-1)) {
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                     + "where o.sector.codigo = '" + sec.getCodigo() + "' "
-                    + "order by o.clientes.apellidos");
+                    + " and o.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.clientes.apellidos");
         } else {
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
             clientes.add(cli);
@@ -134,7 +138,7 @@ public class ReportesClase {
         //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
         clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                 + "where o.sector.codigo = '" + sec.getCodigo() + "' "
-                + "order by o.clientes.apellidos");
+                + "  and o.sucursal.codigo = '"+sucursal.getCodigo()+"'  order by o.clientes.apellidos");
 //        } else {
 //            cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
 //            clientes.add(cli);
@@ -145,7 +149,7 @@ public class ReportesClase {
             String quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
                     + "FROM cxcobrar cx, factura  fa "
                     + " WHERE  fa.clientes  =  " + clientes1.getCodigo() + "  "
-                    + "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
+                    + " AND fa.sucursal = '"+sucursal.getCodigo()+"'  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
 
             List facEncontradas = adm.queryNativo(quer);
@@ -181,7 +185,7 @@ public class ReportesClase {
             //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                     + "where o.sector.codigo = '" + sec.getCodigo() + "' "
-                    + "order by o.clientes.apellidos");
+                    + "   order by o.clientes.apellidos");
         } else {
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
             clientes.add(cli);
@@ -191,16 +195,22 @@ public class ReportesClase {
         String hastastr = convertiraString(hasta);
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
             Clientes clientes1 = itCli.next();
+            
             List facEncontradas = adm.queryNativo("SELECT fa.codigo, fa.numero, fa.fecha, p.nombre, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo"
                     + " FROM plan p, detalle de, cxcobrar cx, factura  fa "
-                    + " WHERE p.codigo = de.plan AND  de.factura = fa.codigo AND fa.clientes  =  " + clientes1.getCodigo() + "  "
-                    + " AND cx.factura = fa.codigo AND cx.fecha between '" + desdestr + "' and '" + hastastr + "' GROUP BY fa.codigo  ");
+                    + " WHERE p.codigo = de.plan AND  de.factura = fa.codigo "
+                    + "AND fa.clientes  =  " + clientes1.getCodigo() + "  "
+                    + " AND fa.sucursal = '"+sucursal.getCodigo()+"' "
+                    + " AND cx.factura = fa.codigo "
+                    + "AND cx.fecha between '" + desdestr + "' and '" + hastastr + "' "
+                    + "GROUP BY fa.codigo  ");
             if (facEncontradas.size() > 0) {
                 Pendientes pendi = null;
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
                     Vector vec = (Vector) itna.next();
 
-                    List<Cxcobrar> abonos = adm.query("Select o from Cxcobrar as o where o.haber > 0 and o.factura.codigo = '" + vec.get(0) + "'");
+                    List<Cxcobrar> abonos = adm.query("Select o from Cxcobrar as o where o.haber > 0 "
+                            + " and o.factura.codigo = '" + vec.get(0) + "'");
                     int i = 1;
                     for (Iterator<Cxcobrar> itAbono = abonos.iterator(); itAbono.hasNext();) {
                         Cxcobrar cIt = itAbono.next();
@@ -224,10 +234,6 @@ public class ReportesClase {
                         detalles.add(pendi);
                         i++;
                     }
-
-
-
-
                 }
 
             }
@@ -244,7 +250,9 @@ public class ReportesClase {
         String hastastr = convertiraString(hasta);
         Pendientes pendi = null;
         List<Cxcobrar> abonos = adm.query("Select o from Cxcobrar as o "
-                + "where o.haber > 0 and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' ");
+                + "where o.haber > 0 "
+                + "and o.factura.sucursal.codigo = '"+sucursal.getCodigo()+"' "
+                + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' ");
         int i = 1;
         for (Iterator<Cxcobrar> itAbono = abonos.iterator(); itAbono.hasNext();) {
             Cxcobrar cIt = itAbono.next();
@@ -277,7 +285,8 @@ public class ReportesClase {
         String desdestr = convertiraString(desde);
         Pendientes pendi = null;
         List<Empleadosfacturas> abonos = adm.queryNativo("Select o.* from Empleadosfacturas as o "
-                + "where date(o.fecha) = '" + desdestr + "'  and o.empleados = '" + emp.getCodigo() + "' ", Empleadosfacturas.class);
+                + "where date(o.fecha) = '" + desdestr + "' "
+                + " and o.empleados = '" + emp.getCodigo() + "' ", Empleadosfacturas.class);
         int i = 1;
         for (Iterator<Empleadosfacturas> itAbono = abonos.iterator(); itAbono.hasNext();) {
             Empleadosfacturas cIt = itAbono.next();
@@ -315,8 +324,9 @@ public class ReportesClase {
     public JRDataSource clientesxsector(Sector sec) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-        List<Contratos> contra = adm.query("Select o from Contratos as o where o.sector.codigo =  '" + sec.getCodigo() + "'"
-                + " order by o.clientes.apellidos");
+        List<Contratos> contra = adm.query("Select o from Contratos as o "
+                + "where o.sector.codigo =  '" + sec.getCodigo() + "'"
+                + "  and o.sucursal.codigo = '"+sucursal.getCodigo()+"'  order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();
             detalles.add(contratos);
@@ -335,6 +345,7 @@ public class ReportesClase {
                 + " SUM(IF(d.cantidad<0 AND c.documento = 'VEN' ,d.cantidad,0)) salida, SUM(IF(d.cantidad<0 AND c.documento = 'AJU' ,d.cantidad,0)) AJUSTE, SUM(IF(d.cantidad<0 AND c.documento = 'PRE' ,d.cantidad,0)) PRESTAMO, (SUM(IF(d.cantidad>0,d.cantidad,0))+SUM(IF(d.cantidad<0,d.cantidad,0))) total "
                 + "FROM cabeceracompra c, detallecompra d, equipos e, marcas m WHERE e.codigo = d.equipos AND m.codigo = e.marcas "
                 + "AND c.codigo = d.compra  AND e.bien = TRUE AND c.documento IN ('COM','VEN','AJU','PRE')  "
+                + " AND c.sucursal = '"+sucursal.getCodigo()+"' "
                 + "GROUP BY d.equipos "
                 + " order by 1";
         List contra = adm.queryNativo(quer);
@@ -361,8 +372,9 @@ public class ReportesClase {
         ArrayList detalles = new ArrayList();
         List contra = adm.queryNativo("SELECT concat(e.nombre,' ', e.modelo,' ', m.nombre),   "
                 + "SUM(IF(d.cantidad<0,d.cantidad,0)) salida "
-                + "FROM cabeceracompra c, detallecompra d, equipos e, marcas m WHERE e.codigo = d.equipos AND m.codigo = e.marcas "
-                + "AND c.codigo = d.compra  AND c.documento IN ('PRE') "
+                + "FROM cabeceracompra c, detallecompra d, equipos e, marcas m "
+                + "WHERE e.codigo = d.equipos AND m.codigo = e.marcas "
+                + "AND c.codigo = d.compra AND c.sucursal = '"+sucursal.getCodigo()+"' AND c.documento IN ('PRE') "
                 + "GROUP BY d.equipos "
                 + " order by 1");
 
@@ -385,7 +397,7 @@ public class ReportesClase {
         List contra = adm.queryNativo("SELECT concat(e.nombre,' ', e.modelo,' ', m.nombre),   "
                 + "SUM(IF(d.cantidad<0,d.cantidad,0)) salida "
                 + "FROM cabeceracompra c, detallecompra d, equipos e, marcas m WHERE e.codigo = d.equipos AND m.codigo = e.marcas "
-                + "AND c.codigo = d.compra  AND c.documento IN ('AJU') "
+                + "AND c.codigo = d.compra AND c.sucursal = '"+sucursal.getCodigo()+"'  AND c.documento IN ('AJU') "
                 + "GROUP BY d.equipos "
                 + " order by 1");
 
@@ -405,7 +417,8 @@ public class ReportesClase {
     public JRDataSource inventarioGeneral() {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-        List<Cabeceracompra> compras = adm.query("Select o from Cabeceracompra as o where o.documento = 'COM' ");
+        List<Cabeceracompra> compras = adm.query("Select o from Cabeceracompra as o "
+                + "where o.documento = 'COM' and o.sucursal.codigo = '"+sucursal.getCodigo()+"' ");
         for (Iterator<Cabeceracompra> it = compras.iterator(); it.hasNext();) {
             Cabeceracompra cabeceracompra = it.next();
             List<Detallecompra> detallesC = adm.query("Select o from Detallecompra as o "
@@ -447,7 +460,7 @@ public class ReportesClase {
                             + "where s.estado in ('C') "
                             + "and s.detallecompra.codigo  = '" + detallecompra.getCodigo() + "'  and s.serie "
                             + " not in (Select o.serie from Series as o "
-                        + "where o.estado in ('P','V','A')  )  ");
+                        + "where o.estado in ('P','V','A') and o.sucursal.codigo = '"+sucursal.getCodigo()+"'  )  ");
                     for (Iterator<Series> it2 = seriesCompradas.iterator(); it2.hasNext();) {
                         Series series = it2.next();
                         InventarioNormal inv = new InventarioNormal();

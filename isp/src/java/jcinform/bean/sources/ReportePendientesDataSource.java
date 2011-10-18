@@ -42,6 +42,9 @@ public class ReportePendientesDataSource implements JRDataSource {
         try {
             if ("factura".equals(fieldName)) {
                 String fac = nodo.getFactura();
+                if(fac.equals("null")){
+                    fac = "000FAC0000";
+                }
                 while(fac.length()<6){
                     fac = "0"+fac;
                 }

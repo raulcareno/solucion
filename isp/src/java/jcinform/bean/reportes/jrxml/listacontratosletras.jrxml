@@ -99,7 +99,7 @@
 			<textField>
 				<reportElement x="418" y="0" width="120" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{sector}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sector2}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
