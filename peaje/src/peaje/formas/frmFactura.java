@@ -2401,6 +2401,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
                             Thread.sleep(20);
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
 
                             //TEMPORAL
                         } catch (Exception ex) {

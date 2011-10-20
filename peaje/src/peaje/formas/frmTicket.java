@@ -378,8 +378,16 @@ if(empresaObj.getSeabretic()){
                         LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
                         ta.outputSream.write(empresaObj.getPuertatic().getBytes());
                         //TEMPORAL
-                            ta.outputSream.write(empresaObj.getPuertatic().getBytes());
-                            ta.outputSream.write(empresaObj.getPuertatic().getBytes());
+                        Thread.sleep(20);                            
+                        ta.outputSream.write(empresaObj.getPuertatic().getBytes());
+                        Thread.sleep(20);                            
+                        ta.outputSream.write(empresaObj.getPuertatic().getBytes());
+                        Thread.sleep(20);                            
+                        ta.outputSream.write(empresaObj.getPuertatic().getBytes());
+                        Thread.sleep(20);                            
+                        ta.outputSream.write(empresaObj.getPuertatic().getBytes());
+                        Thread.sleep(20);                            
+                        ta.outputSream.write(empresaObj.getPuertatic().getBytes());
                         //TEMPORAL
                     } catch (Exception ex) {
                         Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
