@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <JCINFORMEMPRESA>
-    <PUERTOPRINCIPAL>COM3</PUERTOPRINCIPAL>
-    <LED>COM3</LED>
+    <PUERTOPRINCIPAL>COM4</PUERTOPRINCIPAL>
+    <LED>null</LED>
     <BARRA1/>
     <BARRA2/>
     <SALE1>2</SALE1>
     <SALE2>2</SALE2>
-    <ENTRADA1>COM2</ENTRADA1>
+    <ENTRADA1>COM3</ENTRADA1>
     <ENTRADA2/>
     <ENTRADA3/>
     <ENTRADA4/>
@@ -14,8 +14,8 @@
     <ENTRADA6/>
     <ENTRADA7/>
     <SALIDA1/>
-    <SALIDA2>COM3</SALIDA2>
-    <SALIDA3>COM1</SALIDA3>
+    <SALIDA2/>
+    <SALIDA3/>
     <SALIDA4/>
     <SALIDA5/>
     <SALIDA6/>
@@ -28,7 +28,7 @@
     <PUERTA6/>
     <PUERTA7/>
     <ACTIVA1>true</ACTIVA1>
-    <ACTIVA2>true</ACTIVA2>
+    <ACTIVA2>false</ACTIVA2>
     <ACTIVA3>true</ACTIVA3>
     <ACTIVA4>false</ACTIVA4>
     <ACTIVA5>false</ACTIVA5>

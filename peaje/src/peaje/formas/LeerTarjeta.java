@@ -355,8 +355,13 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                             }
 //                            LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
 //                            ta.outputSream.write((("XYinforma" + valor).getBytes()));
-            LeerTarjeta ta = (LeerTarjeta) princip.puertoListo.get(1);
-            ta.outputSream.write((("XYinforma" +valor).getBytes()));
+            try{
+                LeerTarjeta ta = (LeerTarjeta) princip.puertoListo.get(1);
+                ta.outputSream.write((("XYinforma" +valor).getBytes()));
+            }catch(Exception e){
+                System.out.println("NO HAY PANTALLA DE LEDS: "+e);
+            }
+            
             try{
                 princip.disponibles.setText("Disponibles: " + disponibles);
                 princip.ocupados.setText("Ocupados: " + val2.intValue());

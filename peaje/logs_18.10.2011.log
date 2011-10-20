@@ -1,0 +1,12 @@
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,18.10.2011/10:55:56,OK
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,18.10.2011/10:55:56,ERROR
+INFO NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: COM3,line 41,18.10.2011/10:55:58,ERROR
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,18.10.2011/10:56:00,OK
+INFO peaje.formas.frmTicket,line 41,18.10.2011/10:57:26,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,18.10.2011/10:57:34,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,18.10.2011/10:57:41,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,18.10.2011/10:57:48,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,18.10.2011/10:57:59,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,18.10.2011/10:58:17,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,18.10.2011/10:58:26,java.lang.ArrayIndexOutOfBoundsException: 0
+INFO peaje.formas.frmTicket,line 41,18.10.2011/11:05:49,java.lang.ArrayIndexOutOfBoundsException: 0
