@@ -358,7 +358,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                                 valor = "0" + regresa;
                             } else {
                                 valor = "" + regresa;
-                            }
+                            }                       
 //                            LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
 //                            ta.outputSream.write((("XYinforma" + valor).getBytes()));
             try{
