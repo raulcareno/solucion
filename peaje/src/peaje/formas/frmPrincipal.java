@@ -1244,7 +1244,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         salida.setText("Ingresa por la Salida");
         formaTarjetas1.getContentPane().add(salida);
-        salida.setBounds(30, 60, 150, 23);
+        salida.setBounds(20, 60, 130, 23);
 
         txtGracia.setEditable(false);
         txtGracia.setHorizontalAlignment(javax.swing.JTextField.RIGHT);

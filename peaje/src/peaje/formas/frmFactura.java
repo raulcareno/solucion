@@ -2392,7 +2392,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
 //
 //                    }
                     if (empresaObj.getSeabrefac()) {
-
                         try {
                             LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
@@ -2407,7 +2406,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
                             Thread.sleep(20);
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
                             //TEMPORAL
                         } catch (Exception ex) {
                             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);

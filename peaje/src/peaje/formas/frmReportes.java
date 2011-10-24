@@ -779,10 +779,12 @@ public class frmReportes extends javax.swing.JInternalFrame {
         }  else if (cmbTipoReporte.getSelectedIndex() == 4) {//FACTURADO SOLO TICKETS
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + "and o.fechafin is not null and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
+                    + "and o.fechafin is not null "
+                    + "and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+            System.out.println("SOLO TICKETS: "+query);
             if(cmbUsuarios.getSelectedIndex()>0){
-            query = "Select o from Factura as o" +
+                 query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + " and o.fechafin is not null and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                     + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
@@ -798,6 +800,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null  and o.ticket is null and o.tarjetas is null "
                     + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+            System.out.println("SOLO TARJETAS: "+query);
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariastarjetas.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
@@ -806,7 +809,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
             query = "Select date(o.fechafin),sum(o.total) from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "'  "
                     + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
-                    + "  group by month(o.fechafin)  ";
+                    + " and o.fechafin is not null  and (o.nocontar = false or o.nocontar is null ) group by month(o.fechafin)  ";
+            System.out.println(""+query);
             dirreporte = ubicacionDirectorio+"reportes"+separador+"consolidado.jasper";
             titulo = " ";
             consolidado(dirreporte, query, titulo);

@@ -218,7 +218,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
 
                         //System.out.println("" + tarjeta);
-                        if (tarjeta.contains("AEIOU")) {
+                        if (tarjeta.contains("AEIOUA")) {
                             try {
                                 //                            tarjeta = tarjeta.replace("00", "");
                                                 System.out.println(tarjeta + " " + new Date());
@@ -329,6 +329,12 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
               Thread.sleep(20);
                 ta.outputSream.write(puerta.trim().getBytes());
               Thread.sleep(20);
+                ta.outputSream.write(puerta.trim().getBytes());
+                Thread.sleep(20);
+                ta.outputSream.write(puerta.trim().getBytes());
+                Thread.sleep(20);
+                ta.outputSream.write(puerta.trim().getBytes());
+                Thread.sleep(20);
                 ta.outputSream.write(puerta.trim().getBytes());
                 Thread.sleep(20);
                 ta.outputSream.write(puerta.trim().getBytes());
