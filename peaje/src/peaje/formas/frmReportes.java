@@ -599,6 +599,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             parametros.put("telefono", emp.getTelefonos());
             parametros.put("titulo", titulo);
             parametros.put("parqueaderos", emp.getParqueaderos());
+            parametros.put("usuario", cmbUsuarios.getSelectedItem().toString());
 
 
 

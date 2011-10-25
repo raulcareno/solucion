@@ -1223,9 +1223,26 @@ public class frmFactura extends javax.swing.JInternalFrame {
                             LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
                             //TEMPORAL
+                            Thread.sleep(20);
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            
+                            
                             //TEMPORAL
                         } catch (Exception ex) {
                             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -1650,6 +1667,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
         int indice = min.toString().indexOf(".");
         Float valorf = new Float("0" + min.toString().substring(indice));
         int valorMinutos = java.lang.Math.round((valorf * 60));
+        if(minutos.equals(60)){
+            valorMinutos = 60;
+        }
         act.setHours(horas);
         act.setMinutes(valorMinutos);
         tiempo.setDate(act);
@@ -2349,6 +2369,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     facActual.setPlaca("PAGO MULTA");
                     facActual.setTiempo(new Date());
                     facActual.setTicket("000000000");
+                    facActual.setUsuario(principal.usuarioActual);
+                    facActual.setUsuarioc(principal.usuarioActual);
 
                     //adm.guardar(facActual);
                     
@@ -2396,6 +2418,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
                             LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
                             //TEMPORAL
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                            Thread.sleep(20);
+                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
                             Thread.sleep(20);
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
                             Thread.sleep(20);
