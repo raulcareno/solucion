@@ -210,7 +210,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         
 
         if (tarjeta.length() >= 10) {
-            System.out.println("LECTURA: " + tarjeta);
+            System.out.println("LECTURA>10: " + tarjeta);
                         if (tarjeta.length() > 10) {
                             tarjeta = tarjeta.substring(0, 10);
                         }
@@ -266,9 +266,9 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
         } else {
                     System.out.println("" + tarjeta);
-                    if (tarjeta.contains("AEI")) {
+                    if (tarjeta.contains("AEIOUAE") && puertoId.getName().equals(princip.empresaObj.getPuerto())) {
         //             tarjeta = tarjeta.replace("00", "");
-                        System.out.println(tarjeta + " " + new Date());
+                        System.out.println(tarjeta + " ** " + new Date());
                         tarjeta = "";
                         imprimir("");
                         abrirPuerta(princip.empresaObj.getEntra1());
