@@ -14,6 +14,7 @@ import jcinform.bean.sources.clasestmp.InventarioNormal;
 import jcinform.bean.sources.clasestmp.Pendientes;
 import jcinform.conexion.Administrador;
 import jcinform.persistencia.Cabeceracompra;
+import jcinform.persistencia.Canton;
 import jcinform.persistencia.Clientes;
 import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
@@ -83,13 +84,38 @@ Sucursal sucursal = null;
     }
        
     
-    public JRDataSource facturasPendientes(Clientes cli, Sector sec) {
+    public JRDataSource facturasPendientes(Clientes cli, Sector sec,Canton canton) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         if (cli.getCodigo().equals(-1)) {
-            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + "where o.sector.codigo = '" + sec.getCodigo() + "' "
-                    + " and o.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.clientes.apellidos");
+            
+            
+                    if(sec.getCodigo().equals(-1)){
+                            
+                            if(canton.getCodigo().equals(-1)){
+                                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                                    + "where  o.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.clientes.apellidos");
+                            
+                            }else{
+                                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                                    + "where o.sector.canton.codigo = '"+canton.getCodigo()+"' and  o.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.clientes.apellidos");
+                            
+                            }
+                    }else  if(canton.getCodigo().equals(-1)){
+                            
+                            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                                    + "where  o.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.clientes.apellidos");
+                            
+                             
+                    }else{
+                            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                            + "where o.sector.codigo = '" + sec.getCodigo() + "' "
+                            + " and o.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.clientes.apellidos");
+                    
+                    }
+                        
+            
+        
         } else {
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
             clientes.add(cli);

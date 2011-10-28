@@ -25,6 +25,10 @@ Empresa empresa = (Empresa) ses.getAttribute("empresa");
 Empleados user = (Empleados)ses.getAttribute("user");
  ReportesClase reportes = new ReportesClase();
 List cantones = adm.query("Select o from Canton as o  ");
+Canton cantonTodos = new Canton(-1);
+cantonTodos.setNombre("- TODOS - ");
+cantones.add(0,cantonTodos);
+
       Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
       
       public Double redondear(Double numero, int decimales) {
@@ -74,9 +78,9 @@ List cantones = adm.query("Select o from Canton as o  ");
                         cclientev = -1; //TODOS LOS CLIENTES
                 }
                 if(cclientev.equals(-1)){
-                        datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value);
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value,cant.selectedItem.value);
                 }else{
-                        datasource = reportes.facturasPendientes(new Clientes(cclientev),null);
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),null,null);
                 }
                 
                 
@@ -85,9 +89,13 @@ List cantones = adm.query("Select o from Canton as o  ");
                                 datasource = reportes.facturasPendientes(sectorList.selectedItem.value);
                    report.setSrc(directorioReportes+"cxcclientesxzona.jasper");
                    
-            }else if(tipo.equals("PORSECTORCLI")){
+            }else if(tipo.equals("PORSECTORCLI") || tipo.equals("PORSECTORCLI2")){
                   datasource = reportes.clientesxsector(sectorList.selectedItem.value);
-                   report.setSrc(directorioReportes+"listacontratos.jasper");
+                   if(tipo.equals("PORSECTORCLI"))
+                        report.setSrc(directorioReportes+"listacontratos.jasper");
+                   else
+                        report.setSrc(directorioReportes+"listacontratos2.jasper");
+                   
                    
             }else if(tipo.equals("PORSECTORCLILETRA")){
                   datasource = reportes.clientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value);
@@ -152,7 +160,7 @@ void campos(String valor){
       filasector.visible=false;
       filaletras.visible=false;
       Date fec = adm.Date();
-      
+      filasector2.visible = false;
       fec.setDate(1);
         if(valor.equals("CXCLI")){
             titulo.value= "Cuentas por Pagar";
@@ -177,7 +185,7 @@ void campos(String valor){
             titulo.value= "X Cobrar";
             filacanton.visible=true;
             filasector.visible=true;
-        }else if(valor.equals("PORSECTORCLI")){
+        }else if(valor.equals("PORSECTORCLI") || valor.equals("PORSECTORCLI2")){
             titulo.value= "X Cobrar";
             filacanton.visible=true;
             filasector.visible=true;
@@ -228,8 +236,11 @@ void campos(String valor){
             for (Iterator it = sectorList.getItems().iterator(); it.hasNext();) {
                     sectorList.getItems().remove(a);
                 }
-
-
+                      Listitem liTodos = new Listitem();
+                      Sector todos = new Sector(-1);;
+                      liTodos.setValue(todos);
+                      liTodos.appendChild(new Listcell(" - TODOS - "));
+                      sectorList.appendChild(liTodos);
                for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
                       Sector acceIt = (Sector) it.next();
                       Listitem li = new Listitem();
@@ -272,6 +283,7 @@ void campos(String valor){
                                     <listitem disabled="true" label="" />
                                     <listitem  disabled="true" id="linea" label="=========CONTRATOS================" value="linea" />
                                     <listitem id="PORSECTORCLI" label="Clientes por Sector " value="PORSECTORCLI" />
+                                    <listitem id="PORSECTORCLI2" label="Clientes por Sector sin Valor" value="PORSECTORCLI2" />
                                     <listitem id="PORSECTORCLILETRA" label="Clientes por Sector(Desde-Hasta) [A-Z] " value="PORSECTORCLILETRA" />
                                     <listitem id="EQUIPOSPORSECTORCLILETRA" label="Clientes por Sector y Equipos[A-Z] " value="EQUIPOSPORSECTORCLILETRA" />
                                     <listitem disabled="true" label="" />
@@ -434,7 +446,7 @@ void campos(String valor){
                             Hasta:
                             
                             <listbox width="50px" mold="select" id="hastaletra">
-					<listitem selected="true" value="A" label="A" /> 
+					<listitem value="A" label="A" /> 
                                         <listitem value="B" label="B" /> 
                                         <listitem value="C" label="C" />
                                         <listitem value="D" label="D" /> 
@@ -460,7 +472,7 @@ void campos(String valor){
                                         <listitem value="W" label="W" /> 
                                         <listitem value="X" label="X" /> 
                                         <listitem value="Y" label="Y" /> 
-                                         <listitem value="Z" label="Z" /> 
+                                         <listitem selected="true" value="Z" label="Z" /> 
 						
 					</listbox>
                                         </span>
