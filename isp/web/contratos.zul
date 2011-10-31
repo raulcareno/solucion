@@ -864,7 +864,7 @@ void verificarCedula(String valor){
             for (Iterator it = contratosCliente.getItems().iterator(); it.hasNext();) {
                    contratosCliente.getItems().remove(a);
                 }
-                List  ControlequiposEncontrados = adm.query("Select o from Contratos as o where o.clientes.codigo = '"+empa.getCodigo()+"' and o.estado not in ('Terminado') ");
+                List  ControlequiposEncontrados = adm.query("Select o from Contratos as o where o.clientes.codigo = '"+empa.getCodigo()+"'   ");
                         if(ControlequiposEncontrados.size()>0){
                         
                                  if(ControlequiposEncontrados.size() > 1){
