@@ -201,7 +201,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                         System.out.println("#bytes: " + numBytes);
                         tarjeta = tarjeta + new String(readBuffer).trim();
                     }
-
+ 
                 } catch (Exception e) {
                 }
                 break;
@@ -215,10 +215,9 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                             tarjeta = tarjeta.substring(0, 10);
                         }
                         //System.out.println("VAL: TARJETA: " + tarjeta);
-
-
                         //System.out.println("" + tarjeta);
                         if (tarjeta.contains("AEIOUA")) {
+                        //if (tarjeta.contains("AEIOUA")) {
                             try {
                                 //                            tarjeta = tarjeta.replace("00", "");
                                                 System.out.println(tarjeta + " " + new Date());
@@ -227,7 +226,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                                                 Thread.sleep(3000);
                                                 abrirPuerta(princip.empresaObj.getEntra1());
                                                 System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra1());
-
+                                                
                                                 return;
                             } catch (InterruptedException ex) {
                                 Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
@@ -266,7 +265,9 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
         } else {
                     System.out.println("" + tarjeta);
-                    if (tarjeta.contains("AEIOUAE") && puertoId.getName().equals(princip.empresaObj.getPuerto())) {
+                    if (tarjeta.contains("AEIOU")) {
+                        //if (tarjeta.contains("AEIOUAE")) {funciona con francisco
+                    //if (tarjeta.contains("AEI")) { //no funciona para francisco granja
         //             tarjeta = tarjeta.replace("00", "");
                         System.out.println(tarjeta + " ** " + new Date());
                         tarjeta = "";
