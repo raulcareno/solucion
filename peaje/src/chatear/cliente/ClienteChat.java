@@ -57,6 +57,7 @@ public class ClienteChat
         JFrame v = new JFrame();
         panel = new PanelCliente(v.getContentPane());
         v.pack();
+        v.setSize(300, 300);
         v.setVisible(true);
         v.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }

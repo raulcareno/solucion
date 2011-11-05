@@ -50,8 +50,9 @@ public class PanelCliente
         scroll = new JScrollPane(textArea);
 
         JPanel panel = new JPanel(new FlowLayout());
-        textField = new JTextField(50);
+        textField = new JTextField(10);
         boton = new JButton("Enviar");
+//        panel.setSize(500, 600);
         panel.add(textField);
         panel.add(boton);
 
