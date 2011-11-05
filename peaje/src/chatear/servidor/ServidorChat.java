@@ -41,10 +41,10 @@ public class ServidorChat
             ServerSocket socketServidor = new ServerSocket(5557);
             while (true)
             {
-                Socket cliente = socketServidor.accept();
-                Runnable nuevoCliente = new HiloDeCliente(charla, cliente);
-                Thread hilo = new Thread(nuevoCliente);
-                hilo.start();
+//                Socket cliente = socketServidor.accept();
+//                Runnable nuevoCliente = new HiloDeCliente(charla, cliente);
+//                Thread hilo = new Thread(nuevoCliente);
+//                hilo.start();
             }
         } catch (Exception e)
         {

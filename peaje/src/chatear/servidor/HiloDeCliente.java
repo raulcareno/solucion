@@ -11,6 +11,8 @@ import java.net.Socket;
 import javax.swing.DefaultListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import peaje.formas.LeerTarjeta;
+import peaje.formas.frmPrincipal;
 
 /**
  * Hilo encargado de atender a un cliente.
@@ -23,7 +25,7 @@ public class HiloDeCliente implements Runnable, ListDataListener
 
     /** Socket al que est� conectado el cliente */
     private Socket socket;
-
+private frmPrincipal princip;
     /** Para lectura de datos en el socket */
     private DataInputStream dataInput;
 
@@ -35,7 +37,7 @@ public class HiloDeCliente implements Runnable, ListDataListener
      * @param charla La lista de textos que componen la charla del chat
      * @param socket Socket con el cliente.
      */
-    public HiloDeCliente(DefaultListModel charla, Socket socket)
+    public HiloDeCliente(DefaultListModel charla, Socket socket,frmPrincipal principal)
     {
         this.charla = charla;
         this.socket = socket;
@@ -43,6 +45,7 @@ public class HiloDeCliente implements Runnable, ListDataListener
         {
             dataInput = new DataInputStream(socket.getInputStream());
             dataOutput = new DataOutputStream(socket.getOutputStream());
+            princip = principal;
             charla.addListDataListener(this);
         } catch (Exception e)
         {
@@ -63,6 +66,8 @@ public class HiloDeCliente implements Runnable, ListDataListener
                 synchronized (charla)
                 {
                     charla.addElement(texto);
+                    
+                    System.out.println("ABRIR PUERTA 1 "+princip.puertoListo);
                     System.out.println(texto);
                 }
             }
