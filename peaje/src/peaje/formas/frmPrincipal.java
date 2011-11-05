@@ -1,6 +1,7 @@
 package peaje.formas;
 
 //import camaraIP.tomarImage;
+import chatear.servidor.HiloDeCliente;
 import java.awt.AWTException;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -47,6 +48,8 @@ import java.awt.print.PrinterJob;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -539,6 +542,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         logoTeka = new javax.swing.JLabel();
         miBotonImagen = new javax.swing.JLabel();
         ultimoIngreso = new javax.swing.JLabel();
+        jButton11 = new javax.swing.JButton();
         usuarioLogeado = new javax.swing.JButton();
         jLabel37 = new javax.swing.JLabel();
         botoninst = new javax.swing.JButton();
@@ -940,7 +944,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Acceso al Sistema");
         jPanel3.add(jLabel8);
@@ -2392,7 +2396,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(cliente);
             cliente.setBounds(20, 20, 520, 80);
 
-            imAviso.setFont(new java.awt.Font("Tahoma", 0, 24));
+            imAviso.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
             imAviso.setText(".....");
             panelIngreso.add(imAviso);
@@ -2519,6 +2523,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(ultimoIngreso);
             ultimoIngreso.setBounds(370, 340, 230, 13);
 
+            jButton11.setText("..");
+            jButton11.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton11ActionPerformed(evt);
+                }
+            });
+            panelIngreso.add(jButton11);
+            jButton11.setBounds(750, 150, 10, 23);
+
             panelIngreso.setBounds(0, 30, 770, 590);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -2592,7 +2605,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar1.setFloatable(false);
-            jToolBar1.setOrientation(1);
+            jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar1.setRollover(true);
 
             btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
@@ -2660,7 +2673,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar2.setFloatable(false);
-            jToolBar2.setOrientation(1);
+            jToolBar2.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar2.setRollover(true);
 
             btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
@@ -2764,7 +2777,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar3.setFloatable(false);
-            jToolBar3.setOrientation(1);
+            jToolBar3.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar3.setRollover(true);
 
             btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/help.gif"))); // NOI18N
@@ -6482,6 +6495,26 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private void txtGracia1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGracia1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtGracia1ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+         Thread cargar = new Thread() {
+
+            public void run() {
+                try {
+                    System.out.println("EMPEZO.. SERVIDOR");
+                ServidorChat();
+                System.out.println("EMPEZO.. SERVIDOR//");
+                } catch (Exception ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);             lger.logger(frmPrincipal.class.getName(), ex+"");
+                }
+
+            }
+        };
+        cargar.start();   
+       
+           
+    }//GEN-LAST:event_jButton11ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -6679,6 +6712,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JSpinner ingresos2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -7196,4 +7230,24 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 //        }
 //
 //    }
+       private DefaultListModel charla = new DefaultListModel();
+    //COMUNICACIÓN 
+        public void ServidorChat()    {
+        try
+        {
+            ServerSocket socketServidor = new ServerSocket(5557);
+            while (true)
+            {
+                Socket cliente = socketServidor.accept();
+                Runnable nuevoCliente = new HiloDeCliente(charla, cliente,this);
+                Thread hilo = new Thread(nuevoCliente);
+                hilo.start();
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    
 }
