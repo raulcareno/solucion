@@ -41,7 +41,7 @@ public class ClienteChat
         try
         {
             creaYVisualizaVentana();
-            socket = new Socket("localhost", 5557);
+            socket = new Socket("192.168.10.101", 5557);
             ControlCliente control = new ControlCliente(socket, panel);
         } catch (Exception e)
         {
