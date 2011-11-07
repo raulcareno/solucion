@@ -1,0 +1,4 @@
+INFO peaje.formas.frmPrincipal,line 41,01.11.2011/11:46:17,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,01.11.2011/11:47:20,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM1,line 41,01.11.2011/11:47:40,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,01.11.2011/11:47:40,OK

@@ -193,6 +193,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             case SerialPortEvent.OUTPUT_BUFFER_EMPTY:
                 break;
             case SerialPortEvent.DATA_AVAILABLE:
+                manejarDatos();
                 byte[] readBuffer = new byte[10];
                 try {
 //                                tarjeta = "";
@@ -301,7 +302,29 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
         }
     }
+public String manejarDatos() {
+        try {
+                int avail = serialPort.getInputStream().available();
+                byte[] response = new byte[avail];
+//                StringBuffer strbuf = new StringBuffer();
+                serialPort.getInputStream().read(response, 0, avail);
+//                serialPort.getInputStream().read(response, 0, avail);
+                         for (int i = 0; i < avail; i++) {
+                                 Thread.sleep(5);
+                                 char ch = (char) response[i];
+//                                 outputSream.write((char) response[i]);
+                                 System.out.print((char) response[i]);
+                                  tarjeta = tarjeta + new String(ch+"").trim();
+                         }
+                         System.out.println(new Date()+" "+tarjeta);
+        } catch (IOException ie1) {
+                System.out.println("File " + ie1);
+        } catch (InterruptedException in) {
+                System.out.println("Interrupt " + in);
+        }
+        return tarjeta; 
 
+}
     public void abrirPuerta(String puerta) {
         System.out.println("local puerta: " + puerta);
         try {
