@@ -193,12 +193,13 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             case SerialPortEvent.OUTPUT_BUFFER_EMPTY:
                 break;
             case SerialPortEvent.DATA_AVAILABLE:
-                manejarDatos();
+                //manejarDatos();
                 byte[] readBuffer = new byte[10];
                 try {
 //                                tarjeta = "";
                     while (inputStream.available() > 0) {
                         int numBytes = inputStream.read(readBuffer);
+                        Thread.sleep(10);
                         System.out.println("#bytes: " + numBytes);
                         tarjeta = tarjeta + new String(readBuffer).trim();
                     }
@@ -207,7 +208,8 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 }
                 break;
         }
-        //System.out.println(""+tarjeta);
+        Date f = new Date();
+        System.out.println("_______"+tarjeta+" ******* end"+f.getTime());
         
 
         if (tarjeta.length() >= 10) {
@@ -265,14 +267,25 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                         return;
 
         } else {
-                    System.out.println("" + tarjeta);
-                    if (tarjeta.contains("AEIOU")) {
+                    
+                    if (tarjeta.contains("AEIOUAE1")) {
+                        System.out.println("abrio 1:  " + tarjeta + " ** " + new Date());
                         //if (tarjeta.contains("AEIOUAE")) {funciona con francisco
                     //if (tarjeta.contains("AEI")) { //no funciona para francisco granja
         //             tarjeta = tarjeta.replace("00", "");
-                        System.out.println(tarjeta + " ** " + new Date());
                         tarjeta = "";
                         imprimir("");
+                        abrirPuerta(princip.empresaObj.getEntra1());
+                        System.out.println("ABRIO PUERTA aeiou1: " + princip.empresaObj.getEntra1());
+                        return;
+
+                    }else if (tarjeta.contains("AEIOUAE2")) {
+                        System.out.println("abrio 1:  " + tarjeta + " ** " + new Date());
+                        //if (tarjeta.contains("AEIOUAE")) {funciona con francisco
+                    //if (tarjeta.contains("AEI")) { //no funciona para francisco granja
+        //             tarjeta = tarjeta.replace("00", "");
+                        tarjeta = "";
+                        imprimir("2");
                         abrirPuerta(princip.empresaObj.getEntra1());
                         System.out.println("ABRIO PUERTA aeiou1: " + princip.empresaObj.getEntra1());
                         return;
