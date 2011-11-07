@@ -1,0 +1,686 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- saved from url=(0072)http://stackoverflow.com/questions/771538/why-serialevent-ri-doesnt-work -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="./!LEEME!_files/ga.js"></script>
+    
+    <title>java - Why SerialEvent.RI doesn't work? - Stack Overflow</title>
+    <link rel="shortcut icon" href="http://cdn.sstatic.net/stackoverflow/img/favicon.ico">
+    <link rel="apple-touch-icon" href="http://cdn.sstatic.net/stackoverflow/img/apple-touch-icon.png">
+    <link rel="search" type="application/opensearchdescription+xml" title="Stack Overflow" href="http://stackoverflow.com/opensearch.xml">
+    <script type="text/javascript" async="" src="./!LEEME!_files/adzerk1_2_4_43,adzerk2_2_17_45,adzerk3_2_4_44"></script><script type="text/javascript" src="./!LEEME!_files/jquery.min.js"></script>
+    <script type="text/javascript" src="./!LEEME!_files/stub.js"></script>
+    <link rel="stylesheet" type="text/css" href="./!LEEME!_files/all.css">
+    
+    <link rel="canonical" href="./!LEEME!_files/!LEEME!.html">
+    <link rel="alternate" type="application/atom+xml" title="Feed for question &#39;Why SerialEvent.RI doesn&#39;t work?&#39;" href="http://stackoverflow.com/feeds/question/771538">
+    <meta name="title" content="java - Why SerialEvent.RI doesn&amp;#39;t work? - Stack Overflow">
+    <link rel="image_src" href="http://sstatic.net/stackoverflow/img/apple-touch-icon.png">
+    <script type="text/javascript">
+        
+        StackExchange.ready(function () {
+
+            StackExchange.question.init({showAnswerHelp:true,totalCommentCount:0,shownCommentCount:0,highlightColor:'#F4A83D',backgroundColor:'#FFF',questionId:771538});
+
+            styleCode();
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        StackExchange.init({"stackAuthUrl":"http://stackauth.com","serverTime":1320679079,"styleCode":true,"newTagEditor":true,"enableUserHovercards":true,"enableTabCompletion":true,"site":{"name":"Stack Overflow","description":"Q&A for professional and enthusiast programmers"},"user":{"isAnonymous":true,"fkey":"421f8e88a449c9ef720a43199d3dddc2","inboxUnviewedCount":-1}});
+        StackExchange.using.setCacheBreakers({"js/prettify-full.js":"0324556b7bf7","js/moderator.js":"4b831f9da1aa","js/full-anon.js":"6d7020bd1545","js/full.js":"6a19ff0e57e3","js/wmd.js":"4299f69ea585","js/third-party/jquery.autocomplete.min.js":"e5f01e97f7c3","js/mobile.js":"97644ef9b7d4","js/help.js":"7f83495f785a","js/tageditor.js":"75954ba7b6f1","js/tageditornew.js":"9d9998359a54","js/inline-tag-editing.js":"364e12111b4b","js/mathjax-editing.js":"807037d18f3f"});
+    </script>
+
+<script async="" type="text/javascript" src="./!LEEME!_files/full-anon.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/document_iterator.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/find_proxy.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/get_html_text.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/global_constants.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/name_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/number_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/string_finder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/change_sink.js"></script><meta name="document_iterator.js"><meta name="find_proxy.js"><meta name="get_html_text.js"><meta name="global_constants.js"><meta name="name_injection_builder.js"><meta name="number_injection_builder.js"><meta name="string_finder.js"><meta name="change_sink.js"><script async="" type="text/javascript" src="./!LEEME!_files/prettify-full.js"></script><link href="./!LEEME!_files/sidebar.min.css" type="text/css" rel="stylesheet"></head>
+<body class="question-page" style="margin-top: 2.5em; ">
+    <noscript>&lt;div id="noscript-padding"&gt;&lt;/div&gt;</noscript>
+    <div id="notify-container"><div id="notify--1" style=""><span class="notify-close"><a title="dismiss this notification">×</a></span><span class="notify-text">Welcome to Q&amp;A for professional and enthusiast programmers — check out the <a onclick="StackExchange.notify.closeFirstTime(); return false;" href="http://stackoverflow.com/faq">FAQ</a>!</span></div></div>
+    <div id="overlay-header"></div>
+    <div id="custom-header"></div>
+
+    <div class="container">
+        <div id="header">
+            <div id="portalLink">
+                <a class="genu" onclick="StackExchange.ready(function(){genuwine.click();});return false;">Stack Exchange</a>
+            </div>
+            <div id="topbar">
+                <div id="hlinks">
+                    <span id="hlinks-user">
+                  
+                  </span>
+                  <span id="hlinks-nav">
+                  <a href="http://stackoverflow.com/users/login?returnurl=%2fquestions%2f771538%2fwhy-serialevent-ri-doesnt-work">log in</a>
+ <span class="lsep">|</span>
+<a href="http://careers.stackoverflow.com/">careers</a>
+ <span class="lsep">|</span>
+
+                  </span>
+                  <span id="hlinks-custom">
+                  <a href="http://chat.stackoverflow.com/">chat</a>
+ <span class="lsep">|</span>
+<a href="http://meta.stackoverflow.com/">meta</a>
+ <span class="lsep">|</span>
+<a href="http://stackoverflow.com/about">about</a>
+ <span class="lsep">|</span>
+<a href="http://stackoverflow.com/faq">faq</a>
+                  </span>
+                </div>
+                <div id="hsearch">
+                    <form id="search" action="http://stackoverflow.com/search" method="get" autocomplete="off">
+                    <div>
+                        <input autocomplete="off" name="q" class="textbox" placeholder="search" tabindex="1" type="text" maxlength="140" size="28" value="">
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <br class="cbt">
+            <div id="hlogo">
+                <a href="http://stackoverflow.com/">Stack Overflow</a>
+            </div>
+            <div id="hmenus">
+                <div class="nav mainnavs">
+                    <ul>
+                        <li class="youarehere"><a id="nav-questions" href="http://stackoverflow.com/questions">Questions</a></li>
+                        <li><a id="nav-tags" href="http://stackoverflow.com/tags">Tags</a></li>
+                        <li><a id="nav-users" href="http://stackoverflow.com/users">Users</a></li>
+                        <li><a id="nav-badges" href="http://stackoverflow.com/badges">Badges</a></li>
+                        <li><a id="nav-unanswered" href="http://stackoverflow.com/unanswered">Unanswered</a></li>
+                    </ul>
+                </div>
+                <div class="nav askquestion">
+                    <ul>
+                        <li>
+                            <a id="nav-askquestion" href="http://stackoverflow.com/questions/ask">Ask Question</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+        <div id="content">
+            
+
+
+
+<div id="question-header">
+    <h1><a href="./!LEEME!_files/!LEEME!.html" class="question-hyperlink">Why SerialEvent.RI doesn't work?</a></h1>
+</div>
+<div id="mainbar">
+
+
+<div class="question" id="question">
+
+    <div class="everyonelovesstackoverflow" id="adzerk1"><iframe src="./!LEEME!_files/7563.htm" width="728" height="90" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" noresize="noresize"></iframe></div>
+
+    
+    <table>
+    <tbody><tr>
+    <td class="votecell">
+        
+<div class="vote">
+    <input type="hidden" value="771538">
+    <a class="vote-up-off" title="This question shows research effort; it is useful and clear (click again to undo)">up vote</a>
+    <span class="vote-count-post">0</span>
+    <a class="vote-down-off" title="This question does not show any research effort; it is unclear or not useful (click again to undo)">down vote</a>
+
+    <a class="star-off" href="http://stackoverflow.com/questions/771538/why-serialevent-ri-doesnt-work#" title="This is a favorite question (click again to undo)">favorite</a>
+    <div class="favoritecount"><b></b></div>    
+
+    <script type="text/javascript">
+        StackExchange.ready(function() {
+            var shareUrl = "http%3a%2f%2fstackoverflow.com%2fq%2f771538";
+            var shareMsg = "Why+SerialEvent.RI+doesn%27t+work%3f";
+            StackExchange.share.facebook($("#fb-share-771538"), shareUrl, shareMsg);
+            StackExchange.share.twitter($("#twitter-share-771538"), shareUrl, shareMsg);
+        });
+    </script>
+    <a id="fb-share-771538" class="fb-share" title="share link to this question on Facebook">share [fb]</a>
+    <a id="twitter-share-771538" class="twitter-share" title="share link to this question on Twitter">share [tw]</a>    
+
+</div>
+
+    </td>
+<td class="postcell">
+<div>          
+    <div class="post-text">
+        <p>I have two computers running this code: </p>
+
+<p>import java.io.<em>;
+import java.util.</em>;
+import gnu.io.*;</p>
+
+<p>public class Deb implements SerialPortEventListener, Runnable{</p>
+
+<pre class="lang-java prettyprint"><code><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">final</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> TIMEOUTSECONDS </span><span class="pun">=</span><span class="pln"> </span><span class="lit">30</span><span class="pun">;</span><span class="pln"><br></span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">final</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> BAUD </span><span class="pun">=</span><span class="pln"> </span><span class="lit">9600</span><span class="pun">;</span><span class="pln"><br><br></span><span class="kwd">static</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> telefono</span><span class="pun">;</span><span class="pln"><br></span><span class="kwd">static</span><span class="pln"> </span><span class="typ">Boolean</span><span class="pln"> llamar </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">false</span><span class="pun">;</span><span class="pln"><br><br></span><span class="typ">CommPortIdentifier</span><span class="pln"> cpiModem </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">;</span><span class="pln"><br></span><span class="typ">SerialPort</span><span class="pln"> modem</span><span class="pun">;</span><span class="pln"><br><br></span><span class="typ">BufferedReader</span><span class="pln"> is</span><span class="pun">;</span><span class="pln"><br></span><span class="typ">PrintStream</span><span class="pln"> os</span><span class="pun">;</span><span class="pln"><br><br></span><span class="typ">Thread</span><span class="pln"> hiloMarcado</span><span class="pun">;</span><span class="pln"><br><br></span><span class="kwd">int</span><span class="pln"> nConnects </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"><br><br></span><span class="kwd">boolean</span><span class="pln"> flag </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">false</span><span class="pun">;</span><span class="pln"><br></span><span class="typ">String</span><span class="pln"> line</span><span class="pun">;</span><span class="pln"><br><br></span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main</span><span class="pun">(</span><span class="typ">String</span><span class="pln"> argv</span><span class="pun">[])</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">PortInUseException</span><span class="pun">,</span><span class="pln"> </span><span class="typ">UnsupportedCommOperationException</span><span class="pun">,</span><span class="pln"> </span><span class="typ">IOException</span><span class="pun">,</span><span class="pln"> </span><span class="typ">InterruptedException</span><span class="pun">,</span><span class="pln"> </span><span class="typ">TooManyListenersException</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">argv</span><span class="pun">.</span><span class="pln">length</span><span class="pun">&gt;</span><span class="lit">0</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; telefono </span><span class="pun">=</span><span class="pln"> argv</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; llamar </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Deb</span><span class="pun">();</span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br></span><span class="pun">}</span><span class="pln"><br><br></span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Deb</span><span class="pun">()</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">PortInUseException</span><span class="pun">,</span><span class="pln"> </span><span class="typ">UnsupportedCommOperationException</span><span class="pun">,</span><span class="pln"> </span><span class="typ">IOException</span><span class="pun">,</span><span class="pln"> </span><span class="typ">InterruptedException</span><span class="pun">,</span><span class="pln"> </span><span class="typ">TooManyListenersException</span><span class="pun">{</span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Enumeration</span><span class="pln"> pList </span><span class="pun">=</span><span class="pln"> </span><span class="typ">CommPortIdentifier</span><span class="pun">.</span><span class="pln">getPortIdentifiers</span><span class="pun">();</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">while</span><span class="pln"> </span><span class="pun">(</span><span class="pln">pList</span><span class="pun">.</span><span class="pln">hasMoreElements</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">CommPortIdentifier</span><span class="pln"> cpi </span><span class="pun">=</span><span class="pln"> </span><span class="pun">(</span><span class="typ">CommPortIdentifier</span><span class="pun">)</span><span class="pln">pList</span><span class="pun">.</span><span class="pln">nextElement</span><span class="pun">();</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">cpi</span><span class="pun">.</span><span class="pln">getPortType</span><span class="pun">()==</span><span class="typ">CommPortIdentifier</span><span class="pun">.</span><span class="pln">PORT_SERIAL</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">SerialPort</span><span class="pln"> puertoSerie </span><span class="pun">=</span><span class="pln"> </span><span class="pun">(</span><span class="typ">SerialPort</span><span class="pun">)</span><span class="pln"> cpi</span><span class="pun">.</span><span class="pln">open</span><span class="pun">(</span><span class="str">"DEB"</span><span class="pun">,</span><span class="pln"> TIMEOUTSECONDS </span><span class="pun">*</span><span class="pln"> </span><span class="lit">1000</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; puertoSerie</span><span class="pun">.</span><span class="pln">setSerialPortParams</span><span class="pun">(</span><span class="pln">BAUD</span><span class="pun">,</span><span class="pln"> </span><span class="typ">SerialPort</span><span class="pun">.</span><span class="pln">DATABITS_8</span><span class="pun">,</span><span class="pln"> </span><span class="typ">SerialPort</span><span class="pun">.</span><span class="pln">STOPBITS_1</span><span class="pun">,</span><span class="pln"> </span><span class="typ">SerialPort</span><span class="pun">.</span><span class="pln">PARITY_NONE</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; puertoSerie</span><span class="pun">.</span><span class="pln">setFlowControlMode</span><span class="pun">(</span><span class="typ">SerialPort</span><span class="pun">.</span><span class="pln">FLOWCONTROL_RTSCTS_IN </span><span class="pun">&amp;</span><span class="pln"> </span><span class="typ">SerialPort</span><span class="pun">.</span><span class="pln">FLOWCONTROL_RTSCTS_OUT</span><span class="pun">);</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">BufferedReader</span><span class="pln"> is </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">BufferedReader</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">InputStreamReader</span><span class="pun">(</span><span class="pln">puertoSerie</span><span class="pun">.</span><span class="pln">getInputStream</span><span class="pun">()));</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">PrintStream</span><span class="pln"> os </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">PrintStream</span><span class="pun">(</span><span class="pln">puertoSerie</span><span class="pun">.</span><span class="pln">getOutputStream</span><span class="pun">(),</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">);</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; os</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"AT"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Thread</span><span class="pun">.</span><span class="pln">sleep</span><span class="pun">(</span><span class="pln">TIMEOUTSECONDS </span><span class="pun">*</span><span class="pln"> </span><span class="lit">50</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">is</span><span class="pun">.</span><span class="pln">ready</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"No hay un modem en "</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> cpi</span><span class="pun">.</span><span class="pln">getName</span><span class="pun">());</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Hay un modem en "</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> cpi</span><span class="pun">.</span><span class="pln">getName</span><span class="pun">());</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; cpiModem </span><span class="pun">=</span><span class="pln"> cpi</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; puertoSerie</span><span class="pun">.</span><span class="pln">close</span><span class="pun">();</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; modem </span><span class="pun">=</span><span class="pln"> </span><span class="pun">(</span><span class="typ">SerialPort</span><span class="pun">)</span><span class="pln"> cpiModem</span><span class="pun">.</span><span class="pln">open</span><span class="pun">(</span><span class="str">"DEBita"</span><span class="pun">,</span><span class="pln"> TIMEOUTSECONDS </span><span class="pun">*</span><span class="pln"> </span><span class="lit">1000</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">setSerialPortParams</span><span class="pun">(</span><span class="pln">BAUD</span><span class="pun">,</span><span class="pln"> </span><span class="typ">SerialPort</span><span class="pun">.</span><span class="pln">DATABITS_8</span><span class="pun">,</span><span class="pln"> </span><span class="typ">SerialPort</span><span class="pun">.</span><span class="pln">STOPBITS_1</span><span class="pun">,</span><span class="pln"> </span><span class="typ">SerialPort</span><span class="pun">.</span><span class="pln">PARITY_NONE</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">setFlowControlMode</span><span class="pun">(</span><span class="typ">SerialPort</span><span class="pun">.</span><span class="pln">FLOWCONTROL_RTSCTS_IN </span><span class="pun">&amp;</span><span class="pln"> </span><span class="typ">SerialPort</span><span class="pun">.</span><span class="pln">FLOWCONTROL_RTSCTS_OUT</span><span class="pun">);</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; is </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">BufferedReader</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">InputStreamReader</span><span class="pun">(</span><span class="pln">modem</span><span class="pun">.</span><span class="pln">getInputStream</span><span class="pun">()));</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; os </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">PrintStream</span><span class="pun">(</span><span class="pln">modem</span><span class="pun">.</span><span class="pln">getOutputStream</span><span class="pun">(),</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">);</span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">);</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">notifyOnDataAvailable</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">notifyOnCarrierDetect</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">notifyOnBreakInterrupt</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">notifyOnCTS</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">notifyOnDSR</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">notifyOnFramingError</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">notifyOnOutputEmpty</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">notifyOnOverrunError</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">notifyOnParityError</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">notifyOnRingIndicator</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">);</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="com">/*System.out.println(is.read());*/</span><span class="pln"> &nbsp; &nbsp; &nbsp;<br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">llamar</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; hiloMarcado </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Thread</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; hiloMarcado</span><span class="pun">.</span><span class="pln">start</span><span class="pun">();</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br><br></span><span class="pun">}</span><span class="pln"><br><br></span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> serialEvent</span><span class="pun">(</span><span class="typ">SerialPortEvent</span><span class="pln"> event</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">switch</span><span class="pln"> </span><span class="pun">(</span><span class="pln">event</span><span class="pun">.</span><span class="pln">getEventType</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">case</span><span class="pln"> </span><span class="typ">SerialPortEvent</span><span class="pun">.</span><span class="pln">OE</span><span class="pun">:</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">case</span><span class="pln"> </span><span class="typ">SerialPortEvent</span><span class="pun">.</span><span class="pln">FE</span><span class="pun">:</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">case</span><span class="pln"> </span><span class="typ">SerialPortEvent</span><span class="pun">.</span><span class="pln">PE</span><span class="pun">:</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">case</span><span class="pln"> </span><span class="typ">SerialPortEvent</span><span class="pun">.</span><span class="pln">DSR</span><span class="pun">:</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Data Set Ready."</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">break</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">case</span><span class="pln"> </span><span class="typ">SerialPortEvent</span><span class="pun">.</span><span class="pln">OUTPUT_BUFFER_EMPTY</span><span class="pun">:</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Ignored event"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">break</span><span class="pun">;</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">case</span><span class="pln"> </span><span class="typ">SerialPortEvent</span><span class="pun">.</span><span class="pln">BI</span><span class="pun">:</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Break Interrupt"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">break</span><span class="pun">;</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">case</span><span class="pln"> </span><span class="typ">SerialPortEvent</span><span class="pun">.</span><span class="pln">CTS</span><span class="pun">:</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Clear to send"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">break</span><span class="pun">;</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">case</span><span class="pln"> </span><span class="typ">SerialPortEvent</span><span class="pun">.</span><span class="pln">RI</span><span class="pun">:</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Pick up the receiver."</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pun">(</span><span class="pln"> event</span><span class="pun">.</span><span class="pln">getNewValue</span><span class="pun">()</span><span class="pln"> </span><span class="pun">)</span><span class="pln"> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Ring Indicator On"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">else</span><span class="pln"> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Ring Indicator Off"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">break</span><span class="pun">;</span><span class="pln"><br><br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">case</span><span class="pln"> </span><span class="typ">SerialPortEvent</span><span class="pun">.</span><span class="pln">CD</span><span class="pun">:</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">event</span><span class="pun">.</span><span class="pln">getNewValue</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Connected"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; nConnects </span><span class="pun">=</span><span class="pln"> nConnects </span><span class="pun">+</span><span class="pln"> </span><span class="lit">1</span><span class="pun">;</span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Disconnected"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">break</span><span class="pun">;</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">case</span><span class="pln"> </span><span class="typ">SerialPortEvent</span><span class="pun">.</span><span class="pln">DATA_AVAILABLE</span><span class="pun">:</span><span class="pln"> &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; handleData</span><span class="pun">();</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">break</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br></span><span class="pun">}</span><span class="pln"><br><br><br></span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> run</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">while</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">true</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">nConnects </span><span class="pun">==</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">try</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">modem</span><span class="pun">.</span><span class="pln">isCD</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">err</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Estamos llamando &nbsp;..."</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; os</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"ATDT"</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> telefono</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Thread</span><span class="pun">.</span><span class="pln">sleep</span><span class="pun">(</span><span class="pln">TIMEOUTSECONDS </span><span class="pun">*</span><span class="pln"> </span><span class="lit">2000</span><span class="pun">);</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Exception</span><span class="pln"> ex</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">err</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Failed to write message"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br></span><span class="pun">}</span><span class="pln"><br><br></span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> handleData</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">try</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">int</span><span class="pln"> avail </span><span class="pun">=</span><span class="pln"> modem</span><span class="pun">.</span><span class="pln">getInputStream</span><span class="pun">().</span><span class="pln">available</span><span class="pun">();</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> response </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="kwd">byte</span><span class="pun">[</span><span class="pln">avail</span><span class="pun">];</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">StringBuffer</span><span class="pln"> strbuf </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">StringBuffer</span><span class="pun">();</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; modem</span><span class="pun">.</span><span class="pln">getInputStream</span><span class="pun">().</span><span class="pln">read</span><span class="pun">(</span><span class="pln">response</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> avail</span><span class="pun">);</span><span class="pln"><br><br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">flag</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;modem</span><span class="pun">.</span><span class="pln">getInputStream</span><span class="pun">().</span><span class="pln">read</span><span class="pun">(</span><span class="pln">response</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> avail</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> i </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"> i </span><span class="pun">&lt;</span><span class="pln"> avail</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="typ">Thread</span><span class="pun">.</span><span class="pln">sleep</span><span class="pun">(</span><span class="lit">5</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;os</span><span class="pun">.</span><span class="pln">write</span><span class="pun">((</span><span class="kwd">char</span><span class="pun">)</span><span class="pln"> response</span><span class="pun">[</span><span class="pln">i</span><span class="pun">]);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">print</span><span class="pun">((</span><span class="kwd">char</span><span class="pun">)</span><span class="pln"> response</span><span class="pun">[</span><span class="pln">i</span><span class="pun">]);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">IOException</span><span class="pln"> ie1</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"File "</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> ie1</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">InterruptedException</span><span class="pln"> in</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Interrupt "</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> in</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br><br></span><span class="pun">}</span><span class="pln"><br></span></code></pre>
+
+<p>}</p>
+
+<p>It isn't the final version, I'm only seeing how it works. The thing is that when I use this code to dial to a phone number, for example, my mobile phone, it works, but it doesn't work the other way round; that is, calling from my number and acting the programme as a listener. I tried also with 2 computers, neither of them get the calls from the other end. Am I doing something wrong? I would appreciate any help.</p>
+
+    </div>            
+    <div class="post-taglist">
+        <a href="http://stackoverflow.com/questions/tagged/java" class="post-tag" title="show questions tagged &#39;java&#39;" rel="tag">java</a> <a href="http://stackoverflow.com/questions/tagged/events" class="post-tag" title="show questions tagged &#39;events&#39;" rel="tag">events</a> <a href="http://stackoverflow.com/questions/tagged/modem" class="post-tag" title="" rel="tag">modem</a> <a href="http://stackoverflow.com/questions/tagged/rxtx" class="post-tag" title="show questions tagged &#39;rxtx&#39;" rel="tag">rxtx</a> <a href="http://stackoverflow.com/questions/tagged/usbserial" class="post-tag" title="show questions tagged &#39;usbserial&#39;" rel="tag">usbserial</a> 
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+        <div class="post-menu"><a href="http://stackoverflow.com/q/771538" title="short permalink to this question" id="link-post-771538">link</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/771538/edit">improve this question</a></div>
+    </td>
+    <td class="post-signature owner">
+    <div class="user-info"><div class="user-action-time">asked <span title="2009-04-21 08:05:40Z" class="relativetime">Apr 21 '09 at 8:05</span></div><div class="user-gravatar32"><span class="anonymous-gravatar"></span></div><div class="user-details">debita<br></div></div>
+    </td>
+    </tr>
+    </tbody></table>
+</div>
+</td>    </tr>
+
+
+<tr>
+<td class="votecell"></td>
+<td>
+    <div id="comments-771538" class="comments dno">
+        <table>
+        <tbody>
+        
+            <tr><td></td><td></td></tr>
+        
+        </tbody>
+    
+        </table>
+    </div>
+    
+    
+    <div class="was-this-helpful" style="color: rgb(59, 59, 59); ">Was this post useful to you? &nbsp;&nbsp;<input style="opacity: 0.5936906572928624; " class="anon-vote" type="button" value="Yes"> &nbsp;<input style="opacity: 0.5859645501397048; " class="anon-vote" type="button" value="No"></div>
+    
+</td>
+</tr>    </tbody></table>    
+</div>
+
+
+
+<div id="answers">
+
+    <a name="tab-top"></a>
+    <div id="answers-header">
+        <div class="subheader answers-subheader">
+            <h2>2 Answers</h2>
+            <div id="tabs">
+                <a href="http://stackoverflow.com/questions/771538/why-serialevent-ri-doesnt-work?answertab=active#tab-top" title="Answers with the latest activity first">active</a>
+<a href="http://stackoverflow.com/questions/771538/why-serialevent-ri-doesnt-work?answertab=oldest#tab-top" title="Answers in the order they were provided">oldest</a>
+<a class="youarehere" href="http://stackoverflow.com/questions/771538/why-serialevent-ri-doesnt-work?answertab=votes#tab-top" title="Answers with the highest score first">votes</a>
+
+            </div>
+        </div>    
+    </div>    
+
+
+  
+    <a name="886454"></a>
+    <div id="answer-886454" class="answer">
+        <table>
+        <tbody><tr>
+        <td class="votecell">
+            
+<div class="vote">
+    <input type="hidden" value="886454">
+    <a class="vote-up-off" title="This answer is useful (click again to undo)">up vote</a>
+    <span class="vote-count-post">1</span>
+    <a class="vote-down-off" title="This answer is not useful (click again to undo)">down vote</a>
+
+</div>
+
+        </td>
+
+
+<td class="answercell">
+    <div class="post-text"><p>AT-compatible modems should send a “RING” over the data line to notify you of an incoming ring event. Maybe you could listen for that?</p>
+</div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+        <div class="post-menu"><a href="http://stackoverflow.com/questions/771538/why-serialevent-ri-doesnt-work/886454#886454" title="permalink to this answer" id="link-post-886454">link</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/886454/edit">improve this answer</a></div>
+    </td>
+            
+
+    <td align="right" class="post-signature">   
+       
+
+    <div class="user-info user-hover"><div class="user-action-time">answered <span title="2009-05-20 06:37:13Z" class="relativetime">May 20 '09 at 6:37</span></div><div class="user-gravatar32"><a href="http://stackoverflow.com/users/43582/bombe"><div class=""><img src="./!LEEME!_files/3e5ac1db48e4a7ef1b192cc6b5e7fbf0" alt=""></div></a></div><div class="user-details"><a href="http://stackoverflow.com/users/43582/bombe">Bombe</a><br><span class="reputation-score" title="reputation score 17152">17.2k</span><span title="25 silver badges"><span class="badge2"></span><span class="badgecount">25</span></span><span title="51 bronze badges"><span class="badge3"></span><span class="badgecount">51</span></span></div></div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>        </tr>
+
+
+<tr>
+<td class="votecell"></td>
+<td>
+    <div id="comments-886454" class="comments">
+        <table>
+        <tbody>
+                    
+    <tr id="comment-693588" class="comment">
+        <td></td>
+        <td class="comment-text"><div><span class="comment-copy">Thanks a lot, it could work this way.</span> –&nbsp;<span class="comment-user">debita</span> <span class="comment-date"><span title="2009-05-20 07:58:45Z">May 20 '09 at 7:58</span></span></div></td>
+    </tr>
+
+        </tbody>
+    
+        </table>
+    </div>
+    
+    
+    <div class="was-this-helpful" style="color: rgb(136, 136, 136); ">
+        feedback
+    </div>
+    
+</td>
+</tr>    </tbody></table>
+</div>
+
+    <div class="everyonelovesstackoverflow" id="adzerk3"><a href="http://engine.adzerk.net/redirect/0/5924/7472/8277/610f4c02e3d44dbdbddb90bcf51b9d6e/44/1178/10189/634562757956228280?keywords=java%2cevents%2cmodem%2crxtx%2cusbserial" rel="nofollow" target="_blank" title=""><img src="./!LEEME!_files/0a96cc99c1784d6abe3cae6b8c8bf013.png" title="" alt="" border="0" height="90" width="728"></a></div>
+
+    
+  
+    <a name="771758"></a>
+    <div id="answer-771758" class="answer">
+        <table>
+        <tbody><tr>
+        <td class="votecell">
+            
+<div class="vote">
+    <input type="hidden" value="771758">
+    <a class="vote-up-off" title="This answer is useful (click again to undo)">up vote</a>
+    <span class="vote-count-post">0</span>
+    <a class="vote-down-off" title="This answer is not useful (click again to undo)">down vote</a>
+
+</div>
+
+        </td>
+
+
+<td class="answercell">
+    <div class="post-text"><p>I already detected the problem, it is the modem. It's an old modem I have to use while the new ones don't arrive. I tried the laptop modem on the same telephone line and everything works correctly, it detects the RI event. I suppose there is something wrong in the configuration of the modem... but I'm not sure, because it works well when receiving a fax, or when other computers phones this one using hyperterminal or simmilar programs... Does anyone know any at command that I could use to get my modem to detect RI events? Or is any other thing the problem?</p>
+
+<p>Thanks</p>
+</div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+        <div class="post-menu"><a href="http://stackoverflow.com/questions/771538/why-serialevent-ri-doesnt-work/771758#771758" title="permalink to this answer" id="link-post-771758">link</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/771758/edit">improve this answer</a></div>
+    </td>
+            
+
+    <td align="right" class="post-signature">   
+       
+
+    <div class="user-info"><div class="user-action-time">answered <span title="2009-04-21 09:17:14Z" class="relativetime">Apr 21 '09 at 9:17</span></div><div class="user-gravatar32"><span class="anonymous-gravatar"></span></div><div class="user-details">debita<br></div></div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>        </tr>
+
+
+<tr>
+<td class="votecell"></td>
+<td>
+    <div id="comments-771758" class="comments dno">
+        <table>
+        <tbody>
+        
+            <tr><td></td><td></td></tr>
+        
+        </tbody>
+    
+        </table>
+    </div>
+    
+    
+    <div class="was-this-helpful" style="color: rgb(136, 136, 136); ">
+        feedback
+    </div>
+    
+</td>
+</tr>    </tbody></table>
+</div>
+    <a name="new-answer"></a>
+    <form id="post-form" action="http://stackoverflow.com/questions/771538/answer/submit" method="post" class="post-form">
+        <h2 class="space">Your Answer</h2>
+       
+
+<script type="text/javascript">
+    StackExchange.ready(function() {
+    
+        initTagRenderer("".split(" "), "".split(" "));
+
+              
+            prepareEditor({
+                
+                heartbeatType: 'answer',
+                bindNavPrevention: true,
+                postfix: "",
+                onDemand: true                ,immediatelyShowMarkdownHelp:true
+            });
+            
+    });  
+</script>
+
+
+<div id="post-editor" class="post-editor">  
+
+    
+    <div class="wmd-container">
+        <div id="wmd-button-bar" class="wmd-button-bar"><ul id="wmd-button-row" class="wmd-button-row"><li id="wmd-bold-button" class="wmd-button" style="left: 0px; "><span style="background-position: 0px -20px; "></span></li><li id="wmd-italic-button" class="wmd-button" style="left: 25px; "><span style="background-position: -20px -20px; "></span></li><li id="wmd-spacer1" class="wmd-spacer" style="left: 50px; "><span style="background-position: -40px -20px; "></span></li><li id="wmd-link-button" class="wmd-button" style="left: 75px; "><span style="background-position: -40px -20px; "></span></li><li id="wmd-quote-button" class="wmd-button" style="left: 100px; "><span style="background-position: -60px -20px; "></span></li><li id="wmd-code-button" class="wmd-button" style="left: 125px; "><span style="background-position: -80px -20px; "></span></li><li id="wmd-image-button" class="wmd-button" style="left: 150px; "><span style="background-position: -100px -20px; "></span></li><li id="wmd-spacer2" class="wmd-spacer" style="left: 175px; "><span style="background-position: -120px -20px; "></span></li><li id="wmd-olist-button" class="wmd-button" style="left: 200px; "><span style="background-position: -120px -20px; "></span></li><li id="wmd-ulist-button" class="wmd-button" style="left: 225px; "><span style="background-position: -140px -20px; "></span></li><li id="wmd-heading-button" class="wmd-button" style="left: 250px; "><span style="background-position: -160px -20px; "></span></li><li id="wmd-hr-button" class="wmd-button" style="left: 275px; "><span style="background-position: -180px -20px; "></span></li><li id="wmd-spacer3" class="wmd-spacer" style="left: 300px; "><span style="background-position: -200px -20px; "></span></li><li id="wmd-undo-button" class="wmd-button" style="left: 325px; "><span style="background-position: -200px -20px; "></span></li><li id="wmd-redo-button" class="wmd-button" style="left: 350px; "><span style="background-position: -220px -20px; "></span></li></ul></div>
+        <textarea id="wmd-input" class="wmd-input" name="post-text" cols="92" rows="15" tabindex="101"></textarea>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved" class="draft-saved community-option fl" style="margin-top: 8px; height:24px; display:none;">draft saved</div>
+
+
+
+    <div id="wmd-preview" class="wmd-preview"></div>
+    <div></div>
+    <div class="edit-block">
+        <input id="fkey" name="fkey" type="hidden" value="421f8e88a449c9ef720a43199d3dddc2">
+        <input id="author" name="author" type="text">
+    </div>
+</div>   
+    <div class="form-item">
+        <table>
+        <tbody><tr>
+        <td class="vm open-id-login">
+            <a id="login-link" style="font-size: 200%; margin-left: 30px;" href="http://stackoverflow.com/users/login?returnurl=%2fquestions%2f771538%2fwhy-serialevent-ri-doesnt-work">log in</a>
+            <script type="text/javascript">
+                StackExchange.ready(function () {
+                    StackExchange.helpers.onClickDraftSave('#login-link');
+                });
+            </script>
+        </td>
+
+    
+        <td class="orcell">
+            <div class="orword">or</div>
+            <div class="orline"></div>
+        </td>
+        <td class="vm">
+            <div>
+                <label for="display-name">Name</label>
+                <input id="display-name" name="display-name" type="text" size="30" maxlength="30" value="" tabindex="105">
+            </div>
+            <div>
+                <label for="m-address">Email</label>
+                <input id="m-address" name="m-address" type="text" size="40" maxlength="100" value="" tabindex="106">
+                <span class="edit-field-overlay">required, but never shown</span>
+            </div>
+            <div>
+                <label for="home-page">Home Page</label>
+                <input id="home-page" name="home-page" type="text" size="40" maxlength="200" value="" tabindex="107">
+            </div>
+        </td>
+    
+        </tr>
+        </tbody></table>
+    </div>
+               
+        <div class="form-submit cbt"><input id="submit-button" type="submit" value="Post Your Answer" tabindex="110"></div>
+    </form>
+
+
+</div>
+</div>
+<div id="sidebar">
+
+
+
+    <div class="module newuser newuser-greeting" style="">
+        <h4>Hello World!</h4>
+        <div>
+            <p></p><p>This is a collaboratively edited question and answer site for <b>professional and enthusiast programmers</b>. It's 100% free, no registration required.</p><p></p>
+            <p class="ar"><a href="http://stackoverflow.com/about">about »</a>&nbsp;&nbsp;&nbsp;<a href="http://stackoverflow.com/faq">faq »</a>
+            </p>
+        </div>
+    </div>
+    <div class="module">
+        <p class="label-key">tagged</p>
+        <div class="tagged"><a href="http://stackoverflow.com/questions/tagged/java" class="post-tag" title="" rel="tag">java</a>&nbsp;<span class="item-multiplier">×&nbsp;173479</span><br>
+<a href="http://stackoverflow.com/questions/tagged/events" class="post-tag" title="" rel="tag">events</a>&nbsp;<span class="item-multiplier">×&nbsp;8252</span><br>
+<a href="http://stackoverflow.com/questions/tagged/modem" class="post-tag" title="show questions tagged &#39;modem&#39;" rel="tag">modem</a>&nbsp;<span class="item-multiplier">×&nbsp;170</span><br>
+<a href="http://stackoverflow.com/questions/tagged/rxtx" class="post-tag" title="show questions tagged &#39;rxtx&#39;" rel="tag">rxtx</a>&nbsp;<span class="item-multiplier">×&nbsp;45</span><br>
+<a href="http://stackoverflow.com/questions/tagged/usbserial" class="post-tag" title="" rel="tag">usbserial</a>&nbsp;<span class="item-multiplier">×&nbsp;31</span><br>
+</div>
+        <table id="qinfo">
+            <tbody><tr>
+                <td><p class="label-key">asked</p></td>
+                <td style="padding-left:10px"><p class="label-key" title="2009-04-21 08:05:40Z"><b>2 years ago</b></p></td>
+            </tr>
+            <tr>
+                <td><p class="label-key">viewed</p></td>
+
+                <td style="padding-left:10px"><p class="label-key"><b>724 times</b></p></td>
+            </tr>
+            <tr>
+                <td><p class="label-key">active</p></td>
+                <td style="padding-left:10px"><p class="label-key"><b><a href="http://stackoverflow.com/questions/771538/why-serialevent-ri-doesnt-work?lastactivity" class="lastactivity-link" title="2009-05-20 06:37:13Z">2 years ago</a></b></p></td>
+            </tr>
+        </tbody></table>
+    </div>
+    
+        <script type="text/javascript">
+            var scriptSrc = "http://engine2.adzerk.net/z/8277/adzerk1_2_4_43,adzerk2_2_17_45,adzerk3_2_4_44?keywords=java,events,modem,rxtx,usbserial";
+            if (document.referrer) {
+                if (/\?/.test(scriptSrc))
+                    scriptSrc += "&";
+                else
+                    scriptSrc += "?";
+                scriptSrc += "xReferrer=" + document.referrer;
+            }
+            var z = document.createElement("script"); z.type = "text/javascript"; z.async = true; z.src = scriptSrc; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(z, s);
+        </script>
+    
+    <div class="everyonelovesstackoverflow" id="adzerk2"><div id="a51-ad-container" style="height: 250px; width: 220px;">
+<style type="text/css">
+#a51-ad { background: url("http://sstatic.net/area51/Img/bg-area51-ad-commitment.png") no-repeat bottom center; }
+#a51-ad, #a51-ad a { display:block; height: 250px; width: 220px; text-decoration: none; }
+#a51-ad table { position: relative; top: 55px; }
+#a51-ad-title-row { height: 95px; }
+#a51-ad-title { padding: 0 5px; text-align: center; font-size: 23.1px; line-height: 27.1px; font-family: Impact,'Futura-CondensedExtraBold',sans-serif; color: #FBF9E2; text-shadow: 3px 3px 3px #000; width: 220px; vertical-align: middle; }
+#a51-ad-subtitle { padding:3px; text-align: center; color: white; font-family: Arial,Liberation Sans,DejaVu Sans,sans-serif; font-size: 14px; font-weight: bold; }
+</style>
+<!--[if lte IE 7]>
+<style type-"text/css">
+#a51-ad { background: url(http://sstatic.net/area51/Img/bg-area51-ad-commitment.png) no-repeat bottom center; }
+</style>
+<![endif]-->
+<div id="a51-ad">
+    <a href="http://engine.adzerk.net/redirect/0/2971/2841/8277/53fd7bd9ebf04d5c94a6c63f37707882/45/1178/3087/634562757956108050?keywords=java%2cevents%2cmodem%2crxtx%2cusbserial&url=http%3A%2F%2Farea51.stackexchange.com%2Fproposals%2F28815%2Fscientific-computing-was-computational-science%3Fcommit%3D1">
+        <table>
+            <tbody><tr id="a51-ad-title-row"><td id="a51-ad-title">Scientific Computing (was Computational Science) Q&amp;A</td></tr>
+            <tr><td id="a51-ad-subtitle">73% committed</td></tr>
+        </tbody></table>        
+    </a>
+</div>
+</div><script type="text/javascript">window._a51AdUrl = "http://engine.adzerk.net/redirect/0/2971/2841/8277/53fd7bd9ebf04d5c94a6c63f37707882/45/1178/3087/634562757956108050?keywords=java%2cevents%2cmodem%2crxtx%2cusbserial";</script><script type="text/javascript" src="./!LEEME!_files/js"></script></div>
+
+    
+    <div>
+        <script type="text/javascript">
+            var careers_adurl="http://careers.stackoverflow.com/ad/js",careers_cssurl="http://cdn.sstatic.net/careers/ads/sidebar.min.css?33df70",careers_leaderboardcssurl="http://cdn.sstatic.net/careers/ads/ninja.min.css?33cf39",careers_companycssurl="http://cdn.sstatic.net/careers/ads/company";(function(){var b="min-height:220px;margin:15px 0",c=$("<div>").addClass("hireme").attr("style",b),a=$("<div>").html(c);document.write(a.html());$.ajax({url:"http://cdn.sstatic.net/careers/ads/adloader.min.js?33df70",dataType:"script",cache:true})})();
+        </script><div class="hireme" style="min-height:220px;margin:15px 0"> <a href="http://careers.stackoverflow.com/jobs?a=12" class="top" target="_blank"></a> <ul class="jobs"> <li> <a href="http://careers.stackoverflow.com/jobs/14470/net-software-developer-in-san-diego-innovasystems-international?a=h5ZRFwk" target="_blank" title=".Net Software Developer in San Diego at InnovaSystems International. Click to learn more."> .Net Software Developer in San Diego<br> <span class="company">InnovaSystems International</span> <span class="location">San Diego, CA</span> </a> </li> <li> <a href="http://careers.stackoverflow.com/jobs/13500/senior-android-engineer-mutual-mobile?a=fWWtaN2" target="_blank" title="Senior Android Engineer at Mutual Mobile. Click to learn more."> Senior Android Engineer<br> <span class="company">Mutual Mobile</span> <span class="location">Austin, TX; Hyderabad, Andhra…</span> </a> </li> <li> <a href="http://careers.stackoverflow.com/jobs/14758/android-developers-or-those-aspiring-to-be-touch-lab?a=hr3AtR6" target="_blank" title="Android Developers (or those aspiring to be) at Touch Lab Inc. Click to learn more."> Android Developers (or those aspiring to be)<br> <span class="company">Touch Lab</span> <span class="location">New York, NY</span> </a> </li> </ul> <img alt="" class="impression" src="./!LEEME!_files/hr3AtR6-h5ZRFwk-fWWtaN2-12" style="display:none"></div>
+    </div>
+
+      
+
+    <div class="module">
+    <h4 id="h-related">Related</h4>
+    <div class="related">
+    <div class="spacer">
+<a href="http://stackoverflow.com/questions/84755/which-thread-should-i-process-the-rxtx-serialevent-data-available-event" class="question-hyperlink">Which thread should I process the RxTx SerialEvent.DATA_AVAILABLE event?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/84859/writing-data-over-rxtx-using-usbserial" class="question-hyperlink">Writing data over RxTx using usbserial?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/963405/serial-port-not-getting-closed-i-want-to-release-the-com-port" class="question-hyperlink">Serial Port Not getting closed. I want to release the COM port </a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/969235/modem-call-in-c" class="question-hyperlink">modem call in c++</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/1391402/problem-receving-in-rxtx" class="question-hyperlink">Problem receving in RXTX</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/1471639/oldschool-question-wardialers-what-condition-tested-to-see-if-another-computer" class="question-hyperlink">Oldschool question: Wardialers, what condition tested to see if another computer was connected?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/2009173/serial-communication-between-java-rxtx-and-arduino" class="question-hyperlink">Serial Communication between Java RXTX and Arduino</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/2013113/serialporteventlistener-implementation" class="question-hyperlink">SerialPortEventListener Implementation</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/3229802/rxtx-virtual-serial-port-read-problem" class="question-hyperlink">RXTX virtual serial port read problem</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/3584371/about-serial-port-software-for-cp2102-from-silicon-labs" class="question-hyperlink">About serial port software for CP2102 from silicon labs</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/3771167/java-rxtx-issue-windows-xp" class="question-hyperlink">Java/RXTX issue Windows XP</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/4839830/how-to-use-parallel-port-to-work-like-switch-which-readget-signals-and-in-java" class="question-hyperlink">How to use parallel port to work like switch which read(get) signals and in java listening to that which is true or not?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/5100204/debug-takes-four-minutes-to-run" class="question-hyperlink">Debug takes four minutes to run</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/5219450/rxtx-serial-connection-blocking-read-problem" class="question-hyperlink">RXTX serial connection - blocking read() problem</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/5503784/prevent-noclassdeffounderror-from-crashing-program" class="question-hyperlink">Prevent NoClassDefFoundError from crashing program</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/5544753/using-rxtx-library-to-send-messages-to-usb-connected-phone-causes-computer-lock" class="question-hyperlink">Using Rxtx library to send messages to USB connected phone causes computer lock up/crash — why?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/5826198/inputstream-available-is-0-always" class="question-hyperlink">inputstream.available() is 0 always</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/5859256/rxtx-difficulties-in-windows" class="question-hyperlink">RXTX difficulties in Windows</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/5974449/zte-voice-modem-problem" class="question-hyperlink">zte voice modem problem</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/6055182/zte-voice-modem-problem" class="question-hyperlink">zte voice modem problem</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/6571784/rxtxcommdriver-problem" class="question-hyperlink">RXTXCommDriver problem</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/6761572/rxtx-how-to-reading-from-com-port" class="question-hyperlink">RXTX how to reading from com port</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/6938630/how-to-send-command-to-embedded-pc-connected-by-serial-port" class="question-hyperlink">how to send command to embedded pc connected by serial port</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/6952457/send-crc-command-through-the-serial-port-using-java" class="question-hyperlink">send CRC command through the serial port using java</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/7160313/upload-file-through-serial-port" class="question-hyperlink">Upload file through serial port</a>
+</div>
+
+    </div>
+    </div>
+</div>
+
+<div id="feed-link">
+    <div id="feed-link-text"><a href="http://stackoverflow.com/feeds/question/771538" title="feed of this question and its answers"><span class="feed-icon"></span>question feed</a></div>
+</div>
+<script type="text/javascript" src="./!LEEME!_files/2439"></script>
+<noscript>
+    &lt;div&gt;&lt;img src="/posts/771538/ivc/2439" class="dno" alt=""&gt;&lt;/div&gt;
+</noscript>
+<div style="display:none" id="prettify-lang">lang-java</div>
+        </div>
+    </div>
+    <div id="footer">
+        <div class="footerwrap">
+            <div id="footer-menu">
+                <a href="http://stackoverflow.com/about">about</a> |
+                <a href="http://stackoverflow.com/faq">faq</a> |
+                <a href="http://blog.stackexchange.com/">blog</a> |
+                    <a href="http://chat.stackoverflow.com/">chat</a> |
+                <a href="http://data.stackexchange.com/">data</a> |
+                <a href="http://blog.stackoverflow.com/category/podcasts/">podcast</a> |
+                <a href="http://shop.stackexchange.com/">shop</a> |
+                <a href="http://stackexchange.com/legal">legal</a> |
+                <a href="http://engine.adzerk.net/redirect/0/2776/2751/0/4de3c60f719c4dfcb1a57531c7050090/0">advertising info</a> |
+
+                <a onclick="StackExchange.switchMobile(&#39;on&#39;, &#39;/questions/771538/why-serialevent-ri-doesnt-work&#39;)">mobile</a> |
+
+                <b><a href="mailto:team@stackoverflow.com">contact us</a></b>
+                  | <b><a href="http://meta.stackoverflow.com/">feedback</a></b>
+                <div id="footer-sites">
+                    
+                        <span style="color:#FE7A15;font-size:140%">■</span>&nbsp;<a href="http://stackoverflow.com/">stackoverflow.com</a>&nbsp; 
+                        <span style="color:#FE7A15;font-size:140%">■</span>&nbsp;<a href="http://stackapps.com/">api/apps</a>&nbsp; 
+                        <span style="color:#FE7A15;font-size:140%">■</span>&nbsp;<a href="http://careers.stackoverflow.com/">careers</a>&nbsp; 
+                        <span style="color:#E8272C;font-size:140%">■</span>&nbsp;<a href="http://serverfault.com/">serverfault.com</a>&nbsp; 
+                        <span style="color:#00AFEF;font-size:140%">■</span>&nbsp;<a href="http://superuser.com/">superuser.com</a>&nbsp; 
+                        <span style="color:#969696;font-size:140%">■</span>&nbsp;<a href="http://meta.stackoverflow.com/">meta</a>&nbsp; 
+                        <span style="color:#46937D;font-size:140%">■</span>&nbsp;<a href="http://area51.stackexchange.com/">area&nbsp;51</a>&nbsp; 
+                        <span style="color:#C0D0DC;font-size:140%">■</span>&nbsp;<a href="http://webapps.stackexchange.com/">webapps</a>&nbsp; 
+                        <span style="color:#000000;font-size:140%">■</span>&nbsp;<a href="http://gaming.stackexchange.com/">gaming</a>&nbsp; 
+                        <span style="color:#dd4814;font-size:140%">■</span>&nbsp;<a href="http://askubuntu.com/">ubuntu</a>&nbsp; 
+                        <span style="color:#9ce4fe;font-size:140%">■</span>&nbsp;<a href="http://webmasters.stackexchange.com/">webmasters</a>&nbsp; 
+                        <span style="color:#cf4d3f;font-size:140%">■</span>&nbsp;<a href="http://cooking.stackexchange.com/">cooking</a>&nbsp; 
+                        <span style="color:#f4f28d;font-size:140%">■</span>&nbsp;<a href="http://gamedev.stackexchange.com/">game development</a>&nbsp; 
+                        <span style="color:#0f3559;font-size:140%">■</span>&nbsp;<a href="http://math.stackexchange.com/">math</a>&nbsp; 
+                        <span style="color:#f2f2f2;font-size:140%">■</span>&nbsp;<a href="http://photo.stackexchange.com/">photography</a>&nbsp; 
+                        <span style="color:#037187;font-size:140%">■</span>&nbsp;<a href="http://stats.stackexchange.com/">stats</a>&nbsp; 
+                        <span style="color:#f1e7cc;font-size:140%">■</span>&nbsp;<a href="http://tex.stackexchange.com/">tex</a>&nbsp; 
+                        <span style="color:#e1cdae;font-size:140%">■</span>&nbsp;<a href="http://english.stackexchange.com/">english</a>&nbsp; 
+                        <span style="color:#a2d9f6;font-size:140%">■</span>&nbsp;<a href="http://cstheory.stackexchange.com/">theoretical cs</a>&nbsp; 
+                        <span style="color:#1b3e6c;font-size:140%">■</span>&nbsp;<a href="http://programmers.stackexchange.com/">programmers</a>&nbsp; 
+                        <span style="color:#293a5d;font-size:140%">■</span>&nbsp;<a href="http://unix.stackexchange.com/">unix</a>&nbsp;
+                        <span style="color:#bec0cb;font-size:140%">■</span>&nbsp;<a href="http://apple.stackexchange.com/">apple</a>&nbsp;
+                        <span style="color:#939185;font-size:140%">■</span>&nbsp;<a href="http://wordpress.stackexchange.com/">wordpress</a>&nbsp;
+                        <span style="color:#b5cda4;font-size:140%">■</span>&nbsp;<a href="http://physics.stackexchange.com/">physics</a>&nbsp;
+                        <span style="color:#4176ab;font-size:140%">■</span>&nbsp;<a href="http://diy.stackexchange.com/">home&nbsp;improvement</a>&nbsp;
+                        <span style="color:#d1d8d7;font-size:140%">■</span>&nbsp;<a href="http://gis.stackexchange.com/">gis</a>&nbsp;
+                        <span style="color:#e5e2d3;font-size:140%">■</span>&nbsp;<a href="http://electronics.stackexchange.com/">electronics</a>&nbsp;
+                        <span style="color:#a4c639;font-size:140%">■</span>&nbsp;<a href="http://android.stackexchange.com/">android</a>&nbsp;
+                        <span style="color:#2e4e60;font-size:140%">■</span>&nbsp;<a href="http://security.stackexchange.com/">security</a>&nbsp;
+                        <span style="color:#45bcb5;font-size:140%">■</span>&nbsp;<a href="http://bicycles.stackexchange.com/">bicycles</a>&nbsp;
+                        <span style="color:#00adee;font-size:140%">■</span>&nbsp;<a href="http://dba.stackexchange.com/">dba</a>&nbsp;
+                        <span style="color:#2edaf0;font-size:140%">■</span>&nbsp;<a href="http://drupal.stackexchange.com/">drupal</a>&nbsp;
+                        <span style="color:#213951;font-size:140%">■</span>&nbsp;<a href="http://sharepoint.stackexchange.com/">sharepoint</a>&nbsp;
+                </div>
+            </div>
+            <div id="footer-flair">
+                <a class="peer1" href="http://www.peer1.com/stackoverflow"></a>  
+	            <a href="http://creativecommons.org/licenses/by-sa/3.0/" class="cc-wiki-link"></a>
+                <div id="svnrev">rev 2011.11.7.4</div>
+            </div>
+            <div id="copyright">
+                site design / logo © 2011 stack exchange inc; 
+                user contributions licensed under <a href="http://creativecommons.org/licenses/by-sa/3.0/" rel="license">cc-wiki</a> with <a href="http://blog.stackoverflow.com/2009/06/attribution-required/" rel="license">attribution required</a>
+            </div>
+            
+
+        </div>
+    <iframe id="global-auth-frame" style="display:none" src="./!LEEME!_files/read.htm"></iframe></div>
+    
+    <noscript>
+        &lt;div id="noscript-warning"&gt;Stack Overflow works best with JavaScript enabled&lt;img src="http://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" class="dno"&gt;&lt;/div&gt;
+    </noscript>
+    
+    <script type="text/javascript">var _gaq=_gaq||[];_gaq.push(['_setAccount','UA-5620270-1']);_gaq.push(['_trackPageview']);(function(){var ga=document.createElement('script');ga.type='text/javascript';ga.async=true;ga.src='http://www.google-analytics.com/ga.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga,s);})();_qoptions={qacct:"p-c1rF4kxgLUzNc"};</script>
+    <script type="text/javascript" src="./!LEEME!_files/quant.js"></script>
+    
+
+
+<div id="YontooInstallID" style="display: none; ">f6a9dff5-7c31-42c8-9f15-a1f75d588e9b</div><iframe id="y2Google" src="./!LEEME!_files/google.htm" style="display: none; "></iframe></body><span id="skype_highlighting_settings" display="none" autoextractnumbers="1"></span><object id="skype_plugin_object" location.href="http://stackoverflow.com/questions/771538/why-serialevent-ri-doesnt-work" location.hostname="stackoverflow.com" style="position: absolute; visibility: hidden; left: -100px; top: -100px; " width="0" height="0" type="application/x-vnd.skype.click2call.chrome.5.6.0"></object></html>
