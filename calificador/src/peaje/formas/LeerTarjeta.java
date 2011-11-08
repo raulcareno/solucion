@@ -180,6 +180,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //                                tarjeta = "";
                     while (inputStream.available() > 0) {
                         int numBytes = inputStream.read(readBuffer);
+                             Thread.sleep(30);
                         System.out.println("#bytes: " + numBytes);
                         tarjeta = tarjeta + new String(readBuffer).trim();
                     }
