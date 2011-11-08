@@ -60,6 +60,10 @@ public class Soporte implements Serializable {
     @JoinColumn(name = "empleados", referencedColumnName = "codigo")
     @ManyToOne
     private Empleados empleados;
+    
+    @JoinColumn(name = "tecnico", referencedColumnName = "codigo")
+    @ManyToOne
+    private Empleados tecnico;
 
     public Soporte() {
     }
@@ -139,6 +143,16 @@ public class Soporte implements Serializable {
     public void setNoorden(Integer noorden) {
         this.noorden = noorden;
     }
+
+    public Empleados getTecnico() {
+        return tecnico;
+    }
+
+    public void setTecnico(Empleados tecnico) {
+        this.tecnico = tecnico;
+    }
+    
+    
 
     @Override
     public int hashCode() {

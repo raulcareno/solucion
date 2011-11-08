@@ -37,6 +37,8 @@ public class Clientes implements Serializable {
     private Integer codigo;
     @Column(name = "identificacion")
     private String identificacion;
+    @Column(name = "razonsocial")
+    private String razonsocial;
     @Column(name = "apellidos")
     private String apellidos;
     @Column(name = "nombres")
@@ -75,6 +77,16 @@ public class Clientes implements Serializable {
     public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
+
+    public String getRazonsocial() {
+        return razonsocial;
+    }
+
+    public void setRazonsocial(String razonsocial) {
+        this.razonsocial = razonsocial;
+    }
+    
+    
 
     public String getIdentificacion() {
         return identificacion;

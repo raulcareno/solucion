@@ -41,7 +41,7 @@ import java.text.SimpleDateFormat;
    Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
     
- 
+ List empleadosEncontrados = adm.query("Select o from Empleados as o  order by o.apellidos");
  
  Boolean verificar(String accion){
         return permiso.verificarPermiso("Soporte",accion);
@@ -180,6 +180,23 @@ llenarCliente(Clientes clienteEn){
                             observacion.value = sop.getObservacion();
                             generar.checked  = sop.getGenerada();
                             noorden.value = sop.getNoorden();
+                             if(sop.getTecnico() != null){
+                                     try{
+                                                for (int i = 0; i <= empleadosList.getItems().size(); i++) {
+                                                            Empleados tr0 = ((Empleados)((Listitem)empleadosList.getItems().get(i)).getValue());
+                                                            int primero = tr0.getCodigo();
+                                                            int segundo = sop.getTecnico().getCodigo();
+                                                            if(primero == segundo){
+                                                                empleadosList.setSelectedItem((Listitem)empleadosList.getItems().get(i));
+                                                                bd.value = sop.getTecnico().getApellidos()+" "+sop.getTecnico().getNombres();
+                                                                break;
+                                                            }
+                                                   }
+                                         }catch(Exception err){System.out.println("ERROR TECNICOS: "+err);}
+
+
+                              } 
+                            
                         }else{
                                 Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                         }  
@@ -204,6 +221,9 @@ llenarCliente(Clientes clienteEn){
                                 sop.setGenerada(generar.checked);
                                 sop.setClientes(new Clientes(new Integer(codigocli.value)));
                                 sop.setNoorden(noorden.value);
+                                if(generar.checked){
+                                    sop.setTecnico(empleadosList.selectedItem.value);
+                                }
 
                                 if(sop.getGenerada() && sop.getNoorden() == null){ 
                                     Integer valor = adm.getNuevaClave("Soporte","noorden");
@@ -409,11 +429,34 @@ llenarCliente(Clientes clienteEn){
                                     <row>
                                         <span style="float:right"> Generar Orden: </span>
                                         <span>   
-                                            <checkbox id="generar" disabled="true"   />
+                                            <checkbox id="generar" onCheck="bd.disabled = (!self.checked) " disabled="true"   />
                                       No. Orden: 
                                             <intbox id="noorden" readonly="true"   /> 
                                         </span>
                                     </row>
+                                    <row>
+                                        <span>Téc.Asignado:</span>
+                                        
+                                        <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
+                                            <bandpopup>
+                                                <vbox>
+                                                       
+                                                    <listbox   onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();"   id="empleadosList"  >
+                                            
+                                                        <listitem forEach="${empleadosEncontrados}"    value="${each}">
+                                                            <listcell label="${each.apellidos}" />
+                                                            <listcell label="${each.nombres}" />
+                                                        </listitem>
+                                                    </listbox> 
+                                                </vbox>
+                                            </bandpopup>
+                                        </bandbox>
+                                        
+                                        
+                                      
+                                        
+                                    </row>
+                                        
                                     <row spans="2">
                                         <span>
                                             <button image="/images/guardar.gif" id="guardars" label="Guardar"  disabled="true"  onClick="guardars();modificars.disabled = true;"/>

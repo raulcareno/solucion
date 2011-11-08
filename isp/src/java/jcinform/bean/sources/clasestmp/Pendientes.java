@@ -21,6 +21,8 @@ public class Pendientes {
     String factura;
     Date fecha,fechapago;
     BigDecimal total,valorabonoefe,valorabonoche,valorabonotar,valorabonodeb,valorabonodes;
+    BigDecimal valorabonotra,valorabonoriva,valorabonorfue,valorabonotot;
+    String numerotransferencia,numeroretencion;
     BigDecimal saldo;
     Clientes cliente;
     Integer noabono;
@@ -172,6 +174,54 @@ public class Pendientes {
 
     public void setValorabonodes(BigDecimal valorabonodes) {
         this.valorabonodes = valorabonodes;
+    }
+
+    public BigDecimal getValorabonorfue() {
+        return valorabonorfue;
+    }
+
+    public void setValorabonorfue(BigDecimal valorabonorfue) {
+        this.valorabonorfue = valorabonorfue;
+    }
+
+    public BigDecimal getValorabonoriva() {
+        return valorabonoriva;
+    }
+
+    public void setValorabonoriva(BigDecimal valorabonoriva) {
+        this.valorabonoriva = valorabonoriva;
+    }
+
+    public BigDecimal getValorabonotot() {
+        return valorabonotot;
+    }
+
+    public void setValorabonotot(BigDecimal valorabonotot) {
+        this.valorabonotot = valorabonotot;
+    }
+
+    public BigDecimal getValorabonotra() {
+        return valorabonotra;
+    }
+
+    public void setValorabonotra(BigDecimal valorabonotra) {
+        this.valorabonotra = valorabonotra;
+    }
+
+    public String getNumeroretencion() {
+        return numeroretencion;
+    }
+
+    public void setNumeroretencion(String numeroretencion) {
+        this.numeroretencion = numeroretencion;
+    }
+
+    public String getNumerotransferencia() {
+        return numerotransferencia;
+    }
+
+    public void setNumerotransferencia(String numerotransferencia) {
+        this.numerotransferencia = numerotransferencia;
     }
 
   

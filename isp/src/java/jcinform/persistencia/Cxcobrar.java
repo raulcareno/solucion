@@ -61,10 +61,29 @@ public class Cxcobrar implements Serializable {
     private String notarjeta;
     @Column(name = "nocuenta")
     private String nocuenta;
+    @Column(name = "transferencia")
+    private BigDecimal transferencia;
+    @Column(name = "riva")
+    private BigDecimal riva;
+    @Column(name = "rfuente")
+    private BigDecimal rfuente;
+    @Column(name = "rtotal")
+    private BigDecimal rtotal;
+    @Column(name = "numeroretencion")
+    private String numeroretencion;
+    
+    
+    @Column(name = "notransferencia")
+    private String notransferencia;
+    @Column(name = "fechatransferencia")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechatransferencia;
     @JoinColumn(name = "factura", referencedColumnName = "codigo")
     @ManyToOne
     private Factura factura;
-
+    @JoinColumn(name = "banco", referencedColumnName = "codigo")
+    @ManyToOne
+    private Bancos banco;
     public Cxcobrar() {
     }
 
@@ -191,6 +210,73 @@ public class Cxcobrar implements Serializable {
     public void setDescuento(BigDecimal descuento) {
         this.descuento = descuento;
     }
+
+    public Bancos getBanco() {
+        return banco;
+    }
+
+    public void setBanco(Bancos banco) {
+        this.banco = banco;
+    }
+
+    public Date getFechatransferencia() {
+        return fechatransferencia;
+    }
+
+    public void setFechatransferencia(Date fechatransferencia) {
+        this.fechatransferencia = fechatransferencia;
+    }
+
+    public String getNotransferencia() {
+        return notransferencia;
+    }
+
+    public void setNotransferencia(String notransferencia) {
+        this.notransferencia = notransferencia;
+    }
+
+    public BigDecimal getTransferencia() {
+        return transferencia;
+    }
+
+    public void setTransferencia(BigDecimal transferencia) {
+        this.transferencia = transferencia;
+    }
+
+   
+    public String getNumeroretencion() {
+        return numeroretencion;
+    }
+
+    public void setNumeroretencion(String numeroretencion) {
+        this.numeroretencion = numeroretencion;
+    }
+
+    public BigDecimal getRfuente() {
+        return rfuente;
+    }
+
+    public void setRfuente(BigDecimal rfuente) {
+        this.rfuente = rfuente;
+    }
+
+    public BigDecimal getRiva() {
+        return riva;
+    }
+
+    public void setRiva(BigDecimal riva) {
+        this.riva = riva;
+    }
+
+    public BigDecimal getRtotal() {
+        return rtotal;
+    }
+
+    public void setRtotal(BigDecimal rtotal) {
+        this.rtotal = rtotal;
+    }
+    
+    
 
     @Override
     public int hashCode() {

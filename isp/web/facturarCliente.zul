@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk  xmlns="http://www.zkoss.org/2005/zul">
-    <window  onClose="cerrar()" onCreate="cargar()" width="550px" id="facturarCliente">
+    <window  onClose="cerrar()" onCreate="cargar()" width="600px" id="facturarCliente">
         <zscript>
             <![CDATA[
   import jcinform.persistencia.*;
@@ -73,7 +73,14 @@ String llenarCeros(String numero){
             cobrar.setTarjeta(tarjeta.value);
             cobrar.setNocheque(nocheque.value);
             cobrar.setNotarjeta(notarjeta.value);
+            cobrar.setTransferencia(transferencia.value);
+            cobrar.setNotransferencia(notransferencia.value);
+            cobrar.setRiva(riva.value);
+            cobrar.setRfuente(rfuente.value);
+            cobrar.setRtotal(rtotal.value);
+            cobrar.setNumeroretencion(noretencion.value);
             adm.guardar(cobrar);
+            
             
    
             if(codigodes.value > 0){
@@ -183,7 +190,7 @@ String llenarCeros(String numero){
         }
        public void sumarcobros(String tipo){
                 BigDecimal  totalFinal = valor.getValue();
-                BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue());
+                BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(transferencia.getValue());
             //    Double antesTotal = new Double(totalCobros.getValue());
                 if(total.compareTo(totalFinal)==1){ //>
                     if(tipo.equals("efe")){
@@ -201,10 +208,31 @@ String llenarCeros(String numero){
                         BigDecimal cobros = (totalCobros.getValue());
                         //cheque.setValue(""+(redondear((totalFinal -cobros),2)<0?0:redondear((totalFinal -cobros),2)));
                         tarjeta.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
+                    }else if(tipo.equals("tra")){
+                        BigDecimal cobros = (totalCobros.getValue());
+                        transferencia.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
                     }
                 }
-                 total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue());
+                 total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(transferencia.getValue());
                 totalCobros.setValue(total);
+}
+
+   public void sumarretencion(String tipo){
+                BigDecimal  totalFinal = valor.getValue();
+                BigDecimal total = riva.getValue().add(rfuente.getValue()).add(efectivo.getValue()).add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(transferencia.getValue());
+                if(total.compareTo(totalFinal)==1){  
+                    if(tipo.equals("iva")){
+                        BigDecimal cobros =  totalCobros.getValue() ;
+                        riva.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
+                    }else if(tipo.equals("fuente")){
+                        BigDecimal cobros = (totalCobros.getValue());
+                         rfuente.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
+                    } 
+                }
+                 total = riva.getValue().add(rfuente.getValue());
+                rtotal.setValue(total);
+                BigDecimal total2 = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(transferencia.getValue()).add(total);
+                totalCobros.setValue(total2);
 }
 
 
@@ -276,52 +304,90 @@ void ultimoRecibo(){
                                 </span> 
                                 <span>
                                     <decimalbox readonly="true" cols="7" format="##0.00"  id="valor" />
-                                    <label style="font-weight:bold" value="A COBRAR: " />
+                              
+                                    <label style="font-weight:bold" value="DESCUENTO: " />
+                             
+                                    <decimalbox  readonly="true" format="##0.00" cols="7" id="descuento" />
+                                    <label style="font-weight:bold" value="TOTAL: " />
                                     <decimalbox readonly="true" cols="7" format="##0.00"  id="totalCobros" />
                                 </span>
                             </row>
                             
-                            <row>
-                                <span  style="float:right">
-                                    <label style="font-weight:bold" value="DESCUENTO: " />
-                                </span> 
-                                <decimalbox  readonly="true" format="##0.00" cols="7" id="descuento" />
-                            </row>
+                         
                             <row align="center" spans="2">
                                 <label style="font-weight:bold" value="FORMA DE PAGO" />
                             </row>
-                            <row>
-                                <span  style="float:right">Efectivo:</span> 
-                                <decimalbox onOK="deposito.focus()" onBlur='sumarcobros("efe")' format="##0.00" cols="7" id="efectivo" />
+                            <row spans="2">
+                                <grid>
+                                
+                                    <rows>
+                                
+                                     
+                                        <row>
+                                            <span  style="float:center; font-weigth:bold;"> </span> 
+                                            <label style="font-weight:bold;">Efectivo</label> 
+                                            <label  style="font-weight:bold;">Depósito</label> 
+                                            <label  style="font-weight:bold;">Cheque</label> 
+                                            <label  style="font-weight:bold;">Tarjeta</label> 
+                                            <label  style="font-weight:bold;">Transferencia</label> 
+                                        </row>
+                                        <row>
+                                            <span>
+                                                <label  style="font-weight:bold;">VALOR:</label> 
+                                            </span>
+
+                                            <decimalbox onOK="deposito.focus()" onBlur='sumarcobros("efe")' format="##0.00" cols="7" id="efectivo" />
+                                            <decimalbox cols="7"   onBlur='sumarcobros("dep")'  format="##0.00"  onOK="nocuenta.focus()" id="deposito" />
+                                            <decimalbox  onBlur='sumarcobros("che")'   format="##0.00"  onOK="nocheque.focus()"  cols="7" id="cheque" />
+                                            <decimalbox   onBlur='sumarcobros("tar")' onOK="notarjeta.focus()"  format="##0.00"   cols="7" id="tarjeta" />
+                                            <decimalbox   onBlur='sumarcobros("tra")' onOK="notrasnferencia.focus()"  format="##0.00"   cols="7" id="transferencia" />
+                                                
+                                        </row>
+                                        <row>
+                                            <label  style="font-weight:bold;">NÚMERO:</label>
+                                            <span> - </span>
+                                            <textbox id="nocuenta" cols="7"   onOK="cheque.focus()"  />
+                                            <textbox id="nocheque"  cols="7"  onOK="tarjeta.focus()"  />
+                                            <textbox id="notarjeta"  cols="7"  onOK="transferencia.focus()"  />
+                                            <textbox id="notransferencia"  cols="7"  onOK="btnguardar.focus()"  />
+                                            
+                                        </row>
+                          
+                            
+                                    </rows>
+                                </grid>
                             </row>
-                            <row>
-                                <span  style="float:right">Depósito:</span> 
-                                <span>
-                                    <decimalbox cols="7"   onBlur='sumarcobros("dep")'  format="##0.00"  onOK="nocuenta.focus()" id="deposito" />
-                      No.Depósito:
-                                    <textbox id="nocuenta"  onOK="cheque.focus()"  />
-                                </span>
-                            </row>
-                            <row>
-                                <span  style="float:right">Cheque:</span> 
-                                <span>
-                                    <decimalbox  onBlur='sumarcobros("che")'   format="##0.00"  onOK="nocheque.focus()"  cols="7" id="cheque" />
-                     No.Cheque: 
-                                    <textbox id="nocheque"  onOK="tarjeta.focus()"  />
-                                </span>
-                            </row>
-                            <row>
-                                <span  style="float:right">Tarjeta:</span> 
-                                <span>
-                                    <decimalbox   onBlur='sumarcobros("tar")' onOK="notarjeta.focus()"  format="##0.00"   cols="7" id="tarjeta" />
-                     No.Tarjeta: 
-                                    <textbox id="notarjeta"  onOK="btnguardar.focus()"  />
-                                </span>
-                            </row>
-                            <row>
-                            </row>
+                                
                             <row align="center" spans="2">
-                                <button label="GUARDAR PAGO" image="/images/guardar.gif" onClick="guardar()" id="btnguardar" />
+                                <label style="font-weight:bold" value="RETENCIONES" />
+                            </row>
+                            <row spans="2" >
+                                <grid width ="100%">
+                                    <rows>
+                                        <row>
+                                            <span  style="float:center; font-weigth:bold;"> </span> 
+                                            <label style="font-weight:bold;">Retención IVA</label> 
+                                            <label  style="font-weight:bold;">Retención Fuente</label> 
+                                            <label  style="font-weight:bold;">Total Retención </label> 
+                                            <label  style="font-weight:bold;">No.Retención </label> 
+                                        </row>
+                                        <row>
+                                            <span  style="float:center; font-weigth:bold;"> </span> 
+                                            <decimalbox onOK="deposito.focus()" onBlur='sumarretencion("iva")' format="##0.00" cols="7" id="riva" />
+                                            <decimalbox cols="7"   onBlur='sumarretencion("fuente")'  format="##0.00"  onOK="nocuenta.focus()" id="rfuente" />
+                                            <decimalbox readonly="true" format="##0.00"  onOK="nocheque.focus()"  cols="7" id="rtotal" />
+                                            <textbox id="noretencion"  cols="7"  onOK="btnguardar.focus()"  />
+                                               
+                                    
+                                        </row>
+                                    </rows>
+                                
+                            
+                                </grid>    
+                            </row>
+                            
+                            <row align="center" spans="2">
+                                <button label="GUARDAR PAGO" image="/images/guardar.gif" width="300px" onClick="guardar()" id="btnguardar" />
                             </row>
                            
                            
@@ -360,8 +426,12 @@ void ultimoRecibo(){
                     cheque.value = BigDecimal.ZERO;
                     tarjeta.value = BigDecimal.ZERO;
                     deposito.value = BigDecimal.ZERO;
+                    transferencia.value = BigDecimal.ZERO;
+                    riva.value =  BigDecimal.ZERO;
+                    rtotal.value =  BigDecimal.ZERO;
+                    rfuente.value =  BigDecimal.ZERO;
+                    noretencion.value =  "";
                     if(facEnc.getNumero() != null){
-                    System.out.println("FACTURA SUBSTRINEADA "+facEnc.getNumero().substring(9,facEnc.getNumero().length()));
                         nofactura.value = new Integer(facEnc.getNumero().substring(9,facEnc.getNumero().length()));
                         nofactura.readonly = true;
                         

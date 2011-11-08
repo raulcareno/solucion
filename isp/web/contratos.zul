@@ -76,6 +76,7 @@ void llenar(Contratos  equi2){
           Clientes cli = new Clientes(0);
           cli.setEmail("");
           cli.setApellidos(""); 
+          cli.setRazonsocial("");
           cli.setNombres("");  
           cli.setDireccion("");
           cli.setTelefono("");
@@ -280,6 +281,7 @@ void estado(Boolean estado,Boolean modificar){
      email.readonly = estado;
      nombres.readonly = estado;
      apellidos.readonly = estado;
+     razonsocial.readonly = estado;
      identificacion2.readonly = estado;
      
      //combo.readonly = estado;
@@ -375,6 +377,7 @@ Boolean validar(){
             empa.setIdentificacion(""+identificacion2.value);
             empa.setNombres(nombres.value);
             empa.setApellidos(apellidos.value);
+            empa.setRazonsocial(razonsocial.value);
             empa.setDireccion(direccion.value);
             empa.setTelefono(telefono.value);
             empa.setEmail(email.value);
@@ -386,6 +389,7 @@ Boolean validar(){
             empa.setIdentificacion(""+identificacion2.value);
             empa.setNombres(nombres.value);
             empa.setApellidos(apellidos.value);
+            empa.setRazonsocial(razonsocial.value);
             empa.setDireccion(direccion.value);
             empa.setTelefono(telefono.value);
             empa.setEmail(email.value);
@@ -808,6 +812,7 @@ llenarCliente(Clientes clienteEn){
      }
      apellidos.value = clienteEn.getApellidos();
      nombres.value = clienteEn.getNombres() ;
+     razonsocial.value = clienteEn.getRazonsocial();
      
 
 }
@@ -824,6 +829,7 @@ void buscarCedula(String valor){
                 codigocli.value = cli.getCodigo()+"";
                 email.value = cli.getEmail()+"";
                 apellidos.value = cli.getApellidos();//cliente
+                razonsocial.value = cli.getRazonsocial();//cliente
                 nombres.value = cli.getNombres();
  
             } 
@@ -1825,7 +1831,7 @@ void llamar(){
                                                     <groupbox closable="true" style="position: absolute;background:#E2EDFE;" visible="false" id="bclientei">
                                                         <vbox>
                                                             <hbox>
-                                                                <listbox onSelect='combo.value = ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+"";  telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; apellidos.value = ((Clientes)self.selectedItem.value).getApellidos(); nombres.value = ((Clientes)self.selectedItem.value).getNombres();  bclientei.visible =false; verificarCedula(identificacion.value);' id="lclienteced" width="400px">
+                                                                <listbox onSelect='combo.value = ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+"";  telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; razonsocial.value = ((Clientes)self.selectedItem.value).getRazonsocial(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos(); nombres.value = ((Clientes)self.selectedItem.value).getNombres();  bclientei.visible =false; verificarCedula(identificacion.value);' id="lclienteced" width="400px">
                                                                     <listhead>
                                                                         <listheader label="Nombres"/>
                                                                         <listheader label="Dirección"/>
@@ -1858,7 +1864,7 @@ void llamar(){
                                                     <groupbox closable="true" style="position: absolute;background:#E2EDFE; display: none;" visible="false" id="bcliente">
                                                         <vbox>
                                                             <hbox>
-                                                                <listbox style="background:white" onSelect='identificacion.value= ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";  identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos()+""; nombres.value = ((Clientes)self.selectedItem.value).getNombres()+""; bcliente.visible =false; verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion());' id="lcliente" width="400px">
+                                                                <listbox style="background:white" onSelect='identificacion.value= ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";  identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); razonsocial.value = ((Clientes)self.selectedItem.value).getRazonsocial()+"";  apellidos.value = ((Clientes)self.selectedItem.value).getApellidos()+""; nombres.value = ((Clientes)self.selectedItem.value).getNombres()+""; bcliente.visible =false; verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion());' id="lcliente" width="400px">
                                                                     <listhead>
                                                                         <listheader label="Nombres"/>
                                                                         <listheader label="Dirección"/>
@@ -1899,7 +1905,8 @@ void llamar(){
                                                             <!--button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/-->
                                             </span>
                                                         
-                                            <span></span>
+                                                  <span  style="float:right" >Razón Social:</span>
+                                            <span> <textbox readonly="true" cols="25"  id="razonsocial" /></span>
                                         </row>
                                         <row>
                                             <span style="float:right">

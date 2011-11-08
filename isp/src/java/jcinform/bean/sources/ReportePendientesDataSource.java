@@ -69,6 +69,16 @@ public class ReportePendientesDataSource implements JRDataSource {
                 valor = nodo.getValorabonodes();
             } else if ("valorabonoche".equals(fieldName)) {
                 valor = nodo.getValorabonoche();
+            } else if ("valorabonoriva".equals(fieldName)) {
+                valor = nodo.getValorabonoriva();
+            } else if ("valorabonorfue".equals(fieldName)) {
+                valor = nodo.getValorabonorfue();
+            } else if ("valorabonotra".equals(fieldName)) {
+                valor = nodo.getValorabonotra();
+            } else if ("valorabonotot".equals(fieldName)) {
+                valor = nodo.getValorabonotot();
+            } else if ("notransferencia".equals(fieldName)) {
+                valor = nodo.getNumerotransferencia();
             } else if ("valorabonodeb".equals(fieldName)) {
                 valor = nodo.getValorabonodeb();
             } else if ("valorabonotar".equals(fieldName)) {
