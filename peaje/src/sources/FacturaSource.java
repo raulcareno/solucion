@@ -92,6 +92,11 @@ public class FacturaSource implements JRDataSource {
 
             } else if ("cliente".equals(fieldName)) {
                 valor = nodo.getClientes().getNombres();
+            } else if ("tarjeta".equals(fieldName)) {
+                try{
+                    valor = nodo.getTarjetas().getTarjeta();
+                }catch(Exception e){
+                }
             } else if ("clientenombre".equals(fieldName)) {
                 try {
                         valor = nodo.getTarjetas().getClientes().getNombres();    
