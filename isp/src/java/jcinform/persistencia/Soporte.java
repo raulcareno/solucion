@@ -40,12 +40,25 @@ public class Soporte implements Serializable {
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Column(name = "fechaorden")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaorden;
+    
+    @Column(name = "fechafin")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechafin;
+    
+    @Column(name = "fechamodifica")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechamodifica;
     @Lob
     @Column(name = "observacion")
     private String observacion;
     @Lob
     @Column(name = "observacion2")
     private String observacion2;
+    @Column(name = "estado")
+    private Integer estado;
     @Lob
     @Column(name = "observacion3")
     private String observacion3;
@@ -150,6 +163,14 @@ public class Soporte implements Serializable {
 
     public void setTecnico(Empleados tecnico) {
         this.tecnico = tecnico;
+    }
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
     }
     
     

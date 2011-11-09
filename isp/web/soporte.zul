@@ -81,6 +81,8 @@ void modificar(){
      
  
  }
+
+ 
 llenarCliente(Clientes clienteEn){
      identificacion.value = clienteEn.getIdentificacion();
      codigocli.value = clienteEn.getCodigo()+"";
@@ -90,16 +92,8 @@ llenarCliente(Clientes clienteEn){
      combo.value = clienteEn.getApellidos()+" "+clienteEn.getNombres() ;
 
 }
-  void verificarCedula(String valor){
-      if(valor.length()>9){
-            List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
-            if(empleados.size()>0){
-                for(Iterator it = empleados.iterator(); it.hasNext();) {
-                      Clientes object = (Clientes)it.next();
-                      empa = object;
-                      
-                 }
-                  contratosCliente = new Listbox();
+void buscarContratos(Clientes empa){
+  contratosCliente = new Listbox();
         int a=0;
             for (Iterator it = contratosCliente.getItems().iterator(); it.hasNext();) {
                    contratosCliente.getItems().remove(a);
@@ -134,10 +128,22 @@ llenarCliente(Clientes clienteEn){
                                       li.appendChild(estadoCelda);
                                         contratosCliente.appendChild(li);
                              }
-                             if(ControlequiposEncontrados.size()>0)
-                                contratosPanel.visible = true;
+}
+
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
+            if(empleados.size()>0){
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Clientes object = (Clientes)it.next();
+                      empa = object;
+                      
+                 }
+                
+                             
                 llenarCliente(empa);
                 buscarSoportes();
+                buscarContratos(empa);
                 facturasPendientes();
             }else{
                    alert("No encontrado");
@@ -158,6 +164,27 @@ llenarCliente(Clientes clienteEn){
                 }
         
         }
+ 
+    }
+    
+    
+      void buscarOrden(String valor){
+       
+            List empleados = adm.query("Select o from Soporte as o where o.noorden = "+new Integer(valor)+" ");
+            if(empleados.size()>0){
+                nuevos(empleados.get(0));
+                modificars.disabled = false;
+                  llenarCliente((empleados.get(0)).getClientes());
+                buscarSoportes();
+                 buscarContratos((empleados.get(0)).getClientes());
+                facturasPendientes();
+            }else{
+                   Messagebox.show("Orden NO encontrada...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                   nuevos(new Soporte(0));
+                   llenarCliente(new Clientes(0));
+                    buscarSoportes();
+                    facturasPendientes();
+             }
  
     }
     
@@ -301,6 +328,8 @@ llenarCliente(Clientes clienteEn){
                                       li.appendChild(new Listcell(acceIt.getObservacion()+""));
                                       li.appendChild(new Listcell((acceIt.getGenerada()==true?"SI":"NO")));
                                       li.appendChild(new Listcell(acceIt.getEmpleados().getApellidos()+" "+acceIt.getEmpleados().getNombres()));
+                                      li.appendChild(new Listcell(acceIt.getTecnico().getApellidos()+" "+acceIt.getTecnico().getNombres()));
+                                      li.appendChild(new Listcell(acceIt.getEstado()+" "));
                                       soporte.appendChild(li);
                              }
 
@@ -359,35 +388,42 @@ llenarCliente(Clientes clienteEn){
   ]]>
     </zscript>
     <div style="align:center">
-        <grid  width="802px">
-            <rows>
-                <row>
-                                        
-                                 
-                    <panel framable="true" visible="true" title="DATOS CLIENTE" height="300px" width="400px">
-                        <panelchildren>
-                            <grid>
-                                <rows>
-                                    <row spans="2">
-                            
-                                    </row>
-                                    <row>
-                                        <span style="float:right"> Identificación: </span> 
-                                        <span> 
-                                            <textbox id="identificacion" cols="13" readonly="false" onBlur="verificarCedula(self.value)" onOK="verificarCedula(self.value)"  />
+        <tabbox width="100%"  height="600px" orient="vertical"  >
+            <tabs  width="150px">
+                <tab id="registro" label="Soporte e Historial"/>
+                <tab  label="Pendientes" id="facturas"/>
+                <tab label="Contratos" />
+               
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <groupbox id="gb" mold="3d" width="802px">
+                        <caption label="Registro" />
+                        <grid>
+                            <rows>
+                                <row>
+                                    <span style="float:right"> Buscar x Orden: </span> 
+                                    <span> 
+                                        <textbox id="orden" cols="13"   onOK="buscarOrden(self.value)"  />
+                                    </span>
+                                </row>
+                                <row>
+                                    <span style="float:right"> Identificación: </span> 
+                                    <span> 
+                                        <textbox id="identificacion" cols="13" readonly="false" onBlur="verificarCedula(self.value)" onOK="verificarCedula(self.value)"  />
                                
                             Digite el No.[ENTER]
-                                            <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
-                                        </span>
-                                    </row>
-                                    <row>
-                                        <span style="float:right"> Nombres:</span> 
-                                        <span>     
-                                            <textbox readonly="true" cols="32"   id="combo" />
+                                        <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
+                                    </span>
+                                </row>
+                                <row>
+                                    <span style="float:right"> Nombres:</span> 
+                                    <span>     
+                                        <textbox readonly="true" cols="32"   id="combo" />
                            
                               
-                                            <button label="" id="buscarC" disabled="false"  image="/images/auditoria.gif">
-                                                <attribute name="onClick">{
+                                        <button label="" id="buscarC" disabled="false"  image="/images/auditoria.gif">
+                                            <attribute name="onClick">{
                                                 limpiarTodo();
                                             final Window win = (Window) Executions.createComponents("buscarClientes.zul", null, null);
                                             win.setMaximizable(true);
@@ -396,111 +432,160 @@ llenarCliente(Clientes clienteEn){
                                             win.setTitle("Buscar Clientes");
                                             win.doModal();
                                             }                            
-                                                </attribute>
-                                            </button> 
+                                            </attribute>
+                                        </button> 
                                            
                               
                     
                        
                       
-                                        </span>
-                                    </row>
-                                    <row visible="false">
-                                        <span style="float:right">Dirección:  </span>
-                                        <textbox id="direccion" cols="32"  readonly="true"  />
-                                    </row>
+                                    </span>
+                                </row>
+                                <row visible="false">
+                                    <span style="float:right">Dirección:  </span>
+                                    <textbox id="direccion" cols="32"  readonly="true"  />
+                                </row>
                     
-                                    <row visible = "false">
-                                        <intbox id="codigos" readonly="true" />    
-                                        <intbox id="atendida" readonly="true" />    
-                                    </row>
-                                    <row>
-                                        <span style="float:right">Atendido por:  </span>
-                                        <textbox id="atendidanombre" cols="32"  readonly="true" />        
-                                    </row>
-                                    <row> 
-                                        <span style="float:right">Fecha:  </span>
-                                        <datebox readonly="true" onCreate="self.value = adm.Date()" id="fechasoporte"/> 
-                                    </row>
-                                    <row>
-                                        <span style="float:right"> Observación: </span>
-                                        <textbox readonly="true" cols="32"  rows="3" id="observacion"/> 
-                                    </row>
-                                    <row>
-                                        <span style="float:right"> Generar Orden: </span>
-                                        <span>   
-                                            <checkbox id="generar" onCheck="bd.disabled = (!self.checked) " disabled="true"   />
+                                <row visible = "false">
+                                    <intbox id="codigos" readonly="true" />    
+                                    <intbox id="atendida" readonly="true" />    
+                                </row>
+                                <row>
+                                    <span style="float:right">Atendido por:  </span>
+                                    <textbox id="atendidanombre" cols="32"  readonly="true" />        
+                                </row>
+                                <row> 
+                                    <span style="float:right">Fecha:  </span>
+                                    <span>
+                                        <datebox readonly="true" width="73px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechasoporte"/> 
+                                        Modificada:
+                                        <datebox readonly="true"  width="73px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechamodificada"/> 
+                                        Orden:
+                                        <datebox readonly="true" width="73px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechaorden"/> 
+                                        Finalizada:
+                                        <datebox readonly="true" width="73px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechafinalizada"/> 
+                                    </span>
+                                    
+                                </row>
+                                <row>
+                                    <span style="float:right"> Observación: </span>
+                                    <textbox readonly="true" cols="32"  rows="2" id="observacion"/> 
+                                </row>
+                                <row>
+                                    <span style="float:right"> Generar Orden: </span>
+                                    <span>   
+                                        <checkbox id="generar" onCheck="bd.disabled = (!self.checked) " disabled="true"   />
                                       No. Orden: 
-                                            <intbox id="noorden" readonly="true"   /> 
-                                        </span>
-                                    </row>
-                                    <row>
-                                        <span>Téc.Asignado:</span>
+                                        <intbox id="noorden" readonly="true"   /> 
+                                    </span>
+                                </row>
+                                <row>
+                                    <span>Téc.Asignado:</span>
                                         
-                                        <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
-                                            <bandpopup>
-                                                <vbox>
+                                    <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
+                                        <bandpopup>
+                                            <vbox>
                                                        
-                                                    <listbox   onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();"   id="empleadosList"  >
+                                                <listbox   onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();"   id="empleadosList"  >
                                             
-                                                        <listitem forEach="${empleadosEncontrados}"    value="${each}">
-                                                            <listcell label="${each.apellidos}" />
-                                                            <listcell label="${each.nombres}" />
-                                                        </listitem>
-                                                    </listbox> 
-                                                </vbox>
-                                            </bandpopup>
-                                        </bandbox>
+                                                    <listitem forEach="${empleadosEncontrados}"    value="${each}">
+                                                        <listcell label="${each.apellidos}" />
+                                                        <listcell label="${each.nombres}" />
+                                                    </listitem>
+                                                </listbox> 
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
                                         
                                         
                                       
                                         
-                                    </row>
-                                        
-                                    <row spans="2">
-                                        <span>
-                                            <button image="/images/guardar.gif" id="guardars" label="Guardar"  disabled="true"  onClick="guardars();modificars.disabled = true;"/>
-                                            <button  image="/images/nuevo.gif" id="agregars" label="Agregar" onClick="nuevos(new Soporte(0)); habilitar(false); observacion.focus();guardars.disabled = false;modificars.disabled = true" />
-                                            <button  image="/images/editar.gif" id="modificars"  label="Modificar" disabled="true"  onClick="habilitar(false); observacion.focus();guardars.disabled = false;"/>                           
-                                        </span>
-                                    </row>
-                                </rows>
-                            </grid>
-                                    
-                        </panelchildren>
-                    </panel>
-                    <span>
-                        <panel framable="true" visible="true" id="contratosPanel"  title="CONTRATOS"   height="150px" width="390px">
+                                </row>
+                                <row>
+                                    <span>Estado:</span>
+                                    <radiogroup id="estadoContrato" >
+                                        <radio disabled="true" id="eactivo" selected="true" value="Activo" label="Pendiente" style="font-weight:bold2" />
+                                        <radio disabled="true"  id="esuspendido"  value="Suspendido"  label="En Visita" style="font-weight:bold2" />
+                                        <radio  disabled="true"  id="eterminado" value="Terminado"  label="Finalizado" style="font-weight:bold2" />
+                                    </radiogroup>
+                                </row>
+                            </rows>
+                        </grid>
+                           
+                        <span>
+                            <button image="/images/guardar.gif" id="guardars" label="Guardar"  disabled="true"  onClick="guardars();modificars.disabled = true;"/>
+                            <button  image="/images/nuevo.gif" id="agregars" label="Agregar" onClick="nuevos(new Soporte(0)); habilitar(false); observacion.focus();guardars.disabled = false;modificars.disabled = true" />
+                            <button  image="/images/editar.gif" id="modificars"  label="Modificar" disabled="true"  onClick="habilitar(false); observacion.focus();guardars.disabled = false;"/>                           
+                        </span>		
+                        <panel framable="true" visible="true"  title="HISTORIAL DE ATENCIONES"   height="200px" width="795px">
                             <panelchildren>
-                                <listbox mold="paging" rows="3" pageSize="3" id="contratosCliente" height="100%" width="100%">
+                            
+                        
+	   
+                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="nuevos(soporte.selectedItem.value);modificars.disabled = false" id="soporte" width="100%">
                                     <listhead>
-                                        <listheader label="Plan"/>
                                         <listheader label="Fecha"/>
+                                        <listheader label="Observación"/>
+                                        <listheader label="Orden Generada"/>
+                                        <listheader label="Registrador"/>
+                                        <listheader label="Técnico"/>
                                         <listheader label="Estado"/>
                                     </listhead>
                                     <listitem forEach="${allEvents}" value="${each}">
                                         <listcell label="${each.fecha}" />
+                                        <listcell label="${each.observacion}" />
+                                        <listcell label="${each.generada}" />
+                                        <listcell label="${each.empleados}" />
                                     </listitem>
                                 </listbox>
-                            </panelchildren>
+                            </panelchildren>	 
                         </panel>
-                        <panel framable="true" visible="true" id="contratosPanel001"  title="FACTURAS PENDIENTES"   height="150px" width="390px">
-                            <panelchildren>
-                                <listbox mold="paging" rows="3" pageSize="3"   id="facturasDatos" width="100%">
-                                    <listhead>
+                    </groupbox>
+                        
+                </tabpanel>
+                <tabpanel>
+         
+                    <listbox mold="paging" rows="3" pageSize="3"   id="facturasDatos" width="100%">
+                        <listhead>
                                    
-                                        <listheader label="Fecha Pago"/>
-                                        <listheader label="Servicio"/>
-                                        <listheader label="Total"/>
-                                        <listheader label="Saldo"/>
-                                        <listheader label="Opcion"/>
-                                    </listhead>
-                                    <listitem forEach="${allEvents}" value="${each}">
-                                    </listitem>
-                                </listbox>    
+                            <listheader label="Fecha Pago"/>
+                            <listheader label="Servicio"/>
+                            <listheader label="Total"/>
+                            <listheader label="Saldo"/>
+                            <listheader label="Opcion"/>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                        </listitem>
+                    </listbox>    
                          
-                            </panelchildren>
-                        </panel>
+                       
+                </tabpanel>
+                <tabpanel>
+                   
+                    <listbox mold="paging" rows="3" pageSize="3" id="contratosCliente" height="100%" width="100%">
+                        <listhead>
+                            <listheader label="Plan"/>
+                            <listheader label="Fecha"/>
+                            <listheader label="Estado"/>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.fecha}" />
+                        </listitem>
+                    </listbox>
+                       
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+        
+        <grid  width="802px">
+            <rows>
+                <row>
+                                        
+                                 
+              
+                    <span>
+                    
+                        
                     </span>
                 </row>
                
@@ -508,30 +593,7 @@ llenarCliente(Clientes clienteEn){
         </grid>
         <textbox id="direccioni" cols="40" readonly="true"  visible="false" />
         <textbox id="telefonoi" readonly="true" visible="false" />
-        <groupbox id="gb" mold="3d" width="802px">
-	    			
-            <panel framable="true" visible="true"  title="HISTORIAL DE ATENCIONES"   height="250px" width="795px">
-                <panelchildren>
-                            
-                        
-	   
-                    <listbox mold="paging" rows="10" pageSize="10"  onSelect="nuevos(soporte.selectedItem.value);modificars.disabled = false" id="soporte" width="100%">
-                        <listhead>
-                            <listheader label="Fecha"/>
-                            <listheader label="Observación"/>
-                            <listheader label="Orden Generada"/>
-                            <listheader label="Atendida"/>
-                        </listhead>
-                        <listitem forEach="${allEvents}" value="${each}">
-                            <listcell label="${each.fecha}" />
-                            <listcell label="${each.observacion}" />
-                            <listcell label="${each.generada}" />
-                            <listcell label="${each.empleados}" />
-                        </listitem>
-                    </listbox>
-                </panelchildren>	 
-            </panel>
-        </groupbox>
+     
         <panel height="1px" visible="false" style="margin-bottom:10px"
                            title="Reporte" border="normal">
             <panelchildren>
