@@ -2347,6 +2347,18 @@ public class frmFactura extends javax.swing.JInternalFrame {
             guardando = true;
 
             if (principal.permisos.getAgregar()) {
+                            int seleccion = JOptionPane.showOptionDialog(this, " ¿Seguro que Desea Aplicar MULTA?",
+                    "JCINFORM",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, // null para icono por defecto.
+                    new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
+                    "NO");
+            System.out.println("" + seleccion);
+
+            if (0 == seleccion) {
+
+                
                 try {
 
 
@@ -2401,18 +2413,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     }
                     
                     imprimir(facActual.getCodigo(), emp, dia, false, nuevoCl);
-                    //adm.actualizar(emp);
-//                    if (empresaObj.getSeabretic()) {
-//                        Thread cargar = new Thread() {
-//
-//                            public void run() {
-//                                AbrirPuerta.abrir(empresaObj.getPuerto(), frmPrincipal.out);
-//                                System.out.println("SALIO PUERTA: " + frmPrincipal.out);
-//
-//                            }
-//                        };
-//
-//                    }
                     if (empresaObj.getSeabrefac()) {
                         try {
                             LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
@@ -2474,6 +2474,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     return;
                 }
                 //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito");
+                
+            }
             } else {
                 JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
             }
