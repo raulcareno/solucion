@@ -206,7 +206,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel1.setBounds(190, 60, 60, 14);
 
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas Tickest y Tarjetas", "Facturas de Tickets", "Facturas de Tarjetas", "Consolidado por Mes", "Clientes mas frecuentes", "Listado clientes", "No. de Ingresos x Cliente", "Tickets Anulados", "Fotos de Vehiculos", "CIERRE DE CAJA" }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas Tickest y Tarjetas", "Facturas de Tickets", "Facturas de Tarjetas", "Consolidado por Mes", "Clientes mas frecuentes", "Listado clientes", "No. de Ingresos x Cliente", "Tickets Anulados", "Fotos de Vehiculos", "CIERRE DE CAJA", "Tarjetas Ocupadas(Dentro del Parqu.)" }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -349,7 +349,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -425,6 +425,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 if (cmbTipoReporte.getSelectedIndex() > 0) {
                     factura.setFecha(factura.getFechafin());
                 }
+                try{
+                    factura.setClientes(factura.getTarjetas().getClientes());
+                }catch(Exception e){
+                    
+                }
+                
+                
                 detalle.add(factura);
             }
             FacturaSource ds = new FacturaSource(detalle);
@@ -901,6 +908,14 @@ public class frmReportes extends javax.swing.JInternalFrame {
             
             dirreporte = ubicacionDirectorio+"reportes"+separador+"cierrecaja.jasper";
             titulo = "Facturas ";
+            tickets(dirreporte, query, titulo);
+
+        } else if (cmbTipoReporte.getSelectedIndex() == 13) {//TARJETAS DENTRO
+            query = "Select o from Factura as o" +
+                    " where o.fechaini between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "AND o.fechafin is null AND o.ticket  IS NULL order by o.fechaini ";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"clientesActuales.jasper";
+            titulo = "Clientes dentro del parqueadero";
             tickets(dirreporte, query, titulo);
 
         }  
