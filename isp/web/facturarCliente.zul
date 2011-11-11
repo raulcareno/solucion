@@ -341,7 +341,7 @@ void ultimoRecibo(){
                                             <decimalbox cols="7"   onBlur='sumarcobros("dep")'  format="##0.00"  onOK="nocuenta.focus()" id="deposito" />
                                             <decimalbox  onBlur='sumarcobros("che")'   format="##0.00"  onOK="nocheque.focus()"  cols="7" id="cheque" />
                                             <decimalbox   onBlur='sumarcobros("tar")' onOK="notarjeta.focus()"  format="##0.00"   cols="7" id="tarjeta" />
-                                            <decimalbox   onBlur='sumarcobros("tra")' onOK="notrasnferencia.focus()"  format="##0.00"   cols="7" id="transferencia" />
+                                            <decimalbox   onBlur='sumarcobros("tra")' onOK="notransferencia.focus()"  format="##0.00"   cols="7" id="transferencia" />
                                                 
                                         </row>
                                         <row>
