@@ -38,11 +38,11 @@ public class Clientes implements Serializable {
     @Column(name = "identificacion")
     private String identificacion;
     @Column(name = "razonsocial")
-    private String razonsocial;
+    private String razonsocial="";
     @Column(name = "apellidos")
-    private String apellidos;
+    private String apellidos="";
     @Column(name = "nombres")
-    private String nombres;
+    private String nombres="";
     @Column(name = "direccion")
     private String direccion;
     @Column(name = "telefono")
