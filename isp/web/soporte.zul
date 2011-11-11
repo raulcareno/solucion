@@ -233,6 +233,10 @@ void buscarContratos(Clientes empa){
                             fechasoporte.readonly = estado;
                             observacion.readonly = estado;
                             generar.disabled  = estado;
+                            uno.disabled = estado;
+                            dos.disabled = estado;
+                            tres.disabled = estado;
+                            cuatro.disabled = estado;
                 }else{
                                 Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                 }  
@@ -328,13 +332,15 @@ void buscarContratos(Clientes empa){
                                       li.appendChild(new Listcell(acceIt.getObservacion()+""));
                                       li.appendChild(new Listcell((acceIt.getGenerada()==true?"SI":"NO")));
                                       li.appendChild(new Listcell(acceIt.getEmpleados().getApellidos()+" "+acceIt.getEmpleados().getNombres()));
+                                      try{
                                       li.appendChild(new Listcell(acceIt.getTecnico().getApellidos()+" "+acceIt.getTecnico().getNombres()));
+                                      }catch(Exception er){}
                                       li.appendChild(new Listcell(acceIt.getEstado()+" "));
                                       soporte.appendChild(li);
                              }
 
                     }catch(Exception e){
-                            Messagebox.show("Seleccione primero un CLIENTE  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
 
                         }
                  }
@@ -401,25 +407,23 @@ void buscarContratos(Clientes empa){
                         <caption label="Registro" />
                         <grid>
                             <rows>
-                                <row>
-                                    <span style="float:right"> Buscar x Orden: </span> 
+                                <row style="background:#FFFF66">
+                                    <span style="float:right"> </span> 
                                     <span> 
+                                    <label value="Buscar x No. de Orden: " style="font-weight:bold" />
                                         <textbox id="orden" cols="13"   onOK="buscarOrden(self.value)"  />
+                                        <image  src="/images/enter.png"  height="14px"/>
                                     </span>
                                 </row>
                                 <row>
                                     <span style="float:right"> Identificación: </span> 
                                     <span> 
                                         <textbox id="identificacion" cols="13" readonly="false" onBlur="verificarCedula(self.value)" onOK="verificarCedula(self.value)"  />
-                               
-                            Digite el No.[ENTER]
-                                        <textbox id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
-                                    </span>
-                                </row>
-                                <row>
-                                    <span style="float:right"> Nombres:</span> 
+                                            <image  src="/images/enter.png"  height="14px"/>
+                                        <textbox visible="false" id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
+                                         <span> Nombres:</span> 
                                     <span>     
-                                        <textbox readonly="true" cols="32"   id="combo" />
+                                        <textbox readonly="true" cols="42"   id="combo" />
                            
                               
                                         <button label="" id="buscarC" disabled="false"  image="/images/auditoria.gif">
@@ -434,13 +438,11 @@ void buscarContratos(Clientes empa){
                                             }                            
                                             </attribute>
                                         </button> 
-                                           
-                              
-                    
-                       
                       
                                     </span>
+                                    </span>
                                 </row>
+                                 
                                 <row visible="false">
                                     <span style="float:right">Dirección:  </span>
                                     <textbox id="direccion" cols="32"  readonly="true"  />
@@ -450,17 +452,14 @@ void buscarContratos(Clientes empa){
                                     <intbox id="codigos" readonly="true" />    
                                     <intbox id="atendida" readonly="true" />    
                                 </row>
-                                <row>
-                                    <span style="float:right">Atendido por:  </span>
-                                    <textbox id="atendidanombre" cols="32"  readonly="true" />        
-                                </row>
+                                
                                 <row> 
-                                    <span style="float:right">Fecha:  </span>
+                                    <span style="float:right">Creada:  </span>
                                     <span>
                                         <datebox readonly="true" width="73px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechasoporte"/> 
                                         Modificada:
                                         <datebox readonly="true"  width="73px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechamodificada"/> 
-                                        Orden:
+                                        Orden Generada:
                                         <datebox readonly="true" width="73px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechaorden"/> 
                                         Finalizada:
                                         <datebox readonly="true" width="73px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechafinalizada"/> 
@@ -469,7 +468,7 @@ void buscarContratos(Clientes empa){
                                 </row>
                                 <row>
                                     <span style="float:right"> Observación: </span>
-                                    <textbox readonly="true" cols="32"  rows="2" id="observacion"/> 
+                                    <textbox readonly="true" cols="82"  rows="6" id="observacion"/> 
                                 </row>
                                 <row>
                                     <span style="float:right"> Generar Orden: </span>
@@ -477,10 +476,7 @@ void buscarContratos(Clientes empa){
                                         <checkbox id="generar" onCheck="bd.disabled = (!self.checked) " disabled="true"   />
                                       No. Orden: 
                                         <intbox id="noorden" readonly="true"   /> 
-                                    </span>
-                                </row>
-                                <row>
-                                    <span>Téc.Asignado:</span>
+                                        <span>Téc.Asignado:</span>
                                         
                                     <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
                                         <bandpopup>
@@ -497,17 +493,21 @@ void buscarContratos(Clientes empa){
                                         </bandpopup>
                                     </bandbox>
                                         
-                                        
-                                      
-                                        
+                                    </span>
                                 </row>
                                 <row>
                                     <span>Estado:</span>
-                                    <radiogroup id="estadoContrato" >
-                                        <radio disabled="true" id="eactivo" selected="true" value="Activo" label="Pendiente" style="font-weight:bold2" />
-                                        <radio disabled="true"  id="esuspendido"  value="Suspendido"  label="En Visita" style="font-weight:bold2" />
-                                        <radio  disabled="true"  id="eterminado" value="Terminado"  label="Finalizado" style="font-weight:bold2" />
+                                    <radiogroup id="estadoSoporte" >
+                                        <radio  disabled="true"  id="uno" value="1"  label="Finalizado" style="font-weight:bold2" />
+                                        <radio disabled="true" id="dos" selected="true" value="2" label="Pendiente" style="font-weight:bold2" />
+                                        <radio disabled="true"  id="tres"  value="3"  label="En Visita" style="font-weight:bold2" />
+                                        <radio disabled="true"  id="cuatro"  value="4"  label="Verificando" style="font-weight:bold2" />
+                                        
                                     </radiogroup>
+                                </row>
+                                <row style="background:#CDDFF5">
+                                    <span style="float:right"> <label style="font-weight:bold">Atendido por:</label>  </span>
+                                    <textbox id="atendidanombre" cols="32" style="background:transparent;border:0px" readonly="true" />        
                                 </row>
                             </rows>
                         </grid>
