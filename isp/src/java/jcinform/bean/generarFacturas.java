@@ -240,6 +240,9 @@ public class generarFacturas {
             fac.setClientes(object.getClientes());
             fac.setFecha(fecha2);
             fac.setSucursal(suc);
+            if(object.getDescuento()==null){
+            object.setDescuento(BigDecimal.ZERO);
+            }
             fac.setDescuento(BigDecimal.ZERO);
             fac.setSubtotal(new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento()));
             fac.setDescuento(new BigDecimal(0));
@@ -264,6 +267,7 @@ public class generarFacturas {
             cuenta.setCheque(BigDecimal.ZERO);
             cuenta.setEfectivo(BigDecimal.ZERO);
             cuenta.setDescuento(BigDecimal.ZERO);
+            cuenta.setTransferencia(BigDecimal.ZERO);
             cuenta.setFactura(fac);
             cuenta.setFecha(fecha2);
             cuenta.setNotarjeta("");
@@ -274,6 +278,7 @@ public class generarFacturas {
         } catch (Exception e) {
             System.out.println("" + e);
             System.out.println("DUPLICADO: " + e.hashCode());
+            Logger.getLogger(generarFacturas.class.getName()).log(Level.SEVERE, null, e);
             return e.hashCode() + "";
         }
         //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??

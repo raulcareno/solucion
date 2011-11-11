@@ -190,6 +190,7 @@ void buscarContratos(Clientes empa){
     
     
  nuevos(Soporte sop){
+ orden.value = null;
                    if(verificar("Agregar")){
                          codigos.value = sop.getCodigo();
                             try{
@@ -210,16 +211,21 @@ void buscarContratos(Clientes empa){
                             fechamodifica.value = sop.getFechamodifica();
                             fechafin.value = sop.getFechafin();
                             fechaorden.value = sop.getFechaorden();
-                            Integer valorEstado = sop.getEstado();
-                            if(valorEstado.equals(1)){
-                                uno.selected = true;
-                            }else if(valorEstado.equals(2)){
-                                dos.selected = true;
-                            }else if(valorEstado.equals(3)){
-                                tres.selected = true;
-                            }else if(valorEstado.equals(4)){
-                                cuatro.selected = true;
-                            } 
+                            try{
+                             Integer valorEstado = sop.getEstado();
+                                if(valorEstado.equals(null)){
+                                    valorEstado = 1;
+                                }
+                                if(valorEstado.equals(1)){
+                                    uno.selected = true;
+                                }else if(valorEstado.equals(2)){
+                                    dos.selected = true;
+                                }else if(valorEstado.equals(3)){
+                                    tres.selected = true;
+                                }else if(valorEstado.equals(4)){
+                                    cuatro.selected = true;
+                                } 
+                            }catch(Exception error){System.out.println("ERROR EN ESTADO: "+error); uno.selected= true;}
                              if(sop.getTecnico() != null){
                                      try{
                                                 for (int i = 0; i <= empleadosList.getItems().size(); i++) {
@@ -336,7 +342,7 @@ void buscarContratos(Clientes empa){
                     }
                      
                     
-                      void buscarSoportes(){
+  void buscarSoportes(){
                     try{
                             List ControlequiposEncontrados = adm.query("Select o from Soporte  as o where o.clientes.codigo = '"+codigocli.value+"' order by o.fecha desc ");
                         
@@ -358,7 +364,20 @@ void buscarContratos(Clientes empa){
                                       try{
                                       li.appendChild(new Listcell(acceIt.getTecnico().getApellidos()+" "+acceIt.getTecnico().getNombres()));
                                       }catch(Exception er){}
-                                      li.appendChild(new Listcell(acceIt.getEstado()+" "));
+                                      
+                                      String estado = "";
+                                      Integer valorEstado = acceIt.getEstado();
+                                      if(valorEstado.equals(1)){
+                                            estado = "RESUELTO";
+                                        }else if(valorEstado.equals(2)){
+                                            estado = "PENDIENTE";
+                                        }else if(valorEstado.equals(3)){
+                                            estado = "EN VISITA";
+                                        }else if(valorEstado.equals(4)){
+                                            estado = "VERIFICANDO";
+                                        } 
+                                      li.appendChild(new Listcell(estado));
+                                      
                                       soporte.appendChild(li);
                              }
 
@@ -484,7 +503,7 @@ void buscarContratos(Clientes empa){
                                         <datebox readonly="true" disabled="true"  style="background:white; font-weight:bold"  width="75px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechamodificada"/> 
                                         Orden Generada:
                                         <datebox readonly="true" disabled="true"  style="background:white; font-weight:bold"  width="75px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechaorden"/> 
-                                        Finalizada:
+                                        Resuelto:
                                         <datebox readonly="true" disabled="true"  style="background:white; font-weight:bold"  width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechafin"/> 
                                     </span>
                                     
@@ -521,7 +540,7 @@ void buscarContratos(Clientes empa){
                                 <row>
                                     <span>Estado:</span>
                                     <radiogroup id="estadoSoporte" >
-                                        <radio  disabled="true"  id="uno" value="1"  label="Finalizado" style="font-weight:bold2" />
+                                        <radio  disabled="true"  id="uno" value="1"  label="Resuelto" style="font-weight:bold2" />
                                         <radio disabled="true" id="dos" selected="true" value="2" label="Pendiente" style="font-weight:bold2" />
                                         <radio disabled="true"  id="tres"  value="3"  label="En Visita" style="font-weight:bold2" />
                                         <radio disabled="true"  id="cuatro"  value="4"  label="Verificando" style="font-weight:bold2" />
