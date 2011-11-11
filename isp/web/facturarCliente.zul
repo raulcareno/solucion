@@ -78,6 +78,7 @@ String llenarCeros(String numero){
             cobrar.setRiva(riva.value);
             cobrar.setRfuente(rfuente.value);
             cobrar.setRtotal(rtotal.value);
+            cobrar.setEmpleados(usuarioActual);
             cobrar.setNumeroretencion(noretencion.value);
             adm.guardar(cobrar);
             

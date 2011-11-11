@@ -172,6 +172,30 @@ public class Soporte implements Serializable {
     public void setEstado(Integer estado) {
         this.estado = estado;
     }
+
+    public Date getFechafin() {
+        return fechafin;
+    }
+
+    public void setFechafin(Date fechafin) {
+        this.fechafin = fechafin;
+    }
+
+    public Date getFechamodifica() {
+        return fechamodifica;
+    }
+
+    public void setFechamodifica(Date fechamodifica) {
+        this.fechamodifica = fechamodifica;
+    }
+
+    public Date getFechaorden() {
+        return fechaorden;
+    }
+
+    public void setFechaorden(Date fechaorden) {
+        this.fechaorden = fechaorden;
+    }
     
     
 

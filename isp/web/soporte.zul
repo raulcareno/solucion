@@ -207,6 +207,19 @@ void buscarContratos(Clientes empa){
                             observacion.value = sop.getObservacion();
                             generar.checked  = sop.getGenerada();
                             noorden.value = sop.getNoorden();
+                            fechamodifica.value = sop.getFechamodifica();
+                            fechafin.value = sop.getFechafin();
+                            fechaorden.value = sop.getFechaorden();
+                            Integer valorEstado = sop.getEstado();
+                            if(valorEstado.equals(1)){
+                                uno.selected = true;
+                            }else if(valorEstado.equals(2)){
+                                dos.selected = true;
+                            }else if(valorEstado.equals(3)){
+                                tres.selected = true;
+                            }else if(valorEstado.equals(4)){
+                                cuatro.selected = true;
+                            } 
                              if(sop.getTecnico() != null){
                                      try{
                                                 for (int i = 0; i <= empleadosList.getItems().size(); i++) {
@@ -250,6 +263,11 @@ void buscarContratos(Clientes empa){
                                 sop.setFecha(fechasoporte.value);
                                 sop.setObservacion(observacion.value);
                                 sop.setGenerada(generar.checked);
+                                Integer valorEstado = new Integer(estadoSoporte.selectedItem.value);
+                                sop.setEstado(valorEstado);
+                                if(valorEstado.equals(1)){
+                                    sop.setFechafin(adm.Date());
+                                }
                                 sop.setClientes(new Clientes(new Integer(codigocli.value)));
                                 sop.setNoorden(noorden.value);
                                 if(generar.checked){
@@ -259,8 +277,10 @@ void buscarContratos(Clientes empa){
                                 if(sop.getGenerada() && sop.getNoorden() == null){ 
                                     Integer valor = adm.getNuevaClave("Soporte","noorden");
                                     sop.setNoorden(valor);
+                                    sop.setFechaorden(adm.Date());
                                 }
                                 if((!sop.getCodigo().equals(0)) ){
+                                     sop.setFechamodifica(adm.Date());
                                      sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
                                      adm.actualizar(sop);
                                         permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
@@ -287,6 +307,9 @@ void buscarContratos(Clientes empa){
                                                     parameters.put("telefono", empresa.getTelefono());
                                                     parameters.put("cliente", combo.value);
                                                     parameters.put("noorden", sop.getNoorden());
+                                                    try{
+                                                       parameters.put("tecnico",sop.getTecnico().getApellidos()+ " "+sop.getTecnico().getNombres() );
+                                                    }catch(Exception ar){System.out.println("ERROR EN TECNICO",ar);}
                                                     System.out.println("00002");
                                                     parameters.put("telefono1", telefonoi.value);
                                                     parameters.put("direccion1", direccioni.value);
@@ -456,13 +479,13 @@ void buscarContratos(Clientes empa){
                                 <row> 
                                     <span style="float:right">Creada:  </span>
                                     <span>
-                                        <datebox readonly="true" width="73px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechasoporte"/> 
+                                        <datebox readonly="true" disabled="true"  style="background:white; font-weight:bold" width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechasoporte"/> 
                                         Modificada:
-                                        <datebox readonly="true"  width="73px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechamodificada"/> 
+                                        <datebox readonly="true" disabled="true"  style="background:white; font-weight:bold"  width="75px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechamodificada"/> 
                                         Orden Generada:
-                                        <datebox readonly="true" width="73px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechaorden"/> 
+                                        <datebox readonly="true" disabled="true"  style="background:white; font-weight:bold"  width="75px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechaorden"/> 
                                         Finalizada:
-                                        <datebox readonly="true" width="73px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechafinalizada"/> 
+                                        <datebox readonly="true" disabled="true"  style="background:white; font-weight:bold"  width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechafin"/> 
                                     </span>
                                     
                                 </row>
