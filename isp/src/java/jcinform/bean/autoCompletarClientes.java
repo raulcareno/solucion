@@ -46,7 +46,7 @@ public class autoCompletarClientes extends Combobox {
             List<Clientes> estu = new ArrayList<Clientes>();
             if (abuscar.length() > 1) {
                 estu = adm.query("Select o from Clientes as o "
-                        + "where o.apellidos like '%" + abuscar + "%'",0,10);
+                        + "where o.apellidos like '%" + abuscar + "%' order by o.apellidos ",0,10);
             }
 
             for (int i = 0; i < getItems().size(); i++) {

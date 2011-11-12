@@ -739,6 +739,8 @@ if(sihay==0){
  }
  void nuevo(){
      genFactura.setChecked(false);
+     telefono.value ="";
+     direccion.value ="";
     if(verificar("Agregar")){
        guardar.disabled=false;
        agregare = false;
