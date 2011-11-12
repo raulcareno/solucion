@@ -356,15 +356,24 @@ Sucursal sucursal = null;
     public JRDataSource clientesxsector(Sector sec) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-        List<Contratos> contra = adm.query("Select o from Contratos as o "
+        String que = "Select o from Contratos as o "
                 + "where o.sector.codigo =  '" + sec.getCodigo() + "'"
-                + "  and o.sucursal.codigo = '"+sucursal.getCodigo()+"'  order by o.clientes.apellidos");
-        for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
-            Contratos contratos = it.next();
-            detalles.add(contratos);
-
-        }
-
+                + "  and o.sucursal.codigo = '"+sucursal.getCodigo()+"'  order by o.clientes.apellidos";
+                
+                if(sec.getCodigo().equals(-1)){
+                    que = "Select o from Contratos as o "
+                        + "where o.sucursal.codigo = '"+sucursal.getCodigo()+"'  order by o.clientes.apellidos";      
+                }else{
+                     que = "Select o from Contratos as o "
+                        + "where o.sector.codigo =  '" + sec.getCodigo() + "'"
+                        + "  and o.sucursal.codigo = '"+sucursal.getCodigo()+"'  order by o.clientes.apellidos";      
+                }
+                List<Contratos> contra = adm.query(que);;   
+        
+            for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
+                Contratos contratos = it.next();
+                detalles.add(contratos);
+            }
         ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
         return ds;
     }

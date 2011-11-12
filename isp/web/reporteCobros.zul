@@ -283,6 +283,7 @@ void campos(String valor){
                                     <listitem disabled="true" label="" />
                                     <listitem  disabled="true" id="linea" label="=========CONTRATOS================" value="linea" />
                                     <listitem id="PORSECTORCLI" label="Clientes por Sector " value="PORSECTORCLI" />
+                                    <listitem id="PORISNSTALACIONCLI" label="Clientes por Instalación " value="PORINSTALACIONCLI" />
                                     <listitem id="PORSECTORCLI2" label="Clientes por Sector sin Valor" value="PORSECTORCLI2" />
                                     <listitem id="PORSECTORCLILETRA" label="Clientes por Sector(Desde-Hasta) [A-Z] " value="PORSECTORCLILETRA" />
                                     <listitem id="EQUIPOSPORSECTORCLILETRA" label="Clientes por Sector y Equipos[A-Z] " value="EQUIPOSPORSECTORCLILETRA" />
