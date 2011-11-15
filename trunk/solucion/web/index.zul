@@ -127,44 +127,45 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
             Empleados user = a.getAttribute("user");
             if(user != null){
             //cargo los periodos que tienen
-            List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'");
+            List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o " + 
+            " where o.empleado.codigoemp = '"+user.getCodigoemp()+"'   order by o.periodo.descripcion, o.periodo.institucion.tipo, o.periodo.seccion.descripcion  ");
             if(user.getCodigoemp().equals(-1)){
             equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
             }
             if(equivaEncontrados.size()>0){
-            Empleadoperiodo p = new Empleadoperiodo();
-            Periodo per = new Periodo(-1);
-            Institucion ins = new Institucion(-1);
-            ins.setTipo("");
-            per.setDescripcion("[Seleccione]");
-            p.setPeriodo(per);
-            Global g = new Global();
-            g.setDescripcion("");
+                    Empleadoperiodo p = new Empleadoperiodo();
+                    Periodo per = new Periodo(-1);
+                    Institucion ins = new Institucion(-1);
+                    ins.setTipo("");
+                    per.setDescripcion("[Seleccione]");
+                    p.setPeriodo(per);
+                    Global g = new Global();
+                    g.setDescripcion("");
 
-            ins.setDenominacion("");
-            ins.setNombre("");
-            per.setInstitucion(ins);
-            per.setSeccion(g);
-            equivaEncontrados.add(0,p);
-            verificar.visible = false;
-            btnIngresar.visible = true;
-            clave.disabled = true;
-            usuario.disabled = true;
-            rperiodo.visible = true;
+                    ins.setDenominacion("");
+                    ins.setNombre("");
+                    per.setInstitucion(ins);
+                    per.setSeccion(g);
+                    equivaEncontrados.add(0,p);
+                    verificar.visible = false;
+                    btnIngresar.visible = true;
+                    clave.disabled = true;
+                    usuario.disabled = true;
+                    rperiodo.visible = true;
 
-            periodo = new Listbox();
+                    periodo = new Listbox();
 
-            int a=0;
-            for(Iterator it =periodo.getItems().iterator(); it.hasNext();) {
-            periodo.getItems().remove(a);
-            }
-            for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
-            Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
-            Listitem li = new Listitem();
-            li.setValue(acceIt.getPeriodo());
-            li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " - "+ acceIt.getPeriodo().getInstitucion().getTipo() +" [" +acceIt.getPeriodo().getSeccion()+"]"));
-            periodo.appendChild(li);
-            }
+                    int a=0;
+                    for(Iterator it =periodo.getItems().iterator(); it.hasNext();) {
+                    periodo.getItems().remove(a);
+                    }
+                    for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                    Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
+                    Listitem li = new Listitem();
+                    li.setValue(acceIt.getPeriodo());
+                    li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " - "+ acceIt.getPeriodo().getInstitucion().getTipo() +" [" +acceIt.getPeriodo().getSeccion()+"]"));
+                    periodo.appendChild(li);
+                    }
 
             }else{
             Messagebox.show("Usuario Correcto no tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
