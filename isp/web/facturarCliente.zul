@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk  xmlns="http://www.zkoss.org/2005/zul">
-    <window  onClose="cerrar()" onCreate="cargar()" width="600px" id="facturarCliente">
+    <window  onClose="cerrar()" onCreate="cargar()" width="650px" id="facturarCliente">
+           <style>
+.MyGridRowHeight
+tr.z-row td.z-row-inner
+{
+border:1px solid white;
+border-right:1px solid transparent;
+padding:0px;
+} 
+    </style>
         <zscript>
             <![CDATA[
   import jcinform.persistencia.*;
@@ -17,13 +26,14 @@
     Administrador adm = new Administrador();
     Permisos permiso = new Permisos();
     Session ses = Sessions.getCurrent();
-       
+    
     Empleados usuarioActual = ses.getAttribute("user");
     Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
     String directorioReportes = empresa.getReportes();
     ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
     Sucursal suc = new Sucursal();
+    List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");       
     cargarCliente(){
         boton = Path.getComponent("//controlequipospage/controlventana/facturas");
         boton.doClick();
@@ -73,6 +83,7 @@ String llenarCeros(String numero){
             cobrar.setTarjeta(tarjeta.value);
             cobrar.setNocheque(nocheque.value);
             cobrar.setNotarjeta(notarjeta.value);
+            cobrar.setNocuenta(nocuenta.value);
             cobrar.setTransferencia(transferencia.value);
             cobrar.setNotransferencia(notransferencia.value);
             cobrar.setRiva(riva.value);
@@ -80,6 +91,18 @@ String llenarCeros(String numero){
             cobrar.setRtotal(rtotal.value);
             cobrar.setEmpleados(usuarioActual);
             cobrar.setNumeroretencion(noretencion.value);
+            try{
+                cobrar.setBanco(bancotransferencia.selectedItem.value);
+            }catch(Exception e){System.out.println("NO HAY BANCOS SELECCIONADO");}
+            
+            try{
+                cobrar.setBancocheque(bancocheque.selectedItem.value);
+            }catch(Exception e){System.out.println("NO HAY BANCOS SELECCIONADO");}
+            
+            cobrar.setFechatransferencia(fechatransferencia.value);
+            cobrar.setFechacheque(fechacheque.value);
+            
+            
             adm.guardar(cobrar);
             
             
@@ -280,16 +303,15 @@ void ultimoRecibo(){
                                     <label id="cliente" />  
                                     <intbox visible="false" readonly="true" id="codigocli" /> 
                                     <intbox visible="false"  readonly="true" id="codigofac" /> 
-                                    <intbox visible="true"  readonly="true" id="codigodes" /> 
-                                </span>
-                            </row>
-                            <row>
-                                <span  style="float:right">
+                                    <intbox visible="false"  readonly="true" id="codigodes" /> 
+                                    <span>
                                     <label style="font-weight:bold" value="FECHA: " /> 
-                                </span>
+                                    </span>
                                 <label id="fecha" /> 
+                                </span>
                             </row>
-                            <row>
+                             
+                            <!--row>
                                 <span  style="float:right;"> 
                                     <label style="font-weight:bold" value="DIRECCIÓN: " />
                                 </span>
@@ -298,7 +320,7 @@ void ultimoRecibo(){
                                     <label style="font-weight:bold" value="TELEFONO:" />
                                     <label id="telefono" /> 
                                 </span>
-                            </row>
+                            </row-->
                             <row>
                                 <span  style="float:right">
                                     <label style="font-weight:bold" value="VALOR MORA: " />
@@ -319,7 +341,7 @@ void ultimoRecibo(){
                                 <label style="font-weight:bold" value="FORMA DE PAGO" />
                             </row>
                             <row spans="2">
-                                <grid>
+                                <grid  sclass="MyGridRowHeight" >
                                 
                                     <rows>
                                 
@@ -352,6 +374,54 @@ void ultimoRecibo(){
                                             <textbox id="notarjeta"  cols="7"  onOK="transferencia.focus()"  />
                                             <textbox id="notransferencia"  cols="7"  onOK="btnguardar.focus()"  />
                                             
+                                        </row>
+                                        <row>
+                                            <label  style="font-weight:bold;"> </label>
+                                            <span>   </span>
+                                            <span>   </span>
+                                             
+                                            <bandbox   readonly="true"   value="Banco" width="50px"  id="bd22">
+                                                    <bandpopup>
+                                                        <vbox>
+                                                            <listbox  id="bancocheque" width="250px"
+                                                                    onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
+                                                                <listhead>
+                                                                    <listheader label="Seleccione un Banco"/>
+                                                                </listhead>
+                                                                <listitem forEach="${bancos}" value="${each}">
+                                                                    <listcell label="${each.nombre}" />
+
+                                                                </listitem>
+                                                            </listbox>
+                                                        </vbox>
+                                                    </bandpopup>
+                                                </bandbox>
+                                            <span>   </span>
+                                             
+                                            <bandbox  readonly="true" value="Banco" width="50px"  id="bd223">
+                                                    <bandpopup>
+                                                        <vbox>
+                                                            <listbox  id="bancotransferencia" width="250px"
+                                                                    onSelect="bd223.value=self.selectedItem.label;bd223.closeDropdown();">
+                                                                <listhead>
+                                                                    <listheader label="Seleccione un Banco"/>
+                                                                </listhead>
+                                                                <listitem forEach="${bancos}" value="${each}">
+                                                                    <listcell label="${each.nombre}" />
+
+                                                                </listitem>
+                                                            </listbox>
+                                                        </vbox>
+                                                    </bandpopup>
+                                                </bandbox>
+                                        </row>
+                                        <row>
+                                            <span>   </span>
+                                            <span>   </span>
+                                            <span>   </span>
+                                            <span><datebox  width="50px"  id="fechacheque"  format="dd-MM-yyyy" />   </span>
+                                            <span>   </span>
+                                            <datebox  width="50px" id="fechatransferencia"  format="dd-MM-yyyy" />   
                                         </row>
                           
                             

@@ -78,12 +78,18 @@ public class Cxcobrar implements Serializable {
     @Column(name = "fechatransferencia")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechatransferencia;
+    @Column(name = "fechacheque")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechacheque;
     @JoinColumn(name = "factura", referencedColumnName = "codigo")
     @ManyToOne
     private Factura factura;
     @JoinColumn(name = "banco", referencedColumnName = "codigo")
     @ManyToOne
     private Bancos banco;
+    @JoinColumn(name = "bancoche", referencedColumnName = "codigo")
+    @ManyToOne
+    private Bancos bancocheque;
     @JoinColumn(name = "empleados", referencedColumnName = "codigo")
     @ManyToOne
     private Empleados empleados;
@@ -286,9 +292,27 @@ public class Cxcobrar implements Serializable {
     public void setEmpleados(Empleados empleados) {
         this.empleados = empleados;
     }
-    
+
+    public Bancos getBancocheque() {
+        return bancocheque;
+    }
+
+    public void setBancocheque(Bancos bancocheque) {
+        this.bancocheque = bancocheque;
+    }
+
+    public Date getFechacheque() {
+        return fechacheque;
+    }
+
+    public void setFechacheque(Date fechacheque) {
+        this.fechacheque = fechacheque;
+    }
+
+   
     
 
+    
     @Override
     public int hashCode() {
         int hash = 0;

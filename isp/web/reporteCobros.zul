@@ -29,8 +29,13 @@ Canton cantonTodos = new Canton(-1);
 cantonTodos.setNombre("- TODOS - ");
 cantones.add(0,cantonTodos);
 
-      Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
-      
+ Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
+ Empleados empSel = new Empleados(-1);
+             empSel.setApellidos("");
+             empSel.setNombres("");
+             
+ 
+ List empleadosEncontrados = adm.query("Select o from Empleados as o  order by o.apellidos");      
       public Double redondear(Double numero, int decimales) {
                 try{
                         BigDecimal d = new BigDecimal(numero);
@@ -137,6 +142,9 @@ cantones.add(0,cantonTodos);
             }else  if(tipo.equals("ARQUEO")){
                    datasource = reportes.reporteCaja(desde.value, hasta.value);
                     report.setSrc(directorioReportes+"rpcaja.jasper");
+            }else  if(tipo.equals("ARQUEOU")){
+                   datasource = reportes.reporteCaja(desde.value, hasta.value,empleadosList.selectedItem.value);
+                    report.setSrc(directorioReportes+"rpcaja.jasper");
             }else if(tipo.equals("-1")){
                    alert("No ha seleccionado ningún reporte...!");
                     return;
@@ -161,6 +169,7 @@ void campos(String valor){
       filaletras.visible=false;
       Date fec = adm.Date();
       filasector2.visible = false;
+      filaempleados.visible=false;
       fec.setDate(1);
         if(valor.equals("CXCLI")){
             titulo.value= "Cuentas por Pagar";
@@ -181,6 +190,11 @@ void campos(String valor){
             titulo.value= "Cobros Diarios";
             filafechas.visible=true;
             desde.value = adm.Date();
+        }else if(valor.equals("ARQUEOU")){
+            titulo.value= "Cobros Diarios";
+            filafechas.visible=true;
+            desde.value = adm.Date();
+            filaempleados.visible=true;
         }else if(valor.equals("PORSECTOR")){
             titulo.value= "X Cobrar";
             filacanton.visible=true;
@@ -278,7 +292,8 @@ void campos(String valor){
                                     <listitem  disabled="true" id="linea0" label="========CLIENTES==============" value="linea" />
                                     <listitem id="CXCLI" label="Cuentas x Cobrar - Clientes" value="CXCLI" />
                                     <listitem id="COBROS"  label="Cuentas Cobradas por Clientes " value="COBROS" />
-                                    <listitem id="ARQUEO" label="Reporte Diario de Caja o Fechas" value="ARQUEO" />
+                                    <listitem id="ARQUEO" label="Reporte Diario de Caja X Fechas" value="ARQUEO" />
+                                    <listitem id="ARQUEOU" label="Reporte Diario de Caja X Fechas y Usuario" value="ARQUEOU" />
                                     <listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" />
                                     <listitem disabled="true" label="" />
                                     <listitem  disabled="true" id="linea" label="=========CONTRATOS================" value="linea" />
@@ -300,7 +315,27 @@ void campos(String valor){
     
                             </span>
                         </row>
- 
+                        <row id="filaempleados">
+                            <span style="float:right"> Empleado: </span>
+                            <bandbox style="background-color:transparent" disabled="false" readonly="true" width="240px"  id="bdEmp">
+                                <bandpopup>
+                                    <vbox>
+                                                       
+                                        <listbox   onSelect="bdEmp.value=(self.selectedItem.value).getApellidos() + ' ' +  (self.selectedItem.value).getNombres(); bdEmp.closeDropdown();"   id="empleadosList"  >
+                                            <listitem label=" - TODOS - " selected="true" value="${empSel}">
+                                                    <listcell label="${empSel.apellidos}" />
+                                                    <listcell label="${empSel.nombres}" />
+                                                 
+                                            </listitem>
+                                            <listitem forEach="${empleadosEncontrados}"    value="${each}">
+                                                <listcell label="${each.apellidos}" />
+                                                <listcell label="${each.nombres}" />
+                                            </listitem>
+                                        </listbox> 
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                        </row>
                         <row id="filaclientes" visible="false" >
                             <span style="float:right"> Clientes: </span>
 
@@ -414,69 +449,69 @@ void campos(String valor){
                         <row id="filaletras" visible="false">
                             <span style="float:right"> Letras:</span>
                             <span>
-                             <listbox  width="50px"  mold="select" id="desdeletra">
-					<listitem selected="true" value="A" label="A" /> 
-                                        <listitem value="B" label="B" /> 
-                                        <listitem value="C" label="C" />
-                                        <listitem value="D" label="D" /> 
-                                        <listitem value="E" label="E" /> 
-                                        <listitem value="F" label="F" />  
-                                        <listitem value="G" label="G" />
-                                        <listitem value="H" label="H" />
-                                        <listitem value="I" label="I" />
-                                        <listitem value="J" label="J" /> 
-                                        <listitem value="K" label="K" /> 
-                                        <listitem value="L" label="L" /> 
-                                        <listitem value="M" label="M" /> 
-                                         <listitem value="N" label="N" />  
-                                         <listitem value="Ñ" label="Ñ" />  
-                                         <listitem value="O" label="O" /> 
-                                         <listitem value="P" label="P" /> 
-                                         <listitem value="Q" label="Q" /> 
-                                         <listitem value="R" label="R" /> 
-                                        <listitem value="S" label="S" /> 
-                                        <listitem value="T" label="T" /> 
-                                        <listitem value="U" label="U" /> 
-                                        <listitem value="V" label="V" /> 
-                                        <listitem value="W" label="W" /> 
-                                        <listitem value="X" label="X" /> 
-                                        <listitem value="Y" label="Y" /> 
-                                         <listitem value="Z" label="Z" /> 
+                                <listbox  width="50px"  mold="select" id="desdeletra">
+                                    <listitem selected="true" value="A" label="A" /> 
+                                    <listitem value="B" label="B" /> 
+                                    <listitem value="C" label="C" />
+                                    <listitem value="D" label="D" /> 
+                                    <listitem value="E" label="E" /> 
+                                    <listitem value="F" label="F" />  
+                                    <listitem value="G" label="G" />
+                                    <listitem value="H" label="H" />
+                                    <listitem value="I" label="I" />
+                                    <listitem value="J" label="J" /> 
+                                    <listitem value="K" label="K" /> 
+                                    <listitem value="L" label="L" /> 
+                                    <listitem value="M" label="M" /> 
+                                    <listitem value="N" label="N" />  
+                                    <listitem value="Ñ" label="Ñ" />  
+                                    <listitem value="O" label="O" /> 
+                                    <listitem value="P" label="P" /> 
+                                    <listitem value="Q" label="Q" /> 
+                                    <listitem value="R" label="R" /> 
+                                    <listitem value="S" label="S" /> 
+                                    <listitem value="T" label="T" /> 
+                                    <listitem value="U" label="U" /> 
+                                    <listitem value="V" label="V" /> 
+                                    <listitem value="W" label="W" /> 
+                                    <listitem value="X" label="X" /> 
+                                    <listitem value="Y" label="Y" /> 
+                                    <listitem value="Z" label="Z" /> 
 						
-                            </listbox>
+                                </listbox>
                             Hasta:
                             
-                            <listbox width="50px" mold="select" id="hastaletra">
-					<listitem value="A" label="A" /> 
-                                        <listitem value="B" label="B" /> 
-                                        <listitem value="C" label="C" />
-                                        <listitem value="D" label="D" /> 
-                                        <listitem value="E" label="E" /> 
-                                        <listitem value="F" label="F" />  
-                                        <listitem value="G" label="G" />
-                                        <listitem value="H" label="H" />
-                                        <listitem value="I" label="I" />
-                                        <listitem value="J" label="J" /> 
-                                        <listitem value="K" label="K" /> 
-                                        <listitem value="L" label="L" /> 
-                                        <listitem value="M" label="M" /> 
-                                         <listitem value="N" label="N" />  
-                                         <listitem value="Ñ" label="Ñ" />  
-                                         <listitem value="O" label="O" /> 
-                                         <listitem value="P" label="P" /> 
-                                         <listitem value="Q" label="Q" /> 
-                                         <listitem value="R" label="R" /> 
-                                        <listitem value="S" label="S" /> 
-                                        <listitem value="T" label="T" /> 
-                                        <listitem value="U" label="U" /> 
-                                        <listitem value="V" label="V" /> 
-                                        <listitem value="W" label="W" /> 
-                                        <listitem value="X" label="X" /> 
-                                        <listitem value="Y" label="Y" /> 
-                                         <listitem selected="true" value="Z" label="Z" /> 
+                                <listbox width="50px" mold="select" id="hastaletra">
+                                    <listitem value="A" label="A" /> 
+                                    <listitem value="B" label="B" /> 
+                                    <listitem value="C" label="C" />
+                                    <listitem value="D" label="D" /> 
+                                    <listitem value="E" label="E" /> 
+                                    <listitem value="F" label="F" />  
+                                    <listitem value="G" label="G" />
+                                    <listitem value="H" label="H" />
+                                    <listitem value="I" label="I" />
+                                    <listitem value="J" label="J" /> 
+                                    <listitem value="K" label="K" /> 
+                                    <listitem value="L" label="L" /> 
+                                    <listitem value="M" label="M" /> 
+                                    <listitem value="N" label="N" />  
+                                    <listitem value="Ñ" label="Ñ" />  
+                                    <listitem value="O" label="O" /> 
+                                    <listitem value="P" label="P" /> 
+                                    <listitem value="Q" label="Q" /> 
+                                    <listitem value="R" label="R" /> 
+                                    <listitem value="S" label="S" /> 
+                                    <listitem value="T" label="T" /> 
+                                    <listitem value="U" label="U" /> 
+                                    <listitem value="V" label="V" /> 
+                                    <listitem value="W" label="W" /> 
+                                    <listitem value="X" label="X" /> 
+                                    <listitem value="Y" label="Y" /> 
+                                    <listitem selected="true" value="Z" label="Z" /> 
 						
-					</listbox>
-                                        </span>
+                                </listbox>
+                            </span>
                         </row>
                         <row  style="background:transparent;border:0px">
                             <span style="float:right"> Título:</span>
@@ -545,7 +580,7 @@ void campos(String valor){
                                 <button  image="/images/eliminar.gif" id="cerrar"   label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
                                 <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
                                 <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
-                                      <button label="Refrescar...!" image="/images/actualizar.png" onClick='showReport();'/>
+                                <button label="Refrescar...!" image="/images/actualizar.png" onClick='showReport();'/>
                             </span>
 
                         </row>
