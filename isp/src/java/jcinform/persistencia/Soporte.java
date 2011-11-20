@@ -59,6 +59,8 @@ public class Soporte implements Serializable {
     private String observacion2;
     @Column(name = "estado")
     private Integer estado;
+    @Column(name = "actividad")
+    private Integer actividad;
     @Lob
     @Column(name = "observacion3")
     private String observacion3;
@@ -195,6 +197,14 @@ public class Soporte implements Serializable {
 
     public void setFechaorden(Date fechaorden) {
         this.fechaorden = fechaorden;
+    }
+
+    public Integer getActividad() {
+        return actividad;
+    }
+
+    public void setActividad(Integer actividad) {
+        this.actividad = actividad;
     }
     
     

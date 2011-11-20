@@ -131,7 +131,7 @@ void buscarContratos(Clientes empa){
 }
 
   void verificarCedula(String valor){
-      if(valor.length()>9){
+      if(valor.length()>6){
             List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
             if(empleados.size()>0){
                 for(Iterator it = empleados.iterator(); it.hasNext();) {
@@ -146,7 +146,8 @@ void buscarContratos(Clientes empa){
                 buscarContratos(empa);
                 facturasPendientes();
             }else{
-                   alert("No encontrado");
+                   Messagebox.show("Número de Identificación no encontrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                   return;
                 }
 
         }else{
@@ -206,6 +207,7 @@ void buscarContratos(Clientes empa){
                             if(sop.getFecha() == null)
                                 fechasoporte.value = adm.Date();
                             observacion.value = sop.getObservacion();
+                            solucion.value = sop.getObservacion2();
                             generar.checked  = sop.getGenerada();
                             noorden.value = sop.getNoorden();
                             fechamodifica.value = sop.getFechamodifica();
@@ -216,16 +218,41 @@ void buscarContratos(Clientes empa){
                                 if(valorEstado.equals(null)){
                                     valorEstado = 1;
                                 }
-                                if(valorEstado.equals(1)){
-                                    uno.selected = true;
-                                }else if(valorEstado.equals(2)){
-                                    dos.selected = true;
-                                }else if(valorEstado.equals(3)){
-                                    tres.selected = true;
-                                }else if(valorEstado.equals(4)){
-                                    cuatro.selected = true;
-                                } 
+                                try{
+                                        for (int i = 0; i <= estadoSoporte.getItems().size(); i++) {
+                                                    String tr0 = ((String)((Listitem)estadoSoporte.getItems().get(i)).getValue());
+                                                    String primero = tr0+"";
+                                                    String segundo = valorEstado+"";
+                                                    if(primero.equals(segundo)){
+                                                        estadoSoporte.setSelectedItem((Listitem)estadoSoporte.getItems().get(i));
+                                                        bdEstado.value = estadoSoporte.selectedItem.label+"";
+                                                        break;
+                                                    }
+                                           }
+                                 }catch(Exception err){System.out.println("ERROR no tiene planes asignados COMBO estados: "+err);}
+                                
                             }catch(Exception error){System.out.println("ERROR EN ESTADO: "+error); uno.selected= true;}
+                            
+                            try{
+                             Integer valorEstado = sop.getActividad();
+                                if(valorEstado.equals(null)){
+                                    valorEstado = 1;
+                                }
+                                try{
+                                        for (int i = 0; i <= estadoActividad.getItems().size(); i++) {
+                                                    String tr0 = ((String)((Listitem)estadoActividad.getItems().get(i)).getValue());
+                                                    String primero = tr0+"";
+                                                    String segundo = valorEstado+"";
+                                                    if(primero.equals(segundo)){
+                                                        estadoActividad.setSelectedItem((Listitem)estadoActividad.getItems().get(i));
+                                                        bdActividad.value = estadoActividad.selectedItem.label+"";
+                                                        break;
+                                                    }
+                                           }
+                                 }catch(Exception err){System.out.println("ERROR no tiene planes asignados COMBO estados: "+err);}
+                                
+                            }catch(Exception error){System.out.println("ERROR EN ESTADO: "+error); uno.selected= true;}
+                            
                              if(sop.getTecnico() != null){
                                      try{
                                                 for (int i = 0; i <= empleadosList.getItems().size(); i++) {
@@ -251,39 +278,53 @@ void buscarContratos(Clientes empa){
                 if(verificar("Modificar")){
                             fechasoporte.readonly = estado;
                             observacion.readonly = estado;
+                            solucion.readonly = estado;
                             generar.disabled  = estado;
-                            uno.disabled = estado;
-                            dos.disabled = estado;
-                            tres.disabled = estado;
-                            cuatro.disabled = estado;
+                            bdActividad.disabled = estado;
+                            bdEstado.disabled = estado;
+                            String va =  estadoSoporte.selectedItem.value;
+                            if(va.equals("3") || estadoSoporte.selectedItem.value.equals("4")){
+      
+                                      bd.disabled = false;
+                            }
                 }else{
                                 Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                 }  
  }
                         
                 void guardars(){
- 
+ Integer valorEstado = new Integer(estadoSoporte.selectedItem.value);
+ if( empleadosList.selectedItem == null && (valorEstado.equals(3) || valorEstado.equals(4)) ){
+    Messagebox.show("No ha seleccionado el Técnico para la asistencia...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    return;
+ }
                                 Soporte sop = new Soporte();
                                 sop.setCodigo(codigos.value);
                                 sop.setEmpleados(new Empleados(atendida.value));
                                 sop.setFecha(fechasoporte.value);
                                 sop.setObservacion(observacion.value);
+                                sop.setObservacion2(solucion.value);
                                 sop.setGenerada(generar.checked);
-                                Integer valorEstado = new Integer(estadoSoporte.selectedItem.value);
+                                sop.setActividad(new Integer(estadoActividad.selectedItem.value));
+                                
                                 sop.setEstado(valorEstado);
                                 if(valorEstado.equals(1)){
                                     sop.setFechafin(adm.Date());
                                 }
                                 sop.setClientes(new Clientes(new Integer(codigocli.value)));
                                 sop.setNoorden(noorden.value);
-                                if(generar.checked){
+                                if(valorEstado.equals(3) || valorEstado.equals(4)){
                                     sop.setTecnico(empleadosList.selectedItem.value);
+                                    sop.setGenerada(true);
                                 }
 
-                                if(sop.getGenerada() && sop.getNoorden() == null){ 
+                                if(valorEstado.equals(3) && sop.getNoorden() == null){ 
                                     Integer valor = adm.getNuevaClave("Soporte","noorden");
                                     sop.setNoorden(valor);
                                     sop.setFechaorden(adm.Date());
+                                //    orden.value = valor+"";
+                                    sop.setGenerada(true);
+                                    noorden.value = valor;
                                 }
                                 if((!sop.getCodigo().equals(0)) ){
                                      sop.setFechamodifica(adm.Date());
@@ -296,10 +337,11 @@ void buscarContratos(Clientes empa){
                                         adm.guardar(sop);
                                         permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
                                  }
+                                 
                                         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                              
-                                       
-                                              if(sop.getGenerada()){  //GENERAR ORDEN DE COMPRA
+                                       noorden.value = sop.getNoorden();
+                                              if(valorEstado.equals(3) || valorEstado.equals(4) ){  //GENERAR ORDEN DE COMPRA
                                          
                                                    Map parameters = new HashMap();
                                                    System.out.println("00000");
@@ -310,12 +352,13 @@ void buscarContratos(Clientes empa){
                                                     System.out.println("00001");
                                                     parameters.put("direccion", empresa.getDireccion());
                                                     parameters.put("observacion", observacion.value);
+                                                    parameters.put("observacion2", solucion.value);
                                                     parameters.put("telefono", empresa.getTelefono());
                                                     parameters.put("cliente", combo.value);
                                                     parameters.put("noorden", sop.getNoorden());
                                                     try{
                                                        parameters.put("tecnico",sop.getTecnico().getApellidos()+ " "+sop.getTecnico().getNombres() );
-                                                    }catch(Exception ar){System.out.println("ERROR EN TECNICO",ar);}
+                                                    }catch(Exception ar){System.out.println("ERROR EN TECNICO"+ar);}
                                                     System.out.println("00002");
                                                     parameters.put("telefono1", telefonoi.value);
                                                     parameters.put("direccion1", direccioni.value);
@@ -334,7 +377,7 @@ void buscarContratos(Clientes empa){
                                               }
                                             guardars.disabled=true;
                                             agregars.disabled=false;
-                                            nuevos(new Soporte(0));
+                                       //     nuevos(new Soporte(0));
                                             habilitar(true);
                                             buscarSoportes();
                                       
@@ -362,19 +405,25 @@ void buscarContratos(Clientes empa){
                                       li.appendChild(new Listcell((acceIt.getGenerada()==true?"SI":"NO")));
                                       li.appendChild(new Listcell(acceIt.getEmpleados().getApellidos()+" "+acceIt.getEmpleados().getNombres()));
                                       try{
-                                      li.appendChild(new Listcell(acceIt.getTecnico().getApellidos()+" "+acceIt.getTecnico().getNombres()));
+                                            if(acceIt.getTecnico()!= null){
+                                                li.appendChild(new Listcell(acceIt.getTecnico().getApellidos()+" "+acceIt.getTecnico().getNombres()));
+                                            }else{
+                                                li.appendChild(new Listcell(""));
+                                            }
                                       }catch(Exception er){}
                                       
                                       String estado = "";
                                       Integer valorEstado = acceIt.getEstado();
-                                      if(valorEstado.equals(1)){
+                                        if(valorEstado.equals(0)){
+                                            estado = "INGRESADO";
+                                        }else if(valorEstado.equals(1)){
                                             estado = "RESUELTO";
                                         }else if(valorEstado.equals(2)){
                                             estado = "PENDIENTE";
                                         }else if(valorEstado.equals(3)){
-                                            estado = "EN VISITA";
+                                            estado = "AGENDADO";
                                         }else if(valorEstado.equals(4)){
-                                            estado = "VERIFICANDO";
+                                            estado = "RE-AGENDADO";
                                         } 
                                       li.appendChild(new Listcell(estado));
                                       
@@ -430,9 +479,20 @@ void buscarContratos(Clientes empa){
                 
                 }
                 
+ habil(String val){
+     bd.disabled = true;
+        fechaorden.disabled = true;
+     if(val.equals("3") || val.equals("4")){
+        fechaorden.disabled = false;
+        bd.disabled = false;
+        if(fechaorden.value == null){
+            fechaorden.value = adm.Date();
+        }
+    }else if(val.equals("1")){
+    
+    }
                 
-                
-                
+}
   ]]>
     </zscript>
     <div style="align:center">
@@ -452,7 +512,7 @@ void buscarContratos(Clientes empa){
                                 <row style="background:#FFFF66">
                                     <span style="float:right"> </span> 
                                     <span> 
-                                    <label value="Buscar x No. de Orden: " style="font-weight:bold" />
+                                        <label value="Buscar x No. de Orden: " style="font-weight:bold" />
                                         <textbox id="orden" cols="13"   onOK="buscarOrden(self.value)"  />
                                         <image  src="/images/enter.png"  height="14px"/>
                                     </span>
@@ -461,11 +521,17 @@ void buscarContratos(Clientes empa){
                                     <span style="float:right"> Identificación: </span> 
                                     <span> 
                                         <textbox id="identificacion" cols="13" readonly="false" onBlur="verificarCedula(self.value)" onOK="verificarCedula(self.value)"  />
-                                            <image  src="/images/enter.png"  height="14px"/>
-                                        <textbox visible="false" id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
-                                         <span> Nombres:</span> 
-                                    <span>     
-                                        <textbox readonly="true" cols="42"   id="combo" />
+                                        <image  src="/images/enter.png"  height="14px"/>
+                                        <textbox visible="true" id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
+                                        <span> Nombres:</span> 
+                                        <span>  
+                                            <combobox  cols="35" id="combo" 
+                                      onSelect="verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion())" 
+                                      autodrop="true" 
+                                      buttonVisible="false"  
+                                      use="jcinform.bean.autoCompletarClientes"/>
+                                    
+                                        <!--textbox readonly="true" cols="42"   id="combo2" />
                            
                               
                                         <button label="" id="buscarC" disabled="false"  image="/images/auditoria.gif">
@@ -479,9 +545,9 @@ void buscarContratos(Clientes empa){
                                             win.doModal();
                                             }                            
                                             </attribute>
-                                        </button> 
+                                        </button--> 
                       
-                                    </span>
+                                        </span>
                                     </span>
                                 </row>
                                  
@@ -495,60 +561,91 @@ void buscarContratos(Clientes empa){
                                     <intbox id="atendida" readonly="true" />    
                                 </row>
                                 
-                                <row> 
-                                    <span style="float:right">Creada:  </span>
+                                <row visible ="false"> 
+                                    <span style="float:right"> </span>
                                     <span>
-                                        <datebox readonly="true" disabled="true"  style="background:white; font-weight:bold" width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechasoporte"/> 
-                                        Modificada:
-                                        <datebox readonly="true" disabled="true"  style="background:white; font-weight:bold"  width="75px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechamodificada"/> 
-                                        Orden Generada:
-                                        <datebox readonly="true" disabled="true"  style="background:white; font-weight:bold"  width="75px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechaorden"/> 
-                                        Resuelto:
-                                        <datebox readonly="true" disabled="true"  style="background:white; font-weight:bold"  width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechafin"/> 
+                                        <datebox readonly="true" visible="false" disabled="true"  style="background:white; font-weight:bold" width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechasoporte"/> 
+                                        <datebox readonly="true" visible = "false" disabled="true"  style="background:white; font-weight:bold"  width="75px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechamodificada"/> 
+                                        <datebox readonly="true" visible = "false"  disabled="true"  style="background:white; font-weight:bold"  width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechafin"/> 
                                     </span>
                                     
                                 </row>
+
                                 <row>
-                                    <span style="float:right"> Observación: </span>
-                                    <textbox readonly="true" cols="82"  rows="6" id="observacion"/> 
-                                </row>
-                                <row>
-                                    <span style="float:right"> Generar Orden: </span>
-                                    <span>   
-                                        <checkbox id="generar" onCheck="bd.disabled = (!self.checked) " disabled="true"   />
-                                      No. Orden: 
-                                        <intbox id="noorden" readonly="true"   /> 
-                                        <span>Téc.Asignado:</span>
-                                        
-                                    <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
-                                        <bandpopup>
-                                            <vbox>
+                                    <span style="float:right"> Estado: </span>
+                                    <span>
+                                        <bandbox style="background-color:transparent" value="Ingresado" disabled="true" readonly="true" width="90px"  id="bdEstado">
+                                            <bandpopup>
+                                                <vbox>
                                                        
-                                                <listbox   onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();"   id="empleadosList"  >
+                                                    <listbox  onSelect="bdEstado.value=self.selectedItem.label;bdEstado.closeDropdown(); habil(self.selectedItem.value);"   id="estadoSoporte"  >
+                                                        <listitem label="Ingresado" selected="true" value="0" />
+                                                        <listitem  label="Agendado" value="3" />
+                                                        <listitem label="RE-Agendado" value="4" />
+                                                        <listitem label="Pendiente" value="2" />
+                                                        <listitem label="Resuelto" value="1" />
+                                                     
+                                                    </listbox> 
+                                                </vbox>
+                                            </bandpopup>
+                                        </bandbox>  
+                                    
+                                    Actividad:
+                                        <bandbox style="background-color:transparent" value="Asistencia" disabled="true" readonly="true" width="90px"  id="bdActividad">
+                                            <bandpopup>
+                                                <vbox>
+                                                       
+                                                    <listbox   onSelect="bdActividad.value=self.selectedItem.label;bdActividad.closeDropdown();"   id="estadoActividad"  >
+                                                        <listitem selected="true" label="Asistencia" value="1" />
+                                                        <listitem label="Retiro de Equipos" value="2" />
+                                                        <listitem label="Traslado" value="3" />
+                                                    
+                                                    </listbox> 
+                                                </vbox>
+                                            </bandpopup>
+                                        </bandbox>
+                                    
+                                    </span>
+                                </row>
+                                                                <row>
+                                    <span style="float:right"> No. Orden: </span>
+                                    <span>   
+                                        <checkbox visible ="false" id="generar" onCheck="bd.disabled = (!self.checked) " disabled="true"   />
+                                        <intbox id="noorden" readonly="true"   /> 
+                                        Fecha:
+                                        <datebox readonly="true" disabled="true"  style="background:white;"  
+                                    width="140px"  format="dd-MM-yyyy HH:mm"  onCreate="self.value = adm.Date()" id="fechaorden"/> 
+                                        <span>Téc.Asignado:</span>
+                                        <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
+                                            <bandpopup>
+                                                <vbox>
+                                                       
+                                                    <listbox   onSelect="bd.value=(self.selectedItem.value).getApellidos() +' '+(self.selectedItem.value).getNombres() ;bd.closeDropdown();"   id="empleadosList"  >
                                             
-                                                    <listitem forEach="${empleadosEncontrados}"    value="${each}">
-                                                        <listcell label="${each.apellidos}" />
-                                                        <listcell label="${each.nombres}" />
-                                                    </listitem>
-                                                </listbox> 
-                                            </vbox>
-                                        </bandpopup>
-                                    </bandbox>
+                                                        <listitem forEach="${empleadosEncontrados}"    value="${each}">
+                                                            <listcell label="${each.apellidos}" />
+                                                            <listcell label="${each.nombres}" />
+                                                        </listitem>
+                                                    </listbox> 
+                                                </vbox>
+                                            </bandpopup>
+                                        </bandbox>
                                         
                                     </span>
                                 </row>
                                 <row>
-                                    <span>Estado:</span>
-                                    <radiogroup id="estadoSoporte" >
-                                        <radio  disabled="true"  id="uno" value="1"  label="Resuelto" style="font-weight:bold2" />
-                                        <radio disabled="true" id="dos" selected="true" value="2" label="Pendiente" style="font-weight:bold2" />
-                                        <radio disabled="true"  id="tres"  value="3"  label="En Visita" style="font-weight:bold2" />
-                                        <radio disabled="true"  id="cuatro"  value="4"  label="Verificando" style="font-weight:bold2" />
-                                        
-                                    </radiogroup>
+                                    <span style="float:right"> Comentario: </span>
+                                    <textbox readonly="true" cols="82"  rows="4" id="observacion"/> 
                                 </row>
+                                <row>
+                                    <span style="float:right"> Solución: </span>
+                                    <textbox readonly="true" cols="82"  rows="4" id="solucion"/> 
+                                </row>
+                                
                                 <row style="background:#CDDFF5">
-                                    <span style="float:right"> <label style="font-weight:bold">Atendido por:</label>  </span>
+                                    <span style="float:right"> 
+                                        <label style="font-weight:bold">Atendido por:</label>  
+                                    </span>
                                     <textbox id="atendidanombre" cols="32" style="background:transparent;border:0px" readonly="true" />        
                                 </row>
                             </rows>
@@ -556,7 +653,7 @@ void buscarContratos(Clientes empa){
                            
                         <span>
                             <button image="/images/guardar.gif" id="guardars" label="Guardar"  disabled="true"  onClick="guardars();modificars.disabled = true;"/>
-                            <button  image="/images/nuevo.gif" id="agregars" label="Agregar" onClick="nuevos(new Soporte(0)); habilitar(false); observacion.focus();guardars.disabled = false;modificars.disabled = true" />
+                            <button  image="/images/nuevo.gif" id="agregars" label="Agregar" onClick="nuevos(new Soporte(0)); habilitar(false); identificacion.focus();guardars.disabled = false;modificars.disabled = true" />
                             <button  image="/images/editar.gif" id="modificars"  label="Modificar" disabled="true"  onClick="habilitar(false); observacion.focus();guardars.disabled = false;"/>                           
                         </span>		
                         <panel framable="true" visible="true"  title="HISTORIAL DE ATENCIONES"   height="200px" width="795px">

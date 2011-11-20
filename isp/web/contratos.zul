@@ -117,6 +117,8 @@ void llenar(Contratos  equi2){
             esuspendido.selected = true;
         }else if(equi.getEstado().equals("Terminado")){
             eterminado.selected = true;
+        } else if(equi.getEstado().equals("Cortado")){
+            ecortado.selected = true;
         } 
     if(equi.getEmpleados2() != null){
         codigoemp.value = equi.getEmpleados2().getCodigo()+""; //EMPLEADOS
@@ -274,6 +276,7 @@ void estado(Boolean estado,Boolean modificar){
      deb.disabled=estado;
      efe.disabled=estado;
      eactivo.disabled=estado;
+     ecortado.disabled = estado;
      esuspendido.disabled=estado;
      eterminado.disabled=estado;
      direccion.readonly = estado;
@@ -1954,10 +1957,10 @@ void llamar(){
                                             </span>
                                                                 
                                             <radiogroup id="estadoContrato" >
-                                                <radio disabled="true" id="eactivo" selected="true" value="Activo" label="ACTIVO" style="font-weight:bold2" />
-                                                <radio disabled="true"  id="esuspendido"  value="Suspendido"  label="CORTADO" style="font-weight:bold2" />
-                                                <radio  disabled="true"  id="eterminado" value="Terminado"  label="TERMINADO" style="font-weight:bold2" />
-                                         
+                                                <radio disabled="true" id="eactivo" selected="true" value="Activo" label="Activo" style="font-weight:bold2" />
+                                                <radio disabled="true"  id="ecortado"  value="Cortado"  label="Cortado" style="font-weight:bold2" />
+                                                <radio disabled="true"  id="esuspendido"  value="Suspendido"  label="Suspendido" style="font-weight:bold2" />
+                                                <radio  disabled="true"  id="eterminado" value="Terminado"  label="Terminado" style="font-weight:bold2" />
                                             </radiogroup>
                                             <span style="float:right">
                                                 <label visible="false" style="font-weight:bold2" value=" Fecha: " />
