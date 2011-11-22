@@ -260,6 +260,7 @@
                                         <listitem id="Reportes Notas" label="Rep.Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
                                         <listitem id="Comentarios" label="Comentarios"  image="/images/comentarios.png" value="/comentarios.zul" />
                                         <listitem id="Tareas" image="/images/tarea.png"  label="Tareas" value="/tareas.zul" /><listitem/>
+                                        <listitem id="Dobe" image="/images/pensum.png"  label="Dobe" value="/dobe.zul" /><listitem/>
                                     </listbox>
 
 
