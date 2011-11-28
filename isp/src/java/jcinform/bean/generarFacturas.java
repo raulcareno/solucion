@@ -5,6 +5,7 @@
 package jcinform.bean;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
@@ -91,11 +92,15 @@ public class generarFacturas {
                 if(object.getDescuento()==null){
                     object.setDescuento(BigDecimal.ZERO);
                 }
-                fac.setSubtotal(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
+                BigDecimal valor = new BigDecimal(redondear(object.getPlan().getValor(),2));
+                if(object.getFormapago().equals(3)){
+                    valor = valor.add(suc.getEmpresa().getInstalacion());
+                }
+                fac.setSubtotal(valor.subtract(object.getDescuento()));
                 fac.setDescuento(new BigDecimal(0));
-                fac.setBaseiva(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
+                fac.setBaseiva(valor.subtract(object.getDescuento()));
                 fac.setPorcentajeiva(suc.getEmpresa().getIva());
-                fac.setValoriva((new BigDecimal(redondear(object.getPlan().getValor(),2))).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
+                fac.setValoriva(valor.subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
                 fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
                 adm.guardar(fac);
                 Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
@@ -177,15 +182,19 @@ public class generarFacturas {
                 fac.setFecha(fecha);
                 fac.setContratos(object);
                 fac.setSucursal(suc);
-                fac.setSubtotal(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
+                BigDecimal valor = new BigDecimal(redondear(object.getPlan().getValor(),2));
+                if(object.getFormapago().equals(3)){
+                    valor = valor.add(suc.getEmpresa().getInstalacion());
+                }
+                fac.setSubtotal(valor.subtract(object.getDescuento()));
                 fac.setDescuento(new BigDecimal(0));
-                fac.setBaseiva(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
+                fac.setBaseiva(valor.subtract(object.getDescuento()));
                 fac.setPorcentajeiva(suc.getEmpresa().getIva());
-                fac.setValoriva((new BigDecimal(redondear(object.getPlan().getValor(),2))).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
+                fac.setValoriva(valor.subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
                 fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
                 adm.guardar(fac);
                 Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
+                det.setTotal(valor.subtract(object.getDescuento()));
                 det.setPlan(object.getPlan());
                 det.setCantidad(1);
                 det.setMes(fecha.getMonth() + 1);
@@ -222,7 +231,7 @@ public class generarFacturas {
         return "OK";
     }
 
-    public String anadirCobros(Sucursal suc, Contratos con) { //ESTO ES PARA AÑADIR COBROS PENDIENTES
+    public String anadirCobros(Sucursal suc, Contratos con) { //ESTO ES PARA AÑADIR COBROS PENDIENTES individual
         //seleccionar todos los que no tenga deuda en éste més o periodo
         Administrador adm = new Administrador();
         Date fecha2 = con.getFecha();
@@ -241,18 +250,23 @@ public class generarFacturas {
             fac.setFecha(fecha2);
             fac.setSucursal(suc);
             if(object.getDescuento()==null){
-            object.setDescuento(BigDecimal.ZERO);
+                object.setDescuento(BigDecimal.ZERO);
+            }
+            
+             BigDecimal valor = new BigDecimal(redondear(object.getPlan().getValor(),2));
+            if(object.getFormapago().equals(3)){
+                valor = valor.add(suc.getEmpresa().getInstalacion());
             }
             fac.setDescuento(BigDecimal.ZERO);
-            fac.setSubtotal(new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento()));
+            fac.setSubtotal(valor.subtract(object.getDescuento()));
             fac.setDescuento(new BigDecimal(0));
-            fac.setBaseiva(new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento()));
+            fac.setBaseiva(valor.subtract(object.getDescuento()));
             fac.setPorcentajeiva(suc.getEmpresa().getIva());
-            fac.setValoriva((new BigDecimal(con.getPlan().getValor())).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
+            fac.setValoriva((valor).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
             fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
             adm.guardar(fac);
             Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-            det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
+            det.setTotal(valor.subtract(object.getDescuento()));
             det.setPlan(object.getPlan());
             det.setCantidad(1);
             det.setMes(fecha2.getMonth() + 1);
@@ -326,6 +340,9 @@ public class generarFacturas {
             fac.setSucursal(suc);
             fac.setDescuento(BigDecimal.ZERO);
             BigDecimal valor = new BigDecimal(redondear(con.getPlan().getValor(),2)).subtract(object.getDescuento());
+//            if(object.getFormapago().equals(3)){
+//                valor = valor.add(suc.getEmpresa().getInstalacion());
+//            }
             if (fechaInstalacion.getDate() > 1) {
                 int noDias = object.getPlan().getDias() - fechaInstalacion.getDate();
                 if (noDias > 0) {

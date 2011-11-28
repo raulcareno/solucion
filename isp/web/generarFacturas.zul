@@ -26,7 +26,7 @@
                                 if(resultado.equals("OK")){
                                     alert("Generación Correcta en "+emp.getDescripcion());
                                 }else{
-                                    alert(resultado);
+                                    alert("error: "+resultado);
                                 }
                 }
         

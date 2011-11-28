@@ -52,7 +52,7 @@
                     <textbox readonly="true" id="documento" onChange="update();"/>
                 </row>
                 <row>
-                    <span style="float:right"> Valor Instalación:</span>
+                    <span style="float:right"> Valor Cobranza(S/IVA):</span>
                     <a:bind value="inobjeto.instalacion"/>
                     <decimalbox id="instalacion" onChange="update();"/>
                 </row>

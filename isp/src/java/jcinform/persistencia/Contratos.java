@@ -73,6 +73,8 @@ public class Contratos implements Serializable {
     private Boolean autorizado = true;
     @Column(name = "descuento")
     private BigDecimal descuento= new BigDecimal(0);
+    @Column(name = "cobranza")
+    private Boolean cobranza= false;
     @Column(name = "fechainstalacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainstalacion = new Date();
@@ -416,10 +418,16 @@ public class Contratos implements Serializable {
     public void setTelefonof(String telefonof) {
         this.telefonof = telefonof;
     }
-    
-    
 
-    @Override
+    public Boolean getCobranza() {
+        return cobranza;
+    }
+
+    public void setCobranza(Boolean cobranza) {
+        this.cobranza = cobranza;
+    }
+
+      @Override
     public int hashCode() {
         int hash = 0;
         hash += (codigo != null ? codigo.hashCode() : 0);
