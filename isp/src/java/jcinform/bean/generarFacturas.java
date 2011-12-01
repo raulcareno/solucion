@@ -125,11 +125,12 @@ public class generarFacturas {
                 cuenta.setDescuento(BigDecimal.ZERO);
                 cuenta.setTotal(fac.getTotal());
                 adm.guardar(cuenta);
-                numero++;
+//                numero++;
             }
         } catch (Exception e) {
+            Logger.getLogger(generarFacturas.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("DUPLICADO: "+e +" " + e.hashCode());
-            return e.hashCode() + "";
+            return ""+e +" "+e.hashCode() + "";
         }
         //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
 
@@ -460,6 +461,36 @@ public class generarFacturas {
                 + "  AND cx.factura = fa.codigo  AND cli.codigo = fa.clientes and fa.sucursal = '"+suc.getCodigo()+"'  GROUP BY fa.codigo "
                 + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
         List deudas = adm.queryNativo(quer);
+
+        return deudas;
+    }
+       public List buscar(Sucursal suc, String tipoPlan) {
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+        List<Contratos> contratos = adm.query("Select o from Contratos as o "
+                + "where o.plan.tipo  like '%" + tipoPlan+ "%'  order by o.clientes.apellidos ");
+        String contraString = "";
+        for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
+            Contratos contratos1 = itContratos.next();
+            contraString = "" + contratos1.getCodigo() + "," + contraString + "";
+        }
+        if (contraString.length() > 0) {
+            contraString = contraString.substring(0, contraString.length() - 1);
+        }
+        String quer = "SELECT fa.codigo, fa.numero, fa.fecha, CONCAT(cli.apellidos,' ',cli.nombres),  fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
+                + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli "
+                + " WHERE fa.contratos in (" + contraString + ")  and c.codigo = fa.contratos  "
+                + "  AND cx.factura = fa.codigo  AND cli.codigo = fa.clientes "
+                + "and fa.sucursal = '"+suc.getCodigo()+"' and (fa.numero = '' or fa.numero is null) "
+                + " GROUP BY fa.codigo "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 "
+                + "order by cli.apellidos, fa.fecha ";
+        List deudas = null;
+           try {
+               deudas = adm.queryNativo(quer);
+           } catch (Exception e) {
+               System.out.println("ERRROR: "+e);
+               return null;
+           }
 
         return deudas;
     }
