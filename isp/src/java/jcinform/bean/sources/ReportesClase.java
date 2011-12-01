@@ -61,6 +61,23 @@ Sucursal sucursal = null;
         return ds;
     }
     
+        
+    public JRDataSource clientesxestado(String estado) {
+        Administrador adm = new Administrador();
+        ArrayList detalles = new ArrayList();
+  
+        List<Contratos> contra =  adm.query("Select o from Contratos as o "
+                    + " where  o.estado = '"+estado+"' "
+                    + " and o.sucursal.codigo = '"+sucursal.getCodigo()+"' "
+                    + " order by o.clientes.apellidos");
+        for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
+            Contratos contratos = it.next();
+            detalles.add(contratos);
+        }
+        ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
+        return ds;
+    }
+    
    public JRDataSource equiposclientesxsector(Sector ini,Sector fin, String letraini, String letrafin) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();

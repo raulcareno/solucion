@@ -1473,7 +1473,7 @@ void verificarCedula(String valor){
                                                             row.appendChild(aButton);
                                                             
                                                             Checkbox facturado = new Checkbox();
-                                                            facturado.setChecked(true);
+                                                            facturado.setChecked(false);
                                                             facturado.addEventListener("onCheck", new EventListener() {
                                                                 public void onEvent(Event event) throws Exception {
                                                                      sumar();

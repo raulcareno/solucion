@@ -67,6 +67,7 @@ cantones.add(0,cantonTodos);
             parametros.put("telefono", empresa.getTelefono());
             parametros.put("desde", desde.value);
             parametros.put("hasta", hasta.value);
+            parametros.put("estado", estadoContrato.selectedItem.value);
             try{
                 parametros.put("canton", cant.selectedItem.value+"");
                 parametros.put("sector", sectorList.selectedItem.value+"");
@@ -102,6 +103,9 @@ cantones.add(0,cantonTodos);
                         report.setSrc(directorioReportes+"listacontratos2.jasper");
                    
                    
+            }else if(tipo.equals("PORESTADO")){
+                  datasource = reportes.clientesxestado(estadoContrato.selectedItem.value);
+                  report.setSrc(directorioReportes+"listacontratosestado.jasper");
             }else if(tipo.equals("PORSECTORCLILETRA")){
                   datasource = reportes.clientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value);
                    report.setSrc(directorioReportes+"listacontratosletras.jasper");
@@ -170,6 +174,7 @@ void campos(String valor){
       Date fec = adm.Date();
       filasector2.visible = false;
       filaempleados.visible=false;
+      filaestado.visible = false;
       fec.setDate(1);
         if(valor.equals("CXCLI")){
             titulo.value= "Cuentas por Pagar";
@@ -203,6 +208,10 @@ void campos(String valor){
             titulo.value= "X Cobrar";
             filacanton.visible=true;
             filasector.visible=true;
+        }else if(valor.equals("PORESTADO")){
+            titulo.value ="X Estado";
+            filaestado.visible = true;
+        
         }else if(valor.equals("PORSECTORCLILETRA")){
             titulo.value= "X Cobrar";
             filacanton.visible=true;
@@ -299,6 +308,7 @@ void campos(String valor){
                                     <listitem  disabled="true" id="linea" label="=========CONTRATOS================" value="linea" />
                                     <listitem id="PORSECTORCLI" label="Clientes por Sector " value="PORSECTORCLI" />
                                     <listitem id="PORISNSTALACIONCLI" label="Clientes por Instalación " value="PORINSTALACIONCLI" />
+                                    <listitem id="PORESTADO" label="Clientes por Estado " value="PORESTADO" />
                                     <listitem id="PORSECTORCLI2" label="Clientes por Sector sin Valor" value="PORSECTORCLI2" />
                                     <listitem id="PORSECTORCLILETRA" label="Clientes por Sector(Desde-Hasta) [A-Z] " value="PORSECTORCLILETRA" />
                                     <listitem id="EQUIPOSPORSECTORCLILETRA" label="Clientes por Sector y Equipos[A-Z] " value="EQUIPOSPORSECTORCLILETRA" />
@@ -335,6 +345,15 @@ void campos(String valor){
                                     </vbox>
                                 </bandpopup>
                             </bandbox>
+                        </row>
+                        <row id="filaestado" visible="false">
+                                        <span style="float:right"> Estado: </span>
+                                        <radiogroup id="estadoContrato" >
+                                                <radio id="eactivo" selected="true" value="Activo" label="Activo" style="font-weight:bold2" />
+                                                <radio id="ecortado"  value="Cortado"  label="Cortado" style="font-weight:bold2" />
+                                                <radio id="esuspendido"  value="Suspendido"  label="Suspendido" style="font-weight:bold2" />
+                                                <radio  id="eterminado" value="Terminado"  label="Terminado" style="font-weight:bold2" />
+                                            </radiogroup>    
                         </row>
                         <row id="filaclientes" visible="false" >
                             <span style="float:right"> Clientes: </span>
