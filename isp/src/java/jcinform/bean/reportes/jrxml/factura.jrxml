@@ -22,7 +22,7 @@
 	<field name="fecha" class="java.util.Date"/>
 	<field name="telefono" class="java.lang.String"/>
 	<field name="descuento" class="java.math.BigDecimal"/>
-	<field name="valoriva" class="java.lang.String"/>
+	<field name="valoriva" class="java.math.BigDecimal"/>
 	<group name="factura" isStartNewPage="true">
 		<groupExpression><![CDATA[$F{numero}]]></groupExpression>
 		<groupHeader>
@@ -131,7 +131,7 @@
 				<textElement textAlignment="Right">
 					<font fontName="Times New Roman" size="9"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valor}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{subtotal}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField" x="39" y="0" width="62" height="14"/>
@@ -169,16 +169,10 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{baseiva}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="415" y="50" width="100" height="16"/>
+				<reportElement x="369" y="50" width="39" height="16"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{iva}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="415" y="82" width="100" height="16"/>
-				<box leftPadding="2" rightPadding="2"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{descuento}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="308" y="33" width="100" height="16"/>
@@ -186,7 +180,7 @@
 				<text><![CDATA[Base iva]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="308" y="49" width="100" height="16"/>
+				<reportElement x="308" y="49" width="61" height="16"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[IVA]]></text>
 			</staticText>
@@ -200,11 +194,12 @@
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[Subtotal]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="308" y="81" width="100" height="16"/>
+			<textField pattern="#,##0.00">
+				<reportElement x="416" y="50" width="100" height="16"/>
+				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right"/>
-				<text><![CDATA[DESCUENTO]]></text>
-			</staticText>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valoriva}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnFooter>
 	<pageFooter>
