@@ -779,13 +779,18 @@ llenarGridCursos(Periodo periodoSelec){
                                     }
                                     row.appendChild(ch);
                                     row.setValue(acceIt);
-                                    row.appendChild(new Label(""+acceIt));
+                                    Label cursoLabel = new Label(""+acceIt);
+                                    cursoLabel.setStyle("font-size:10px");
+                                    row.appendChild(cursoLabel);
                                     
                                     listaC.setMold("select");
                                     
                                     row.appendChild(listaC);          
                                     if(listaC.getSelectedItem() == null){
-                                            row.appendChild(new Label("Sin Coincidencia"));
+                                    Label sinc = new Label("Sin Coincidencia");
+                                            sinc.setStyle("color:red; font-weight:bold");
+                                            row.appendChild(sinc);
+                                            row.setStyle("background:yellow");
                                      }else{
                                         row.appendChild(new Label(""));
                                      }
@@ -883,6 +888,50 @@ llenarGrid23(Integer n){
 
 
 }
+
+void guardarCopiaDistributivo(){
+
+
+    int valor = Messagebox.show("Seguro que deséa continuar con el proceso?, \n Se borrarán los parametros que haya hecho hasta el momento en éste periodo", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+    if(valor != Messagebox.YES){
+        return;
+    }else{
+            int valor2 = Messagebox.show("Se procederá a borrar el distributivo actual de todos los cursos seleccionados, ¿Desea Continuar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                if(valor2 != Messagebox.YES){
+                    return;
+                }
+    }
+
+        Rows filas001 = cursosCopiar.getRows();
+                List listadoMaterias = filas001.getChildren();
+
+                   for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                      Row object = (Row) listadoMaterias.get(i);
+                      List labels = object.getChildren();
+                      Boolean estado = ((Checkbox)labels.get(0)).isChecked();
+                      
+                            if(estado){
+                                    Cursos cur = object.getValue();
+                                    String sql = "Select o from MateriaProfesor as o " + 
+                                                    " where o.curso.codigocur = '"+cur.getCodigocur()+"' ";
+                                                    System.out.println(""+sql);
+                                           List distributivoAnterior = adm.query(sql); 
+                                                    
+                                                Cursos cursoActIterado = ((Listbox)labels.get(2)).selectedItem.value;
+                                                adm.ejecutaSql("Delete from MateriaProfesor where curso.codigocur = '"+cursoActIterado.getCodigocur()+"'  ");
+                                                        for (Iterator it = distributivoAnterior.iterator(); it.hasNext();) {
+                                                                MateriaProfesor matPro = (MateriaProfesor) it.next();
+                                                                
+                                                                    matPro.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));       
+                                                                    matPro.setCurso(cursoActIterado);
+                                                                    adm.guardar(matPro);
+                                                        }
+                             }
+                }
+}
+
+
+
 
 void guardarc(){
    Rows filas001 = datos3.getRows();
@@ -1287,7 +1336,10 @@ void guardarc(){
                                     <listcell label="${each.institucion.tipo}" />
                                 </listitem>
                             </listbox>
+                            <button image="/images/guardar.gif" id="guardarDis" label="Guardar"  onClick="guardarCopiaDistributivo()"/>
                             </span>
+                            
+ 
                         </row>
                         <row spans="2">
                             <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="cursosCopiar" >
