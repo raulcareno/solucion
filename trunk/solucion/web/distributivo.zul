@@ -2,8 +2,8 @@
 <window >
     <style>
 .MyGridRowHeight tr.z-row td.z-row-inner
-{
-      background: white;
+{ 
+    background: white;
       border-top: none;
       border-left: 1px solid white;
       border-right: 1px solid #CCC;
@@ -36,6 +36,9 @@
     List allEvents = adm.query("Select o from Empleados as o where o.identificacion = 0");
     static MateriaProfesor matricula = new MateriaProfesor();
    //List cursos = adm.query("Select o from Cursos as o  where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia,o.paralelo.descripcion, o.descripcion");
+   
+   List periodoActuales = adm.query("Select o from Periodo as o where o.codigoper <> '"+periodo.getCodigoper()+"' ");
+   
    List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
       " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
    if(cursos.size()<=0){
@@ -756,6 +759,73 @@ llenarGrid3(Cursos cur){
 
 }
 
+llenarGridCursos(Periodo periodoSelec){
+
+        List cursosPeriodo = adm.query("Select o from Cursos as o " + 
+        " where o.periodo.codigoper = '"+periodoSelec.getCodigoper()+"' order by o.secuencia,  o.paralelo.descripcion ,o.especialidad.descripcion");
+            cursosCopiar = new Grid();
+            filasCursos.getChildren().clear();
+            if(cursosPeriodo.size()>0){
+
+                       for (Iterator it = cursosPeriodo.iterator(); it.hasNext();) {
+                              Cursos acceIt = (Cursos) it.next();
+                                    Row row = new Row();
+                                    
+                                    Checkbox ch = new Checkbox();
+                                    Listbox listaC = llenarComboCursosPeriodo(acceIt);
+                                    ch.setChecked(true);
+                                    if(listaC.getSelectedItem() == null){
+                                        ch.setChecked(false);
+                                    }
+                                    row.appendChild(ch);
+                                    row.setValue(acceIt);
+                                    row.appendChild(new Label(""+acceIt));
+                                    
+                                    listaC.setMold("select");
+                                    
+                                    row.appendChild(listaC);          
+                                    if(listaC.getSelectedItem() == null){
+                                            row.appendChild(new Label("Sin Coincidencia"));
+                                     }else{
+                                        row.appendChild(new Label(""));
+                                     }
+                                    filasCursos.appendChild(row);
+                       }
+          }else{
+
+          }
+
+
+}
+
+Listbox llenarComboCursosPeriodo(Cursos cursollega){
+        Listbox lista = new Listbox();
+            Cursos curse = new Cursos(-1);
+            Listitem li = new Listitem();
+            li.setValue(curse);
+            li.appendChild(new Listcell("[Seleccione]"));
+            //li.setSelected(true);
+            lista.appendChild(li);
+            for (Iterator it = cursos.iterator(); it.hasNext();) {
+                       Cursos acceIt = (Cursos) it.next();
+                         li = new Listitem();
+                         li.setValue(acceIt);
+                         li.appendChild(new Listcell(acceIt.getDescripcion()+" "+acceIt.getEspecialidad()+" "+acceIt.getParalelo()));
+                        if(acceIt.getDescripcion().replace("Á","A").replace("É","E").replace("Í","I").replace("Ó","O").replace("Ú","U").contains(cursollega.getDescripcion().substring(0,5).replace("Á","A").replace("É","E").replace("Í","I").replace("Ó","O").replace("Ú","U")) 
+                           && acceIt.getEspecialidad().getCodigo().equals(cursollega.getEspecialidad().getCodigo())
+                           && acceIt.getParalelo().getCodigo().equals(cursollega.getParalelo().getCodigo())){
+                                    li.setSelected(true);
+                        }         
+                         lista.appendChild(li);
+                         
+
+            }
+            
+            lista.setMold("select");
+            lista.setStyle("font-size:10px");
+        return lista;
+}
+
  void eliminando3(Object clave){
     try{
             try{
@@ -909,6 +979,7 @@ void guardarc(){
             <tab label="DISTRIBUTIVO POR CURSO" />
             <tab  image="/images/pensum.png" label="POR PROFESOR" />
             <tab  image="/images/cursos.png"  label="POR CURSO LINEAL" />
+            <tab  image="/images/pensum.png"  label="COPIAR DISTRIBUTIVO ANTERIOR" />
         
         </tabs>
         <tabpanels>
@@ -1193,6 +1264,45 @@ void guardarc(){
                                 <button label="Agregar más Filas" onClick="llenarGrid23(nofilas3.value)"/>
                             </span>
                         </row>
+                    </rows>
+                </grid>
+            </tabpanel>
+            <tabpanel>
+                <grid>
+
+                    <rows>
+                        <row>
+                            <span style="float:right"> PERIODO ANTERIOR(*):</span>
+                            <span>
+                        <listbox height="100px" onSelect='llenarGridCursos(self.selectedItem.value);' id="periodoAnterior" width="100%">
+                                <listhead>
+                                    <listheader label="Cod."/>
+                                    <listheader label="Nombres"/>
+                                    <listheader label="Estado"/>
+                                </listhead>
+                                <listitem forEach="${periodoActuales}" value="${each}">
+                                    <listcell label="${each.codigoper}" />
+                                    <listcell label="${each.descripcion}" />
+                                    <listcell label="${each.institucion}" />
+                                    <listcell label="${each.institucion.tipo}" />
+                                </listitem>
+                            </listbox>
+                            </span>
+                        </row>
+                        <row spans="2">
+                            <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="cursosCopiar" >
+                                <columns>
+                                    <column  width="30px" label="Todos"/>
+                                    <column   label="CURSOS DEL PERIODO ANTERIOR"/>
+                                    <column   label="CURSOS DEL PRESENTE PERIODO"/>
+                                    <column   label="OBS"/>
+                                    
+                                </columns>
+                                <rows id="filasCursos">
+                                </rows>
+                            </grid>
+                        </row>
+                         
                     </rows>
                 </grid>
             </tabpanel>
