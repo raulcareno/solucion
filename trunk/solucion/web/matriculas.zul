@@ -279,10 +279,18 @@ List matricula = adm.query("Select o from Matriculas as o where o.estudiante.cod
     if(matricula.size()>0)
     {
         llenarMatricula(matricula.get(0));
+        /* modificar.disabled = true;
+        for(Iterator it = cursos.iterator(); it.hasNext();){
+            Cursos cur = it.next();
+            if(cur.getCodigocur().equals(matricula.get(0).getCurso().getCodigocur()))
+                modificar.disabled = false;
+        }
+        */
+        
     }else{
         llenarMatricula(new Matriculas(0));
         numero.value = 0;
-        //Messagebox.show("No se encuentra Inscrito ni Matriculado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+//        Messagebox.show("No se encuentra Inscrito ni Matriculado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
     }
 }
 
@@ -1225,7 +1233,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                             <bandbox  width="400px" readonly="true"  id="bd1">
                                                                                 <bandpopup>
                                                                                     <vbox>
-                                                                                        <listbox id="curso" width="660px" rows="10"
+                                                                                      <listbox id="curso" width="660px" rows="10" 
                                                                                      onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
                                                                                             <listitem selected="true" forEach="${cursos}" value="${each}">
                                                                                                 <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
