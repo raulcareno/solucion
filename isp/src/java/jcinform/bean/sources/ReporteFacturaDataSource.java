@@ -49,8 +49,9 @@ public class ReporteFacturaDataSource implements JRDataSource {
         try {
             if ("nombre".equals(fieldName)) {
                 valor = nodo.getFactura().getClientes().getApellidos()+" "+nodo.getFactura().getClientes().getNombres();
-                String razon = nodo.getFactura().getClientes().getRazonsocial()+"";
-                if(!razon.equals("") && !razon.equals("null") && razon.length()>0 )
+                String razon = nodo.getFactura().getClientes().getRazonsocial();
+                //if(!razon.equals("") && !razon.equals("null") && razon.length()>0 )
+                if(razon!= null && !razon.isEmpty())
                     valor = nodo.getFactura().getClientes().getRazonsocial();
             }else if ("ruc".equals(fieldName)) {
                 valor = nodo.getFactura().getClientes().getIdentificacion();

@@ -44,7 +44,11 @@ public class ReporteContratoDataSource implements JRDataSource {
         String fieldName = campo.getName();
         try {
             if ("cliente".equals(fieldName)) {
-                valor = nodo.getClientes()+"";
+                valor = nodo.getClientes() + "";
+                String razon = nodo.getClientes().getRazonsocial() + "";
+                if (razon != null && !razon.isEmpty()) {
+                    valor = nodo.getClientes().getRazonsocial();
+                }
             } else if ("ruc".equals(fieldName)) {
                 valor = nodo.getClientes().getIdentificacion();
             } else if ("direccion".equals(fieldName)) {
@@ -60,31 +64,31 @@ public class ReporteContratoDataSource implements JRDataSource {
             } else if ("clave".equals(fieldName)) {
                 valor = nodo.getClave();
             } else if ("plan".equals(fieldName)) {
-                valor = nodo.getPlan()+"";
+                valor = nodo.getPlan() + "";
             } else if ("valor".equals(fieldName)) {
                 valor = nodo.getPlan().getValor();
             } else if ("descuento".equals(fieldName)) {
                 valor = nodo.getDescuento();
             } else if ("sector".equals(fieldName)) {
-                valor = nodo.getRadios().getNodos().getSector().getNombre()+"";
+                valor = nodo.getRadios().getNodos().getSector().getNombre() + "";
             } else if ("radio".equals(fieldName)) {
-                valor = nodo.getRadios().getNombre()+"";
+                valor = nodo.getRadios().getNombre() + "";
             } else if ("nodo".equals(fieldName)) {
-                valor = nodo.getRadios().getNodos().getNombre()+"";
+                valor = nodo.getRadios().getNodos().getNombre() + "";
             } else if ("canton".equals(fieldName)) {
-                valor = nodo.getRadios().getNodos().getSector().getCanton().getNombre()+"";
+                valor = nodo.getRadios().getNodos().getSector().getCanton().getNombre() + "";
             } else if ("fecha".equals(fieldName)) {
                 valor = nodo.getFecha();
             } else if ("fechainstalacion".equals(fieldName)) {
                 valor = nodo.getFechainstalacion();
-            }else if ("equipo".equals(fieldName)) {
+            } else if ("equipo".equals(fieldName)) {
                 valor = nodo.getSerie1();
-            }else if ("nofactura".equals(fieldName)) {
+            } else if ("nofactura".equals(fieldName)) {
                 valor = nodo.getSerie2();
-            }else if ("serie".equals(fieldName)) {
+            } else if ("serie".equals(fieldName)) {
                 valor = nodo.getSerie3();
             }
-            
+
         } catch (Exception e) {
             System.out.println("en datasource Acta " + e);
         }

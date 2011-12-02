@@ -46,7 +46,10 @@ public class autoCompletarClientes extends Combobox {
             List<Clientes> estu = new ArrayList<Clientes>();
             if (abuscar.length() > 1) {
                 estu = adm.query("Select o from Clientes as o "
-                        + "where o.apellidos like '%" + abuscar + "%' order by o.apellidos ",0,10);
+                        + "where o.apellidos like '%" + abuscar + "%' "
+                        + "OR "
+                        + "o.razonsocial like '%" + abuscar + "%' "
+                        + "order by o.apellidos ",0,10);
             }
 
             for (int i = 0; i < getItems().size(); i++) {
@@ -66,6 +69,10 @@ public class autoCompletarClientes extends Combobox {
                 Comboitem c = new Comboitem();
                 c.setValue(estudiantes);
                 c.setLabel(estudiantes.getApellidos() + " " + estudiantes.getNombres());
+                if(estudiantes.getRazonsocial() != null && !estudiantes.getRazonsocial().isEmpty()){
+                    c.setLabel(estudiantes.getRazonsocial() + " | ["+estudiantes.getApellidos() + " " + estudiantes.getNombres()+"]");
+                }
+                    
                 c.setParent(this);
                 
             }
