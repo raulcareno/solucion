@@ -165,6 +165,12 @@
                                     <checkbox checked="true" id="ccursos" label="Cursos" />
                                     <checkbox checked="true"  id="cequivalencias" label="Equivalencias" />
                                     <checkbox checked="true"  id="cparametros" label="Parámetros" />
+                                </span>
+                            </row>
+                            <row spans="2" style="background:#99CCFF">
+                                <span>
+            SE COPIARÁ:
+                                  
                                     <checkbox checked="true"  id="ctextos" label="Textos" />
                                     <checkbox checked="true"  id="caportes" label="Trimestres y Aportes" />
                                     <checkbox checked="true"  id="cactas" label="Parametros de Actas de Grado" />
