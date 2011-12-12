@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+
+    <window id="anularFacturass" onClose="observacion.getValue()">
+  
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.util.ArrayList;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+    Administrador adm = new Administrador();
+ 
+
+cargarObservacion(Boolean continuar2){
+
+ codi = Path.getComponent("//contratospage/contratosventana/observacionanula");
+ con = Path.getComponent("//contratospage/contratosventana/continuar");
+ if(continuar2){
+    codi.value = observacion.value+"";
+ }
+ con.checked = continuar2;
+ 
+  anularFacturass.detach();
+   
+}
+
+]]>
+        </zscript>
+       
+
+   
+
+ 
+                        <vbox>
+                            <hbox>  Observación 
+                                <textbox constraint="no empty: Debe ingresar un valor para continuar" id="observacion" rows="2" maxlength="60" cols="40" />
+  
+                            </hbox>
+                            <hbox>
+                                <separator bar="true"/>
+                                   <button id="CONT"  label="CONTINUAR" onClick="observacion.getValue(); cargarObservacion(true);"/>
+                                <button id="CANC"  label="CANCELAR" onClick="cargarObservacion(false);"/>
+                                </hbox>
+                        </vbox>
+  
+
+    </window>
+</zk>

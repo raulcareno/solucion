@@ -47,7 +47,7 @@ import java.text.SimpleDateFormat;
 List cantonesList = adm.query("Select o from Canton as o ");
     Boolean modificare = false;
     Boolean agregare = false;
-    
+
 //FUNCIONES
 
 void llenarCliente(Clientes cli){
@@ -1277,8 +1277,9 @@ void verificarCedula(String valor){
  
    void facturasPagadas(){
                 try{
-                List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.numero, fa.fecha, " + 
-                    "  fa.total, cx.fecha, cx.debe, cx.haber,IF(cx.haber < fa.total && cx.haber >0,'ABONO',IF(cx.haber = fa.total,'PAGADO','')) FROM cxcobrar cx, factura  fa "   +
+                List facEncontradas =  adm.queryNativo("SELECT cx.codigo, fa.numero, fa.fecha, " + 
+                    "  fa.total, cx.fecha, cx.debe, cx.haber,IF(cx.haber < fa.total && cx.haber >0,'ABONO',IF(cx.haber = fa.total,'PAGADO',''))  " + 
+                    " FROM cxcobrar cx, factura  fa "   +
                     "   WHERE fa.clientes  =  "+codigocli.value+"  " + 
                     "  AND cx.factura = fa.codigo GROUP BY cx.codigo " + 
                     " order by fa.codigo desc, fa.fecha desc, cx.fecha "); 
@@ -1292,8 +1293,6 @@ void verificarCedula(String valor){
                                 Date d = (Date)vec.get(2);
                              String cabe = vec.get(0)+"";
                                Group grupo = new Group(" MES: "+d1.format(d));
-                               // grupo.setStyle("background-color:#FFDDAA");
-   
                                if(i == 0){
                                     grupo.setParent(filasPag);
                                     facturasAnadidos.add(cabe+"");
@@ -1308,6 +1307,7 @@ void verificarCedula(String valor){
                                    if(row == null){
                                     row = new Row();
                                    }
+                                   Boolean mostrarEliminar = false;
                             for (int j = 0; j < vec.size(); j++) {
                                 Object dos = vec.get(j);
                                 if(row == null){
@@ -1335,6 +1335,7 @@ void verificarCedula(String valor){
                                                 Label la = new Label(val+"");
                                                 la.setStyle("color:blue; font-weight:bold");
                                                 row.appendChild(la);
+                                                mostrarEliminar = true;
                                             }else{
                                                 row.appendChild(new Label(""));
                                             }
@@ -1346,6 +1347,94 @@ void verificarCedula(String valor){
                                        }
                                     }
                             }
+                                Button aButtonEli = null;
+                            aButtonEli = new Button("Eliminar");//"Eliminar"
+                            aButtonEli.setImage("/images/eliminar.gif");
+                            aButtonEli.setId("elip"+vec.get(0));
+                            aButtonEli.setVisible(mostrarEliminar);
+                            aButtonEli.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                                 if(verificar2("Eliminar")){
+                                 registro.setSelected(true);
+                                 int valor0 = Messagebox.show("Seguro que desea Eliminar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                  seriespanel.visible = false;
+                                   
+                                   if(valor0 == 16){
+                                     
+                                      Integer facCodi = new Integer(aButtonEli.getId().replace("elip",""));
+                                      List siEx = adm.query("Select o from Cxcobrar as o where o.factura.codigo = '"+facCodi+"'");
+                                      if(siEx.size()>1){
+                                                 Messagebox.show("No se puede eliminar, ya tiene pagos realizados...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
+                                      }else{
+                                              Cxcobrar cobro = adm.buscarClave(facCodi, Cxcobrar.class);
+                                              Factura mifac = cobro.getFactura();
+                                              observacionanula.value = "";
+                                              continuar.checked = false;
+                                              if(mifac.getNumero() != null && !mifac.getNumero().isEmpty()){
+                                                      continuar.checked = false;
+                                                      final Window win = (Window) Executions.createComponents("anularFactura.zul", null, null);
+                                                        win.setMaximizable(true);
+                                                        win.setClosable(true);
+                                                        win.setTitle("Observación de Anular Factura");
+                                                        win.doModal();
+                                                      Facturaanulada facAnulada = new Facturaanulada();
+                                                      facAnulada.setFactura(mifac);
+                                                      facAnulada.setEmpleados(usuarioActual);
+                                                      facAnulada.setFecha(adm.Date());
+                                                      facAnulada.setNumero(mifac.getNumero());
+                                                      facAnulada.setObservacion(observacionanula.value);
+                                                      facAnulada.setValorpago(cobro.getHaber());
+                                                      facAnulada.setNopago(cobro.getCodigo());
+                                                      if(continuar.isChecked()){
+                                                        adm.guardar(facAnulada);
+                                                        adm.eliminarObjeto(Cxcobrar.class, facCodi );
+                                                        mifac.setNumero(null);
+                                                        adm.actualizar(mifac);
+                                                      }else{
+                                                            historial.setSelected(true);
+                                                          return;
+                                                      }
+                                                      historial.setSelected(true);
+                                               }else{
+                                                    final Window win = (Window) Executions.createComponents("anularFactura.zul", null, null);
+                                                    win.setMaximizable(true);
+                                                    win.setClosable(true);
+                                                    win.setTitle("Observación de Anular Cobro");
+                                                    win.doModal();
+                                               
+                                                      Facturaanulada facAnulada = new Facturaanulada();
+                                                      facAnulada.setFactura(null);
+                                                      facAnulada.setEmpleados(usuarioActual);
+                                                      facAnulada.setFecha(adm.Date());
+                                                      facAnulada.setNumero(null);
+                                                      facAnulada.setObservacion(observacionanula.value);
+                                                      facAnulada.setValorpago(cobro.getHaber());
+                                                      facAnulada.setNopago(cobro.getCodigo());
+                                                    if(continuar.isChecked()){
+                                                        adm.guardar(facAnulada);
+                                                        adm.eliminarObjeto(Cxcobrar.class, facCodi );
+                                                    }
+                                          
+                                                     historial.setSelected(true);
+                                               }
+                                       
+                                      
+                                      }
+                                      
+                                      
+                                    }
+                                     
+                                    historial.setSelected(true);  
+                                      
+                                }else{
+                                        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                }                      
+
+                              
+                               
+                              }
+                                });
+                            row.appendChild(aButtonEli);
     
                             filasPag.appendChild(row);
                 }
@@ -1786,7 +1875,7 @@ void llamar(){
                 <tab id="registro" label="Contratos"/>
                 <tab onSelect="facturasPendientes()" label="Pendientes" id="facturas"/>
                 <tab onSelect="buscarSoportes()" label="Hist. Técnica" />
-                <tab onSelect="facturasPagadas()" label="Hist. Pagos" />
+                <tab onSelect="facturasPagadas()" label="Hist. Pagos" id="historial" />
                
             </tabs>
             <tabpanels>
@@ -1913,8 +2002,10 @@ void llamar(){
                                                             <!--button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/-->
                                             </span>
                                                         
-                                                  <span  style="float:right" >Razón Social:</span>
-                                            <span> <textbox readonly="true" cols="25"  id="razonsocial" /></span>
+                                            <span  style="float:right" >Razón Social:</span>
+                                            <span> 
+                                                <textbox readonly="true" cols="25"  id="razonsocial" />
+                                            </span>
                                         </row>
                                         <row>
                                             <span style="float:right">
@@ -2371,7 +2462,7 @@ void llamar(){
                         </listitem>
                     </listbox>
                 </tabpanel>
-                  <tabpanel>
+                <tabpanel>
                     <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasPag" >
                         <columns>
                             <column  sort="auto"  label="No."/>
@@ -2381,10 +2472,14 @@ void llamar(){
                             <column   label="Debe"/>
                             <column   label="Haber"/>
                             <column   label="Observación"/>
+                            <column   label="Acción"/>
                         </columns>
                         <rows id="filasPag">
+                            
                         </rows>
                     </grid>
+                    <textbox id="observacionanula" />
+                    <checkbox id="continuar" />
                 </tabpanel>
                 <tabpanel>
                     <panel height="470px" style="margin-bottom:10px"
