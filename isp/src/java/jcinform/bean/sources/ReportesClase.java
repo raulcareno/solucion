@@ -354,6 +354,7 @@ Sucursal sucursal = null;
             pendi.setFactura("" + cIt.getFactura().getNumero());
             pendi.setFecha(cIt.getFecha());
             pendi.setPlan("");
+            //pendi.setCliente(null);
             pendi.setTotal(new BigDecimal(0));
             pendi.setSaldo(new BigDecimal(0));
             pendi.setNoabono(cIt.getCodigo());

@@ -353,6 +353,7 @@ void ultimoRecibo(){
                                             <label  style="font-weight:bold;">Cheque</label> 
                                             <label  style="font-weight:bold;">Tarjeta</label> 
                                             <label  style="font-weight:bold;">Transferencia</label> 
+                                            <label  style="font-weight:bold;">Débito</label> 
                                         </row>
                                         <row>
                                             <span>
@@ -364,6 +365,7 @@ void ultimoRecibo(){
                                             <decimalbox  onBlur='sumarcobros("che")'   format="##0.00"  onOK="nocheque.focus()"  cols="7" id="cheque" />
                                             <decimalbox   onBlur='sumarcobros("tar")' onOK="notarjeta.focus()"  format="##0.00"   cols="7" id="tarjeta" />
                                             <decimalbox   onBlur='sumarcobros("tra")' onOK="notransferencia.focus()"  format="##0.00"   cols="7" id="transferencia" />
+                                            <decimalbox   onBlur='sumarcobros("deb")' onOK="nodebito.focus()"  format="##0.00"   cols="7" id="debito" />
                                                 
                                         </row>
                                         <row>
@@ -373,6 +375,7 @@ void ultimoRecibo(){
                                             <textbox id="nocheque"  cols="7"  onOK="tarjeta.focus()"  />
                                             <textbox id="notarjeta"  cols="7"  onOK="transferencia.focus()"  />
                                             <textbox id="notransferencia"  cols="7"  onOK="btnguardar.focus()"  />
+                                            <textbox id="nodebito"  cols="7"  onOK="btnguardar.focus()"  />
                                             
                                         </row>
                                         <row>

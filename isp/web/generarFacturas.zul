@@ -269,7 +269,8 @@
                    reportelocal.setSrc(directorioReportes+"factura.jasper");
                    reportelocal.setParameters(parameters);
                    reportelocal.setDatasource(ds);
-                   reportelocal.setType("pdf");
+                   reportelocal.setType((String) format.getSelectedItem().getValue());
+                   
                    //impresion.selected = true;
                 
             }
@@ -326,6 +327,38 @@
                     <intbox id="numero" style="color:blue; text-align:center;font-size:14px;font-weight:bold" constraint="no empty,no zero: Ingrese el número inicial para continuar debe ser mayor a 0 y no blanco" />
                     <button label="Empezar a Generar #" onClick="numero.getValue(); generarFacturas(); "/>
                     <button label="Imprimir" image="/images/imprimir.gif" onClick="imprimirTodos()"/>
+                    <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
+                                        <bandpopup>
+                                            <vbox>
+                                                <listbox width="90px" id="format"  onSelect="bd.value=self.selectedItem.label; bd.close();imprimirTodos();">
+                                                    <listitem  value="pdf" selected="true">
+                                                        <listcell  image="/images/pdf.png" label="PDF" />
+                                                    </listitem>
+                                                    <listitem value="rtf">
+                                                        <listcell  image="/images/word.gif" label="Word" />
+                                                    </listitem>
+                                                    <listitem value="xls">
+                                                        <listcell  image="/images/excel.gif"  label="Excel" />
+                                                    </listitem>
+                                                    <listitem value="jxl">
+                                                        <listcell  image="/images/excel.gif" label="JXL" />
+                                                    </listitem>
+                                                    <listitem value="csv">
+                                                        <listcell  image="/images/csv.gif" label="CSV" />
+                                                    </listitem>
+                                                    <listitem value="odt">
+                                                        <listcell  image="/images/open.png" label="OpenOfic" />
+                                                    </listitem>
+                                                    <listitem value="xml">
+                                                        <listcell  image="/images/xml.gif" label="XML" />
+                                                    </listitem>
+                                                    <listitem value="html">
+                                                        <listcell  image="/images/html.gif" label="HTML" />
+                                                    </listitem>
+                                                </listbox>
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
 
                 </groupbox>
                                            
