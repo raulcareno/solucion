@@ -304,6 +304,10 @@ Sucursal sucursal = null;
             pendi.setFecha(cIt.getFecha());
             pendi.setPlan("");
             pendi.setTotal(new BigDecimal(0));
+            try {
+            pendi.setCliente(cIt.getFactura().getClientes());    
+            } catch (Exception e) {
+            }
             pendi.setSaldo(new BigDecimal(0));
             pendi.setNoabono(cIt.getCodigo());
             pendi.setFechapago(cIt.getFecha());
@@ -354,7 +358,11 @@ Sucursal sucursal = null;
             pendi.setFactura("" + cIt.getFactura().getNumero());
             pendi.setFecha(cIt.getFecha());
             pendi.setPlan("");
-            //pendi.setCliente(null);
+            try {
+            pendi.setCliente(cIt.getFactura().getClientes());    
+            } catch (Exception e) {
+            }
+            
             pendi.setTotal(new BigDecimal(0));
             pendi.setSaldo(new BigDecimal(0));
             pendi.setNoabono(cIt.getCodigo());

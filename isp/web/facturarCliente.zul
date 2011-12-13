@@ -63,7 +63,7 @@ String llenarCeros(String numero){
  
    
   
-        BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(descuento.getValue()).add(transferencia.getValue());
+        BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(descuento.getValue()).add(transferencia.getValue()).add(debito.getValue());
         if(total.compareTo(new BigDecimal(0)) == 0 ){
             Messagebox.show("Valor a pagar está en Cero  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             efectivo.focus();
@@ -214,7 +214,7 @@ String llenarCeros(String numero){
         }
        public void sumarcobros(String tipo){
                 BigDecimal  totalFinal = valor.getValue();
-                BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(transferencia.getValue());
+                BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(transferencia.getValue()).add(debito.getValue());
             //    Double antesTotal = new Double(totalCobros.getValue());
                 if(total.compareTo(totalFinal)==1){ //>
                     if(tipo.equals("efe")){
@@ -235,9 +235,12 @@ String llenarCeros(String numero){
                     }else if(tipo.equals("tra")){
                         BigDecimal cobros = (totalCobros.getValue());
                         transferencia.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
+                    }else if(tipo.equals("deb")){
+                        BigDecimal cobros = (totalCobros.getValue());
+                        debito.setValue((totalFinal.subtract(cobros).compareTo(new BigDecimal(0)) == -1?new BigDecimal(0):(totalFinal.subtract(cobros))));
                     }
                 }
-                 total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(transferencia.getValue());
+                 total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(transferencia.getValue()).add(debito.getValue());
                 totalCobros.setValue(total);
 }
 
@@ -504,6 +507,7 @@ void ultimoRecibo(){
                     riva.value =  BigDecimal.ZERO;
                     rtotal.value =  BigDecimal.ZERO;
                     rfuente.value =  BigDecimal.ZERO;
+                    debito.value =  BigDecimal.ZERO;
                     noretencion.value =  "";
                     if(facEnc.getNumero() != null){
                         nofactura.value = new Integer(facEnc.getNumero().substring(9,facEnc.getNumero().length()));
