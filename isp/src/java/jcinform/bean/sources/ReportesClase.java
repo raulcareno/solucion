@@ -5,6 +5,7 @@
 package jcinform.bean.sources;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -269,12 +270,13 @@ Sucursal sucursal = null;
                         pendi.setFechapago(cIt.getFecha());
                         pendi.setValorabonoefe(cIt.getEfectivo());
                         pendi.setValorabonoche(cIt.getCheque());
-                        pendi.setValorabonodep(cIt.getDeposito());
-                        pendi.setValorabonotar(cIt.getTarjeta());
-                        pendi.setValorabonoban(cIt.getBancario());
+                        pendi.setValorabonodep(cIt.getDeposito()==null?new BigDecimal(BigInteger.ZERO):cIt.getDeposito());
+                        pendi.setValorabonotar(cIt.getTarjeta()==null?new BigDecimal(BigInteger.ZERO):cIt.getTarjeta());
+                        pendi.setValorabonoban(cIt.getBancario()==null?new BigDecimal(BigInteger.ZERO):cIt.getBancario());
                         pendi.setNocheque(cIt.getNocheque());
                         pendi.setNocuenta(cIt.getNocuenta());
                         pendi.setNotarjeta(cIt.getNotarjeta());
+                        pendi.setValorabonoret(cIt.getRtotal()==null?new BigDecimal(BigInteger.ZERO):cIt.getRtotal());
                         detalles.add(pendi);
                         i++;
                     }
@@ -314,18 +316,19 @@ Sucursal sucursal = null;
             pendi.setFechapago(cIt.getFecha());
             pendi.setValorabonoefe(cIt.getEfectivo());
             pendi.setValorabonoche(cIt.getCheque());
-            pendi.setValorabonodep(cIt.getDeposito());
-            pendi.setValorabonotar(cIt.getTarjeta());
+            pendi.setValorabonodep(cIt.getDeposito()==null?new BigDecimal(BigInteger.ZERO):cIt.getDeposito());
+           pendi.setValorabonotar(cIt.getTarjeta()==null?new BigDecimal(BigInteger.ZERO):cIt.getTarjeta());
             pendi.setNocheque(cIt.getNocheque());
             pendi.setNocuenta(cIt.getNocuenta());
-            pendi.setValorabonotra(cIt.getTransferencia());
+            pendi.setValorabonotra(cIt.getTransferencia()==null?new BigDecimal(BigInteger.ZERO):cIt.getTransferencia());
             pendi.setValorabonorfue(cIt.getRfuente());
             pendi.setValorabonoriva(cIt.getRiva());
             pendi.setValorabonotot(cIt.getRtotal());
-            pendi.setValorabonoban(cIt.getBancario());
+            pendi.setValorabonoban(cIt.getBancario()==null?new BigDecimal(BigInteger.ZERO):cIt.getBancario());
             pendi.setNumeroretencion(cIt.getNumeroretencion());
             pendi.setNumerotransferencia(cIt.getNotransferencia());
             pendi.setNotarjeta(cIt.getNotarjeta());
+           pendi.setValorabonoret(cIt.getRtotal()==null?new BigDecimal(BigInteger.ZERO):cIt.getRtotal());
             detalles.add(pendi);
             i++;
         }
@@ -349,7 +352,8 @@ Sucursal sucursal = null;
                                 + "where o.haber > 0 "
                                 + "and o.factura.sucursal.codigo = '"+sucursal.getCodigo()+"' "
                                 + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' "
-                                + "order by o.factura.numero, o.empleados.apellidos ";
+                                + " order by  o.empleados.apellidos,o.factura.numero ";
+               empleado.setApellidos("TODOS");
         }
         
         List<Cxcobrar> abonos = adm.query(query);
@@ -371,22 +375,23 @@ Sucursal sucursal = null;
             pendi.setFechapago(cIt.getFecha());
             pendi.setValorabonoefe(cIt.getEfectivo());
             pendi.setValorabonoche(cIt.getCheque());
-            pendi.setValorabonodep(cIt.getDeposito());
-            pendi.setValorabonotar(cIt.getTarjeta());
+            pendi.setValorabonodep(cIt.getDeposito()==null?new BigDecimal(BigInteger.ZERO):cIt.getDeposito());
+            pendi.setValorabonotar(cIt.getTarjeta()==null?new BigDecimal(BigInteger.ZERO):cIt.getTarjeta());
             pendi.setNocheque(cIt.getNocheque());
             pendi.setNocuenta(cIt.getNocuenta());
-            pendi.setValorabonotra(cIt.getTransferencia());
+          pendi.setValorabonotra(cIt.getTransferencia()==null?new BigDecimal(BigInteger.ZERO):cIt.getTransferencia());
             pendi.setValorabonorfue(cIt.getRfuente());
             pendi.setValorabonoriva(cIt.getRiva());
             pendi.setValorabonotot(cIt.getRtotal());
-            pendi.setValorabonoban(cIt.getBancario());
+            pendi.setValorabonoban(cIt.getBancario()==null?new BigDecimal(BigInteger.ZERO):cIt.getBancario());
             pendi.setNumeroretencion(cIt.getNumeroretencion());
             pendi.setNumerotransferencia(cIt.getNotransferencia());
+            pendi.setValorabonoret(cIt.getRtotal()==null?new BigDecimal(BigInteger.ZERO):cIt.getRtotal());
             pendi.setNotarjeta(cIt.getNotarjeta());
             try {
-                pendi.setEmpleado(empleado.getApellidos()+" "+empleado.getNombres());    
+                pendi.setEmpleado(cIt.getEmpleados().getApellidos()+" "+cIt.getEmpleados().getNombres());    
             } catch (Exception e) {
-                pendi.setEmpleado("TODOS");    
+//                pendi.setEmpleado("TODOS");    
             }
             
             detalles.add(pendi);
@@ -420,12 +425,13 @@ Sucursal sucursal = null;
             pendi.setValorabonodes(cIt.getDescuento());
             pendi.setValorabonoefe(cIt.getEfectivo());
             pendi.setValorabonoche(cIt.getCheque());
-            pendi.setValorabonodep(cIt.getDeposito());
-             pendi.setValorabonoban(cIt.getBancario());
-            pendi.setValorabonotar(cIt.getTarjeta());
+            pendi.setValorabonodep(cIt.getDeposito()==null?new BigDecimal(BigInteger.ZERO):cIt.getDeposito());
+           pendi.setValorabonoban(cIt.getBancario()==null?new BigDecimal(BigInteger.ZERO):cIt.getBancario());
+            pendi.setValorabonotar(cIt.getTarjeta()==null?new BigDecimal(BigInteger.ZERO):cIt.getTarjeta());
             pendi.setNocheque(cIt.getNocheque());
             pendi.setNocuenta(cIt.getNocuenta());
             pendi.setNotarjeta(cIt.getNotarjeta());
+//            pendi.setValorabonoret(cIt.getRtotal());
             detalles.add(pendi);
             i++;
         }

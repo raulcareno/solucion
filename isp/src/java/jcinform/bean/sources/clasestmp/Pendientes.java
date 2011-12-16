@@ -21,6 +21,7 @@ public class Pendientes {
     String factura;
     Date fecha,fechapago;
     BigDecimal total,valorabonoefe,valorabonoche,valorabonotar,valorabonodep,valorabonodes,valorabonoban;
+    BigDecimal valorabonoret;
     BigDecimal valorabonotra,valorabonoriva,valorabonorfue,valorabonotot;
     String numerotransferencia,numeroretencion;
     BigDecimal saldo;
@@ -239,6 +240,14 @@ public class Pendientes {
 
     public void setEmpleado(String empleado) {
         this.empleado = empleado;
+    }
+
+    public BigDecimal getValorabonoret() {
+        return valorabonoret;
+    }
+
+    public void setValorabonoret(BigDecimal valorabonoret) {
+        this.valorabonoret = valorabonoret;
     }
 
   

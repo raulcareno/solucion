@@ -140,6 +140,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                                     cobrar.setTarjeta(empf.getTarjeta());
                                                     cobrar.setNocheque(empf.getNocheque());
                                                     cobrar.setNotarjeta(empf.getNotarjeta());
+                                                    cobrar.setEmpleados(empleados.selectedItem.value);
                                                     if(cobrar.getHaber().doubleValue()>0){
                                                         adm.guardar(cobrar);
                                                     }

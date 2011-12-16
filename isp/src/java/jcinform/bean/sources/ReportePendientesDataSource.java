@@ -87,6 +87,8 @@ public class ReportePendientesDataSource implements JRDataSource {
                 valor = nodo.getValorabonoban();
             } else if ("valorabonotar".equals(fieldName)) {
                 valor = nodo.getValorabonotar();
+            }  else if ("valorabonoret".equals(fieldName)) {
+                valor = nodo.getValorabonoret();
             } else if ("noabono".equals(fieldName)) {
                 valor = nodo.getNoabono();
             } else if ("notarjeta".equals(fieldName)) {
