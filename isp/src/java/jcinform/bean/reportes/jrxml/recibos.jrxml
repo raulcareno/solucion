@@ -18,7 +18,7 @@
 	<field name="total" class="java.math.BigDecimal"/>
 	<field name="efectivo" class="java.math.BigDecimal"/>
 	<field name="cheque" class="java.math.BigDecimal"/>
-	<field name="debito" class="java.math.BigDecimal"/>
+	<field name="deposito" class="java.math.BigDecimal"/>
 	<field name="nombre" class="java.lang.String"/>
 	<field name="ruc" class="java.lang.String"/>
 	<field name="direccion" class="java.lang.String"/>
@@ -208,7 +208,7 @@
 				<reportElement x="248" y="50" width="100" height="16"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{debito}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{deposito}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="248" y="82" width="100" height="16"/>
@@ -224,7 +224,7 @@
 			<staticText>
 				<reportElement x="141" y="49" width="100" height="16"/>
 				<textElement textAlignment="Right"/>
-				<text><![CDATA[Debito: ]]></text>
+				<text><![CDATA[Deposito: ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="141" y="97" width="100" height="16"/>

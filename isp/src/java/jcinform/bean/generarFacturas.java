@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.conexion.Administrador;
+import jcinform.persistencia.Canton;
 import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
 import jcinform.persistencia.Detalle;
@@ -75,7 +76,7 @@ public class generarFacturas {
                 + "where f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "') "
                 + "and  o.estado in ('Activo')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ";
         //+ "and  o.estado in ('Activo','Terminado')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ";
-        System.out.println(""+query);
+        System.out.println("" + query);
         List facturasHechas = adm.queryNativo(query, Contratos.class);
         try {
 
@@ -89,22 +90,22 @@ public class generarFacturas {
                 fac.setFecha(fecha);
                 fac.setSucursal(suc);
                 fac.setContratos(object);
-                if(object.getDescuento()==null){
+                if (object.getDescuento() == null) {
                     object.setDescuento(BigDecimal.ZERO);
                 }
-                BigDecimal valor = new BigDecimal(redondear(object.getPlan().getValor(),2));
-                if(object.getFormapago().equals(3)){
+                BigDecimal valor = new BigDecimal(redondear(object.getPlan().getValor(), 2));
+                if (object.getFormapago().equals(3)) {
                     valor = valor.add(suc.getEmpresa().getInstalacion());
                 }
                 fac.setSubtotal(valor.subtract(object.getDescuento()));
                 fac.setDescuento(new BigDecimal(0));
                 fac.setBaseiva(valor.subtract(object.getDescuento()));
                 fac.setPorcentajeiva(suc.getEmpresa().getIva());
-                fac.setValoriva(valor.subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
+                fac.setValoriva(valor.subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)));
                 fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
                 adm.guardar(fac);
                 Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
+                det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(), 2)).subtract(object.getDescuento()));
                 det.setPlan(object.getPlan());
                 det.setCantidad(1);
                 det.setMes(fecha.getMonth() + 1);
@@ -115,7 +116,7 @@ public class generarFacturas {
                 Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
                 cuenta.setDebe(fac.getTotal());
                 cuenta.setHaber(BigDecimal.ZERO);
-                cuenta.setDebito(BigDecimal.ZERO);
+                cuenta.setDeposito(BigDecimal.ZERO);
                 cuenta.setCheque(BigDecimal.ZERO);
                 cuenta.setEfectivo(BigDecimal.ZERO);
                 cuenta.setFactura(fac);
@@ -129,8 +130,8 @@ public class generarFacturas {
             }
         } catch (Exception e) {
             Logger.getLogger(generarFacturas.class.getName()).log(Level.SEVERE, null, e);
-            System.out.println("DUPLICADO: "+e +" " + e.hashCode());
-            return ""+e +" "+e.hashCode() + "";
+            System.out.println("DUPLICADO: " + e + " " + e.hashCode());
+            return "" + e + " " + e.hashCode() + "";
         }
         //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
 
@@ -183,15 +184,15 @@ public class generarFacturas {
                 fac.setFecha(fecha);
                 fac.setContratos(object);
                 fac.setSucursal(suc);
-                BigDecimal valor = new BigDecimal(redondear(object.getPlan().getValor(),2));
-                if(object.getFormapago().equals(3)){
+                BigDecimal valor = new BigDecimal(redondear(object.getPlan().getValor(), 2));
+                if (object.getFormapago().equals(3)) {
                     valor = valor.add(suc.getEmpresa().getInstalacion());
                 }
                 fac.setSubtotal(valor.subtract(object.getDescuento()));
                 fac.setDescuento(new BigDecimal(0));
                 fac.setBaseiva(valor.subtract(object.getDescuento()));
                 fac.setPorcentajeiva(suc.getEmpresa().getIva());
-                fac.setValoriva(valor.subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
+                fac.setValoriva(valor.subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)));
                 fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
                 adm.guardar(fac);
                 Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
@@ -207,7 +208,7 @@ public class generarFacturas {
                 cuenta.setDebe(fac.getTotal());
                 cuenta.setDescuento(BigDecimal.ZERO);
                 cuenta.setHaber(BigDecimal.ZERO);
-                cuenta.setDebito(BigDecimal.ZERO);
+                cuenta.setDeposito(BigDecimal.ZERO);
                 cuenta.setCheque(BigDecimal.ZERO);
                 cuenta.setEfectivo(BigDecimal.ZERO);
                 cuenta.setFactura(fac);
@@ -238,7 +239,7 @@ public class generarFacturas {
         Date fecha2 = con.getFecha();
         fecha2.setDate(1);
         con = (Contratos) adm.buscarClave(con.getCodigo(), Contratos.class);
-        
+
         try {
 
             Contratos object = con;
@@ -250,12 +251,12 @@ public class generarFacturas {
             fac.setClientes(object.getClientes());
             fac.setFecha(fecha2);
             fac.setSucursal(suc);
-            if(object.getDescuento()==null){
+            if (object.getDescuento() == null) {
                 object.setDescuento(BigDecimal.ZERO);
             }
-            
-             BigDecimal valor = new BigDecimal(redondear(object.getPlan().getValor(),2));
-            if(object.getFormapago().equals(3)){
+
+            BigDecimal valor = new BigDecimal(redondear(object.getPlan().getValor(), 2));
+            if (object.getFormapago().equals(3)) {
                 valor = valor.add(suc.getEmpresa().getInstalacion());
             }
             fac.setDescuento(BigDecimal.ZERO);
@@ -263,7 +264,7 @@ public class generarFacturas {
             fac.setDescuento(new BigDecimal(0));
             fac.setBaseiva(valor.subtract(object.getDescuento()));
             fac.setPorcentajeiva(suc.getEmpresa().getIva());
-            fac.setValoriva((valor).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
+            fac.setValoriva((valor).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)));
             fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
             adm.guardar(fac);
             Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
@@ -278,7 +279,7 @@ public class generarFacturas {
             Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
             cuenta.setDebe(fac.getTotal());
             cuenta.setHaber(BigDecimal.ZERO);
-            cuenta.setDebito(BigDecimal.ZERO);
+            cuenta.setDeposito(BigDecimal.ZERO);
             cuenta.setCheque(BigDecimal.ZERO);
             cuenta.setEfectivo(BigDecimal.ZERO);
             cuenta.setDescuento(BigDecimal.ZERO);
@@ -340,7 +341,7 @@ public class generarFacturas {
             fac.setFecha(fechaInstalacion);
             fac.setSucursal(suc);
             fac.setDescuento(BigDecimal.ZERO);
-            BigDecimal valor = new BigDecimal(redondear(con.getPlan().getValor(),2)).subtract(object.getDescuento());
+            BigDecimal valor = new BigDecimal(redondear(con.getPlan().getValor(), 2)).subtract(object.getDescuento());
 //            if(object.getFormapago().equals(3)){
 //                valor = valor.add(suc.getEmpresa().getInstalacion());
 //            }
@@ -348,7 +349,7 @@ public class generarFacturas {
                 int noDias = object.getPlan().getDias() - fechaInstalacion.getDate();
                 if (noDias > 0) {
                     if ((fechaInstalacion.getMonth() == adm.Date().getMonth())) {
-                        valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(object.getPlan().getDias()),2, RoundingMode.HALF_UP);
+                        valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(object.getPlan().getDias()), 2, RoundingMode.HALF_UP);
                     } else {
                         valor = new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento());
                     }
@@ -357,17 +358,17 @@ public class generarFacturas {
                 }
 
             } else {
-                valor = new BigDecimal(redondear(con.getPlan().getValor(),2)).subtract(object.getDescuento());
+                valor = new BigDecimal(redondear(con.getPlan().getValor(), 2)).subtract(object.getDescuento());
             }
             fac.setSubtotal(valor);
             fac.setDescuento(new BigDecimal(0));
             fac.setBaseiva(fac.getSubtotal());
             fac.setPorcentajeiva(suc.getEmpresa().getIva());
-            fac.setValoriva((valor).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
+            fac.setValoriva((valor).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)));
             fac.setTotal(fac.getValoriva().add(valor));
             adm.guardar(fac);
             Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-            det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(),2)).subtract(object.getDescuento()));
+            det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(), 2)).subtract(object.getDescuento()));
             det.setPlan(object.getPlan());
             det.setCantidad(1);
             det.setMes(fechaInstalacion.getMonth() + 1);
@@ -378,7 +379,7 @@ public class generarFacturas {
             Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
             cuenta.setDebe(fac.getTotal());
             cuenta.setHaber(BigDecimal.ZERO);
-            cuenta.setDebito(BigDecimal.ZERO);
+            cuenta.setDeposito(BigDecimal.ZERO);
             cuenta.setCheque(BigDecimal.ZERO);
             cuenta.setEfectivo(BigDecimal.ZERO);
             cuenta.setDescuento(BigDecimal.ZERO);
@@ -390,7 +391,7 @@ public class generarFacturas {
             adm.guardar(cuenta);
 
         } catch (Exception e) {
-            System.out.println("DUPLICADO: " + e.hashCode()+" .."+e);
+            System.out.println("DUPLICADO: " + e.hashCode() + " .." + e);
             return e.hashCode() + "";
         }
         //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
@@ -444,17 +445,17 @@ public class generarFacturas {
     //BUSCAR PARA ASIGNAR FACTURA 
     public List buscar(Sucursal suc, Sector uno, Sector dos, String formapago) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
-        String complemento = " and o.formapago = '"+formapago+"' ";
-        if(formapago.equals("0")){
+        String complemento = " and o.formapago = '" + formapago + "' ";
+        if (formapago.equals("0")) {
             complemento = "";
         }
         List<Contratos> contratos = adm.query("Select o from Contratos as o "
                 + "where o.sector.numero between  " + uno.getNumero() + "  and  " + dos.getNumero() + " "
-                + "and  o.sucursal.codigo =  '"+suc.getCodigo()+"'  "+complemento+" ");
+                + "and  o.sucursal.codigo =  '" + suc.getCodigo() + "'  " + complemento + " ");
         String contraString = "";
         for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
             Contratos contratos1 = itContratos.next();
-             contraString = "" + contratos1.getCodigo() + "," + contraString + "";
+            contraString = "" + contratos1.getCodigo() + "," + contraString + "";
         }
         if (contraString.length() > 0) {
             contraString = contraString.substring(0, contraString.length() - 1);
@@ -462,16 +463,56 @@ public class generarFacturas {
         String quer = "SELECT fa.codigo, fa.numero, fa.fecha, CONCAT(cli.apellidos,' ',cli.nombres), c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
                 + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli "
                 + " WHERE fa.contratos in (" + contraString + ")  and c.codigo = fa.contratos  "
-                + "  AND cx.factura = fa.codigo  AND cli.codigo = fa.clientes and fa.sucursal = '"+suc.getCodigo()+"'  GROUP BY fa.codigo "
+                + "  AND cx.factura = fa.codigo  AND cli.codigo = fa.clientes and fa.sucursal = '" + suc.getCodigo() + "'  GROUP BY fa.codigo "
                 + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
         List deudas = adm.queryNativo(quer);
 
         return deudas;
     }
-       public List buscar(Sucursal suc, String tipoPlan) {
+
+    //BUSCAR PARA ASIGNAR FACTURA 
+    public List buscar(Sucursal suc, Canton canton, String formapago, String diapago,Boolean anteriores) {
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+        String complemento = " and o.formapago = '" + formapago + "' ";
+        if (formapago.equals("0")) {
+            complemento = "";
+        }
+
+        String complementoCanton = "  o.sector.canton.codigo  = '" + canton.getCodigo() + "'  ";
+        if (canton.getCodigo().equals("-1")) {
+            complementoCanton = "";
+        }
+        String complementoDia = " and o.diapago = "+diapago+"";
+        if(anteriores){
+            complementoDia = " and o.diapago <= "+diapago+" ";
+        }
+        List<Contratos> contratos = adm.query("Select o from Contratos as o "
+                + "where "+complementoCanton
+                + "and  o.sucursal.codigo =  '" + suc.getCodigo() + "'  "
+                + " " + complemento + " "
+                + " " + complementoDia);
+        String contraString = "";
+        for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
+            Contratos contratos1 = itContratos.next();
+            contraString = "" + contratos1.getCodigo() + "," + contraString + "";
+        }
+        if (contraString.length() > 0) {
+            contraString = contraString.substring(0, contraString.length() - 1);
+        }
+        String quer = "SELECT fa.codigo, fa.numero, fa.fecha, CONCAT(cli.apellidos,' ',cli.nombres), c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
+                + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli "
+                + " WHERE fa.contratos in (" + contraString + ")  and c.codigo = fa.contratos  "
+                + "  AND cx.factura = fa.codigo  AND cli.codigo = fa.clientes and fa.sucursal = '" + suc.getCodigo() + "'  GROUP BY fa.codigo "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
+        List deudas = adm.queryNativo(quer);
+
+        return deudas;
+    }
+
+    public List buscar(Sucursal suc, String tipoPlan) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         List<Contratos> contratos = adm.query("Select o from Contratos as o "
-                + "where o.plan.tipo  like '%" + tipoPlan+ "%'  order by o.clientes.apellidos ");
+                + "where o.plan.tipo  like '%" + tipoPlan + "%'  order by o.clientes.apellidos ");
         String contraString = "";
         for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
             Contratos contratos1 = itContratos.next();
@@ -484,17 +525,17 @@ public class generarFacturas {
                 + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli "
                 + " WHERE fa.contratos in (" + contraString + ")  and c.codigo = fa.contratos  "
                 + "  AND cx.factura = fa.codigo  AND cli.codigo = fa.clientes "
-                + "and fa.sucursal = '"+suc.getCodigo()+"' and (fa.numero = '' or fa.numero is null) "
+                + "and fa.sucursal = '" + suc.getCodigo() + "' and (fa.numero = '' or fa.numero is null) "
                 + " GROUP BY fa.codigo "
                 + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 "
                 + "order by cli.apellidos, fa.fecha ";
         List deudas = null;
-           try {
-               deudas = adm.queryNativo(quer);
-           } catch (Exception e) {
-               System.out.println("ERRROR: "+e);
-               return null;
-           }
+        try {
+            deudas = adm.queryNativo(quer);
+        } catch (Exception e) {
+            System.out.println("ERRROR: " + e);
+            return null;
+        }
 
         return deudas;
     }
@@ -518,13 +559,13 @@ public class generarFacturas {
                 + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli  "
                 + " WHERE fa.codigo in ( Select x.factura from Empleadosfacturas as x where x.empleados = '" + emp.getCodigo() + "' and Date(x.fecha) = '" + fec + "' )  and c.codigo = fa.contratos  "
                 + "  AND cx.factura = fa.codigo "
-                + "   AND cli.codigo = fa.clientes AND fa.sucursal = '"+suc.getCodigo()+"'  GROUP BY fa.codigo  "
+                + "   AND cli.codigo = fa.clientes AND fa.sucursal = '" + suc.getCodigo() + "'  GROUP BY fa.codigo  "
                 + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
         List deudas = adm.queryNativo(quer);
 
         return deudas;
     }
-    
+
     public Double redondear(Double numero, int decimales) {
         try {
             BigDecimal d = new BigDecimal(numero);

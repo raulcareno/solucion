@@ -54,8 +54,8 @@ public class Empleadosfacturas implements Serializable {
     private BigDecimal efectivo;
     @Column(name = "cheque")
     private BigDecimal cheque;
-    @Column(name = "debito")
-    private BigDecimal debito;
+    @Column(name = "deposito")
+    private BigDecimal deposito;
     @Column(name = "tarjeta")
     private BigDecimal tarjeta;
     @Column(name = "descuento")
@@ -68,7 +68,8 @@ public class Empleadosfacturas implements Serializable {
     private String nocuenta;
   @Column(name = "saldo")
     private BigDecimal saldo;
-
+@Column(name = "bancario")
+    private BigDecimal bancario;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "total")
     private BigDecimal total;
@@ -160,13 +161,23 @@ public class Empleadosfacturas implements Serializable {
         this.cheque = cheque;
     }
 
-    public BigDecimal getDebito() {
-        return debito;
+    public BigDecimal getDeposito() {
+        return deposito;
     }
 
-    public void setDebito(BigDecimal debito) {
-        this.debito = debito;
+    public void setDeposito(BigDecimal deposito) {
+        this.deposito = deposito;
     }
+
+    public BigDecimal getBancario() {
+        return bancario;
+    }
+
+    public void setBancario(BigDecimal bancario) {
+        this.bancario = bancario;
+    }
+
+  
 
     public BigDecimal getDescuento() {
         return descuento;

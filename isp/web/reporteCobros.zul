@@ -148,7 +148,7 @@ cantones.add(0,cantonTodos);
                     report.setSrc(directorioReportes+"rpcaja.jasper");
             }else  if(tipo.equals("ARQUEOU")){
                    datasource = reportes.reporteCaja(desde.value, hasta.value,empleadosList.selectedItem.value);
-                    report.setSrc(directorioReportes+"rpcaja.jasper");
+                    report.setSrc(directorioReportes+"rpcajaempleado.jasper");
             }else if(tipo.equals("-1")){
                    alert("No ha seleccionado ningún reporte...!");
                     return;

@@ -51,6 +51,8 @@ public class ReportePendientesDataSource implements JRDataSource {
                 valor = fac;
             } else if ("mes".equals(fieldName)) {
                 valor = nodo.getFecha();
+            }else if ("empleado".equals(fieldName)) {
+                valor = nodo.getEmpleado();
             }  else if ("plan".equals(fieldName)) {
                 valor = nodo.getPlan();
             } else if ("valor".equals(fieldName)) {
@@ -80,7 +82,9 @@ public class ReportePendientesDataSource implements JRDataSource {
             } else if ("notransferencia".equals(fieldName)) {
                 valor = nodo.getNumerotransferencia();
             } else if ("valorabonodeb".equals(fieldName)) {
-                valor = nodo.getValorabonodeb();
+                valor = nodo.getValorabonodep();
+            }  else if ("valorabonoban".equals(fieldName)) {
+                valor = nodo.getValorabonoban();
             } else if ("valorabonotar".equals(fieldName)) {
                 valor = nodo.getValorabonotar();
             } else if ("noabono".equals(fieldName)) {

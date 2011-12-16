@@ -700,7 +700,7 @@ if(sihay==0){
                             Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
                             cuenta.setDebe(fac.getTotal());
                             cuenta.setHaber(BigDecimal.ZERO);
-                            cuenta.setDebito(BigDecimal.ZERO);
+                            cuenta.setDeposito(BigDecimal.ZERO);
                             cuenta.setCheque(BigDecimal.ZERO);
                             cuenta.setEfectivo(BigDecimal.ZERO);
                             cuenta.setFactura(fac);

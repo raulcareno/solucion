@@ -49,8 +49,8 @@ public class Cxcobrar implements Serializable {
     private BigDecimal efectivo;
     @Column(name = "cheque")
     private BigDecimal cheque;
-    @Column(name = "debito")
-    private BigDecimal debito;
+    @Column(name = "deposito")
+    private BigDecimal deposito;
     @Column(name = "tarjeta")
     private BigDecimal tarjeta;
     @Column(name = "descuento")
@@ -71,8 +71,10 @@ public class Cxcobrar implements Serializable {
     private BigDecimal rtotal;
     @Column(name = "numeroretencion")
     private String numeroretencion;
-    
-    
+     @Column(name = "bancario")
+    private BigDecimal bancario;
+      @Column(name = "nocuentaban")
+    private String nocuentaban;
     @Column(name = "notransferencia")
     private String notransferencia;
     @Column(name = "fechatransferencia")
@@ -87,6 +89,9 @@ public class Cxcobrar implements Serializable {
     @JoinColumn(name = "banco", referencedColumnName = "codigo")
     @ManyToOne
     private Bancos banco;
+        @JoinColumn(name = "bancoban", referencedColumnName = "codigo")
+    @ManyToOne
+    private Bancos bancoban;
     @JoinColumn(name = "bancoche", referencedColumnName = "codigo")
     @ManyToOne
     private Bancos bancocheque;
@@ -172,13 +177,15 @@ public class Cxcobrar implements Serializable {
         this.cheque = cheque;
     }
 
-    public BigDecimal getDebito() {
-        return debito;
+    public BigDecimal getDeposito() {
+        return deposito;
     }
 
-    public void setDebito(BigDecimal debito) {
-        this.debito = debito;
+    public void setDeposito(BigDecimal deposito) {
+        this.deposito = deposito;
     }
+
+  
 
     public BigDecimal getTarjeta() {
         return tarjeta;
@@ -307,6 +314,30 @@ public class Cxcobrar implements Serializable {
 
     public void setFechacheque(Date fechacheque) {
         this.fechacheque = fechacheque;
+    }
+
+    public BigDecimal getBancario() {
+        return bancario;
+    }
+
+    public void setBancario(BigDecimal bancario) {
+        this.bancario = bancario;
+    }
+
+    public Bancos getBancoban() {
+        return bancoban;
+    }
+
+    public void setBancoban(Bancos bancoban) {
+        this.bancoban = bancoban;
+    }
+
+    public String getNocuentaban() {
+        return nocuentaban;
+    }
+
+    public void setNocuentaban(String nocuentaban) {
+        this.nocuentaban = nocuentaban;
     }
 
    

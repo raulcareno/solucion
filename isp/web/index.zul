@@ -149,7 +149,9 @@ void ingresar(Menuitem item,String pantalla ){
                                 <!--menuitem image="/images/facturacion.png" value="/facturacion.zul"  label="Facturación" onClick='ingresar(self,"")' /-->
                                     <menuseparator />
                                     <menuitem image="/images/facturacion.png" value="/asignarFacturas.zul"  label="Asignar Facturas" onClick='ingresar(self,"Facturacion")' />
+                                    <menuitem image="/images/facturacion.png" value="/generarArchivoBanco.zul"  label="Generar Archivo Banco" onClick='ingresar(self,"Facturacion")' />
                                     <menuitem image="/images/tarjeta.png" value="/registroFacturas.zul"  label="Registrar Cobros" onClick='ingresar(self,"Registro de Cobros")' />
+                                    <menuitem image="/images/tarjeta.png" value="/registroFacturasDebito.zul"  label="Registrar Cobros Debitos" onClick='ingresar(self,"Registro de Cobros")' />
                                     <menuitem image="/images/calendario.png" value="/generarFacturas.zul"  label="Generación Facturas" onClick='ingresar(self,"Generacion Cobros")' />
                                     <menuseparator />
                                     <menuitem  value="/planes.zul"    image="/images/planes.png" label="Planes Productos" onClick='ingresar(self,"Planes")' />

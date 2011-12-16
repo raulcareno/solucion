@@ -70,8 +70,8 @@ public class ReporteReciboDataSource implements JRDataSource {
                    valor = nodo.getEfectivo();
             } else if ("cheque".equals(fieldName)) {
                    valor = nodo.getCheque();
-            } else if ("debito".equals(fieldName)) {
-                   valor = nodo.getDebito();
+            } else if ("deposito".equals(fieldName)) {
+                   valor = nodo.getDeposito();
             } else if ("tarjeta".equals(fieldName)) {
                    valor = nodo.getTarjeta();
             } else if ("descuento".equals(fieldName)) {

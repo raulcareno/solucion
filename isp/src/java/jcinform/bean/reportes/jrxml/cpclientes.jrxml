@@ -192,7 +192,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<text><![CDATA[Debito]]></text>
+					<text><![CDATA[Deposito]]></text>
 				</staticText>
 				<staticText>
 					<reportElement mode="Transparent" x="325" y="0" width="31" height="15" backcolor="#EDECEC"/>

@@ -62,7 +62,7 @@ import java.util.Map;
             cobrar.setDescuento(descuento.value);
             cobrar.setEfectivo(efectivo.value);
             cobrar.setCheque(cheque.value);
-            cobrar.setDebito(deposito.value);
+            cobrar.setDeposito(deposito.value);
             cobrar.setTarjeta(tarjeta.value);
             cobrar.setNocheque(nocheque.value);
             cobrar.setNotarjeta(notarjeta.value);

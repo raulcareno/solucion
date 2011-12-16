@@ -20,7 +20,7 @@ public class Pendientes {
     
     String factura;
     Date fecha,fechapago;
-    BigDecimal total,valorabonoefe,valorabonoche,valorabonotar,valorabonodeb,valorabonodes;
+    BigDecimal total,valorabonoefe,valorabonoche,valorabonotar,valorabonodep,valorabonodes,valorabonoban;
     BigDecimal valorabonotra,valorabonoriva,valorabonorfue,valorabonotot;
     String numerotransferencia,numeroretencion;
     BigDecimal saldo;
@@ -29,6 +29,7 @@ public class Pendientes {
     String plan;
     String formapago,notarjeta,nocheque,nocuenta;
     String direccion;
+    String empleado;
 
     public Clientes getCliente() {
         return cliente;
@@ -136,15 +137,15 @@ public class Pendientes {
         this.valorabonoche = valorabonoche;
     }
 
-    public BigDecimal getValorabonodeb() {
-        return valorabonodeb;
+    public BigDecimal getValorabonodep() {
+        return valorabonodep;
     }
 
-    public void setValorabonodeb(BigDecimal valorabonodeb) {
-        this.valorabonodeb = valorabonodeb;
+    public void setValorabonodep(BigDecimal valorabonodep) {
+        this.valorabonodep = valorabonodep;
     }
 
-    public BigDecimal getValorabonoefe() {
+      public BigDecimal getValorabonoefe() {
         return valorabonoefe;
     }
 
@@ -222,6 +223,22 @@ public class Pendientes {
 
     public void setNumerotransferencia(String numerotransferencia) {
         this.numerotransferencia = numerotransferencia;
+    }
+
+    public BigDecimal getValorabonoban() {
+        return valorabonoban;
+    }
+
+    public void setValorabonoban(BigDecimal valorabonoban) {
+        this.valorabonoban = valorabonoban;
+    }
+
+    public String getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(String empleado) {
+        this.empleado = empleado;
     }
 
   

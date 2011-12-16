@@ -171,10 +171,10 @@ void verificarSistema(){
                         <span style="float:right">Contraseña:(*):</span>
                         <textbox  onOK="usuario.getValue(); clave.getValue(); verificar()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
                     </row>
-                    <row visible="true" id="seleccione"  align="center" spans="2" style="background:transparent;border:0px">
+                    <row visible="false" id="seleccione"  align="center" spans="2" style="background:transparent;border:0px">
                         <label style="float:center;font-size:16px;color:red" value="SELECCIONE UN SECTOR:"></label>
                     </row>
-                    <row align="center"  style="background:transparent;border:0px" id="rperiodo" visible="true" spans="2">
+                    <row align="center"  style="background:transparent;border:0px" id="rperiodo" visible="false" spans="2">
                         <listbox  onOK="btnIngresar.focus()"  style="font-size:11px"   width="380px"  id="periodo" mold="select">
                             <listitem forEach="${perfiles}" value="${each}">
                                 <listcell  label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
