@@ -296,7 +296,7 @@
 						<rightPen lineWidth="0.25"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" pdfFontName="Helvetica-Bold"/>
+						<font size="8" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoefe_1}]]></textFieldExpression>
 				</textField>
@@ -310,7 +310,7 @@
 						<rightPen lineWidth="0.25"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" pdfFontName="Helvetica-Bold"/>
+						<font size="8" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonodeb_1}]]></textFieldExpression>
 				</textField>
@@ -324,7 +324,7 @@
 						<rightPen lineWidth="0.25"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" pdfFontName="Helvetica-Bold"/>
+						<font size="8" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoche_1}]]></textFieldExpression>
 				</textField>
@@ -338,7 +338,7 @@
 						<rightPen lineWidth="0.25"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" pdfFontName="Helvetica-Bold"/>
+						<font size="8" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonotar_1}]]></textFieldExpression>
 				</textField>
@@ -352,7 +352,7 @@
 						<rightPen lineWidth="0.25"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" pdfFontName="Helvetica-Bold"/>
+						<font size="8" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoefe_1}.add($V{valorabonodeb_1}).add($V{valorabonoche_1}).add($V{valorabonotar_1}).add($V{valorabonotra_1}).add($V{valorabonoban_1}).add($V{valorabonoret_1})]]></textFieldExpression>
 				</textField>
@@ -366,7 +366,7 @@
 						<rightPen lineWidth="0.25"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" pdfFontName="Helvetica-Bold"/>
+						<font size="8" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoban_1}]]></textFieldExpression>
 				</textField>
@@ -380,7 +380,7 @@
 						<rightPen lineWidth="0.25"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" pdfFontName="Helvetica-Bold"/>
+						<font size="8" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonotra_1}]]></textFieldExpression>
 				</textField>
@@ -394,7 +394,7 @@
 						<rightPen lineWidth="0.25"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoret_1}]]></textFieldExpression>
 				</textField>
@@ -422,7 +422,7 @@
 						<rightPen lineWidth="0.25"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" pdfFontName="Helvetica-Bold"/>
+						<font size="8" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoefe_1}.add($V{valorabonodeb_1}).add($V{valorabonoche_1}).add($V{valorabonotar_1}).add($V{valorabonotra_1}).add($V{valorabonoban_1})]]></textFieldExpression>
 				</textField>
@@ -721,7 +721,7 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" pdfFontName="Helvetica-Bold"/>
+					<font size="8" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoefe_2}.add($V{valorabonodeb_2}).add($V{valorabonoche_2}).add($V{valorabonotar_2}).add($V{valorabonotra_2}).add($V{valorabonoban_2}).add($V{valorabonoret_2})]]></textFieldExpression>
 			</textField>
@@ -735,7 +735,7 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" pdfFontName="Helvetica-Bold"/>
+					<font size="8" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonodeb_2}]]></textFieldExpression>
 			</textField>
@@ -749,7 +749,7 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" pdfFontName="Helvetica-Bold"/>
+					<font size="8" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoefe_2}]]></textFieldExpression>
 			</textField>
@@ -763,7 +763,7 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" pdfFontName="Helvetica-Bold"/>
+					<font size="8" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoban_2}]]></textFieldExpression>
 			</textField>
@@ -791,7 +791,7 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" pdfFontName="Helvetica-Bold"/>
+					<font size="8" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoche_2}]]></textFieldExpression>
 			</textField>
@@ -805,7 +805,7 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" pdfFontName="Helvetica-Bold"/>
+					<font size="8" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonotar_2}]]></textFieldExpression>
 			</textField>
@@ -819,7 +819,7 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" pdfFontName="Helvetica-Bold"/>
+					<font size="8" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonotra_2}]]></textFieldExpression>
 			</textField>
@@ -833,7 +833,7 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" pdfFontName="Helvetica-Bold"/>
+					<font size="8" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoret_2}]]></textFieldExpression>
 			</textField>
@@ -847,7 +847,7 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" pdfFontName="Helvetica-Bold"/>
+					<font size="8" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoefe_2}.add($V{valorabonodeb_2}).add($V{valorabonoche_2}).add($V{valorabonotar_2}).add($V{valorabonotra_2}).add($V{valorabonoban_2})]]></textFieldExpression>
 			</textField>
