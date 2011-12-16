@@ -96,6 +96,7 @@ void llenar(Contratos  equi2){
     nocuenta.value = equi.getNocuenta();
     tipocuenta.value  = equi.getTipocuenta();
     direccioni.value = equi.getDireccion();
+    direccion.value = equi.getDireccionf();
     referenciai.value = equi.getReferencia();
     descuento.value = equi.getDescuento();
     telefonoi.value = equi.getTelefono();
@@ -1951,32 +1952,14 @@ void llamar(){
                                                 <span>
                                                     <combobox  cols="35" id="combo" onSelect="verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion())" autodrop="true" buttonVisible="false"  use="jcinform.bean.autoCompletarClientes"/>
                                                                          
-                                                    <!--textbox readonly="false" cols="25"   onChanging="buscarCli(event.value);"   onOK ="btcliente.value = combo.value; buscarCli(btcliente.value); bcliente.visible = true"   id="combo" /-->
+                                                     
                                                     <image  tooltip="autompletar2" popup="autompletar2"  src="/images/keyboard.png"  />
                                                     <popup id="autompletar2" width="300px">
                                                         <html>
                                                                             Ingrese un Apellido del Cliente Ejemplo: AGUIRRE y seleccione uno de los del listado de búsqueda, si es que existe.
                                                         </html>
                                                     </popup>
-                                                    <!--groupbox closable="true" style="position: absolute;background:#E2EDFE; display: none;" visible="false" id="bcliente">
-                                                        <vbox>
-                                                            <hbox>
-                                                                <listbox style="background:white" onSelect='identificacion.value= ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";  identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; combo.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); razonsocial.value = ((Clientes)self.selectedItem.value).getRazonsocial()+"";  apellidos.value = ((Clientes)self.selectedItem.value).getApellidos()+""; nombres.value = ((Clientes)self.selectedItem.value).getNombres()+""; bcliente.visible =false; verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion());' id="lcliente" width="400px">
-                                                                    <listhead>
-                                                                        <listheader label="Nombres"/>
-                                                                        <listheader label="Dirección"/>
-                                                                    </listhead>
-                                                                    <listitem forEach="${allEvents}" value="${each}">
-                                                                        <listcell label="${each.apellidos}" />
-                                                                        <listcell label="${each.direccion}" />
-                                                                    </listitem>
-                                                                </listbox>
-                                                            </hbox>
-                                                            <button label="CERRAR" onClick="bcliente.visible = false;"/>
-                                                                   
-                                                        </vbox>
-                                                                
-                                                    </groupbox-->
+ 
                                                     <label style="font-weight:bold2" id="labelcontrato" value="No.Contrato" />
                                                     <intbox readonly="false" cols="5"   onOK ="verificarContrato(self.value)"   id="buscarContrato" />
                                                     <image  tooltip="autompletarNo" popup="autompletarNo"  src="/images/keyboard.png"  />

@@ -105,7 +105,11 @@
                                     }else{
                                         if(dos != null){
                                                 if(j==1){
+                                                    if(!dos.toString().isEmpty()){
                                                         row.appendChild(new Label(dos.substring(9)+""));        
+                                                    }else{
+                                                        row.appendChild(new Label(dos+""));
+                                                        }
                                                 }else{
                                                         row.appendChild(new Label(dos+""));
                                                 }
@@ -123,10 +127,10 @@
                             System.out.println("NO SE AGREGÓ FILA POR ERROR: "+exs);
                             }
                 }
-            valortotal.value = total;
+                         valortotal.value = total;
                    }catch(Exception e){
                             //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                            System.out.println("ERROR: "+e);
+                            System.out.println("ERROR:.. "+e);
                           
                         }
                 

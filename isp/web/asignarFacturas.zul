@@ -51,7 +51,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
 
   void facturasPendientes(){
         try{
-            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),sect.selectedItem.value,sect2.selectedItem.value);
+            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),sect.selectedItem.value,sect2.selectedItem.value,formapago.selectedItem.value);
             facturasDatos.getRows().getChildren().clear();
             ArrayList contratosAnadidos = new ArrayList();
             int i =0;
@@ -575,6 +575,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                     <rows>
                                         <row visible = "true" id="filacanton">
                                             <span style="float:right"> Cantón(*):</span>
+                                            <span>
                                             <bandbox  readonly="true"  id="bdCanton">
                                                 <bandpopup>
                                                     <vbox>
@@ -589,6 +590,25 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                     </vbox>
                                                 </bandpopup>
                                             </bandbox>
+                                            <span> Forma Pago:</span>
+                                                
+                                                     
+                                                                <listbox mold="select" id="formapago" width="250px" >
+                                 
+                                                                    <listitem value="3"  selected="true">
+                                                                        <listcell label="Domicilio" />
+                                                                    </listitem>
+                                                                    <listitem value="1" >
+                                                                        <listcell label="Oficina" />
+                                                                    </listitem>
+                                                                    <listitem value="2" >
+                                                                        <listcell label="Debito" />
+                                                                    </listitem>
+                                                                    <listitem value="0" >
+                                                                        <listcell label="Todos" />
+                                                                    </listitem>
+                                                      </listbox>
+                                                    </span>
 
                                         </row>
                                         <row visible = "true" id="filasector">

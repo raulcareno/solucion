@@ -295,7 +295,7 @@ Sucursal sucursal = null;
         List<Cxcobrar> abonos = adm.query("Select o from Cxcobrar as o "
                 + "where o.haber > 0 "
                 + "and o.factura.sucursal.codigo = '"+sucursal.getCodigo()+"' "
-                + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' ");
+                + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' order by o.factura.numero");
         int i = 1;
         for (Iterator<Cxcobrar> itAbono = abonos.iterator(); itAbono.hasNext();) {
             Cxcobrar cIt = itAbono.next();
@@ -347,7 +347,7 @@ Sucursal sucursal = null;
                                 + "where o.haber > 0 "
                                 + "and o.factura.sucursal.codigo = '"+sucursal.getCodigo()+"' "
                                 + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' "
-                                + "order by o.empleados.apellidos ";
+                                + "order by o.factura.numero, o.empleados.apellidos ";
         }
         
         List<Cxcobrar> abonos = adm.query(query);
