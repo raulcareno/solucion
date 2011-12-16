@@ -91,12 +91,19 @@ String llenarCeros(String numero){
             cobrar.setRtotal(rtotal.value);
             cobrar.setEmpleados(usuarioActual);
             cobrar.setNumeroretencion(noretencion.value);
+            cobrar.setBancario(dedibo.value);
+            cobrar.setNocuentaban(nodebito.value);
+            
+            
             try{
                 cobrar.setBanco(bancotransferencia.selectedItem.value);
             }catch(Exception e){System.out.println("NO HAY BANCOS SELECCIONADO");}
             
             try{
                 cobrar.setBancocheque(bancocheque.selectedItem.value);
+            }catch(Exception e){System.out.println("NO HAY BANCOS SELECCIONADO");}
+             try{
+                cobrar.setBancoban(bancoban.selectedItem.value);
             }catch(Exception e){System.out.println("NO HAY BANCOS SELECCIONADO");}
             
             cobrar.setFechatransferencia(fechatransferencia.value);
@@ -409,6 +416,23 @@ void ultimoRecibo(){
                                                         <vbox>
                                                             <listbox  id="bancotransferencia" width="250px"
                                                                     onSelect="bd223.value=self.selectedItem.label;bd223.closeDropdown();">
+                                                                <listhead>
+                                                                    <listheader label="Seleccione un Banco"/>
+                                                                </listhead>
+                                                                <listitem forEach="${bancos}" value="${each}">
+                                                                    <listcell label="${each.nombre}" />
+
+                                                                </listitem>
+                                                            </listbox>
+                                                        </vbox>
+                                                    </bandpopup>
+                                                </bandbox>
+                                                  
+                                            <bandbox  readonly="true" value="Banco" width="50px"  id="bd224">
+                                                    <bandpopup>
+                                                        <vbox>
+                                                            <listbox  id="bancoban" width="250px"
+                                                                    onSelect="bd224.value=self.selectedItem.label;bd224.closeDropdown();">
                                                                 <listhead>
                                                                     <listheader label="Seleccione un Banco"/>
                                                                 </listhead>

@@ -51,15 +51,8 @@ List cantonesList = adm.query("Select o from Canton as o ");
 //FUNCIONES
 
 void llenarCliente(Clientes cli){
-            //identificacion.value = cli.getIdentificacion();
-            //direccion.value = cli.getDireccion();
-            //telefono.value = cli.getTelefono()+"";
-            //combo.value = cli.getApellidos()+" "+cli.getNombres();//cliente
-            //identificacion2.value = cli.getIdentificacion();
-            codigocli.value = cli.getCodigo()+"";
-            
+           codigocli.value = cli.getCodigo()+"";
             email.value = cli.getEmail()+"";
-            
             apellidos.value = cli.getApellidos()+" "+cli.getNombres();//cliente
        
 
@@ -67,6 +60,23 @@ void llenarCliente(Clientes cli){
 void llenar(Contratos  equi2){
  genFactura.setChecked(false);
     equi = equi2;
+
+//SETEO LA FORMA DE PAGO
+    try{
+      if(equi.getFormapago().equals(1)){//SE COBRA EN OFICIONA
+            efe.checked = true;
+        }else if(equi.getFormapago().equals(2)){//POR DÉBITO BANCARIO
+            deb.checked = true;
+        }else if(equi.getFormapago().equals(3)){ //COBRA A DOMICIOLIO
+            cbr.checked = true;
+        } else {
+            efe.checked = true;
+        } 
+     }catch(Exception err){
+     System.out.println("error en forma de pago null: "+err);
+     efe.checked = true;
+     }
+    
     registro.setSelected(true);
     try{
      if(equi.getClientes()!=null){
@@ -110,8 +120,8 @@ void llenar(Contratos  equi2){
          diapago.value  = equi.getDiapago()+"";
     }
     
-    
-    clave.value = equi.getClave();
+        
+        clave.value = equi.getClave();
        if(equi.getEstado().equals("Activo")){
             eactivo.selected = true;
         }else if(equi.getEstado().equals("Suspendido")){
@@ -243,7 +253,7 @@ void llenar(Contratos  equi2){
      registrado.value = usuarioActual.getApellidos()+" "+usuarioActual.getNombres();
      registradoU.value = usuarioActual.getCodigo()+"";
      }  
-    buscarSeries(equi);
+     buscarSeries(equi);
     
 }
 void estado(Boolean estado,Boolean modificar){
@@ -861,10 +871,9 @@ void buscarCedula(String valor){
     
 void verificarCedula(String valor){
       if(valor.length()>6){
-            List empleados = adm.query("Select o from Clientes as o  " + 
+                  List empleados = adm.query("Select o from Clientes as o  " + 
             " where o.identificacion like '"+valor+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
-            if(empleados.size()>0){
-            
+      if(empleados.size()>0){
                 for(Iterator it = empleados.iterator(); it.hasNext();) {
                       Clientes object = (Clientes)it.next();
                       empa = object;
@@ -877,10 +886,10 @@ void verificarCedula(String valor){
             for (Iterator it = contratosCliente.getItems().iterator(); it.hasNext();) {
                    contratosCliente.getItems().remove(a);
                 }
-                List  ControlequiposEncontrados = adm.query("Select o from Contratos as o where o.clientes.codigo = '"+empa.getCodigo()+"'   ");
-                        if(ControlequiposEncontrados.size()>0){
+                List  contratosEncontrados = adm.query("Select o from Contratos as o where o.clientes.codigo = '"+empa.getCodigo()+"'   ");
+                        if(contratosEncontrados.size()>0){
                         
-                                 if(ControlequiposEncontrados.size() > 1){
+                                 if(contratosEncontrados.size() > 1){
                                           contratosPanel.visible = true; 
                                           llenarCliente(empa);
                                           numerocontrato.focus();
@@ -888,9 +897,9 @@ void verificarCedula(String valor){
                                  }else{
                                           contratosPanel.visible = false; 
                                           llenarCliente(empa);
-                                          llenar(ControlequiposEncontrados.get(0));
-                                          direccion.value = ControlequiposEncontrados.get(0).getDireccionf();
-                                          telefono.value = ControlequiposEncontrados.get(0).getTelefonof();
+                                          llenar(contratosEncontrados.get(0));
+                                          direccion.value = contratosEncontrados.get(0).getDireccionf();
+                                          telefono.value = contratosEncontrados.get(0).getTelefonof();
                                           eliminar.disabled = false;
                                           numerocontrato.focus();
                                           modificar.disabled = false;
@@ -898,7 +907,7 @@ void verificarCedula(String valor){
                                  }
                                 
                                 
-                                for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
+                                for (Iterator it = contratosEncontrados.iterator(); it.hasNext();) {
                                       Contratos  acceIt = (Contratos) it.next();
                                       Listitem li = new Listitem();
                                       li.setValue(acceIt);
@@ -933,7 +942,7 @@ void verificarCedula(String valor){
                              
               
             }else{
-                  
+                  System.out.println("NO TIENE CONTRATOS ASIGNADOS");
            }
 
         }else{
@@ -1951,8 +1960,7 @@ void llamar(){
                                                 </span>
                                                 <span>
                                                     <combobox  cols="35" id="combo" onSelect="verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion())" autodrop="true" buttonVisible="false"  use="jcinform.bean.autoCompletarClientes"/>
-                                                                         
-                                                     
+
                                                     <image  tooltip="autompletar2" popup="autompletar2"  src="/images/keyboard.png"  />
                                                     <popup id="autompletar2" width="300px">
                                                         <html>
