@@ -565,6 +565,22 @@ public class generarFacturas {
 
         return deudas;
     }
+    
+    //BUSCA POR NUMERO DE INFORME
+  public List buscar(Sucursal suc, Integer numero) {
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+        
+        String quer = "SELECT fa.codigo, fa.numero, fa.fecha,  CONCAT(cli.apellidos,' ',cli.nombres), c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
+                + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli  "
+                + " WHERE fa.codigo in ( Select x.factura from Facturasenviadas as x where x.numero= '" + numero+ "' "
+                + " )  and c.codigo = fa.contratos  "
+                + "  AND cx.factura = fa.codigo "
+                + "   AND cli.codigo = fa.clientes AND fa.sucursal = '" + suc.getCodigo() + "'  GROUP BY fa.codigo  "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
+        List deudas = adm.queryNativo(quer);
+
+        return deudas;
+    }
 
     public Double redondear(Double numero, int decimales) {
         try {

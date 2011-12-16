@@ -327,36 +327,35 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                             empleados.focus();
                             return;
                        }
-                       adm.ejecutaSqlNativo("Delete from Empleadosfacturas where DATE(fecha) = '"+fec +"' and empleados  = '"+((Empleados)empleados.selectedItem.value).getCodigo()+"' and fecharegreso is null  ");
+                       //adm.ejecutaSqlNativo("Delete from Facturasenviadas where numero = '"+numeroinforme.value +"' and fecharegreso is null  ");
 
-                       List facturasLista = adm.queryNativo("Select o.factura from Empleadosfacturas as o "
-                                         + "where o.empleados  = '"+((Empleados)empleados.selectedItem.value).getCodigo()+"'   "
-                                         + "and  DATE(o.fecha) = '"+fec+"'  ");
+                       List facturasLista = adm.queryNativo("Select o from Facturasenviadas as o " +
+                            " where o.numero = '"+numeroinforme.value +"' and fecharegreso is null  ");
 
                                      for (Iterator itfacturas = facturasLista.iterator(); itfacturas.hasNext();) {
                                             Vector facturas1 = (Vector) itfacturas.next();
                                         arr.add(facturas1.get(0));
 
                                     }
+                                    Integer num = adm.getNuevaClave("Facturasenviadas", "numero");
+                                    numeroinforme.value = num;
                            for (int i = 0; i < col.size(); i++) {
                                      Row object = (Row) col.get(i);
                                       List labels = object.getChildren();
                                             try{
                                          
                                                   Integer facCodigo = object.getValue();
-                                                  Empleadosfacturas empf = new Empleadosfacturas();
-                                                  empf.setFactura(new Factura(facCodigo));
-                                                  empf.setFecha(fechaAc);
-                                                  empf.setEmpleados(empleados.selectedItem.value);
-                                                  empf.setSaldo(new BigDecimal(labels.get(6).getValue()));
-                                                  empf.setEfectivo(new BigDecimal(0));
-                                                  empf.setDepsito(new BigDecimal(0));
-                                                  empf.setCheque(new BigDecimal(0));
-                                                  empf.setTarjeta(new BigDecimal(0));
-                                                  empf.setTotal(new BigDecimal(0));
-                                                  empf.setDescuento(new BigDecimal(0));
+                                                  Facturasenviadas facEnvi = Facturasenviadas(adm.getNuevaClave("Facturasenviadas", "codigo"));
+                                                  facEnvi.setFactura(new Factura(facCodigo));
+                                                  facEnvi.setFecha(fechaAc);
+                                                  facEnvi.setNumero(num);
+                                                  facEnvi.setEmpleados(empleados.selectedItem.value);
+                                                  facEnvi.setSaldo(new BigDecimal(labels.get(6).getValue()));
+                                                  facEnvi.setDebito(new BigDecimal(0));
+                                                  facEnvi.setTotal(new BigDecimal(0));
+                                                  facEnvi.setDescuento(new BigDecimal(0));
                                                   if(!arr.contains(facCodigo))
-                                                    adm.guardar(empf);
+                                                    adm.guardar(facEnvi);
                                               }catch(Exception ax){
                                                 System.out.println(""+ax.getMessage());
                                             }
@@ -367,7 +366,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
  }
    void facturasPendientesEmpleado(){
         try{
-            List facturasDatosAsignados2 =  gen.buscar(sucursalEmp.getSucursal(),empleados.selectedItem.value,fecha.value);
+            List facturasDatosAsignados2 =  gen.buscar(sucursalEmp.getSucursal(),new Integer(numeroinforme.value));
             facturasDatosAsignados.getRows().getChildren().clear();
             ArrayList contratosAnadidos = new ArrayList();
             int i =0;
@@ -736,7 +735,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                     <rows>
                                         <row>
                                             <span style="float:right"> Número de Informe(*):</span>
-                                             <textbox value="" id="numeroinforme"/>
+                                             <intbox  readonly="true" value="" id="numeroinforme"/>
                                         </row>
                                         <row>
                                             <span style="float:right"> Fecha(*):</span>
