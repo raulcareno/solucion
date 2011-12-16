@@ -471,7 +471,7 @@ public class generarFacturas {
     }
 
     //BUSCAR PARA ASIGNAR FACTURA 
-    public List buscar(Sucursal suc, Canton canton, String formapago, String diapago,Boolean anteriores) {
+    public List buscar(Sucursal suc, Canton canton, String formapago, String diapago,String diapago2) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         String complemento = " and o.formapago = '" + formapago + "' ";
         if (formapago.equals("0")) {
@@ -482,10 +482,10 @@ public class generarFacturas {
         if (canton.getCodigo().equals("-1")) {
             complementoCanton = "";
         }
-        String complementoDia = " and o.diapago = "+diapago+"";
-        if(anteriores){
-            complementoDia = " and o.diapago <= "+diapago+" ";
-        }
+        String complementoDia = " and o.diapago >= "+diapago+" and o.diapago <= "+diapago2+" ";
+//        if(anteriores){
+//            complementoDia = " and o.diapago <= "+diapago+" ";
+//        }
         List<Contratos> contratos = adm.query("Select o from Contratos as o "
                 + "where "+complementoCanton
                 + "and  o.sucursal.codigo =  '" + suc.getCodigo() + "'  "

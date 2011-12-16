@@ -50,7 +50,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
 
   void facturasPendientes(){
         try{
-            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),cant.selectedItem.value,formapago.selectedItem.value, diapago.value, anterior.isChecked());
+            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),cant.selectedItem.value,formapago.selectedItem.value, diapago.value, diapago2.value);
             facturasDatos.getRows().getChildren().clear();
             ArrayList contratosAnadidos = new ArrayList();
             int i =0;
@@ -590,10 +590,10 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                             </bandbox>
                                             </row>
                                             <row>
-                                            <span style="float:right"> Día de Pago:</span>
+                                            <span style="float:right"> Día de Pago Desde:</span>
                                             <span>
                                                 
-                                            <combobox value="1"  width="17px"  id="diapago">
+                                            <combobox value="1" onSelect="diapago2.value = self.value"  width="17px"  id="diapago">
                                                 <comboitem label="1"/>
                                                 <comboitem label="2"/>
                                                 <comboitem label="3"/>
@@ -624,8 +624,39 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                 <comboitem label="28"/>
                                                 <comboitem label="30"/>
                                             </combobox>
-                                            <checkbox id="anterior" label="Incluir Días Anteriores" />
-                                                     
+                                            Hasta:
+                                             <combobox value="1"  width="17px"  id="diapago2">
+                                                <comboitem label="1"/>
+                                                <comboitem label="2"/>
+                                                <comboitem label="3"/>
+                                                <comboitem label="4"/>
+                                                <comboitem label="5"/>
+                                                <comboitem label="6"/>
+                                                <comboitem label="7"/>
+                                                <comboitem label="8"/>
+                                                <comboitem label="9"/>
+                                                <comboitem label="10"/>
+                                                <comboitem label="11"/>
+                                                <comboitem label="12"/>
+                                                <comboitem label="13"/>
+                                                <comboitem label="14"/>
+                                                <comboitem label="15"/>
+                                                <comboitem label="16"/>
+                                                <comboitem label="17"/>
+                                                <comboitem label="18"/>
+                                                <comboitem label="19"/>
+                                                <comboitem label="20"/>
+                                                <comboitem label="23"/>
+                                                <comboitem label="22"/>
+                                                <comboitem label="25"/>
+                                                <comboitem label="24"/>
+                                                <comboitem label="27"/>
+                                                <comboitem label="26"/>
+                                                <comboitem label="29"/>
+                                                <comboitem label="28"/>
+                                                <comboitem label="30"/>
+                                            </combobox>
+                                                                                               
                                             <listbox visible="false" mold="select" id="formapago" width="150px" >
                                  
                                                 <listitem value="3" >

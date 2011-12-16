@@ -63,7 +63,7 @@ String llenarCeros(String numero){
  
    
   
-        BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(descuento.getValue()).add(transferencia.getValue()).add(bancario.getValue());
+        BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(descuento.getValue()).add(transferencia.getValue()).add(bancario.getValue()).add(rtotal.getValue());
         if(total.compareTo(new BigDecimal(0)) == 0 ){
             Messagebox.show("Valor a pagar está en Cero  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             efectivo.focus();
@@ -265,7 +265,8 @@ String llenarCeros(String numero){
                 }
                  total = riva.getValue().add(rfuente.getValue());
                 rtotal.setValue(total);
-                BigDecimal total2 = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(transferencia.getValue());
+                BigDecimal total2 = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(transferencia.getValue()).add(bancario.getValue());
+                total2 = total2.add(rtotal.getValue());
                 totalCobros.setValue(total2);
 }
 
