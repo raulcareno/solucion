@@ -27,6 +27,7 @@
   import jcinform.persistencia.*;
   import jcinform.conexion.*;
   import jcinform.bean.*;
+  import jcinform.persistencia.Facturasenviadas;
   import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
   import jcinform.bean.generarFacturas;
@@ -322,14 +323,10 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                        ArrayList arr  = new ArrayList();
                        Date fechaAc = fecha.value;
                        String fec = gen.convertiraString(fechaAc);
-                       if(empleados.selectedItem == null){
-                            Messagebox.show("Seleccione un Empleado..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                            empleados.focus();
-                            return;
-                       }
+                       
                        //adm.ejecutaSqlNativo("Delete from Facturasenviadas where numero = '"+numeroinforme.value +"' and fecharegreso is null  ");
 
-                       List facturasLista = adm.queryNativo("Select o from Facturasenviadas as o " +
+                       List facturasLista = adm.queryNativo("Select o.factura from Facturasenviadas as o " +
                             " where o.numero = '"+numeroinforme.value +"' and fecharegreso is null  ");
 
                                      for (Iterator itfacturas = facturasLista.iterator(); itfacturas.hasNext();) {
@@ -345,11 +342,12 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                             try{
                                          
                                                   Integer facCodigo = object.getValue();
-                                                  Facturasenviadas facEnvi = Facturasenviadas(adm.getNuevaClave("Facturasenviadas", "codigo"));
+                                                  Facturasenviadas facEnvi = new Facturasenviadas();
+                                                  facEnvi.setCodigo(adm.getNuevaClave("Facturasenviadas", "codigo"));
                                                   facEnvi.setFactura(new Factura(facCodigo));
                                                   facEnvi.setFecha(fechaAc);
                                                   facEnvi.setNumero(num);
-                                                  facEnvi.setEmpleados(empleados.selectedItem.value);
+                                                  facEnvi.setEmpleados(usuarioActual);
                                                   facEnvi.setSaldo(new BigDecimal(labels.get(6).getValue()));
                                                   facEnvi.setDebito(new BigDecimal(0));
                                                   facEnvi.setTotal(new BigDecimal(0));
@@ -735,7 +733,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                     <rows>
                                         <row>
                                             <span style="float:right"> Número de Informe(*):</span>
-                                             <intbox  readonly="true" value="" id="numeroinforme"/>
+                                             <intbox   value="0" id="numeroinforme"/>
                                         </row>
                                         <row>
                                             <span style="float:right"> Fecha(*):</span>
