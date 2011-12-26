@@ -344,12 +344,7 @@ Boolean validar(){
             return false; 
 }
  void guardar(){
- 
- if(validarContrato(self.value)){
-        Messagebox.show("Número de contrato ya existe ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR); 
-        numerocontrato.value = null;
-        numerocontrato.focus();
- }
+
     if(validar(identificacion2) ){
            Messagebox.show("Ingrese la Identificación del Cliente ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
            identificacion2.focus();
@@ -476,6 +471,13 @@ Boolean validar(){
              adm.actualizar(equi);
                 permiso.auditar("Contratos","Actualizar",""+equi.getContrato()+" - "+equi.getClientes());
          }else{
+          //EN CASO DE Q VAYA A ACTUALIAR
+             if(validarContrato(self.value)){
+                    Messagebox.show("Número de contrato ya existe ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR); 
+                    numerocontrato.value = null;
+                    numerocontrato.focus();
+                    return;
+             }
                 equi.setEmpleados(usuarioActual);//REGISTRADOR
                 equi.setCodigo(adm.getNuevaClave("Contratos","codigo"));
                 adm.guardar(equi);
