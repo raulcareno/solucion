@@ -87,7 +87,16 @@ public class ReporteContratoDataSource implements JRDataSource {
                 valor = nodo.getSerie2();
             } else if ("serie".equals(fieldName)) {
                 valor = nodo.getSerie3();
+            } else if ("factura".equals(fieldName)) {
+                valor = nodo.getFactura();
+            }else if ("saldo".equals(fieldName)) {
+                valor = nodo.getSaldo();
+            }else if ("valorPago".equals(fieldName)) {
+                valor = nodo.getValorPago();
+            }else if ("empleado".equals(fieldName)) {
+                valor = nodo.getEmpleados2().toString();
             }
+
 
         } catch (Exception e) {
             System.out.println("en datasource Acta " + e);

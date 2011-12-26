@@ -146,6 +146,9 @@ cantones.add(0,cantonTodos);
             }else  if(tipo.equals("ARQUEO")){
                    datasource = reportes.reporteCaja(desde.value, hasta.value);
                     report.setSrc(directorioReportes+"rpcaja.jasper");
+            }else  if(tipo.equals("COMISIONES1")){
+                   datasource = reportes.facturasComisiones1(empleadosList.selectedItem.value,desde.value, hasta.value);
+                    report.setSrc(directorioReportes+"listacontratosComision.jasper");
             }else  if(tipo.equals("ARQUEOU")){
                    datasource = reportes.reporteCaja(desde.value, hasta.value,empleadosList.selectedItem.value);
                     report.setSrc(directorioReportes+"rpcajaempleado.jasper");
@@ -195,6 +198,12 @@ void campos(String valor){
             titulo.value= "Cobros Diarios";
             filafechas.visible=true;
             desde.value = adm.Date();
+        }else if(valor.equals("COMISIONES1")){
+            titulo.value= "Contratos por Empleado";
+            filafechas.visible=true;
+            filaempleados.visible=true;
+            desde.value = adm.Date();
+            hasta.value = adm.Date();
         }else if(valor.equals("ARQUEOU")){
             titulo.value= "Cobros Diarios";
             filafechas.visible=true;
@@ -318,6 +327,10 @@ void campos(String valor){
                                     <listitem id="INVGEN" label="Inventario con Series x Compras" value="INVGEN" />
                                     <listitem id="INVTRAN" label="Inventario Transito" value="INVTRAN" />
                                     <listitem id="INVAJU" label="Inventario Ajuste" value="INVAJU" />
+                                    <listitem disabled="true" label="" />
+                                    <listitem  disabled="true" id="linea99" label="========EMPLEADOS=================" value="linea2" />
+                                    <listitem id="COMISIONES1" label="Contratos vendidos por empleado" value="COMISIONES1" />
+                                     
                                     
                                     
            

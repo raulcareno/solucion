@@ -23,6 +23,7 @@ import jcinform.persistencia.Detallecompra;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Empleadosfacturas;
 import jcinform.persistencia.Empleadossucursal;
+import jcinform.persistencia.Equipos;
 import jcinform.persistencia.Sector;
 import jcinform.persistencia.Series;
 import jcinform.persistencia.Sucursal;
@@ -35,25 +36,25 @@ import org.zkoss.zk.ui.Sessions;
  * @author jcinform
  */
 public class ReportesClase {
-Sucursal sucursal = null;
+
+    Sucursal sucursal = null;
+
     public ReportesClase() {
-      Session ses = Sessions.getCurrent();
-      Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
-      sucursal = sucursalEmp.getSucursal();
+        Session ses = Sessions.getCurrent();
+        Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
+        sucursal = sucursalEmp.getSucursal();
     }
 
-    
-    
-    public JRDataSource clientesxsector(Sector ini,Sector fin, String letraini, String letrafin) {
+    public JRDataSource clientesxsector(Sector ini, Sector fin, String letraini, String letrafin) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-        String  complemento = " and substring(o.clientes.apellidos,1,1) >= '"+letraini+"' "
-                       + " and substring(o.clientes.apellidos,1,1) <= '"+letrafin+"' ";
-  
-        List<Contratos> contra =  adm.query("Select o from Contratos as o "
-                    + "where o.sector.numero "
-                    + "between  '" + ini.getNumero()  + "' and   '" + fin.getNumero()  + "' " +  complemento
-                    + " and o.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.clientes.apellidos");
+        String complemento = " and substring(o.clientes.apellidos,1,1) >= '" + letraini + "' "
+                + " and substring(o.clientes.apellidos,1,1) <= '" + letrafin + "' ";
+
+        List<Contratos> contra = adm.query("Select o from Contratos as o "
+                + "where o.sector.numero "
+                + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento
+                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();
             detalles.add(contratos);
@@ -61,16 +62,15 @@ Sucursal sucursal = null;
         ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
         return ds;
     }
-    
-        
+
     public JRDataSource clientesxestado(String estado) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-  
-        List<Contratos> contra =  adm.query("Select o from Contratos as o "
-                    + " where  o.estado = '"+estado+"' "
-                    + " and o.sucursal.codigo = '"+sucursal.getCodigo()+"' "
-                    + " order by o.clientes.apellidos");
+
+        List<Contratos> contra = adm.query("Select o from Contratos as o "
+                + " where  o.estado = '" + estado + "' "
+                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                + " order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();
             detalles.add(contratos);
@@ -78,17 +78,17 @@ Sucursal sucursal = null;
         ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
         return ds;
     }
-    
-   public JRDataSource equiposclientesxsector(Sector ini,Sector fin, String letraini, String letrafin) {
+
+    public JRDataSource equiposclientesxsector(Sector ini, Sector fin, String letraini, String letrafin) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-        String  complemento = " and substring(o.contratos.clientes.apellidos,1,1) >= '"+letraini+"' "
-                       + " and substring(o.contratos.clientes.apellidos,1,1) <= '"+letrafin+"' ";
-  
-        List<Series> contra =  adm.query("Select o from Series as o "
-                    + "where o.contratos.sector.numero "
-                    + "between  '" + ini.getNumero()  + "' and   '" + fin.getNumero()  + "' " +  complemento
-                    + "and o.estado = 'P' and o.contratos.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.contratos.clientes.apellidos");
+        String complemento = " and substring(o.contratos.clientes.apellidos,1,1) >= '" + letraini + "' "
+                + " and substring(o.contratos.clientes.apellidos,1,1) <= '" + letrafin + "' ";
+
+        List<Series> contra = adm.query("Select o from Series as o "
+                + "where o.contratos.sector.numero "
+                + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento
+                + "and o.estado = 'P' and o.contratos.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.contratos.clientes.apellidos");
         for (Iterator<Series> it = contra.iterator(); it.hasNext();) {
             Series ser = it.next();
             Contratos contratos = ser.getContratos();
@@ -100,40 +100,39 @@ Sucursal sucursal = null;
         ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
         return ds;
     }
-       
-    
-    public JRDataSource facturasPendientes(Clientes cli, Sector sec,Canton canton) {
+
+    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         if (cli.getCodigo().equals(-1)) {
-            
-            
-                    if(sec.getCodigo().equals(-1)){
-                            
-                            if(canton.getCodigo().equals(-1)){
-                                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                                    + "where  o.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.clientes.apellidos");
-                            
-                            }else{
-                                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                                    + "where o.sector.canton.codigo = '"+canton.getCodigo()+"' and  o.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.clientes.apellidos");
-                            
-                            }
-                    }else  if(canton.getCodigo().equals(-1)){
-                            
-                            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                                    + "where  o.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.clientes.apellidos");
-                            
-                             
-                    }else{
-                            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                            + "where o.sector.codigo = '" + sec.getCodigo() + "' "
-                            + " and o.sucursal.codigo = '"+sucursal.getCodigo()+"' order by o.clientes.apellidos");
-                    
-                    }
-                        
-            
-        
+
+
+            if (sec.getCodigo().equals(-1)) {
+
+                if (canton.getCodigo().equals(-1)) {
+                    clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                            + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+
+                } else {
+                    clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                            + "where o.sector.canton.codigo = '" + canton.getCodigo() + "' and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+
+                }
+            } else if (canton.getCodigo().equals(-1)) {
+
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+
+
+            } else {
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "where o.sector.codigo = '" + sec.getCodigo() + "' "
+                        + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+
+            }
+
+
+
         } else {
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
             clientes.add(cli);
@@ -182,7 +181,7 @@ Sucursal sucursal = null;
         //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
         clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                 + "where o.sector.codigo = '" + sec.getCodigo() + "' "
-                + "  and o.sucursal.codigo = '"+sucursal.getCodigo()+"'  order by o.clientes.apellidos");
+                + "  and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  order by o.clientes.apellidos");
 //        } else {
 //            cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
 //            clientes.add(cli);
@@ -193,7 +192,7 @@ Sucursal sucursal = null;
             String quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
                     + "FROM cxcobrar cx, factura  fa "
                     + " WHERE  fa.clientes  =  " + clientes1.getCodigo() + "  "
-                    + " AND fa.sucursal = '"+sucursal.getCodigo()+"'  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
+                    + " AND fa.sucursal = '" + sucursal.getCodigo() + "'  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
 
             List facEncontradas = adm.queryNativo(quer);
@@ -239,12 +238,12 @@ Sucursal sucursal = null;
         String hastastr = convertiraString(hasta);
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
             Clientes clientes1 = itCli.next();
-            
+
             List facEncontradas = adm.queryNativo("SELECT fa.codigo, fa.numero, fa.fecha, p.nombre, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo"
                     + " FROM plan p, detalle de, cxcobrar cx, factura  fa "
                     + " WHERE p.codigo = de.plan AND  de.factura = fa.codigo "
                     + "AND fa.clientes  =  " + clientes1.getCodigo() + "  "
-                    + " AND fa.sucursal = '"+sucursal.getCodigo()+"' "
+                    + " AND fa.sucursal = '" + sucursal.getCodigo() + "' "
                     + " AND cx.factura = fa.codigo "
                     + "AND cx.fecha between '" + desdestr + "' and '" + hastastr + "' "
                     + "GROUP BY fa.codigo  ");
@@ -270,13 +269,13 @@ Sucursal sucursal = null;
                         pendi.setFechapago(cIt.getFecha());
                         pendi.setValorabonoefe(cIt.getEfectivo());
                         pendi.setValorabonoche(cIt.getCheque());
-                        pendi.setValorabonodep(cIt.getDeposito()==null?new BigDecimal(BigInteger.ZERO):cIt.getDeposito());
-                        pendi.setValorabonotar(cIt.getTarjeta()==null?new BigDecimal(BigInteger.ZERO):cIt.getTarjeta());
-                        pendi.setValorabonoban(cIt.getBancario()==null?new BigDecimal(BigInteger.ZERO):cIt.getBancario());
+                        pendi.setValorabonodep(cIt.getDeposito() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getDeposito());
+                        pendi.setValorabonotar(cIt.getTarjeta() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getTarjeta());
+                        pendi.setValorabonoban(cIt.getBancario() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getBancario());
                         pendi.setNocheque(cIt.getNocheque());
                         pendi.setNocuenta(cIt.getNocuenta());
                         pendi.setNotarjeta(cIt.getNotarjeta());
-                        pendi.setValorabonoret(cIt.getRtotal()==null?new BigDecimal(BigInteger.ZERO):cIt.getRtotal());
+                        pendi.setValorabonoret(cIt.getRtotal() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getRtotal());
                         detalles.add(pendi);
                         i++;
                     }
@@ -297,7 +296,7 @@ Sucursal sucursal = null;
         Pendientes pendi = null;
         List<Cxcobrar> abonos = adm.query("Select o from Cxcobrar as o "
                 + "where o.haber > 0 "
-                + "and o.factura.sucursal.codigo = '"+sucursal.getCodigo()+"' "
+                + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
                 + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' order by o.factura.numero");
         int i = 1;
         for (Iterator<Cxcobrar> itAbono = abonos.iterator(); itAbono.hasNext();) {
@@ -308,7 +307,7 @@ Sucursal sucursal = null;
             pendi.setPlan("");
             pendi.setTotal(new BigDecimal(0));
             try {
-            pendi.setCliente(cIt.getFactura().getClientes());    
+                pendi.setCliente(cIt.getFactura().getClientes());
             } catch (Exception e) {
             }
             pendi.setSaldo(new BigDecimal(0));
@@ -316,19 +315,19 @@ Sucursal sucursal = null;
             pendi.setFechapago(cIt.getFecha());
             pendi.setValorabonoefe(cIt.getEfectivo());
             pendi.setValorabonoche(cIt.getCheque());
-            pendi.setValorabonodep(cIt.getDeposito()==null?new BigDecimal(BigInteger.ZERO):cIt.getDeposito());
-           pendi.setValorabonotar(cIt.getTarjeta()==null?new BigDecimal(BigInteger.ZERO):cIt.getTarjeta());
+            pendi.setValorabonodep(cIt.getDeposito() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getDeposito());
+            pendi.setValorabonotar(cIt.getTarjeta() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getTarjeta());
             pendi.setNocheque(cIt.getNocheque());
             pendi.setNocuenta(cIt.getNocuenta());
-            pendi.setValorabonotra(cIt.getTransferencia()==null?new BigDecimal(BigInteger.ZERO):cIt.getTransferencia());
+            pendi.setValorabonotra(cIt.getTransferencia() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getTransferencia());
             pendi.setValorabonorfue(cIt.getRfuente());
             pendi.setValorabonoriva(cIt.getRiva());
             pendi.setValorabonotot(cIt.getRtotal());
-            pendi.setValorabonoban(cIt.getBancario()==null?new BigDecimal(BigInteger.ZERO):cIt.getBancario());
+            pendi.setValorabonoban(cIt.getBancario() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getBancario());
             pendi.setNumeroretencion(cIt.getNumeroretencion());
             pendi.setNumerotransferencia(cIt.getNotransferencia());
             pendi.setNotarjeta(cIt.getNotarjeta());
-           pendi.setValorabonoret(cIt.getRtotal()==null?new BigDecimal(BigInteger.ZERO):cIt.getRtotal());
+            pendi.setValorabonoret(cIt.getRtotal() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getRtotal());
             detalles.add(pendi);
             i++;
         }
@@ -336,6 +335,7 @@ Sucursal sucursal = null;
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
         return ds;
     }
+
     public JRDataSource reporteCaja(Date desde, Date hasta, Empleados empleado) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
@@ -344,18 +344,18 @@ Sucursal sucursal = null;
         Pendientes pendi = null;
         String query = "Select o from Cxcobrar as o "
                 + "where o.haber > 0 "
-                + "and o.factura.sucursal.codigo = '"+sucursal.getCodigo()+"' "
+                + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
                 + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' "
-                + "and o.empleados.codigo = '"+empleado.getCodigo()+"' order by o.fecha ";
-        if(empleado.getCodigo().equals(-1)){
-               query = "Select o from Cxcobrar as o "
-                                + "where o.haber > 0 "
-                                + "and o.factura.sucursal.codigo = '"+sucursal.getCodigo()+"' "
-                                + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' "
-                                + " order by  o.empleados.apellidos,o.factura.numero ";
-               empleado.setApellidos("TODOS");
+                + "and o.empleados.codigo = '" + empleado.getCodigo() + "' order by o.fecha ";
+        if (empleado.getCodigo().equals(-1)) {
+            query = "Select o from Cxcobrar as o "
+                    + "where o.haber > 0 "
+                    + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                    + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' "
+                    + " order by  o.empleados.apellidos,o.factura.numero ";
+            empleado.setApellidos("TODOS");
         }
-        
+
         List<Cxcobrar> abonos = adm.query(query);
         int i = 1;
         for (Iterator<Cxcobrar> itAbono = abonos.iterator(); itAbono.hasNext();) {
@@ -365,35 +365,35 @@ Sucursal sucursal = null;
             pendi.setFecha(cIt.getFecha());
             pendi.setPlan("");
             try {
-            pendi.setCliente(cIt.getFactura().getClientes());    
+                pendi.setCliente(cIt.getFactura().getClientes());
             } catch (Exception e) {
             }
-            
+
             pendi.setTotal(new BigDecimal(0));
             pendi.setSaldo(new BigDecimal(0));
             pendi.setNoabono(cIt.getCodigo());
             pendi.setFechapago(cIt.getFecha());
             pendi.setValorabonoefe(cIt.getEfectivo());
             pendi.setValorabonoche(cIt.getCheque());
-            pendi.setValorabonodep(cIt.getDeposito()==null?new BigDecimal(BigInteger.ZERO):cIt.getDeposito());
-            pendi.setValorabonotar(cIt.getTarjeta()==null?new BigDecimal(BigInteger.ZERO):cIt.getTarjeta());
+            pendi.setValorabonodep(cIt.getDeposito() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getDeposito());
+            pendi.setValorabonotar(cIt.getTarjeta() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getTarjeta());
             pendi.setNocheque(cIt.getNocheque());
             pendi.setNocuenta(cIt.getNocuenta());
-          pendi.setValorabonotra(cIt.getTransferencia()==null?new BigDecimal(BigInteger.ZERO):cIt.getTransferencia());
+            pendi.setValorabonotra(cIt.getTransferencia() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getTransferencia());
             pendi.setValorabonorfue(cIt.getRfuente());
             pendi.setValorabonoriva(cIt.getRiva());
             pendi.setValorabonotot(cIt.getRtotal());
-            pendi.setValorabonoban(cIt.getBancario()==null?new BigDecimal(BigInteger.ZERO):cIt.getBancario());
+            pendi.setValorabonoban(cIt.getBancario() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getBancario());
             pendi.setNumeroretencion(cIt.getNumeroretencion());
             pendi.setNumerotransferencia(cIt.getNotransferencia());
-            pendi.setValorabonoret(cIt.getRtotal()==null?new BigDecimal(BigInteger.ZERO):cIt.getRtotal());
+            pendi.setValorabonoret(cIt.getRtotal() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getRtotal());
             pendi.setNotarjeta(cIt.getNotarjeta());
             try {
-                pendi.setEmpleado(cIt.getEmpleados().getApellidos()+" "+cIt.getEmpleados().getNombres());    
+                pendi.setEmpleado(cIt.getEmpleados().getApellidos() + " " + cIt.getEmpleados().getNombres());
             } catch (Exception e) {
 //                pendi.setEmpleado("TODOS");    
             }
-            
+
             detalles.add(pendi);
             i++;
         }
@@ -425,9 +425,9 @@ Sucursal sucursal = null;
             pendi.setValorabonodes(cIt.getDescuento());
             pendi.setValorabonoefe(cIt.getEfectivo());
             pendi.setValorabonoche(cIt.getCheque());
-            pendi.setValorabonodep(cIt.getDeposito()==null?new BigDecimal(BigInteger.ZERO):cIt.getDeposito());
-           pendi.setValorabonoban(cIt.getBancario()==null?new BigDecimal(BigInteger.ZERO):cIt.getBancario());
-            pendi.setValorabonotar(cIt.getTarjeta()==null?new BigDecimal(BigInteger.ZERO):cIt.getTarjeta());
+            pendi.setValorabonodep(cIt.getDeposito() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getDeposito());
+            pendi.setValorabonoban(cIt.getBancario() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getBancario());
+            pendi.setValorabonotar(cIt.getTarjeta() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getTarjeta());
             pendi.setNocheque(cIt.getNocheque());
             pendi.setNocuenta(cIt.getNocuenta());
             pendi.setNotarjeta(cIt.getNotarjeta());
@@ -451,22 +451,22 @@ Sucursal sucursal = null;
         ArrayList detalles = new ArrayList();
         String que = "Select o from Contratos as o "
                 + "where o.sector.codigo =  '" + sec.getCodigo() + "'"
-                + "  and o.sucursal.codigo = '"+sucursal.getCodigo()+"'  order by o.clientes.apellidos";
-                
-                if(sec.getCodigo().equals(-1)){
-                    que = "Select o from Contratos as o "
-                        + "where o.sucursal.codigo = '"+sucursal.getCodigo()+"'  order by o.clientes.apellidos";      
-                }else{
-                     que = "Select o from Contratos as o "
-                        + "where o.sector.codigo =  '" + sec.getCodigo() + "'"
-                        + "  and o.sucursal.codigo = '"+sucursal.getCodigo()+"'  order by o.clientes.apellidos";      
-                }
-                List<Contratos> contra = adm.query(que);;   
-        
-            for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
-                Contratos contratos = it.next();
-                detalles.add(contratos);
-            }
+                + "  and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  order by o.clientes.apellidos";
+
+        if (sec.getCodigo().equals(-1)) {
+            que = "Select o from Contratos as o "
+                    + "where o.sucursal.codigo = '" + sucursal.getCodigo() + "'  order by o.clientes.apellidos";
+        } else {
+            que = "Select o from Contratos as o "
+                    + "where o.sector.codigo =  '" + sec.getCodigo() + "'"
+                    + "  and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  order by o.clientes.apellidos";
+        }
+        List<Contratos> contra = adm.query(que);;
+
+        for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
+            Contratos contratos = it.next();
+            detalles.add(contratos);
+        }
         ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
         return ds;
     }
@@ -479,11 +479,11 @@ Sucursal sucursal = null;
                 + " SUM(IF(d.cantidad<0 AND c.documento = 'VEN' ,d.cantidad,0)) salida, SUM(IF(d.cantidad<0 AND c.documento = 'AJU' ,d.cantidad,0)) AJUSTE, SUM(IF(d.cantidad<0 AND c.documento = 'PRE' ,d.cantidad,0)) PRESTAMO, (SUM(IF(d.cantidad>0,d.cantidad,0))+SUM(IF(d.cantidad<0,d.cantidad,0))) total "
                 + "FROM cabeceracompra c, detallecompra d, equipos e, marcas m WHERE e.codigo = d.equipos AND m.codigo = e.marcas "
                 + "AND c.codigo = d.compra  AND e.bien = TRUE AND c.documento IN ('COM','VEN','AJU','PRE')  "
-                + " AND c.sucursal = '"+sucursal.getCodigo()+"' "
+                + " AND c.sucursal = '" + sucursal.getCodigo() + "' "
                 + "GROUP BY d.equipos "
                 + " order by 1";
         List contra = adm.queryNativo(quer);
-        System.out.println(""+quer);
+        System.out.println("" + quer);
         for (Iterator it = contra.iterator(); it.hasNext();) {
             Vector vec = (Vector) it.next();
             InventarioNormal inv = new InventarioNormal();
@@ -508,7 +508,7 @@ Sucursal sucursal = null;
                 + "SUM(IF(d.cantidad<0,d.cantidad,0)) salida "
                 + "FROM cabeceracompra c, detallecompra d, equipos e, marcas m "
                 + "WHERE e.codigo = d.equipos AND m.codigo = e.marcas "
-                + "AND c.codigo = d.compra AND c.sucursal = '"+sucursal.getCodigo()+"' AND c.documento IN ('PRE') "
+                + "AND c.codigo = d.compra AND c.sucursal = '" + sucursal.getCodigo() + "' AND c.documento IN ('PRE') "
                 + "GROUP BY d.equipos "
                 + " order by 1");
 
@@ -531,7 +531,7 @@ Sucursal sucursal = null;
         List contra = adm.queryNativo("SELECT concat(e.nombre,' ', e.modelo,' ', m.nombre),   "
                 + "SUM(IF(d.cantidad<0,d.cantidad,0)) salida "
                 + "FROM cabeceracompra c, detallecompra d, equipos e, marcas m WHERE e.codigo = d.equipos AND m.codigo = e.marcas "
-                + "AND c.codigo = d.compra AND c.sucursal = '"+sucursal.getCodigo()+"'  AND c.documento IN ('AJU') "
+                + "AND c.codigo = d.compra AND c.sucursal = '" + sucursal.getCodigo() + "'  AND c.documento IN ('AJU') "
                 + "GROUP BY d.equipos "
                 + " order by 1");
 
@@ -552,7 +552,7 @@ Sucursal sucursal = null;
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         List<Cabeceracompra> compras = adm.query("Select o from Cabeceracompra as o "
-                + "where o.documento = 'COM' and o.sucursal.codigo = '"+sucursal.getCodigo()+"' ");
+                + "where o.documento = 'COM' and o.sucursal.codigo = '" + sucursal.getCodigo() + "' ");
         for (Iterator<Cabeceracompra> it = compras.iterator(); it.hasNext();) {
             Cabeceracompra cabeceracompra = it.next();
             List<Detallecompra> detallesC = adm.query("Select o from Detallecompra as o "
@@ -589,32 +589,82 @@ Sucursal sucursal = null;
 
                     detalles.add(inv);
                 }
-                 
-                    List<Series> seriesCompradas = adm.query("Select s from Series as s "
-                            + "where s.estado in ('C') "
-                            + "and s.detallecompra.codigo  = '" + detallecompra.getCodigo() + "'  and s.serie "
-                            + " not in (Select o.serie from Series as o "
-                        + "where o.estado in ('P','V','A') and o.sucursal.codigo = '"+sucursal.getCodigo()+"'  )  ");
-                    for (Iterator<Series> it2 = seriesCompradas.iterator(); it2.hasNext();) {
-                        Series series = it2.next();
-                        InventarioNormal inv = new InventarioNormal();
-                        inv.setCantidadpro(detallecompra.getCantidad());
-                        inv.setProducto(series.getDetallecompra().getEquipos() + "");
-                        inv.setEntrada(cabeceracompra.getCantidad());
-                        inv.setCompra(cabeceracompra.getCodigo() + "");
-                        inv.setFactura(cabeceracompra.getFactura() + "");
-                        inv.setSerie(series.getSerie());
-                        inv.setProveedor(cabeceracompra.getProveedores().getRazonsocial() + "");
-                        inv.setDocumento("Bodega");
-                        inv.setTipo("STOCK");
-                        inv.setCantidad(1);
-                        inv.setFecha(cabeceracompra.getFecha());
-                        detalles.add(inv);
-                    }
-                 
+
+                List<Series> seriesCompradas = adm.query("Select s from Series as s "
+                        + "where s.estado in ('C') "
+                        + "and s.detallecompra.codigo  = '" + detallecompra.getCodigo() + "'  and s.serie "
+                        + " not in (Select o.serie from Series as o "
+                        + "where o.estado in ('P','V','A') and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  )  ");
+                for (Iterator<Series> it2 = seriesCompradas.iterator(); it2.hasNext();) {
+                    Series series = it2.next();
+                    InventarioNormal inv = new InventarioNormal();
+                    inv.setCantidadpro(detallecompra.getCantidad());
+                    inv.setProducto(series.getDetallecompra().getEquipos() + "");
+                    inv.setEntrada(cabeceracompra.getCantidad());
+                    inv.setCompra(cabeceracompra.getCodigo() + "");
+                    inv.setFactura(cabeceracompra.getFactura() + "");
+                    inv.setSerie(series.getSerie());
+                    inv.setProveedor(cabeceracompra.getProveedores().getRazonsocial() + "");
+                    inv.setDocumento("Bodega");
+                    inv.setTipo("STOCK");
+                    inv.setCantidad(1);
+                    inv.setFecha(cabeceracompra.getFecha());
+                    detalles.add(inv);
+                }
+
             }
         }
         ReporteInventarioNormalDataSource ds = new ReporteInventarioNormalDataSource(detalles);
+        return ds;
+    }
+
+    public JRDataSource facturasComisiones1(Empleados empleado, Date desde, Date hasta) {
+        Administrador adm = new Administrador();
+        String desdestr = convertiraString(desde)+" 00:00:01";
+        String hastastr = convertiraString(hasta)+" 23:59:59";
+        List<Contratos> contratos = new ArrayList<Contratos>();
+        if (empleado.getCodigo().equals(-1)) {
+            String q = "Select o.*  from Contratos as o "
+                    + " where o.fechainstalacion between '"+desdestr+"' and '"+hastastr+"'  "
+                    + "  order by o.empleados ";
+            System.out.println(""+q);
+                contratos = adm.queryNativo(q,Contratos.class);             
+            //contratos.get(0).getEmpleados() 
+        } else { 
+            String q = "Select o.*  from Contratos as o "
+                    + " where o.empleados  = '" + empleado.getCodigo() + "'   "
+                    + " and o.fechainstalacion between '"+desdestr+"' and '"+hastastr+"'  "
+                    + " order by o.fecha  ";
+            System.out.println(""+q);
+                contratos = adm.queryNativo(q,Contratos.class);             
+        }
+        ArrayList detalles = new ArrayList();
+        String quer = "";
+        List<Equipos> equ = adm.queryNativo("SELECT * FROM Equipos WHERE CAST(tipo AS SIGNED)  BETWEEN 1 AND  10 ",Equipos.class);
+        String codigoEq = "";
+        for (Iterator<Equipos> it = equ.iterator(); it.hasNext();) {
+            Equipos equipos = it.next();
+            codigoEq+=equipos.getCodigo()+",";
+        }
+        if(codigoEq.length()>1){
+            codigoEq = codigoEq.substring(0,codigoEq.length()-1);
+        }
+        for (Iterator<Contratos> itCli = contratos.iterator(); itCli.hasNext();) {
+            Contratos contra = itCli.next();
+//            String query = "Select o from Detalle as o "
+//                        + " where o.equipos.codigo in ("+codigoEq+")  "
+//                        + " and o.factura.contratos.codigo = '" + contra.getCodigo() + "' "
+//                        + " and o.factura.fecha between  '" + desdestr + "'  and '" + hastastr + "' "
+//                        + " and o.factura.contratos.codigo = '"+contra.getCodigo()+"'  ";
+//                   query = "Select o from Cxcobrar as o "
+//                        + "where o.haber > 0 "
+//                        + "and o.factura.contratos.codigo = '" + contra.getCodigo() + "' "
+//                        + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' "
+//                        + " order by  o.empleados.apellidos,o.factura.numero ";
+                   detalles.add(contra);
+        }
+        System.out.println("" + quer);
+        ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
         return ds;
     }
 }

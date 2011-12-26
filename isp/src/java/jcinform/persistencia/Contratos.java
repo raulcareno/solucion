@@ -20,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  *
@@ -427,6 +428,40 @@ public class Contratos implements Serializable {
         this.cobranza = cobranza;
     }
 
+    @Transient
+    String factura;
+    @Transient
+    BigDecimal saldo;
+    @Transient
+    BigDecimal valorPago;
+
+    public String getFactura() {
+        return factura;
+    }
+
+    public void setFactura(String factura) {
+        this.factura = factura;
+    }
+
+    public BigDecimal getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(BigDecimal saldo) {
+        this.saldo = saldo;
+    }
+
+    public BigDecimal getValorPago() {
+        return valorPago;
+    }
+
+    public void setValorPago(BigDecimal valorPago) {
+        this.valorPago = valorPago;
+    }
+    
+    
+    
+    
       @Override
     public int hashCode() {
         int hash = 0;

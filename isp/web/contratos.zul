@@ -345,6 +345,11 @@ Boolean validar(){
 }
  void guardar(){
  
+ if(validarContrato(self.value)){
+        Messagebox.show("Número de contrato ya existe ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR); 
+        numerocontrato.value = null;
+        numerocontrato.focus();
+ }
     if(validar(identificacion2) ){
            Messagebox.show("Ingrese la Identificación del Cliente ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
            identificacion2.focus();
@@ -984,6 +989,27 @@ void verificarCedula(String valor){
                   }else{
                         Messagebox.show("No. de Contrato no Existente ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
                   }
+  }
+    boolean validarContrato(Integer valor){
+
+            if(valor!=null){
+                   String q = "Select o from Contratos as o " + 
+                        " where o.contrato = '"+valor+"'  "  + 
+                        " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ";
+                   List  ControlequiposEncontrados = adm.query(q);
+                   if(ControlequiposEncontrados.size()>0){
+                        numerocontrato.value= null;
+                        Messagebox.show("No. de Contrato ya Existe  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);       
+                        numerocontrato.focus();
+                        return true;
+                  }else{
+                        return false;
+                  }
+                  
+            }else{
+                return false;
+            }
+            
   }
     
     
@@ -2058,7 +2084,7 @@ void llamar(){
                                                 <label style="font-weight:bold2" value=" No.Contrato: " />
                                             </span>
                                             <span>
-                                                <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" id="numerocontrato" cols="16" />
+                                                <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" onBlur="validarContrato(self.value)" id="numerocontrato" cols="16" />
                                                 <button label="Contratos"  image="/images/contratos.png"  id="vercontratos" onClick="contratosPanel.visible = true; "/>
                                             </span>
                                             <span style="float:right">
