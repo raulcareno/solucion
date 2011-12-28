@@ -3619,10 +3619,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     if (ubicacionDirectorio.contains("build")) {
                         ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                     }
-                    verIp.tomarFotoIp(direccion + separador + fac.getCodigo() + ".jpg", this);
+                    verIp.tomarFotoIp(ubicacionDirectorio  + "fotos" + separador + fac.getCodigo() + ".jpg", this);
                 }
-
-                abrirPuerta(puertoViene);
+                try {
+                abrirPuerta(puertoViene);    
+                } catch (Exception e) {
+                    System.out.println("PROCESO CORRECTO NO ABRIÓ PUERTA POR PUERTO DESHABILITADO");
+                }
+                
                 procesando.setVisible(true);
                 cliente.setText(tarje.getClientes().getNombres());
                 noDisponibles();
@@ -3678,7 +3682,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         if (ubicacionDirectorio.contains("build")) {
                             ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                         }
-                        verIp.tomarFotoIp(direccion + separador + fac.getCodigo() + ".jpg", this);
+                        verIp.tomarFotoIp(ubicacionDirectorio  + "fotos" + separador + fac.getCodigo() + ".jpg", this);
                     }
                     cargarFoto(fac.getCodigo());
                 }

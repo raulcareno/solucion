@@ -880,12 +880,12 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         } else if (cmbTipoReporte.getSelectedIndex() == 11) {//TICKEST FOTOS
             query = "Select o from Factura as o" +
-                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    " where o.fechaini between '" + desde2 + "' and '" + hasta2 + "' "
                     + " ";
             if(cmbUsuarios.getSelectedIndex()>0){
                     query = "Select o from Factura as o" +
-                            " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                            + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
+                            " where o.fechaini between '" + desde2 + "' and '" + hasta2 + "' "
+                            + " and o.usuario.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
                             + "    ";
             }
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsfotos.jasper";
