@@ -110,6 +110,7 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String MULTA = "MULTA";
     private static final String PUERTATIC = "PUERTATIC";
     private static final String PUERTAFAC = "PUERTAFAC";
+    private static final String BARRERAS = "BARRERAS";
 
 
     // Variables
@@ -295,6 +296,8 @@ public static UsuarioActivo user = new UsuarioActivo();
         personal.appendChild(item);
         item = xmlDoc.createElement(BLOQUEARSALIDA);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBloquearsalida()+""));
+        item = xmlDoc.createElement(BARRERAS);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBarreras()+""));
         personal.appendChild(item);
         
     }
@@ -441,6 +444,7 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setEntra2(emp.getEntra2()); 
         beanEmpleado.setBloquear(emp.getBloquear()); 
         beanEmpleado.setBloquearsalida(emp.getBloquearsalida()); 
+        beanEmpleado.setBarreras(emp.getBarreras());
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
         //obtenemos el documento XML en cadena de texto
@@ -666,9 +670,20 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList SALIDA7outAgeList = SALIDA7outElement.getChildNodes();
                     user.setSalida7(((Node) SALIDA7outAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
+                          user.setSalida7("");
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
-                      
+                   
+                     try {
+                      //------
+                    NodeList BARRERASoutList = firstPersonElement.getElementsByTagName("BARRERAS");
+                    Element BARRERASoutElement = (Element) BARRERASoutList.item(0);
+                    NodeList BARRERASoutAgeList = BARRERASoutElement.getChildNodes();
+                    user.setBarreras(((Node) BARRERASoutAgeList.item(0)).getNodeValue().trim());
+                      } catch (Exception parserConfigurationException) {
+                          user.setBarreras("");
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
                     //------
                     try {
                       //------
@@ -677,6 +692,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList BLOQUEAR2outAgeList = BLOQUEAR2outElement.getChildNodes();
                     user.setBloquear(new Boolean(((Node) BLOQUEAR2outAgeList.item(0)).getNodeValue().trim()));
                       } catch (Exception parserConfigurationException) {
+                          user.setBloquear(false);
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
                      //------
@@ -688,6 +704,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setBloquearsalida(new Boolean(((Node) BLOQUEARSALIDA2outAgeList.item(0)).getNodeValue().trim()));
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                          user.setBloquearsalida(false);
                     }
                     //------
                     try {
@@ -698,6 +715,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setActiva1(new Boolean(((Node) ACTIVA1outAgeList.item(0)).getNodeValue().trim()));
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                          user.setActiva1(false);
                     }
                       //------
                     try {
@@ -708,6 +726,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setActiva2(new Boolean(((Node) ACTIVA2outAgeList.item(0)).getNodeValue().trim()));
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                          user.setActiva2(false);
                     }
                       //------
                     try {
@@ -718,6 +737,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setActiva3(new Boolean(((Node) ACTIVA3outAgeList.item(0)).getNodeValue().trim()));
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                          user.setActiva3(false);
                     }
                       //------
                     try {
@@ -728,6 +748,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setActiva4(new Boolean(((Node) ACTIVA4outAgeList.item(0)).getNodeValue().trim()));
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                          user.setActiva4(false);
                     }
                       //------
                     try {
@@ -738,6 +759,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setActiva5(new Boolean(((Node) ACTIVA5outAgeList.item(0)).getNodeValue().trim()));
                      } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                         user.setActiva5(false);
                     }
                       //------
                     try {
@@ -747,6 +769,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setActiva6(new Boolean(((Node) ACTIVA6outAgeList.item(0)).getNodeValue().trim()));
                        } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                           user.setActiva6(false);
                     }
                       //------
                     try {
@@ -754,34 +777,55 @@ public static UsuarioActivo user = new UsuarioActivo();
                     Element ACTIVA7outElement = (Element) ACTIVA7outList.item(0);
                     NodeList ACTIVA7outAgeList = ACTIVA7outElement.getChildNodes();
                     user.setActiva7(new Boolean(((Node) ACTIVA7outAgeList.item(0)).getNodeValue().trim()));
-                    
+                    } catch (Exception parserConfigurationException) {
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                           user.setActiva7(false);
+                    }
+                    try{
                     NodeList WEBCAMoutList = firstPersonElement.getElementsByTagName("WEBCAM");
                     Element WEBCAMoutElement = (Element) WEBCAMoutList.item(0);
                     NodeList WEBCAMoutAgeList = WEBCAMoutElement.getChildNodes();
                     user.setWebcam(new Boolean(((Node) WEBCAMoutAgeList.item(0)).getNodeValue().trim()));
-                    
+                    } catch (Exception parserConfigurationException) {
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                           user.setWebcam(false);
+                    }
+                    try{
                     NodeList SEABRETICoutList = firstPersonElement.getElementsByTagName("SEABRETIC");
                     Element SEABRETICoutElement = (Element) SEABRETICoutList.item(0);
                     NodeList SEABRETICoutAgeList = SEABRETICoutElement.getChildNodes();
                     user.setSeabretic(new Boolean(((Node) SEABRETICoutAgeList.item(0)).getNodeValue().trim()));
-                    
+                    } catch (Exception parserConfigurationException) {
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                           user.setSeabretic(false);
+                    }
+                    try{
                     NodeList SEABREFACoutList = firstPersonElement.getElementsByTagName("SEABREFAC");
                     Element SEABREFACoutElement = (Element) SEABREFACoutList.item(0);
                     NodeList SEABREFACoutAgeList = SEABREFACoutElement.getChildNodes();
                     user.setSeabrefac(new Boolean(((Node) SEABREFACoutAgeList.item(0)).getNodeValue().trim()));
-                    
+                    } catch (Exception parserConfigurationException) {
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                           user.setSeabrefac(false);
+                    }
+                    try{
                     NodeList MULTAoutList = firstPersonElement.getElementsByTagName("MULTA");
                     Element MULTAoutElement = (Element) MULTAoutList.item(0);
                     NodeList MULTAoutAgeList = MULTAoutElement.getChildNodes();
                     user.setMulta(new Double(((Node) MULTAoutAgeList.item(0)).getNodeValue().trim()));
-                    
+                    } catch (Exception parserConfigurationException) {
+                      //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                           user.setMulta(0d);
+                    }
+                    try{
                     NodeList IPCAMoutList = firstPersonElement.getElementsByTagName("IPCAM");
                     Element IPCAMoutElement = (Element) IPCAMoutList.item(0);
                     NodeList IPCAMoutAgeList = IPCAMoutElement.getChildNodes();
                     user.setIpcam(new Boolean(((Node) IPCAMoutAgeList.item(0)).getNodeValue().trim()));
                     
-  } catch (Exception parserConfigurationException) {
+                    } catch (Exception parserConfigurationException) {
 //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                        user.setIpcam(false);
                     }
                     
                      try {
@@ -792,6 +836,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setUrl(((Node) URLoutAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                          user.setUrl("");
                     }
                        try {
                       //------
@@ -801,6 +846,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setEntra1(((Node) ENTRA1outAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                          user.setEntra1("");
                     }
                        
                     try {
@@ -811,6 +857,7 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setEntra2(((Node) ENTRA2outAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                          user.setEntra2("");
                     }
                     
                     
@@ -834,16 +881,9 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setPuertafac(((Node) PUERTAFACoutAgeList.item(0)).getNodeValue().trim());
                       } catch (Exception parserConfigurationException) {
                       //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                          user.setPuertafac("");
                     }
                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                     
                       //------
                     try {
                     NodeList PUERTA1outList = firstPersonElement.getElementsByTagName("PUERTA1");

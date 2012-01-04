@@ -3225,6 +3225,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setMulta(emp.getMulta());
         empresaObj.setPuertafac(emp.getPuertafac());
         empresaObj.setPuertatic(emp.getPuertatic());
+        empresaObj.setBarreras(emp.getBarreras());
 
 
     }
@@ -3668,8 +3669,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     if (tarje.getFacturar()) {
                         imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
                     }
-                    abrirPuerta(puertoViene);
-                    if (empresaObj.getWebcam()) {
+                    try {
+                            abrirPuerta(puertoViene);    
+                    } catch (Exception e) {
+                        System.out.println("NO SE ABRIO PUERTA POR "+ puertoViene+" ERROR: "+e);
+                    }
+                    
+                    
+                    if (empresaObj.getWebcam() && empresaObj.getBarreras().contains(puertaxComm(puertoViene))) {
                         if (ubicacionDirectorio.contains("build")) {
                             ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                         }
@@ -3678,7 +3685,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             JOptionPane.showMessageDialog(null, "Error en la Fotografia");
                         }
 
-                    } else if (empresaObj.getIpcam()) {
+                    } else if (empresaObj.getIpcam()   && empresaObj.getBarreras().contains(puertaxComm(puertoViene))) {
                         if (ubicacionDirectorio.contains("build")) {
                             ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                         }
@@ -4289,7 +4296,45 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         }
 
     }
+  public String puertaxComm(String puertoqueViene) {
+        String lapuertaaAbrir = "";
+        if (puertoqueViene.equals(empresaObj.getPuerto1())) {
+            lapuertaaAbrir = empresaObj.getPuerta1();
+        } else if (puertoqueViene.equals(empresaObj.getPuerto2())) {
+            lapuertaaAbrir = empresaObj.getPuerta2();
+        } else if (puertoqueViene.equals(empresaObj.getPuerto3())) {
+            lapuertaaAbrir = empresaObj.getPuerta3();
+        } else if (puertoqueViene.equals(empresaObj.getPuerto4())) {
+            lapuertaaAbrir = empresaObj.getPuerta4();
+        } else if (puertoqueViene.equals(empresaObj.getPuerto5())) {
+            lapuertaaAbrir = empresaObj.getPuerta5();
+        } else if (puertoqueViene.equals(empresaObj.getPuerto6())) {
+            lapuertaaAbrir = empresaObj.getPuerta6();
+        } else if (puertoqueViene.equals(empresaObj.getPuerto7())) {
+            lapuertaaAbrir = empresaObj.getPuerta7();
+        } else if (puertoqueViene.equals(empresaObj.getSalida1())) {
+            lapuertaaAbrir = empresaObj.getPuerta1();
+        } else if (puertoqueViene.equals(empresaObj.getSalida2())) {
+            lapuertaaAbrir = empresaObj.getPuerta2();
+        } else if (puertoqueViene.equals(empresaObj.getSalida3())) {
+            lapuertaaAbrir = empresaObj.getPuerta3();
+        } else if (puertoqueViene.equals(empresaObj.getSalida4())) {
+            lapuertaaAbrir = empresaObj.getPuerta4();
+        } else if (puertoqueViene.equals(empresaObj.getSalida5())) {
+            lapuertaaAbrir = empresaObj.getPuerta5();
+        } else if (puertoqueViene.equals(empresaObj.getSalida6())) {
+            lapuertaaAbrir = empresaObj.getPuerta6();
+        } else if (puertoqueViene.equals(empresaObj.getSalida7())) {
+            lapuertaaAbrir = empresaObj.getPuerta7();
+        } else if (puertoqueViene.equals(empresaObj.getBarras())) {
+            lapuertaaAbrir = empresaObj.getSale();
+        } else if (puertoqueViene.equals(empresaObj.getBarras2())) {
+            lapuertaaAbrir = empresaObj.getSale2();
+        }
+        return lapuertaaAbrir;
+    }
 
+    
     public String entradaosalida(String puertoqueViene) {
         String lapuertaaAbrir = "";
         if (puertoqueViene.equals(empresaObj.getPuerto1())) {
@@ -4319,6 +4364,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         } else if (puertoqueViene.equals(empresaObj.getSalida6())) {
             lapuertaaAbrir = "s";
         } else if (puertoqueViene.equals(empresaObj.getSalida7())) {
+            lapuertaaAbrir = "s";
+        }else{
             lapuertaaAbrir = "s";
         }
         return lapuertaaAbrir;

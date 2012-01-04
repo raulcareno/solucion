@@ -708,7 +708,8 @@ public class Empresa implements Serializable {
     @Transient
     public String entra2 = "";
     
-    
+    @Transient
+    public String barreras="";
     @Transient
     public Boolean seabretic = false;
 
@@ -727,6 +728,15 @@ public class Empresa implements Serializable {
     public void setEntra2(String entra2) {
         this.entra2 = entra2;
     }
+
+    public String getBarreras() {
+        return barreras;
+    }
+
+    public void setBarreras(String barreras) {
+        this.barreras = barreras;
+    }
+    
     @Transient
     public Boolean seabrefac = false;
     @Transient

@@ -92,6 +92,7 @@ public class EmpresaPuertosStatic {
         public Double multa;
         public String puertatic;
         public String puertafac;
+        public String barreras;
    public String url;
    public String entra1;
    public String entra2;
@@ -616,5 +617,15 @@ public class EmpresaPuertosStatic {
     public void setBloquearsalida(Boolean bloquearsalida) {
         this.bloquearsalida = bloquearsalida;
     }
+
+    public String getBarreras() {
+        return barreras;
+    }
+
+    public void setBarreras(String barreras) {
+        this.barreras = barreras;
+    }
+    
+    
  }
  

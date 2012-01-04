@@ -88,6 +88,7 @@ public class EmpresaPuertos {
     public String puerta12;
     public String puerta13;
     public String puerta14;
+    public String barreras;
     public Boolean webcam;
     public Boolean ipcam;
     public Boolean seabrefac;
@@ -619,6 +620,14 @@ public class EmpresaPuertos {
 
     public void setBloquearsalida(Boolean bloquearsalida) {
         this.bloquearsalida = bloquearsalida;
+    }
+
+    public String getBarreras() {
+        return barreras;
+    }
+
+    public void setBarreras(String barreras) {
+        this.barreras = barreras;
     }
      
      
