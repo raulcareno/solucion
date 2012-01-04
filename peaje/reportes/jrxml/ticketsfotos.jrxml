@@ -206,7 +206,7 @@
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{salida}]]></textFieldExpression>
 			</textField>
-			<image>
+			<image onErrorType="Blank">
 				<reportElement x="296" y="0" width="212" height="130"/>
 				<imageExpression class="java.lang.String"><![CDATA[$P{ubicacion}+$F{codigo}+".jpg"]]></imageExpression>
 			</image>
