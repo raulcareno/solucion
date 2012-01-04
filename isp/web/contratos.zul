@@ -472,7 +472,7 @@ Boolean validar(){
                 permiso.auditar("Contratos","Actualizar",""+equi.getContrato()+" - "+equi.getClientes());
          }else{
           //EN CASO DE Q VAYA A ACTUALIAR
-             if(validarContrato(self.value)){
+             if(validarContrato(numerocontrato.value)){
                     Messagebox.show("Número de contrato ya existe ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR); 
                     numerocontrato.value = null;
                     numerocontrato.focus();
@@ -993,6 +993,12 @@ void verificarCedula(String valor){
                   }
   }
     boolean validarContrato(Integer valor){
+
+      if(numerocontrato.getValue() !=null ){
+        if(numerocontrato.getValue().equals(0)){
+            return false;
+       }
+      } 
 
             if(valor!=null){
                    String q = "Select o from Contratos as o " + 
@@ -2086,7 +2092,7 @@ void llamar(){
                                                 <label style="font-weight:bold2" value=" No.Contrato: " />
                                             </span>
                                             <span>
-                                                <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" onBlur="validarContrato(self.value)" id="numerocontrato" cols="16" />
+                                                <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" id="numerocontrato" cols="16" />
                                                 <button label="Contratos"  image="/images/contratos.png"  id="vercontratos" onClick="contratosPanel.visible = true; "/>
                                             </span>
                                             <span style="float:right">

@@ -48,10 +48,14 @@ import jcinform.bean.sources.clasestmp.Pendientes;
       
 List cantonesList = adm.query("Select o from Canton as o ");
 List empleadosList = adm.query("Select o from Empleados as o ");
+List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
+  Bancos selBan = new Bancos(-1);
+         selBan.setNombre("[TODOS]");
+        bancos.add(0,selBan);
 
   void facturasPendientes(){
         try{
-            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),cant.selectedItem.value,formapago.selectedItem.value, diapago.selectedItem.value, diapago2.selectedItem.value);
+            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),cant.selectedItem.value,formapago.selectedItem.value, diapago.selectedItem.value, diapago2.selectedItem.value,bancosList.selectedItem.value);
             facturasDatos.getRows().getChildren().clear();
             ArrayList contratosAnadidos = new ArrayList();
             int i =0;
@@ -585,99 +589,118 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                     </vbox>
                                                 </bandpopup>
                                             </bandbox>
-                                            </row>
-                                            <row>
+                                        </row>
+                                        <row>
                                             <span style="float:right"> Día de Pago Desde:</span>
                                             <span>
                                                 
-                                            <listbox mold="select" onSelect="diapago2.selectedItem.value = self.selectedItem.value"  width="47px"  id="diapago">
-                                                <listitem value="1" selected="true" label="1"/>
-                                                <listitem value="2" label="2"/>
-                                                <listitem value="3" label="3"/>
-                                                <listitem value="4" label="4"/>
-                                                <listitem value="5" label="5"/>
-                                                <listitem value="6" label="6"/>
-                                                <listitem value="7" label="7"/>
-                                                <listitem value="8" label="8"/>
-                                                <listitem value="9" label="9"/>
-                                                <listitem value="10" label="10"/>
-                                                <listitem value="11" label="11"/>
-                                                <listitem value="12" label="12"/>
-                                                <listitem value="13" label="13"/>
-                                                <listitem value="14" label="14"/>
-                                                <listitem value="15" label="15"/>
-                                                <listitem value="16" label="16"/>
-                                                <listitem value="17" label="17"/>
-                                                <listitem value="18" label="18"/>
-                                                <listitem value="19" label="19"/>
-                                                <listitem value="20" label="20"/>
-                                                <listitem value="21" label="21"/>
-                                                <listitem value="22" label="22"/>
-                                                <listitem value="23" label="23"/>
-                                                <listitem value="24" label="24"/>
-                                                <listitem value="25" label="25"/>
-                                                <listitem value="26" label="26"/>
-                                                <listitem value="27" label="27"/>
-                                                <listitem value="28" label="28"/>
-                                                <listitem value="29" label="29"/>
-                                                <listitem value="30" label="30"/>
-                                                <listitem value="31" label="31"/>
-                                            </listbox>
+                                                <listbox mold="select" onSelect="diapago2.selectedItem.value = self.selectedItem.value"  width="47px"  id="diapago">
+                                                    <listitem value="1" selected="true" label="1"/>
+                                                    <listitem value="2" label="2"/>
+                                                    <listitem value="3" label="3"/>
+                                                    <listitem value="4" label="4"/>
+                                                    <listitem value="5" label="5"/>
+                                                    <listitem value="6" label="6"/>
+                                                    <listitem value="7" label="7"/>
+                                                    <listitem value="8" label="8"/>
+                                                    <listitem value="9" label="9"/>
+                                                    <listitem value="10" label="10"/>
+                                                    <listitem value="11" label="11"/>
+                                                    <listitem value="12" label="12"/>
+                                                    <listitem value="13" label="13"/>
+                                                    <listitem value="14" label="14"/>
+                                                    <listitem value="15" label="15"/>
+                                                    <listitem value="16" label="16"/>
+                                                    <listitem value="17" label="17"/>
+                                                    <listitem value="18" label="18"/>
+                                                    <listitem value="19" label="19"/>
+                                                    <listitem value="20" label="20"/>
+                                                    <listitem value="21" label="21"/>
+                                                    <listitem value="22" label="22"/>
+                                                    <listitem value="23" label="23"/>
+                                                    <listitem value="24" label="24"/>
+                                                    <listitem value="25" label="25"/>
+                                                    <listitem value="26" label="26"/>
+                                                    <listitem value="27" label="27"/>
+                                                    <listitem value="28" label="28"/>
+                                                    <listitem value="29" label="29"/>
+                                                    <listitem value="30" label="30"/>
+                                                    <listitem value="31" label="31"/>
+                                                </listbox>
                                             Hasta:
-                                             <listbox   mold="select"  width="47px"  id="diapago2">
-                                                <listitem value="1" selected="true" label="1"/>
-                                                <listitem value="2" label="2"/>
-                                                <listitem value="3" label="3"/>
-                                                <listitem value="4" label="4"/>
-                                                <listitem value="5" label="5"/>
-                                                <listitem value="6" label="6"/>
-                                                <listitem value="7" label="7"/>
-                                                <listitem value="8" label="8"/>
-                                                <listitem value="9" label="9"/>
-                                                <listitem value="10" label="10"/>
-                                                <listitem value="11" label="11"/>
-                                                <listitem value="12" label="12"/>
-                                                <listitem value="13" label="13"/>
-                                                <listitem value="14" label="14"/>
-                                                <listitem value="15" label="15"/>
-                                                <listitem value="16" label="16"/>
-                                                <listitem value="17" label="17"/>
-                                                <listitem value="18" label="18"/>
-                                                <listitem value="19" label="19"/>
-                                                <listitem value="20" label="20"/>
-                                                <listitem value="21" label="21"/>
-                                                <listitem value="22" label="22"/>
-                                                <listitem value="23" label="23"/>
-                                                <listitem value="24" label="24"/>
-                                                <listitem value="25" label="25"/>
-                                                <listitem value="26" label="26"/>
-                                                <listitem value="27" label="27"/>
-                                                <listitem value="28" label="28"/>
-                                                <listitem value="29" label="29"/>
-                                                <listitem value="30" label="30"/>
-                                                <listitem value="31" label="31"/>
-                                            </listbox>
+                                                <listbox   mold="select"  width="47px"  id="diapago2">
+                                                    <listitem value="1" selected="true" label="1"/>
+                                                    <listitem value="2" label="2"/>
+                                                    <listitem value="3" label="3"/>
+                                                    <listitem value="4" label="4"/>
+                                                    <listitem value="5" label="5"/>
+                                                    <listitem value="6" label="6"/>
+                                                    <listitem value="7" label="7"/>
+                                                    <listitem value="8" label="8"/>
+                                                    <listitem value="9" label="9"/>
+                                                    <listitem value="10" label="10"/>
+                                                    <listitem value="11" label="11"/>
+                                                    <listitem value="12" label="12"/>
+                                                    <listitem value="13" label="13"/>
+                                                    <listitem value="14" label="14"/>
+                                                    <listitem value="15" label="15"/>
+                                                    <listitem value="16" label="16"/>
+                                                    <listitem value="17" label="17"/>
+                                                    <listitem value="18" label="18"/>
+                                                    <listitem value="19" label="19"/>
+                                                    <listitem value="20" label="20"/>
+                                                    <listitem value="21" label="21"/>
+                                                    <listitem value="22" label="22"/>
+                                                    <listitem value="23" label="23"/>
+                                                    <listitem value="24" label="24"/>
+                                                    <listitem value="25" label="25"/>
+                                                    <listitem value="26" label="26"/>
+                                                    <listitem value="27" label="27"/>
+                                                    <listitem value="28" label="28"/>
+                                                    <listitem value="29" label="29"/>
+                                                    <listitem value="30" label="30"/>
+                                                    <listitem value="31" label="31"/>
+                                                </listbox>
                                                                                                
-                                            <listbox visible="false" mold="select" id="formapago" width="150px" >
+                                                <listbox visible="false" mold="select" id="formapago" width="150px" >
                                  
-                                                <listitem value="3" >
-                                                    <listcell label="Domicilio" />
-                                                </listitem>
-                                                <listitem value="1" >
-                                                    <listcell label="Oficina" />
-                                                </listitem>
-                                                <listitem  selected="true" value="2" >
-                                                    <listcell label="Deposito" />
-                                                </listitem>
-                                                <listitem value="0" >
-                                                    <listcell label="Todos" />
-                                                </listitem>
-                                            </listbox>
-                                            <button label="Buscar" onClick="facturasPendientes()"/>
+                                                    <listitem value="3" >
+                                                        <listcell label="Domicilio" />
+                                                    </listitem>
+                                                    <listitem value="1" >
+                                                        <listcell label="Oficina" />
+                                                    </listitem>
+                                                    <listitem  selected="true" value="2" >
+                                                        <listcell label="Deposito" />
+                                                    </listitem>
+                                                    <listitem value="0" >
+                                                        <listcell label="Todos" />
+                                                    </listitem>
+                                                </listbox>
+                                                <button label="Buscar" onClick="facturasPendientes()"/>
 
                                             </span>
                                         </row>
                                      
+                                        <row>
+                                            <span style="float:right"> Banco:</span>
+                                            <bandbox readonly="true" width="100px"  id="bd22">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox  id="bancosList" width="250px"
+                                                                    onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
+                                                            <listhead>
+                                                                <listheader label="Seleccione un Banco"/>
+                                                            </listhead>
+                                                            <listitem forEach="${bancos}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
+
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                        </row>
                                         <row spans="4">
                                             <groupbox id="gb" mold="3d" width="100%">
                                                 # Inicial de Factura
@@ -733,7 +756,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                     <rows>
                                         <row>
                                             <span style="float:right"> Número de Informe(*):</span>
-                                             <intbox   value="0" id="numeroinforme"/>
+                                            <intbox   value="0" id="numeroinforme"/>
                                         </row>
                                         <row>
                                             <span style="float:right"> Fecha(*):</span>

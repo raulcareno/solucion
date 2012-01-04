@@ -5,7 +5,6 @@
 package jcinform.bean;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.conexion.Administrador;
+import jcinform.persistencia.Bancos;
 import jcinform.persistencia.Canton;
 import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
@@ -471,7 +471,7 @@ public class generarFacturas {
     }
 
     //BUSCAR PARA ASIGNAR FACTURA 
-    public List buscar(Sucursal suc, Canton canton, String formapago, String diapago,String diapago2) {
+    public List buscar(Sucursal suc, Canton canton, String formapago, String diapago,String diapago2,Bancos bancoSel) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         String complemento = " and o.formapago = '" + formapago + "' ";
         if (formapago.equals("0")) {
@@ -482,14 +482,21 @@ public class generarFacturas {
         if (canton.getCodigo().equals("-1")) {
             complementoCanton = "";
         }
+        
+        String complementoBanco = "  and o.bancos.codigo = '" + bancoSel.getCodigo() + "'  ";
+        if (bancoSel.getCodigo().equals(-1)) {
+            complementoBanco = "";
+        }
+        
         String complementoDia = " and o.diapago >= "+diapago+" and o.diapago <= "+diapago2+" ";
 //        if(anteriores){
 //            complementoDia = " and o.diapago <= "+diapago+" ";
 //        }
         List<Contratos> contratos = adm.query("Select o from Contratos as o "
                 + "where "+complementoCanton
-                + "and  o.sucursal.codigo =  '" + suc.getCodigo() + "'  "
-                + " " + complemento + " "
+                + " and o.formapago = 2 and  o.sucursal.codigo =  '" + suc.getCodigo() + "'  "
+                + " " + complemento + ""
+                + " " + complementoBanco
                 + " " + complementoDia);
         String contraString = "";
         for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {

@@ -5,12 +5,8 @@
 package jcinform.bean.sources;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import jcinform.conexion.Permisos;
 import jcinform.persistencia.Detalle;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -70,6 +66,21 @@ public class ReporteFacturaDataSource implements JRDataSource {
                 else
                     valor = nodo.getPlan()+" ";
                    
+            } else if ("formapago".equals(fieldName)) {
+                   valor = nodo.getFactura().getContratos().getFormapago();
+                   if(valor != null){
+                       if(valor.equals(1)){
+                           valor = "Oficina";
+                       }else if(valor.equals(3)){
+                           valor = "Domicilio";
+                       }else if(valor.equals(2)){
+                           valor = "Débito";
+                       }else{
+                           valor = "";
+                       }
+                   }else{
+                       valor = "";
+                   }
             } else if ("cantidad".equals(fieldName)) {
                    valor = nodo.getCantidad();
             } else if ("valor".equals(fieldName)) {
