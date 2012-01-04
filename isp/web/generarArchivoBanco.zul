@@ -351,7 +351,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                                   facEnvi.setFecha(fechaAc);
                                                   facEnvi.setNumero(num);
                                                   facEnvi.setEmpleados(usuarioActual);
-                                                  facEnvi.setSaldo(new BigDecimal(labels.get(6).getValue()));
+                                                  facEnvi.setSaldo(new BigDecimal(labels.get(7).getValue()));
                                                   facEnvi.setDebito(new BigDecimal(0));
                                                   facEnvi.setTotal(new BigDecimal(0));
                                                   facEnvi.setDescuento(new BigDecimal(0));

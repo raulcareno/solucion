@@ -87,8 +87,8 @@ if(usuarioActual.getTipo().equals("OTRO")){
 
                        Date fechaAc = fecha.value;
                        String fec = gen.convertiraString(fechaAc);
-                       if(empleados.selectedItem == null){
-                            Messagebox.show("Seleccione un Empleado..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                       if(numeroinforme.value == null){
+                            Messagebox.show("Ingrese un Número de Informe ..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             empleados.focus();
                             return;
                        }
@@ -97,21 +97,15 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                      Row object = (Row) col.get(i);
                                       List labels = object.getChildren();
                                             try{
-                                              Empleadosfacturas empf = (Empleadosfacturas)object.getValue();
+                                              Facturasenviadas empf = (Facturasenviadas)object.getValue();
                                               BigDecimal valorAnt = empf.getTotal();
                                               
                                               empf.setVisitado(true);
                                               empf.setFecharegreso(adm.Date());
                                               empf.setCobrado(false);
-                                              empf.setEfectivo(((Decimalbox)labels.get(6)).getValue());
-                                              empf.setCheque(((Decimalbox)labels.get(7)).getValue());
-                                              empf.setNocheque(((Textbox)labels.get(8)).getValue());
-                                              empf.setDeposito(((Decimalbox)labels.get(9)).getValue());
-                                              empf.setNocuenta(((Textbox)labels.get(10)).getValue());
-                                              empf.setTarjeta(((Decimalbox)labels.get(11)).getValue());
-                                              empf.setNotarjeta(((Textbox)labels.get(12)).getValue());
-                                              BigDecimal tot = empf.getEfectivo().add(empf.getCheque()).add(empf.getDeposito()).add(empf.getTarjeta());
-                                            
+                                              empf.setDebito(((Decimalbox)labels.get(6)).getValue());
+                                              empf.setNocuenta(((Textbox)labels.get(7)).getValue());
+                                              BigDecimal tot = empf.getDebito();
                                               empf.setTotal(tot);
                                                   if(tot.doubleValue()>0){
                                                         empf.setDescuento(((Decimalbox)labels.get(5)).getValue());
@@ -119,9 +113,11 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                                          empf.setCobrado(true);
                                                          try{
                                                              Descuentos descu = adm.buscarClave(((Intbox)labels.get(4)).getValue(),Descuentos.class);
-                                                             descu.setAplicado(true);
-                                                             descu.setFechaaplicado(adm.Date());
-                                                             adm.actualizar(descu);
+                                                             if(descu != null){
+                                                                 descu.setAplicado(true);
+                                                                 descu.setFechaaplicado(adm.Date());
+                                                                 adm.actualizar(descu);
+                                                             }
                                                          }catch(Exception em){
                                                             System.out.println("ERROR EN DESCUENTO: "+em);
                                                          }
@@ -133,13 +129,13 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                                     cobrar.setHaber(empf.getTotal());
                                                     cobrar.setFecha(adm.Date());
                                                     cobrar.setTipo("P");
-                                                    cobrar.setDescuento(empf.getDescuento());
-                                                    cobrar.setEfectivo(empf.getEfectivo());
-                                                    cobrar.setCheque(empf.getCheque());
-                                                    cobrar.setDeposito(empf.getDeposito());
-                                                    cobrar.setTarjeta(empf.getTarjeta());
-                                                    cobrar.setNocheque(empf.getNocheque());
-                                                    cobrar.setNotarjeta(empf.getNotarjeta());
+                                                    cobrar.setDescuento(new BigDecimal(0));
+                                                    cobrar.setEfectivo(new BigDecimal(0));
+                                                    cobrar.setCheque(new BigDecimal(0));
+                                                    cobrar.setDeposito(empf.getDebito());
+                                                    cobrar.setTarjeta(new BigDecimal(0));
+                                                    cobrar.setNocheque("");
+                                                    cobrar.setNotarjeta("");
                                                     if(cobrar.getHaber().doubleValue()>0){
                                                         adm.guardar(cobrar);
                                                     }
@@ -154,22 +150,17 @@ if(usuarioActual.getTipo().equals("OTRO")){
 
  }
    void facturasPendientesEmpleado(){
-               if(empleados.selectedItem == null){
-                            Messagebox.show("Seleccione un Empleado..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                            empleados.focus();
-                            return;
-                       }
         try{
            Date fechaAc = fecha.value;
            String fec = gen.convertiraString(fechaAc);
             List facturasDatosAsignados2 =  adm.queryNativo("Select o.* from Facturasenviadas as o " +
-            " where o.numero = '"+ numeroinforme.value + "' ",Empleadosfacturas.class);
+            " where o.numero = '"+ numeroinforme.value + "' ",Facturasenviadas.class);
             facturasDatosAsignados.getRows().getChildren().clear();
             ArrayList contratosAnadidos = new ArrayList();
             int i =0;
             int si =0;
                 for (Iterator itna = facturasDatosAsignados2.iterator(); itna.hasNext();) {
-                          Empleadosfacturas empf = (Empleadosfacturas) itna.next();
+                          Facturasenviadas empf = (Facturasenviadas) itna.next();
                            Row row = new Row();
                                    if(row == null){
                                         row = new Row();
@@ -208,35 +199,13 @@ if(usuarioActual.getTipo().equals("OTRO")){
                             row.appendChild(codigodes);
                             row.appendChild(descuento);
                             
-                           Decimalbox efectivo = new Decimalbox();
-                            efectivo.setStyle("text-align:center");
-                            efectivo.setFormat("#00.00");
-                            efectivo.setCols(4);
-                            efectivo.setTabindex(1);
-                            efectivo.setValue(empf.getEfectivo());
-                            row.appendChild(efectivo);
-
-                            Decimalbox cheque = new Decimalbox();
-                            cheque.setStyle("text-align:center");
-                            cheque.setFormat("#00.00");
-                            cheque.setCols(4);
-                            cheque.setTabindex(2);
-                            cheque.setValue(empf.getCheque());
-                            row.appendChild(cheque);
-
-                           Textbox nocheque = new Textbox();
-                            nocheque.setStyle("text-align:center");
-                            nocheque.setTabindex(2);
-                            nocheque.setCols(6);
-                            nocheque.setValue(empf.getNocheque());
-                            row.appendChild(nocheque);
-
+                           
                             Decimalbox deposito = new Decimalbox();
                             deposito.setStyle("text-align:center");
                             deposito.setFormat("#00.00");
                             deposito.setCols(4);
                             deposito.setTabindex(3);
-                            deposito.setValue(empf.getDeposito());
+                            deposito.setValue(empf.getDebito());
                             row.appendChild(deposito);
 
                             Textbox nocuenta = new Textbox();
@@ -246,20 +215,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
                             nocuenta.setValue(empf.getNocuenta());
                             row.appendChild(nocuenta);
 
-                            Decimalbox tarjeta = new Decimalbox();
-                            tarjeta.setStyle("text-align:center");
-                            tarjeta.setCols(4);
-                            tarjeta.setFormat("#00.00");
-                            tarjeta.setTabindex(4);
-                            tarjeta.setValue(empf.getTarjeta());
-                            row.appendChild(tarjeta);
-
-                            Textbox notarjeta = new Textbox();
-                            notarjeta.setStyle("text-align:center");
-                            notarjeta.setTabindex(4);
-                            notarjeta.setCols(6);
-                            notarjeta.setValue(empf.getNotarjeta());
-                            row.appendChild(notarjeta);
+                           
                             if(empf.getTotal().doubleValue()>0)
                                     si++;
                             filasFacAsignados.appendChild(row);
@@ -342,22 +298,14 @@ if(usuarioActual.getTipo().equals("OTRO")){
 
                                 <grid height="350px"  sclass="MyGridRowHeight2"  fixedLayout="true"  id="facturasDatosAsignados" >
                                     <columns>
-                                        <!--column  width="35px" >
-                                            <checkbox id="todos2" label="Selección" onCheck="seleccionarTodos(self,1)" />
-                                        </column-->
                                         <column   width="68px" label="# Fac."/>
                                         <column   width="68px"   label="Fecha"/>
                                         <column  width="150px" label="Cliente "/>
                                         <column    width="45px"  label="Saldo"/>
                                         <column  visible="false"  width="45px"  label="CodigoDescuento"/>
                                         <column    width="45px"  label="Dscto."/>
-                                        <column    width="45px"  label="Efec."/>
-                                        <column    width="45px"  label="Cheque"/>
-                                        <column    width="50px"  label="No.Cheq."/>
-                                        <column    width="45px"  label="Deposito"/>
+                                        <column    width="45px"  label="Debitado"/>
                                         <column    width="50px"  label="No.Cuenta"/>
-                                        <column    width="45px"  label="Tarjeta"/>
-                                        <column    width="50px"  label="No.Tarj."/>
 
                                     </columns>
                                     <rows id="filasFacAsignados">

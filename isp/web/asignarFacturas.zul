@@ -349,7 +349,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                   empf.setFactura(new Factura(facCodigo));
                                                   empf.setFecha(fechaAc);
                                                   empf.setEmpleados(empleados.selectedItem.value);
-                                                  empf.setSaldo(new BigDecimal(labels.get(6).getValue()));
+                                                  empf.setSaldo(new BigDecimal(labels.get(7).getValue()));
                                                   empf.setEfectivo(new BigDecimal(0));
                                                   empf.setDeposito(new BigDecimal(0));
                                                   empf.setCheque(new BigDecimal(0));
