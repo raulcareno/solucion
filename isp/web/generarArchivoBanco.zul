@@ -344,7 +344,6 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                      Row object = (Row) col.get(i);
                                       List labels = object.getChildren();
                                             try{
-                                         
                                                   Integer facCodigo = object.getValue();
                                                   Facturasenviadas facEnvi = new Facturasenviadas();
                                                   facEnvi.setCodigo(adm.getNuevaClave("Facturasenviadas", "codigo"));
@@ -544,8 +543,8 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                 parameters.put("ruc",empresa.getRuc());
                 parameters.put("direccion",empresa.getDireccion());
                 parameters.put("telefono",empresa.getTelefono());    
-                parameters.put("empleados",empleados.selectedItem.value+"");    
-                   reportelocal.setSrc(directorioReportes+"facturasempleado.jasper");
+                parameters.put("empleados",numeroinforme.value+"");    
+                   reportelocal.setSrc(directorioReportes+"facturasbanco.jasper");
                    reportelocal.setParameters(parameters);
                    reportelocal.setDatasource(ds);
                    reportelocal.setType("pdf");
@@ -756,13 +755,17 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                     <rows>
                                         <row>
                                             <span style="float:right"> Número de Informe(*):</span>
-                                            <intbox   value="0" id="numeroinforme"/>
+                                            <span>
+                                            <intbox   value="0" id="numeroinforme"/>    
+                                            <button label="Buscar" onClick="facturasPendientesEmpleado()"/>
+                                            </span>
+                                            
                                         </row>
-                                        <row>
+                                        <row visible="false">
                                             <span style="float:right"> Fecha(*):</span>
                                             <span>
                                                 <datebox id="fecha" format="dd-MMM-yyyy" onCreate="self.value = adm.Date()"/>
-                                                <button label="Buscar" onClick="facturasPendientesEmpleado()"/>
+                                                
                                             </span>
                                         </row>
                                         <row spans="2" align="center">
