@@ -40,7 +40,7 @@
    List periodoActuales = adm.query("Select o from Periodo as o where o.codigoper <> '"+periodo.getCodigoper()+"' ");
    
    List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
-      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"' and o.curso.periodo.codigoper =  '"+ periodo.getCodigoper() +"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
    if(cursos.size()<=0){
              cursos = adm.query("Select o from Cursos as o "
             + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"'  order by o.secuencia,o.paralelo.descripcion, o.descripcion  ");
