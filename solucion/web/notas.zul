@@ -23,7 +23,8 @@ reportesClase noti = new reportesClase();
 Boolean guardando = false;
 Empleados user =  (Empleados)ses.getAttribute("user");
 List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
-      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"'  " + 
+      " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
 
 
    if(cursos.size()<=0){
