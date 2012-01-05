@@ -274,7 +274,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                     <menuitem onClick="ingresar(self)" id="Auditoria" image="/images/auditoria.gif" label="Auditoria" value="/auditoria.zul"/>
                                     <menuitem onClick="ingresar(self)" id="Empleados" image="/images/pensum.png" label="Empleados" value="/empleados.zul" />
                                     <menuitem onClick="ingresar(self)" id="EmpleadosPeriodos" image="/images/eperiodo.png" label="Asignar Periodos" value="/empleadoPeriodo.zul" />
-                                    <menuitem onClick="ingresar(self)" id="EmpleadosCursos" image="/images/eperiodo.png" label="Asignar Cursos" value="/cursosEmpleados.zul" />
+                                    <menuitem onClick="ingresar(self)" id="EmpleadosCursos" image="/images/eperiodo.png" label="Asignar Cursos (Solo a Secretaria)" value="/cursosEmpleados.zul" />
                                     <menuitem onClick="ingresar(self)" id="Equivalencias" image="/images/equivalencias.png"  label="Equivalencias y Rangos(S,MB, FJ,FI)" value="/equivalencias.zul" />
                                     <menuitem onClick="ingresar(self)" id="Globales" label="Globales" image="/images/run.gif"  value="/globales.zul" />
                                     <menuitem onClick="ingresar(self)" id="Institucion" label="Institución" image="/images/institucion.png"  value="/institucion.zul" />
@@ -287,7 +287,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                 <menupopup  >
                                     <menuitem onClick="ingresar(self)" image="/images/cursos.png"   label="Cursos"  id="Cursos"  value="/cursos.zul"   />
                                     <menuitem onClick="ingresar(self)" id="Matricular" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Matricular2" label="Asignar Cursos" image="/images/asignar.png"  value="/asignarmatriculas.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Matricular2" label="Asignar Cursos(Estudiantes del A al B)" image="/images/asignar.png"  value="/asignarmatriculas.zul" />
                                     <menuitem onClick="ingresar(self)" id="Actualizacion" label="Actualizar" image="/images/actualizar.png"  value="/actualizacion.zul" />
                                     <menuitem onClick="ingresar(self)" id="Pendientes" label="Pendientes(Bloquear Notas)" image="/images/dinero.gif"   value="/pendientes.zul" />
                                     <menuitem onClick="ingresar(self)" id="Inscripciones" label="Inscripciones Internet"     value="/inscripcionesModificar.zul" />
