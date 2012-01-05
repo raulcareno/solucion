@@ -1,9 +1,0 @@
-INFO peaje.formas.frmPrincipal,line 41,31.08.2011/09:55:32,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
-INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,31.08.2011/09:56:02,OK
-INFO peaje.formas.frmPrincipal,line 41,31.08.2011/09:56:26,java.lang.ArithmeticException: Rounding necessary
-INFO peaje.formas.frmPrincipal,line 41,31.08.2011/09:57:54,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
-INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,31.08.2011/09:58:06,OK
-INFO peaje.formas.frmPrincipal,line 41,31.08.2011/09:58:13,java.lang.ArithmeticException: Rounding necessary
-INFO peaje.formas.frmPrincipal,line 41,31.08.2011/10:23:32,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
-INFO peaje.formas.frmPrincipal,line 41,31.08.2011/10:25:11,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
-INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,31.08.2011/10:25:24,OK

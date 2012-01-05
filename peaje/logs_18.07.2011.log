@@ -1,5 +1,0 @@
-INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,18.07.2011/11:47:31,OK
-INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,18.07.2011/11:47:31,OK
-INFO peaje.formas.frmTicket,line 41,18.07.2011/11:47:56,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterException: El área de datos transferida a una llamada del sistema es demasiado pequeña.
-
-INFO peaje.formas.frmPrincipal,line 41,18.07.2011/11:49:17,java.lang.NullPointerException

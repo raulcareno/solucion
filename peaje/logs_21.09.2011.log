@@ -1,8 +1,0 @@
-INFO peaje.formas.frmPrincipal,line 41,21.09.2011/18:43:03,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
-INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,21.09.2011/18:43:16,OK
-INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,21.09.2011/18:46:17,OK
-INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,21.09.2011/18:48:23,OK
-INFO peaje.formas.frmTicket,line 41,21.09.2011/18:49:19,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterException: El servidor RPC no está disponible.
-
-INFO peaje.formas.frmPrincipal,line 41,21.09.2011/19:16:02,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
-INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,21.09.2011/19:16:18,OK
