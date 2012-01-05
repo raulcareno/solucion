@@ -44,64 +44,67 @@ public class ReporteFacturaDataSource implements JRDataSource {
 
         try {
             if ("nombre".equals(fieldName)) {
-                valor = nodo.getFactura().getClientes().getApellidos()+" "+nodo.getFactura().getClientes().getNombres();
+                valor = nodo.getFactura().getClientes().getApellidos() + " " + nodo.getFactura().getClientes().getNombres();
                 String razon = nodo.getFactura().getClientes().getRazonsocial();
                 //if(!razon.equals("") && !razon.equals("null") && razon.length()>0 )
-                if(razon!= null && !razon.isEmpty())
+                if (razon != null && !razon.isEmpty()) {
                     valor = nodo.getFactura().getClientes().getRazonsocial();
-            }else if ("ruc".equals(fieldName)) {
+                }
+            } else if ("ruc".equals(fieldName)) {
                 valor = nodo.getFactura().getClientes().getIdentificacion();
-            }else if ("direccion".equals(fieldName)) {
+            } else if ("direccion".equals(fieldName)) {
                 valor = nodo.getFactura().getClientes().getDireccion();
-            }else if ("numero".equals(fieldName)) {
+            } else if ("numero".equals(fieldName)) {
                 valor = nodo.getFactura().getNumero();
-            }else if ("fecha".equals(fieldName)) {
+            } else if ("fecha".equals(fieldName)) {
                 valor = nodo.getFactura().getFecha();
             } else if ("telefono".equals(fieldName)) {
-                   valor = nodo.getFactura().getClientes().getTelefono();
+                valor = nodo.getFactura().getClientes().getTelefono();
             } else if ("rubro".equals(fieldName)) {
-                   
-                if(nodo.getEquipos()!= null)
-                    valor = nodo.getEquipos()+" ";
-                else
-                    valor = nodo.getPlan()+" ";
-                   
+
+                if (nodo.getEquipos() != null) {
+                    valor = nodo.getEquipos()+"";
+                } else {
+                    valor = nodo.getPlan()  + " (" + mes(nodo.getFactura().getFecha().getMonth()) + ")";
+                }
+
             } else if ("formapago".equals(fieldName)) {
-                   valor = nodo.getFactura().getContratos().getFormapago();
-                   if(valor != null){
-                       if(valor.equals(1)){
-                           valor = "Oficina";
-                       }else if(valor.equals(3)){
-                           valor = "Domicilio";
-                       }else if(valor.equals(2)){
-                           valor = "Débito";
-                       }else{
-                           valor = "";
-                       }
-                   }else{
-                       valor = "";
-                   }
+                valor = nodo.getFactura().getContratos().getFormapago();
+                if (valor != null) {
+                    if (valor.equals(1)) {
+                        valor = "Oficina";
+                    } else if (valor.equals(3)) {
+                        valor = "Domicilio";
+                    } else if (valor.equals(2)) {
+                        valor = "Débito";
+                    } else {
+                        valor = "";
+                    }
+                } else {
+                    valor = "";
+                }
             } else if ("cantidad".equals(fieldName)) {
-                   valor = nodo.getCantidad();
+                valor = nodo.getCantidad();
             } else if ("valor".equals(fieldName)) {
-                 if(nodo.getEquipos()!= null)
-                   valor = nodo.getEquipos().getPvp1();
-                else
-                    valor = new BigDecimal(nodo.getPlan().getValor());
-                
-                   
+                if (nodo.getEquipos() != null) {
+                    valor = nodo.getEquipos().getPvp1();
+                } else {
+                    valor = nodo.getTotal();
+                }
+
+
             } else if ("subtotal".equals(fieldName)) {
-                   valor = nodo.getFactura().getSubtotal();
+                valor = nodo.getFactura().getSubtotal();
             } else if ("baseiva".equals(fieldName)) {
-                   valor = nodo.getFactura().getBaseiva();
+                valor = nodo.getFactura().getBaseiva();
             } else if ("iva".equals(fieldName)) {
-                   valor = nodo.getFactura().getPorcentajeiva();
+                valor = nodo.getFactura().getPorcentajeiva();
             } else if ("valoriva".equals(fieldName)) {
-                   valor = nodo.getFactura().getValoriva();
+                valor = nodo.getFactura().getValoriva();
             } else if ("descuento".equals(fieldName)) {
-                   valor = nodo.getFactura().getDescuento();
+                valor = nodo.getFactura().getDescuento();
             } else if ("total".equals(fieldName)) {
-                   valor = nodo.getFactura().getTotal();
+                valor = nodo.getFactura().getTotal();
             }
 
 
@@ -111,5 +114,35 @@ public class ReporteFacturaDataSource implements JRDataSource {
 
         return valor;
     }
- 
+
+    public String mes(int mes) {
+        switch (mes) {
+            case 0:
+                return "Enero";
+            case 1:
+                return "Febrero";
+            case 2:
+                return "Marzo";
+            case 3:
+                return "Abril";
+            case 4:
+                return "Mayo";
+            case 5:
+                return "Junio";
+            case 6:
+                return "Julio";
+            case 7:
+                return "Agosto";
+            case 8:
+                return "Septiembre";
+            case 9:
+                return "Octubre";
+            case 10:
+                return "Noviembre";
+            case 11:
+                return "Diciembre";
+        }
+        return "";
+
+    }
 }

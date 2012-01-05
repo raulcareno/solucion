@@ -368,7 +368,7 @@ public class generarFacturas {
             fac.setTotal(fac.getValoriva().add(valor));
             adm.guardar(fac);
             Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-            det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(), 2)).subtract(object.getDescuento()));
+            det.setTotal(valor.subtract(object.getDescuento()));
             det.setPlan(object.getPlan());
             det.setCantidad(1);
             det.setMes(fechaInstalacion.getMonth() + 1);

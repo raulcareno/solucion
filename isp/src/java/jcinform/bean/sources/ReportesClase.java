@@ -226,9 +226,15 @@ public class ReportesClase {
         List<Clientes> clientes = new ArrayList<Clientes>();
         if (cli.getCodigo().equals(-1)) {
             //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
-            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+            if(sec.getCodigo().equals(-1)){
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                     + "   order by o.clientes.apellidos");
+            }else{
+               clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                     + "where o.sector.codigo = '" + sec.getCodigo() + "' "
                     + "   order by o.clientes.apellidos");
+            }
+            
         } else {
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
             clientes.add(cli);

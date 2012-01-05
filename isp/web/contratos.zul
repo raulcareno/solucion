@@ -661,7 +661,10 @@ if(sihay==0){
  
  }
  
- 
+ if(genFactura.isChecked() && facturadostotal.value <= 0){
+      gen.generarCobros(sucursalEmp.getSucursal(),equi,fechainstalacion.value);
+ }
+ Date fechaInstalacion = fechainstalacion.value;
  if(facturadostotal.value > 0){
  //EMPIEZO A GENERAR FACTURA Y CXCOBRAR 
  Date fecha = adm.Date();
@@ -672,18 +675,53 @@ if(sihay==0){
             fac.setFecha(fecha);
             fac.setContratos(equi);
             fac.setSucursal(sucursalEmp.getSucursal());
-            fac.setSubtotal(valortotal.value);
+            BigDecimal valor = null;
+            if(genFactura.isChecked()){
+                
+                valor = new BigDecimal(redondear(equi.getPlan().getValor(), 2)).subtract(equi.getDescuento());
+                if (fechaInstalacion.getDate() > 1) {
+                    int noDias = equi.getPlan().getDias() - fechaInstalacion.getDate();
+                    if (noDias > 0) {
+                        if ((fechaInstalacion.getMonth() == adm.Date().getMonth())) {
+                            valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(equi.getPlan().getDias()), 2, RoundingMode.HALF_UP);
+                        } else {
+                            valor = new BigDecimal(equi.getPlan().getValor()).subtract(equi.getDescuento());
+                        }
+                    } else {
+                         valor = new BigDecimal(0);
+                    }
+
+                } else {
+                    valor = new BigDecimal(redondear(equi.getPlan().getValor(), 2)).subtract(equi.getDescuento());
+                }
+        
+            }
+            if(valor!=null && genFactura.isChecked())
+                fac.setSubtotal((valortotal.value).add(valor));
+            else
+                fac.setSubtotal(valortotal.value);
             fac.setDescuento(new BigDecimal(0));
-            fac.setBaseiva(valortotal.value);
+            fac.setBaseiva(fac.getSubtotal());
             fac.setPorcentajeiva(empresa.getIva());
-            fac.setValoriva((valortotal.value).multiply(empresa.getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
+            fac.setValoriva((fac.getSubtotal()).multiply(empresa.getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
             fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
             fac.setObservacion("V");
             adm.guardar(fac);
     
+    
                             List col = productos.getRows().getChildren();
                             String seriesString = "";
-                            
+                            if(genFactura.isChecked()){
+                                Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+                                det.setTotal(valor);
+                                det.setPlan(equi.getPlan());
+                                det.setCantidad(1);
+                                det.setMes(fechaInstalacion.getMonth() + 1);
+                                det.setAnio(fechaInstalacion.getYear() + 1900);
+                                det.setDescripcion("generada");
+                                det.setFactura(fac);
+                                adm.guardar(det);
+                            }
                                     for (int i = 0; i < col.size(); i++) {
                                              Row object = (Row) col.get(i);
                                              Series serieDet = ((Series)object.getValue());
@@ -732,9 +770,7 @@ if(sihay==0){
  } 
   
  
- if(genFactura.isChecked()){
-      gen.generarCobros(sucursalEmp.getSucursal(),equi,fechainstalacion.value);
- }
+ 
           Messagebox.show("Contrato Registrado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                     guardar.disabled=true;
                     agregar.disabled=false;
@@ -789,6 +825,15 @@ if(sihay==0){
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
 }
+  public Double redondear(Double numero, int decimales) {
+        try {
+            BigDecimal d = new BigDecimal(numero);
+            d = d.setScale(decimales, RoundingMode.HALF_UP);
+            return d.doubleValue();
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
  void nuevo2(){
   genFactura.setChecked(false);
     if(verificar("Agregar")){
