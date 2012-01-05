@@ -2165,6 +2165,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
             facActual.setTotal(new BigDecimal(txtTotal1.getText()));
             facActual.setFecha(new Date());
             facActual.setFechafin(new Date());
+            facActual.setUsuario(principal.usuarioActual);
+            facActual.setUsuarioc(principal.usuarioActual);
             facActual.setNumero(emp.getDocumentofac());
             adm.guardar(facActual);
             Integer numero = new Integer(emp.getDocumentofac());
