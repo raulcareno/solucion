@@ -19,6 +19,7 @@ import jcinform.persistencia.Canton;
 import jcinform.persistencia.Clientes;
 import jcinform.persistencia.Contratos;
 import jcinform.persistencia.Cxcobrar;
+import jcinform.persistencia.Detalle;
 import jcinform.persistencia.Detallecompra;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Empleadosfacturas;
@@ -226,15 +227,15 @@ public class ReportesClase {
         List<Clientes> clientes = new ArrayList<Clientes>();
         if (cli.getCodigo().equals(-1)) {
             //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
-            if(sec.getCodigo().equals(-1)){
+            if (sec.getCodigo().equals(-1)) {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                     + "   order by o.clientes.apellidos");
-            }else{
-               clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + "where o.sector.codigo = '" + sec.getCodigo() + "' "
-                    + "   order by o.clientes.apellidos");
+                        + "   order by o.clientes.apellidos");
+            } else {
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "where o.sector.codigo = '" + sec.getCodigo() + "' "
+                        + "   order by o.clientes.apellidos");
             }
-            
+
         } else {
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
             clientes.add(cli);
@@ -285,6 +286,83 @@ public class ReportesClase {
                         detalles.add(pendi);
                         i++;
                     }
+                }
+
+            }
+
+        }
+        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
+        return ds;
+    }
+
+    public JRDataSource facturasCobradasContador(Clientes cli, Date desde, Date hasta, Sector sec) {
+        Administrador adm = new Administrador();
+        List<Clientes> clientes = new ArrayList<Clientes>();
+        if (cli.getCodigo().equals(-1)) {
+            //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
+            if (sec.getCodigo().equals(-1)) {
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "   order by o.clientes.apellidos");
+            } else {
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "where o.sector.codigo = '" + sec.getCodigo() + "' "
+                        + "   order by o.clientes.apellidos");
+            }
+
+        } else {
+            cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
+            clientes.add(cli);
+        }
+        ArrayList detalles = new ArrayList();
+        String desdestr = convertiraString(desde);
+        String hastastr = convertiraString(hasta);
+        for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
+            Clientes clientes1 = itCli.next();
+            String sql = "SELECT fa.codigo, fa.numero, fa.fecha, p.nombre, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo,SUM(cx.haber) abonos"
+                    + " FROM plan p, detalle de, cxcobrar cx, factura  fa "
+                    + " WHERE p.codigo = de.plan AND  de.factura = fa.codigo "
+                    + "AND fa.clientes  =  " + clientes1.getCodigo() + "  "
+                    + " AND fa.sucursal = '" + sucursal.getCodigo() + "' "
+                    + " AND cx.factura = fa.codigo "
+                    + "AND fa.fecha between '" + desdestr + "' and '" + hastastr + "' and fa.numero > 0 "
+                    + "GROUP BY fa.numero  having SUM(cx.haber) >0  ";
+            List facEncontradas = adm.queryNativo(sql);
+            if (facEncontradas.size() > 0) {
+                Pendientes pendi = null;
+                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                    Vector vec = (Vector) itna.next();
+                    int i = 1;
+                    List<Detalle> detalleLocal = adm.query("Select o from Detalle as o where o.factura.codigo = '" + vec.get(0) + "'");
+                    int ii = 0;
+                    pendi = new Pendientes();
+                    pendi.setPlan("");
+                    for (Iterator<Detalle> it = detalleLocal.iterator(); it.hasNext();) {
+                        Detalle detalle = it.next();
+                        String pth = " / ";
+                        if (ii == 0) {
+                            pth = "";
+                        }
+                        if (detalle.getEquipos() != null) {
+                            pendi.setPlan(pendi.getPlan() + pth + detalle.getEquipos().getNombre());
+                        }
+                        if (detalle.getPlan() != null) {
+                            pendi.setPlan(pendi.getPlan() + pth + detalle.getPlan().getNombre());
+                        }
+                        ii++;
+                    }
+                    detalleLocal = null;
+
+                    pendi.setCliente(clientes1);
+                    pendi.setFactura("" + vec.get(1));
+                    Date d = (Date) vec.get(2);
+                    pendi.setFecha(d);
+
+                    pendi.setTotal((BigDecimal) vec.get(4));
+                    pendi.setSaldo((BigDecimal) vec.get(5));
+                    pendi.setValorabonoefe((BigDecimal) vec.get(6));
+                    detalles.add(pendi);
+                    i++;
+
                 }
 
             }
@@ -626,34 +704,34 @@ public class ReportesClase {
 
     public JRDataSource facturasComisiones1(Empleados empleado, Date desde, Date hasta) {
         Administrador adm = new Administrador();
-        String desdestr = convertiraString(desde)+" 00:00:01";
-        String hastastr = convertiraString(hasta)+" 23:59:59";
+        String desdestr = convertiraString(desde) + " 00:00:01";
+        String hastastr = convertiraString(hasta) + " 23:59:59";
         List<Contratos> contratos = new ArrayList<Contratos>();
         if (empleado.getCodigo().equals(-1)) {
             String q = "Select o.*  from Contratos as o "
-                    + " where o.fechainstalacion between '"+desdestr+"' and '"+hastastr+"'  "
+                    + " where o.fechainstalacion between '" + desdestr + "' and '" + hastastr + "'  "
                     + "  order by o.empleados ";
-            System.out.println(""+q);
-                contratos = adm.queryNativo(q,Contratos.class);             
+            System.out.println("" + q);
+            contratos = adm.queryNativo(q, Contratos.class);
             //contratos.get(0).getEmpleados() 
-        } else { 
+        } else {
             String q = "Select o.*  from Contratos as o "
                     + " where o.empleados  = '" + empleado.getCodigo() + "'   "
-                    + " and o.fechainstalacion between '"+desdestr+"' and '"+hastastr+"'  "
+                    + " and o.fechainstalacion between '" + desdestr + "' and '" + hastastr + "'  "
                     + " order by o.fecha  ";
-            System.out.println(""+q);
-                contratos = adm.queryNativo(q,Contratos.class);             
+            System.out.println("" + q);
+            contratos = adm.queryNativo(q, Contratos.class);
         }
         ArrayList detalles = new ArrayList();
         String quer = "";
-        List<Equipos> equ = adm.queryNativo("SELECT * FROM Equipos WHERE CAST(tipo AS SIGNED)  BETWEEN 1 AND  10 ",Equipos.class);
+        List<Equipos> equ = adm.queryNativo("SELECT * FROM Equipos WHERE CAST(tipo AS SIGNED)  BETWEEN 1 AND  10 ", Equipos.class);
         String codigoEq = "";
         for (Iterator<Equipos> it = equ.iterator(); it.hasNext();) {
             Equipos equipos = it.next();
-            codigoEq+=equipos.getCodigo()+",";
+            codigoEq += equipos.getCodigo() + ",";
         }
-        if(codigoEq.length()>1){
-            codigoEq = codigoEq.substring(0,codigoEq.length()-1);
+        if (codigoEq.length() > 1) {
+            codigoEq = codigoEq.substring(0, codigoEq.length() - 1);
         }
         for (Iterator<Contratos> itCli = contratos.iterator(); itCli.hasNext();) {
             Contratos contra = itCli.next();
@@ -667,7 +745,7 @@ public class ReportesClase {
 //                        + "and o.factura.contratos.codigo = '" + contra.getCodigo() + "' "
 //                        + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' "
 //                        + " order by  o.empleados.apellidos,o.factura.numero ";
-                   detalles.add(contra);
+            detalles.add(contra);
         }
         System.out.println("" + quer);
         ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
