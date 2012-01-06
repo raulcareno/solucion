@@ -451,7 +451,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel1.add(noTicket);
         noTicket.setBounds(70, 10, 90, 21);
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 0, 204));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Tiempo: ");
@@ -633,7 +633,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         cliente.setEditable(false);
         cliente.setText("1");
         cliente.setEnabled(false);
-        cliente.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cliente.setFont(new java.awt.Font("Tahoma", 0, 12));
         jPanel2.add(cliente);
         cliente.setBounds(190, 10, 20, 20);
 
@@ -1672,9 +1672,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
         }
         act.setHours(horas);
         act.setMinutes(valorMinutos);
+        if(horas == 1 && valorMinutos ==60)
+            act.setMinutes(0);
         tiempo.setDate(act);
         placa.setText(fac.getPlaca());
-        if (valorMinutos <= empresaObj.getGracia().intValue()) {
+        //VERIFICO EL TIEMPO DE GRACIA SI ES QUE ESTÁ EN EL TIEMPO DE GRACIA
+        if (valorMinutos <= empresaObj.getGracia().intValue() &&  empresaObj.getGracia().intValue()>0 ) {
             BigDecimal descuento = buscar(valorMinutos);
             aCobrar = aCobrar.subtract(descuento);
         }
