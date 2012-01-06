@@ -1013,22 +1013,22 @@ public class notas extends Rows {
 
                 for (Iterator<MateriaProfesor> it = maprofes.iterator(); it.hasNext();) {
                     MateriaProfesor acaMater = it.next();
-                    formu += "N" + acaMater.getMateria().getCodigo() + "+";
+                    formu += "N" + acaMater.getMateria().getCodigo() + ",";
                 }
 
                 formu = formu.substring(0, formu.length() - 1);
-                if (tipo.contains("MITAD")) {
-                    formu = "(((" + formu + ")/" + maprofes.size() + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/2";
-                } else if (tipo.contains("PROMEDIO")) {//
-                    formu = "(((" + formu + ") + (N1==null || N1==0 ?" + notaDisciplina + ":N1)" + ")/(" + (maprofes.size() + 1) + "))";
+                if (tipo.contains("MITAD")) { // EL INSPECTOR MEDIA NOTA Y EL PROMEDIO DE LOS PROFES LA OTRA MITDA
+                    formu = "promedio(promedio(" + formu + ") , " + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))";
+                } else if (tipo.contains("PROMEDIO")) {//PROMEDIO DE TODAS LAS NOTAS INCLUIDA LA NOTA DEL INSPECTOR
+                    formu = " promedio(" + formu + " , (N1==null || N1==0 ?" + notaDisciplina + ":N1)" + ") ";
                     //formu = "(((" + formu + ")/" + maprofes.size() + ") +" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/2";
                     //formu = "(((" + formu + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/(" + maprofes.size() + "))";
-                } else if (tipo.contains("PROMEDIADA")) {//
-                    formu = "(((" + formu + ") )/(" + (maprofes.size()) + "))";
+                } else if (tipo.contains("PROMEDIADA")) {// PROMEDIA SOLO LAS NTOAS DE LOS PROFESORES
+                    formu = "promedio(" + formu + ")";
                     //formu = "(((" + formu + ")/" + maprofes.size() + ") +" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/2";
                     //formu = "(((" + formu + ")+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))/(" + maprofes.size() + "))";
-                } else if (tipo.contains("SUMATORIA")) {//PROMEDIO DE PROFESORES + PROMEDIO DE INSPECCION
-                    formu = "((" + formu + ")/" + maprofes.size() + "+" + "(N1==null || N1==0 ?" + notaDisciplina + ":N1))";
+                } else if (tipo.contains("SUMATORIA")) {//PROMEDIO DE PROFESORES + PROMEDIO DE DE LA NOTA INGRESADA INSPECCION
+                    formu = " promedio(" + formu + ") +  (N1==null || N1==0 ?" + notaDisciplina + ":N1)";
                 }
 //                 else if (tipo.contains("PROMEDIADA")) {//SUMA SOLO LAS MATERIAS Y LAS DIVIDE PARA LOS QUE INGRESARON
 //                    coll.setFinali((promProfesor) / lista.size());
@@ -1082,6 +1082,7 @@ public class notas extends Rows {
                     }
                     String vector1 = (String) vectors.get(0);
 //                    System.out.println("VECTOR 1: "+vector1);
+                    inter.eval(prom1);
                     inter.eval("int tamanio1 =  " + vector1 + ".size(); " +//OJOSSS
                             "int tamanio2 = ((Vector)" + vector1 + ".get(0)).size(); " +//OJOSSS
                             "Vector calculado = new Vector(); ");

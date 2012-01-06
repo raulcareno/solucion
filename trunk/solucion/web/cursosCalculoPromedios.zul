@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <?page id="main-page"?>
-<zk>
+<zk xmlns="http://www.zkoss.org/2005/zul">
     <zscript>
         <![CDATA[
 import bean.Procesos;
