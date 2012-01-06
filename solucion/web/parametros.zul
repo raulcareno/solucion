@@ -229,7 +229,17 @@ equi.setPerfil(g);
 </row>
 <row id="vc" visible="false" ><span style="float:right"> Valor(*):</span>
         <span><textbox    id="valc"  maxlength="60" cols="40" readonly="true"/>
-        INGRESADA
+ 
+<image src="/images/information.png" height="22px" width="22px" tooltip="mailt" popup="mailt" style="cursor: pointer" />
+ <popup id="mailt" width="300px">
+  <html>
+    &lt;p&gt; MITAD: Suma dos notas el promedio de todos los profesores + la del inspector y la divide para 2  &lt;/p&gt;
+    &lt;p&gt; PROMEDIO: Toma TODAS las NOTAS incluida la DISCIPLINA INSPECTOR y saca el promedio   &lt;/p&gt;
+    &lt;p&gt; PROMEDIADA: Promedia todas las notas ingresadas en Disciplina(NO INCLUYE DISCIPLINA DEL INSPECTOR SOLO DE MATERIAS)  &lt;/p&gt;
+    &lt;p&gt; SUMATORIA: Suma el Promedio del Inspector + El Promedio de los Profesores &lt;/p&gt;
+
+   </html>
+ </popup>
         </span>
 </row>
 <row id="vn" visible="false" ><span style="float:right"> Valor(*):</span>
