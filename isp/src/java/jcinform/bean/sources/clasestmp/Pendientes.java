@@ -12,23 +12,21 @@ import jcinform.persistencia.Clientes;
  *
  * @author jcinform
  */
-public class Pendientes {
-    
-    public void Pendientes(){
-        
+public class Pendientes implements Comparable {
+
+    public void Pendientes() {
     }
-    
     String factura;
-    Date fecha,fechapago;
-    BigDecimal total,valorabonoefe,valorabonoche,valorabonotar,valorabonodep,valorabonodes,valorabonoban;
+    Date fecha, fechapago;
+    BigDecimal total, valorabonoefe, valorabonoche, valorabonotar, valorabonodep, valorabonodes, valorabonoban;
     BigDecimal valorabonoret;
-    BigDecimal valorabonotra,valorabonoriva,valorabonorfue,valorabonotot;
-    String numerotransferencia,numeroretencion;
+    BigDecimal valorabonotra, valorabonoriva, valorabonorfue, valorabonotot;
+    String numerotransferencia, numeroretencion;
     BigDecimal saldo;
     Clientes cliente;
     Integer noabono;
     String plan;
-    String formapago,notarjeta,nocheque,nocuenta;
+    String formapago, notarjeta, nocheque, nocuenta;
     String direccion;
     String empleado;
 
@@ -47,9 +45,8 @@ public class Pendientes {
     public void setPlan(String plan) {
         this.plan = plan;
     }
-            
-    //fa.codigo, fa.fecha, p.nombre, fa.total,  (SUM(cx.debe) - SUM(cx.haber))
 
+    //fa.codigo, fa.fecha, p.nombre, fa.total,  (SUM(cx.debe) - SUM(cx.haber))
     public String getFactura() {
         return factura;
     }
@@ -146,7 +143,7 @@ public class Pendientes {
         this.valorabonodep = valorabonodep;
     }
 
-      public BigDecimal getValorabonoefe() {
+    public BigDecimal getValorabonoefe() {
         return valorabonoefe;
     }
 
@@ -250,8 +247,14 @@ public class Pendientes {
         this.valorabonoret = valorabonoret;
     }
 
-  
-    
-    
-    
+    @Override
+    public int compareTo(Object o) {
+        Pendientes persona = (Pendientes) o;
+        if (this.factura.compareToIgnoreCase(persona.factura) == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
+
+    }
 }

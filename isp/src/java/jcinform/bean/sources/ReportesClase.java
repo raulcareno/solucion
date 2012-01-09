@@ -6,11 +6,7 @@ package jcinform.bean.sources;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import jcinform.bean.sources.clasestmp.InventarioNormal;
 import jcinform.bean.sources.clasestmp.Pendientes;
 import jcinform.conexion.Administrador;
@@ -313,7 +309,7 @@ public class ReportesClase {
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
             clientes.add(cli);
         }
-        ArrayList detalles = new ArrayList();
+ List<Pendientes> detalles = new ArrayList();
         String desdestr = convertiraString(desde);
         String hastastr = convertiraString(hasta);
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
@@ -325,7 +321,8 @@ public class ReportesClase {
                     + " AND fa.sucursal = '" + sucursal.getCodigo() + "' "
                     + " AND cx.factura = fa.codigo "
                     + "AND fa.fecha between '" + desdestr + "' and '" + hastastr + "' and fa.numero > 0 "
-                    + "GROUP BY fa.numero  having SUM(cx.haber) >0  ";
+                    + "GROUP BY fa.numero    ";
+            //+ "GROUP BY fa.numero  having SUM(cx.haber) >0  ";
             List facEncontradas = adm.queryNativo(sql);
             if (facEncontradas.size() > 0) {
                 Pendientes pendi = null;
@@ -340,7 +337,7 @@ public class ReportesClase {
                         Detalle detalle = it.next();
                         String pth = " / ";
                         if (ii == 0) {
-                            pth = "";
+                            pth = "("+mes(detalle.getFactura().getFecha().getMonth()) +")";
                         }
                         if (detalle.getEquipos() != null) {
                             pendi.setPlan(pendi.getPlan() + pth + detalle.getEquipos().getNombre());
@@ -368,10 +365,40 @@ public class ReportesClase {
             }
 
         }
+       Collections.sort(detalles);
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
         return ds;
     }
+  public String mes(int mes) {
+        switch (mes) {
+            case 0:
+                return "Ene";
+            case 1:
+                return "Feb";
+            case 2:
+                return "Mar";
+            case 3:
+                return "Abr";
+            case 4:
+                return "May";
+            case 5:
+                return "Jun";
+            case 6:
+                return "Jul";
+            case 7:
+                return "Ago";
+            case 8:
+                return "Sep";
+            case 9:
+                return "Oct";
+            case 10:
+                return "Nov";
+            case 11:
+                return "Dic";
+        }
+        return "";
 
+    }
     public JRDataSource reporteCaja(Date desde, Date hasta) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
