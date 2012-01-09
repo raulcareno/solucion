@@ -16,14 +16,14 @@ import org.zkoss.zul.Listbox;
 import sources.CustomDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import sources.*;
-import bean.notas;
+import bean.*;
 
 
 
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 
-notas noti = new notas();
+reportesClase noti = new reportesClase();
 Matriculas mat = (Matriculas)ses.getAttribute("matricula");
 ses.setAttribute("periodo",mat.getCurso().getPeriodo());
 System.out.println("MATRICULA:  "+mat);
