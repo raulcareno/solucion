@@ -253,8 +253,9 @@ public class Pendientes implements Comparable {
         if (this.factura.compareToIgnoreCase(persona.factura) == 0) {
             return 0;
         } else {
-            return 1;
+             return this.factura.compareToIgnoreCase(persona.factura);
         }
+        
 
     }
 }

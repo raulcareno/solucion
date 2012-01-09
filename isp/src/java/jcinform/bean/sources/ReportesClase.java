@@ -365,7 +365,16 @@ public class ReportesClase {
             }
 
         }
+//        for (Iterator<Pendientes> it = detalles.iterator(); it.hasNext();) {
+//            Pendientes pendientes = it.next();
+//            System.out.println(""+pendientes.getFactura()+ ";"+pendientes.getCliente());
+//        }
        Collections.sort(detalles);
+//        System.out.println("__________________________________________--");
+//       for (Iterator<Pendientes> it = detalles.iterator(); it.hasNext();) {
+//            Pendientes pendientes = it.next();
+//            System.out.println(""+pendientes.getFactura()+ ";"+pendientes.getCliente());
+//        }
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
         return ds;
     }
