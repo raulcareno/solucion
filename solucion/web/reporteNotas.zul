@@ -482,18 +482,18 @@ void recalcular(){
             }else if(tipo.equals("CCAL2")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked);
                     report.setSrc(directorioReportes+"cuadrocalificaciones2.jasper");
                            
             }else if(tipo.equals("CCAL3")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked);
                     report.setSrc(directorioReportes+"cuadrocalificaciones3.jasper");
             }else if(tipo.equals("CCAL")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked);
                     report.setSrc(directorioReportes+"cuadrocalificaciones.jasper");
 
             }else if(tipo.equals("CSUP")){
@@ -599,6 +599,7 @@ void campos(String valor){
     filamaterias.visible = false;
     filaaportes.visible = false;
      filasecuencia.visible = false;
+     incluirfaltas.visible = false;
         if(valor.equals("DIS")){
             curs.disabled = false;
             filacursos.visible = true;
@@ -685,6 +686,7 @@ void campos(String valor){
              filacursos.visible = true;
              filaestudiantes.visible = true;
         }else if(valor.equals("CCAL") || valor.equals("CCAL2") || valor.equals("CCAL3")){
+             incluirfaltas.visible = true;
              curs.disabled = false;
              sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Calificaciones";
@@ -819,16 +821,20 @@ void campos(String valor){
                                     <listitem  id="PROFC" label="Listado de Profesores completo" value="PROFC" />
         
                                 </listbox>
+                              
     
                             </span>
                         </row>
                         <row  style="background:transparent;border:0px" id="fila" visible="false">
                             <span style="float:right;color:blue"> Rango Notas:</span>
                             <span style="color:blue"> Desde:
-                                <decimalbox id="desde" value="0" cols="5" /> Hasta:
-                                <decimalbox id="hasta" value="20" cols="5"/>
-                                Nota de Peligro:
-                                <decimalbox id="peligro" value="13.33" cols="5"/>
+                                <decimalbox id="desde" value="0" cols="5" /> 
+                                <separator bar="true" orient="vertical" />
+                                Hasta:<decimalbox id="hasta" value="20" cols="5"/>
+                                <separator bar="true" orient="vertical" />
+                                Nota de Peligro:<decimalbox id="peligro" value="13.33" cols="5"/>
+                                <separator bar="true" orient="vertical" />
+                                  <checkbox visible="false" id="incluirfaltas" label="INCLUIR FALTAS" style="color:blue" />
                             </span>
                         </row>
 

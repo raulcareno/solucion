@@ -68,7 +68,8 @@ public class reportesClase {
 
     public reportesClase() {
     }
-public ConvertirNumeros c = new ConvertirNumeros();
+    public ConvertirNumeros c = new ConvertirNumeros();
+
     public JRDataSource evaluacion(Cursos curso, Matriculas matricula) {
         Administrador adm = new Administrador();
 //        Session ses = Sessions.getCurrent();
@@ -308,7 +309,7 @@ public ConvertirNumeros c = new ConvertirNumeros();
 
     }
 
-    public JRDataSource cuadrocalificaciones(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta) {
+    public JRDataSource cuadrocalificaciones(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta,Boolean incluyefaltas) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -332,16 +333,16 @@ public ConvertirNumeros c = new ConvertirNumeros();
             query += notass.getNota() + ",";
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
-        String[] values = new String[sistemas.size()];
 
-        for (int i = 0; i < sistemas.size(); i++) {
-            values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
-        }
+
+
 //    tamanio = sistemas.size();
         //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
-/*String q = "Select matricula,materia, "+query+" from notas " +
-        "where matricula in (select codigomat from matriculas where  curso  =  '"+curso.getCodigocur()+"' ) " +
-        " ";*/
+/*
+         * String q = "Select matricula,materia, "+query+" from notas " + "where
+         * matricula in (select codigomat from matriculas where curso =
+         * '"+curso.getCodigocur()+"' ) " + " ";
+         */
         //and matriculas.estado in ('Matriculado','Recibir Pase','Retirado')
         String q = "Select codigomap, mat.codigomat,notas.materia, " + query + "  "
                 + "from notas, materia_profesor, matriculas mat, estudiantes est "
@@ -354,6 +355,10 @@ public ConvertirNumeros c = new ConvertirNumeros();
         System.out.println("" + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
+        List<Equivalencias> equivalenciasFaltas = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'DI' "
+                + "and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+
         Integer cont = 0;
         String matricula = "";
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
@@ -363,6 +368,8 @@ public ConvertirNumeros c = new ConvertirNumeros();
             Global materiaNo = null;
             MateriaProfesor maprofesor = null;
             int ksis = 0;
+
+
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
                 Double val = 0.0;
@@ -412,8 +419,50 @@ public ConvertirNumeros c = new ConvertirNumeros();
                 } else if (j == 0) {
                     maprofesor = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
                 }
+
                 if (matriculaNo != null && j > 1) {
                     if (!matriculaNo.toString().equals(matricula)) {
+                        if(incluyefaltas){
+                            
+                        /**
+                         * AGREGRO LAS FALTAS AL REPORTE
+                         */
+                        String query3 = "";
+                        int w = 1;
+
+                        for (int i = 0; i < equivalenciasFaltas.size(); i++) {
+                            query3 += "sum(nota" + w + "),";
+
+                            w++;
+                        }
+                        query3 = query3.substring(0, query3.length() - 1);
+                        //IMPRIMO LAS FALTAS
+                        String qf = "Select " + query3 + "  from disciplina "
+                                + "where matricula = '" + matriculaNo.getCodigomat() + "'  "
+                                + "and sistema = '" + sistema.getCodigosis() + "' "
+                                + " group by matricula ";
+                        //System.out.println(""+q);
+                        List nativoF = adm.queryNativo(qf);
+                        for (Iterator itnaF = nativoF.iterator(); itnaF.hasNext();) {
+                            Vector vecF = (Vector) itnaF.next();
+                            for (int jF = 0; jF < vecF.size(); jF++) {
+                                Object dosF = vecF.get(jF);
+                                Integer valF = new Integer(dosF.toString());
+                                Nota notaF = new Nota();
+                                notaF.setContador(cont+1);
+                                notaF.setMatricula(matriculaNo);
+                                notaF.setNota(valF);
+                                Global matNueva = new Global((equivalenciasFaltas.get(jF)).getCodigoequi());
+                                matNueva.setDescripcion((equivalenciasFaltas.get(jF)).getNombre());
+                                notaF.setMateria(matNueva);
+                                notaF.setMprofesor(maprofesor);
+                                notaF.setSistema(sistema);
+                                lisNotas.add(notaF);
+                            }
+
+                        }
+                        
+                        }
                         cont++;
                     }
                 }
@@ -831,9 +880,11 @@ public ConvertirNumeros c = new ConvertirNumeros();
         }
 //    tamanio = sistemas.size();
         //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
-/*String q = "Select matricula,materia, "+query+" from notas " +
-        "where matricula in (select codigomat from matriculas where  curso  =  '"+curso.getCodigocur()+"' ) " +
-        " ";*/
+/*
+         * String q = "Select matricula,materia, "+query+" from notas " + "where
+         * matricula in (select codigomat from matriculas where curso =
+         * '"+curso.getCodigocur()+"' ) " + " ";
+         */
         //and matriculas.estado in ('Matriculado','Recibir Pase','Retirado')
         String q = "Select codigomap, mat.codigomat,notas.materia, " + query + "  "
                 + "from notas, materia_profesor, matriculas mat, estudiantes est, GLOBAL glo "
@@ -1649,7 +1700,7 @@ public ConvertirNumeros c = new ConvertirNumeros();
                         coll.setNota(dos);
 
 
-                        if (cuantitativa == false) {
+                        if (cuantitativa == false || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
                             coll.setNota(equivalencia(dos, equivalencias));
                         } else {
                             if (val == 0.0) {
@@ -1711,7 +1762,7 @@ public ConvertirNumeros c = new ConvertirNumeros();
                         if (j > 0) {
                             val = ((BigDecimal) dos).doubleValue();
                             coll.setNota(dos);
-                            if (promCuantitativo == false) {
+                            if (promCuantitativo == false || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
                                 coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
                             } else {
                                 if (val == 0.0) {
@@ -1767,7 +1818,7 @@ public ConvertirNumeros c = new ConvertirNumeros();
                         if (j > 0) {
                             val = ((BigDecimal) dos).doubleValue();
                             coll.setNota(dos);
-                            if (discCuantitativo == false) {
+                            if (discCuantitativo == false || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
                                 coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
                             } else {
                                 if (val == 0.0) {
@@ -2812,15 +2863,15 @@ public ConvertirNumeros c = new ConvertirNumeros();
                         coll.setMatriculas(matriculas1);
                         coll.setMateria(ac.getNombre());
                         coll.setNoActa(noActa + "");
-                        String cabecera1tmp = cabecera1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[mes]", convertir(fecha)).replace("[dia]",fecha.getDate()+"").replace("[anio]",(fecha.getYear()+1900)+"").replace("[anioletras]",c.convertNumberToLetter((fecha.getYear()+1900)).toLowerCase()+"");
-                        String cabecera2tmp = cabecera2.replace("[fecha]", convertir(new Date()) + "").replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[mes]", convertir(fecha)).replace("[dia]",fecha.getDate()+"").replace("[anio]",(fecha.getYear()+1900)+"").replace("[anioletras]",c.convertNumberToLetter((fecha.getYear()+1900)).toLowerCase()+"");
+                        String cabecera1tmp = cabecera1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[mes]", convertir(fecha)).replace("[dia]", fecha.getDate() + "").replace("[anio]", (fecha.getYear() + 1900) + "").replace("[anioletras]", c.convertNumberToLetter((fecha.getYear() + 1900)).toLowerCase() + "");
+                        String cabecera2tmp = cabecera2.replace("[fecha]", convertir(new Date()) + "").replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[mes]", convertir(fecha)).replace("[dia]", fecha.getDate() + "").replace("[anio]", (fecha.getYear() + 1900) + "").replace("[anioletras]", c.convertNumberToLetter((fecha.getYear() + 1900)).toLowerCase() + "");
                         coll.setCabecera1(cabecera1tmp);
                         coll.setCabecera1(cabecera1tmp);
                         coll.setCabecera2(cabecera2tmp);
                         coll.setCabecera2(cabecera2tmp);
-                        String pie1tmp = pi1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa()).replace("[mes]", convertir(fecha)).replace("[dia]",fecha.getDate()+"").replace("[anio]",(fecha.getYear()+1900)+"").replace("[anioletras]",c.convertNumberToLetter((fecha.getYear()+1900)).toLowerCase()+"");
+                        String pie1tmp = pi1.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa()).replace("[mes]", convertir(fecha)).replace("[dia]", fecha.getDate() + "").replace("[anio]", (fecha.getYear() + 1900) + "").replace("[anioletras]", c.convertNumberToLetter((fecha.getYear() + 1900)).toLowerCase() + "");
                         coll.setPie1(pie1tmp);
-                        String pie2tmp = pi2.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa()).replace("[mes]", convertir(fecha)).replace("[dia]",fecha.getDate()+"").replace("[anio]",(fecha.getYear()+1900)+"").replace("[anioletras]",c.convertNumberToLetter((fecha.getYear()+1900)).toLowerCase()+"");
+                        String pie2tmp = pi2.replace("[estudiante]", matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre()).replace("[titulo]", matriculaNo.getCurso().getActa()).replace("[mes]", convertir(fecha)).replace("[dia]", fecha.getDate() + "").replace("[anio]", (fecha.getYear() + 1900) + "").replace("[anioletras]", c.convertNumberToLetter((fecha.getYear() + 1900)).toLowerCase() + "");
                         coll.setPie2(pie2tmp);
                         coll.setCar1(car1);
                         coll.setCar2(car2);
@@ -3634,6 +3685,6 @@ public ConvertirNumeros c = new ConvertirNumeros();
                 break;
         }
 
-        return  mes ;
+        return mes;
     }
 }
