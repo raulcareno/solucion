@@ -26,6 +26,7 @@ public class Pendientes implements Comparable {
     Clientes cliente;
     Integer noabono;
     String plan;
+    String contrato;
     String formapago, notarjeta, nocheque, nocuenta;
     String direccion;
     String empleado;
@@ -245,6 +246,14 @@ public class Pendientes implements Comparable {
 
     public void setValorabonoret(BigDecimal valorabonoret) {
         this.valorabonoret = valorabonoret;
+    }
+
+    public String getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(String contrato) {
+        this.contrato = contrato;
     }
 
     @Override

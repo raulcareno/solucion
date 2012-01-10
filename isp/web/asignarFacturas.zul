@@ -527,6 +527,29 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                     
                     Contratos c = (Contratos) adm.buscarClave(vec.get(5), Contratos.class);
                     pendi.setPlan(c.getPlan()+"");
+                    pendi.setContrato(""+vec.get(5));
+                     int ii = 0;
+                    pendi.setPlan("");
+                    int i = 1;
+                    List detalleLocal = adm.query("Select o from Detalle as o where o.factura.codigo = '" + vec.get(0) + "'");
+                    for (Iterator it = detalleLocal.iterator(); it.hasNext();) {
+                        Detalle detalle = it.next();
+                        String pth = " / ";
+                        if (ii == 0) {
+                            pth = "("+mes(detalle.getFactura().getFecha().getMonth()) +")";
+                        }
+                        if (detalle.getEquipos() != null) {
+                            pendi.setPlan(pendi.getPlan() + pth + detalle.getEquipos().getNombre());
+                        }
+                        if (detalle.getPlan() != null) {
+                            pendi.setPlan(pendi.getPlan() + pth + detalle.getPlan().getNombre());
+                        }
+                        ii++;
+                    }
+                    
+                    
+                    
+                    
                     pendi.setDireccion(c.getDireccion());
                     pendi.setTotal((BigDecimal) vec.get(3));
                     pendi.setSaldo((BigDecimal) vec.get(4));
@@ -555,6 +578,36 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                 
  
  }
+   public String mes(int mes) {
+        switch (mes) {
+            case 0:
+                return "Ene";
+            case 1:
+                return "Feb";
+            case 2:
+                return "Mar";
+            case 3:
+                return "Abr";
+            case 4:
+                return "May";
+            case 5:
+                return "Jun";
+            case 6:
+                return "Jul";
+            case 7:
+                return "Ago";
+            case 8:
+                return "Sep";
+            case 9:
+                return "Oct";
+            case 10:
+                return "Nov";
+            case 11:
+                return "Dic";
+        }
+        return "";
+
+    }
   ]]>
     </zscript>
     <div>
