@@ -30,6 +30,7 @@
 	<field name="factura" class="java.lang.String"/>
 	<field name="valorPago" class="java.lang.Double"/>
 	<field name="empleado" class="java.lang.String"/>
+	<field name="formapago" class="java.lang.String"/>
 	<variable name="contrato_1" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{contrato}]]></variableExpression>
 	</variable>
@@ -168,7 +169,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<text><![CDATA[Pago x Inst.]]></text>
+					<text><![CDATA[Pago]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
@@ -313,7 +314,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{factura}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="216" y="0" width="53" height="14"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="0.25"/>
@@ -322,10 +323,10 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{valorPago}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{formapago}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="495" y="0" width="60" height="14"/>
