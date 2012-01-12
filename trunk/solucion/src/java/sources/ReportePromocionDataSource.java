@@ -118,6 +118,8 @@ public class ReportePromocionDataSource implements JRDataSource {
                 valor = nodo.getMatricula().getCodigomat();
             } else if ("estudiante".equals(fieldName)) {
                 valor = nodo.getMatricula().getEstudiante().getApellido() + " " + nodo.getMatricula().getEstudiante().getNombre();
+            } else if ("genero".equals(fieldName)) {
+                valor = nodo.getMatricula().getEstudiante().getGenero();
             } else if ("observacion".equals(fieldName)) {
                 valor = nodo.getEstadoMateria();
             } else if ("equivalencia".equals(fieldName)) {
@@ -158,6 +160,10 @@ public class ReportePromocionDataSource implements JRDataSource {
                 valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ, (Double) nodo.getDisciplina()).getNombre();
             } else if ("curso".equals(fieldName)) {
                 valor = nodo.getMatricula().getCurso().getDescripcion();
+            } else if ("paralelo".equals(fieldName)) {
+                valor = nodo.getMatricula().getCurso().getParalelo().getDescripcion();
+            } else if ("especialidad".equals(fieldName)) {
+                valor = nodo.getMatricula().getCurso().getEspecialidad().getDescripcion();
             } else if ("letrasAprovechamiento".equals(fieldName)) {
                 String formado = num.numerosDecimales(nodo.getAprovechamiento()).toUpperCase();
                 try {
