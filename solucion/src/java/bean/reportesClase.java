@@ -420,7 +420,8 @@ public class reportesClase {
                             matriNueva = dosTmp + "";
                         } catch (Exception e) {
                             System.out.println(""+e);
-                            //matriNueva = "";
+                            if(iVec == nativo.size())
+                                matriNueva = "";
                         }
 
                         if (true && !matriculaAct.equals(matriNueva)) {//PARA EL PROMEDIO
