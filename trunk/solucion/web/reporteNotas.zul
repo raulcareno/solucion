@@ -969,6 +969,7 @@ void campos(String valor){
                                 <button  image="/images/eliminar.gif" id="cerrar"   label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
                                 <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
                                 <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
+                                <button label="Refrescar Ejecutar...!" image="/images/run.gif" onClick='showReport();'/>
                             </span>
 
                         </row>
