@@ -254,6 +254,7 @@ void eliminar(){
                       li.appendChild(new Listcell(acceIt.getTelefono1()+""));
                       li.appendChild(new Listcell(acceIt.getDireccion()+""));
                       li.appendChild(new Listcell(acceIt.getPerfil()+""));
+                      li.appendChild(new Listcell(acceIt.getTipo()+""));
                       datos.appendChild(li);
              }
 
@@ -418,11 +419,11 @@ empa.setPerfil(g);
                         <caption label="Busquedas" />
                         <vbox>
                             <hbox>  Apellidos:
-                                <textbox id="buscarText"  maxlength="60" cols="40" />
+                                <textbox onChanging="buscar(event.value)" id="buscarText"  maxlength="60" cols="40" />
                                 <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                             </hbox>
                             <hbox>
-                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                                <listbox mold="paging" rows="20" pageSize="20"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                                     <listhead>
                                         <listheader label="Cod."/>
                                         <listheader label="Nombres"/>
@@ -430,6 +431,7 @@ empa.setPerfil(g);
                                         <listheader label="Dirección"/>
                                         
                                         <listheader label="Perfil"/>
+                                        <listheader label="Pantalla"/>
 
                                     </listhead>
                                     <listitem forEach="${allEvents}" value="${each}">

@@ -924,11 +924,18 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                 alert("No ha seleccionado ningún reporte...!");
                     return;
             }
-            if(!tipo.equals("-1")){
+              if(!tipo.equals("-1")){
                 report.setParameters(parametros);
                 report.setDatasource(datasource);
-                report.setType((String) format.getSelectedItem().getValue());
-            }
+                if(format.getSelectedItem().getValue().equals("xlsm")){
+                    Map exportParams = new HashMap();
+                    exportParams.put(net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter.PROPERTY_ONE_PAGE_PER_SHEET.toString(), false);
+                    parametros.put("exportParameter", exportParams);
+                    report.setType("xls");
+                }else{
+                    report.setType((String) format.getSelectedItem().getValue());
+                }
+              }
  }
 
 void campos(String valor){
@@ -1138,15 +1145,18 @@ void campos(String valor){
                                     <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
                                         <bandpopup>
                                             <vbox>
-                                                <listbox width="90px" id="format"  onSelect="bd.value=self.selectedItem.label; ejecutar.image = self.selectedItem.image;  bd.close();showReport();">
+                                                <listbox width="137px" id="format"  onSelect="bd.value=self.selectedItem.label; ejecutar.image = self.selectedItem.image;  bd.close();showReport();">
                                                     <listitem  value="pdf" selected="true">
                                                         <listcell  image="/images/pdf.png" label="PDF" />
                                                     </listitem>
                                                     <listitem value="rtf">
                                                         <listcell  image="/images/word.gif" label="Word" />
                                                     </listitem>
-                                                    <listitem value="xls">
-                                                        <listcell  image="/images/excel.gif"  label="Excel" />
+                                                     <listitem value="xls">
+                                                        <listcell  image="/images/excel.gif"  label="Excel(Múlt.Hoja)" />
+                                                    </listitem>
+                                                    <listitem value="xlsm">
+                                                        <listcell  image="/images/excel.gif"  label="Excel(Una.Hoja)" />
                                                     </listitem>
                                                     <listitem value="jxl">
                                                         <listcell  image="/images/excel.gif" label="JXL" />
