@@ -434,7 +434,8 @@ public class reportesClase {
                                     + "and notas.seimprime = true "
                                     + "and notas.promedia = true "
                                     + "and notas.disciplina = false "
-                                    + "and notas.cuantitativa = true and notas.materia != 0 "
+                                    + " and notas.materia != 0 "
+                                    //+ "and notas.cuantitativa = true and notas.materia != 0 "
                                     + "group by matricula  ";
                             //                System.out.println("NOTAS DE promedio " + q);
                             List nativo2 = null;
@@ -460,6 +461,7 @@ public class reportesClase {
                                         dosProm = new BigDecimal(0.0);
                                         //                                        System.out.println(""+e);
                                     }
+                                                                            System.out.println("PROMEDIOS: "+dosProm);
                                     if (jj > 0) {
                                         valProm = ((BigDecimal) dosProm).doubleValue();
                                         coll.setNota(dosProm);
