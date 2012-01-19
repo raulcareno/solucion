@@ -64,7 +64,12 @@ public class ReporteNotasDataSource implements JRDataSource {
                         if (!vale.contains(".01") && !vale.contains(".02") && !vale.contains(".03") && !vale.contains(".04")
                                 && !vale.contains(".06") && !vale.contains(".07") && !vale.contains(".08") && !vale.contains(".05")
                                 && !vale.contains(".09")) {
-                            nodo.setNota(nodo.getNota().toString().replace(".0", ""));
+                            if(vale.contains(".00")){
+                                nodo.setNota(nodo.getNota().toString().replace(".00", ""));
+                            }else{
+                                nodo.setNota(nodo.getNota().toString().replace(".0", ""));
+                            }
+                            
                         }
                     }
                     String vale = nodo.getNota().toString();
