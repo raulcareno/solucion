@@ -7,6 +7,7 @@ package jcinform.bean.sources.clasestmp;
 import java.math.BigDecimal;
 import java.util.Date;
 import jcinform.persistencia.Clientes;
+import jcinform.persistencia.Contratos;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Pendientes implements Comparable {
     String numerotransferencia, numeroretencion;
     BigDecimal saldo;
     Clientes cliente;
+    Contratos contratos;
     Integer noabono;
     String plan;
     String contrato;
@@ -254,6 +256,14 @@ public class Pendientes implements Comparable {
 
     public void setContrato(String contrato) {
         this.contrato = contrato;
+    }
+
+    public Contratos getContratos() {
+        return contratos;
+    }
+
+    public void setContratos(Contratos contratos) {
+        this.contratos = contratos;
     }
 
     @Override

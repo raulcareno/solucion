@@ -391,6 +391,87 @@ List<Facturaanulada> anuladas = adm.queryNativo("Select o.* from Facturaanulada 
         return ds;
     }
 
+    public JRDataSource facturasComision(Empleados emp,  Date desde, Date hasta, String estado) {
+        Administrador adm = new Administrador();
+        List<Clientes> clientes = new ArrayList<Clientes>();
+            //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
+             if(emp.getCodigo().equals(-1)){
+                    clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + " WHERE o.estado = '"+estado+"' order by o.clientes.apellidos");
+             }else{
+                    clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + " WHERE o.empleados2.codigo = '"+emp.getCodigo()+"'   "
+                        + " and o.estado = '"+estado+"' order by o.clientes.apellidos");
+             }
+             
+         
+        List<Pendientes> detalles = new ArrayList();
+        String desdestr = convertiraString(desde);
+        String hastastr = convertiraString(hasta);
+        for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
+            Clientes clientes1 = itCli.next();
+            String sql = "SELECT fa.codigo, fa.numero, fa.fecha, p.nombre, fa.total,  "
+                    + "(SUM(cx.debe) - SUM(cx.haber)) saldo,SUM(cx.haber) abonos, "
+                    + " fa.contratos FROM plan p, detalle de, cxcobrar cx, factura  fa "
+                    + " WHERE p.codigo = de.plan AND  de.factura = fa.codigo "
+                    + "AND fa.clientes  =  " + clientes1.getCodigo() + "  "
+                    + " AND fa.sucursal = '" + sucursal.getCodigo() + "' "
+                    + " AND cx.factura = fa.codigo "
+                    + "AND fa.fecha between '" + desdestr + "' and '" + hastastr + "' and fa.numero > 0 "
+                    + "GROUP BY fa.numero    ";
+            //+ "GROUP BY fa.numero  having SUM(cx.haber) >0  ";
+            List facEncontradas = adm.queryNativo(sql);
+            if (facEncontradas.size() > 0) {
+                Pendientes pendi = null;
+                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                    Vector vec = (Vector) itna.next();
+                    int i = 1;
+                    List<Detalle> detalleLocal = adm.query("Select o from Detalle as o where o.factura.codigo = '" + vec.get(0) + "'");
+                    int ii = 0;
+                    pendi = new Pendientes();
+                    pendi.setPlan("");
+                    for (Iterator<Detalle> it = detalleLocal.iterator(); it.hasNext();) {
+                        Detalle detalle = it.next();
+                        String pth = " / ";
+                        if (ii == 0) {
+                            pth = "(" + mes(detalle.getFactura().getFecha().getMonth()) + ")";
+                        }
+                        if (detalle.getEquipos() != null) {
+                            pendi.setPlan(pendi.getPlan() + pth + detalle.getEquipos().getNombre());
+                        }
+                        if (detalle.getPlan() != null) {
+                            pendi.setPlan(pendi.getPlan() + pth + detalle.getPlan().getNombre());
+                        }
+                        ii++;
+                    }
+                    detalleLocal = null;
+
+                    Contratos contra = (Contratos) adm.buscarClave((Integer) vec.get(7),Contratos.class);
+                    pendi.setContratos(contra);
+                    pendi.setEmpleado(contra.getEmpleados2().toString());
+                    pendi.setContrato(contra.getContrato()+"");
+                    pendi.setCliente(clientes1);
+                    pendi.setFactura("" + vec.get(1));
+                    Date d = (Date) vec.get(2);
+                    pendi.setFecha(d);
+
+                    pendi.setTotal((BigDecimal) vec.get(4));
+                    pendi.setSaldo((BigDecimal) vec.get(5));
+                    pendi.setValorabonoefe((BigDecimal) vec.get(6));
+                    detalles.add(pendi);
+                    i++;
+
+                }
+
+            }
+
+        }
+  
+        Collections.sort(detalles);
+         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
+        return ds;
+    }
+
     public String mes(int mes) {
         switch (mes) {
             case 0:
