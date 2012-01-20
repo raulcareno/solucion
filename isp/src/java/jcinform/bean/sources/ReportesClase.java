@@ -29,7 +29,7 @@ public class ReportesClase {
         sucursal = sucursalEmp.getSucursal();
     }
 
-    public JRDataSource clientesxsector(Sector ini, Sector fin, String letraini, String letrafin) {
+    public JRDataSource clientesxsector(Sector ini, Sector fin, String letraini, String letrafin,String estado) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String complemento = " and substring(o.clientes.apellidos,1,1) >= '" + letraini + "' "
@@ -38,7 +38,9 @@ public class ReportesClase {
         List<Contratos> contra = adm.query("Select o from Contratos as o "
                 + "where o.sector.numero "
                 + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento
-                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                + "and o.estado = '"+estado+"' "
+                + "order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();
             detalles.add(contratos);
@@ -63,7 +65,7 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource equiposclientesxsector(Sector ini, Sector fin, String letraini, String letrafin) {
+    public JRDataSource equiposclientesxsector(Sector ini, Sector fin, String letraini, String letrafin,String estado) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String complemento = " and substring(o.contratos.clientes.apellidos,1,1) >= '" + letraini + "' "
@@ -72,7 +74,10 @@ public class ReportesClase {
         List<Series> contra = adm.query("Select o from Series as o "
                 + "where o.contratos.sector.numero "
                 + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento
-                + "and o.estado = 'P' and o.contratos.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.contratos.clientes.apellidos");
+                + "and o.estado = 'P' "
+                + "and o.contratos.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                + "and o.contratos.estado = '"+estado+"' "
+                + "order by o.contratos.clientes.apellidos");
         for (Iterator<Series> it = contra.iterator(); it.hasNext();) {
             Series ser = it.next();
             Contratos contratos = ser.getContratos();
@@ -575,20 +580,26 @@ List<Facturaanulada> anuladas = adm.queryNativo("Select o.* from Facturaanulada 
 
     }
 
-    public JRDataSource clientesxsector(Sector sec) {
+    public JRDataSource clientesxsector(Sector sec, String estado) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String que = "Select o from Contratos as o "
                 + "where o.sector.codigo =  '" + sec.getCodigo() + "'"
-                + "  and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  order by o.clientes.apellidos";
+                + "  and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                + " and o.estado = '"+estado+"' "
+                + "  order by o.clientes.apellidos";
 
         if (sec.getCodigo().equals(-1)) {
             que = "Select o from Contratos as o "
-                    + "where o.sucursal.codigo = '" + sucursal.getCodigo() + "'  order by o.clientes.apellidos";
+                    + "where o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
+                    + " and o.estado = '"+estado+"' "
+                    + "order by o.clientes.apellidos";
         } else {
             que = "Select o from Contratos as o "
                     + "where o.sector.codigo =  '" + sec.getCodigo() + "'"
-                    + "  and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  order by o.clientes.apellidos";
+                    + "  and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
+                    + " and o.estado = '"+estado+"' "
+                    + "order by o.clientes.apellidos";
         }
         List<Contratos> contra = adm.query(que);;
 

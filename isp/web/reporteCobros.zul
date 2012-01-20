@@ -96,7 +96,7 @@ cantones.add(0,cantonTodos);
                    report.setSrc(directorioReportes+"cxcclientesxzona.jasper");
                    
             }else if(tipo.equals("PORSECTORCLI") || tipo.equals("PORSECTORCLI2")){
-                  datasource = reportes.clientesxsector(sectorList.selectedItem.value);
+                  datasource = reportes.clientesxsector(sectorList.selectedItem.value,estadoContrato.selectedItem.value);
                    if(tipo.equals("PORSECTORCLI"))
                         report.setSrc(directorioReportes+"listacontratos.jasper");
                    else
@@ -107,11 +107,11 @@ cantones.add(0,cantonTodos);
                   datasource = reportes.clientesxestado(estadoContrato.selectedItem.value);
                   report.setSrc(directorioReportes+"listacontratosestado.jasper");
             }else if(tipo.equals("PORSECTORCLILETRA")){
-                  datasource = reportes.clientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value);
+                  datasource = reportes.clientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value,estadoContrato.selectedItem.value);
                    report.setSrc(directorioReportes+"listacontratosletras.jasper");
                    
             }else if(tipo.equals("EQUIPOSPORSECTORCLILETRA")){
-                  datasource = reportes.equiposclientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value);
+                  datasource = reportes.equiposclientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value,estadoContrato.selectedItem.value);
                    report.setSrc(directorioReportes+"listacontratosletrasequipos.jasper");
                    
             }else if(tipo.equals("INVNORMAL")){
@@ -246,6 +246,7 @@ void campos(String valor){
             titulo.value= "X Cobrar";
             filacanton.visible=true;
             filasector.visible=true;
+            filaestado.visible = true;
         }else if(valor.equals("PORESTADO")){
             titulo.value ="X Estado";
             filaestado.visible = true;
@@ -256,12 +257,14 @@ void campos(String valor){
             filasector.visible=true;
             filasector2.visible=true;
             filaletras.visible=true;
+            filaestado.visible = true;
         }else if(valor.equals("EQUIPOSPORSECTORCLILETRA")){
             titulo.value= "X Cobrar";
             filacanton.visible=true;
             filasector.visible=true;
             filasector2.visible=true;
             filaletras.visible=true;
+            filaestado.visible=true;
         }else{
             titulo.value= " ";
         }
