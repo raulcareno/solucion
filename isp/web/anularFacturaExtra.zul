@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+
+    <window id="anularFacturass" onClose="observacion.getValue()">
+  
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.util.ArrayList;
+  import java.math.BigDecimal;
+    
+    Administrador adm = new Administrador();
+    Session ses = Sessions.getCurrent();
+    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+    Empleados usuarioActual = ses.getAttribute("user");
+   
+   
+   String llenarCeros(String numero) {
+        
+        while (numero.length() < 7) {
+            numero = "0" + numero;
+        }        
+        return numero;
+        
+    }
+
+anular(){
+            
+               Integer num = numerofactura.value;
+               Sucursal suc = sucursalEmp.getSucursal();
+            String vali = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num);
+            List siExiste = adm.query("Select o from Factura as o where o.numero = '"+vali+"' ");
+               if(siExiste.size()>0){
+                                Messagebox.show("El # de la factura ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                numerofactura.setRawValue(null);
+                                numerofactura.focus();
+                                return;        
+                            }
+            Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));                
+            fac.setNumero(vali);
+            fac.setClientes(null);
+            fac.setEstado(true);
+            fac.setFecha(adm.Date());
+            fac.setContratos(null);
+            fac.setSucursal(sucursalEmp.getSucursal());
+            fac.setSubtotal(new BigDecimal(0));
+            fac.setDescuento(new BigDecimal(0));
+            fac.setBaseiva(new BigDecimal(0));
+            fac.setPorcentajeiva(new BigDecimal(0));
+            fac.setValoriva(new BigDecimal(0));
+            fac.setTotal(new BigDecimal(0));
+            fac.setObservacion("");
+            adm.guardar(fac);
+            
+            
+           Facturaanulada facAnulada = new Facturaanulada();
+            facAnulada.setFactura(fac);
+            facAnulada.setEmpleados(usuarioActual);
+            facAnulada.setFecha(adm.Date());
+            facAnulada.setNumero(fac.getNumero());
+            facAnulada.setObservacion(observacion.value);
+            facAnulada.setValorpago(new BigDecimal(0));
+            facAnulada.setNopago(0);
+            adm.guardar(facAnulada);
+            //adm.eliminarObjeto(Cxcobrar.class, facCodi );
+            
+   //text.setRawValue(null);
+   Messagebox.show("Factura Anulada correctamente...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+   numerofactura.setRawValue(null);
+   observacion.setRawValue(null);
+   numerofactura.focus();
+}
+
+]]>
+        </zscript>
+        <grid>
+            <rows>
+                <row>
+                    <span style="float:right" >
+                        No. de Factura
+                    </span>
+                    <intbox constraint="no empty: Debe ingresar un número de factura" id="numerofactura" />
+                </row>
+                <row>
+                    <span style="float:right" >
+                        Observación     
+                    </span>
+             
+                    <textbox constraint="no empty: Debe ingresar una observación para continuar" id="observacion" rows="2" maxlength="60" cols="40" />
+                </row>
+                <row>
+                    <span></span>
+                    <button id="CONT"  label="ANULAR FACTURA" onClick="numerofactura.focus(); numerofactura.getValue();  observacion.focus(); observacion.getValue();  anular();"/>
+                                 
+                </row>         
+            </rows>
+        </grid>      
+   
+                 
+
+                  
+  
+
+    </window>
+</zk>

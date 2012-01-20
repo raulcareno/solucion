@@ -153,6 +153,7 @@ void ingresar(Menuitem item,String pantalla ){
                                     <menuitem image="/images/tarjeta.png" value="/registroFacturas.zul"  label="Registrar Cobros" onClick='ingresar(self,"Registro de Cobros")' />
                                     <menuitem image="/images/tarjeta.png" value="/registroFacturasDebito.zul"  label="Registrar Cobros Debitos" onClick='ingresar(self,"Registro de Cobros")' />
                                     <menuitem image="/images/calendario.png" value="/generarFacturas.zul"  label="Generación Facturas" onClick='ingresar(self,"Generacion Cobros")' />
+                                    <menuitem image="/images/calendario.png" value="/anularFacturaExtra.zul"  label="Ingresar Factura Anulada" onClick='ingresar(self,"Generacion Cobros")' />
                                     <menuseparator />
                                     <menuitem  value="/planes.zul"    image="/images/planes.png" label="Planes Productos" onClick='ingresar(self,"Planes")' />
                                     <menuitem value="/reporteCobros.zul"  image="/images/reportes.png" label="Reportes" onClick='ingresar(self,"Reportes")' />

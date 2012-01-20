@@ -10,20 +10,7 @@ import java.util.*;
 import jcinform.bean.sources.clasestmp.InventarioNormal;
 import jcinform.bean.sources.clasestmp.Pendientes;
 import jcinform.conexion.Administrador;
-import jcinform.persistencia.Cabeceracompra;
-import jcinform.persistencia.Canton;
-import jcinform.persistencia.Clientes;
-import jcinform.persistencia.Contratos;
-import jcinform.persistencia.Cxcobrar;
-import jcinform.persistencia.Detalle;
-import jcinform.persistencia.Detallecompra;
-import jcinform.persistencia.Empleados;
-import jcinform.persistencia.Empleadosfacturas;
-import jcinform.persistencia.Empleadossucursal;
-import jcinform.persistencia.Equipos;
-import jcinform.persistencia.Sector;
-import jcinform.persistencia.Series;
-import jcinform.persistencia.Sucursal;
+import jcinform.persistencia.*;
 import net.sf.jasperreports.engine.JRDataSource;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
@@ -309,7 +296,7 @@ public class ReportesClase {
             cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
             clientes.add(cli);
         }
- List<Pendientes> detalles = new ArrayList();
+        List<Pendientes> detalles = new ArrayList();
         String desdestr = convertiraString(desde);
         String hastastr = convertiraString(hasta);
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
@@ -337,7 +324,7 @@ public class ReportesClase {
                         Detalle detalle = it.next();
                         String pth = " / ";
                         if (ii == 0) {
-                            pth = "("+mes(detalle.getFactura().getFecha().getMonth()) +")";
+                            pth = "(" + mes(detalle.getFactura().getFecha().getMonth()) + ")";
                         }
                         if (detalle.getEquipos() != null) {
                             pendi.setPlan(pendi.getPlan() + pth + detalle.getEquipos().getNombre());
@@ -365,11 +352,31 @@ public class ReportesClase {
             }
 
         }
+List<Facturaanulada> anuladas = adm.queryNativo("Select o.* from Facturaanulada as o "
+                + "where o.fecha between '" + desdestr + "' and  '" + hastastr + "' "
+                + " and o.numero LIKE '"+sucursal.getSerie1()+sucursal.getSerie2()+"FAC%'",Facturaanulada.class);
+        for (Iterator<Facturaanulada> it = anuladas.iterator(); it.hasNext();) {
+            Facturaanulada facturaanulada = it.next();
+            Pendientes pendi = null;
+            pendi = new Pendientes();
+            pendi.setPlan("ANULADA");
+            Clientes clientes1 = new Clientes();
+            clientes1.setApellidos("-");
+            clientes1.setNombres("");
+            pendi.setCliente(clientes1);
+            pendi.setFactura(facturaanulada.getNumero());
+            pendi.setFecha(facturaanulada.getFecha());
+            pendi.setTotal(new BigDecimal(0));
+            pendi.setSaldo(new BigDecimal(0));
+            pendi.setValorabonoefe(new BigDecimal(0));
+            detalles.add(pendi);
+        }
+
 //        for (Iterator<Pendientes> it = detalles.iterator(); it.hasNext();) {
 //            Pendientes pendientes = it.next();
 //            System.out.println(""+pendientes.getFactura()+ ";"+pendientes.getCliente());
 //        }
-       Collections.sort(detalles);
+        Collections.sort(detalles);
 //        System.out.println("__________________________________________--");
 //       for (Iterator<Pendientes> it = detalles.iterator(); it.hasNext();) {
 //            Pendientes pendientes = it.next();
@@ -378,7 +385,8 @@ public class ReportesClase {
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
         return ds;
     }
-  public String mes(int mes) {
+
+    public String mes(int mes) {
         switch (mes) {
             case 0:
                 return "Ene";
@@ -408,6 +416,7 @@ public class ReportesClase {
         return "";
 
     }
+
     public JRDataSource reporteCaja(Date desde, Date hasta) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
