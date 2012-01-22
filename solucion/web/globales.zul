@@ -195,14 +195,19 @@ equi.setPerfil(g);
        <caption label="Busquedas" />
 <vbox>
     <hbox>  Tipo:
-<combobox     id="buscarText"  width="60px">
-              <comboitem  value="ESP" label="Especialidad"/>
-            <comboitem  value="MAT" label="Materias"/>
-            <comboitem  value="GRU" label="Grupo de Materias"/>
-            <comboitem  value="SEC" label="Secciones"/>
-            <comboitem  value="PAR" label="Paralelos"/>
-    </combobox>
- <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
+
+  <listbox mold="select" id="buscarText"  onSelect="buscar(buscarText.selectedItem.getValue());">
+                <listitem  value="SEL" label="[Seleccione un Grupo]"/>
+                <listitem  value="ESP" label="Especialidad"/>
+                <listitem  value="MAT" label="Materias"/>
+                <listitem  value="GRU" label="Grupo de Materias"/>
+                <listitem  value="SEC" label="Secciones"/>
+                <listitem  value="PAR" label="Paralelos"/>
+</listbox>
+ <button id="buscar"  image="/images/actualizar.png" label="Buscar" onClick="buscar(buscarText.selectedItem.getValue());"/> 
+ 
+ 
+ </hbox>
     <hbox width="100%">
          <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="430px">
 			<listhead>
