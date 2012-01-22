@@ -111,16 +111,46 @@ if(guardando)
     return;
 
 guardando = true;
-  guardar1.disabled=true;
+  guardar1.disabled=false;
   guardar2.disabled=false;
     notas nso = new notas();
     notas r = (notas) datos.getRows();
+     Cursos curso = ((Cursos)curs.selectedItem.value);
+     MateriaProfesor materia = ((MateriaProfesor)mates.selectedItem.value);
+      
+                           Boolean seguir=true;
+                            int mm = 1;
+                            do{
+                                System.out.println("******** Ingreso n: "+mm);
+                                String ocupado = "Select o from Cursoocupado as o where o.curso = '" + curso.getCodigocur() + "' "
+                                                    + "and o.materia = '" + materia.getMateria().getCodigo() + "'  and o.tipo = 0  ";
+                                List ocupando = adm.query(ocupado);
+                                if (ocupando.size() > 0) {
+                                        System.out.println("Esperando.... ");
+                                        seguir = true;
+                                        Thread.sleep(2000);
+                                }else{
+                                    seguir = false;
+                                }
+                                mm++;
+                            }while(seguir==true);  
+      
+                            Cursoocupado cO = new Cursoocupado(adm.getNuevaClave("Cursoocupado", "codigo"));
+                            cO.setCurso(curso.getCodigocur());
+                            cO.setMateria(materia.getMateria().getCodigo());
+                            cO.setTipo(0);
+                            adm.guardar(cO);
+
+
         String resultado = "";
-        if(((MateriaProfesor)mates.selectedItem.value).getCuantitativa()){
-            resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+            if(((MateriaProfesor)mates.selectedItem.value).getCuantitativa()){
+                resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
             }else{
                 resultado = nso.guardarCualitativas(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
             }
+ //AL FINALIZAR EL PROCESO BORRO EL REGISTRO DE ÉSTE PROFESOR 
+ adm.eliminarObjeto(Cursoocupado.class, cO.getCodigo());
+ 
         if(resultado.equals("ok")){
             doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
             Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -230,7 +260,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             <bandpopup>
                                 <vbox>
                                     <listbox id="curs" width="420px"
-                                                 onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
+                                             onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
 
                                         <listitem forEach="${cursos}" value="${each}">
                                             <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
@@ -246,7 +276,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="mates" width="420px"
-                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
+                                                 onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
 
                                             <listitem forEach="${materias}" value="${each}">
                                                 <listcell label="${each.descripcion}" />
@@ -301,7 +331,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <rows>
                     <row  spans="3">
                         <span style="color:red;font-size:14px;">
-                                Nota: imprima una vez que haya guardado las notas, sino estas no se reflejarán en el reporte
+                            Nota: imprima una vez que haya guardado las notas, sino estas no se reflejarán en el reporte
                         </span>
                     </row>
                     <row>
