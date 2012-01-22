@@ -121,7 +121,9 @@ public class takePicture {
 
 
             //ImageIO.write(imageBuffer, fileType, new File(fileName));
-            java.io.File f = new java.io.File(fileName);
+            //java.io.File f = new java.io.File.createTempFile(fileName);
+            java.io.File f =  java.io.File.createTempFile(fileName, "jpg");
+            //File.createTempFile("miArchivo", ".gif");
             ImageIO.write(imageBuffer, "jpg", f);
             FileInputStream fin = null;
             fin = new FileInputStream(f);
