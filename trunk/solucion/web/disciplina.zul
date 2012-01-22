@@ -16,7 +16,7 @@ Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 Permisos permiso = new Permisos();
-
+Boolean guardando = false;
 List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 disciplina no = new disciplina();
@@ -62,9 +62,43 @@ Date fechaActual = new Date();
            // values[i]="number";
           }
 guardar(){
+
+        if(guardando)
+            return;
+        guardando = true;
+        
         disciplina nso = new disciplina();
         disciplina r = (disciplina) datos.getRows();
+        Cursos curso = ((Cursos)curs.selectedItem.value);
+        MateriaProfesor materia = ((MateriaProfesor)mates.selectedItem.value);
+        
+                    Boolean seguir=true;
+                    int mm = 1;
+                    do{
+                        System.out.println("******** Ingreso n: "+mm);
+                        String ocupado = "Select o from Cursoocupado as o where o.curso = '" + curso.getCodigocur() + "' "
+                                            + "and o.materia = '" + materia.getMateria().getCodigo() + "'  and o.tipo = 1  ";
+                        List ocupando = adm.query(ocupado);
+                        if (ocupando.size() > 0) {
+                                System.out.println("Esperando.... ");
+                                seguir = true;
+                                Thread.sleep(2000);
+                        }else{
+                            seguir = false;
+                        }
+                        mm++;
+                    }while(seguir==true);  
+
+                    Cursoocupado cO = new Cursoocupado(adm.getNuevaClave("Cursoocupado", "codigo"));
+                    cO.setCurso(curso.getCodigocur());
+                    cO.setMateria(materia.getMateria().getCodigo());
+                    cO.setTipo(1);
+                    adm.guardar(cO);
+
+        
         String resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+        //AL FINALIZAR EL PROCESO BORRO EL REGISTRO DE ÉSTE PROFESOR 
+        adm.eliminarObjeto(Cursoocupado.class, cO.getCodigo());
         if(resultado.equals("ok")){
            doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
             Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -72,6 +106,7 @@ guardar(){
          }else{
             Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
          }
+         guardando = false;
 }
 
   Boolean verificar(String accion){
