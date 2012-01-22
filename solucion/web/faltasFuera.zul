@@ -26,7 +26,7 @@ List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
  cursos.add(0,curS);
 Permisos permiso = new Permisos();
 disciplina no = new disciplina();
-
+Boolean guardando = false;
 List equivalen = adm.query("Select o from Equivalencias as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  and o.grupo = 'DI'");
  /*List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  and o.faltas = true order by o.orden");
 Sistemacalificacion siste = new Sistemacalificacion(-1);
@@ -67,11 +67,40 @@ String[][] values = new String[equivalen.size()][2];
              values[i][1]= "number";
            }
 guardar(){
+   if(guardando)
+            return;
+        guardando = true;
     disciplina nso = new disciplina();
     disciplina r = (disciplina) datos.getRows();
+       Cursos curso = ((Cursos)curs.selectedItem.value);
+         Sistemacalificacion sistema = (Sistemacalificacion)sisis.selectedItem.value;
+                    Boolean seguir=true;
+                    int mm = 1;
+                    do{
+                        System.out.println("******** Ingreso n: "+mm);
+                        String ocupado = "Select o from Cursoocupado as o where o.curso = '" + curso.getCodigocur() + "' "
+                                            + "and o.sistema = '" + sistema.getCodigosis() + "' ";
+                        List ocupando = adm.query(ocupado);
+                        if (ocupando.size() > 0) {
+                                System.out.println("Esperando.... ");
+                                seguir = true;
+                                Thread.sleep(2000);
+                        }else{
+                            seguir = false;
+                        }
+                        mm++;
+                    }while(seguir==true);  
+
+                    Cursoocupado cO = new Cursoocupado(adm.getNuevaClave("Cursoocupado", "codigo"));
+                    cO.setCurso(curso.getCodigocur());
+                    cO.setSistema(sistema.getCodigosis());
+                    cO.setTipo(2);
+                    adm.guardar(cO);
     nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),(Sistemacalificacion)sisis.selectedItem.value);
+    //AL FINALIZAR EL PROCESO BORRO EL REGISTRO DE ÉSTE PROFESOR 
+    adm.eliminarObjeto(Cursoocupado.class, cO.getCodigo());
     int a = Messagebox.show("Registro Almacenado con éxito...! \n ", "Administrador ", Messagebox.OK, Messagebox.QUESTION);
- 
+ guardando = false;
 
 }
 
