@@ -44,6 +44,7 @@ String p = grupo.getValue();
             equi = equi2;
             nombre.value = equi.getDescripcion();
             String p = "Caracter";
+            variable.value = equi.getVariable();
             try{
              vc.visible=false;
              vn.visible=false;
@@ -96,23 +97,29 @@ void estado(Boolean estado,Boolean modificar){
     equi.setPeriodo(periodo);
         equi.setDescripcion(nombre.value);
         equi.setTipo(grupo.selectedItem.value);
+        equi.setVariable(variable.value);
         String p = grupo.getValue();
+        String valMostrar = "";
             try{
                 if(p.equals("Caracter")){
                     equi.setCvalor(valc.value);
+                    valMostrar = ""+ valc.value;
                 }else if(p.equals("Numerico")){
                     equi.setNvalor(valn.value.doubleValue());
+                    valMostrar = ""+ valn.value;
                 }else if(p.equals("Logico")){
                     equi.setBvalor(vall.checked);
+                    valMostrar = ""+ vall.value;
                 }else if(p.equals("Fecha")){
                     equi.setDvalor(valf.value);
+                    valMostrar = ""+ valf.value;
                 }
             }catch(Exception e){}
 
         if((!equi.getCodigopar().equals(0)) ){
              adm.actualizar(equi);
                 List children = datos.selectedItem.children;
-                  ((Listcell)children.get(0)).label = equi.getCodigopar()+"";
+                  ((Listcell)children.get(0)).label = equi.getVariable()+"";
                   ((Listcell)children.get(1)).label = nombre.value+ "" ;
          }else{
                 equi.setCodigopar(adm.getNuevaClave("ParametrosGlobales","codigopar"));
@@ -123,7 +130,7 @@ void estado(Boolean estado,Boolean modificar){
                     agregar.disabled=false;
                     estado(true,false);
                     llenar(new ParametrosGlobales(0));
-  
+  variable.disabled =true;
 
     }
 
@@ -154,6 +161,8 @@ void modificar(){
 }
 void eliminar(){
   if(verificar("Eliminar")){
+   int val = Messagebox.show("¿Seguro de eliminar, puede causar problemas en el sistema?", "Seguridad",  Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+  if(val == 16){
         try{
              equi = (ParametrosGlobales)datos.selectedItem.value;
              adm.eliminarObjeto(ParametrosGlobales.class, equi.getCodigopar());
@@ -162,6 +171,7 @@ void eliminar(){
                 Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         }catch(Exception e){
             Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
         }
 }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -201,7 +211,7 @@ void eliminar(){
                         }else if(p.equals("F")){
                             li.appendChild(new Listcell(acceIt.getDvalor()+" "));
                         }
-
+                        li.appendChild(new Listcell(acceIt.getVariable()+" "));
                       datos.appendChild(li);
              }
 
@@ -225,7 +235,11 @@ equi.setPerfil(g);
 </row>
 
 <row><span style="float:right"> Nombre(*):</span>
+<span>
         <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />
+        VAR:
+        <textbox id="variable"  disabled="true"/>
+        </span>
 </row>
 <row id="vc" visible="false" ><span style="float:right"> Valor(*):</span>
         <span><textbox    id="valc"  maxlength="60" cols="40" readonly="true"/>
@@ -258,7 +272,7 @@ equi.setPerfil(g);
 <vbox>
 <hbox>
     <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();vc.visible=true;" />
+    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();vc.visible=true;variable.disabled =false;" />
 	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
 </hbox>
@@ -272,13 +286,17 @@ equi.setPerfil(g);
        <caption label="Busquedas" />
 <vbox>
 <hbox>  Tipo:
-<combobox id="buscarText"  width="60px">
-            <comboitem  value="C" label="Caracter"/>
-            <comboitem  value="N" label="Numerico"/>
-            <comboitem  value="L" label="Logico"/>
-            <comboitem  value="F" label="Fecha"/>
-    </combobox>
- <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+ 
+ 
+  <listbox mold="select" id="buscarText"  onSelect="buscar(buscarText.selectedItem.getValue());">
+                <listitem  value="SEL" label="[Seleccione un Grupo]"/>
+                <listitem  value="C" label="Caracter"/>
+                <listitem  value="N" label="Numerico"/>
+                <listitem  value="L" label="Logico"/>
+                <listitem  value="F" label="Fecha"/>
+</listbox>
+ <button id="buscar"  image="/images/actualizar.png" label="Buscar" onClick="buscar(buscarText.selectedItem.getValue());"/> 
+ 
  </hbox>
     <hbox width="100%">
          <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="800px">
@@ -286,6 +304,7 @@ equi.setPerfil(g);
                                 <listheader label="Código"/>
                                 <listheader label="Nombre"/>
                                 <listheader label="Valor"/>
+                                <listheader label="Variable"/>
 
 			</listhead>
 			<listitem forEach="${allEvents}" value="${each}">
