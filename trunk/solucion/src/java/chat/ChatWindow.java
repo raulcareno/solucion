@@ -32,6 +32,7 @@ public class ChatWindow extends Window {
 			chatroom = new ChatRoom();
 			desktop.getWebApp().setAttribute("chatroom", chatroom);
 		}
+        onLogin();
 	}
 
 	public void onCreate() {

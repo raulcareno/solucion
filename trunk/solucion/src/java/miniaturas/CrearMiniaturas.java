@@ -27,7 +27,7 @@ public class CrearMiniaturas {
         File f = new File(ubicacion + nombre + "." + formato);
         BufferedImage bf = p.escalarATamanyo(f, 230, 170, formato);
         try {
-            ImageIO.write(bf, formato, new File(ubicacion + nombre + "_t." + formato));
+            ImageIO.write(bf, formato, new File(ubicacion + nombre + "." + formato));
         } catch (IOException e) {
             System.out.println("Error de escritura");
         }
