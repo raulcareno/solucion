@@ -19,6 +19,7 @@ import jcinform.bean.sources.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 Permisos per = new Permisos();
+
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Empresa empresa = (Empresa) ses.getAttribute("empresa");
@@ -34,9 +35,14 @@ cantones.add(0,cantonTodos);
              empSel.setApellidos("");
              empSel.setNombres("");
              
- 
+ List planes = adm.query("Select o from Plan as o " + 
+     " where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  order by o.nombre, o.valor ");
+     Plan pSel = new Plan(-1);
+     pSel.setNombre("[TODOS]");
+     planes.add(0,pSel);
  List empleadosEncontrados = adm.query("Select o from Empleados as o  order by o.apellidos");      
-      public Double redondear(Double numero, int decimales) {
+ 
+ public Double redondear(Double numero, int decimales) {
                 try{
                         BigDecimal d = new BigDecimal(numero);
                 d = d.setScale(decimales, RoundingMode.HALF_UP);
@@ -105,6 +111,15 @@ cantones.add(0,cantonTodos);
                    
             }else if(tipo.equals("PORESTADO")){
                   datasource = reportes.clientesxestado(estadoContrato.selectedItem.value);
+                  report.setSrc(directorioReportes+"listacontratosestado.jasper");
+            }else if(tipo.equals("PORESTADOPLAN")){
+                    Set items2 = planList.getSelectedItems();
+                    List listPlanes = new ArrayList(items2);
+                    if(listPlanes.size()<=0){
+                    alert("Seleccione al menos un plan");
+                    return;
+                    }
+                  datasource = reportes.clientesxestadoplan(estadoContrato.selectedItem.value,listPlanes,tipoplanList.selectedItem.value);
                   report.setSrc(directorioReportes+"listacontratosestado.jasper");
             }else if(tipo.equals("PORSECTORCLILETRA")){
                   datasource = reportes.clientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value,estadoContrato.selectedItem.value);
@@ -202,6 +217,8 @@ void campos(String valor){
       filasector2.visible = false;
       filaempleados.visible=false;
       filaestado.visible = false;
+      filaplan.visible = false;
+            filatipoplan.visible = false;
       fec.setDate(1);
         if(valor.equals("CXCLI")){
             titulo.value= "Cuentas por Pagar";
@@ -260,6 +277,12 @@ void campos(String valor){
         }else if(valor.equals("PORESTADO")){
             titulo.value ="X Estado";
             filaestado.visible = true;
+        
+        }else if(valor.equals("PORESTADOPLAN")){
+            titulo.value ="X Estado";
+            filaestado.visible = true;
+            filaplan.visible = true;
+            filatipoplan.visible = true;
         
         }else if(valor.equals("PORSECTORCLILETRA")){
             titulo.value= "X Cobrar";
@@ -361,6 +384,7 @@ void campos(String valor){
                                     <listitem id="PORSECTORCLI" label="Clientes por Sector " value="PORSECTORCLI" />
                                     <listitem id="PORISNSTALACIONCLI" label="Clientes por Instalación " value="PORINSTALACIONCLI" />
                                     <listitem id="PORESTADO" label="Clientes por Estado " value="PORESTADO" />
+                                    <listitem id="PORESTADOPLAN" label="Clientes por Estado y Plan" value="PORESTADOPLAN" />
                                     <listitem id="PORSECTORCLI2" label="Clientes por Sector sin Valor" value="PORSECTORCLI2" />
                                     <listitem id="PORSECTORCLILETRA" label="Clientes por Sector(Desde-Hasta) [A-Z] " value="PORSECTORCLILETRA" />
                                     <listitem id="EQUIPOSPORSECTORCLILETRA" label="Clientes por Sector y Equipos[A-Z] " value="EQUIPOSPORSECTORCLILETRA" />
@@ -484,7 +508,29 @@ void campos(String valor){
                             </bandbox>
 
                         </row>
-                        <row visible = "false" id="filasector">
+                      <row visible = "false" id="filatipoplan">
+                            <span style="float:right"> Tipo(*):</span>
+                                        <listbox mold="select" id="tipoplanList" width="250px">
+                                            <listitem selected="true" value="TODOS" label="TODOS" />
+                                            <listitem  value="HOME" label="HOME" />
+                                            <listitem value="BASICO" label="BASICO" />
+                                            <listitem value="CORPORATIVO" label="CORPORATIVO" />
+                                            <listitem value="PREMIUM" label="PREMIUM" />
+                                        </listbox>
+                              
+
+                        </row>
+                        <row visible = "false" id="filaplan">
+                            <span style="float:right"> Plan(*):</span>
+                                        <listbox height="80px" id="planList" width="250px" multiple="true" checkmark="true" >
+                                            <listitem forEach="${planes}" value="${each}">
+                                                <listcell label="${each.nombre}" />
+                                            </listitem>
+                                        </listbox>
+                              
+
+                        </row>
+                      <row visible = "false" id="filasector">
                             <span style="float:right"> Sector(*):</span>
                             <bandbox  width="200px" readonly="true"  id="bdSector">
                                 <bandpopup>

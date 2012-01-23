@@ -14,6 +14,7 @@ import jcinform.persistencia.*;
 import net.sf.jasperreports.engine.JRDataSource;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Listitem;
 
 /**
  *
@@ -29,7 +30,7 @@ public class ReportesClase {
         sucursal = sucursalEmp.getSucursal();
     }
 
-    public JRDataSource clientesxsector(Sector ini, Sector fin, String letraini, String letrafin,String estado) {
+    public JRDataSource clientesxsector(Sector ini, Sector fin, String letraini, String letrafin, String estado) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String complemento = " and substring(o.clientes.apellidos,1,1) >= '" + letraini + "' "
@@ -39,8 +40,49 @@ public class ReportesClase {
                 + "where o.sector.numero "
                 + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento
                 + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + "and o.estado = '"+estado+"' "
+                + "and o.estado = '" + estado + "' "
                 + "order by o.clientes.apellidos");
+        for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
+            Contratos contratos = it.next();
+            detalles.add(contratos);
+        }
+        ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
+        return ds;
+    }
+
+    public JRDataSource clientesxestadoplan(String estado, List planes, String tipo) {
+        Administrador adm = new Administrador();
+        ArrayList detalles = new ArrayList();
+        String comple = "";
+        String complemento2 = "";
+        if (!tipo.equals("TODOS")) {
+            comple = " and o.plan.tipo = '"+tipo+"' ";
+        }
+        Boolean todoslosPlanes = false;
+        String codigosPlanes = "";
+        if (planes != null) {
+            for (Iterator it = planes.iterator(); it.hasNext();) {
+                Listitem object = (Listitem) it.next();
+                if (((Plan)object.getValue()).getCodigo().equals(-1)) {
+                    todoslosPlanes = true;
+                    break;
+                }
+                codigosPlanes += ((Plan)object.getValue()).getCodigo() + ",";
+            }
+            if (codigosPlanes.length() > 0) {
+                codigosPlanes = codigosPlanes.substring(0, codigosPlanes.length() - 1);
+            }
+
+            if (todoslosPlanes == false) {
+                complemento2 = " and o.plan.codigo in (" + codigosPlanes + ") ";
+            }
+
+        }
+
+        List<Contratos> contra = adm.query("Select o from Contratos as o "
+                + " where  o.estado = '" + estado + "' "
+                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' " + comple + complemento2
+                + " order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();
             detalles.add(contratos);
@@ -65,7 +107,7 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource equiposclientesxsector(Sector ini, Sector fin, String letraini, String letrafin,String estado) {
+    public JRDataSource equiposclientesxsector(Sector ini, Sector fin, String letraini, String letrafin, String estado) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String complemento = " and substring(o.contratos.clientes.apellidos,1,1) >= '" + letraini + "' "
@@ -76,7 +118,7 @@ public class ReportesClase {
                 + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento
                 + "and o.estado = 'P' "
                 + "and o.contratos.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + "and o.contratos.estado = '"+estado+"' "
+                + "and o.contratos.estado = '" + estado + "' "
                 + "order by o.contratos.clientes.apellidos");
         for (Iterator<Series> it = contra.iterator(); it.hasNext();) {
             Series ser = it.next();
@@ -357,9 +399,9 @@ public class ReportesClase {
             }
 
         }
-List<Facturaanulada> anuladas = adm.queryNativo("Select o.* from Facturaanulada as o "
+        List<Facturaanulada> anuladas = adm.queryNativo("Select o.* from Facturaanulada as o "
                 + "where o.fecha between '" + desdestr + "' and  '" + hastastr + "' "
-                + " and o.numero LIKE '"+sucursal.getSerie1()+sucursal.getSerie2()+"FAC%'",Facturaanulada.class);
+                + " and o.numero LIKE '" + sucursal.getSerie1() + sucursal.getSerie2() + "FAC%'", Facturaanulada.class);
         for (Iterator<Facturaanulada> it = anuladas.iterator(); it.hasNext();) {
             Facturaanulada facturaanulada = it.next();
             Pendientes pendi = null;
@@ -391,20 +433,20 @@ List<Facturaanulada> anuladas = adm.queryNativo("Select o.* from Facturaanulada 
         return ds;
     }
 
-    public JRDataSource facturasComision(Empleados emp,  Date desde, Date hasta, String estado) {
+    public JRDataSource facturasComision(Empleados emp, Date desde, Date hasta, String estado) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
-            //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
-             if(emp.getCodigo().equals(-1)){
-                    clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                        + " WHERE o.estado = '"+estado+"' order by o.clientes.apellidos");
-             }else{
-                    clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                        + " WHERE o.empleados2.codigo = '"+emp.getCodigo()+"'   "
-                        + " and o.estado = '"+estado+"' order by o.clientes.apellidos");
-             }
-             
-         
+        //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
+        if (emp.getCodigo().equals(-1)) {
+            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                    + " WHERE o.estado = '" + estado + "' order by o.clientes.apellidos");
+        } else {
+            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                    + " WHERE o.empleados2.codigo = '" + emp.getCodigo() + "'   "
+                    + " and o.estado = '" + estado + "' order by o.clientes.apellidos");
+        }
+
+
         List<Pendientes> detalles = new ArrayList();
         String desdestr = convertiraString(desde);
         String hastastr = convertiraString(hasta);
@@ -446,10 +488,10 @@ List<Facturaanulada> anuladas = adm.queryNativo("Select o.* from Facturaanulada 
                     }
                     detalleLocal = null;
 
-                    Contratos contra = (Contratos) adm.buscarClave((Integer) vec.get(7),Contratos.class);
+                    Contratos contra = (Contratos) adm.buscarClave((Integer) vec.get(7), Contratos.class);
                     pendi.setContratos(contra);
                     pendi.setEmpleado(contra.getEmpleados2().toString());
-                    pendi.setContrato(contra.getContrato()+"");
+                    pendi.setContrato(contra.getContrato() + "");
                     pendi.setCliente(clientes1);
                     pendi.setFactura("" + vec.get(1));
                     Date d = (Date) vec.get(2);
@@ -466,9 +508,9 @@ List<Facturaanulada> anuladas = adm.queryNativo("Select o.* from Facturaanulada 
             }
 
         }
-  
+
         Collections.sort(detalles);
-         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
+        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
         return ds;
     }
 
@@ -667,19 +709,19 @@ List<Facturaanulada> anuladas = adm.queryNativo("Select o.* from Facturaanulada 
         String que = "Select o from Contratos as o "
                 + "where o.sector.codigo =  '" + sec.getCodigo() + "'"
                 + "  and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + " and o.estado = '"+estado+"' "
+                + " and o.estado = '" + estado + "' "
                 + "  order by o.clientes.apellidos";
 
         if (sec.getCodigo().equals(-1)) {
             que = "Select o from Contratos as o "
                     + "where o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
-                    + " and o.estado = '"+estado+"' "
+                    + " and o.estado = '" + estado + "' "
                     + "order by o.clientes.apellidos";
         } else {
             que = "Select o from Contratos as o "
                     + "where o.sector.codigo =  '" + sec.getCodigo() + "'"
                     + "  and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
-                    + " and o.estado = '"+estado+"' "
+                    + " and o.estado = '" + estado + "' "
                     + "order by o.clientes.apellidos";
         }
         List<Contratos> contra = adm.query(que);;
