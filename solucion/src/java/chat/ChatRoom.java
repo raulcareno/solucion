@@ -1,21 +1,4 @@
-/* ChatRoom.java
 
- {{IS_NOTE
- Purpose:
- 
- Description:
- 
- History:
- Aug 17, 2007 12:58:55 PM , Created by robbiecheng
- }}IS_NOTE
-
- Copyright (C) 2007 Potix Corporation. All Rights Reserved.
-
- {{IS_RIGHT
- This program is distributed under GPL Version 2.0 in the hope that
- it will be useful, but WITHOUT ANY WARRANTY.
- }}IS_RIGHT
- */
 
 package chat;
 
@@ -32,7 +15,7 @@ import java.util.LinkedList;
 public class ChatRoom {
 	private Collection<Chatter> _chatters;
 
-	private static final String SIGNAL = "*****";
+	private static final String SIGNAL = "-";
 
 	public ChatRoom() {
 		_chatters = new LinkedList<Chatter>();

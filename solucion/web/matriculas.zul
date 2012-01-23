@@ -49,10 +49,12 @@ import java.math.BigDecimal;
 import bean.notas;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-
+import miniaturas.*;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
+
+CrearMiniaturas mini = new CrearMiniaturas();
 Boolean cargandoFoto = false;
 Boolean guardando = false;
     Administrador adm = new Administrador();
@@ -726,6 +728,8 @@ void estado(Boolean estado,Boolean modificar){
             FileOutputStream out=new FileOutputStream(name);
             DataOutputStream objout=new DataOutputStream(out);
             org.zkoss.io.Files.copy(objout,objin);
+            mini.reducir(periodo.getInstitucion().getFotos(),matricula.getCodigomat()+"",nueva.getFormat()+"");
+            //String ubicacion, String nombre, String formato
             matricula.setExtension(nueva.getFormat());
         }else{
             matricula.setExtension(null);
