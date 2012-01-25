@@ -125,6 +125,7 @@ error.visible = false;
              Clients.evalJavaScript(command2);
                 error.visible = true;
                 usuario.focus();
+                clave.setRawValue(null);
              }
   
 }

@@ -92,6 +92,10 @@
                                     <datebox id="hastama"  value="@{inobjeto.fechamaf}"  format="dd/MM/yyyy"   onChange="update();"  readonly="true"  />
                                 </span>
                             </row>
+                            <row>
+                                <span style="float:right"> Habilitado para Consultar Notas:</span>
+                                <checkbox id="vernotas" checked="@{inobjeto.vernotas}" onCheck="update();" disabled="true"  />
+                            </row>
  
                         </rows>
                     </grid>
@@ -215,7 +219,8 @@ void estado(Boolean estado,Boolean modificar){
     hasta.disabled=estado;
     seccionesL.disabled=estado;
     regimen.disabled=estado;
-    descripcion.readonly = estado;
+    descripcion.readonly = 
+    vernotas.disabled=estado;
 }
 
 

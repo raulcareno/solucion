@@ -21,6 +21,10 @@ List cursos = adm.query("SELECT distinct o FROM Matriculas as o WHERE o.estudian
  
 void buscar2(Matriculas mat){
 try{
+            if(mat.getCurso().getPeriodo().getVernotas()){
+               Messagebox.show("LAS NOTAS DE ÉSTE PERIODO SE ENCUENTRAN BLOQUEADAS POR LA ADMINISTRACIÓN  (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                return;
+            }
             if(mat != null){
                 ses.setAttribute("matricula",mat);
                 Window win34 = (Window) Executions.createComponents("/notasEstudiantes.zul", null, null);
