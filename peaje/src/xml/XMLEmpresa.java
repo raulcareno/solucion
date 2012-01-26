@@ -112,7 +112,7 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String PUERTAFAC = "PUERTAFAC";
     private static final String BARRERAS = "BARRERAS";
     private static final String IPBARRAS1 = "IPBARRAS1";
-    private static final String IPBARRAS2 = "IPBARRAS1";
+    private static final String IPBARRAS2 = "IPBARRAS2";
     private static final String PUERTOBARRAS1 = "PUERTOBARRAS1";
     private static final String PUERTOBARRAS2 = "PUERTOBARRAS2";
      

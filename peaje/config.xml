@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <JCINFORMEMPRESA>
     <PUERTOPRINCIPAL>COM3</PUERTOPRINCIPAL>
-    <LED>null</LED>
-    <BARRA1>COM3</BARRA1>
+    <LED/>
+    <BARRA1/>
     <BARRA2/>
     <SALE1>1</SALE1>
     <SALE2>2</SALE2>
