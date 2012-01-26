@@ -1,6 +1,6 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.8" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Container class="javax.swing.JDialog" name="buscarClientes">
       <Properties>
@@ -1359,10 +1359,10 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Component id="jLabel33" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="12" max="32767" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
                                   <Component id="jLabel35" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jButton10" pref="40" max="32767" attributes="1"/>
+                              <Component id="jButton10" max="32767" attributes="1"/>
                               <Component id="btnGuardarCambios" alignment="0" min="-2" pref="40" max="-2" attributes="1"/>
                           </Group>
                           <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
@@ -2890,7 +2890,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="ubicacionArchivo">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="C:\RESPALDOS\"/>
+                    <Property name="text" type="java.lang.String" value="C:\u005cRESPALDOS\u005c" containsInvalidXMLChars="true"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

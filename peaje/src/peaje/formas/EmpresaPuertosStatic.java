@@ -96,6 +96,10 @@ public class EmpresaPuertosStatic {
    public String url;
    public String entra1;
    public String entra2;
+   public String ipBarras1;
+   public String ipBarras2;
+   public String puertoBarras1;
+   public String puertoBarras2;
     public Double getMulta() {
         return multa;
     }
@@ -625,7 +629,40 @@ public class EmpresaPuertosStatic {
     public void setBarreras(String barreras) {
         this.barreras = barreras;
     }
-    
+
+    public String getIpBarras1() {
+        return ipBarras1;
+    }
+
+    public void setIpBarras1(String ipBarras1) {
+        this.ipBarras1 = ipBarras1;
+    }
+
+    public String getIpBarras2() {
+        return ipBarras2;
+    }
+
+    public void setIpBarras2(String ipBarras2) {
+        this.ipBarras2 = ipBarras2;
+    }
+
+    public String getPuertoBarras1() {
+        return puertoBarras1;
+    }
+
+    public void setPuertoBarras1(String puertoBarras1) {
+        this.puertoBarras1 = puertoBarras1;
+    }
+
+    public String getPuertoBarras2() {
+        return puertoBarras2;
+    }
+
+    public void setPuertoBarras2(String puertoBarras2) {
+        this.puertoBarras2 = puertoBarras2;
+    }
+
+        
     
  }
  

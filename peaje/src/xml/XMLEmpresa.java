@@ -111,7 +111,11 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String PUERTATIC = "PUERTATIC";
     private static final String PUERTAFAC = "PUERTAFAC";
     private static final String BARRERAS = "BARRERAS";
-
+    private static final String IPBARRAS1 = "IPBARRAS1";
+    private static final String IPBARRAS2 = "IPBARRAS1";
+    private static final String PUERTOBARRAS1 = "PUERTOBARRAS1";
+    private static final String PUERTOBARRAS2 = "PUERTOBARRAS2";
+     
 
     // Variables
     private Document xmlDoc = null;
@@ -299,6 +303,18 @@ public static UsuarioActivo user = new UsuarioActivo();
         item = xmlDoc.createElement(BARRERAS);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBarreras()+""));
         personal.appendChild(item);
+        item = xmlDoc.createElement(IPBARRAS1);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getIpBarras1()+""));
+        personal.appendChild(item);
+        item = xmlDoc.createElement(IPBARRAS2);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getIpBarras2()+""));
+        personal.appendChild(item);
+        item = xmlDoc.createElement(PUERTOBARRAS1);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getPuertoBarras1()+""));
+        personal.appendChild(item);
+        item = xmlDoc.createElement(PUERTOBARRAS2);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getPuertoBarras2()+""));
+        personal.appendChild(item);
         
     }
 
@@ -427,6 +443,10 @@ public static UsuarioActivo user = new UsuarioActivo();
        
         beanEmpleado.setPuertatic(emp.getPuertatic());
         beanEmpleado.setPuertafac(emp.getPuertafac());
+        beanEmpleado.setIpBarras1(emp.getIpBarras1());
+        beanEmpleado.setIpBarras2(emp.getIpBarras2());
+        beanEmpleado.setPuertoBarras1(emp.getPuertoBarras1());
+        beanEmpleado.setPuertoBarras2(emp.getPuertoBarras2());
 
 
    beanEmpleado.setPuerta1(emp.getPuerta1());
@@ -944,9 +964,46 @@ public static UsuarioActivo user = new UsuarioActivo();
                     Element PUERTA7outElement = (Element) PUERTA7outList.item(0);
                     NodeList PUERTA7outAgeList = PUERTA7outElement.getChildNodes();
                     user.setPuerta7(((Node) PUERTA7outAgeList.item(0)).getNodeValue().trim());
-  } catch (Exception parserConfigurationException) {
-//                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    } catch (Exception parserConfigurationException) {
+                        //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
+                    
+                    try {
+                    NodeList IPBARRAS1outList = firstPersonElement.getElementsByTagName("IPBARRAS1");
+                    Element IPBARRAS1outElement = (Element) IPBARRAS1outList.item(0);
+                    NodeList IPBARRAS1outAgeList = IPBARRAS1outElement.getChildNodes();
+                    user.setIpBarras1(((Node) IPBARRAS1outAgeList.item(0)).getNodeValue().trim());
+                    } catch (Exception parserConfigurationException) {
+                        //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    try {
+                    NodeList IPBARRAS2outList = firstPersonElement.getElementsByTagName("IPBARRAS2");
+                    Element IPBARRAS2outElement = (Element) IPBARRAS2outList.item(0);
+                    NodeList IPBARRAS2outAgeList = IPBARRAS2outElement.getChildNodes();
+                    user.setIpBarras2(((Node) IPBARRAS2outAgeList.item(0)).getNodeValue().trim());
+                    } catch (Exception parserConfigurationException) {
+                        //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    
+                    try {
+                    NodeList PUERTOBARRAS1outList = firstPersonElement.getElementsByTagName("PUERTOBARRAS1");
+                    Element PUERTOBARRAS1outElement = (Element) PUERTOBARRAS1outList.item(0);
+                    NodeList PUERTOBARRAS1outAgeList = PUERTOBARRAS1outElement.getChildNodes();
+                    user.setPuertoBarras1(((Node) PUERTOBARRAS1outAgeList.item(0)).getNodeValue().trim());
+                    } catch (Exception parserConfigurationException) {
+                        //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                     
+                    
+                    try {
+                    NodeList PUERTOBARRAS2outList = firstPersonElement.getElementsByTagName("PUERTOBARRAS2");
+                    Element PUERTOBARRAS2outElement = (Element) PUERTOBARRAS2outList.item(0);
+                    NodeList PUERTOBARRAS2outAgeList = PUERTOBARRAS2outElement.getChildNodes();
+                    user.setPuertoBarras2(((Node) PUERTOBARRAS2outAgeList.item(0)).getNodeValue().trim());
+                    } catch (Exception parserConfigurationException) {
+                        //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                     
                       //------
                     
                 }//end of if clause
