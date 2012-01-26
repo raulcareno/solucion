@@ -107,6 +107,12 @@ public class ReportePromocionDataSource implements JRDataSource {
                     valor = null;
                 }
 
+            } else if ("equivale".equals(fieldName)) {
+                try {
+                        valor =  " "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();    
+                } catch (Exception e) {
+                    valor = "";
+                }
             } else if ("letras".equals(fieldName)) {
                 if (nodo.getMateriaProfesor().getCuantitativa() == true) {
                     valor = num.numeros((Double) nodo.getNota()) + "";
@@ -180,6 +186,22 @@ public class ReportePromocionDataSource implements JRDataSource {
                     valor = formado;
                     System.out.println("erroren" + e);
                 }
+            }else if ("equivaleAprovechamiento".equals(fieldName)) {
+                try {
+                    valor =  " "+devolverNombre(equ,nodo.getAprovechamiento()).getNombre();    
+                } catch (Exception e) {
+                    valor = "";
+                    System.out.println("erroren" + e);
+                }
+                
+            } else if ("equivaleDisciplina".equals(fieldName)) {
+                try {
+                    valor =  " "+devolverNombre(equ,nodo.getDisciplina()).getNombre();    
+                } catch (Exception e) {
+                    valor = "";
+                    System.out.println("erroren" + e);
+                }
+                
             } else if ("sello".equals(fieldName)) {
                 try {
                     byte[] bImage = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getEscudo();
