@@ -308,7 +308,7 @@ void cargarPar(Global g){
                 <row>
                     <span style="float:right"> Orden(*):</span>
                     <span>
-                        <spinner value="1" cols="2" id="secuencia"  constraint="no negative,no zero,min 0 max 20" />
+                        <spinner value="1" cols="2" id="secuencia"  constraint="no negative,min 0 max 20" />
                         <separator orient="vertical" bar="true"  />
                         Aprueba con:
                         <decimalbox id="aprobacion" maxlength="5" cols="3"  readonly="true"    /> pts.
