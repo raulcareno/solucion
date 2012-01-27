@@ -23,20 +23,21 @@ public class generaClaves {
      * @param args the command line arguments
      */
     public static void main(String[] args){
-        Clients.showBusy("Procediendo", true);
+//        Clients.showBusy("Procediendo", true);
 //        int val = Messagebox.show("¿Seguro de eliminar, puede causar la pérdida de notas, si ya tiene registrado?", "Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
         // TODO code application logic here
-        String tipo = "EST";
+        String tipo = "EMP";
         Administrador adm = new Administrador();
         Permisos c = new Permisos();
 
         if (tipo.contains("EMP")) {
-            List<Empleados> emp = adm.query("Select o from Empleados as o where  o.clave is null ");
+            List<Empleados> emp = adm.query("Select o from Empleados as o where  o.usuario is null ");
 
             for (Iterator<Empleados> it = emp.iterator(); it.hasNext();) {
                 Empleados empleados = it.next();
-                empleados.setClave(c.encriptar(empleados.getUsuario()));
-                //System.out.println("1."+c.encriptar(empleados.getUsuario()));
+                empleados.setUsuario(empleados.getIdentificacion());
+                empleados.setClave(c.encriptar(empleados.getIdentificacion()));
+                System.out.println("1."+(empleados.getUsuario()));
                 adm.actualizar(empleados);
 
             }
@@ -47,8 +48,8 @@ public class generaClaves {
 
 
                 String user = "";
-                String caracter = "JCINFORM";
-                caracter += "JCQWERTYUIOPASDFGHJKLZXCVBNM";
+                String caracter = "";
+                caracter += "A";
                 String caracterNumeros = "012345678901234567890123456789012345678901234567890123456789";
                 //caracterNumeros += "0123456789";
 //                String numericos = "012345678901234567890123456789";
@@ -94,6 +95,7 @@ public class generaClaves {
                 String caracter = "JCINFORM";
                 caracter += "JCQWERTYUIOPASDFGHJKLZXCVBNM";
 //                String numericos = "012345678901234567890123456789";
+                String caracterNumeros = "012345678901234567890123456789012345678901234567890123456789";
                 int numero_caracteres = 10;
                 int total = caracter.length();
                 int contando = 1;
@@ -103,7 +105,7 @@ public class generaClaves {
                     String clave2 = "";
 
                     for (int a = 0; a < numero_caracteres; a++) {
-                        clave2 += caracter.charAt(((Double) (total * Math.random())).intValue());
+                        clave2 += caracterNumeros.charAt(((Double) (total * Math.random())).intValue());
                     }
 
                     String clave = clave2.toUpperCase();
