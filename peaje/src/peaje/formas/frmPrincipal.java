@@ -3962,9 +3962,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     public void buscarTarjetaValidarSalida2(String puertoViene, String noticket) {//VALIDO LA SALIDA CON CODIGO DE  BARRAS
 //        final frmPrincipal pra = this;
-        if (puertoViene.length() > 10) {
-            puertoViene = puertoViene.substring(0, 10);
-        }
+//        if (puertoViene.length() > 10) {
+//            puertoViene = puertoViene.substring(0, 10);
+//        }
         if (noticket.length() > 10) {
             noticket = noticket.substring(0, 10);
         }
