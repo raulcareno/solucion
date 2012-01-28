@@ -749,6 +749,14 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"certificadoMatricula2.jasper");
+            }else if(tipo.equals("CC")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"certificadoConstancia.jasper");
+            }else if(tipo.equals("CP")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"certificadoPension.jasper");
             }else if(tipo.equals("LFEC")){
                     datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
@@ -989,6 +997,8 @@ void campos(String valor){
         }
         if(valor.equals("CM") ||  valor.equals("CM2") )
             titulo.value = "Certificado de Matricula";
+        if(valor.equals("CC") ||  valor.equals("CP") )
+            titulo.value = "Certificado";
         if(valor.equals("AM"))
             titulo.value = "Actas de Matricula";
         if(valor.equals("INS"))
@@ -1051,11 +1061,13 @@ void campos(String valor){
                     <rows>
                         <row  style="background:transparent;border:0px" >
                             <span style="float:right"> Reporte:</span>
-                            <listbox id="reporte" onSelect="campos(self.selectedItem.value)"  width="400px"  mold="select" >
+                            <listbox id="reporte" onSelect="campos(self.selectedItem.value); curs.clearSelection()"  width="400px"  mold="select" >
                                 <listitem  label="[Seleccione]" value="-1" selected="true" />
                                 <listitem  id="AM" label="Actas de Matricula" value="AM" />
                                 <listitem id="CM"  label="Certificado de Matricula" value="CM" />
                                 <listitem  id="CM2" label="Certificado de Matricula(2)" value="CM2" />
+                                <listitem  id="CC" label="Certificado de Constancia(Entrega documentos)" value="CC" />
+                                <listitem  id="CP" label="Certificado de Pensión" value="CP" />
                                 <listitem  id="LMIN" label="Folio y No. Matricula" value="LMIN"/>
                                 <listitem  id="INS" label="Inscritos" value="INS" />
                                 <listitem disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
