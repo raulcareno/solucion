@@ -185,7 +185,7 @@
 				<textElement textAlignment="Justified" lineSpacing="1_1_2">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Está matriculado en el "+$F{curso}+" en el año lectivo "+$P{periodo}+" y se verifica que en el Archivo Calificaciones el promedio en Desarrollo Comportamental (Conducta) es de "+$F{disciplina}+"  Equivalente a  "+$F{equivaleDisciplina}+". "]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Está matriculado en el "+$F{curso}+" en el año lectivo "+$P{periodo}+" y se verifica que en el Archivo Calificaciones el promedio en Aprochamiento es de "+$F{aprovechamiento}+"  Equivalente a  "+$F{equivaleAprovechamiento}+". "]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="-1" y="239" width="425" height="20"/>
