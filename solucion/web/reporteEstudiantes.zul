@@ -22,6 +22,7 @@ Permisos per = new Permisos();
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
+reportesClase  noti = new reportesClase();
 
 Empleados user = (Empleados)ses.getAttribute("user");
     List cursos = null;
@@ -745,6 +746,15 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"CM",listadoEstudiantes);
                     report.setSrc(directorioReportes+"certificadoMatricula.jasper");
                     parametros.put("titulo", "Certificado de Matricula");
+            }else if(tipo.equals("CD")){
+                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes);
+                    report.setSrc(directorioReportes+"certificadoconducta.jasper");
+            }else if(tipo.equals("CA")){
+                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes);
+                    report.setSrc(directorioReportes+"certificadoaprovechamiento.jasper");
+            }else if(tipo.equals("CAD")){
+                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes);
+                    report.setSrc(directorioReportes+"certificadoaprovydisc.jasper");
             }else if(tipo.equals("CM2")){
                     datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
@@ -1068,6 +1078,11 @@ void campos(String valor){
                                 <listitem  id="CM2" label="Certificado de Matricula(2)" value="CM2" />
                                 <listitem  id="CC" label="Certificado de Constancia(Entrega documentos)" value="CC" />
                                 <listitem  id="CP" label="Certificado de Pensión" value="CP" />
+                                <listitem  id="CD" label="Certificado de Disciplina" value="CD" />
+                                <listitem  id="CA" label="Certificado de Aprovechamiento" value="CA" />
+                                <listitem  id="CAD" label="Certificado de Aprov. Y Disciplina" value="CAD" />
+                                <listitem  id="CH" label="Certificado de Historial de Matriculas con Actual" value="CH" />
+                                <listitem  id="CAP" label="Certificado de Años Aprobados" value="CAP" />
                                 <listitem  id="LMIN" label="Folio y No. Matricula" value="LMIN"/>
                                 <listitem  id="INS" label="Inscritos" value="INS" />
                                 <listitem disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>

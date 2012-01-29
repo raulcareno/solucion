@@ -2559,7 +2559,7 @@ public class reportesClase {
 
     }
 
-    public JRDataSource certificadodisciplina(Cursos curso, Matriculas matri) {
+    public JRDataSource certificadodisciplina(Cursos curso, List<Matriculas> matri) {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -2583,11 +2583,12 @@ public class reportesClase {
         ArrayList listaMatriculados = new ArrayList();
 //        List<Nota> lisNotas = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
-        if (matri.getCodigomat().equals(-2)) {
-            matriculas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '" + curso.getCodigocur() + "'");
-        } else {
-            matriculas.add(matri);
-        }
+        matriculas = matri;
+//        if (matri.getCodigomat().equals(-2)) {
+//            matriculas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '" + curso.getCodigocur() + "'");
+//        } else {
+//            matriculas.add(matri);
+//        }
         for (Matriculas matriculas1 : matriculas) {
             boolean estadoEstudiante = true;
             String q = "Select round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal)," + 3 + ") from matriculas "
