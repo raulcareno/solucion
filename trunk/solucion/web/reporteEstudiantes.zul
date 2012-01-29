@@ -508,6 +508,48 @@ public JRDataSource certificados(ArrayList listadodeCursos,String tipo,ArrayList
             return ds;
 
 }
+public JRDataSource listadoMatriculas(ArrayList listadodeCursos,String tipo,ArrayList listadoEstudiantes){
+    String curso =  "";
+    String matricula = "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+        if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+      for(Iterator itE = listadoEstudiantes.iterator(); itE.hasNext();) {
+            Matriculas elem2 = (Matriculas) itE.next();
+            matricula  +=""+elem2.getEstudiante().getCodigoest()+",";
+      }
+      
+      if(matricula.length()>0){
+         matricula = matricula.substring(0,matricula.length()-1);
+      }
+
+              Administrador adm = new Administrador();
+              Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "";
+                    String comple2 = "";
+                    comple2 = " AND e.codigoest IN ("+matricula+") ";
+                             query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                        + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                        + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                        + comple2
+                                         + " AND o.estado IN ('Matriculado','Recibir Pase','Retirado','Emitir Pase') "
+                                         + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre, e.codigoest ";
+            List hoy = adm.queryNativo(query,Matriculas.class);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = null;
+                 
+                      ds = new ReporteActaDataSource(detalle);
+            return ds;
+
+}
 
 public JRDataSource certificadosInsc(ArrayList listadodeCursos,String tipo){
     String curso =  "";
@@ -767,6 +809,14 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"certificadoPension.jasper");
+            }else if(tipo.equals("CH")){
+                    datasource = listadoMatriculas(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"certificadohistoriaactual.jasper");
+            }else if(tipo.equals("CAP")){
+                    datasource = listadoMatriculas(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"certificadohistoriayaprobacion.jasper");
             }else if(tipo.equals("LFEC")){
                     datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
