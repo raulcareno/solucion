@@ -399,8 +399,6 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         puertoBarras2 = new javax.swing.JFormattedTextField();
         jLabel52 = new javax.swing.JLabel();
         jLabel49 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel53 = new javax.swing.JLabel();
 
         formaEmpresa.setLocationByPlatform(true);
         formaEmpresa.getContentPane().setLayout(null);
@@ -1569,16 +1567,6 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
         jTabbedPane1.addTab("PUERTAS Y LECTORAS", new javax.swing.ImageIcon(getClass().getResource("/images/admin.gif")), jPanel5); // NOI18N
 
-        jPanel1.setLayout(null);
-
-        jLabel53.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel53.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel53.setText("1.Puerto Codigo Barras (sal.de vehículo):");
-        jPanel1.add(jLabel53);
-        jLabel53.setBounds(50, 90, 210, 14);
-
-        jTabbedPane1.addTab("tab3", jPanel1);
-
         getContentPane().add(jTabbedPane1);
         jTabbedPane1.setBounds(10, 40, 430, 360);
 
@@ -2289,13 +2277,11 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
-    private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

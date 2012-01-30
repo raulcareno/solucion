@@ -3687,6 +3687,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     errores.setText("<html>ENTRADA OK...!</html>");
                     imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
                     if (tarje.getFacturar()) {
+                        errores.setText("<html>VALOR: "+fac.getTotal()+"  </html>");
                         imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
                     }
                     try {
@@ -3743,6 +3744,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                             }
                             llenarFechayHora(fac, "no");
+                            errores.setText("<html> Valor: "+fac.getTotal()+" </html>");
                             imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
 
                         } else {
@@ -3804,7 +3806,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             adm.guardar(fac);
                         }
 
-                        errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO)");
+                        
+                        if(tarje.getFacturar()){
+                            errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO) VALOR: "+fac.getTotal()+" </html> ");
+                        }else{
+                            errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO)  ");
+                        }
+                        
                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
 
                         abrirPuerta(puertoViene);
