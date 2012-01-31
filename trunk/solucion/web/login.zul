@@ -112,6 +112,10 @@ error.visible = false;
                                      cancelar.visible = true;
                                      consultar.visible =false;
                                      olvidado.visible =false;
+                                     if(equivaEncontrados.size() == 2){
+                                        periodo.setSelectedIndex(1);
+                                        ingresoSistemas();
+                                     } 
 
             }else{
                 Messagebox.show("Usuario Correcto NO tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
