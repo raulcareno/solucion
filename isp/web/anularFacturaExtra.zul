@@ -42,7 +42,7 @@ anular(){
             fac.setNumero(vali);
             fac.setClientes(null);
             fac.setEstado(true);
-            fac.setFecha(adm.Date());
+            fac.setFecha(fechaanula.value);
             fac.setContratos(null);
             fac.setSucursal(sucursalEmp.getSucursal());
             fac.setSubtotal(new BigDecimal(0));
@@ -58,7 +58,7 @@ anular(){
            Facturaanulada facAnulada = new Facturaanulada();
             facAnulada.setFactura(fac);
             facAnulada.setEmpleados(usuarioActual);
-            facAnulada.setFecha(adm.Date());
+            facAnulada.setFecha(fechaanula.value);
             facAnulada.setNumero(fac.getNumero());
             facAnulada.setObservacion(observacion.value);
             facAnulada.setValorpago(new BigDecimal(0));
@@ -89,6 +89,9 @@ anular(){
                     </span>
              
                     <textbox constraint="no empty: Debe ingresar una observación para continuar" id="observacion" rows="2" maxlength="60" cols="40" />
+                </row>
+                <row>
+                    Fecha: <datebox format="dd/MM/yyyy" onCreate="self.value = adm.Date()" id="fechaanula"/>
                 </row>
                 <row>
                     <span></span>

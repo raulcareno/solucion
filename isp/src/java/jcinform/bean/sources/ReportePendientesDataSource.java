@@ -105,7 +105,16 @@ public class ReportePendientesDataSource implements JRDataSource {
                 valor = (nodo.getContratos().getFormapago().equals(1)?"Oficina":nodo.getContratos().getFormapago().equals(2)?"Debito":"Domicilio");
             }   else if ("empleado".equals(fieldName)) {
                 valor = nodo.getContratos().getEmpleados2().toString();
+            }    else if ("enplanes".equals(fieldName)) {
+                valor = nodo.getEnplanes();
+            }       else if ("enequipos".equals(fieldName)) {
+                valor = nodo.getEnequipos();
+            }       else if ("eninstalaciones".equals(fieldName)) {
+                valor = nodo.getEninstalaciones();
             }     
+
+
+   
 
         } catch (Exception e) {
             System.out.println("en datasource Acta " + e);

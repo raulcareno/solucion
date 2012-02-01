@@ -52,6 +52,12 @@ public class ReporteFacturaDataSource implements JRDataSource {
                 }
             } else if ("ruc".equals(fieldName)) {
                 valor = nodo.getFactura().getClientes().getIdentificacion();
+            } else if ("contrato".equals(fieldName)) {
+                try{
+                    valor = nodo.getFactura().getContratos().getContrato();
+                }catch(Exception e){
+                }
+                
             } else if ("direccion".equals(fieldName)) {
                 valor = nodo.getFactura().getClientes().getDireccion();
             } else if ("numero".equals(fieldName)) {

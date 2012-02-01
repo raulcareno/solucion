@@ -20,6 +20,7 @@ public class Pendientes implements Comparable {
     String factura;
     Date fecha, fechapago;
     BigDecimal total, valorabonoefe, valorabonoche, valorabonotar, valorabonodep, valorabonodes, valorabonoban;
+    BigDecimal enplanes,enequipos,eninstalaciones;
     BigDecimal valorabonoret;
     BigDecimal valorabonotra, valorabonoriva, valorabonorfue, valorabonotot;
     String numerotransferencia, numeroretencion;
@@ -264,6 +265,30 @@ public class Pendientes implements Comparable {
 
     public void setContratos(Contratos contratos) {
         this.contratos = contratos;
+    }
+
+    public BigDecimal getEnequipos() {
+        return enequipos;
+    }
+
+    public void setEnequipos(BigDecimal enequipos) {
+        this.enequipos = enequipos;
+    }
+
+    public BigDecimal getEninstalaciones() {
+        return eninstalaciones;
+    }
+
+    public void setEninstalaciones(BigDecimal eninstalaciones) {
+        this.eninstalaciones = eninstalaciones;
+    }
+
+    public BigDecimal getEnplanes() {
+        return enplanes;
+    }
+
+    public void setEnplanes(BigDecimal enplanes) {
+        this.enplanes = enplanes;
     }
 
     @Override

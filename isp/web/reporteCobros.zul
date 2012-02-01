@@ -178,15 +178,16 @@ cantones.add(0,cantonTodos);
             }else  if(tipo.equals("ARQUEO")){
                    datasource = reportes.reporteCaja(desde.value, hasta.value);
                     report.setSrc(directorioReportes+"rpcaja.jasper");
-            }else  if(tipo.equals("COMISIONES1")){
+            }else  if(tipo.equals("ARQUEO2")){
+                   datasource = reportes.reporteCaja2(desde.value, hasta.value);
+                    report.setSrc(directorioReportes+"rpcajapei.jasper");
+            }
+            else  if(tipo.equals("COMISIONES1")){
                    datasource = reportes.facturasComisiones1(empleadosList.selectedItem.value,desde.value, hasta.value);
                     report.setSrc(directorioReportes+"listacontratosComision.jasper");
             }else  if(tipo.equals("COMISIONES2")){
                  datasource = reportes.facturasComision(empleadosList.selectedItem.value, desde.value, hasta.value, estadoContrato.selectedItem.value);
                  report.setSrc(directorioReportes+"listacontratosComision2.jasper");
-            }else  if(tipo.equals("ARQUEOU")){
-                   datasource = reportes.reporteCaja(desde.value, hasta.value,empleadosList.selectedItem.value);
-                    report.setSrc(directorioReportes+"rpcajaempleado.jasper");
             }else if(tipo.equals("-1")){
                    alert("No ha seleccionado ningún reporte...!");
                     return;
@@ -252,7 +253,7 @@ void campos(String valor){
             filacanton.visible=true;
             filasector.visible=true;    
             desde.value = fec;
-        }else if(valor.equals("ARQUEO")){
+        }else if(valor.equals("ARQUEO") || valor.equals("ARQUEO2")){
             titulo.value= "Cobros Diarios";
             filafechas.visible=true;
             desde.value = adm.Date();
@@ -386,6 +387,7 @@ void campos(String valor){
                                     <listitem id="CXCLIEST" label="Cuentas x Cobrar x Clientes y Estado" value="CXCLIEST" />
                                     <listitem id="COBROS"  label="Cuentas Cobradas por Clientes " value="COBROS" />
                                     <listitem id="ARQUEO" label="Reporte Diario de Caja X Fechas" value="ARQUEO" />
+                                    <listitem id="ARQUEO2" label="Reporte Diario de Caja X Fechas (Plan,Equi,Serv)" value="ARQUEO2" />
                                     <listitem id="ARQUEOU" label="Reporte Diario de Caja X Fechas y Usuario" value="ARQUEOU" />
                                     <listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" />
                                     <listitem id="COBROS2"  label="Cuenta Mensual para Contabilidad" value="COBROS2" />
