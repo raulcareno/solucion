@@ -181,6 +181,9 @@ cantones.add(0,cantonTodos);
             }else  if(tipo.equals("ARQUEO2")){
                    datasource = reportes.reporteCaja2(desde.value, hasta.value);
                     report.setSrc(directorioReportes+"rpcajapei.jasper");
+            }else  if(tipo.equals("ARQUEOU")){
+                   datasource = reportes.reporteCaja(desde.value, hasta.value,empleadosList.selectedItem.value);
+                    report.setSrc(directorioReportes+"rpcaja.jasper");
             }
             else  if(tipo.equals("COMISIONES1")){
                    datasource = reportes.facturasComisiones1(empleadosList.selectedItem.value,desde.value, hasta.value);
