@@ -1009,7 +1009,9 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
                         cliente.setText("1");
                         facActual.setClientes(nuevoCl);
                     } else {
+                        System.out.println("CLIENTE: "+cliente.getText());
                         facActual.setClientes(new Clientes(new Integer(cliente.getText())));
+                        cli.setCodigo(facActual.getClientes().getCodigo());
                         cli.setDireccion(direccion.getText());
                         cli.setIdentificacion(identificacion.getText());
                         cli.setTelefono(telefono.getText());

@@ -11,10 +11,7 @@
 
 package peaje.formas;
 
-import hibernate.Empresa;
-import hibernate.Global;
-import hibernate.Productos;
-import hibernate.Tarifas;
+import hibernate.*;
 import java.awt.Container;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,7 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
-import java.math.BigInteger;
 
 /**
  *
@@ -36,6 +32,8 @@ public class frmTarifas   extends javax.swing.JInternalFrame {
     public boolean modificar = false;
     public boolean grabar1 = false;
     public boolean modificar1 = false;
+    public boolean grabar2 = false;
+    public boolean modificar2 = false;
     public List lista = null;
     public int posicion = 0;
     public int tamano = 0;
@@ -125,6 +123,26 @@ void llenarProductos(){
         }
 }
  
+void llenarProductos1(){
+      try {
+
+            List<Tarifasdiarias> tar = adm.query("Select o from Tarifasdiarias as o ");
+            DefaultTableModel dtm = (DefaultTableModel) tbTarifas1.getModel();
+            dtm.getDataVector().removeAllElements();
+            for (Tarifasdiarias tarifas : tar) {
+                Object[] obj = new Object[5];
+                obj[0] = tarifas.getCodigo();
+                obj[1] = tarifas.getNombre();
+                obj[2] = tarifas.getValor();
+                dtm.addRow(obj);
+            }
+
+            tbTarifas1.setModel(dtm);
+        } catch (Exception ex) {
+            Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
+ 
 
 
 // <editor-fold defaultstate="collapsed" desc="PROPIEDADES">
@@ -161,12 +179,23 @@ void llenarProductos(){
      
 
     }
+    public void habilitar1(Boolean estado) {
+     
+
+    }
 
     public void limpiar() {
         String estado = "";
         txtCodigo.setText("");
         txtNombre.setText("");
         txtValor.setText("");
+    }
+    
+    public void limpiar1() {
+        String estado = "";
+        txtCodigo1.setText("");
+        txtNombre1.setText("");
+        txtValor1.setText("");
     }
 
     // </editor-fold >
@@ -214,6 +243,20 @@ void llenarProductos(){
         btnModificar1 = new javax.swing.JButton();
         btnEliminar1 = new javax.swing.JButton();
         btnSalir1 = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        txtNombre1 = new javax.swing.JTextField();
+        txtCodigo1 = new javax.swing.JTextField();
+        txtValor1 = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbTarifas1 = new javax.swing.JTable();
+        jPanel9 = new javax.swing.JPanel();
+        btnAgregar2 = new javax.swing.JButton();
+        btnModificar2 = new javax.swing.JButton();
+        btnEliminar2 = new javax.swing.JButton();
+        btnSalir2 = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
 
         setTitle("Tarifario");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
@@ -223,13 +266,13 @@ void llenarProductos(){
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Catálogo de Tarifas ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Tarifario en minutos de cobros ..::..");
         jPanel3.add(jLabel10);
@@ -451,7 +494,7 @@ void llenarProductos(){
         jPanel5.add(jPanel1);
         jPanel1.setBounds(10, 10, 370, 220);
 
-        jTabbedPane1.addTab("Tarifas Diarias", jPanel5);
+        jTabbedPane1.addTab("Tarifas x Horas", jPanel5);
 
         jPanel6.setLayout(null);
 
@@ -611,6 +654,165 @@ void llenarProductos(){
         jPanel7.setBounds(20, 280, 330, 70);
 
         jTabbedPane1.addTab("Tarifas Mensuales", jPanel6);
+
+        jPanel8.setLayout(null);
+
+        txtNombre1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNombre1KeyPressed(evt);
+            }
+        });
+        jPanel8.add(txtNombre1);
+        txtNombre1.setBounds(80, 40, 230, 20);
+
+        txtCodigo1.setEditable(false);
+        txtCodigo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodigo1ActionPerformed(evt);
+            }
+        });
+        jPanel8.add(txtCodigo1);
+        txtCodigo1.setBounds(80, 20, 100, 20);
+
+        txtValor1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtValor1KeyPressed(evt);
+            }
+        });
+        jPanel8.add(txtValor1);
+        txtValor1.setBounds(80, 60, 60, 20);
+
+        tbTarifas1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Cod", "Nombre", "Valor"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbTarifas1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbTarifas1MouseClicked(evt);
+            }
+        });
+        tbTarifas1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tbTarifas1KeyPressed(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tbTarifas1);
+        tbTarifas1.getColumnModel().getColumn(0).setPreferredWidth(5);
+        tbTarifas1.getColumnModel().getColumn(0).setMaxWidth(10);
+
+        jPanel8.add(jScrollPane3);
+        jScrollPane3.setBounds(20, 90, 330, 170);
+
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel9.setLayout(null);
+
+        btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
+        btnAgregar2.setMnemonic('N');
+        btnAgregar2.setText("Nuevo");
+        btnAgregar2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregar2.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnAgregar2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar2ActionPerformed(evt);
+            }
+        });
+        btnAgregar2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregar2KeyPressed(evt);
+            }
+        });
+        jPanel9.add(btnAgregar2);
+        btnAgregar2.setBounds(80, 10, 60, 50);
+
+        btnModificar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
+        btnModificar2.setMnemonic('M');
+        btnModificar2.setText("Modificar");
+        btnModificar2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnModificar2.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnModificar2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnModificar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificar2ActionPerformed(evt);
+            }
+        });
+        btnModificar2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnModificar2KeyPressed(evt);
+            }
+        });
+        jPanel9.add(btnModificar2);
+        btnModificar2.setBounds(140, 10, 60, 50);
+
+        btnEliminar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
+        btnEliminar2.setMnemonic('E');
+        btnEliminar2.setText("Eliminar");
+        btnEliminar2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEliminar2.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnEliminar2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminar2ActionPerformed(evt);
+            }
+        });
+        btnEliminar2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnEliminar2KeyPressed(evt);
+            }
+        });
+        jPanel9.add(btnEliminar2);
+        btnEliminar2.setBounds(200, 10, 60, 50);
+
+        btnSalir2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
+        btnSalir2.setMnemonic('S');
+        btnSalir2.setText("Salir");
+        btnSalir2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalir2.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnSalir2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalir2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalir2ActionPerformed(evt);
+            }
+        });
+        btnSalir2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalir2KeyPressed(evt);
+            }
+        });
+        jPanel9.add(btnSalir2);
+        btnSalir2.setBounds(260, 10, 60, 50);
+
+        jPanel8.add(jPanel9);
+        jPanel9.setBounds(20, 280, 330, 70);
+
+        jLabel9.setText("Codigo:");
+        jPanel8.add(jLabel9);
+        jLabel9.setBounds(30, 20, 50, 14);
+
+        jLabel11.setText("Nombre:");
+        jPanel8.add(jLabel11);
+        jLabel11.setBounds(30, 40, 50, 14);
+
+        jLabel12.setText("Valor:");
+        jPanel8.add(jLabel12);
+        jLabel12.setBounds(30, 60, 40, 14);
+
+        jTabbedPane1.addTab("Tarifa x Día", jPanel8);
 
         getContentPane().add(jTabbedPane1);
         jTabbedPane1.setBounds(10, 50, 400, 400);
@@ -792,6 +994,7 @@ void llenarProductos(){
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
+        this.dispose();
         principal = null;
         empresaObj = null;
         System.gc();
@@ -936,6 +1139,7 @@ void llenarProductos(){
     private void btnSalir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir1ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
+        this.dispose();
         principal = null;
         empresaObj = null;
         System.gc();
@@ -1014,19 +1218,195 @@ void llenarProductos(){
          principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnSalir1KeyPressed
 
+    private void txtNombre1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombre1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombre1KeyPressed
+
+    private void txtCodigo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigo1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigo1ActionPerformed
+
+    private void txtValor1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValor1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtValor1KeyPressed
+
+    private void tbTarifas1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbTarifas1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbTarifas1MouseClicked
+
+    private void tbTarifas1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbTarifas1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbTarifas1KeyPressed
+
+    private void btnAgregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar2ActionPerformed
+        // TODO add your handling code here:
+           // TODO add your handling code here:
+          // TODO add your handling code here:
+        if (principal.permisos.getAgregar()) {
+            if (grabar2 == false) {
+                
+                this.btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
+                this.btnAgregar2.setLabel("Guardar");
+                this.btnModificar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
+                this.btnModificar2.setLabel("Cancelar");
+                grabar2 = true;
+                modificar2 = false;
+                habilitar1(true);
+                limpiar1();
+                
+                txtNombre1.requestFocusInWindow();
+                btnAgregar2.setMnemonic('G');
+                btnModificar2.setMnemonic('C');
+                
+
+            } else if (grabar2 == true) {
+                if (txtNombre1.getText().trim().isEmpty() || txtValor1.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
+                } else {
+                    Tarifasdiarias usuarioObj = new Tarifasdiarias();
+
+                     usuarioObj.setNombre(txtNombre1.getText());
+                     usuarioObj.setValor(new BigDecimal(txtValor1.getText()));
+                    if (modificar2) {
+                        try {
+                            usuarioObj.setCodigo(Integer.parseInt(txtCodigo1.getText()));
+                            adm.actualizar(usuarioObj);
+
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+                            return;
+                        }
+                    } else {
+                        try {
+                            usuarioObj.setCodigo(null);
+                            adm.guardar(usuarioObj);
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+                            return;
+                        }
+                    }
+                    this.btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
+                    this.btnAgregar2.setLabel("Nuevo");
+                    this.btnModificar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
+                    this.btnModificar2.setLabel("Modificar");
+                    btnAgregar2.setMnemonic('N');
+                    btnModificar2.setMnemonic('M');
+                    grabar2 = false;
+                    modificar2 = false;
+                    habilitar1(false);
+                    llenarProductos1();
+                    
+
+                }
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+        }
+    }//GEN-LAST:event_btnAgregar2ActionPerformed
+
+    private void btnAgregar2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregar2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregar2KeyPressed
+
+    private void btnModificar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar2ActionPerformed
+        // TODO add your handling code here:
+             if (grabar2 == false) {
+            if(principal.permisos.getModificar()){
+
+                this.btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
+                this.btnAgregar2.setLabel("Guardar");
+                btnAgregar2.setEnabled(true);
+                this.btnModificar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
+                this.btnModificar2.setLabel("Cancelar");
+                btnAgregar2.setMnemonic('G');
+                btnModificar2.setMnemonic('C');
+                modificar2 = true;
+                grabar2 = true;
+
+                habilitar1(true);
+                //            btnBuscar.setEnabled(false);
+
+            }else{
+                JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+            }
+        } else {
+
+            grabar2 = false;
+            modificar2 = false;
+            this.btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
+            this.btnAgregar2.setLabel("Nuevo");
+            this.btnModificar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
+            this.btnModificar2.setLabel("Modificar");
+            btnAgregar2.setMnemonic('N');
+            btnModificar2.setMnemonic('M');
+            btnAgregar2.setEnabled(false);
+
+            habilitar1(false);
+            //            btnBuscar.setEnabled(true);
+
+        }
+    }//GEN-LAST:event_btnModificar2ActionPerformed
+
+    private void btnModificar2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnModificar2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnModificar2KeyPressed
+
+    private void btnEliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar2ActionPerformed
+        // TODO add your handling code here:
+          if (principal.permisos.getEliminar()) {        // TODO add your handling code here:
+            try {
+                adm.eliminarObjeto(Tarifasdiarias.class, new Integer(txtCodigo1.getText()));
+                this.limpiar1();
+                llenarProductos1();
+
+            } catch (Exception ex) {
+                Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+        }
+    }//GEN-LAST:event_btnEliminar2ActionPerformed
+
+    private void btnEliminar2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEliminar2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminar2KeyPressed
+
+    private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
+        // TODO add your handling code here:
+          this.setVisible(false);
+        this.dispose();
+        principal = null;
+        empresaObj = null;
+        System.gc();
+    }//GEN-LAST:event_btnSalir2ActionPerformed
+
+    private void btnSalir2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalir2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalir2KeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
+    private javax.swing.JButton btnAgregar2;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEliminar1;
+    private javax.swing.JButton btnEliminar2;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnModificar1;
+    private javax.swing.JButton btnModificar2;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSalir1;
+    private javax.swing.JButton btnSalir2;
     private javax.swing.JTextField horas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1034,6 +1414,7 @@ void llenarProductos(){
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1041,15 +1422,22 @@ void llenarProductos(){
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField minutos;
     private javax.swing.JTable tarifario;
     private javax.swing.JTable tbTarifas;
+    private javax.swing.JTable tbTarifas1;
     private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtCodigo1;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtNombre1;
     private javax.swing.JTextField txtValor;
+    private javax.swing.JTextField txtValor1;
     // End of variables declaration//GEN-END:variables
 
 }
