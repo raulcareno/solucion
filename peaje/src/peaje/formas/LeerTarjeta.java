@@ -229,6 +229,12 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                     imprimir("");
                     System.out.println("IMPRIMIÓ");
                     Thread.sleep(3000);
+//                    if (princip.empresaObj.getRetardoEntrada() != null) {
+//                                if (princip.empresaObj.getRetardoEntrada().length() > 0) {
+//                                    Integer retardo = new Integer(princip.empresaObj.getRetardoEntrada());
+//                                    Thread.sleep(retardo * 1000);
+//                                }
+//                      }
                     abrirPuerta(princip.empresaObj.getEntra1());
                     System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra1());
 
@@ -245,6 +251,12 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                     tarjeta = "";
                     imprimir("2");
                     Thread.sleep(3000);
+//                        if (princip.empresaObj.getRetardoEntrada() != null) {
+//                                if (princip.empresaObj.getRetardoEntrada().length() > 0) {
+//                                    Integer retardo = new Integer(princip.empresaObj.getRetardoEntrada());
+//                                    Thread.sleep(retardo * 1000);
+//                                }
+//                      }
                     abrirPuerta(princip.empresaObj.getEntra1());
                     System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra2());
                     tarjeta = "";
@@ -270,7 +282,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
         } else {
 
-            if (tarjeta.contains("AEIOUAE1")) {
+            if (tarjeta.contains("AEIOUAE1")) {//*******PULSA EL BOTÓN 1 E INTENTA ABRIR LA BARRERA
                 try {
                     System.out.println("abrio 1:  " + tarjeta + " ** " + new Date());
                     //if (tarjeta.contains("AEIOUAE")) {funciona con francisco
@@ -279,7 +291,13 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                     tarjeta = "";
                     imprimir("");
                     System.out.println("IMPRIMIÓ");
-                    Thread.sleep(3000);
+                    //Thread.sleep(3000);
+                    if (princip.empresaObj.getRetardoEntrada() != null) {
+                                if (princip.empresaObj.getRetardoEntrada().length() > 0) {
+                                    Integer retardo = new Integer(princip.empresaObj.getRetardoEntrada());
+                                    Thread.sleep(retardo * 1000);
+                                }
+                      }
                     abrirPuerta(princip.empresaObj.getEntra1());
                     System.out.println("ABRIO PUERTA AEIOUAE1: " + princip.empresaObj.getEntra1());
                     return;
@@ -295,7 +313,12 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                     //             tarjeta = tarjeta.replace("00", "");
                     tarjeta = "";
                     imprimir("2");
-                    Thread.sleep(3000);
+                     if (princip.empresaObj.getRetardoEntrada() != null) {
+                                if (princip.empresaObj.getRetardoEntrada().length() > 0) {
+                                    Integer retardo = new Integer(princip.empresaObj.getRetardoEntrada());
+                                    Thread.sleep(retardo * 1000);
+                                }
+                      }
                     abrirPuerta(princip.empresaObj.getEntra1());
                     System.out.println("ABRIO PUERTA aeiou1: " + princip.empresaObj.getEntra1());
                     return;
@@ -356,22 +379,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     public void abrirPuerta(String puerta) {
         System.out.println("ORDEN DE ABRIR PUERTA: " + puerta);
         try {
-            noDisponibles();
-            if (princip.empresaObj.bloquear) {
-                if (noDisponibles() == 0) {
-                    try {
-                        System.out.println("PARQUEADERO LLENO...!");
-
-                        princip.cliente.setText("<html>PARQUEADERO LLENO...!</html>");
-                        //princip.errores.setText("<html>PARQUEADERO LLENO...!</html>");
-                        return;
-                    } catch (Exception e) {
-                        return;
-                    }
-
-
-                }
-            }
+            
             if (puerta == null) {
                 puerta = "1";
             }
@@ -514,6 +522,9 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
             exporter.exportReport();
+            try {
+                
+            
             if (princip.empresaObj.getWebcam()) {
                 if (ubicacionDirectorio.contains("build")) {
                     ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
@@ -532,8 +543,10 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
 
             }
-
             princip.cargarFoto(fac.getCodigo());
+            } catch (Exception e) {
+                System.out.println("NO SE FOTOGRAFÍO "+e); 
+            }
 //            JasperViewer viewer = new JasperViewer(masterPrint, false); //PARA VER EL REPORTE ANTES DE IMPRIMIR
 //            viewer.show();
 //            try {
