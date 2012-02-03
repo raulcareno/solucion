@@ -560,6 +560,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         btnTicket = new javax.swing.JButton();
         btnCobrar = new javax.swing.JButton();
         btnReportes = new javax.swing.JButton();
+        btnCobrar1 = new javax.swing.JButton();
         contenedor2 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar2 = new javax.swing.JToolBar();
         btnUsuarios = new javax.swing.JButton();
@@ -685,7 +686,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         barraHerramients.add(jButton2);
         barraHerramients.add(jSeparator2);
 
-        totales.setFont(new java.awt.Font("Tahoma", 1, 11));
+        totales.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         totales.setForeground(new java.awt.Color(255, 102, 0));
         totales.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         totales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/naranja.png"))); // NOI18N
@@ -695,7 +696,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         totales.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraHerramients.add(totales);
 
-        disponibles.setFont(new java.awt.Font("Tahoma", 1, 11));
+        disponibles.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         disponibles.setForeground(new java.awt.Color(0, 153, 102));
         disponibles.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         disponibles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/verde.png"))); // NOI18N
@@ -705,7 +706,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         disponibles.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraHerramients.add(disponibles);
 
-        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11));
+        ocupados.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         ocupados.setForeground(new java.awt.Color(255, 0, 0));
         ocupados.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ocupados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rojo.png"))); // NOI18N
@@ -716,7 +717,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         barraHerramients.add(ocupados);
         barraHerramients.add(jSeparator1);
 
-        barrera1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera1.setForeground(new java.awt.Color(204, 102, 0));
         barrera1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera1.setText("F1");
@@ -733,7 +734,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         barraHerramients.add(barrera1);
 
-        barrera2.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera2.setForeground(new java.awt.Color(204, 102, 0));
         barrera2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera2.setText("F2");
@@ -750,7 +751,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         barraHerramients.add(barrera2);
 
-        barrera3.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera3.setForeground(new java.awt.Color(204, 102, 0));
         barrera3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera3.setText("F3");
@@ -767,7 +768,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         barraHerramients.add(barrera3);
 
-        barrera4.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera4.setForeground(new java.awt.Color(204, 102, 0));
         barrera4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera4.setText("F4");
@@ -784,7 +785,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         barraHerramients.add(barrera4);
 
-        barrera5.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera5.setForeground(new java.awt.Color(204, 102, 0));
         barrera5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera5.setText("F5");
@@ -801,7 +802,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         barraHerramients.add(barrera5);
 
-        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera6.setForeground(new java.awt.Color(204, 102, 0));
         barrera6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera6.setText("F6");
@@ -818,7 +819,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         barraHerramients.add(barrera6);
 
-        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11));
+        barrera7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         barrera7.setForeground(new java.awt.Color(204, 102, 0));
         barrera7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/remoto.png"))); // NOI18N
         barrera7.setText("F7");
@@ -874,7 +875,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         usuariot.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
         usuariot.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        usuariot.setFont(new java.awt.Font("Tahoma", 0, 14));
+        usuariot.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         usuariot.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usuariotActionPerformed(evt);
@@ -888,7 +889,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel2.add(usuariot);
         usuariot.setBounds(140, 20, 110, 19);
 
-        clave.setFont(new java.awt.Font("Tahoma", 0, 14));
+        clave.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         clave.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         clave.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
         clave.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -904,13 +905,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel2.add(clave);
         clave.setBounds(140, 50, 110, 19);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Usuario:");
         jPanel2.add(jLabel1);
         jLabel1.setBounds(50, 20, 70, 17);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Clave:");
         jPanel2.add(jLabel2);
@@ -954,14 +955,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Ingrese el usuario proporcionado por el Administrador");
         jPanel3.add(jLabel10);
         jLabel10.setBounds(10, 20, 300, 13);
 
         procesando.setBackground(new java.awt.Color(204, 204, 255));
-        procesando.setFont(new java.awt.Font("Tahoma", 0, 10));
+        procesando.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         procesando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
         procesando.setBorderPainted(false);
         procesando.setContentAreaFilled(false);
@@ -1603,9 +1604,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(frmLoteLayout.createSequentialGroup()
                         .addComponent(jLabel33)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel35))
-                    .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGuardarCambios, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(47, 47, 47))
         );
@@ -1906,13 +1907,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel6.setOpaque(false);
         jPanel6.setLayout(null);
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(0, 51, 51));
         jLabel11.setText("Catálogo de Clientes ..::..");
         jPanel6.add(jLabel11);
         jLabel11.setBounds(10, 0, 270, 15);
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(102, 102, 102));
         jLabel13.setText("Busqueda, Creación,Modificación,  Clientes ..::..");
         jPanel6.add(jLabel13);
@@ -2284,7 +2285,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             frmRespaldarBase.getContentPane().add(jLabel6);
             jLabel6.setBounds(40, 90, 97, 14);
 
-            jLabel24.setFont(new java.awt.Font("Tahoma", 1, 12));
+            jLabel24.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             jLabel24.setText(".sql");
             frmRespaldarBase.getContentPane().add(jLabel24);
             jLabel24.setBounds(347, 80, 30, 30);
@@ -2385,7 +2386,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             panelIngreso.setLayout(null);
 
-            errores.setFont(new java.awt.Font("Tahoma", 1, 39));
+            errores.setFont(new java.awt.Font("Tahoma", 1, 39)); // NOI18N
             errores.setForeground(new java.awt.Color(255, 0, 0));
             errores.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
             errores.setText("ok..!");
@@ -2396,7 +2397,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             cliente.setEditable(false);
             cliente.setForeground(new java.awt.Color(51, 51, 255));
             cliente.setText("CLIENTE ACTUAL");
-            cliente.setFont(new java.awt.Font("Bernard MT Condensed", 1, 42));
+            cliente.setFont(new java.awt.Font("Bernard MT Condensed", 1, 42)); // NOI18N
             panelIngreso.add(cliente);
             cliente.setBounds(20, 20, 520, 80);
 
@@ -2443,40 +2444,40 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(jPanel1);
             jPanel1.setBounds(360, 10, 20, 70);
 
-            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14));
+            spIngreso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
             spIngreso.setBorder(null);
             spIngreso.setEnabled(false);
             spIngreso.setFocusable(false);
             panelIngreso.add(spIngreso);
             spIngreso.setBounds(370, 290, 90, 20);
 
-            ingre.setFont(new java.awt.Font("Tahoma", 1, 11));
+            ingre.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             ingre.setForeground(new java.awt.Color(153, 153, 153));
             ingre.setText("INGRESO:");
             panelIngreso.add(ingre);
             ingre.setBounds(370, 270, 60, 20);
 
-            spSalida.setFont(new java.awt.Font("Tahoma", 0, 14));
+            spSalida.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
             spSalida.setBorder(null);
             spSalida.setEnabled(false);
             spSalida.setFocusable(false);
             panelIngreso.add(spSalida);
             spSalida.setBounds(470, 290, 90, 20);
 
-            salid.setFont(new java.awt.Font("Tahoma", 1, 11));
+            salid.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             salid.setForeground(new java.awt.Color(153, 153, 153));
             salid.setText("SALIDA:");
             panelIngreso.add(salid);
             salid.setBounds(490, 270, 60, 20);
 
-            spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14));
+            spConsumo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
             spConsumo.setBorder(null);
             spConsumo.setEnabled(false);
             spConsumo.setFocusable(false);
             panelIngreso.add(spConsumo);
             spConsumo.setBounds(580, 290, 90, 20);
 
-            cons.setFont(new java.awt.Font("Tahoma", 1, 11));
+            cons.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             cons.setForeground(new java.awt.Color(153, 153, 153));
             cons.setText("CONSUMO:");
             panelIngreso.add(cons);
@@ -2522,7 +2523,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(miBotonImagen);
             miBotonImagen.setBounds(370, 360, 230, 180);
 
-            ultimoIngreso.setFont(new java.awt.Font("Tahoma", 1, 10));
+            ultimoIngreso.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
             ultimoIngreso.setText("Ultimo Ingreso");
             panelIngreso.add(ultimoIngreso);
             ultimoIngreso.setBounds(370, 340, 230, 13);
@@ -2539,7 +2540,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.setBounds(0, 30, 770, 590);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11));
+            usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             usuarioLogeado.setForeground(new java.awt.Color(0, 153, 204));
             usuarioLogeado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editPerfil.png"))); // NOI18N
             usuarioLogeado.setText("...");
@@ -2559,7 +2560,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             usuarioLogeado.setBounds(10, 3, 270, 30);
             contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-            jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12));
+            jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             jLabel37.setForeground(new java.awt.Color(102, 102, 102));
             jLabel37.setText("PARTNERS");
             jLabel37.setBounds(500, 450, 160, 20);
@@ -2666,6 +2667,20 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             jToolBar1.add(btnReportes);
+
+            btnCobrar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
+            btnCobrar1.setMnemonic('B');
+            btnCobrar1.setText("Cobras Diarios(F11)");
+            btnCobrar1.setToolTipText("Cobrar ticket");
+            btnCobrar1.setFocusable(false);
+            btnCobrar1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+            btnCobrar1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+            btnCobrar1.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    btnCobrar1ActionPerformed(evt);
+                }
+            });
+            jToolBar1.add(btnCobrar1);
 
             contenedor1.getContentPane().add(jToolBar1);
 
@@ -2870,7 +2885,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(jLabel32)
-                    .addContainerGap(96, Short.MAX_VALUE))
+                    .addContainerGap(73, Short.MAX_VALUE))
             );
 
             jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -5777,8 +5792,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             btnTicket.doClick();
         } else if (teclaPresionada == evt.VK_F10) {
             btnCobrar.doClick(); //ABRIR COBROS
-
-
+        } else if (teclaPresionada == evt.VK_F11) {
+            btnCobrar1.doClick(); //ABRIR COBROS
         }
     }
     private void contenedorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contenedorKeyPressed
@@ -6665,6 +6680,31 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
 
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void btnCobrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrar1ActionPerformed
+        // TODO add your handling code here:
+           try {
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Factura' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
+            if (accesosL.size() > 0) {
+                permisos = accesosL.get(0);
+            } else {
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            frmFacturaTarifas usu = new frmFacturaTarifas(this, true, this, adm);
+            usu.setSize(669, 507);
+            usu.setLocation(0, 0);
+            contenedor.add(usu);
+
+            usu.show();
+            
+
+
+        } catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            lger.logger(frmPrincipal.class.getName(), ex + "");
+        }
+    }//GEN-LAST:event_btnCobrar1ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -6787,6 +6827,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnClientes;
     private javax.swing.JButton btnCobrar;
+    private javax.swing.JButton btnCobrar1;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEliminar1;
     private javax.swing.JButton btnEmpresa;
