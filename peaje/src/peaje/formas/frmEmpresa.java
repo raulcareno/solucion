@@ -205,6 +205,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="FUNCIONES ACCIONES">
     public void habilitar(Boolean estado) {
+        retardoEntrada.setEditable(estado);
+        retardoSalida.setEditable(estado);
         ipBarras1.setEditable(estado);
         ipBarras2.setEditable(estado);
         puertoBarras1.setEditable(estado);
@@ -1026,11 +1028,21 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel2.add(jLabel55);
         jLabel55.setBounds(20, 240, 160, 14);
 
+        retardoEntrada.setEditable(false);
         retardoEntrada.setText("1");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.retardoEntrada}"), retardoEntrada, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
         jPanel2.add(retardoEntrada);
         retardoEntrada.setBounds(180, 240, 20, 18);
 
+        retardoSalida.setEditable(false);
         retardoSalida.setText("1");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.retardoSalida}"), retardoSalida, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
         jPanel2.add(retardoSalida);
         retardoSalida.setBounds(360, 240, 20, 18);
 

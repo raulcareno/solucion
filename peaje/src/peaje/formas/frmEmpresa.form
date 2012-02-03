@@ -1101,8 +1101,12 @@
             </Component>
             <Component class="javax.swing.JFormattedTextField" name="retardoEntrada">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="text" type="java.lang.String" value="1"/>
               </Properties>
+              <BindingProperties>
+                <BindingProperty name="value" source="Form" sourcePath="${usuarioObj.retardoEntrada}" target="retardoEntrada" targetPath="value" updateStrategy="0" immediately="false"/>
+              </BindingProperties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                   <AbsoluteConstraints x="180" y="240" width="20" height="18"/>
@@ -1111,8 +1115,12 @@
             </Component>
             <Component class="javax.swing.JFormattedTextField" name="retardoSalida">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="text" type="java.lang.String" value="1"/>
               </Properties>
+              <BindingProperties>
+                <BindingProperty name="value" source="Form" sourcePath="${usuarioObj.retardoSalida}" target="retardoSalida" targetPath="value" updateStrategy="0" immediately="false"/>
+              </BindingProperties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                   <AbsoluteConstraints x="360" y="240" width="20" height="18"/>

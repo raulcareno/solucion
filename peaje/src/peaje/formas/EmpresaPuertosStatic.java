@@ -662,6 +662,24 @@ public class EmpresaPuertosStatic {
         this.puertoBarras2 = puertoBarras2;
     }
 
+        public String retardoEntrada;
+        public String retardoSalida;
+
+    public String getRetardoEntrada() {
+        return retardoEntrada;
+    }
+
+    public void setRetardoEntrada(String retardoEntrada) {
+        this.retardoEntrada = retardoEntrada;
+    }
+
+    public String getRetardoSalida() {
+        return retardoSalida;
+    }
+
+    public void setRetardoSalida(String retardoSalida) {
+        this.retardoSalida = retardoSalida;
+    }
         
     
  }

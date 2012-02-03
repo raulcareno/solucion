@@ -3249,7 +3249,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setIpBarras2(emp.getIpBarras2());
         empresaObj.setPuertoBarras1(emp.getPuertoBarras1());
         empresaObj.setPuertoBarras2(emp.getPuertoBarras2());
-
+        empresaObj.setRetardoEntrada(emp.getRetardoEntrada());
+        empresaObj.setRetardoSalida(emp.getRetardoSalida());
 
     }
 

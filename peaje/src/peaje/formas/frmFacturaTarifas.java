@@ -1062,6 +1062,8 @@ if (guardando == false) {
                     facActual.setTiempo(fecTiempo);
                     facActual.setUsuarioc(principal.usuarioActual);
                     adm.actualizar(facActual);
+                    try {
+                        
                      if(empresaObj.getWebcam()){
                          if (ubicacionDirectorio.contains("build")) {
                             ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
@@ -1076,6 +1078,8 @@ if (guardando == false) {
                         fotografiarIp(""+facActual.getCodigo()+".jpg", ubicacionDirectorio+"\\fotos");
                     }
  
+                    } catch (Exception e) {
+                    }
                     Boolean pasar = true;
                     Integer numero = new Integer(emp.getDocumentofac()) + 1;
                     while (pasar) {
@@ -1092,9 +1096,21 @@ if (guardando == false) {
 
                     }
                     imprimir(facActual.getCodigo(), emp, 1, false, cli);
+                    
                     if (empresaObj.getSeabrefac()) {
 
                         try {
+                            if(empresaObj.getRetardoSalida()!= null){
+                                if(empresaObj.getRetardoSalida().length()>0){
+                                    Integer retardo = new Integer(empresaObj.getRetardoSalida());
+                                    System.out.println("---"+new Date());
+                                    System.out.println("Retardo de: ");
+                                    Thread.sleep(retardo*1000);        
+                                    System.out.println("---"+new Date());
+                                    
+                                }
+                            }
+                                
                             LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
                             //TEMPORAL
@@ -1224,6 +1240,7 @@ public void fotografiarIp(String nombre,String direccion){
                 String nombre = services[i].getName();
                 if (nombre.contains(emp.getImpfactura())) {
                     selectedService = i;
+                    break;
                 }
             }
             job.setPrintService(services[selectedService]);
