@@ -373,7 +373,12 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     
                     imprimir(fac.getCodigo(), emp);
 if(empresaObj.getSeabretic()){
-
+                        if (empresaObj.getRetardoEntrada() != null) {
+                                if (empresaObj.getRetardoEntrada().length() > 0) {
+                                    Integer retardo = new Integer(empresaObj.getRetardoEntrada());
+                                    Thread.sleep(retardo * 1000);
+                                }
+                        }
                     try {
                         LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
                         ta.outputSream.write(empresaObj.getPuertatic().getBytes());
