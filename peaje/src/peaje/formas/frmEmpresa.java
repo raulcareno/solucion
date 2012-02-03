@@ -341,6 +341,12 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         barreras = new javax.swing.JFormattedTextField();
         jLabel51 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel53 = new javax.swing.JLabel();
+        jLabel55 = new javax.swing.JLabel();
+        retardoEntrada = new javax.swing.JFormattedTextField();
+        retardoSalida = new javax.swing.JFormattedTextField();
+        jLabel56 = new javax.swing.JLabel();
+        jLabel57 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -630,12 +636,12 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("CI/RUC:");
         jPanel2.add(jLabel1);
-        jLabel1.setBounds(10, 0, 100, 14);
+        jLabel1.setBounds(10, 0, 100, 18);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Dirección:");
         jPanel2.add(jLabel2);
-        jLabel2.setBounds(10, 60, 100, 14);
+        jLabel2.setBounds(10, 50, 100, 18);
 
         nombres.setEditable(false);
 
@@ -648,7 +654,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(nombres);
-        nombres.setBounds(120, 20, 220, 20);
+        nombres.setBounds(120, 18, 240, 18);
 
         direccion.setEditable(false);
 
@@ -661,13 +667,13 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(direccion);
-        direccion.setBounds(120, 60, 220, 20);
+        direccion.setBounds(120, 52, 240, 18);
 
         jLabel12.setForeground(new java.awt.Color(0, 0, 153));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Nombres:");
         jPanel2.add(jLabel12);
-        jLabel12.setBounds(10, 20, 100, 14);
+        jLabel12.setBounds(10, 18, 100, 18);
 
         codigo.setEditable(false);
         codigo.setEnabled(false);
@@ -681,7 +687,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(codigo);
-        codigo.setBounds(120, 0, 100, 20);
+        codigo.setBounds(120, 0, 130, 18);
 
         razonsocial.setEditable(false);
 
@@ -694,19 +700,19 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(razonsocial);
-        razonsocial.setBounds(120, 40, 220, 20);
+        razonsocial.setBounds(120, 36, 240, 18);
 
         jLabel5.setForeground(new java.awt.Color(0, 0, 153));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Razón Social:");
         jPanel2.add(jLabel5);
-        jLabel5.setBounds(0, 40, 110, 14);
+        jLabel5.setBounds(0, 36, 110, 18);
 
         jLabel6.setForeground(new java.awt.Color(0, 0, 153));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Teléfonos:");
         jPanel2.add(jLabel6);
-        jLabel6.setBounds(10, 80, 100, 14);
+        jLabel6.setBounds(10, 70, 100, 18);
 
         telefono.setEditable(false);
 
@@ -719,7 +725,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(telefono);
-        telefono.setBounds(120, 80, 100, 20);
+        telefono.setBounds(120, 70, 100, 18);
 
         parqueaderos.setEditable(false);
 
@@ -732,7 +738,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(parqueaderos);
-        parqueaderos.setBounds(120, 100, 40, 20);
+        parqueaderos.setBounds(120, 87, 40, 18);
 
         cmbFactura.setEnabled(false);
 
@@ -745,19 +751,19 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(cmbFactura);
-        cmbFactura.setBounds(120, 160, 240, 20);
+        cmbFactura.setBounds(120, 146, 240, 18);
 
         jLabel9.setForeground(new java.awt.Color(0, 0, 153));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("No. Parqueaderos:");
         jPanel2.add(jLabel9);
-        jLabel9.setBounds(-10, 100, 120, 14);
+        jLabel9.setBounds(-10, 87, 120, 18);
 
         jLabel13.setForeground(new java.awt.Color(0, 0, 153));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Imp. Ticket:");
         jPanel2.add(jLabel13);
-        jLabel13.setBounds(0, 140, 110, 14);
+        jLabel13.setBounds(0, 128, 110, 18);
 
         cmbTicket.setEnabled(false);
 
@@ -770,13 +776,13 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(cmbTicket);
-        cmbTicket.setBounds(120, 140, 240, 20);
+        cmbTicket.setBounds(120, 128, 240, 18);
 
         jLabel18.setForeground(new java.awt.Color(0, 0, 153));
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel18.setText("Imp. Factura:");
         jPanel2.add(jLabel18);
-        jLabel18.setBounds(0, 160, 110, 14);
+        jLabel18.setBounds(0, 146, 110, 18);
 
         cmbImpresora.setEnabled(false);
 
@@ -789,13 +795,13 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(cmbImpresora);
-        cmbImpresora.setBounds(120, 180, 240, 20);
+        cmbImpresora.setBounds(120, 164, 240, 18);
 
         jLabel20.setForeground(new java.awt.Color(0, 0, 153));
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel20.setText("Impresora Botón(1):");
         jPanel2.add(jLabel20);
-        jLabel20.setBounds(0, 180, 110, 14);
+        jLabel20.setBounds(0, 164, 110, 18);
 
         iva.setEditable(false);
         iva.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -809,12 +815,12 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(iva);
-        iva.setBounds(320, 100, 40, 20);
+        iva.setBounds(320, 87, 40, 18);
 
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel16.setText("Gracia por Hora: ");
         jPanel2.add(jLabel16);
-        jLabel16.setBounds(0, 220, 110, 20);
+        jLabel16.setBounds(0, 200, 110, 18);
 
         graciaentrada.setEditable(false);
         graciaentrada.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -829,7 +835,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(graciaentrada);
-        graciaentrada.setBounds(120, 220, 60, 20);
+        graciaentrada.setBounds(120, 200, 60, 18);
 
         graciasalida.setEditable(false);
         graciasalida.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -844,11 +850,11 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(graciasalida);
-        graciasalida.setBounds(300, 220, 60, 20);
+        graciasalida.setBounds(300, 200, 60, 18);
 
         jLabel28.setText("Tiempo Gracia Salida: ");
         jPanel2.add(jLabel28);
-        jLabel28.setBounds(190, 220, 110, 20);
+        jLabel28.setBounds(190, 200, 110, 18);
 
         chkWebcam.setText("Trabaja con WebCam");
         chkWebcam.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -875,7 +881,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(seabrefactura);
-        seabrefactura.setBounds(220, 240, 140, 18);
+        seabrefactura.setBounds(220, 220, 140, 18);
 
         seabreticket.setText("Abrir barrera al imprimir Ticket");
 
@@ -883,7 +889,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         bindingGroup.addBinding(binding);
 
         jPanel2.add(seabreticket);
-        seabreticket.setBounds(10, 240, 170, 18);
+        seabreticket.setBounds(10, 220, 170, 18);
 
         multa.setEditable(false);
         multa.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
@@ -894,7 +900,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         bindingGroup.addBinding(binding);
 
         jPanel2.add(multa);
-        multa.setBounds(320, 80, 40, 18);
+        multa.setBounds(320, 70, 40, 18);
 
         jLabel29.setText("Barre.que Fotografía: ");
         jPanel2.add(jLabel29);
@@ -911,13 +917,13 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(cmbImpresora1);
-        cmbImpresora1.setBounds(120, 200, 240, 20);
+        cmbImpresora1.setBounds(120, 182, 240, 18);
 
         jLabel37.setForeground(new java.awt.Color(0, 0, 153));
         jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel37.setText("Impresora Botón(2):");
         jPanel2.add(jLabel37);
-        jLabel37.setBounds(0, 200, 110, 14);
+        jLabel37.setBounds(0, 183, 110, 18);
 
         chkIpcam.setText("Trabaja con Cámara IP        ó");
 
@@ -934,7 +940,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
         jLabel38.setText("Multa por pérdida: ");
         jPanel2.add(jLabel38);
-        jLabel38.setBounds(230, 80, 100, 20);
+        jLabel38.setBounds(230, 70, 100, 18);
 
         url.setEditable(false);
         url.setText("http://");
@@ -957,7 +963,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(cmbPuertaFac);
-        cmbPuertaFac.setBounds(360, 240, 37, 20);
+        cmbPuertaFac.setBounds(360, 220, 37, 20);
 
         cmbPuertaTicket.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
         cmbPuertaTicket.setEnabled(false);
@@ -971,13 +977,13 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(cmbPuertaTicket);
-        cmbPuertaTicket.setBounds(180, 240, 37, 20);
+        cmbPuertaTicket.setBounds(180, 220, 37, 20);
 
         jLabel50.setForeground(new java.awt.Color(0, 0, 153));
         jLabel50.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel50.setText("IVA %");
         jPanel2.add(jLabel50);
-        jLabel50.setBounds(280, 100, 40, 20);
+        jLabel50.setBounds(280, 87, 40, 18);
 
         chkBloquear.setText("Bloquear Pulsador al llenarse");
 
@@ -990,7 +996,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(chkBloquear);
-        chkBloquear.setBounds(20, 120, 180, 23);
+        chkBloquear.setBounds(20, 105, 180, 18);
 
         chkBloquearSalida.setText("Bloquear Salida si no ha Ingresado");
 
@@ -998,7 +1004,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         bindingGroup.addBinding(binding);
 
         jPanel2.add(chkBloquearSalida);
-        chkBloquearSalida.setBounds(200, 120, 210, 23);
+        chkBloquearSalida.setBounds(200, 105, 210, 18);
 
         barreras.setToolTipText("");
         jPanel2.add(barreras);
@@ -1011,6 +1017,30 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel7.setText("Ej.: 1;2;3;4");
         jPanel2.add(jLabel7);
         jLabel7.setBounds(220, 300, 70, 14);
+
+        jLabel53.setText("Tiempo retardo al cobrar");
+        jPanel2.add(jLabel53);
+        jLabel53.setBounds(230, 240, 130, 14);
+
+        jLabel55.setText("Tiempo retardo al abrir barrera");
+        jPanel2.add(jLabel55);
+        jLabel55.setBounds(20, 240, 160, 14);
+
+        retardoEntrada.setText("1");
+        jPanel2.add(retardoEntrada);
+        retardoEntrada.setBounds(180, 240, 20, 18);
+
+        retardoSalida.setText("1");
+        jPanel2.add(retardoSalida);
+        retardoSalida.setBounds(360, 240, 20, 18);
+
+        jLabel56.setText("s");
+        jPanel2.add(jLabel56);
+        jLabel56.setBounds(200, 243, 5, 14);
+
+        jLabel57.setText("s");
+        jPanel2.add(jLabel57);
+        jLabel57.setBounds(380, 243, 10, 14);
 
         jTabbedPane1.addTab("DATOS DE LA EMPRESA", new javax.swing.ImageIcon(getClass().getResource("/images/empresa.png")), jPanel2); // NOI18N
 
@@ -1639,6 +1669,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setIpBarras2(ipBarras2.getText());
                     empresaObj.setPuertoBarras1(puertoBarras1.getText());
                     empresaObj.setPuertoBarras2(puertoBarras2.getText());
+                    empresaObj.setRetardoEntrada(retardoEntrada.getText());
+                    empresaObj.setRetardoSalida(retardoSalida.getText());
                     try {
                         empresaObj.setMulta(new Double(multa.getText()));
                     } catch (Exception e) {
@@ -2277,7 +2309,11 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel54;
+    private javax.swing.JLabel jLabel55;
+    private javax.swing.JLabel jLabel56;
+    private javax.swing.JLabel jLabel57;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -2296,6 +2332,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JFormattedTextField puertoBarras1;
     private javax.swing.JFormattedTextField puertoBarras2;
     private javax.swing.JFormattedTextField razonsocial;
+    private javax.swing.JFormattedTextField retardoEntrada;
+    private javax.swing.JFormattedTextField retardoSalida;
     private javax.swing.JCheckBox seabrefactura;
     private javax.swing.JCheckBox seabreticket;
     private javax.swing.JFormattedTextField telefono;

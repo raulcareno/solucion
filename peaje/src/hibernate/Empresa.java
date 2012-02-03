@@ -760,6 +760,10 @@ public class Empresa implements Serializable {
     public String puertoBarras1="";
     @Transient
     public String puertoBarras2="";
+    @Transient
+    public String retardoEntrada="";
+    @Transient
+    public String retardoSalida="";
     
     public Boolean getBloquearsalida() {
         return bloquearsalida;
@@ -847,6 +851,22 @@ public class Empresa implements Serializable {
 
     public void setPuertoBarras2(String puertoBarras2) {
         this.puertoBarras2 = puertoBarras2;
+    }
+
+    public String getRetardoEntrada() {
+        return retardoEntrada;
+    }
+
+    public void setRetardoEntrada(String retardoEntrada) {
+        this.retardoEntrada = retardoEntrada;
+    }
+
+    public String getRetardoSalida() {
+        return retardoSalida;
+    }
+
+    public void setRetardoSalida(String retardoSalida) {
+        this.retardoSalida = retardoSalida;
     }
     
     
