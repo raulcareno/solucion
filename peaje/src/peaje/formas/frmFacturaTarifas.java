@@ -132,7 +132,7 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
 //        btn.setName(title);
         btn.setText(tarifa.getNombre());
         btn.addMouseListener(new MouseAdapter() {
-
+           
             @Override
             public void mouseReleased(MouseEvent evt) {
                 final JButton btn = (JButton) evt.getSource();

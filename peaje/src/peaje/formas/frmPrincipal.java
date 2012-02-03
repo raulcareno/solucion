@@ -559,8 +559,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         btnClientes = new javax.swing.JButton();
         btnTicket = new javax.swing.JButton();
         btnCobrar = new javax.swing.JButton();
-        btnReportes = new javax.swing.JButton();
         btnCobrar1 = new javax.swing.JButton();
+        btnReportes = new javax.swing.JButton();
         contenedor2 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar2 = new javax.swing.JToolBar();
         btnUsuarios = new javax.swing.JButton();
@@ -2655,19 +2655,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             jToolBar1.add(btnCobrar);
 
-            btnReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/resultados.png"))); // NOI18N
-            btnReportes.setText("Reportes");
-            btnReportes.setFocusable(false);
-            btnReportes.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-            btnReportes.setPreferredSize(new java.awt.Dimension(101, 21));
-            btnReportes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-            btnReportes.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    btnReportesActionPerformed(evt);
-                }
-            });
-            jToolBar1.add(btnReportes);
-
             btnCobrar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
             btnCobrar1.setMnemonic('B');
             btnCobrar1.setText("Cobras Diarios(F11)");
@@ -2681,6 +2668,19 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             jToolBar1.add(btnCobrar1);
+
+            btnReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/resultados.png"))); // NOI18N
+            btnReportes.setText("Reportes");
+            btnReportes.setFocusable(false);
+            btnReportes.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+            btnReportes.setPreferredSize(new java.awt.Dimension(101, 21));
+            btnReportes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+            btnReportes.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    btnReportesActionPerformed(evt);
+                }
+            });
+            jToolBar1.add(btnReportes);
 
             contenedor1.getContentPane().add(jToolBar1);
 
@@ -6685,7 +6685,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private void btnCobrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrar1ActionPerformed
         // TODO add your handling code here:
            try {
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Factura' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'FacturaDiaria' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);
             } else {
