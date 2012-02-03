@@ -101,6 +101,7 @@ public class frmTarifas   extends javax.swing.JInternalFrame {
 
 
        llenarProductos();
+              llenarProductos1();
 
     }
 void llenarProductos(){
@@ -1232,6 +1233,10 @@ void llenarProductos1(){
 
     private void tbTarifas1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbTarifas1MouseClicked
         // TODO add your handling code here:
+           int fila = tbTarifas1.getSelectedRow();
+        txtCodigo1.setText((Integer) tbTarifas1.getValueAt(fila,0)+"");
+        txtNombre1.setText((String) tbTarifas1.getValueAt(fila,1));
+        txtValor1.setText((BigDecimal) tbTarifas1.getValueAt(fila,2)+"");
     }//GEN-LAST:event_tbTarifas1MouseClicked
 
     private void tbTarifas1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbTarifas1KeyPressed
