@@ -34,7 +34,9 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.Vector;
 import sources.ClientesSource;
+import sources.ConsolidadoSource;
 import sources.FacturaSource;
+import sources.General;
 //import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
 
 /**
@@ -184,13 +186,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Catálogo de Reportes ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Seleccione un reporte y presione ver ..::..");
         jPanel3.add(jLabel10);
@@ -206,7 +208,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel1.setBounds(190, 60, 60, 14);
 
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas Tickest y Tarjetas", "Facturas de Tickets", "Facturas de Tarjetas", "Consolidado por Mes", "Clientes mas frecuentes", "Listado clientes", "No. de Ingresos x Cliente", "Tickets Anulados", "Fotos de Vehiculos", "CIERRE DE CAJA", "Tarjetas Ocupadas(Dentro del Parqu.)" }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas Tickest y Tarjetas", "Facturas de Tickets", "Facturas de Tarjetas", "Consolidado por Mes", "Clientes mas frecuentes", "Listado clientes", "No. de Ingresos x Cliente", "Tickets Anulados", "Fotos de Vehiculos", "CIERRE DE CAJA", "Tarjetas Ocupadas(Dentro del Parqu.)", "Consolidado x fechas" }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -349,7 +351,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -387,6 +389,48 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 detalle.add(factura);
             }
             FacturaSource ds = new FacturaSource(detalle);
+            Map parametros = new HashMap();
+            parametros.put("empresa", emp.getRazon());
+            parametros.put("direccion", emp.getDireccion());
+            parametros.put("telefono", emp.getTelefonos());
+            parametros.put("titulo", titulo);
+            parametros.put("parqueaderos", emp.getParqueaderos());
+            parametros.put("desde",desde.getDate());
+            parametros.put("hasta",hasta.getDate());
+
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+            JRViewer reporte = new JRViewer(masterPrint); //PARA VER EL REPORTE ANTES DE IMPRIMIR
+            panelReportes.removeAll();
+            reporte.repaint();
+            reporte.setLocation(0, 0);
+            reporte.setSize(723, 557);
+            reporte.setVisible(true);
+            panelReportes.add(reporte);
+            panelReportes.repaint();
+            this.repaint();
+        } catch (Exception ex) {
+            Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    public void consolidadoxfecha(String dirreporte, String query, String titulo) {
+        try {
+            System.out.println("QUERY: "+query);
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(dirreporte);
+            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+
+            List fac = adm.queryNativo(query);
+            ArrayList detalle = new ArrayList();
+            for (Iterator it = fac.iterator(); it.hasNext();) {
+                Vector faci = (Vector)it.next();
+                General gen = new General();
+                gen.setDato1(faci.get(0)+"");  
+                gen.setNumero1(new Integer(faci.get(2).toString()));  
+                gen.setValor1(new BigDecimal(faci.get(1).toString()));  
+                gen.setValor2(new BigDecimal(faci.get(3).toString()));  
+                detalle.add(gen);
+            }
+            ConsolidadoSource  ds = new ConsolidadoSource(detalle);
             Map parametros = new HashMap();
             parametros.put("empresa", emp.getRazon());
             parametros.put("direccion", emp.getDireccion());
@@ -918,7 +962,16 @@ public class frmReportes extends javax.swing.JInternalFrame {
             titulo = "Clientes dentro del parqueadero";
             tickets(dirreporte, query, titulo);
 
-        }  
+        } else if (cmbTipoReporte.getSelectedIndex() == 14) {//CONSOLIDADO
+                query = "SELECT placa, total, COUNT(*), SUM(total) FROM factura  "
+                        + "WHERE fechafin BETWEEN '"+desde2+"' "
+                        + "AND  '"+hasta2+"' GROUP BY placa "; 
+                System.out.println(""+query);
+                dirreporte = ubicacionDirectorio+"reportes"+separador+"consolidadoxfecha.jasper";
+                titulo = "Consolidado";
+                consolidadoxfecha(dirreporte, query, titulo);
+                
+        }
            principal.contenedor.requestFocus();
 
     }//GEN-LAST:event_btnBuscarActionPerformed
