@@ -1,0 +1,16 @@
+INFO peaje.formas.frmPrincipal,line 41,03.02.2012/00:32:58,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,03.02.2012/00:33:07,OK
+INFO peaje.formas.frmPrincipal,line 41,03.02.2012/00:33:28,java.lang.NullPointerException
+INFO peaje.formas.frmPrincipal,line 41,03.02.2012/00:35:50,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,03.02.2012/00:36:07,OK
+INFO peaje.formas.frmPrincipal,line 41,03.02.2012/00:36:28,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,03.02.2012/00:38:20,OK
+INFO peaje.formas.frmPrincipal,line 41,03.02.2012/00:38:42,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,03.02.2012/00:39:46,OK
+INFO peaje.formas.frmPrincipal,line 41,03.02.2012/00:40:07,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,03.02.2012/00:41:58,OK
+INFO peaje.formas.frmPrincipal,line 41,03.02.2012/00:42:19,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,03.02.2012/00:49:39,OK
+INFO peaje.formas.frmPrincipal,line 41,03.02.2012/00:50:00,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,03.02.2012/00:58:15,OK
+INFO peaje.formas.frmPrincipal,line 41,03.02.2012/00:58:36,java.lang.NullPointerException
