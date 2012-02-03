@@ -112,8 +112,8 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
 
             panelencontrados.setVisible(false);
 //            panelTarifas.setVisible(false);
-            panelencontrados2.setVisible(false);
-            llenarProductos();
+            //panelencontrados2.setVisible(false);
+            //llenarProductos();
             panelTarifas.setLayout(new GridLayout(4, 1));
             List<Tarifasdiarias> lVenta = adm.query("Select o from Tarifasdiarias as o ");
             for (Iterator<Tarifasdiarias> it = lVenta.iterator(); it.hasNext();) {
@@ -169,20 +169,7 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         }
     }
 
-    public void llenarProductos() {
-
-        try {
-            cmbProductos.removeAllItems();
-            List produc = adm.query("Select o from Productos as o");
-            for (Iterator it = produc.iterator(); it.hasNext();) {
-                Productos object = (Productos) it.next();
-                cmbProductos.addItem(object);
-
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+     
 
 // <editor-fold defaultstate="collapsed" desc="PROPIEDADES">
     public String getClaveActual() {
@@ -239,8 +226,6 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel5 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         panelTarifas = new javax.swing.JPanel();
         codigo = new javax.swing.JFormattedTextField();
@@ -260,6 +245,8 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         cliente = new javax.swing.JFormattedTextField();
         btnNuevoCliente = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jPanel12 = new javax.swing.JPanel();
+        miBotonImagen = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         frmEliminar = new javax.swing.JInternalFrame();
         jLabel28 = new javax.swing.JLabel();
@@ -270,41 +257,6 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         btnSalir = new javax.swing.JButton();
         total = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel12 = new javax.swing.JPanel();
-        miBotonImagen = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
-        panelencontrados2 = new javax.swing.JPanel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        encontrados2 = new javax.swing.JList();
-        telefono1 = new javax.swing.JFormattedTextField();
-        identificacion1 = new javax.swing.JFormattedTextField();
-        nombres1 = new javax.swing.JFormattedTextField();
-        direccion1 = new javax.swing.JFormattedTextField();
-        cliente1 = new javax.swing.JFormattedTextField();
-        btnNuevoCliente1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        productos = new javax.swing.JTable();
-        jPanel8 = new javax.swing.JPanel();
-        btnAgregar1 = new javax.swing.JButton();
-        btnSalir1 = new javax.swing.JButton();
-        txtTotal1 = new javax.swing.JFormattedTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
-        txtSubtotal = new javax.swing.JFormattedTextField();
-        txtIva = new javax.swing.JFormattedTextField();
-        cmbProductos = new javax.swing.JComboBox();
-        btnAnadirProducto = new javax.swing.JButton();
-        txtCantidad = new javax.swing.JFormattedTextField();
-        jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
 
         formaBusqueda.setLocationByPlatform(true);
         formaBusqueda.getContentPane().setLayout(null);
@@ -374,7 +326,7 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         formaBusqueda.getContentPane().add(jPanel10);
         jPanel10.setBounds(10, 60, 510, 180);
 
-        setTitle("Cobrar Ticket");
+        setTitle("Facturar ");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -391,7 +343,7 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
-        jLabel8.setText("Facturación de Tickets ..::..");
+        jLabel8.setText("Facturación según el tipo de vehículo  ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
@@ -403,13 +355,6 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 640, 40);
-
-        jPanel5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jPanel5KeyPressed(evt);
-            }
-        });
-        jPanel5.setLayout(null);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
@@ -434,8 +379,8 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         jPanel1.add(tarifaNombre);
         tarifaNombre.setBounds(30, 50, 240, 50);
 
-        jPanel5.add(jPanel1);
-        jPanel1.setBounds(10, 10, 290, 160);
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(20, 50, 290, 160);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel2.setLayout(null);
@@ -556,8 +501,18 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         jPanel2.add(jButton3);
         jButton3.setBounds(210, 10, 30, 23);
 
-        jPanel5.add(jPanel2);
-        jPanel2.setBounds(310, 10, 290, 160);
+        getContentPane().add(jPanel2);
+        jPanel2.setBounds(330, 50, 290, 160);
+
+        jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel12.setLayout(new java.awt.BorderLayout());
+
+        miBotonImagen.setBackground(new java.awt.Color(204, 204, 255));
+        miBotonImagen.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(153, 204, 255)));
+        jPanel12.add(miBotonImagen, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(jPanel12);
+        jPanel12.setBounds(20, 230, 290, 190);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -634,332 +589,10 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         jPanel4.add(jLabel2);
         jLabel2.setBounds(10, 30, 120, 30);
 
-        jPanel5.add(jPanel4);
-        jPanel4.setBounds(310, 170, 300, 190);
+        getContentPane().add(jPanel4);
+        jPanel4.setBounds(320, 230, 300, 190);
 
-        jLabel1.setText("NOTA: Para reimprimir el comprobante de pago, en caso de error en la impresora, digite nuevamente el No. de Ticket");
-        jPanel5.add(jLabel1);
-        jLabel1.setBounds(20, 370, 570, 14);
-
-        jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPanel12.setLayout(new java.awt.BorderLayout());
-
-        miBotonImagen.setBackground(new java.awt.Color(204, 204, 255));
-        miBotonImagen.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(153, 204, 255)));
-        jPanel12.add(miBotonImagen, java.awt.BorderLayout.CENTER);
-
-        jPanel5.add(jPanel12);
-        jPanel12.setBounds(10, 170, 290, 190);
-
-        jTabbedPane1.addTab("TICKETS", jPanel5);
-
-        jPanel6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jPanel6KeyPressed(evt);
-            }
-        });
-        jPanel6.setLayout(null);
-
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPanel7.setLayout(null);
-
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel11.setText("Teléfono: ");
-        jPanel7.add(jLabel11);
-        jLabel11.setBounds(0, 70, 80, 20);
-
-        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel20.setText("CI/RUC: ");
-        jPanel7.add(jLabel20);
-        jLabel20.setBounds(0, 10, 80, 20);
-
-        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel21.setText("Dirección: ");
-        jPanel7.add(jLabel21);
-        jLabel21.setBounds(0, 50, 80, 20);
-
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel22.setText("Cliente: ");
-        jPanel7.add(jLabel22);
-        jLabel22.setBounds(0, 30, 80, 20);
-
-        panelencontrados2.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
-        panelencontrados2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        panelencontrados2.setLayout(null);
-
-        encontrados2.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Lista Clientes" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        encontrados2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        encontrados2.setAlignmentX(0.2F);
-        encontrados2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                encontrados2MouseClicked(evt);
-            }
-        });
-        encontrados2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                encontrados2KeyPressed(evt);
-            }
-        });
-        jScrollPane5.setViewportView(encontrados2);
-
-        panelencontrados2.add(jScrollPane5);
-        jScrollPane5.setBounds(10, 10, 170, 90);
-
-        jPanel7.add(panelencontrados2);
-        panelencontrados2.setBounds(80, 50, 190, 110);
-
-        telefono1.setEditable(false);
-        telefono1.setText("9999999999999");
-        telefono1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                telefono1KeyPressed(evt);
-            }
-        });
-        jPanel7.add(telefono1);
-        telefono1.setBounds(80, 70, 140, 20);
-
-        identificacion1.setEditable(false);
-        identificacion1.setText("9999999999999");
-        identificacion1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                identificacion1ActionPerformed(evt);
-            }
-        });
-        identificacion1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                identificacion1FocusLost(evt);
-            }
-        });
-        identificacion1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                identificacion1KeyPressed(evt);
-            }
-        });
-        jPanel7.add(identificacion1);
-        identificacion1.setBounds(80, 10, 110, 20);
-
-        nombres1.setEditable(false);
-        nombres1.setText("CONSUMIDOR FINAL");
-        nombres1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                nombres1KeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                nombres1KeyReleased(evt);
-            }
-        });
-        jPanel7.add(nombres1);
-        nombres1.setBounds(80, 30, 190, 20);
-
-        direccion1.setEditable(false);
-        direccion1.setText("S/D");
-        direccion1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                direccion1KeyPressed(evt);
-            }
-        });
-        jPanel7.add(direccion1);
-        direccion1.setBounds(80, 50, 190, 20);
-
-        cliente1.setBorder(null);
-        cliente1.setEditable(false);
-        cliente1.setText("1");
-        cliente1.setEnabled(false);
-        cliente1.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
-        jPanel7.add(cliente1);
-        cliente1.setBounds(190, 10, 20, 10);
-
-        btnNuevoCliente1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
-        btnNuevoCliente1.setText("CREAR O BUSCAR CLIENTE");
-        btnNuevoCliente1.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnNuevoCliente1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoCliente1ActionPerformed(evt);
-            }
-        });
-        btnNuevoCliente1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnNuevoCliente1KeyPressed(evt);
-            }
-        });
-        jPanel7.add(btnNuevoCliente1);
-        btnNuevoCliente1.setBounds(40, 100, 230, 30);
-
-        jPanel6.add(jPanel7);
-        jPanel7.setBounds(20, 10, 270, 160);
-
-        productos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "...", "Cantidad", "Descripcion", "Valor"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        productos.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                productosKeyPressed(evt);
-            }
-        });
-        jScrollPane1.setViewportView(productos);
-        productos.getColumnModel().getColumn(0).setPreferredWidth(0);
-        productos.getColumnModel().getColumn(0).setMaxWidth(5);
-
-        jPanel6.add(jScrollPane1);
-        jScrollPane1.setBounds(300, 50, 320, 120);
-
-        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPanel8.setLayout(null);
-
-        btnAgregar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
-        btnAgregar1.setMnemonic('G');
-        btnAgregar1.setText("Guardar");
-        btnAgregar1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregar1.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnAgregar1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAgregar1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregar1ActionPerformed(evt);
-            }
-        });
-        btnAgregar1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnAgregar1KeyPressed(evt);
-            }
-        });
-        jPanel8.add(btnAgregar1);
-        btnAgregar1.setBounds(440, 10, 60, 50);
-
-        btnSalir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
-        btnSalir1.setMnemonic('S');
-        btnSalir1.setText("Salir");
-        btnSalir1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalir1.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnSalir1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSalir1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalir1ActionPerformed(evt);
-            }
-        });
-        btnSalir1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnSalir1KeyPressed(evt);
-            }
-        });
-        jPanel8.add(btnSalir1);
-        btnSalir1.setBounds(500, 10, 60, 50);
-
-        txtTotal1.setBorder(null);
-        txtTotal1.setEditable(false);
-        txtTotal1.setForeground(new java.awt.Color(51, 153, 0));
-        txtTotal1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtTotal1.setText("0.0");
-        txtTotal1.setCaretColor(new java.awt.Color(0, 204, 0));
-        txtTotal1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jPanel8.add(txtTotal1);
-        txtTotal1.setBounds(140, 60, 140, 40);
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel6.setLabelFor(total);
-        jLabel6.setText("A PAGAR:");
-        jPanel8.add(jLabel6);
-        jLabel6.setBounds(20, 70, 130, 30);
-
-        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel25.setText("IVA:");
-        jPanel8.add(jLabel25);
-        jLabel25.setBounds(67, 30, 90, 14);
-
-        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel26.setText("SUBTOTAL:");
-        jPanel8.add(jLabel26);
-        jLabel26.setBounds(80, 10, 80, 14);
-
-        txtSubtotal.setEditable(false);
-        txtSubtotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtSubtotal.setText("0.0");
-        jPanel8.add(txtSubtotal);
-        txtSubtotal.setBounds(172, 10, 110, 20);
-
-        txtIva.setEditable(false);
-        txtIva.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtIva.setText("0.0");
-        jPanel8.add(txtIva);
-        txtIva.setBounds(172, 30, 110, 20);
-
-        jPanel6.add(jPanel8);
-        jPanel8.setBounds(20, 190, 600, 100);
-
-        cmbProductos.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                cmbProductosKeyPressed(evt);
-            }
-        });
-        jPanel6.add(cmbProductos);
-        cmbProductos.setBounds(300, 30, 200, 20);
-
-        btnAnadirProducto.setText("Añadir");
-        btnAnadirProducto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnadirProductoActionPerformed(evt);
-            }
-        });
-        btnAnadirProducto.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnAnadirProductoKeyPressed(evt);
-            }
-        });
-        jPanel6.add(btnAnadirProducto);
-        btnAnadirProducto.setBounds(550, 30, 63, 20);
-
-        txtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtCantidad.setText("1");
-        txtCantidad.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCantidadKeyPressed(evt);
-            }
-        });
-        jPanel6.add(txtCantidad);
-        txtCantidad.setBounds(500, 30, 50, 20);
-
-        jLabel23.setText("Productos disponibles");
-        jPanel6.add(jLabel23);
-        jLabel23.setBounds(300, 10, 190, 14);
-
-        jLabel24.setText("Cantidad");
-        jPanel6.add(jLabel24);
-        jLabel24.setBounds(500, 10, 50, 14);
-
-        jLabel27.setForeground(new java.awt.Color(255, 51, 0));
-        jLabel27.setText("Para QUITAR un elemento seleccione y presione SUPRIMIR");
-        jPanel6.add(jLabel27);
-        jLabel27.setBounds(300, 170, 310, 14);
-
-        jTabbedPane1.addTab("VENTA DE TARJETAS", jPanel6);
-
-        getContentPane().add(jTabbedPane1);
-        jTabbedPane1.setBounds(10, 42, 620, 420);
+        getAccessibleContext().setAccessibleName("Facturar");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1637,11 +1270,7 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
     }
 
     public void llenarCliente2(Clientes nCliente) {
-        cliente1.setText("" + nCliente.getCodigo());
-        identificacion1.setText(nCliente.getIdentificacion());
-        nombres1.setText(nCliente.getNombres());
-        direccion1.setText(nCliente.getDireccion());
-        telefono1.setText(nCliente.getTelefono());
+        
     }
 
     private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
@@ -1745,272 +1374,7 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
             llenarCliente(est);
         }
     }//GEN-LAST:event_encontradosMouseClicked
-
-    private void encontrados2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encontrados2MouseClicked
-        // TODO add your handling code here:
-        if (evt.getClickCount() == 2) {
-            this.panelencontrados2.setVisible(false);
-            Clientes est = (Clientes) this.encontrados2.getSelectedValue();
-            llenarCliente2(est);
-            cargarGrid(est.getProductos(), est.getValor());
-
-        }
-    }//GEN-LAST:event_encontrados2MouseClicked
-
-    private void encontrados2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontrados2KeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_ENTER) {
-            this.panelencontrados2.setVisible(false);
-            Clientes est = (Clientes) this.encontrados2.getSelectedValue();
-            llenarCliente2(est);
-            cargarGrid(est.getProductos(), est.getValor());
-
-
-        }
-        if (evt.getKeyCode() == evt.VK_UP && encontrados2.getSelectedIndex() == 0) {
-            this.nombres1.requestFocusInWindow();
-        }
-        if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            this.panelencontrados2.setVisible(false);
-
-        }
-    }//GEN-LAST:event_encontrados2KeyPressed
-
-    private void identificacion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identificacion1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_identificacion1ActionPerformed
-    public void cargarGrid(Productos pro, BigDecimal valor) {
-        Productos asigRub = pro;
-        DefaultTableModel dtm = (DefaultTableModel) this.productos.getModel();
-        Object[] obj = new Object[10];
-        obj[0] = asigRub.getCodigo();
-        obj[1] = new Integer(1);
-        obj[2] = asigRub.getDescripcion();
-        obj[3] = valor.setScale(2, RoundingMode.UP);
-        dtm.addRow(obj);
-        productos.setModel(dtm);
-        sumar();
-
-    }
-    private void identificacion1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_identificacion1FocusLost
-        // TODO add your handling code here:
-        try {
-            Clientes cliObj = (Clientes) adm.querySimple("Select o from Clientes as o "
-                    + "where o.identificacion like '" + identificacion1.getText().trim() + "%' ");
-            if (cliObj != null) {
-                cliente1.setText(cliObj.getCodigo() + "");
-                identificacion1.setText(cliObj.getIdentificacion());
-                nombres1.setText(cliObj.getNombres());
-                direccion1.setText(cliObj.getDireccion());
-                telefono1.setText(cliObj.getTelefono());
-                cargarGrid(cliObj.getProductos(), cliObj.getValor());
-            }
-
-        } catch (Exception e) {
-            System.out.println("BUSCAR CEDULA UNICA " + e);
-        }
-    }//GEN-LAST:event_identificacion1FocusLost
-
-    private void nombres1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_DOWN) {
-            encontrados2.setSelectedIndex(0);
-            encontrados2.requestFocusInWindow();
-        }
-        if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            panelencontrados2.setVisible(false);
-        }
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_nombres1KeyPressed
-
-    private void nombres1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres1KeyReleased
-        // TODO add your handling code here:
-        if (!nombres1.getText().isEmpty()) {
-
-            List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres1.getText().trim() + "%' order by o.nombres ", 0, 10);
-            if (encon.size() > 0) {
-                DefaultListModel dtm = new DefaultListModel();
-                dtm.removeAllElements();
-                encontrados2.setModel(dtm);
-                int j = 0;
-                for (Clientes est : encon) {
-                    dtm.add(j, est);
-                    j++;
-                }
-                encontrados2.setModel(dtm);
-                this.panelencontrados2.setVisible(true);
-            } else {
-                DefaultListModel dtm = new DefaultListModel();
-                dtm.removeAllElements();
-                encontrados2.setModel(dtm);
-                this.panelencontrados2.setVisible(false);
-            }
-
-        } else {
-            DefaultListModel dtm = new DefaultListModel();
-            dtm.removeAllElements();
-            encontrados2.setModel(dtm);
-            this.panelencontrados2.setVisible(false);
-        }
-    }//GEN-LAST:event_nombres1KeyReleased
-
-    private void btnNuevoCliente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoCliente1ActionPerformed
-        // TODO add your handling code here:
-        identificacion1.setEditable(true);
-        nombres1.setEditable(true);
-        direccion1.setEditable(true);
-        telefono1.setEditable(true);
-        llenarCliente2(new Clientes(0));
-//            cliente.setEditable(true);
-        identificacion1.requestFocusInWindow();
-    }//GEN-LAST:event_btnNuevoCliente1ActionPerformed
-
-    private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
-        try {
-            // TODO add your handling code here:
-            if (cliente1.getText().equals("0") && nombres1.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Falta el ingresar o seleccionar el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
-                identificacion.requestFocusInWindow();
-                return;
-            }
-            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-            Factura facActual = new Factura();
-            Clientes cli = new Clientes();
-            if (cliente1.getText().equals("0")) {
-                Clientes nuevoCl = new Clientes();
-                Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
-                nuevoCl.setCodigo(codigoC);
-                nuevoCl.setDireccion(direccion1.getText());
-                nuevoCl.setIdentificacion(identificacion1.getText());
-                nuevoCl.setTelefono(telefono1.getText());
-                nuevoCl.setNombres(nombres1.getText());
-                cli = nuevoCl;
-                adm.guardar(nuevoCl);
-                identificacion1.setText("9999999999999");
-                nombres1.setText("CONSUMIDOR FINAL");
-                direccion1.setText("S/D");
-                telefono1.setText("9999999999999");
-                cliente1.setText("1");
-                facActual.setClientes(nuevoCl);
-            } else {
-                facActual.setClientes(new Clientes(new Integer(cliente1.getText())));
-                cli.setDireccion(direccion1.getText());
-                cli.setIdentificacion(identificacion1.getText());
-                cli.setTelefono(telefono1.getText());
-                cli.setNombres(nombres1.getText());
-            }
-            facActual.setSubtotal(new BigDecimal(txtSubtotal.getText()));
-            facActual.setIva(new BigDecimal(txtIva.getText()));
-            facActual.setTotal(new BigDecimal(txtTotal1.getText()));
-            facActual.setFecha(new Date());
-            facActual.setFechafin(new Date());
-            facActual.setUsuario(principal.usuarioActual);
-            facActual.setUsuarioc(principal.usuarioActual);
-            facActual.setNumero(emp.getDocumentofac());
-            adm.guardar(facActual);
-            Integer numero = new Integer(emp.getDocumentofac());
-            emp.setDocumentofac((numero + 1) + "");
-            int dia = 0;
-            try {
-            } catch (Exception e) {
-                dia = 0;
-            }
-            adm.actualizar(emp);
-            Detalle det = new Detalle();
-            int filas = productos.getRowCount();
-            for (int i = 0; i < filas; i++) {
-                det = new Detalle();
-                det.setProductos(new Productos((Integer) productos.getValueAt(i, 0)));
-                det.setCantidad((Integer) productos.getValueAt(i, 1));
-                det.setDetalle((String) productos.getValueAt(i, 2));
-                det.setSubtotal((BigDecimal) productos.getValueAt(i, 3));
-                det.setIva(det.getSubtotal().multiply(new BigDecimal(empresaObj.getIva() / 100)));
-                det.setTotal(det.getSubtotal().add(det.getIva()));
-                det.setFactura(facActual);
-                adm.guardar(det);
-            }
-            imprimir(facActual.getCodigo(), emp, dia, true, cli);
-            //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito...!");
-            DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
-            dtm.getDataVector().removeAllElements();
-            productos.setModel(dtm);
-            principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
-            principal.contenedor.requestFocus();
-
-            this.setVisible(false);
-            principal = null;
-            empresaObj = null;
-            System.gc();
-        } catch (Exception ex) {
-            Logger.getLogger(frmFacturaTarifas.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }//GEN-LAST:event_btnAgregar1ActionPerformed
-
-    private void btnSalir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir1ActionPerformed
-        // TODO add your handling code here:
-        principal.contenedor.requestFocus();
-        this.setVisible(false);
-        principal = null;
-        empresaObj = null;
-        System.gc();
-    }//GEN-LAST:event_btnSalir1ActionPerformed
-    public void sumar() {
-        int filasNo = this.productos.getRowCount();
-        BigDecimal suma = new BigDecimal(0.0);
-        for (int i = 0; i < filasNo; i++) {
-            BigDecimal valor = new BigDecimal(this.productos.getValueAt(i, 3).toString());
-            suma = suma.add(valor);
-        }
-        Double totalv01 = suma.doubleValue();
-        Double iva01 = ((empresaObj.getIva() + 100) / 100);
-        Double subtotalv01 = totalv01 / iva01;
-        Double iva02 = subtotalv01 * ((empresaObj.getIva()) / 100);
-
-        BigDecimal subtotalv = new BigDecimal(subtotalv01);
-        BigDecimal ivav = new BigDecimal(iva02);
-        BigDecimal totalv = new BigDecimal(totalv01);
-//        BigDecimal subtotalv = suma;
-//        BigDecimal ivav = subtotalv.multiply(new BigDecimal(empresaObj.getIva() / 100));
-//        BigDecimal totalv = subtotalv.add(ivav);
-        txtSubtotal.setText(subtotalv.setScale(2, RoundingMode.HALF_UP) + "");
-        txtIva.setText(ivav.setScale(2, RoundingMode.HALF_UP) + "");
-        txtTotal1.setText(totalv.setScale(2, RoundingMode.HALF_UP) + "");
-    }
-    private void btnAnadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirProductoActionPerformed
-        // TODO add your handling code here:
-        if (!txtCantidad.getText().isEmpty()) {
-            Productos asigRub = (Productos) cmbProductos.getSelectedItem();
-            DefaultTableModel dtm = (DefaultTableModel) this.productos.getModel();
-            Object[] obj = new Object[10];
-            obj[0] = asigRub.getCodigo();
-            obj[1] = Integer.parseInt(txtCantidad.getText());
-            obj[2] = asigRub.getDescripcion();
-            obj[3] = new BigDecimal(asigRub.getValor() * Integer.parseInt(txtCantidad.getText()));
-            dtm.addRow(obj);
-            productos.setModel(dtm);
-            sumar();
-        } else {
-            JOptionPane.showMessageDialog(this, "INGRESE UNA CANTIDAD");
-            txtCantidad.requestFocusInWindow();
-        }
-
-
-    }//GEN-LAST:event_btnAnadirProductoActionPerformed
-
-    private void productosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_productosKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_DELETE) {
-            int fil = productos.getSelectedRow();
-            DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
-            dtm.removeRow(fil);
-            productos.setModel(dtm);
-            this.sumar();
-
-        }
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_productosKeyPressed
-
+ 
     private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
         // TODO add your handling code here:
         principal.tecla(evt.getKeyCode());
@@ -2020,61 +1384,6 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_formKeyPressed
-
-    private void jPanel5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel5KeyPressed
-        // TODO add your handling code here:
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_jPanel5KeyPressed
-
-    private void jPanel6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel6KeyPressed
-        // TODO add your handling code here:
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_jPanel6KeyPressed
-
-    private void identificacion1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_identificacion1KeyPressed
-        principal.tecla(evt.getKeyCode());
-        // TODO add your handling code here:
-    }//GEN-LAST:event_identificacion1KeyPressed
-
-    private void telefono1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefono1KeyPressed
-        // TODO add your handling code here:
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_telefono1KeyPressed
-
-    private void direccion1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_direccion1KeyPressed
-        // TODO add your handling code here:
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_direccion1KeyPressed
-
-    private void cmbProductosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbProductosKeyPressed
-        // TODO add your handling code here:
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_cmbProductosKeyPressed
-
-    private void txtCantidadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyPressed
-        // TODO add your handling code here:
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_txtCantidadKeyPressed
-
-    private void btnAnadirProductoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAnadirProductoKeyPressed
-        // TODO add your handling code here:
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_btnAnadirProductoKeyPressed
-
-    private void btnNuevoCliente1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnNuevoCliente1KeyPressed
-        // TODO add your handling code here:
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_btnNuevoCliente1KeyPressed
-
-    private void btnAgregar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregar1KeyPressed
-        // TODO add your handling code here:
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_btnAgregar1KeyPressed
-
-    private void btnSalir1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalir1KeyPressed
-        // TODO add your handling code here:
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_btnSalir1KeyPressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -2122,48 +1431,28 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         telefono.setText("");
     }//GEN-LAST:event_jButton3ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregar1;
-    private javax.swing.JButton btnAnadirProducto;
     private javax.swing.JButton btnNuevoCliente;
-    private javax.swing.JButton btnNuevoCliente1;
     private javax.swing.JButton btnSalir;
-    private javax.swing.JButton btnSalir1;
     private javax.swing.JTable busquedaTabla;
     private javax.swing.JFormattedTextField cliente;
-    private javax.swing.JFormattedTextField cliente1;
-    private javax.swing.JComboBox cmbProductos;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JFormattedTextField direccion;
-    private javax.swing.JFormattedTextField direccion1;
     private javax.swing.JList encontrados;
-    private javax.swing.JList encontrados2;
     private javax.swing.JDialog formaBusqueda;
     private javax.swing.JInternalFrame frmEliminar;
     private javax.swing.JFormattedTextField identificacion;
-    private javax.swing.JFormattedTextField identificacion1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -2172,32 +1461,17 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel miBotonImagen;
     private javax.swing.JFormattedTextField nombres;
-    private javax.swing.JFormattedTextField nombres1;
     private javax.swing.JTextArea observacion;
     private javax.swing.JPanel panelTarifas;
     private javax.swing.JPanel panelencontrados;
-    private javax.swing.JPanel panelencontrados2;
-    private javax.swing.JTable productos;
     private javax.swing.JLabel tarifaNombre;
     private javax.swing.JFormattedTextField telefono;
-    private javax.swing.JFormattedTextField telefono1;
     private javax.swing.JFormattedTextField total;
-    private javax.swing.JFormattedTextField txtCantidad;
-    private javax.swing.JFormattedTextField txtIva;
-    private javax.swing.JFormattedTextField txtSubtotal;
-    private javax.swing.JFormattedTextField txtTotal1;
     // End of variables declaration//GEN-END:variables
 }
