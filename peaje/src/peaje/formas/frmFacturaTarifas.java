@@ -130,8 +130,23 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
 
             @Override
             public void mouseReleased(MouseEvent evt) {
-                JButton btn = (JButton) evt.getSource();
+                final JButton btn = (JButton) evt.getSource();
+                Thread cargar = new Thread() {
+
+            public void run() {
+                btnSalir.setEnabled(false);
+                //btnAgregar.setVisible(false);
+                btn.setEnabled(false);
+                panelTarifas.setVisible(false);
+                tarifaNombre.setText("<html> "+tarifa.getNombre()+" </html>");
+                total.setText(""+tarifa.getValor());
                 guardar(tarifa);
+          
+
+            }
+        };
+        cargar.start();
+                
             }
         });
 
@@ -223,6 +238,7 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         panelTarifas = new javax.swing.JPanel();
         codigo = new javax.swing.JFormattedTextField();
+        tarifaNombre = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -245,12 +261,9 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         observacion = new javax.swing.JTextArea();
-        btnAgregar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         total = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
-        btnMulta = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         miBotonImagen = new javax.swing.JLabel();
@@ -407,6 +420,13 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         codigo.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
         jPanel1.add(codigo);
         codigo.setBounds(10, 30, 20, 20);
+
+        tarifaNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        tarifaNombre.setForeground(new java.awt.Color(0, 51, 153));
+        tarifaNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tarifaNombre.setText(".");
+        jPanel1.add(tarifaNombre);
+        tarifaNombre.setBounds(30, 50, 240, 50);
 
         jPanel5.add(jPanel1);
         jPanel1.setBounds(10, 10, 290, 160);
@@ -571,26 +591,6 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         jPanel4.add(frmEliminar);
         frmEliminar.setBounds(10, 0, 270, 140);
 
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
-        btnAgregar.setMnemonic('G');
-        btnAgregar.setText("Guardar");
-        btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregar.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnAgregar.setOpaque(false);
-        btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
-            }
-        });
-        btnAgregar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnAgregarKeyPressed(evt);
-            }
-        });
-        jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(170, 130, 60, 50);
-
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
         btnSalir.setText("Salir");
@@ -627,40 +627,6 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         jLabel2.setText("A PAGAR:");
         jPanel4.add(jLabel2);
         jLabel2.setBounds(10, 30, 120, 30);
-
-        btnMulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/perdida.png"))); // NOI18N
-        btnMulta.setMnemonic('G');
-        btnMulta.setText("Aplicar Multa");
-        btnMulta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnMulta.setMargin(new java.awt.Insets(1, 1, 1, 1));
-        btnMulta.setOpaque(false);
-        btnMulta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnMulta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMultaActionPerformed(evt);
-            }
-        });
-        btnMulta.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnMultaKeyPressed(evt);
-            }
-        });
-        jPanel4.add(btnMulta);
-        btnMulta.setBounds(90, 130, 80, 50);
-
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_cancel.gif"))); // NOI18N
-        btnEliminar.setText("Anular Ticket");
-        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEliminar.setMargin(new java.awt.Insets(1, 1, 1, 1));
-        btnEliminar.setOpaque(false);
-        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnEliminar);
-        btnEliminar.setBounds(10, 130, 80, 50);
 
         jPanel5.add(jPanel4);
         jPanel4.setBounds(310, 170, 300, 190);
@@ -1004,6 +970,7 @@ if (guardando == false) {
                         identificacion.requestFocusInWindow();
                         return;
                     }
+                    total.setText(valor.getValor()+"");
                     Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
                     Factura facActual = new Factura();
                     facActual.setTicket("0");
@@ -1077,7 +1044,9 @@ if (guardando == false) {
                         
                         fotografiarIp(""+facActual.getCodigo()+".jpg", ubicacionDirectorio+"\\fotos");
                     }
- 
+                    cargarFoto(facActual.getCodigo()); 
+                    principal.cargarFoto(facActual.getCodigo());
+                    principal.errores.setText("<html> valor: "+facActual.getTotal()+" </html>");
                     } catch (Exception e) {
                     }
                     Boolean pasar = true;
@@ -1181,11 +1150,6 @@ public void fotografiarIp(String nombre,String direccion){
 //            JOptionPane.showMessageDialog(null, "Error en la Fotografia");
 //        }
 }
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_btnAgregarActionPerformed
-
     public void imprimir(int cod, Empresa emp, int dias, Boolean mensual, Clientes cli) {
 
 //                    viewer.show();
@@ -1512,7 +1476,7 @@ public void fotografiarIp(String nombre,String direccion){
             return;
         }
  
-        btnAgregar.requestFocusInWindow();
+   
 
 
         Date act = new Date();
@@ -2029,11 +1993,6 @@ public void fotografiarIp(String nombre,String direccion){
         principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_productosKeyPressed
 
-    private void btnAgregarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregarKeyPressed
-        // TODO add your handling code here:
-        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_btnAgregarKeyPressed
-
     private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
         // TODO add your handling code here:
         principal.tecla(evt.getKeyCode());
@@ -2099,148 +2058,6 @@ public void fotografiarIp(String nombre,String direccion){
         principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnSalir1KeyPressed
 
-    private void btnMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultaActionPerformed
-        // TODO add your handling code here:
-        if (guardando == false) {
-            guardando = true;
-
-            if (principal.permisos.getAgregar()) {
-                            int seleccion = JOptionPane.showOptionDialog(this, " ¿Seguro que Desea Aplicar MULTA?",
-                    "JCINFORM",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null, // null para icono por defecto.
-                    new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
-                    "NO");
-            System.out.println("" + seleccion);
-
-            if (0 == seleccion) {
-
-                
-                try {
-
-
-                    Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                    Factura facActual = new Factura();
-                    Clientes nuevoCl = (Clientes) adm.buscarClave(new Integer(1), Clientes.class);
-                    facActual.setClientes(nuevoCl);
-                    Date fecSalida = new Date();
-                    facActual.setFechaini(fecSalida);
-                    facActual.setFecha(fecSalida);
-                    facActual.setFechafin(fecSalida);
-                    facActual.setNumero(emp.getDocumentofac());
-                    Double ivav = ((empresaObj.getIva() + 100) / 100);
-                    Double totalv = empresaObj.getMulta();
-                    Double subtotalv = totalv / ivav;
-                    Double ivav1 = subtotalv * (empresaObj.getIva() / 100);
-                    facActual.setTotal(new BigDecimal(totalv));
-                    facActual.setSubtotal(new BigDecimal(subtotalv));
-                    facActual.setIva(new BigDecimal(ivav1));
-                    facActual.setPlaca("PAGO MULTA");
-                    facActual.setTiempo(new Date());
-                    facActual.setTicket("000000000");
-                    facActual.setUsuario(principal.usuarioActual);
-                    facActual.setUsuarioc(principal.usuarioActual);
-
-                    //adm.guardar(facActual);
-                    
-                    
-//                    Integer numero = new Integer(emp.getDocumentofac());
-//                    emp.setDocumentofac((numero + 1) + "");
-                    Boolean pasar = true;
-                    Integer numero = new Integer(emp.getDocumentofac()) + 1;
-                    while (pasar) {
-                        List sihay = adm.query("Select o from Factura as o where o.numero = '" + numero + "'");
-                        if (sihay.size() <= 0) {
-                            pasar = false;
-                            facActual.setNumero("" + numero);
-                            emp.setDocumentofac((numero) + "");
-                            adm.actualizar(emp);//GUARDO EMPRESA
-                            adm.guardar(facActual); // GUARDO FACTURA
-                        } else {
-                            numero++;
-                        }
-
-                    }
-                    
-                    int dia = 0;
-                    try {
- 
-                    } catch (Exception e) {
-                        dia = 0;
-                    }
-                    
-                    imprimir(facActual.getCodigo(), emp, dia, false, nuevoCl);
-                    if (empresaObj.getSeabrefac()) {
-                        try {
-                            LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            //TEMPORAL
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            Thread.sleep(20);
-                            ta.outputSream.write(empresaObj.getPuertafac().getBytes());
-                            //TEMPORAL
-                        } catch (Exception ex) {
-                            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        System.out.println("ABRIO PUERTA: " + empresaObj.getPuertafac());
-                    } else {
-                        System.out.println("NO ABRE BARRERA POR DESHABILITACION DEN FRMEMPRESA ");
-                    }
-
-                    principal.noDisponibles();
- 
-                    codigo.setText("");
-                    principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
-                    principal.contenedor.requestFocus();
-                    this.setVisible(false);
-                    principal = null;
-                    empresaObj = null;
-                    System.gc();
-
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                    Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
-                    return;
-                }
-                //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito");
-                
-            }
-            } else {
-                JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
-            }
-            guardando = false;
-        }
-    }//GEN-LAST:event_btnMultaActionPerformed
-
-    private void btnMultaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnMultaKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnMultaKeyPressed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if (observacion.getText().isEmpty()) {
@@ -2278,42 +2095,6 @@ public void fotografiarIp(String nombre,String direccion){
         frmEliminar.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        try {
-            // TODO add your handling code here:
-            Accesos permisos = null;
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'AnularTickets' "
-                    + "and o.global.codigo  = '" + principal.usuarioActual.getGlobal().getCodigo() + "' and o.ingresar = true  ");
-            if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
-            } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ANULAR TICKETS...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (permisos.getAgregar()) {
-                if (codigo.getText().isEmpty()) {
-                    codigo.setText("");
-                    JOptionPane.showMessageDialog(this, "Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
-                     
-                    return;
-                } else {
-                    observacion.setText("");
-                    frmEliminar.setVisible(true);
-                }
-
-            } else {
-                System.out.println("NO TIENE PERMISOS");
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ANULAR TICKETS...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(frmFacturaTarifas.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-
-
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         cliente.setText("0");
@@ -2322,12 +2103,10 @@ public void fotografiarIp(String nombre,String direccion){
         direccion.setText("");
         telefono.setText("");
     }//GEN-LAST:event_jButton3ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
     private javax.swing.JButton btnAnadirProducto;
-    private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnMulta;
     private javax.swing.JButton btnNuevoCliente;
     private javax.swing.JButton btnNuevoCliente1;
     private javax.swing.JButton btnSalir;
@@ -2395,6 +2174,7 @@ public void fotografiarIp(String nombre,String direccion){
     private javax.swing.JPanel panelencontrados;
     private javax.swing.JPanel panelencontrados2;
     private javax.swing.JTable productos;
+    private javax.swing.JLabel tarifaNombre;
     private javax.swing.JFormattedTextField telefono;
     private javax.swing.JFormattedTextField telefono1;
     private javax.swing.JFormattedTextField total;

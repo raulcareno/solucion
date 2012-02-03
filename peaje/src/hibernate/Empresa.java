@@ -761,9 +761,9 @@ public class Empresa implements Serializable {
     @Transient
     public String puertoBarras2="";
     @Transient
-    public String retardoEntrada="";
+    public String retardoEntrada="0";
     @Transient
-    public String retardoSalida="";
+    public String retardoSalida="1";
     
     public Boolean getBloquearsalida() {
         return bloquearsalida;

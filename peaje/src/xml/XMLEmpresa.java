@@ -115,6 +115,8 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String IPBARRAS2 = "IPBARRAS2";
     private static final String PUERTOBARRAS1 = "PUERTOBARRAS1";
     private static final String PUERTOBARRAS2 = "PUERTOBARRAS2";
+    private static final String RETARDOENTRADA = "RETARDOENTRADA";
+    private static final String RETARDOSALIDA = "RETARDOSALIDA";
      
 
     // Variables
@@ -146,7 +148,7 @@ public static UsuarioActivo user = new UsuarioActivo();
 
     /** M�todo para generar documento XML usando DOM */
     public void llenarEstructuraDocumentoXMLEmpleado(EmpresaPuertos beanEmpresa) {
-       
+        
         Element item;
         //agrega el elemento Nombre dentro del elemento Empleado
         item = xmlDoc.createElement(PUERTOPRINCIPAL);
@@ -315,6 +317,12 @@ public static UsuarioActivo user = new UsuarioActivo();
         item = xmlDoc.createElement(PUERTOBARRAS2);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getPuertoBarras2()+""));
         personal.appendChild(item);
+        item = xmlDoc.createElement(RETARDOENTRADA);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getRetardoEntrada()+""));
+        personal.appendChild(item);
+        item = xmlDoc.createElement(RETARDOSALIDA);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getRetardoSalida()+""));
+        personal.appendChild(item);
         
     }
 
@@ -465,6 +473,9 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setBloquear(emp.getBloquear()); 
         beanEmpleado.setBloquearsalida(emp.getBloquearsalida()); 
         beanEmpleado.setBarreras(emp.getBarreras());
+        beanEmpleado.setRetardoEntrada(emp.getRetardoEntrada());
+        beanEmpleado.setRetardoSalida(emp.getRetardoSalida());
+        
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
         //obtenemos el documento XML en cadena de texto
@@ -1000,6 +1011,25 @@ public static UsuarioActivo user = new UsuarioActivo();
                     Element PUERTOBARRAS2outElement = (Element) PUERTOBARRAS2outList.item(0);
                     NodeList PUERTOBARRAS2outAgeList = PUERTOBARRAS2outElement.getChildNodes();
                     user.setPuertoBarras2(((Node) PUERTOBARRAS2outAgeList.item(0)).getNodeValue().trim());
+                    } catch (Exception parserConfigurationException) {
+                        //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                     
+                    
+                    try {
+                    NodeList RETARDOENTRADAoutList = firstPersonElement.getElementsByTagName("RETARDOENTRADA");
+                    Element RETARDOENTRADAoutElement = (Element) RETARDOENTRADAoutList.item(0);
+                    NodeList RETARDOENTRADAoutAgeList = RETARDOENTRADAoutElement.getChildNodes();
+                    user.setRetardoEntrada(((Node) RETARDOENTRADAoutAgeList.item(0)).getNodeValue().trim());
+                    } catch (Exception parserConfigurationException) {
+                        //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    
+                    try {
+                    NodeList RETARDOSALIDAoutList = firstPersonElement.getElementsByTagName("RETARDOSALIDA");
+                    Element RETARDOSALIDAoutElement = (Element) RETARDOSALIDAoutList.item(0);
+                    NodeList RETARDOSALIDAoutAgeList = RETARDOSALIDAoutElement.getChildNodes();
+                    user.setRetardoSalida(((Node) RETARDOSALIDAoutAgeList.item(0)).getNodeValue().trim());
                     } catch (Exception parserConfigurationException) {
                         //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
