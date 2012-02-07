@@ -42,23 +42,7 @@ import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Messagebox;
-import sources.ActaGeneralDataSource;
-import sources.ConvertirNumeros;
-import sources.DisciplinaDataSource;
-import sources.Nota;
-import sources.NotasClaseTemp;
-import sources.NumerosaLetras;
-import sources.ReporteCertificadoDataSource;
-import sources.ReporteEvaluacionDataSource;
-import sources.ReporteExamenesDataSource;
-import sources.ReporteGradoDataSource;
-import sources.ReporteNoasLibretaDataSource;
-import sources.ReporteNotasDataSource;
-import sources.ReporteProfesorDataSource;
-import sources.ReportePromocionDataSource;
-import sources.ReporteRecordDataSource;
-import sources.ReporteResumenDataSource;
-import sources.ResumenClase;
+import sources.*;
 
 /**
  *
@@ -3779,4 +3763,62 @@ public class reportesClase {
 
         return mes;
     }
+    
+    public JRDataSource matriculadosxgenero() {
+//     int tamanio=0;
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        
+        List nativo = adm.queryNativo(" SELECT cur.descripcion, esp.descripcion, par.descripcion, est.genero, "
+                + " COUNT(est.genero) FROM matriculas mat, estudiantes est, cursos cur, GLOBAL par, GLOBAL esp "
+                + " WHERE mat.estudiante = est.codigoest  AND cur.codigocur = mat.curso"
+                + " AND cur.paralelo = par.codigo AND cur.especialidad = esp.codigo "
+                + "  AND cur.periodo = '" + periodo.getCodigoper() + "'   "
+                + " AND mat.estado ='Matriculado'"
+                + " GROUP BY genero, cur.descripcion, par.descripcion "
+                + " ORDER BY cur.secuencia, cur.descripcion,esp.descripcion, par.descripcion, est.genero DESC   ");
+           
+  
+        List<ConteoMatriculas> lisNotas = new ArrayList();
+          int i= 1;
+          String cursoAnte ="";
+          String paraleAnte ="";
+          String espeAnte = "";
+          Integer masculino= 0;
+          Integer femenino = 0;
+        ConteoMatriculas cTotal = new ConteoMatriculas();
+        for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+            Vector vec = (Vector) itna.next();
+                 ConteoMatriculas c = new ConteoMatriculas();
+                 c.setNumero(i); 
+                 c.setNombrecurso(vec.get(0).toString()); 
+                 c.setEspecialidad(vec.get(1).toString()); 
+                 c.setParalelo(vec.get(2).toString());
+                 c.setGenero(vec.get(3).toString());
+                 c.setConteo(new Integer(vec.get(4).toString()));
+                 if(c.getGenero().contains("Masc")){
+                     masculino+=c.getConteo();
+                 }else{
+                     femenino+=c.getConteo();
+                 }
+                 if(cursoAnte.equals("")){
+                     cursoAnte = c.getNombrecurso();
+                 }
+                 if(!cursoAnte.equals(c.getNombrecurso())) {
+                         
+        
+                     cursoAnte = c.getNombrecurso();
+                    i++;
+                    c.setNumero(i);
+                 }
+                lisNotas.add(c); 
+                 
+        }
+ 
+        ReporteMatriculadosDataSource ds = new ReporteMatriculadosDataSource(lisNotas);
+        return ds;
+
+    }
+    
 }
