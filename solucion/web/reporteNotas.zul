@@ -496,6 +496,11 @@ void recalcular(){
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked);
                     report.setSrc(directorioReportes+"cuadrocalificaciones.jasper");
 
+            }else if(tipo.equals("ESTA")){
+                    parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
+                    datasource = noti.cuadrocalificacionesestadistico(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"estadisticoxmaterias.jasper");
+
             }else if(tipo.equals("CSUP")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
@@ -701,6 +706,13 @@ void campos(String valor){
              filacursos.visible = true;
             filaaportes.visible = true;
             
+        }else if(valor.equals("ESTA")){
+             curs.disabled = false;
+             sistemasCombo.disabled = false;
+             titulo.value= "CUADRO ESTADISTICO DE RENDIMIENTO";
+             filacursos.visible = true;
+            filaaportes.visible = true;
+            
         }else if(valor.equals("CSUP")){
             curs.disabled = false;
             sistemasCombo.disabled = false;
@@ -791,6 +803,7 @@ void campos(String valor){
                                     <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
                                     
                                     <listitem  id="EST" label="Estadístico por Curso" value="EST" />
+                                    <listitem  id="ESTA" label="Estadístico de Rendimiento por Curso" value="ESTA" />
                                     <listitem  id="AG" label="Acta de Grado" value="AG"/>
                                     <listitem  id="AG2" label="Acta de Grado(Suspendidos)" value="AG2"/>
                                     <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
