@@ -3821,4 +3821,105 @@ public class reportesClase {
 
     }
     
+    public JRDataSource cuadrocalificacionesestadistico(Cursos curso, Sistemacalificacion sistema) {
+//     int tamanio=0;
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
+        List sistemas = adm.query("Select o from Sistemacalificacion as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
+
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+                + "where  o.sistema.codigosis  = '" + sistema.getCodigosis() + "' "
+                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + "  "
+                + "order by o.sistema.orden ");
+        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        
+
+        String query = ""; 
+        int numeroEquivalencias=0;
+        for (Notanotas notass : notas) {
+            //query += notass.getNota() + ",";
+            
+                for (Iterator<Equivalencias> itEquiva = equivalencias.iterator(); itEquiva.hasNext();) {
+                    Equivalencias eqIt = itEquiva.next();
+                        query += "COUNT(IF("+notass.getNota() + " > ("+eqIt.getValorminimo()+") AND "+notass.getNota() + " <= ("+eqIt.getValormaximo()+"),1,NULL)), cast(COUNT(IF("+notass.getNota() + "> ("+eqIt.getValorminimo()+") AND "+notass.getNota() + " <= ("+eqIt.getValormaximo()+"),1,NULL)) * 100 / COUNT("+notass.getNota() + ") as decimal(9,2) ),";
+                         numeroEquivalencias++;
+                }
+                query +=" COUNT(IF(mat.estado = 'Matriculado',1,NULL)),COUNT(IF(mat.estado != 'Matriculado',1,NULL)), AVG("+notass.getNota()+") ";
+        }
+        
+        //query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+        String q = "Select  mate.descripcion, " + query + "  "
+                + "from notas, materia_profesor, matriculas mat, global mate  "
+                + "where  materia_profesor.materia = mate.codigo "
+                + "AND  notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "' "
+                + " AND notas.matricula = mat.codigomat  "
+                + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "' "
+                + " and estado in ('Matriculado','Recibir Pase','Emitir Pase','Retirado') )"
+                + "and notas.disciplina = false and materia_profesor.seimprime = true  "
+                + "GROUP BY notas.materia "
+                + "order by materia_profesor.orden ";
+        System.out.println("" + q);
+        List nativo = adm.queryNativo(q);
+        List<EstadisticoPorcentajes> lisNotas = new ArrayList();
+           
+        int iVec = 0;
+        for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                Vector vec = (Vector) itna.next();
+                iVec++;
+                EstadisticoPorcentajes est = new EstadisticoPorcentajes();
+                
+                int em = 1;
+                for (Iterator<Equivalencias> itEquiva = equivalencias.iterator(); itEquiva.hasNext();) {
+                    Equivalencias eqIt = itEquiva.next();
+                    est = new  EstadisticoPorcentajes();
+                    est.setEquivalencia(eqIt.getNombre());
+                    est.setTipo("No.");
+                    est.setValor(new Integer(vec.get(em).toString())); 
+                    est.setNumero(iVec); est.setContador(iVec);
+                    est.setMateria(vec.get(0).toString()); 
+                    est.setPromedio(new Double(vec.get((numeroEquivalencias*2)+3).toString()));
+                    est.setMatriculados(new Integer(vec.get((numeroEquivalencias*2)+1).toString()));  
+                est.setNomatriculados(new Integer(vec.get((numeroEquivalencias*2)+2).toString())); 
+                    lisNotas.add(est); 
+                    em++;
+                    est = new  EstadisticoPorcentajes();
+                    est.setEquivalencia(eqIt.getNombre());
+                    est.setTipo("%");
+                    est.setValor(new Double(vec.get(em).toString()));                  
+                    est.setNumero(iVec); est.setContador(iVec);
+                est.setMateria(vec.get(0).toString()); 
+                est.setPromedio(new Double(vec.get((numeroEquivalencias*2)+3).toString()));
+                est.setMatriculados(new Integer(vec.get((numeroEquivalencias*2)+1).toString()));  
+                est.setNomatriculados(new Integer(vec.get((numeroEquivalencias*2)+2).toString())); 
+                    lisNotas.add(est); 
+                    em++;
+                    
+                }
+//                est = new  EstadisticoPorcentajes();
+//                est.setEquivalencia("Matriculados");
+//                est.setTipo("No.");
+//                est.setMatriculados(new Integer(vec.get((numeroEquivalencias*2)+1).toString()));  
+//                est.setNomatriculados(new Integer(vec.get((numeroEquivalencias*2)+2).toString())); 
+//                est.setPromedio(new Double(vec.get((numeroEquivalencias*2)+3).toString()));
+//                est.setNumero(iVec); est.setContador(iVec);
+//                est.setMateria(vec.get(0).toString()); 
+//                est.setPromedio(new Double(vec.get((numeroEquivalencias*2)+3).toString()));
+//                lisNotas.add(est); 
+                //numeroEquivalencias
+                 
+            }
+
+ 
+        ReporteEstadisticoDataSource ds = new ReporteEstadisticoDataSource(lisNotas);
+        return ds;
+
+    }
+    
 }

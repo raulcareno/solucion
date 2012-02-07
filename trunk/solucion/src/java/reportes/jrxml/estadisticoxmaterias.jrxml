@@ -18,11 +18,13 @@
 	<parameter name="slogan" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="rectora" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="secretaria" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="curso" class="java.lang.String"/>
 	<field name="materia" class="java.lang.String"/>
 	<field name="equivalencia" class="java.lang.String"/>
 	<field name="tipo" class="java.lang.String"/>
 	<field name="valor" class="java.lang.Object"/>
 	<field name="contador" class="java.lang.Integer"/>
+	<field name="promedio" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -139,6 +141,24 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{titulo}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="52" y="108" width="269" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{curso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-3" x="-3" y="108" width="55" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CURSO:]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -158,17 +178,47 @@
 			<crosstab>
 				<reportElement x="0" y="0" width="603" height="284"/>
 				<crosstabDataset isDataPreSorted="true"/>
-				<rowGroup name="contador" width="28" totalPosition="End">
+				<crosstabHeaderCell>
+					<cellContents>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="17" y="0" width="152" height="36"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font size="9"/>
+							</textElement>
+							<text><![CDATA[A S I G N A T U R A S]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="17" height="36"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle"/>
+							<text><![CDATA[No.]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="contador" width="17" totalPosition="End">
 					<bucket>
 						<bucketExpression class="java.lang.Integer"><![CDATA[$F{contador}]]></bucketExpression>
 					</bucket>
 					<crosstabRowHeader>
-						<cellContents backcolor="#F0F8FF" mode="Opaque">
+						<cellContents backcolor="#F0F8FF" mode="Transparent">
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="28" height="16"/>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="17" height="16"/>
 								<textElement>
 									<font size="9"/>
 								</textElement>
@@ -181,27 +231,20 @@
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<staticText>
-								<reportElement x="0" y="0" width="186" height="25" forecolor="#FFFFFF"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="9"/>
-								</textElement>
-								<text><![CDATA[Total contador]]></text>
-							</staticText>
 						</cellContents>
 					</crosstabTotalRowHeader>
 				</rowGroup>
-				<rowGroup name="materia" width="158" totalPosition="End">
+				<rowGroup name="materia" width="152" totalPosition="End">
 					<bucket>
 						<bucketExpression class="java.lang.String"><![CDATA[$F{materia}]]></bucketExpression>
 					</bucket>
 					<crosstabRowHeader>
-						<cellContents backcolor="#F0F8FF" mode="Opaque">
+						<cellContents backcolor="#F0F8FF" mode="Transparent">
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="158" height="16"/>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="152" height="16"/>
 								<box leftPadding="2"/>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
 									<font size="9"/>
@@ -223,12 +266,12 @@
 						<bucketExpression class="java.lang.String"><![CDATA[$F{equivalencia}]]></bucketExpression>
 					</bucket>
 					<crosstabColumnHeader>
-						<cellContents backcolor="#F0F8FF" mode="Opaque">
+						<cellContents backcolor="#F0F8FF" mode="Transparent">
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="31" height="19"/>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="35" height="19"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
@@ -237,16 +280,16 @@
 						</cellContents>
 					</crosstabColumnHeader>
 					<crosstabTotalColumnHeader>
-						<cellContents backcolor="#005FB3" mode="Opaque">
+						<cellContents backcolor="#005FB3" mode="Transparent">
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<staticText>
-								<reportElement x="0" y="0" width="38" height="36" forecolor="#FFFFFF"/>
+								<reportElement x="0" y="0" width="36" height="36" forecolor="#000000"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="9"/>
 								</textElement>
-								<text><![CDATA[Total equivalencia]]></text>
+								<text><![CDATA[PROM.]]></text>
 							</staticText>
 						</cellContents>
 					</crosstabTotalColumnHeader>
@@ -256,12 +299,12 @@
 						<bucketExpression class="java.lang.String"><![CDATA[$F{tipo}]]></bucketExpression>
 					</bucket>
 					<crosstabColumnHeader>
-						<cellContents backcolor="#F0F8FF" mode="Opaque">
+						<cellContents backcolor="#F0F8FF" mode="Transparent">
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="31" height="17"/>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="35" height="17"/>
 								<textElement verticalAlignment="Middle">
 									<font size="9"/>
 								</textElement>
@@ -280,13 +323,16 @@
 				<measure name="valorMeasure" class="java.lang.Object">
 					<measureExpression><![CDATA[$F{valor}]]></measureExpression>
 				</measure>
-				<crosstabCell width="31" height="16">
+				<measure name="promedio" class="java.lang.Double">
+					<measureExpression><![CDATA[$F{promedio}]]></measureExpression>
+				</measure>
+				<crosstabCell width="35" height="16">
 					<cellContents>
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="31" height="16"/>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="35" height="16"/>
 							<textElement verticalAlignment="Middle">
 								<font size="9"/>
 							</textElement>
@@ -294,46 +340,32 @@
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="31" height="25" rowTotalGroup="contador">
+				<crosstabCell width="35" height="0" rowTotalGroup="contador">
 					<cellContents backcolor="#005FB3" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
-						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="31" height="25" forecolor="#FFFFFF"/>
-							<textElement verticalAlignment="Middle">
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="36" height="16" columnTotalGroup="equivalencia">
+					<cellContents backcolor="#005FB3" mode="Transparent">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0.00">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="36" height="16"/>
+							<textElement>
 								<font size="9"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[""+$V{valorMeasure}]]></textFieldExpression>
+							<textFieldExpression class="java.lang.Double"><![CDATA[$V{promedio}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="38" height="16" columnTotalGroup="equivalencia">
-					<cellContents backcolor="#005FB3" mode="Opaque">
+				<crosstabCell width="36" height="0" rowTotalGroup="contador" columnTotalGroup="equivalencia">
+					<cellContents backcolor="#005FB3" mode="Transparent">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
-						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="38" height="16" forecolor="#FFFFFF"/>
-							<textElement verticalAlignment="Middle">
-								<font size="9"/>
-							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[""+$V{valorMeasure}]]></textFieldExpression>
-						</textField>
-					</cellContents>
-				</crosstabCell>
-				<crosstabCell width="38" rowTotalGroup="contador" columnTotalGroup="equivalencia">
-					<cellContents backcolor="#005FB3" mode="Opaque">
-						<box>
-							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-						</box>
-						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="38" height="25" forecolor="#FFFFFF"/>
-							<textElement verticalAlignment="Middle">
-								<font size="9"/>
-							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[""+$V{valorMeasure}]]></textFieldExpression>
-						</textField>
 					</cellContents>
 				</crosstabCell>
 				<crosstabCell width="0" height="16" columnTotalGroup="tipo">
@@ -343,21 +375,21 @@
 						</box>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="0" rowTotalGroup="contador" columnTotalGroup="tipo">
+				<crosstabCell width="0" height="0" rowTotalGroup="contador" columnTotalGroup="tipo">
 					<cellContents backcolor="#005FB3" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="31" height="0" rowTotalGroup="materia">
+				<crosstabCell width="35" height="0" rowTotalGroup="materia">
 					<cellContents backcolor="#BFE1FF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="38" height="0" rowTotalGroup="materia" columnTotalGroup="equivalencia">
+				<crosstabCell width="36" height="0" rowTotalGroup="materia" columnTotalGroup="equivalencia">
 					<cellContents backcolor="#005FB3" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
