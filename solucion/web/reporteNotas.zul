@@ -368,6 +368,7 @@ void recalcular(){
             parametros.put("jornada", periodo.getSeccion().getDescripcion() );
             parametros.put("regimen", periodo.getRegimen());
             parametros.put("minima",(peligro.value).doubleValue());
+            parametros.put("curso", curs.selectedItem.value+"");
                            
  List equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.valorminimo desc ");
