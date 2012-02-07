@@ -602,7 +602,7 @@ if(formula1.equals("")){
                         </row>
                         <row> 
                             <span style="float:right"> Abreviatura(*):</span>
-                            <textbox id="abreviatura"  maxlength="20" cols="20" readonly="true"  /> 
+                            <textbox id="abreviatura"  maxlength="10" cols="20" readonly="true"  /> 
                         </row>
                         <row> 
                             <span style="float:right"> Pase de Notas(*):</span> 

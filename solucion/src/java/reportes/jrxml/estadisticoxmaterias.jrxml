@@ -190,7 +190,7 @@
 								<rightPen lineWidth="0.5"/>
 							</box>
 							<textElement verticalAlignment="Middle">
-								<font size="9"/>
+								<font size="9" pdfFontName="Helvetica-Bold"/>
 							</textElement>
 							<text><![CDATA[A S I G N A T U R A S]]></text>
 						</staticText>
@@ -203,7 +203,9 @@
 								<bottomPen lineWidth="0.5"/>
 								<rightPen lineWidth="0.5"/>
 							</box>
-							<textElement verticalAlignment="Middle"/>
+							<textElement verticalAlignment="Middle">
+								<font pdfFontName="Helvetica-Bold"/>
+							</textElement>
 							<text><![CDATA[No.]]></text>
 						</staticText>
 					</cellContents>
@@ -273,7 +275,7 @@
 							<textField>
 								<reportElement style="Crosstab Data Text" x="0" y="0" width="35" height="19"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="8" pdfFontName="Helvetica-Bold"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{equivalencia}]]></textFieldExpression>
 							</textField>
@@ -287,7 +289,7 @@
 							<staticText>
 								<reportElement x="0" y="0" width="36" height="36" forecolor="#000000"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="9"/>
+									<font size="9" pdfFontName="Helvetica-Bold"/>
 								</textElement>
 								<text><![CDATA[PROM.]]></text>
 							</staticText>
@@ -306,7 +308,7 @@
 							<textField>
 								<reportElement style="Crosstab Data Text" x="0" y="0" width="35" height="17"/>
 								<textElement verticalAlignment="Middle">
-									<font size="9"/>
+									<font size="9" pdfFontName="Helvetica-Bold"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{tipo}]]></textFieldExpression>
 							</textField>

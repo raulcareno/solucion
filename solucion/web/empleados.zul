@@ -50,6 +50,22 @@ void llenar(Empleados empa){
     ingreso.value = empa.getFechaingreso();
     servicio.value = empa.getServicio();
     titulo.value = empa.getTitulo();
+    especializacion.value = empa.getEspecializacion();
+    lugarnacimiento.value = empa.getLugarnacimiento();
+    fechanacimiento.value = empa.getFechanacimiento();
+    hijos.value = empa.getHijos();
+    //estadocivil.value = +"";
+    String civi = empa.getEstadocivil();
+     
+        estadocivil.value = civi;
+     
+    
+    provincia.value = empa.getProvincia();
+    canton.value = empa.getCanton();
+    parroquia.value = empa.getParroquia();
+    magisterio.value = empa.getMagisterio();
+    plantel.value = empa.getPlantel();
+    sector.value = empa.getSector();
 
        if(empa.getFoto() != null){
                     cargarFoto(empa.getFoto());
@@ -106,6 +122,18 @@ void estado(Boolean estado,Boolean modificar){
     ingreso.disabled= estado;
     docente.disabled = estado;
     titulo.readonly = estado;
+    especializacion.readonly = estado;
+    lugarnacimiento.readonly = estado;
+    fechanacimiento.disabled = estado;
+    hijos.readonly = estado;
+    estadocivil.disabled = estado;
+    provincia.readonly = estado;
+    canton.readonly = estado;
+    parroquia.readonly = estado;
+    magisterio.readonly = estado;
+    plantel.readonly = estado;
+    sector.readonly = estado;
+    
 
 }
 
@@ -136,7 +164,19 @@ void estado(Boolean estado,Boolean modificar){
         empa.setDocente(docente.checked);
         empa.setServicio(servicio.value);
         empa.setTitulo(titulo.value);
-
+    empa.setEspecializacion(especializacion.value);
+    empa.setLugarnacimiento(lugarnacimiento.value);
+    empa.setFechanacimiento(fechanacimiento.value);
+    empa.setHijos(hijos.value);
+    String civi = estadocivil.value;
+    empa.setEstadocivil(estadocivil.value);
+      
+    empa.setProvincia(provincia.value);
+    empa.setCanton(canton.value);
+    empa.setParroquia(parroquia.value);
+    empa.setMagisterio(magisterio.value);
+    empa.setPlantel(plantel.value);
+    empa.setSector(sector.value);
 
 
             org.zkoss.image.Image nueva = foto0.getContent();
@@ -318,7 +358,11 @@ empa.setPerfil(g);
                             </row>
                             <row>
                                 <span style="float:right"> Dirección(*):</span>
-                                <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
+                                
+                                <span><textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
+                                Sector:
+                                <textbox id="sector" maxlength="100" cols="15"  readonly="true"    />
+                                </span>
                                 <span style="float:right"> Estado:</span>
                                 <checkbox id="estadoe" disabled="true"  />
                             </row>
@@ -365,21 +409,53 @@ empa.setPerfil(g);
                             <row>
 
                                 <span style="float:right"> Fecha Ingreso:</span>
-                                <datebox id="ingreso"  disabled="true"  />
+                                <span > <datebox id="ingreso"  disabled="true"  />
+                                 Fecha Nacimineto:
+                                <datebox id="fechanacimiento"  disabled="true"  />
+                                </span>
                                 <span style="float:right"> Años de Servicio:</span>
                                 <intbox id="servicio" cols="5" readonly="true"  />
 
                             </row>
 
                              <row>
-                                <span> Título Profesional:
-                                </span>
-                                <span>
-                                     <textbox id="titulo" cols="50"  maxlength="200" readonly="true"  />
-                                </span>
-
+                                <span style="float:right"> Título Profesional: </span>
+                                <textbox id="titulo" cols="50"  maxlength="200" readonly="true"  />
+                                <span style="float:right"> Especialización: </span>
+                               <textbox id="especializacion" cols="50"  maxlength="100" readonly="true"  />
+                            </row>
+                            <row>
+                                <span style="float:right"> Lugar Nacimiento: </span>
+                                <textbox id="lugarnacimiento" cols="50"  maxlength="100" readonly="true"  />
+                                <span style="float:right"> Provincia: </span>
+                               <textbox id="provincia" cols="50"  maxlength="100" readonly="true"  />
                             </row>
 
+                            <row>
+                                <span style="float:right"> Cantón: </span>
+                                <textbox id="canton" cols="50"  maxlength="100" readonly="true"  />
+                                <span style="float:right"> Parroquia: </span>
+                               <textbox id="parroquia" cols="50"  maxlength="100" readonly="true"  />
+                             </row>
+                             <row>
+                                <span style="float:right"> Años en el Magisterio: </span>
+                                <intbox id="magisterio" cols="10"  maxlength="3" readonly="true"  />
+                                <span style="float:right"> Años en el Plantel: </span>
+                               <intbox id="plantel" cols="10"  maxlength="3" readonly="true"  />
+                             </row>
+                             <row>
+                                <span style="float:right"> Estado Civil: </span>
+                                  <combobox disabled="true"  readonly="true"  id="estadocivil"  width="60px">
+                                    <comboitem   value="Soltero" label="Soltero"/>
+                                    <comboitem value="Casado" label="Casado"/>
+                                    <comboitem value="Viudo"  label="Viudo"/>
+                                    <comboitem  value="Divorciado"  label="Divorciado"/>
+                                    <comboitem value="Union Libre" label="Union Libre"/>
+                                    
+                                </combobox>
+                                <span style="float:right"> No. Hijos: </span>
+                                <intbox value="0" id="hijos" maxlength="3" readonly="true"/>
+                             </row>
                             <row>
                                 <button label="Subir Imagen" id="ima">
                                     <attribute name="onClick">{
@@ -396,7 +472,7 @@ empa.setPerfil(g);
                                     </attribute>
                                 </button>
                                 <image border="1" height="125px" id="foto0"/>
-                            </row>
+                                </row>
                         </rows>
                     </grid>
 
