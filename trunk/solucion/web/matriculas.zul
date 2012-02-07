@@ -193,6 +193,7 @@ void llenar(Estudiantes estudent){
     nombres.value = estudent.getNombre();
     apellidos.value = estudent.getApellido();
     direccion.value = estudent.getDireccion();
+    barrio.value = estudent.getBarrio();
     telefono.value = estudent.getTelefono();
     genero.value = estudent.getGenero();
     religion.value = estudent.getReligion();
@@ -487,6 +488,7 @@ void estado(Boolean estado,Boolean modificar){
     nombres.readonly = estado;
     apellidos.readonly = estado;
     direccion.readonly = estado;
+    barrio.readonly = estado;
     telefono.readonly = estado;
     genero.readonly = estado;
     religion.readonly = estado;
@@ -627,6 +629,7 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setNombre(nombres.value);
         estudent.setApellido(apellidos.value);
         estudent.setDireccion(direccion.value);
+        estudent.setBarrio(barrio.value);
         estudent.setTelefono(telefono.value);
         estudent.setMail(mail.value);
         estudent.setFechanacimiento(nacido.value);
@@ -1115,15 +1118,19 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                                     <span style="float:right;">
                                                                         <label value="Dirección(*)" style="font-weight: bold;"/>
                                                                     </span>
+                                                                    <span>
                                                                     <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
+                                                                    Barrio:
+                                                                    <textbox id="barrio" maxlength="100" cols="15"  readonly="true"    />
+                                                                    </span>
                                                                 </row>
 
                                                                 <row>
                                                                     <span style="float:right"> Email:</span>
                                                                     <span>
-                                                                        <textbox id="mail" maxlength="100" cols="30"  readonly="true"    />
+                                                                        <textbox id="mail" maxlength="100" cols="40"  readonly="true"    />
                                                                         Teléfono:
-                                                                        <textbox id="telefono" maxlength="50" cols="13"  readonly="true"  />
+                                                                        <textbox id="telefono" maxlength="50" cols="15"  readonly="true"  />
                                                                     </span>
                                                                 </row>
 
