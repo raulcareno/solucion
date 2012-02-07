@@ -1111,7 +1111,7 @@ void campos(String valor){
             titulo.value = "Listado de Estudiantes";
 
         if(valor.equals("LMAT3")){
-           titulo.value = "Listado";
+           titulo.value = "CUADRO DE ESTUDIANTES MATRICULADOS";
            filacurso.visible = true;
            //filaestudiantes.visible = false;
         }
