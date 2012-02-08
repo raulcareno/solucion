@@ -1026,7 +1026,7 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                     q = "Select " + query + "  from Notas notas "
                             + "where notas.matricula = '" + matriculas1.getCodigomat() + "' "
                             + "and notas.materia = '0'"
-                            + " and notas.disciplina = true  "
+                            + "   "
                             + " ";
                     nativo = adm.queryNativo(q);
                     if (nativo.size() > 0) {
