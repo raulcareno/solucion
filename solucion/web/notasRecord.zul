@@ -26,35 +26,35 @@ Cursos cr = new Cursos(-1);
 cursos.add(0,cr);
 notasRecordBean no = new notasRecordBean();
 
-String[][] values = new String[14][2];
-             values[0][0]= "Octavo";
-             values[0][1]= "number";
-             values[1][0]= "Noveno";
-             values[1][1]= "number";
-             values[2][0]= "Décimo";
-             values[2][1]= "number";
-             values[3][0]= "1ro.Bach";
-             values[3][1]= "number";
-             values[4][0]= "2do.Bach";
-             values[4][1]= "number";
-             values[5][0]= "3ro.Bach";
-             values[5][1]= "number";
-             values[6][0]= "Promedio";
-             values[6][1]= "readonly";
-             values[7][0]= "Octavo";
-             values[7][1]= "number";
-             values[8][0]= "Noveno";
-             values[8][1]= "number";
-             values[9][0]= "Décimo";
-             values[9][1]= "number";
-             values[10][0]= "1ro.Bach";
-             values[10][1]= "number";
-             values[11][0]= "2do.Bach";
-             values[11][1]= "number";
-             values[12][0]= "3ro.Bach";
-             values[12][1]= "number";
-             values[13][0]= "Disciplina";
-             values[13][1]= "readonly";
+String[][] values = new String[26][2];
+             values[0][0]= "1B";
+             values[1][0]= "2B.";
+             values[2][0]= "3B.";
+             values[3][0]= "4B";
+             values[4][0]= "5B";
+             values[5][0]= "6B";
+             values[6][0]= "7B.";
+             values[7][0]= "8B";
+             values[8][0]= "9B.";
+             values[9][0]= "10B.";
+             values[10][0]= "1ro.";
+             values[11][0]= "2do.";
+             values[12][0]= "3ro.";
+             values[13][0]= "1B";
+             values[14][0]= "2B";
+             values[15][0]= "3B";
+             values[16][0]= "4B";
+             values[17][0]= "5B";
+             values[18][0]= "6B";
+             values[19][0]= "7B";
+             values[20][0]= "8B";
+             values[21][0]= "9B";
+             values[22][0]= "10B.";
+             values[23][0]= "1ro.";
+             values[24][0]= "2do.";
+             values[25][0]= "3ro.";
+               
+
 guardar(){
     notasRecordBean nso = new notasRecordBean();
     notasRecordBean r = (notasRecordBean) datos.getRows();
@@ -101,16 +101,17 @@ void doAdd(Cursos curso){
     <grid  id="datos" >
         
         <auxhead >
-            <auxheader colspan="2">
-                <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
+          
+            <auxheader >
+                <textbox cols="50" style="background: transparent;border:0px"  readonly = "true"  />
             </auxheader>
-            <auxheader label="APROVECHAMIENTO" colspan="7"/>
-            <auxheader label="DISCIPLINA" colspan="7"/>
+            <auxheader label="APROVECHAMIENTO" colspan="13"/>
+            <auxheader label="DISCIPLINA" colspan="13"/>
         </auxhead>
         <columns>
-            <column width="15px"   label ="Mat."/>
-            <column width="300px" label ="Estudiante"/>
-            <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+            <column visible="false" width="15px"   label ="Mat."/>
+            <column width="300px" style="border:0px;top:0px;right:0px"  label ="Estudiante"/>
+            <column forEach="${values}"  style="border:0px;top:0px;right:0px"   label="${each[0]}" align="right"  />
         </columns>
         <rows id="filas" use="bean.notasRecordBean">
         </rows>
