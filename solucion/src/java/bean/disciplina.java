@@ -968,7 +968,10 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                     i++;
 
                 }
-formu = formu.substring(0, formu.length() - 1);
+                if(formu.length()>0)
+                    formu = formu.substring(0, formu.length() - 1);
+                else
+                    formu ="0";
                 inter.eval("Double valCal =  promedio("+formu+")  ");
                 Double valorF = (Double) inter.get("valCal");
                 //coll.setProfesores(promProfesor / lista.size());
