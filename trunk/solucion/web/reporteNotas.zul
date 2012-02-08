@@ -805,25 +805,27 @@ void campos(String valor){
                                     
                                     <listitem  id="EST" label="Estadístico por Curso" value="EST" />
                                     <listitem  id="ESTA" label="Estadístico de Rendimiento por Curso" value="ESTA" />
+                                    
+                                    <listitem  id="linea0281" label="============ACTAS Y CERTIFICADOS=============" value="linea2801" />
+                                    
+                                    <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
+                                    <listitem  id="CERT2" label="Certificado de Promoción(con decimales en notas)" value="CERT2"/>
+                                    <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
                                     <listitem  id="AG" label="Acta de Grado" value="AG"/>
                                     <listitem  id="AG2" label="Acta de Grado(Suspendidos)" value="AG2"/>
                                     <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
                                     <listitem  id="CAG2" label="Copia de Acta de Grado(Suspendidos)" value="CAG2"/>
-                                    
-                                    <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
-                                    <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
-                                    <listitem  id="CERT2" label="Certificado de Promoción(con decimales en notas)" value="CERT2"/>
                                     <listitem  id="APRO" label="Listado de Estudiantes Aprobados" value="APRO"/>
                                     <listitem  id="CERD" label="Certificado de Disciplina" value="CERD"/>
                                     <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
                                     <listitem  id="MEJE" label="Mejor egresado(*)" value="MEJE"/>
-                                    <listitem  id="linea001" label="=========================" value="linea" />
+                                    <listitem  id="linea001" label="============RECORDS=============" value="linea" />
                                     <listitem  id="RECC" label="Record Académico por Paralelos" value="RECC"/>
                                     <listitem  id="RECE" label="Record Académico por Especialidad" value="RECE"/>
                                     <listitem  id="RECC1" label="Record Académico por Cursos" value="RECC1"/>
                                     <listitem  id="linea002" label="=========================" value="linea" />
                                     
-                                    <listitem  id="linea" label="=========================" value="linea" />
+                                    <listitem  id="linea" label="========= ENCUESTAS ================" value="linea" />
                                     <listitem  id="ENC2" label="Resultados por Estudiantes" value="ENC2"/>
                                     <listitem  id="ENC3" label="Resumen y Resultados de Encuesta" value="ENC3"/>
                                     <listitem  id="ENC4" label="Resumen y Resultados de Encuesta(GRAFICAS)" value="ENC4"/>
