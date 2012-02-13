@@ -270,67 +270,67 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                             <menu image="/images/herramientas.png"  label="Administración" ><!--ADMINISTRACION-->
                                 <menupopup   >
                                                  
-                                    <menuitem onClick="ingresar(self)" id="Accesos" image="/images/key.png" label="Accesos" value="/accesos.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Auditoria" image="/images/auditoria.gif" label="Auditoria" value="/auditoria.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Empleados" image="/images/pensum.png" label="Empleados" value="/empleados.zul" />
-                                    <menuitem onClick="ingresar(self)" id="EmpleadosPeriodos" image="/images/eperiodo.png" label="Asignar Periodos" value="/empleadoPeriodo.zul" />
-                                    <menuitem onClick="ingresar(self)" id="EmpleadosCursos" image="/images/eperiodo.png" label="Asignar Cursos (Solo a Secretaria)" value="/cursosEmpleados.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Equivalencias" image="/images/equivalencias.png"  label="Equivalencias y Rangos(S,MB, FJ,FI)" value="/equivalencias.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Globales" label="Globales" image="/images/run.gif"  value="/globales.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Institucion" label="Institución" image="/images/institucion.png"  value="/institucion.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Parametros" label="Parametros" image="/images/textos.png" value="/parametros.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Periodos" label="Año Lectivo"  image="/images/periodos.png" value="/periodo.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Textos" label="Textos Reportes"  image="/images/textos.png" value="/textos.zul" />
+                                    <menuitem onClick="ingresar(self)" id="ACC" image="/images/key.png" label="Accesos" value="/accesos.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="AUD" image="/images/auditoria.gif" label="Auditoria" value="/auditoria.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="EMP" image="/images/pensum.png" label="Empleados" value="/empleados.zul" />
+                                    <menuitem onClick="ingresar(self)" id="EPP" image="/images/eperiodo.png" label="Asignar Periodos" value="/empleadoPeriodo.zul" />
+                                    <menuitem onClick="ingresar(self)" id="EPC" image="/images/eperiodo.png" label="Asignar Cursos (Solo a Secretaria)" value="/cursosEmpleados.zul" />
+                                    <menuitem onClick="ingresar(self)" id="EQU" image="/images/equivalencias.png"  label="Equivalencias y Rangos(S,MB, FJ,FI)" value="/equivalencias.zul" />
+                                    <menuitem onClick="ingresar(self)" id="GLO" label="Globales" image="/images/run.gif"  value="/globales.zul" />
+                                    <menuitem onClick="ingresar(self)" id="INS" label="Institución" image="/images/institucion.png"  value="/institucion.zul" />
+                                    <menuitem onClick="ingresar(self)" id="PAR" label="Parametros" image="/images/textos.png" value="/parametros.zul" />
+                                    <menuitem onClick="ingresar(self)" id="PER" label="Año Lectivo"  image="/images/periodos.png" value="/periodo.zul" />
+                                    <menuitem onClick="ingresar(self)" id="TEX" label="Textos Reportes"  image="/images/textos.png" value="/textos.zul" />
                                 </menupopup>
                             </menu>
                             <menu image="/images/matricular.gif"  label="Matriculación" >
                                 <menupopup  >
-                                    <menuitem onClick="ingresar(self)" image="/images/cursos.png"   label="Cursos"  id="Cursos"  value="/cursos.zul"   />
-                                    <menuitem onClick="ingresar(self)" id="Matricular" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Matricular2" label="Asignar Cursos(Estudiantes del A al B)" image="/images/asignar.png"  value="/asignarmatriculas.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Actualizacion" label="Actualizar" image="/images/actualizar.png"  value="/actualizacion.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Pendientes" label="Pendientes(Bloquear Notas)" image="/images/dinero.gif"   value="/pendientes.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Inscripciones" label="Inscripciones Internet"     value="/inscripcionesModificar.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Preaprobados" label="Pre-Aprobados Internet"     value="/seleccionPreaprobados.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Bloquear" label="Bloquear Matricula" image="/images/bloquear.gif"   value="/actualizacion_1.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Reportes_Estudiantes" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Encuesta" label="Encuesta" image="/images/encuesta.png"   value="/encuesta.zul" />
+                                    <menuitem onClick="ingresar(self)" id="CUR"   image="/images/cursos.png"   label="Cursos"  value="/cursos.zul"   />
+                                    <menuitem onClick="ingresar(self)" id="MAT" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" />
+                                    <menuitem onClick="ingresar(self)" id="REC" label="Asignar Cursos(Estudiantes del A al B)" image="/images/asignar.png"  value="/asignarmatriculas.zul" />
+                                    <menuitem onClick="ingresar(self)" id="ACT" label="Actualizar" image="/images/actualizar.png"  value="/actualizacion.zul" />
+                                    <menuitem onClick="ingresar(self)" id="PEN" label="Pendientes(Bloquear Notas)" image="/images/dinero.gif"   value="/pendientes.zul" />
+                                    <menuitem onClick="ingresar(self)" id="INC" label="Inscripciones Internet"     value="/inscripcionesModificar.zul" />
+                                    <menuitem onClick="ingresar(self)" id="PRE" label="Pre-Aprobados Internet"     value="/seleccionPreaprobados.zul" />
+                                    <menuitem onClick="ingresar(self)" id="BLO" label="Bloquear Matricula" image="/images/bloquear.gif"   value="/actualizacion_1.zul" />
+                                    <menuitem onClick="ingresar(self)" id="REE" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
+                                    <menuitem onClick="ingresar(self)" id="ENC" label="Encuesta" image="/images/encuesta.png"   value="/encuesta.zul" />
                                 </menupopup>
                             </menu>
                             <menu  image="/images/barra.png"  label="Notas" ><!--NOTAS-->
                                 <menupopup   >
-                                    <menuitem onClick="ingresar(self)" id="Trimestres" label="Trim.Bim.Quim." image="/images/textos.png" value="/trimestres.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Aportes" image="/images/llave.gif"  label="Aportes" value="/aportes.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Distributivo" label="Distributivo"  image="/images/distributivo.png" value="/distributivo.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Registro_de_Notas" label="Registro de Notas"  image="/images/notas.png" value="/notas.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Registro_de_Disciplina" image="/images/notas.png"  label="Registro de Disciplinas" value="/disciplina.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Registro_de_Faltas" image="/images/notas.png"  label="Registro de Faltas" value="/faltas.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Reportes_Notas" label="Reportes Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Parametros_Autoevaluacion" image="/images/textos.png"  label="Parametros Rendimiento" value="/perfil.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Registrar_Autoevaluacion" image="/images/notas.png"  label="Rendimiento" value="/registrarPerfil.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Comentarios" image="/images/comentarios.png"  label="Comentarios" value="/comentarios.zul" />
+                                    <menuitem onClick="ingresar(self)" id="TRI" label="Trim.Bim.Quim." image="/images/textos.png" value="/trimestres.zul" />
+                                    <menuitem onClick="ingresar(self)" id="APO" image="/images/llave.gif"  label="Aportes" value="/aportes.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="DIS" label="Distributivo"  image="/images/distributivo.png" value="/distributivo.zul" />
+                                    <menuitem onClick="ingresar(self)" id="REN" label="Registro de Notas"  image="/images/notas.png" value="/notas.zul" />
+                                    <menuitem onClick="ingresar(self)" id="RED" image="/images/notas.png"  label="Registro de Disciplinas" value="/disciplina.zul" />
+                                    <menuitem onClick="ingresar(self)" id="REF" image="/images/notas.png"  label="Registro de Faltas" value="/faltas.zul" />
+                                    <menuitem onClick="ingresar(self)" id="RPN" label="Reportes Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
+                                    <menuitem onClick="ingresar(self)" id="PAU" image="/images/textos.png"  label="Parametros Rendimiento" value="/perfil.zul" />
+                                    <menuitem onClick="ingresar(self)" id="RAU" image="/images/notas.png"  label="Rendimiento" value="/registrarPerfil.zul" />
+                                    <menuitem onClick="ingresar(self)" id="COM" image="/images/comentarios.png"  label="Comentarios" value="/comentarios.zul" />
                                     <menuitem onClick="ingresar(self)" id="Tareas" image="/images/tarea.png"  label="Tareas" value="/tareas.zul" />
                                 </menupopup>
                             </menu>
                           
                             <menu image="/images/birrete.gif"  label="Grados" ><!--GRADOS-->
                                 <menupopup   >
-                                    <menuitem onClick="ingresar(self)" id="Notas_Primero_Quinto" image="/images/llave.gif"  label="Record Academico" value="/notasRecord.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Materias_de_Grado"   image="/images/distributivo.png" label="Creación de Materias de  Exa. Grado" value="/materiasdeGrado.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Notas_de_Grado"  image="/images/notas.png"  label="Registro de Notas de Exa. Grado" value="/cursosIngresonotasGrado.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Calculo_Promedios" image="/images/calculo.gif"  label="Calculo Promedios" value="/cursosCalculoPromedios.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Acta_de_Grado" image="/images/acta.gif"  label="Acta de Grado(Creación, Modelo)" value="/materiasdeActa.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Notas_de_Acta" image="/images/notas.png"  label="Registro de Notas del Acta Grado" value="/cursosIngresonotasActa.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="NPQ" image="/images/llave.gif"  label="Record Academico" value="/notasRecord.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="MAG"   image="/images/distributivo.png" label="Creación de Materias de  Exa. Grado" value="/materiasdeGrado.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="RNE"  image="/images/notas.png"  label="Registro de Notas de Exa. Grado" value="/cursosIngresonotasGrado.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="CAL" image="/images/calculo.gif"  label="Calculo Promedios" value="/cursosCalculoPromedios.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="ACG" image="/images/acta.gif"  label="Acta de Grado(Creación, Modelo)" value="/materiasdeActa.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="RNA" image="/images/notas.png"  label="Registro de Notas del Acta Grado" value="/cursosIngresonotasActa.zul"/>
                                 </menupopup>
                             </menu>
                             <menu  image="/images/varios.gif"  label="Varios" ><!--VARIOS-->
                                 <menupopup >
-                                    <menuitem onClick="ingresar(self)"  id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correoInterno.zul"/>
-                                    <menuitem onClick="ingresar(self)"  id="Correo_Interno" image="/images/bandeja2.png"   label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Respaldos" image="/images/base.gif"   label="Respaldar Sistema" value="/respaldos.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Calendario" image="/images/calendar.gif"   label="Calendario Académico" value="/calendar.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Dobe" image="/images/pensum.png"   label="Dobe" value="/dobe.zul"/>
-                                    <menuitem onClick="ingresar(self)" id="Registrar" image="/images/chat.png"  label="Chat" value="/chat/chat.zul"    />
+                                    <menuitem onClick="ingresar(self)"  id="COR" image="/images/bandeja.png"  label="Correo Electronico" value="/correoInterno.zul"/>
+                                    <menuitem onClick="ingresar(self)"  id="COI" image="/images/bandeja2.png"   label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="RES" image="/images/base.gif"   label="Respaldar Sistema" value="/respaldos.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="CAA" image="/images/calendar.gif"   label="Calendario Académico" value="/calendar.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="DOB" image="/images/pensum.png"   label="Dobe" value="/dobe.zul"/>
+                                    <menuitem onClick="ingresar(self)" id="CHA" image="/images/chat.png"  label="Chat" value="/chat/chat.zul"    />
                                 </menupopup>
                             </menu>
                             <menu   image="/images/exit.gif" label="Cerrar Sesión" onClick="salir()"/>
@@ -404,46 +404,46 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
 
         Permisos per = new Permisos();
         void cargando2(){
-          
- 
-        Cursos.visible = per.verificarPermisoReporte("Cursos","Cursos", "Ingresar",true,"MATRICULAS");
-        Matricular.visible = per.verificarPermisoReporte("Matricular","Matricular", "Ingresar",true,"MATRICULAS");
-        Matricular2.visible = per.verificarPermisoReporte("ReasignarCursos","ReasignarCursos", "Ingresar",true,"MATRICULAS");
-        Pendientes.visible = per.verificarPermisoReporte("Pendientes","Pendientes", "Ingresar",true,"MATRICULAS");
-        Reportes_Estudiantes.visible = per.verificarPermisoReporte("Reportes_Estudiantes","Reportes_Estudiantes", "Ingresar",true,"MATRICULAS");
-        Trimestres.visible = per.verificarPermisoReporte("Trimestres","Trimestres", "Ingresar",true,"NOTAS");
-        Aportes.visible = per.verificarPermisoReporte("Aportes", "Aportes", "Ingresar",true,"NOTAS");
-        Distributivo.visible = per.verificarPermisoReporte("Distributivo","Distributivo", "Ingresar",true,"NOTAS");
-        Registro_de_Notas.visible = per.verificarPermisoReporte("Registro_de_Notas","Registro_de_Notas", "Ingresar",true,"NOTAS");
-        Registro_de_Disciplina.visible = per.verificarPermisoReporte("Registro_de_Disciplina","Registro_de_Disciplina", "Ingresar",true,"NOTAS");
-        Registro_de_Faltas.visible = per.verificarPermisoReporte("Registro_de_Faltas","Registro_de_Faltas", "Ingresar",true,"NOTAS");
-        Reportes_Notas.visible = per.verificarPermisoReporte("Reportes_Notas","Reportes_Notas", "Ingresar",true,"NOTAS");
-        Notas_Primero_Quinto.visible = per.verificarPermisoReporte("Notas_Primero_Quinto","Notas_Primero_Quinto", "Ingresar",true,"GRADOS");
-        Materias_de_Grado.visible = per.verificarPermisoReporte("Materias_de_Grado","Materias_de_Grado", "Ingresar",true,"GRADOS");
-        Accesos.visible = per.verificarPermisoReporte("Accesos","Accesos", "Ingresar",true,"MATRICULAS");
-        Preaprobados.visible = per.verificarPermisoReporte("Preaprobados","Preaprobados", "Ingresar",true,"MATRICULAS");
-        Inscripciones.visible = per.verificarPermisoReporte("Inscripciones","Inscripciones", "Ingresar",true,"MATRICULAS");
-        Notas_de_Grado.visible = per.verificarPermisoReporte("Notas_de_Grado","Notas_de_Grado", "Ingresar",true,"GRADOS");
-        Calculo_Promedios.visible = per.verificarPermisoReporte("Calculo_Promedios","Calculo_Promedios", "Ingresar",true,"GRADOS");
-        Acta_de_Grado.visible = per.verificarPermisoReporte("Acta_de_Grado","Acta_de_Grado", "Ingresar",true,"GRADOS");
-        Notas_de_Acta.visible = per.verificarPermisoReporte("Notas_de_Acta","Notas_de_Acta", "Ingresar",true,"GRADOS");
-        Correos.visible = per.verificarPermisoReporte("Correos","Correos", "Ingresar",true,"VARIOS");
-        Correo_Interno.visible = per.verificarPermisoReporte("Correo_Interno","Correo_Interno", "Ingresar",true,"VARIOS");
-        Respaldos.visible = per.verificarPermisoReporte("Respaldos","Respaldos", "Ingresar",true,"VARIOS");
-        Calendario.visible = per.verificarPermisoReporte("Calendario","Calendario", "Ingresar",true,"VARIOS");
-        Dobe.visible = per.verificarPermisoReporte("Dobe", "Dobe", "Ingresar",true,"VARIOS");
-        Registrar.visible = per.verificarPermisoReporte("Registrar","Registrar", "Ingresar",true,"MATRICULAS");
-        Auditoria.visible = per.verificarPermisoReporte("Auditoria","Auditoria", "Ingresar",true,"NOTAS");
-        Empleados.visible = per.verificarPermisoReporte("Empleados","Empleados", "Ingresar",true,"ADMINISTRACION");
-        EmpleadosPeriodos.visible = per.verificarPermisoReporte("EmpleadosPeriodos","EmpleadosPeriodos", "Ingresar",true,"ADMINISTRACION");
-        Equivalencias.visible = per.verificarPermisoReporte("Equivalencias","Equivalencias", "Ingresar",true,"ADMINISTRACION");
-        Globales.visible = per.verificarPermisoReporte("Globales","Globales", "Ingresar",true,"ADMINISTRACION");
-        Institucion.visible = per.verificarPermisoReporte("Institucion","Institucion", "Ingresar",true,"ADMINISTRACION");
-        Parametros.visible = per.verificarPermisoReporte("Parametros","Parametros", "Ingresar",true,"ADMINISTRACION");
-        Periodos.visible = per.verificarPermisoReporte("Periodos","Periodos", "Ingresar",true,"ADMINISTRACION");
-        Textos.visible = per.verificarPermisoReporte("Textos","Textos", "Ingresar",true,"ADMINISTRACION");
 
- 
+
+        Cursos.visible = per.verificarPermisoReporte("Cursos", "Ingresar");
+        Matricular.visible = per.verificarPermisoReporte("Matricular", "Ingresar");
+        Matricular2.visible = per.verificarPermisoReporte("Matricular", "Ingresar");
+        Pendientes.visible = per.verificarPermisoReporte("Pendientes", "Ingresar");
+        Reportes_Estudiantes.visible = per.verificarPermisoReporte("Reportes_Estudiantes", "Ingresar");
+        Trimestres.visible = per.verificarPermisoReporte("Trimestres", "Ingresar");
+        Aportes.visible = per.verificarPermisoReporte("Aportes", "Ingresar");
+        Distributivo.visible = per.verificarPermisoReporte("Distributivo", "Ingresar");
+        Registro_de_Notas.visible = per.verificarPermisoReporte("Registro_de_Notas", "Ingresar");
+        Registro_de_Disciplina.visible = per.verificarPermisoReporte("Registro_de_Disciplina", "Ingresar");
+        Registro_de_Faltas.visible = per.verificarPermisoReporte("Registro_de_Faltas", "Ingresar");
+        Reportes_Notas.visible = per.verificarPermisoReporte("Reportes_Notas", "Ingresar");
+        Notas_Primero_Quinto.visible = per.verificarPermisoReporte("Notas_Primero_Quinto", "Ingresar");
+        Materias_de_Grado.visible = per.verificarPermisoReporte("Materias_de_Grado", "Ingresar");
+        Accesos.visible = per.verificarPermisoReporte("Accesos", "Ingresar");
+        Preaprobados.visible = per.verificarPermisoReporte("Accesos", "Ingresar");
+        Inscripciones.visible = per.verificarPermisoReporte("Accesos", "Ingresar");
+        Notas_de_Grado.visible = per.verificarPermisoReporte("Notas_de_Grado", "Ingresar");
+        Calculo_Promedios.visible = per.verificarPermisoReporte("Calculo_Promedios", "Ingresar");
+        Acta_de_Grado.visible = per.verificarPermisoReporte("Acta_de_Grado", "Ingresar");
+        Notas_de_Acta.visible = per.verificarPermisoReporte("Notas_de_Acta", "Ingresar");
+        Correos.visible = per.verificarPermisoReporte("Correos", "Ingresar");
+        Correo_Interno.visible = per.verificarPermisoReporte("Correo_Interno", "Ingresar");
+        Respaldos.visible = per.verificarPermisoReporte("Respaldos", "Ingresar");
+        Calendario.visible = per.verificarPermisoReporte("Calendario", "Ingresar");
+        Dobe.visible = per.verificarPermisoReporte("Dobe", "Ingresar");
+        Registrar.visible = per.verificarPermisoReporte("Registrar", "Ingresar");
+        Auditoria.visible = per.verificarPermisoReporte("Auditoria", "Ingresar");
+        Empleados.visible = per.verificarPermisoReporte("Empleados", "Ingresar");
+        EmpleadosPeriodos.visible = per.verificarPermisoReporte("EmpleadosPeriodos", "Ingresar");
+        Equivalencias.visible = per.verificarPermisoReporte("Equivalencias", "Ingresar");
+        Globales.visible = per.verificarPermisoReporte("Globales", "Ingresar");
+        Institucion.visible = per.verificarPermisoReporte("Institucion", "Ingresar");
+        Parametros.visible = per.verificarPermisoReporte("Parametros", "Ingresar");
+        Periodos.visible = per.verificarPermisoReporte("Periodos", "Ingresar");
+        Textos.visible = per.verificarPermisoReporte("Textos", "Ingresar");
+
+
 
         }
             </zscript>

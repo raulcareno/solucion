@@ -157,10 +157,22 @@ public class Permisos {
 
     }
 
-    public boolean verificarPermisoReporte(String modulo, String accion) {
+    public boolean verificarPermisoReporte(String idVariable,String descripcion, String accion,Boolean pantalla,String grupo) {
+          
         Session a = Sessions.getCurrent();
-        modulo = modulo.replace("_", " ");
+        if(idVariable== null){
+            return true;
+        }
+        idVariable = idVariable.replace("_", " ");
         List<Accesos> accesosList = (List<Accesos>) a.getAttribute("accesos");
+        Empleados empleadoAc = (Empleados) a.getAttribute("user");
+       
+        if(idVariable.equals("-1")){
+            return true;
+        }
+        if(idVariable.toUpperCase().contains("LINEA")){
+            return true;
+        }
         for (Iterator<Accesos> it = accesosList.iterator(); it.hasNext();) {
             Accesos accesos = it.next();
             int inicio = accesos.getModulo().indexOf("[");
@@ -175,7 +187,7 @@ public class Permisos {
             }
 
 
-            if (elmodulo.equals(modulo)) {
+            if (elmodulo.equals(idVariable)) {
 //                 System.out.println("MODULO: "+elmodulo);
                 if (accion.equals("Ingresar")) {
                     return accesos.getIngresar();
@@ -188,6 +200,34 @@ public class Permisos {
                 }
             }
         }
+        
+        if(empleadoAc.getPerfil().getDescripcion().contains("ADMINIS")){
+                Accesos ac = new Accesos();
+                Administrador adm = new Administrador();
+                ac.setCodigoacc(adm.getNuevaClave("Accesos", "codigoacc"));
+                if(pantalla){
+                    ac.setModulo(idVariable);
+                    ac.setGrupo("MATRICULAS");
+                }else{
+                    ac.setModulo("REP | "+descripcion+" ["+idVariable+"]");
+                    
+                }
+                ac.setGrupo(grupo);
+                
+                ac.setGuardar(true);
+                ac.setIngresar(true);
+                ac.setActualizar(true);
+                ac.setEliminar(Boolean.TRUE);
+                ac.setPerfil(empleadoAc.getPerfil());
+                adm.guardar(ac);
+                
+                accesosList.add(ac);
+                a.removeAttribute("accesos");
+                a.setAttribute("accesos",accesosList);
+                
+                return true;
+        }
+        
         return false;
 
     }
