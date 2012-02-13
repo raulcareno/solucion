@@ -1014,13 +1014,22 @@ void campos(String valor){
 import bean.Permisos;
 Permisos per = new Permisos();
 void cargando(){
-filacursos.visible = false;
+    filacursos.visible = false;
     filaespecialidad.visible = false;
     filaestudiantes.visible = false;
     filamodalidad.visible = false;
     filamaterias.visible = false;
     filaaportes.visible = false;
-        NMAT.visible = per.verificarPermisoReporte("NMAT", "Ingresar");
+    
+              for(Iterator it = reporte.getItems().iterator(); it.hasNext();) {
+                 Listitem object = (Listitem)it.next();
+                 String valor = object.getValue();
+                 String labe = object.getLabel();
+                    object.visible = per.verificarPermisoReporte(valor,labe, "Ingresar",false,"REPORTES");
+                }
+     
+     /*
+     NMAT.visible = per.verificarPermisoReporte("NMAT", "Ingresar");
         NMATD.visible = per.verificarPermisoReporte("NMATD", "Ingresar");
         LIB.visible = per.verificarPermisoReporte("LIB", "Ingresar");
         LIB2.visible = per.verificarPermisoReporte("LIB", "Ingresar");
@@ -1059,8 +1068,9 @@ filacursos.visible = false;
         ENC5.visible = per.verificarPermisoReporte("ETD", "Ingresar");
         ENC6.visible = per.verificarPermisoReporte("ETD", "Ingresar");
         RECC.visible = per.verificarPermisoReporte("RECC", "Ingresar");
-        RECE.visible = per.verificarPermisoReporte("RECC", "Ingresar");
-        RECC1.visible = per.verificarPermisoReporte("RECC", "Ingresar");
+        RECE.visible = per.verificarPermisoReporte("RECE", "Ingresar");
+        RECC1.visible = per.verificarPermisoReporte("RECC1", "Ingresar");
+        */
 
 }
         </zscript>

@@ -1144,7 +1144,7 @@ void campos(String valor){
                                 <listitem  id="CAP" label="Certificado de Años Aprobados" value="CAP" />
                                 <listitem  id="LMIN" label="Folio y No. Matricula" value="LMIN"/>
                                 <listitem  id="INS" label="Inscritos" value="INS" />
-                                <listitem disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
+                                <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <listitem  id="INS2" label="Inscritos por Internet" value="INS2" />
                                 <listitem  id="INS3" label="Calificacion de Inscritos por Internet" value="INS3" />
                                 <listitem  id="INS4" label="Listado de Pre-aprobados" value="INS4" />
@@ -1153,7 +1153,7 @@ void campos(String valor){
                                 <listitem  id="INS7" label="Listado de Pre-aprobados(Impresión Ficha Individual)" value="INS7" />
                                 <listitem  id="INS8" label="Listado de NO-aprobados " value="INS8" />
                                 <listitem  id="LCLA33" label="Claves de Inscritos para Matriculación" value="LCLA33"/>
-                                <listitem disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
+                                <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
                                 <listitem  id="LMAT" label="Matriculados" value="LMAT" />
                                 <listitem  id="LMATYR" label="Matriculados con Retirados" value="LMATYR" />
@@ -1166,7 +1166,7 @@ void campos(String valor){
                                 <listitem  id="LMAT3" label="Totalizado de Matriculados(x Genero)" value="LMAT3" />
                                 
                              
-                                <listitem disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
+                                <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <listitem  id="LCAR" label="Carné del Estudiante(1) "  value="LCAR"/>
                                 <listitem  id="LCAR1" label="Carné Estudiantil Ministerio(2)"  value="LCAR1"/>
                                 <listitem  id="LCART" label="Estudiante para Carnét (No.Mat-Fecha-Curso)" value="LCART" />
@@ -1184,7 +1184,7 @@ void campos(String valor){
                                 <listitem  id="LFEC" label="Estudiantes por Fecha y Edad (Años Cumplidos)" value="LFEC"/>
                                 <listitem  id="LCED" label="Estudiantes con Cédula de Identidad" value="LCED"/>
                                 
-                                <listitem  disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
+                                <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <listitem  id="LNUEV" label="Estudiantes Nuevos" value="LNUEV"/>
                                 <listitem  id="LTRAN" label="Estudiantes que Toman transporte" value="LTRAN"/>
                                 <listitem  id="LINT"  label="Estudiantes Internos" value="LINT"/>
@@ -1318,6 +1318,13 @@ void campos(String valor){
             Permisos per = new Permisos();
             void cargando(){
 
+ for(Iterator it = reporte.getItems().iterator(); it.hasNext();) {
+                 Listitem object = (Listitem)it.next();
+                 String valor = object.getValue();
+                 String labe = object.getLabel();
+                    object.visible = per.verificarPermisoReporte(valor,labe, "Ingresar",false,"REPORTES");
+                }
+/*
             CM.visible = per.verificarPermisoReporte("CM", "Ingresar");
             CM2.visible = per.verificarPermisoReporte("CM2", "Ingresar");
             AM.visible = per.verificarPermisoReporte("AM", "Ingresar");
@@ -1362,6 +1369,8 @@ void campos(String valor){
             LREL.visible = per.verificarPermisoReporte("LINT", "Ingresar");
             LREL2.visible = per.verificarPermisoReporte("LINT", "Ingresar");
             LCLA33.visible = per.verificarPermisoReporte("LCLA33", "Ingresar");
+            
+            */
             }
         </zscript>
 
