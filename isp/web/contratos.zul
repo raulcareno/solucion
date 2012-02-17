@@ -1367,7 +1367,7 @@ void verificarCedula(String valor){
    void facturasPagadas(){
                 try{
                 List facEncontradas =  adm.queryNativo("SELECT cx.codigo, fa.numero, fa.fecha, " + 
-                    "  fa.total, cx.fecha, cx.debe, cx.haber,IF(cx.haber < fa.total && cx.haber >0,'ABONO',IF(cx.haber = fa.total,'PAGADO',''))  " + 
+                    "  fa.total, cx.fecha, cx.debe, cx.haber,IF(cx.haber < fa.total && cx.haber >0,'ABONO',IF(cx.haber = fa.total,'PAGADO','')),cx.fechadeposito  " + 
                     " FROM cxcobrar cx, factura  fa "   +
                     "   WHERE fa.clientes  =  "+codigocli.value+"  " + 
                     "  AND cx.factura = fa.codigo GROUP BY cx.codigo " + 
@@ -2542,6 +2542,7 @@ void llamar(){
                             <column   label="Debe"/>
                             <column   label="Haber"/>
                             <column   label="Observación"/>
+                            <column   label="Fec.Depo"/>
                             <column   label="Acción"/>
                         </columns>
                         <rows id="filasPag">

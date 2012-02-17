@@ -83,6 +83,9 @@ public class Cxcobrar implements Serializable {
     @Column(name = "fechacheque")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechacheque;
+    @Column(name = "fechadeposito")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechadeposito;
     @JoinColumn(name = "factura", referencedColumnName = "codigo")
     @ManyToOne
     private Factura factura;
@@ -351,6 +354,16 @@ public class Cxcobrar implements Serializable {
         return hash;
     }
 
+    public Date getFechadeposito() {
+        return fechadeposito;
+    }
+
+    public void setFechadeposito(Date fechadeposito) {
+        this.fechadeposito = fechadeposito;
+    }
+
+    
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set

@@ -108,6 +108,7 @@ String llenarCeros(String numero){
             
             cobrar.setFechatransferencia(fechatransferencia.value);
             cobrar.setFechacheque(fechacheque.value);
+            cobrar.setFechadeposito(fechadeposito.value);
             
             
             adm.guardar(cobrar);
@@ -449,7 +450,7 @@ void ultimoRecibo(){
                                         <row>
                                             <span>   </span>
                                             <span>   </span>
-                                            <span>   </span>
+                                            <span><datebox  width="50px"  id="fechadeposito"  format="dd-MM-yyyy" />   </span>
                                             <span><datebox  width="50px"  id="fechacheque"  format="dd-MM-yyyy" />   </span>
                                             <span>   </span>
                                             <datebox  width="50px" id="fechatransferencia"  format="dd-MM-yyyy" />   
