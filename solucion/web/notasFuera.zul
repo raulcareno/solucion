@@ -102,6 +102,7 @@ guardar(){
                             cO.setCurso(curso.getCodigocur());
                             cO.setMateria(materia.getMateria().getCodigo());
                             cO.setTipo(0);
+                            cO.setFecha(adm.Date());
                             adm.guardar(cO);
 
 

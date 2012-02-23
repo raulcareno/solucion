@@ -31,6 +31,7 @@
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
         <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" title="JCINFORM" width="460px" sizable="true">
             <zscript>
+                <![CDATA[
   import jcinform.persistencia.Global;
   import bean.EventDAO;
   import java.util.ArrayList;
@@ -53,6 +54,9 @@
 
  Administrador adm = new Administrador();
  Permisos permisos = new Permisos();
+ Date fec = adm.Date();
+ String stFecha = (fec.getYear()+1900)+"-"+(fec.getMonth()+1)+"-"+fec.getDate();
+ adm.ejecutaSqlNativo("DELETE FROM cursoocupado WHERE date(fecha)<= '" + stFecha+"' ");
  
 cargar(){
     derechos.value = "Todos los derechos reservados a JCINFORM, derecho de copia @2009-"+ ((new Date()).getYear()+1900) +", web: ";
@@ -176,6 +180,8 @@ void verificarSistema(){
         }
 }
 
+
+]]>
             </zscript>
             <grid style="background-color:transparent;border:0px">
 	 
