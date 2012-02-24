@@ -290,8 +290,9 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                     <menuitem onClick="ingresar(self)" id="Matricular2" label="Asignar Cursos(Estudiantes del A al B)" image="/images/asignar.png"  value="/asignarmatriculas.zul" />
                                     <menuitem onClick="ingresar(self)" id="Actualizacion" label="Actualizar" image="/images/actualizar.png"  value="/actualizacion.zul" />
                                     <menuitem onClick="ingresar(self)" id="Pendientes" label="Pendientes(Bloquear Notas)" image="/images/dinero.gif"   value="/pendientes.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Inscripciones" label="Inscripciones Internet"     value="/inscripcionesModificar.zul" />
-                                    <menuitem onClick="ingresar(self)" id="Preaprobados" label="Pre-Aprobados Internet"     value="/seleccionPreaprobados.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Inscripciones" label="Inscripciones Internet(Inscribir-Modificar)"     image="/images/inscripciones.gif"   value="/inscripcionesModificar.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Preaprobados" label="Pre-Aprobados Internet"    image="/images/preaprobados.png"  value="/seleccionPreaprobados.zul" />
+                                    <menuitem onClick="ingresar(self)" id="SorteoInscritos" label="Sorteo Automático de Inscritos"   image="/images/sorteo.png"      value="/inscripcionesSorteo.zul" />
                                     <menuitem onClick="ingresar(self)" id="Bloquear" label="Bloquear Matricula" image="/images/bloquear.gif"   value="/actualizacion_1.zul" />
                                     <menuitem onClick="ingresar(self)" id="Reportes_Estudiantes" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
                                     <menuitem onClick="ingresar(self)" id="Encuesta" label="Encuesta" image="/images/encuesta.png"   value="/encuesta.zul" />
