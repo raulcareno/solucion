@@ -95,6 +95,7 @@ guardar(){
                     cO.setCurso(curso.getCodigocur());
                     cO.setSistema(sistema.getCodigosis());
                     cO.setTipo(2);
+                      cO.setFecha(adm.Date());
                     adm.guardar(cO);
     nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),(Sistemacalificacion)sisis.selectedItem.value);
     //AL FINALIZAR EL PROCESO BORRO EL REGISTRO DE ÉSTE PROFESOR 

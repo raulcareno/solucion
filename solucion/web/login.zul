@@ -56,7 +56,7 @@
  Permisos permisos = new Permisos();
  Date fec = adm.Date();
  String stFecha = (fec.getYear()+1900)+"-"+(fec.getMonth()+1)+"-"+fec.getDate();
- adm.ejecutaSqlNativo("DELETE FROM cursoocupado WHERE date(fecha)<= '" + stFecha+"' ");
+ adm.ejecutaSqlNativo("DELETE FROM cursoocupado  ");
  
 cargar(){
     derechos.value = "Todos los derechos reservados a JCINFORM, derecho de copia @2009-"+ ((new Date()).getYear()+1900) +", web: ";
