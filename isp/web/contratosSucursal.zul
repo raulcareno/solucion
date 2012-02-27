@@ -1,0 +1,2585 @@
+<?page id="contratospage"?>
+<window id="contratosventana"  border="normal" >
+    <style>
+            .MyGridRowHeight tr.z-row td.z-row-inner  
+            {
+                  background: white;
+                  border-top: none;
+                  border-left: 1px solid white;
+                  border-right: 1px solid #CCC;
+                  //border-bottom: 1px solid #DDD;
+                  border-bottom: none;
+
+            }
+            /*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+              background: #F8F8F8;
+            } */
+            .MyGridRowHeight td.z-row-inner
+            {
+                padding: 0px;
+                //overflow: hidden;
+            }
+    </style>
+    <zscript>   <![CDATA[
+    
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+  import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
+  import jcinform.bean.generarFacturas;
+
+
+  Session ses = Sessions.getCurrent();
+  //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
+    Administrador adm = new Administrador();
+    static Contratos equi = new Contratos();
+    Permisos permiso = new Permisos();
+    Empleados usuarioActual = ses.getAttribute("user");
+   Empresa empresa = ses.getAttribute("empresa");
+    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+      List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+      List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
+      generarFacturas gen = new generarFacturas();
+List cantonesList = adm.query("Select o from Canton as o ");
+    Boolean modificare = false;
+    Boolean agregare = false;
+
+//FUNCIONES
+
+void llenarCliente(Clientes cli){
+           codigocli.value = cli.getCodigo()+"";
+            email.value = cli.getEmail()+"";
+            apellidos.value = cli.getApellidos()+" "+cli.getNombres();//cliente
+       
+
+}
+void llenar(Contratos  equi2){
+ genFactura.setChecked(false);
+    equi = equi2;
+
+//SETEO LA FORMA DE PAGO
+    try{
+      if(equi.getFormapago().equals(1)){//SE COBRA EN OFICIONA
+            efe.checked = true;
+        }else if(equi.getFormapago().equals(2)){//POR DÉBITO BANCARIO
+            deb.checked = true;
+        }else if(equi.getFormapago().equals(3)){ //COBRA A DOMICIOLIO
+            cbr.checked = true;
+        } else {
+            efe.checked = true;
+        } 
+     }catch(Exception err){
+     System.out.println("error en forma de pago null: "+err);
+     efe.checked = true;
+     }
+    
+    registro.setSelected(true);
+    try{
+     if(equi.getClientes()!=null){
+        if(agregare==false)
+           llenarCliente(equi.getClientes()); //LLLENAR CLIENTES
+      }else{
+          Clientes cli = new Clientes(0);
+          cli.setEmail("");
+          cli.setApellidos(""); 
+          cli.setRazonsocial("");
+          cli.setNombres("");  
+          cli.setDireccion("");
+          cli.setTelefono("");
+          
+        if(agregare==false){
+            llenarCliente(cli); //LLLENAR CLIENTES
+        }
+       }
+    }catch(Exception ecliente){
+        
+    }
+    fecha.value = equi.getFecha();
+    fechainstalacion.value = equi.getFechainstalacion();
+    autorizado.checked = equi.getAutorizado();
+    usuario.value = equi.getUsuario();
+    ip.value = equi.getIp();
+    nocuenta.value = equi.getNocuenta();
+    tipocuenta.value  = equi.getTipocuenta();
+    direccioni.value = equi.getDireccion();
+    direccion.value = equi.getDireccionf();
+    referenciai.value = equi.getReferencia();
+    descuento.value = equi.getDescuento();
+    telefonoi.value = equi.getTelefono();
+    try{
+        if(equi.getDiapago() == null){
+            diapago.value  = "1";
+        }else{
+            diapago.value  = equi.getDiapago()+"";
+        }
+    }catch(Exception ex){
+         diapago.value  = equi.getDiapago()+"";
+    }
+    
+        
+        clave.value = equi.getClave();
+       if(equi.getEstado().equals("Activo")){
+            eactivo.selected = true;
+        }else if(equi.getEstado().equals("Suspendido")){
+            esuspendido.selected = true;
+        }else if(equi.getEstado().equals("Terminado")){
+            eterminado.selected = true;
+        } else if(equi.getEstado().equals("Cortado")){
+            ecortado.selected = true;
+        } 
+    if(equi.getEmpleados2() != null){
+        codigoemp.value = equi.getEmpleados2().getCodigo()+""; //EMPLEADOS
+        combov.value =equi.getEmpleados2().getApellidos()+" "+equi.getEmpleados2().getNombres();//EMPLEADOS
+    }else{
+        codigoemp.value = "";
+        combov.value ="";
+    }
+    
+    numerocontrato.value = equi.getContrato();
+       if(equi.getPlan() != null){
+             try{
+                        for (int i = 0; i <= perf.getItems().size(); i++) {
+                                    Plan tr0 = ((Plan)((Listitem)perf.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getPlan().getCodigo();
+                                    if(primero == segundo){
+                                        perf.setSelectedItem((Listitem)perf.getItems().get(i));
+                                        bd.value = equi.getPlan().getNombre()+" ";
+                                        break;
+                                    }
+                           }
+                 }catch(Exception err){System.out.println("ERROR no tiene planes asignados COMBO CURSOS: "+err);}
+
+
+      } else{
+               bdRadio.value = "";
+                radio.setSelectedItem(null);
+    }
+ 
+ if(equi.getSector() != null){   
+        try{
+                              for (int i = 0; i <= cantones.getItems().size(); i++) {
+                                    Canton tr0 = ((Canton)((Listitem)cantones.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getSector().getCanton().getCodigo();
+                                    if(primero == segundo){
+                                        cantones.setSelectedItem((Listitem)cantones.getItems().get(i));
+                                        bdCanton.value = equi.getSector().getCanton().getNombre()+"";
+                                        break;
+                                    }
+                           }
+                           buscarSectores(equi.getSector().getCanton().getCodigo());
+
+                            for (int i = 0; i <= sectores.getItems().size(); i++) {
+                                            Sector tr0 = ((Sector)((Listitem)sectores.getItems().get(i)).getValue());
+                                            int primero = tr0.getCodigo();
+                                            int segundo = equi.getSector().getCodigo();
+                                            if(primero == segundo){
+                                                sectores.setSelectedItem((Listitem)sectores.getItems().get(i));
+                                                bdSector.value = equi.getSector().getNombre();
+                                                break;
+                                            }
+                            }
+                            if(equi.getRadios() != null){
+                                
+                            }else{
+                                    buscarNodos(equi.getSector().getCanton().getCodigo());
+                            }
+                            
+                             }catch(Exception err){System.out.println("ERROR no tiene Radios asignados COMBO radio "+err);}
+                    }       
+    if(equi.getRadios() != null){
+    try{
+                      buscarNodos(equi.getRadios().getNodos().getSector().getCanton().getCodigo());
+                    
+                    for (int i = 0; i <= nodos.getItems().size(); i++) {
+                                    Nodos tr0 = ((Nodos)((Listitem)nodos.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getRadios().getNodos().getCodigo();
+                                    if(primero == segundo){
+                                        nodos.setSelectedItem((Listitem)nodos.getItems().get(i));
+                                        bdNodo.value = equi.getRadios().getNodos().getNombre();
+                                        break;
+                                    }
+                           }
+                       
+                        buscarRadios(equi.getRadios().getNodos().getCodigo());
+        
+                      for (int i = 0; i <= radio.getItems().size(); i++) {
+                                    Radios tr0 = ((Radios)((Listitem)radio.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getRadios().getCodigo();
+                                    if(primero == segundo){
+                                        radio.setSelectedItem((Listitem)radio.getItems().get(i));
+                                        bdRadio.value = equi.getRadios().getNombre()+" ";
+                                        break;
+                                    }
+                           }
+                 }catch(Exception err){System.out.println("ERROR no tiene Radios asignados COMBO radio "+err);}
+        
+    }else{
+       bdRadio.value = "";
+        radio.setSelectedItem(null);
+    }
+    
+       if(equi.getBancos() != null){
+ 
+        try{
+                      for (int i = 0; i <= bancosList.getItems().size(); i++) {
+                                    Bancos tr0 = ((Bancos)((Listitem)bancosList.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigo();
+                                    int segundo = equi.getBancos().getCodigo();
+                                    if(primero == segundo){
+                                        bancosList.setSelectedItem((Listitem)bancosList.getItems().get(i));
+                                        bd22.value = equi.getBancos().getNombre()+" ";
+                                        break;
+                                    }
+                           }
+                 }catch(Exception err){System.out.println("ERROR no tiene Bancos asignados COMBO bancosList"+err);}
+        
+    }else{
+       bd22.value = "";
+        bancosList.setSelectedItem(null);
+    }
+    try{
+        registrado.value = equi.getEmpleados()+"";//REGISTRADOR
+        registradoU.value = equi.getEmpleados().getCodigo()+"";//REGISTRADOR
+     
+     }catch(Exception exa){
+     registrado.value = usuarioActual.getApellidos()+" "+usuarioActual.getNombres();
+     registradoU.value = usuarioActual.getCodigo()+"";
+     }  
+     buscarSeries(equi);
+    
+}
+void estado(Boolean estado,Boolean modificar){
+    
+   
+    buscarE1.disabled = estado;
+    buscarE2.disabled = estado;
+    buscarE3.disabled = estado;
+    buscarE.disabled = estado;
+    fecha.disabled = estado;
+    nocuenta.readonly = estado;
+    tipocuenta.disabled = estado;
+    diapago.disabled = estado;
+    direccioni.readonly = estado;
+    referenciai.readonly = estado;
+    descuento.readonly = estado;
+    telefonoi.readonly = estado;
+    fechainstalacion.disabled = estado;
+    autorizado.disabled = estado;
+    usuario.readonly = estado;
+    ip.readonly = estado;
+    clave.readonly = estado;
+    bd.disabled = estado;
+    bdRadio.disabled = estado;
+    bdNodo.disabled = estado;
+    bd22.disabled = estado;
+    numerocontrato.readonly = estado;
+    nuevoC.disabled = estado;
+    nuevoE.disabled = estado;
+     identificacion.focus();
+     deb.disabled=estado;
+     efe.disabled=estado;
+     cbr.disabled=estado;
+     eactivo.disabled=estado;
+     ecortado.disabled = estado;
+     esuspendido.disabled=estado;
+     eterminado.disabled=estado;
+     direccion.readonly = estado;
+     telefono.readonly = estado;
+     email.readonly = estado;
+     nombres.readonly = estado;
+     apellidos.readonly = estado;
+     razonsocial.readonly = estado;
+     identificacion2.readonly = estado;
+     
+     //combo.readonly = estado;
+
+
+}
+Boolean validar(Textbox text){
+        if(text.value == "" || text.value == null){
+            text.focus();
+            return true;
+        }
+        return false;
+}
+Boolean validar(Intbox text){
+        if(text.value == "" || text.value == null){
+            text.focus();
+            return true;
+        }
+        return false;
+}
+
+Boolean validar(Datebox text){
+        if(text.value == "" || text.value == null){
+            text.focus();
+            return true;
+        }
+        return false;
+}
+Boolean validar(Combobox text){
+        if(text.value == "" || text.value == null){
+            text.focus();
+            return true;
+        }
+        return false;
+}
+
+Boolean validar(){
+        if(validar(identificacion2)   ||  validar(nombres) || validar(apellidos) || validar(direccion)  || validar(telefono)  || 
+                    validar(numerocontrato) || validar(fecha) || validar(fechainstalacion)  || 
+                  validar(direccioni) ||  validar(telefonoi) || validar(combov) ){
+                          //Messagebox.show("Complete todos los campos que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                          return true;
+          
+          }
+            return false; 
+}
+ void guardar(){
+
+    if(validar(identificacion2) ){
+           Messagebox.show("Ingrese la Identificación del Cliente ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           identificacion2.focus();
+            return;
+    }
+        if(validar(nombres) ){
+           Messagebox.show("Ingrese los Nombres del Cliente  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           nombres.focus();
+            return;
+    } if(validar(apellidos) ){
+           Messagebox.show("Ingrese los Apellidos del Cliente ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           apellidos.focus();
+            return;
+    }if(validar(direccion) ){
+           Messagebox.show("Ingrese la Dirección del Cliente ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           direccion.focus();
+            return;
+    } if(  validar(numerocontrato)){
+           Messagebox.show("Ingrese la Número de Contrato...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           numerocontrato.focus();
+            return;
+    }if( validar(fecha) ){
+           Messagebox.show("Ingrese la Fecha...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           fecha.focus();
+            return;
+    }if( validar(fechainstalacion)  ){
+           Messagebox.show("Ingrese la Fecha de Instalción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           fechainstalacion.focus();
+            return;
+    }if(validar(direccioni) ){
+           Messagebox.show("Ingrese la Dirección de Instalación...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           direccioni.focus();
+            return;
+    } if( validar(combov) ){
+           Messagebox.show("Ingrese el Vendedor...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           combov.focus();
+            return;
+    } 
+    if( bd.value == ""  ){
+           Messagebox.show("Seleccione el Plan para poder continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    } 
+     if(codigocli.value.equals("0")){
+        Clientes empa = new Clientes();
+            empa.setIdentificacion(""+identificacion2.value);
+            empa.setNombres(nombres.value);
+            empa.setApellidos(apellidos.value);
+            empa.setRazonsocial(razonsocial.value);
+            empa.setDireccion(direccion.value);
+            empa.setTelefono(telefono.value);
+            empa.setEmail(email.value);
+            empa.setSucursal(sucursalEmp.getSucursal());
+            adm.guardar(empa);
+            codigocli.value = empa.getCodigo()+"";
+     }else{
+            Clientes empa = new Clientes(new Integer(codigocli.value));
+            empa.setIdentificacion(""+identificacion2.value);
+            empa.setNombres(nombres.value);
+            empa.setApellidos(apellidos.value);
+            empa.setRazonsocial(razonsocial.value);
+            empa.setDireccion(direccion.value);
+            empa.setTelefono(telefono.value);
+            empa.setEmail(email.value);
+            empa.setSucursal(sucursalEmp.getSucursal());
+            adm.actualizar(empa);
+            
+     }
+     equi.setDireccionf(direccion.value);
+    equi.setTelefonof(telefono.value);
+    equi.setClientes(new Clientes(new Integer(codigocli.value)));
+    equi.setFecha(fecha.value);
+    equi.setFechainstalacion(fechainstalacion.value);
+    equi.setAutorizado(autorizado.isChecked());
+    equi.setUsuario(usuario.value);
+    equi.setIp(ip.value);
+    equi.setClave(clave.value);
+    equi.setContrato(numerocontrato.value);
+    equi.setEstado(estadoContrato.selectedItem.value);
+    equi.setSucursal(sucursalEmp.getSucursal());
+    equi.setDireccion(direccioni.value);
+    equi.setReferencia(referenciai.value);
+    equi.setTelefono(telefonoi.value);
+    equi.setEmpleados2(new Empleados((new Integer(codigoemp.value))));
+    
+    
+     if(equi.getContrato()==null){
+            Integer valor = adm.getNuevaClave("Contratos","contrato");
+            equi.setContrato(valor);
+    }
+    
+    equi.setDireccion(direccioni.value);
+    equi.setReferencia(referenciai.value);
+    equi.setDescuento(descuento.value);
+    equi.setTelefono(telefonoi.value);
+    equi.setFormapago(new Integer(formapago.selectedItem.value)); //integer
+    equi.setNocuenta(nocuenta.value); //varchar
+    equi.setTipocuenta(tipocuenta.value); //varchar 
+    equi.setDiapago(new Integer(diapago.value));//integer
+  
+   
+    
+   
+    try{
+        equi.setPlan(perf.getSelectedItem().getValue());
+        }catch(Exception e){
+    }
+    try{
+        equi.setRadios(radio.getSelectedItem().getValue());
+    }catch(Exception e){
+    }
+    
+    try{
+        equi.setSector(sectores.getSelectedItem().getValue());
+    }catch(Exception e){
+    }
+    
+    try{
+        equi.setBancos(bancosList.getSelectedItem().getValue());
+    }catch(Exception e){
+    }
+    
+        if((!equi.getCodigo().equals(0)) ){
+            equi.setEmpleados(new Empleados(new Integer(registradoU.value)));//REGISTRADOR
+             adm.actualizar(equi);
+                permiso.auditar("Contratos","Actualizar",""+equi.getContrato()+" - "+equi.getClientes());
+         }else{
+          //EN CASO DE Q VAYA A ACTUALIAR
+             if(validarContrato(numerocontrato.value)){
+                    Messagebox.show("Número de contrato ya existe ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR); 
+                    numerocontrato.value = null;
+                    numerocontrato.focus();
+                    return;
+             }
+                equi.setEmpleados(usuarioActual);//REGISTRADOR
+                equi.setCodigo(adm.getNuevaClave("Contratos","codigo"));
+                adm.guardar(equi);
+                permiso.auditar("Contratos","Guardar",""+equi.getContrato()+" - "+equi.getClientes());
+         }
+             
+ if(facturadostotal.value > 0){//GENERO LA CABECERA DE COMPRA Y LOS DETALLLES CON LAS SERIES PARA
+      Cabeceracompra cabeCompra = new Cabeceracompra();
+       cabeCompra.setProveedores(null);
+       cabeCompra.setFecha(fecha.value);
+       cabeCompra.setSeries(null);
+       cabeCompra.setCantidad(0);
+       cabeCompra.setTotal(0d);
+       cabeCompra.setSucursal(sucursalEmp.getSucursal());
+       cabeCompra.setDocumento("VEN");
+       adm.guardar(cabeCompra);
+        List col = productos.getRows().getChildren();
+        String seriesString = "";
+        int sihay =0;
+                  for (int i = 0; i < col.size(); i++) {
+                         Row object = (Row) col.get(i);
+                         Series serieDet = ((Series)object.getValue());
+                          List labels = object.getChildren();
+                            if(((Checkbox) labels.get(5)).isChecked()){ //si el item es facturado
+                                  Detallecompra det = new Detallecompra();
+                                  Boolean actualizar = false;
+                                  int cantidad = 0;
+                                  if(i > 0){
+                                    List detList = adm.query("Select o from Detallecompra as o " + 
+                                            " where o.contratos.codigo = '"+equi.getCodigo()+"' " + 
+                                            " and o.equipos.codigo = '"+ ((Intbox) labels.get(0)).getValue()+"' ");
+                                            if(detList.size()>0){
+                                                    det = (Detallecompra)detList.get(0);
+                                                    cantidad = det.getCantidad();
+                                                    actualizar = true;
+                                            }else{
+                                                    det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                                     actualizar = false;
+                                            }
+                                  }else{
+                                        det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                  }
+                                  det.setContratos(equi);
+                                  det.setCabeceracompra(cabeCompra);
+                                  det.setCosto(serieDet.getDetallecompra().getEquipos().getPvp1().doubleValue());
+                                  det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
+                                  det.setCantidad(-1);
+                                    if(serieDet.getDetallecompra().getEquipos().getBien()){
+                                          if(actualizar){
+                                            det.setCantidad(cantidad-1);
+                                            adm.actualizar(det);
+                                          }else{
+                                            adm.guardar(det);
+                                          }
+                                          sihay++;
+                                  }
+//                               alert(""+serieDet.getEstado());
+                               //TENGO QUE ELIMINAR TODO EL REGISTRO DE COMPRA EN CASO DE QUE HAYA SOLO UN ITEM
+                               try{
+                                    if(serieDet.getEstado().equals("P")){
+                                            Series serAc = serieDet;
+                                            int cant = serAc.getDetallecompra().getCantidad();
+                                            if(cant == -1){
+                                                adm.eliminarObjeto(Series.class, serAc.getCodigo()); 
+                                                adm.eliminarObjeto(Detallecompra.class,serAc.getDetallecompra().getCodigo());
+                                                adm.eliminarObjeto(Cabeceracompra.class,serAc.getDetallecompra().getCabeceracompra().getCodigo());
+                                            }else{
+                                                adm.eliminarObjeto(Series.class, serAc.getCodigo()); 
+                                                Detallecompra deta = serAc.getDetallecompra();
+                                                deta.setCantidad(deta.getCantidad()+1);
+                                                adm.actualizar(deta);
+                                            }
+                                        }
+                                   }catch(Exception err){
+                                   System.out.println("ERROR AL COMPARAR ESTADO Y ELIMINAR"+err);
+                                   }         
+                               
+                                  Series ser = new Series();
+                                  ser.setCodigo(adm.getNuevaClave("Series","codigo"));
+                                  ser.setSerie(serieDet.getSerie());
+                                  ser.setDetallecompra(det);
+                                  ser.setContratos(equi);
+                                  ser.setSucursal(sucursalEmp.getSucursal());
+                                  ser.setEstado("V");//VENTA
+                                  
+                               if(serieDet.getDetallecompra().getEquipos().getBien())
+                                  adm.guardar(ser);
+                            }
+
+                  }
+
+ 
+if(sihay==0){
+        adm.eliminarObjeto(Cabeceracompra.class, cabeCompra.getCodigo());
+} 
+ 
+ 
+ }
+ 
+  if(prestadostotal.value  > 0){
+        List seriesExi = adm.query("Select o from Series as o where o.estado = 'P' and o.contratos.codigo = '"+equi.getCodigo()+"' ");
+        if(seriesExi.size()> 0 ){
+            for(Iterator it = seriesExi.iterator(); it.hasNext();) {
+                    Series object = (Series)it.next();
+                    adm.eliminarObjeto(Series.class, object.getCodigo()); 
+                    adm.eliminarObjeto(Detallecompra.class,object.getDetallecompra().getCodigo());
+                    adm.eliminarObjeto(Cabeceracompra.class,object.getDetallecompra().getCabeceracompra().getCodigo());   
+            }
+        }
+  
+  
+       Cabeceracompra cabeCompra = new Cabeceracompra();
+       cabeCompra.setProveedores(null);
+       cabeCompra.setFecha(fecha.value);
+       cabeCompra.setSeries(null);
+       cabeCompra.setCantidad(0);
+       cabeCompra.setTotal(0d);
+       cabeCompra.setSucursal(sucursalEmp.getSucursal());
+       cabeCompra.setDocumento("PRE");
+       adm.guardar(cabeCompra);
+        List col = productos.getRows().getChildren();
+        String seriesString = "";
+        int sihay = 0;
+                  for (int i = 0; i < col.size(); i++) {
+                         Row object = (Row) col.get(i);
+                         Series serieDet = ((Series)object.getValue());
+                          List labels = object.getChildren();
+                            if(serieDet.getDetallecompra().getEquipos().getBien()){
+                            
+                            }
+                          
+                            if(!((Checkbox) labels.get(5)).isChecked()){ //si el item NO es facturado
+                                  Detallecompra det = new Detallecompra();
+                                  Boolean actualizar = false;
+                                  int cantidad = 0;
+                                  if(i > 0){
+                                    List detList = adm.query("Select o from Detallecompra as o " + 
+                                            " where o.contratos.codigo = '"+equi.getCodigo()+"' " + 
+                                            " and o.equipos.codigo = '"+ ((Intbox) labels.get(0)).getValue()+"' ");
+                                            if(detList.size()>0){
+                                                    det = (Detallecompra)detList.get(0);
+                                                    cantidad = det.getCantidad();
+                                                    actualizar = true;
+                                            }else{
+                                                    det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                                     actualizar = false;
+                                            }
+                                  }else{
+                                        det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                  }
+                                  det.setContratos(equi);
+                                  det.setCabeceracompra(cabeCompra);
+                                  det.setCosto(serieDet.getDetallecompra().getEquipos().getPvp1().doubleValue());
+                                  det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
+                                  det.setCantidad(-1);
+                                  if(serieDet.getDetallecompra().getEquipos().getBien()){
+                                  sihay++;
+                                          if(actualizar){
+                                            det.setCantidad(cantidad-1);
+                                            adm.actualizar(det);
+                                          }else{
+                                            adm.guardar(det);
+                                          }
+                                  }
+                                  Series ser = new Series();
+                                  ser.setCodigo(adm.getNuevaClave("Series","codigo"));
+                                  ser.setSerie(serieDet.getSerie());
+                                  ser.setDetallecompra(det);
+                                  ser.setContratos(equi);
+                                  ser.setSucursal(sucursalEmp.getSucursal());
+                                  ser.setEstado("P");//PRESTAMO
+                                  if(serieDet.getDetallecompra().getEquipos().getBien())
+                                  adm.guardar(ser);
+                            }
+
+                  }
+
+         if(sihay==0){
+                adm.eliminarObjeto(Cabeceracompra.class, cabeCompra.getCodigo());
+         }
+ 
+ }
+ 
+ if(genFactura.isChecked() && facturadostotal.value <= 0){
+      gen.generarCobros(sucursalEmp.getSucursal(),equi,fechainstalacion.value);
+ }
+ Date fechaInstalacion = fechainstalacion.value;
+ if(facturadostotal.value > 0){
+ //EMPIEZO A GENERAR FACTURA Y CXCOBRAR 
+ Date fecha = adm.Date();
+             Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
+            fac.setNumero(null);
+            fac.setClientes(equi.getClientes());
+            fac.setEstado(true);
+            fac.setFecha(fecha);
+            fac.setContratos(equi);
+            fac.setSucursal(sucursalEmp.getSucursal());
+            BigDecimal valor = null;
+            if(genFactura.isChecked()){
+                
+                valor = new BigDecimal(redondear(equi.getPlan().getValor(), 2)).subtract(equi.getDescuento());
+                if (fechaInstalacion.getDate() > 1) {
+                    int noDias = equi.getPlan().getDias() - fechaInstalacion.getDate();
+                    if (noDias > 0) {
+                        if ((fechaInstalacion.getMonth() == adm.Date().getMonth())) {
+                            valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(equi.getPlan().getDias()), 2, RoundingMode.HALF_UP);
+                        } else {
+                            valor = new BigDecimal(equi.getPlan().getValor()).subtract(equi.getDescuento());
+                        }
+                    } else {
+                         valor = new BigDecimal(0);
+                    }
+
+                } else {
+                    valor = new BigDecimal(redondear(equi.getPlan().getValor(), 2)).subtract(equi.getDescuento());
+                }
+        
+            }
+            if(valor!=null && genFactura.isChecked())
+                fac.setSubtotal((valortotal.value).add(valor));
+            else
+                fac.setSubtotal(valortotal.value);
+            fac.setDescuento(new BigDecimal(0));
+            fac.setBaseiva(fac.getSubtotal());
+            fac.setPorcentajeiva(empresa.getIva());
+            fac.setValoriva((fac.getSubtotal()).multiply(empresa.getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
+            fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
+            fac.setObservacion("V");
+            adm.guardar(fac);
+    
+    
+                            List col = productos.getRows().getChildren();
+                            String seriesString = "";
+                            if(genFactura.isChecked()){
+                                Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+                                det.setTotal(valor);
+                                det.setPlan(equi.getPlan());
+                                det.setCantidad(1);
+                                det.setMes(fechaInstalacion.getMonth() + 1);
+                                det.setAnio(fechaInstalacion.getYear() + 1900);
+                                det.setDescripcion("generada");
+                                det.setFactura(fac);
+                                adm.guardar(det);
+                            }
+                                    for (int i = 0; i < col.size(); i++) {
+                                             Row object = (Row) col.get(i);
+                                             Series serieDet = ((Series)object.getValue());
+                                              List labels = object.getChildren();
+                                                if(((Checkbox) labels.get(5)).isChecked()){ //si el item es facturado
+                                                        Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+                                                        det.setTotal(serieDet.getDetallecompra().getEquipos().getPvp1());
+                                                        det.setPlan(null);
+                                                        det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
+                                                        det.setCantidad(1);
+                                                        det.setMes(fecha.getMonth()+1);  
+                                                        det.setAnio(fecha.getYear()+1900); 
+                                                        det.setDescripcion(null);
+                                                        det.setFactura(fac);
+                                                        adm.guardar(det);
+                                                
+                                                }
+
+
+                                      }
+                            Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+                            cuenta.setDebe(fac.getTotal());
+                            cuenta.setHaber(BigDecimal.ZERO);
+                            cuenta.setDeposito(BigDecimal.ZERO);
+                            cuenta.setCheque(BigDecimal.ZERO);
+                            cuenta.setEfectivo(BigDecimal.ZERO);
+                            cuenta.setFactura(fac);
+                            cuenta.setFecha(fecha);
+                            cuenta.setNotarjeta("");
+                            cuenta.setNocheque("");
+                            cuenta.setTotal(fac.getTotal());
+                            adm.guardar(cuenta);
+
+
+                    
+                              final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
+                                win.setMaximizable(true);
+                                win.setClosable(true);
+                                win.setAttribute("codigoFactura", fac.getCodigo()+"");
+                                win.setAttribute("valoraPagar", fac.getTotal());
+                                win.setTitle("Facturar Clientes");
+                                win.doModal();
+           
+            
+ 
+ } 
+  
+ 
+ 
+          Messagebox.show("Contrato Registrado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    
+                    //llenar(new Contratos(0));      
+                    //nuevo2();
+                    estado(true,false);
+                    sumar();
+                    buscarSeries(equi);
+}
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Contratos",accion);
+ }
+ Boolean verificar2(String accion){
+        return permiso.verificarPermiso("Descuentos",accion);
+ }
+ Boolean verificar3(String accion){
+        return permiso.verificarPermiso("RealizarCobros",accion);
+ }
+ 
+  Boolean verificar4(String accion){
+        return permiso.verificarPermiso("Soporte",accion);
+ }
+ void nuevo(){
+     genFactura.setChecked(false);
+     telefono.value ="";
+     direccion.value ="";
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+       agregare = false;
+      if(planes.size()<=0){
+        Messagebox.show("No se han creado planes, cierre esta pantalla e ingresse nuevos Planes  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         return;
+      }
+      /*if(bancos.size()<=0){
+        Messagebox.show("No se han creado Bancos, cierre esta pantalla e ingrese nuevos Bancos  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         return;
+      }
+    if(radios.size()<=0){
+        Messagebox.show("No se han creado Radios, cierre esta pantalla e ingrese nuevos Radios  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         return;
+      } */
+       
+        llenar(new Contratos(0));
+        estado(false,false);
+        eliminar.disabled = true;
+        productos.getRows().getChildren().clear();
+        identificacion2.focus();
+     bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+  public Double redondear(Double numero, int decimales) {
+        try {
+            BigDecimal d = new BigDecimal(numero);
+            d = d.setScale(decimales, RoundingMode.HALF_UP);
+            return d.doubleValue();
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
+ void nuevo2(){
+  genFactura.setChecked(false);
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+       agregare = true;
+       if(planes.size()<=0){
+            Messagebox.show("No se han creado planes, cierre esta pantalla e ingresse nuevos Planes  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+        }
+   
+       
+        llenar(new Contratos(0));
+        eliminar.disabled = true;
+        estado(false,false);
+        efe.selected = true;
+        efe.checked = true;
+        productos.getRows().getChildren().clear();
+     bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Contratos)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; 
+       estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ 
+ 
+llenarCliente(Clientes clienteEn){
+    //identificacion.value = clienteEn.getIdentificacion();
+     identificacion2.value = clienteEn.getIdentificacion();
+     codigocli.value = clienteEn.getCodigo()+"";
+     email.value  = clienteEn.getEmail();
+     String espacio = "";
+     if(!clienteEn.getApellidos().trim().equals("")){
+          espacio = " ";
+     }
+     apellidos.value = clienteEn.getApellidos();
+     nombres.value = clienteEn.getNombres() ;
+     razonsocial.value = clienteEn.getRazonsocial();
+     
+
+}
+
+void buscarCedula(String valor){
+ 
+      if(valor.length()>6){
+         List empleados = adm.query("Select o from Clientes as o  " + 
+            " where o.identificacion like '"+valor+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+            if(empleados.size()>0){
+ 
+            
+                Clientes cli =(empleados.get(0));
+                codigocli.value = cli.getCodigo()+"";
+                email.value = cli.getEmail()+"";
+                apellidos.value = cli.getApellidos();//cliente
+                razonsocial.value = cli.getRazonsocial();//cliente
+                nombres.value = cli.getNombres();
+ 
+            } 
+
+        }else{
+                if(valor.contains("999")){
+                    List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%'   and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+                     if(empleados.size()>0){
+                        for(Iterator it = empleados.iterator(); it.hasNext();) {
+                              Clientes object = (Clientes)it.next();
+                              empa = object;
+
+                         }
+                        llenarCliente(empa);
+                         numerocontrato.focus();
+                    }
+                }
+        
+        }
+ 
+    }
+    
+void verificarCedula(String valor){
+      if(valor.length()>6){
+                  List empleados = adm.query("Select o from Clientes as o  " + 
+            " where o.identificacion like '"+valor+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+      if(empleados.size()>0){
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Clientes object = (Clientes)it.next();
+                      empa = object;
+                 }
+                 llenarCliente(empa);
+                  contratosCliente = new Listbox();
+                   int a=0;
+                   nuevo2();
+                   estado(true,false);
+            for (Iterator it = contratosCliente.getItems().iterator(); it.hasNext();) {
+                   contratosCliente.getItems().remove(a);
+                }
+                List  contratosEncontrados = adm.query("Select o from Contratos as o where o.clientes.codigo = '"+empa.getCodigo()+"'   ");
+                        if(contratosEncontrados.size()>0){
+                        
+                                 if(contratosEncontrados.size() > 1){
+                                          contratosPanel.visible = true; 
+                                          llenarCliente(empa);
+                                          numerocontrato.focus();
+                                          anadir.disabled = true;
+                                 }else{
+                                          contratosPanel.visible = false; 
+                                          llenarCliente(empa);
+                                          llenar(contratosEncontrados.get(0));
+                                          direccion.value = contratosEncontrados.get(0).getDireccionf();
+                                          telefono.value = contratosEncontrados.get(0).getTelefonof();
+                                          eliminar.disabled = false;
+                                          numerocontrato.focus();
+                                          modificar.disabled = false;
+                                          anadir.disabled = false;
+                                 }
+                                
+                                
+                                for (Iterator it = contratosEncontrados.iterator(); it.hasNext();) {
+                                      Contratos  acceIt = (Contratos) it.next();
+                                      Listitem li = new Listitem();
+                                      li.setValue(acceIt);
+                                      Listcell contratoCelda = new Listcell(acceIt.getContrato()+"");
+                                      Listcell planCelda = new Listcell(acceIt.getPlan().getNombre()+" "+acceIt.getPlan().getTipo()+" "+acceIt.getPlan().getValor());
+                                      Listcell fechaCelda = new Listcell(acceIt.getFecha().toLocaleString().substring(0,11)+"");
+                                      Listcell estadoCelda = new Listcell(acceIt.getEstado()+"");
+                                      String estilo = "background:#00E673";
+                                      if(acceIt.getEstado().contains("Activo")){
+                                        estilo = "background:#00E673";
+                                      }
+                                      if(acceIt.getEstado().contains("Suspendido")){
+                                        estilo  = "background:#FFFF6F";
+                                      }
+                                      if(acceIt.getEstado().contains("Terminado")){
+                                        estilo = "background:#FF7575";   
+                                      }
+                                      contratoCelda.setStyle(estilo);
+                                      planCelda.setStyle(estilo);
+                                      fechaCelda.setStyle(estilo);
+                                      estadoCelda.setStyle(estilo);
+                                      li.appendChild(contratoCelda);
+                                      li.appendChild(planCelda);
+                                      li.appendChild(fechaCelda);
+                                      li.appendChild(estadoCelda);
+                                        contratosCliente.appendChild(li);
+                             }
+                           }
+                           
+                  
+                                
+                             
+              
+            }else{
+                  System.out.println("NO TIENE CONTRATOS ASIGNADOS");
+           }
+
+        }else{
+                if(valor.contains("999")){
+                    List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%'   and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+                     if(empleados.size()>0){
+                        for(Iterator it = empleados.iterator(); it.hasNext();) {
+                              Clientes object = (Clientes)it.next();
+                              empa = object;
+
+                         }
+                        llenarCliente(empa);
+                         numerocontrato.focus();
+                    }
+                }
+        
+        }
+ 
+    }
+    
+    
+    
+    void verificarContrato(Integer valor){
+                      nuevo2();
+                   estado(true,false);
+                   String q = "Select o from Contratos as o " + 
+                        " where o.contrato = '"+valor+"'  "  + 
+                        " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ";
+                   List  ControlequiposEncontrados = adm.query(q);
+                   if(ControlequiposEncontrados.size()>0){
+                              contratosPanel.visible = false; 
+                              llenarCliente(ControlequiposEncontrados.get(0).getClientes());
+                              llenar(ControlequiposEncontrados.get(0));
+                              direccion.value = ControlequiposEncontrados.get(0).getDireccionf();
+                              telefono.value = ControlequiposEncontrados.get(0).getTelefonof();
+                              numerocontrato.focus();
+                              modificar.disabled = false;
+                              anadir.disabled = false;
+                  }else{
+                        Messagebox.show("No. de Contrato no Existente ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                  }
+  }
+    boolean validarContrato(Integer valor){
+
+      if(numerocontrato.getValue() !=null ){
+        if(numerocontrato.getValue().equals(0)){
+            return false;
+       }
+      } 
+
+            if(valor!=null){
+                   String q = "Select o from Contratos as o " + 
+                        " where o.contrato = '"+valor+"'  "  + 
+                        " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ";
+                   List  ControlequiposEncontrados = adm.query(q);
+                   if(ControlequiposEncontrados.size()>0){
+                        numerocontrato.value= null;
+                        Messagebox.show("No. de Contrato ya Existe  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);       
+                        numerocontrato.focus();
+                        return true;
+                  }else{
+                        return false;
+                  }
+                  
+            }else{
+                return false;
+            }
+            
+  }
+    
+    
+     
+ 
+      
+     nuevos(Soporte sop){
+                
+                     if(verificar4("Agregar")){
+                                          codigos.value = sop.getCodigo();
+                                    try{
+
+                                        atendida.value = sop.getEmpleados().getCodigo();
+                                        atendidanombre.value = sop.getEmpleados().getApellidos()+" "+sop.getEmpleados().getNombres();
+                                    }catch(Exception e){
+                                        atendida.value =  usuarioActual.getCodigo();
+                                        atendidanombre.value = usuarioActual.getApellidos()+" "+usuarioActual.getNombres();
+                                    }
+
+                                        fechasoporte.value = sop.getFecha();
+                                    if(sop.getFecha() == null)
+                                        fechasoporte.value = adm.Date();
+                                    observacion.value = sop.getObservacion();
+                                    generar.checked  = sop.getGenerada();
+                                    noorden.value = sop.getNoorden();        
+                        }else{
+                                Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        }  
+
+              }
+              
+              
+          habilitar(Boolean estado){
+                         if(verificar4("Modificar")){
+                            fechasoporte.readonly = estado;
+                            observacion.readonly = estado;
+                            generar.disabled  = estado;
+                          }else{
+                                Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        }     
+                            
+                            
+            }
+                        
+                void guardars(){
+ 
+                                Soporte sop = new Soporte();
+                                sop.setCodigo(codigos.value);
+                                sop.setEmpleados(new Empleados(atendida.value));
+                                sop.setFecha(fechasoporte.value);
+                                sop.setObservacion(observacion.value);
+                                sop.setGenerada(generar.checked);
+                                sop.setClientes(new Clientes(new Integer(codigocli.value)));
+                                sop.setNoorden(noorden.value);
+
+                                if(sop.getGenerada() && sop.getNoorden() == null){ 
+                                    Integer valor = adm.getNuevaClave("Soporte","noorden");
+                                    sop.setNoorden(valor);
+                                }
+                                if((!sop.getCodigo().equals(0)) ){
+                                     sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
+                                     adm.actualizar(sop);
+                                        permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
+                                 }else{
+                                        sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
+                                        sop.setCodigo(adm.getNuevaClave("Soporte","codigo"));
+                                        adm.guardar(sop);
+                                        permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
+                                 }
+                                        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                             
+                                       
+                                              if(sop.getGenerada()){  //GENERAR ORDEN DE COMPRA
+                                         
+                                                   Map parameters = new HashMap();
+                                                   System.out.println("00000");
+                                             
+                                                    parameters.put("ruc", empresa.getRuc());
+                                                    System.out.println("0000-1");
+                                                    parameters.put("empresa", empresa.getRazonsocial());
+                                                    System.out.println("00001");
+                                                    parameters.put("direccion", empresa.getDireccion());
+                                                    parameters.put("observacion", observacion.value);
+                                                    parameters.put("telefono", empresa.getTelefono());
+                                                    parameters.put("cliente", combo.value);
+                                                    parameters.put("noorden", sop.getNoorden());
+                                                    System.out.println("00002");
+                                                    parameters.put("telefono1", telefonoi.value);
+                                                    parameters.put("direccion1", direccioni.value);
+                                                    System.out.println("00003");
+                                                    reportelocal.setSrc("/jcinform/bean/reportes/jrxml/orden.jasper");
+                                                    reportelocal.setParameters(parameters);
+                                                    reportelocal.setDatasource(null);
+                                                    reportelocal.setType("pdf");
+                                                     System.out.println("000041");
+                                                    final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
+                                                    win.setMaximizable(true);
+                                                    win.setClosable(true);
+                                                    win.setAttribute("reporte",reportelocal);
+                                                    win.setTitle("Reporte");
+                                                    win.doModal();
+                                              }
+                                            guardars.disabled=true;
+                                            agregars.disabled=false;
+                                            nuevos(new Soporte(0));
+                                            habilitar(true);
+                                            buscarSoportes();
+                                      
+                  
+                    }
+                     
+                    
+                      void buscarSoportes(){
+                    try{
+                            List ControlequiposEncontrados = adm.query("Select o from Soporte  as o where o.clientes.codigo = '"+codigocli.value+"' order by o.fecha desc ");
+                        
+                        soporte = new Listbox();
+                        int a=0;
+                            for (Iterator it =soporte.getItems().iterator(); it.hasNext();) {
+                                    soporte.getItems().remove(a);
+                                }
+
+
+                               for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
+                                      Soporte  acceIt = (Soporte) it.next();
+                                      Listitem li = new Listitem();
+                                      li.setValue(acceIt);
+                                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
+                                      li.appendChild(new Listcell(acceIt.getObservacion()+""));
+                                      li.appendChild(new Listcell((acceIt.getGenerada()==true?"SI":"NO")));
+                                      li.appendChild(new Listcell(acceIt.getEmpleados().getApellidos()+" "+acceIt.getEmpleados().getNombres()));
+                                      soporte.appendChild(li);
+                             }
+
+                    }catch(Exception e){
+                            Messagebox.show("Seleccione primero un CLIENTE  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            registro.setSelected(true);
+                        }
+                 }
+                 
+
+  void facturasPendientes(){
+                try{
+                List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo,fa.contratos FROM cxcobrar cx, factura  fa "   +
+                        " WHERE fa.clientes  =  "+codigocli.value+"  " + 
+                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo   HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha "); 
+                
+                facturasDatos.getRows().getChildren().clear();
+  ArrayList contratosAnadidos = new ArrayList();
+  int i =0;
+                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                            Vector vec = (Vector) itna.next();
+                          
+                              Contratos con = adm.buscarClave(vec.get(4), Contratos.class);
+                              Group grupo = new Group(con.getPlan()+"");
+                              grupo.setId("grup"+con.getCodigo()+"");
+                             // grupo.setStyle("background-color:#FFDDAA");
+                              
+                              if(contratosAnadidos.size() == 0){
+                                    grupo.setParent(filasFac);
+                                    contratosAnadidos.add(con.getCodigo()+"");
+                                    
+                              }else{
+                                      if(!contratosAnadidos.contains(con.getCodigo()+"")){
+                                               grupo.setParent(filasFac);
+                                      }
+                                        contratosAnadidos.add(con.getCodigo()+"");
+                              }
+                              
+                              
+                            Row row = new Row();
+                                   if(row == null){
+                                    row = new Row();
+                                   }
+                            for (int j = 0; j < vec.size(); j++) {
+                                Object dos = vec.get(j);
+                                if(row == null){
+                                    row = new Row();
+                                   }
+                                    if(dos instanceof Integer){
+                                       row.setValue(dos);
+                                        row.appendChild(new Label(dos+""));
+                                    }else if(dos instanceof Date){
+                                     SimpleDateFormat d1 = new SimpleDateFormat("dd-MMMM-yyyy");
+                                     Date d = (Date)dos;
+                                      row.appendChild(new Label(d1.format(d)+""));
+                                    }else{
+                                        row.appendChild(new Label(dos+""));
+                                    }
+                            }
+                            Span s = new Span();
+                            Button aButton = null;
+                            aButton = new Button("");//"Cobrar"
+                            aButton.setImage("/images/dinero.gif");
+                            aButton.setId(""+vec.get(0));
+                            aButton.setAttribute("valor",vec.get(3));
+                            aButton.setTooltip(cobr);
+                            aButton.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                               if(verificar3("Ingresar")){
+                                        registro.setSelected(true);
+                                        final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
+                                        win.setMaximizable(true);
+                                        win.setClosable(true);
+                                        win.setAttribute("codigoFactura", aButton.getId());
+                                        win.setAttribute("valoraPagar", aButton.getAttribute("valor"));
+                                        win.setTitle("Facturar Clientes");
+                                        win.doModal();
+                                 }else{
+                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                    }  
+                               
+                              }
+                                });
+                                s.appendChild(aButton);
+                              //row.appendChild(aButton);
+                              
+                            Button aButtonDes = null;
+                            aButtonDes = new Button("");//"Descuento"
+                            aButtonDes.setImage("/images/descuento.png");
+                            aButtonDes.setId("des"+vec.get(0));
+                            aButtonDes.setAttribute("valor",vec.get(3));
+                            aButtonDes.setTooltip(desc);
+                            aButtonDes.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                                 if(verificar2("Ingresar")){
+                                      registro.setSelected(true);
+                                    final Window win = (Window) Executions.createComponents("descuentoCliente.zul", null, null);
+                                    win.setMaximizable(true);
+                                    win.setClosable(true);
+                                    win.setAttribute("codigoFactura", aButtonDes.getId().replace("des",""));
+                                    win.setAttribute("valoraPagar", aButtonDes.getAttribute("valor"));
+                                    win.setTitle("Aplicar Descuento");
+                                    win.doModal();
+                                }else{
+                                        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                }                      
+
+                              
+                               
+                              }
+                                });
+                              s.appendChild(aButtonDes);
+                              //row.appendChild(aButtonDes);
+                              
+                              
+                              Button aButtonEli = null;
+                            aButtonEli = new Button("");//"Eliminar"
+                            aButtonEli.setImage("/images/eliminar.gif");
+                            aButtonEli.setId("eli"+vec.get(0));
+                            aButton.setTooltip(elm);
+                            aButtonEli.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                                 if(verificar2("Eliminar")){
+                                 registro.setSelected(true);
+                                 int valor0 = Messagebox.show("Seguro que desea Eliminar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                  seriespanel.visible = false;
+                                   
+                                   if(valor0 == 16){
+                                     
+                                      Integer facCodi = new Integer(aButtonEli.getId().replace("eli",""));
+                                      List siEx = adm.query("Select o from Cxcobrar as o where o.factura.codigo = '"+facCodi+"'");
+                                      if(siEx.size()>1){
+                                               
+                                                Messagebox.show("No se puede eliminar, ya tiene pagos realizados...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
+                                      }else{
+                                              //adm.ejecutaSql("Delete from Cabeceracompra where factura.codigo = '"+facCodi +"' ");
+                                              adm.ejecutaSql("Delete from Empleadosfacturas where factura.codigo = '"+facCodi +"' ");
+                                              adm.ejecutaSql("Delete from Cxcobrar where factura.codigo = '"+facCodi +"' ");
+                                              adm.ejecutaSql("Delete from Detalle  where factura.codigo = '"+facCodi +"' ");
+                                              adm.eliminarObjeto(Factura.class, facCodi );
+                                              facturas.setSelected(true);
+                                      }
+                                      
+                                      
+                                    }
+                                     
+                                    facturas.setSelected(true);  
+                                      
+                                }else{
+                                        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                }                      
+
+                              
+                               
+                              }
+                                });
+                                s.appendChild(aButtonEli);
+                              //row.appendChild(aButtonEli);
+                            row.appendChild(s);
+                            filasFac.appendChild(row);
+                }
+            
+                   }catch(Exception e){
+                            Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            System.out.println("ERROR: "+e);
+                            registro.setSelected(true);
+                        }
+                
+ }
+ 
+   void facturasPagadas(){
+                try{
+                List facEncontradas =  adm.queryNativo("SELECT cx.codigo, fa.numero, fa.fecha, " + 
+                    "  fa.total, cx.fecha, cx.debe, cx.haber,IF(cx.haber < fa.total && cx.haber >0,'ABONO',IF(cx.haber = fa.total,'PAGADO','')),cx.fechadeposito  " + 
+                    " FROM cxcobrar cx, factura  fa "   +
+                    "   WHERE fa.clientes  =  "+codigocli.value+"  " + 
+                    "  AND cx.factura = fa.codigo GROUP BY cx.codigo " + 
+                    " order by fa.codigo desc, fa.fecha desc, cx.fecha "); 
+                
+                facturasPag.getRows().getChildren().clear();
+                  int i =0;
+                  ArrayList facturasAnadidos = new ArrayList();
+                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                            Vector vec = (Vector) itna.next();
+                                SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy");
+                                Date d = (Date)vec.get(2);
+                             String cabe = vec.get(0)+"";
+                               Group grupo = new Group(" MES: "+d1.format(d));
+                               if(i == 0){
+                                    grupo.setParent(filasPag);
+                                    facturasAnadidos.add(cabe+"");
+                              }else{
+                                if(!facturasAnadidos.contains(cabe+"")){
+                                      grupo.setParent(filasPag);
+                                      facturasAnadidos.add(cabe+"");
+                                  }
+                              }
+                              i++;
+                            Row row = new Row();
+                                   if(row == null){
+                                    row = new Row();
+                                   }
+                                   Boolean mostrarEliminar = false;
+                            for (int j = 0; j < vec.size(); j++) {
+                                Object dos = vec.get(j);
+                                if(row == null){
+                                    row = new Row();
+                                   }
+                                    if(dos instanceof Integer){
+                                       row.setValue(dos);
+                                        //row.appendChild(new Label(dos+""));
+                                    }else if(dos instanceof Date){
+                                         SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy");
+                                         Date d = (Date)dos;
+                                          row.appendChild(new Label(d1.format(d)+""));
+                                    }else if(dos instanceof java.math.BigDecimal){
+                                           java.math.BigDecimal val = (java.math.BigDecimal)dos;
+                                            if(val.doubleValue()<=0){
+                                                row.appendChild(new Label(""));
+                                            }else{
+                                                row.appendChild(new Label(val+""));
+                                            }
+                                    }else if(dos instanceof String){
+                                           String val = dos+"";
+                                            if(val.length()>9){
+                                                row.appendChild(new Label(val.substring(6)+""));
+                                            }else if(val.equals("ABONO") ||val.equals("PAGADO") ){
+                                                Label la = new Label(val+"");
+                                                la.setStyle("color:blue; font-weight:bold");
+                                                row.appendChild(la);
+                                                mostrarEliminar = true;
+                                            }else{
+                                                row.appendChild(new Label(""));
+                                            }
+                                    }else{
+                                        if(dos!=null){
+                                            row.appendChild(new Label(dos+""));
+                                        }else{
+                                            row.appendChild(new Label(""));
+                                       }
+                                    }
+                            }
+                                Button aButtonEli = null;
+                            aButtonEli = new Button("Eliminar");//"Eliminar"
+                            aButtonEli.setImage("/images/eliminar.gif");
+                            aButtonEli.setId("elip"+vec.get(0));
+                            aButtonEli.setVisible(mostrarEliminar);
+                            aButtonEli.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                                 if(verificar2("Eliminar")){
+                                 registro.setSelected(true);
+                                 int valor0 = Messagebox.show("Seguro que desea Eliminar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                  seriespanel.visible = false;
+                                   
+                                   if(valor0 == 16){
+                                     
+                                      Integer facCodi = new Integer(aButtonEli.getId().replace("elip",""));
+                                      List siEx = adm.query("Select o from Cxcobrar as o where o.factura.codigo = '"+facCodi+"'");
+                                      if(siEx.size()>1){
+                                                 Messagebox.show("No se puede eliminar, ya tiene pagos realizados...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
+                                      }else{
+                                              Cxcobrar cobro = adm.buscarClave(facCodi, Cxcobrar.class);
+                                              Factura mifac = cobro.getFactura();
+                                              observacionanula.value = "";
+                                              continuar.checked = false;
+                                              if(mifac.getNumero() != null && !mifac.getNumero().isEmpty()){
+                                                      continuar.checked = false;
+                                                      final Window win = (Window) Executions.createComponents("anularFactura.zul", null, null);
+                                                        win.setMaximizable(true);
+                                                        win.setClosable(true);
+                                                        win.setTitle("Observación de Anular Factura");
+                                                        win.doModal();
+                                                      Facturaanulada facAnulada = new Facturaanulada();
+                                                      facAnulada.setFactura(mifac);
+                                                      facAnulada.setEmpleados(usuarioActual);
+                                                      facAnulada.setFecha(adm.Date());
+                                                      facAnulada.setNumero(mifac.getNumero());
+                                                      facAnulada.setObservacion(observacionanula.value);
+                                                      facAnulada.setValorpago(cobro.getHaber());
+                                                      facAnulada.setNopago(cobro.getCodigo());
+                                                      if(continuar.isChecked()){
+                                                        adm.guardar(facAnulada);
+                                                        adm.eliminarObjeto(Cxcobrar.class, facCodi );
+                                                        mifac.setNumero(null);
+                                                        adm.actualizar(mifac);
+                                                      }else{
+                                                            historial.setSelected(true);
+                                                          return;
+                                                      }
+                                                      historial.setSelected(true);
+                                               }else{
+                                                    final Window win = (Window) Executions.createComponents("anularFactura.zul", null, null);
+                                                    win.setMaximizable(true);
+                                                    win.setClosable(true);
+                                                    win.setTitle("Observación de Anular Cobro");
+                                                    win.doModal();
+                                               
+                                                      Facturaanulada facAnulada = new Facturaanulada();
+                                                      facAnulada.setFactura(null);
+                                                      facAnulada.setEmpleados(usuarioActual);
+                                                      facAnulada.setFecha(adm.Date());
+                                                      facAnulada.setNumero(null);
+                                                      facAnulada.setObservacion(observacionanula.value);
+                                                      facAnulada.setValorpago(cobro.getHaber());
+                                                      facAnulada.setNopago(cobro.getCodigo());
+                                                    if(continuar.isChecked()){
+                                                        adm.guardar(facAnulada);
+                                                        adm.eliminarObjeto(Cxcobrar.class, facCodi );
+                                                    }
+                                          
+                                                     historial.setSelected(true);
+                                               }
+                                       
+                                      
+                                      }
+                                      
+                                      
+                                    }
+                                     
+                                    historial.setSelected(true);  
+                                      
+                                }else{
+                                        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                }                      
+
+                              
+                               
+                              }
+                                });
+                            row.appendChild(aButtonEli);
+    
+                            filasPag.appendChild(row);
+                }
+            
+                   }catch(Exception e){
+                            Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            System.out.println("ERROR: "+e);
+                            registro.setSelected(true);
+                        }
+                
+ }
+                
+                
+        //BUSQUEDA DE CLIENTES
+  void buscarCli(String p){
+        List ClientesEncontrados = adm.query("Select o from Clientes as o "+ 
+        " where o.apellidos like '"+p+"%'  and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' " + 
+        " order by o.apellidos",0,10);
+        lcliente = new Listbox();
+        int a=0;
+            for (Iterator it = lcliente.getItems().iterator(); it.hasNext();) {
+                    lcliente.getItems().remove(a);
+                }
+
+
+               for (Iterator it = ClientesEncontrados.iterator(); it.hasNext();) {
+                      Clientes acceIt = (Clientes) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getApellidos()+" "+acceIt.getNombres()));
+                      li.appendChild(new Listcell(acceIt.getDireccion()+""));
+                      lcliente.appendChild(li);
+             }
+             if(ClientesEncontrados.size()>0){
+                    bcliente.visible = true;
+             }
+             
+    }
+      void buscarCliCed(String p){
+      if(p.length() > 3){
+        List ClientesEncontrados = adm.query("Select o from Clientes as o " + 
+        " where o.identificacion like '"+p+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.identificacion");
+        lclienteced = new Listbox();
+        int a=0;
+            for (Iterator it = lclienteced.getItems().iterator(); it.hasNext();) {
+                    lclienteced.getItems().remove(a);
+                }
+
+
+               for (Iterator it = ClientesEncontrados.iterator(); it.hasNext();) {
+                      Clientes acceIt = (Clientes) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getIdentificacion()+""));
+                      li.appendChild(new Listcell(acceIt.getApellidos()+" "+acceIt.getNombres()));
+                      
+                      lclienteced.appendChild(li);
+             }
+             if(ClientesEncontrados.size()>0){
+                    bclientei.visible = true;
+             }
+        }
+    }
+       
+                                     public void quitarFila(String codigoBuscar){
+                              
+                                                     Rows filas2 = productos.getRows();
+                                                
+                                                    List listadoProductos = filas2.getChildren();
+                                                        for (int i = 0; i <= listadoProductos.size()-1; i++) {
+                                                           Row object = (Row) listadoProductos.get(i);
+                                                                                                              
+                                                          Series nuevo = ((Series)object.getValue());
+                                                          String codigoA = "id"+nuevo.getSerie();
+                                                           if(codigoA.equals(codigoBuscar)){
+                                                                productos.getRows().removeChild(object);
+                                                                break;
+                                                           }
+                                                        }
+
+                                    }
+      void buscarSeries(String serie){
+                            List seriesEn = adm.query("Select o from Series as o where o.estado = 'C'  and o.serie = '"+serie+"'" + 
+                                    " and o.serie not in (Select a.serie from Series as a where a.estado IN ( 'A','P','V') ) " + 
+                                    " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo() +"'  ");
+                               if(seriesEn.size()>0){
+                                           
+                                           try{
+                                                    Row row = new Row();
+                                                      //CARGO LAS SERIES COMO ATRIBUTO
+                                                      ArrayList series = new ArrayList();
+                                                            Intbox intb = new Intbox(seriesEn.get(0).getDetallecompra().getEquipos().getCodigo());
+                                                            intb.setCols(3);
+                                                            intb.setReadonly(true);
+                                                            intb.setStyle("float:right;text-align:right");
+                                                             row.appendChild(intb);
+                                                            Label prod = new Label(""+seriesEn.get(0).getDetallecompra().getEquipos());
+                                                            row.appendChild(prod);
+                                                            Decimalbox valor = new Decimalbox((seriesEn.get(0).getDetallecompra().getEquipos().getPvp1()));
+                                                            valor.setFormat("##0.00");
+                                                            valor.setStyle("float:right;text-align:right");
+                                                            valor.setReadonly(true);
+                                                            row.appendChild(valor);
+                                                            
+                                                            
+                                                            Label seri = new Label(""+seriesEn.get(0).getSerie());
+                                                            row.appendChild(seri);
+                                                         
+                                                            Button aButton = null;
+                                                            aButton = new Button("quitar");
+                                                            aButton.setImage("/images/quitar.gif");
+                                                            aButton.setHeight("5px");
+                                                            aButton.setId("id"+seriesEn.get(0).getSerie());
+                                                            aButton.addEventListener("onClick", new EventListener() {
+                                                                public void onEvent(Event event) throws Exception {
+                                                                     //int valor0 = Messagebox.show("Seguro que desea quitar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                                     //seriespanel.visible = false;
+                                                                     //if(valor0 == 16){
+                                                                        quitarFila(aButton.getId());
+                                                                        sumar();
+                                                                     //}
+
+                                                                }
+                                                            });
+                                                            row.appendChild(aButton);
+                                                            
+                                                            Checkbox facturado = new Checkbox();
+                                                            facturado.setChecked(false);
+                                                            facturado.addEventListener("onCheck", new EventListener() {
+                                                                public void onEvent(Event event) throws Exception {
+                                                                     sumar();
+
+                                                                }
+                                                            });
+                                                            
+                                                            row.appendChild(facturado);
+                                                            
+                                                            
+                                                            row.setValue(seriesEn.get(0)); 
+                                                    filas.appendChild(row);
+                                                    sumar();
+                                                    }catch(Exception e){
+                                                        Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                                                    }
+                                                
+                                                seriebuscar.value="";
+                                                seriebuscar.focus();
+                                                
+                                           }else{
+                                               List equipos = adm.query("Select o from Equipos as o " + 
+                                                    " where o.tipo = '"+serie+"' and o.bien = false and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo() +"' ");
+                                                       if(equipos.size()>0){
+                                                                       try{
+                                                                                    Row row = new Row();
+                                                                                      //CARGO LAS SERIES COMO ATRIBUTO
+                                                                                      ArrayList series = new ArrayList();
+                                                                                            Intbox intb = new Intbox(equipos.get(0).getCodigo());
+                                                                                            intb.setCols(3);
+                                                                                            intb.setReadonly(true);
+                                                                                            intb.setStyle("float:right;text-align:right");
+                                                                                             row.appendChild(intb);
+                                                                                            Label prod = new Label(""+equipos.get(0));
+                                                                                            row.appendChild(prod);
+                                                                                            Decimalbox valor = new Decimalbox((equipos.get(0).getPvp1()));
+                                                                                            valor.setFormat("##0.00");
+                                                                                            valor.setStyle("float:right;text-align:right");
+                                                                                            valor.setReadonly(true);
+                                                                                            row.appendChild(valor);
+
+
+                                                                                            Label seri = new Label(""+equipos.get(0).getTipo());
+                                                                                            row.appendChild(seri);
+
+                                                                                            Button aButton = null;
+                                                                                            aButton = new Button("quitar");
+                                                                                            aButton.setImage("/images/quitar.gif");
+                                                                                            aButton.setHeight("5px");
+                                                                                            aButton.setId("id"+equipos.get(0).getTipo());
+                                                                                            aButton.addEventListener("onClick", new EventListener() {
+                                                                                                public void onEvent(Event event) throws Exception {
+                                                                                                        quitarFila(aButton.getId());
+                                                                                                        sumar();
+                                                                                                  }
+                                                                                            });
+                                                                                            row.appendChild(aButton);
+
+                                                                                            Checkbox facturado = new Checkbox();
+                                                                                            facturado.setChecked(true);
+                                                                                            facturado.addEventListener("onCheck", new EventListener() {
+                                                                                                public void onEvent(Event event) throws Exception {
+                                                                                                     sumar();
+
+                                                                                                }
+                                                                                            });
+
+                                                                                            row.appendChild(facturado);
+                                                                                            Detallecompra det = new Detallecompra();
+                                                                                            Series ser = new Series();
+                                                                                            ser.setSerie(equipos.get(0).getTipo());
+                                                                                            det.setEquipos(equipos.get(0));
+                                                                                            ser.setDetallecompra(det);
+                                                                                            row.setValue(ser); 
+                                                                                    filas.appendChild(row);
+                                                                                    sumar();
+                                                                                    }catch(Exception e){
+                                                                                        Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...! \\n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                                                                                    }
+
+                                                                                seriebuscar.value="";
+                                                                                seriebuscar.focus();
+                                                                
+                                                                
+                                                        }else{
+                                                         Messagebox.show("SERIE NO ENCONTRADA (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                        seriebuscar.value="";
+                                                        seriebuscar.focus();
+                                                        }
+                                           }
+                                           
+                                           
+    } 
+    public void sumar(){
+        List col = productos.getRows().getChildren();
+        BigDecimal total = new BigDecimal(0);
+        int cantidad = 0;
+        int facturados = 0;
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    Detallecompra det = new Detallecompra();
+                    List labels = object.getChildren();
+                       Boolean fac = ((Checkbox) labels.get(5)).isChecked();
+                       if(fac){
+                            BigDecimal val = ((Decimalbox) labels.get(2)).getValue();
+                            total = total.add(val);
+                            facturados ++;
+                       }
+                       cantidad ++;
+             }
+             valortotal.value = total;
+             cantidadtotal.value = cantidad;
+             facturadostotal.value = facturados;
+             prestadostotal.value = (cantidad - facturados);
+             valortotaliva.value = total.multiply(empresa.getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)).add(total);
+    }
+    
+void buscarSeries(Contratos contratos){
+productos.getRows().getChildren().clear();
+           List seriesEn = adm.query("Select o from Series as o where o.estado = 'P' " +
+           " and o.contratos.codigo = '"+contratos.getCodigo()+"' ");
+                  if(seriesEn.size()>0){
+                  for(Iterator it = seriesEn.iterator(); it.hasNext();) {
+                      Series object = (Series)it.next();
+                      try{
+                        Row row = new Row();
+                          //CARGO LAS SERIES COMO ATRIBUTO
+                          ArrayList series = new ArrayList();
+                                Intbox intb = new Intbox(object.getDetallecompra().getEquipos().getCodigo());
+                                intb.setCols(3);
+                                intb.setReadonly(true);
+                                intb.setStyle("float:right;text-align:right");
+                                 row.appendChild(intb);
+                                Label prod = new Label(""+object.getDetallecompra().getEquipos());
+                                row.appendChild(prod);
+                                Decimalbox valor = new Decimalbox((object.getDetallecompra().getEquipos().getPvp1()));
+                                valor.setFormat("##0.00");
+                                valor.setStyle("float:right;text-align:right");
+                                valor.setReadonly(true);
+                                row.appendChild(valor);
+
+
+                                Label seri = new Label(""+object.getSerie());
+                                row.appendChild(seri);
+
+                                Button aButton = null;
+                                aButton = new Button("quitar");
+                                aButton.setImage("/images/quitar.gif");
+                                aButton.setHeight("5px");
+                                aButton.setId("id"+object.getSerie());
+                                aButton.setAttribute("serieId",object.getCodigo());
+                                aButton.setAttribute("serie",object);
+                                aButton.addEventListener("onClick", new EventListener() {
+                                    public void onEvent(Event event) throws Exception {
+                                    Integer sec = aButton.getAttribute("serieId");
+                                         int valor0 = Messagebox.show("Seguro de Eliminar este elemento, Desea Continuar? \n SE ELIMINARÁ DEL REGISTRO DE LAS SERIES", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                          
+                                           if(valor0 == 16){
+                                            
+                                            //TENGO QUE ELIMINAR TODO EL REGISTRO DE COMPRA EN CASO DE QUE HAYA SOLO UN ITEM
+                                            Series serAc = aButton.getAttribute("serie");
+                                            int cant = serAc.getDetallecompra().getCantidad();
+                                            if(cant == -1){
+                                                adm.eliminarObjeto(Series.class, sec); 
+                                                adm.eliminarObjeto(Detallecompra.class,serAc.getDetallecompra().getCodigo());
+                                                adm.eliminarObjeto(Cabeceracompra.class,serAc.getDetallecompra().getCabeceracompra().getCodigo());
+                                            }else{
+                                                adm.eliminarObjeto(Series.class, sec); 
+                                                Detallecompra deta = serAc.getDetallecompra();
+                                                deta.setCantidad(deta.getCantidad()+1);
+                                                adm.actualizar(deta);
+                                            }
+                                            quitarFila(aButton.getId());
+                                            sumar();
+                                          }
+
+                                    }
+                                });
+                                row.appendChild(aButton);
+                                Checkbox facturado = new Checkbox();
+                                facturado.setChecked(false);
+                                facturado.addEventListener("onCheck", new EventListener() {
+                                    public void onEvent(Event event) throws Exception {
+                                         sumar();
+
+                                    }
+                                });
+
+                                row.appendChild(facturado);
+
+
+                                row.setValue(object); 
+                                filas.appendChild(row);
+                        sumar();
+                        }catch(Exception e){
+                            Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                        }
+
+                    seriebuscar.value="";
+                    seriebuscar.focus();
+                    
+                    }
+
+               }
+    } 
+  
+void llamar(){  
+          String object = (String)InputMessageBox.showQuestion("Número de Factura", "Ingreso");
+        System.out.println("RESULT: " + object);
+}
+   void buscarSectores(Integer codigo){
+          bdSector.value = "";
+        List NodosEncontrados = adm.query("Select o from Sector as o  " + 
+        " where o.canton.codigo = '"+codigo+"' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.nombre");
+        sectores = new Listbox();
+        int a=0;
+            for (Iterator it = sectores.getItems().iterator(); it.hasNext();) {
+                    sectores.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      sectores.appendChild(li);
+             }
+
+    }
+    
+      void buscarNodos(Integer codigo){
+          bdNodo.value = "";
+        List NodosEncontrados = adm.query("Select o from Nodos as o " + 
+        " where o.sector.canton.codigo = '"+codigo+"' and o.sector.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo() +"'  order by o.nombre");
+        nodos = new Listbox();
+        int a=0;
+            for (Iterator it = nodos.getItems().iterator(); it.hasNext();) {
+                    nodos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Nodos acceIt = (Nodos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      nodos.appendChild(li);
+             }
+
+    }
+    void buscarRadios(Integer codigo){
+          bdRadio.value = "";
+        List NodosEncontrados = adm.query("Select o from Radios as o where o.nodos.codigo = '"+codigo+"'  order by o.nombre");
+        nodos = new Listbox();
+        int a=0;
+            for (Iterator it = radio.getItems().iterator(); it.hasNext();) {
+                    radio.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Radios acceIt = (Radios) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      radio.appendChild(li);
+             }
+
+    }
+    void eliminar(){
+            if((equi.getCodigo().equals(0)) ){
+                    Messagebox.show("El presente contrato aún no ha sido guardado...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
+                    permiso.auditar("Contratos","Actualizar",""+equi.getContrato()+" - "+equi.getClientes());
+                    return;
+             } 
+           
+        int valor0 = Messagebox.show("Seguro que desea Eliminar este Contrato, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+           if(valor0 == 16){
+                try{
+                        adm.eliminarObjeto(Contratos.class, equi.getCodigo());
+                        llenar(new Contratos(0));
+                }catch(Exception ax){
+                        Messagebox.show("No se puede eliminar, ya tiene pagos realizados, o facturas Emitidas...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
+                }
+            }
+    }
+  ]]>
+    </zscript>
+    <div>
+        <!--button label="MOSTRAR" id="mensaje"  onClick="llamar()" /-->
+    
+        <popup id="desc" width="150px">
+            <vbox>
+			Aplicar o Eliminar un Descuento
+            </vbox>
+        </popup>
+        <popup id="cobr" width="150px">
+            <vbox>
+			Cobrar la deuda seleccionada
+            </vbox>
+        </popup>
+        <popup id="elm" width="150px">
+            <vbox>
+			Eliminar el cobro seleccionado
+            </vbox>
+        </popup>
+        <tabbox width="100%"  height="600px" orient="vertical"  >
+            <tabs  width="150px">
+                <tab id="registro" label="Contratos"/>
+                <tab onSelect="facturasPendientes()" label="Pendientes" id="facturas"/>
+                <tab onSelect="buscarSoportes()" label="Hist. Técnica" />
+                <tab onSelect="facturasPagadas()" label="Hist. Pagos" id="historial" />
+               
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Nuevo Cliente y Contrato" onClick="nuevo();" />
+                    <!--button  image="/images/nuevo.gif" id="agregar2" label="Nuevo Contrato" onClick="nuevo2();" /-->
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    <button label="Añadir Pendientes" disabled="true" id="anadir" image="/images/empleados.png" >
+                        <attribute name="onClick">{
+                                                    final Window win = (Window) Executions.createComponents("generarIndividual.zul", null, null);
+                                                    win.setMaximizable(true);
+                                                    win.setClosable(true);
+                                                    win.setAttribute("plan", equi.getPlan()+"");
+                                                    win.setAttribute("planid", equi.getPlan().getCodigo());
+                                                    win.setAttribute("planvalor", new BigDecimal(equi.getPlan().getValor()));
+                                                    win.setAttribute("contrato", equi.getCodigo());
+                                                    win.setAttribute("clienteid", equi.getClientes().getCodigo());
+                                                    win.setTitle("Asignar rubros por cobrar");
+                                                    win.doModal();
+                                            }                            
+                        </attribute>
+                    </button>
+                    <groupbox id="panel" mold="3d" width="830px">
+                        <panel id="equiposcontrol"  width="100%" >
+                            <panelchildren>
+                               
+                                <grid  sclass="MyGridRowHeight" width="100%">
+                                    <rows>
+                                        <row spans="2">
+                            
+                                        </row>
+                                        <row spans="4">
+                                            <groupbox id="busqueda" style="background:#D6E3F6" mold="3d" width="100%">
+                                                <span>
+                                                                
+                                                    <label style="font-weight:bold2" value="Identificación:" />
+                                                </span>
+                                                <span>
+                                                    <textbox id="identificacion"  readonly="false"   onChanging="buscarCliCed(event.value); "  cols="13"   onOK="verificarCedula(self.value); bclientei.visible = false;"  />
+                                                    <image  tooltip="autompletar" popup="autompletar"  src="/images/keyboard.png"  />
+                                                    <popup id="autompletar" width="300px">
+                                                        <html>
+                                                                        Ingrese un número de cédula, ruc o pasaporte, para buscar Ejemplo: 1709700548, luego presione ENTER o seleccione uno de los del listado de búsqueda
+                                                        </html>
+                                                    </popup>
+                                                    <groupbox closable="true" style="position: absolute;background:#E2EDFE;" visible="false" id="bclientei">
+                                                        <vbox>
+                                                            <hbox>
+                                                                <listbox onSelect='combo.value = ""; direccion.value = ((Clientes)self.selectedItem.value).getCodigo()+"";identificacion.value = ((Clientes)self.selectedItem.value).getIdentificacion()+""; identificacion2.value = ((Clientes)self.selectedItem.value).getIdentificacion()+"";  telefono.value = ((Clientes)self.selectedItem.value).getTelefono()+""; email.value = ((Clientes)self.selectedItem.value).getEmail()+"";codigocli.value = ((Clientes)self.selectedItem.value).getCodigo()+""; razonsocial.value = ((Clientes)self.selectedItem.value).getRazonsocial(); apellidos.value = ((Clientes)self.selectedItem.value).getApellidos(); nombres.value = ((Clientes)self.selectedItem.value).getNombres();  bclientei.visible =false; verificarCedula(identificacion.value);' id="lclienteced" width="400px">
+                                                                    <listhead>
+                                                                        <listheader label="Nombres"/>
+                                                                        <listheader label="Dirección"/>
+                                                                    </listhead>
+                                                                    <listitem forEach="${allEvents}" value="${each}">
+                                                                        <listcell label="${each.apellidos}" />
+                                                                        <listcell label="${each.direccion}" />
+                                                                    </listitem>
+                                                                </listbox>
+                                                            </hbox>
+                                                            <button label="CERRAR" onClick="bclientei.visible = false;"/>
+                                                        </vbox>
+                                                                
+                                                    </groupbox>
+                                    
+                                                            
+                                                </span>
+                                                  
+                                                <span>
+                                                    <label style="font-weight:bold2" id="labelnombre" value="Apellidos: " />
+                                                </span>
+                                                <span>
+                                                    <combobox  cols="35" id="combo" onSelect="verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion())" autodrop="true" buttonVisible="false"  use="jcinform.bean.autoCompletarClientes"/>
+
+                                                    <image  tooltip="autompletar2" popup="autompletar2"  src="/images/keyboard.png"  />
+                                                    <popup id="autompletar2" width="300px">
+                                                        <html>
+                                                                            Ingrese un Apellido del Cliente Ejemplo: AGUIRRE y seleccione uno de los del listado de búsqueda, si es que existe.
+                                                        </html>
+                                                    </popup>
+ 
+                                                    <label style="font-weight:bold2" id="labelcontrato" value="No.Contrato" />
+                                                    <intbox readonly="false" cols="5"   onOK ="verificarContrato(self.value)"   id="buscarContrato" />
+                                                    <image  tooltip="autompletarNo" popup="autompletarNo"  src="/images/keyboard.png"  />
+                                                    <popup id="autompletarNo" width="300px">
+                                                        <html>
+                                                                            Digite el No de Contrato y Presione Enter
+                                                        </html>
+                                                    </popup>
+                               
+                    
+                       
+                      
+                                                </span>
+                                                   
+	    			 
+                                            </groupbox>
+                                        </row>
+                                        <row>
+                                            <span  style="float:right" >Identificación(*):</span>
+                                            <span>
+                                                <textbox id="identificacion2" onBlur="buscarCedula(self.value)" readonly="true"   cols="13" />
+                                                <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
+                                                            <!--button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/-->
+                                            </span>
+                                                        
+                                            <span  style="float:right" >Razón Social:</span>
+                                            <span> 
+                                                <textbox readonly="true" cols="25"  id="razonsocial" />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" id="labelnombre2" value="Apellidos(*): " />
+                                            </span>
+                                            <span>
+                                                <textbox readonly="true" cols="25"  id="apellidos" />
+                                            </span>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" id="labelnombre332" value="Nombres(*): " />
+                                            </span>
+                                            <span>
+                                                <textbox readonly="true" cols="25"  id="nombres" />
+                                            </span>
+                                                      
+                                        </row>
+                                                    
+                                        <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Teléfono Fac.(*):" />
+                                            </span>
+                                            <textbox id="telefono" cols="32" readonly="true"  />
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Email: " />
+                                            </span>
+                                            <textbox id="email" cols="32" readonly="true"  />
+                                        </row>
+                                        <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Dirección Fac.(*): " />
+                                            </span>
+                                            <textbox id="direccion" cols="32"  rows="2" readonly="true"  />    
+                                            <span></span>
+                                            <span></span>
+                                        </row>
+                    
+                                        <row>
+                                                         
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Estado: " />
+                                            </span>
+                                                                
+                                            <radiogroup id="estadoContrato" >
+                                                <radio disabled="true" id="eactivo" selected="true" value="Activo" label="Activo" style="font-weight:bold2" />
+                                                <radio disabled="true"  id="ecortado"  value="Cortado"  label="Cortado" style="font-weight:bold2" />
+                                                <radio disabled="true"  id="esuspendido"  value="Suspendido"  label="Suspendido" style="font-weight:bold2" />
+                                                <radio  disabled="true"  id="eterminado" value="Terminado"  label="Terminado" style="font-weight:bold2" />
+                                            </radiogroup>
+                                            <span style="float:right">
+                                                <label visible="false" style="font-weight:bold2" value=" Fecha: " />
+                                                <datebox id="fecha" visible="false" disabled="true" onCreate="self.value = adm.Date()"/>
+                                                <label style="font-weight:bold2" value=" Instalación (*): " />
+                                            </span>
+                                            <datebox id="fechainstalacion" disabled="true"  onCreate="self.value = adm.Date()"/>
+                                            
+                                        </row>
+                                        <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" No.Contrato: " />
+                                            </span>
+                                            <span>
+                                                <intbox style="color:red;font-size:16px;text-align:center"  readonly="true" id="numerocontrato" cols="16" />
+                                                <button label="Contratos"  image="/images/contratos.png"  id="vercontratos" onClick="contratosPanel.visible = true; "/>
+                                            </span>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Planes (*): " />
+                                            </span>
+                                            <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="perf" width="450px" onSelect="bd.value=self.selectedItem.label;bd.closeDropdown();">
+                                                            <listhead>
+                                                                <listheader label="Descripción"/>
+                                                                <listheader label="Tipo"/>
+                                                                <listheader label="valor"/>
+                                            
+                                                            </listhead>
+                                                            <listitem forEach="${planes}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
+                                                                <listcell label="${each.tipo}" />
+                                                                <listcell label="${each.valor}" />
+
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                        </row>
+                                     
+                                        <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Dir.Instalar: " />
+                                            </span>
+                                            <span>
+                                                <textbox id="direccioni" cols="40" readonly="true"  />
+                                                <button image="/images/copiar.png"   onClick="direccioni.value=direccion.value;"/>
+                                            </span>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Telf.Instalar: " />
+                                            </span>
+                                            <span>
+                                                <textbox id="telefonoi" readonly="true"  />
+                                                <button  image="/images/copiar.png"   onClick="telefonoi.value=telefono.value;"/>
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Referencia: " />
+                                                              
+                                            </span>
+                                            <textbox id="referenciai" rows="2" cols="40" readonly="true"  />
+                                            <span style="float:right"> Descuento </span>
+                                            <span > 
+                                                <decimalbox id="descuento" format="#0.00" cols="4" />$   
+                                            </span>
+                                        </row>
+                                                   
+                                                           
+                                        <row>
+                                            <span style="float:right"> Canton(*):</span>
+                                            <bandbox  width="200px" readonly="true"  id="bdCanton">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="cantones" width="250px" rows="10"
+                                                                                                                         onSelect="bdCanton.value=self.selectedItem.label;bdCanton.closeDropdown(); buscarSectores(((Canton)self.selectedItem.value).getCodigo()); buscarNodos(((Canton)self.selectedItem.value).getCodigo());">
+                                                            <listitem   forEach="${cantonesList}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                            <span style="float:right"> Nodos(*):</span>
+                                                           
+                                            <bandbox  width="200px" readonly="true"  id="bdNodo">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="nodos" width="250px" rows="10"
+                                                                        onSelect="bdNodo.value=self.selectedItem.label;bdNodo.closeDropdown(); buscarRadios(((Nodos)self.selectedItem.value).getCodigo());">
+
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Sector(*):</span>
+                                            <bandbox  width="200px" readonly="true"  id="bdSector">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="sectores" width="250px" rows="10"
+                                                                  onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
+                                    
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                                        
+                                                    
+                                                        
+                                                     
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value="Radio(*): " />
+                                            </span>
+                                            <bandbox  disabled="true"  readonly="true"  id="bdRadio">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="radio" width="450px"
+                                                     onSelect="bdRadio.value=self.selectedItem.label;bdRadio.closeDropdown();">
+                                                            <listhead>
+                                                                <listheader label="Nombre"/>
+                                                                <listheader label="Sector"/>
+                                                                <listheader label="Radio"/>
+                                                                <listheader label="Ip"/>
+                                            
+                                                            </listhead>
+                                                            <listitem forEach="${radios}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
+                                                                <listcell label="${each.nodos.sector}" />
+                                                                <listcell label="${each.nodos.nombre}" />
+                                                                <listcell label="${each.ip}" />
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                                      
+                                                       
+                                                       
+                                        </row>
+                                        <row visible="false">
+                                            <span style="float:right">   IP(*):</span>
+                                            <textbox cols="15" readonly="true" id="ip" />
+                                            <span style="float:right"> Autorizado a Inst(*):</span>
+                                            <checkbox id="autorizado" disabled="true"  />
+                                                           
+                                        </row>
+                                        <row>
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Vendido por(*): " />
+                                                <textbox id="codigoemp"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                            </span>
+                                            <span>
+                                                <textbox  readonly="true"  cols="32"   id="combov" />
+
+                                                <button label=""  id="buscarE" disabled="true" image="/images/auditoria.gif">
+                                                    <attribute name="onClick">{
+                                                            final Window win = (Window) Executions.createComponents("buscarEmpleados.zul", null, null);
+                                                            win.setMaximizable(true);
+                                                            win.setClosable(true);
+                                                            win.setAttribute("nuevo", true);
+                                                            win.setTitle("Buscar Empleados");
+                                                            win.doModal();
+                                                        }                            
+                                                    </attribute>
+                                                </button>
+
+                                            </span>
+                                            <span style="float:right">   Usuario:</span>
+                                            <span style="float:right">   
+                                                <textbox cols="15" readonly="true"   id="usuario" />
+                                                    Clave:
+                                                <textbox cols="15" readonly="true"   id="clave" />
+                                            </span>
+                                        </row>
+                                        <row spans="4">
+                                            <groupbox style="background:#FFE7D7" mold="3d" width="100%">
+                                                
+                                            
+                                                <span>
+                                                    <label style="font-weight:bold2" value=" Paga(*): " />
+                                                </span>
+                                                <radiogroup Id="formapago" onCheck="">
+                                                    <radio disabled="true" id="efe" selected="true" value="1" onCheck="bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;" label="Oficina"/>
+                                                    <radio disabled="true" id="cbr" value="3" onCheck="bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;" label="Domicilio"/>
+                                                    <radio disabled="true" id="deb"   value="2" onCheck="bd22.disabled=false;tipocuenta.disabled= false;nocuenta.disabled = false;diapago.disabled = false;  " label="Débito"/>
+                                                </radiogroup>
+                                                <span>
+                                                    <label style="font-weight:bold2" value="Banco:" />
+                                                </span>
+                                                <bandbox disabled="true" readonly="true" width="100px"  id="bd22">
+                                                    <bandpopup>
+                                                        <vbox>
+                                                            <listbox  id="bancosList" width="250px"
+                                                                    onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
+                                                                <listhead>
+                                                                    <listheader label="Seleccione un Banco"/>
+                                                                </listhead>
+                                                                <listitem forEach="${bancos}" value="${each}">
+                                                                    <listcell label="${each.nombre}" />
+
+                                                                </listitem>
+                                                            </listbox>
+                                                        </vbox>
+                                                    </bandpopup>
+                                                </bandbox>
+                                                <span>
+                                                    <label style="font-weight:bold2" value="No.Cuen: " />
+                                                </span>
+                                                <span>
+                                                    <textbox id="nocuenta" cols="10"  readonly="true"  />
+                                                    <combobox   style="background-color:transparent" disabled="true" width="29px" id="tipocuenta">
+                                                        <comboitem label="AHO"/>
+                                                        <comboitem label="COR"/>
+                                                    </combobox>
+                                                </span>
+                                                <span>
+                                                    <label style="font-weight:bold2" value="Día Pago(*): " />
+                                                </span>
+                                                <combobox disabled="true" width="17px"  id="diapago">
+                                                    <comboitem label="1"/>
+                                                    <comboitem label="2"/>
+                                                    <comboitem label="3"/>
+                                                    <comboitem label="4"/>
+                                                    <comboitem label="5"/>
+                                                    <comboitem label="6"/>
+                                                    <comboitem label="7"/>
+                                                    <comboitem label="8"/>
+                                                    <comboitem label="9"/>
+                                                    <comboitem label="10"/>
+                                                    <comboitem label="11"/>
+                                                    <comboitem label="12"/>
+                                                    <comboitem label="13"/>
+                                                    <comboitem label="14"/>
+                                                    <comboitem label="15"/>
+                                                    <comboitem label="16"/>
+                                                    <comboitem label="17"/>
+                                                    <comboitem label="18"/>
+                                                    <comboitem label="19"/>
+                                                    <comboitem label="20"/>
+                                                    <comboitem label="23"/>
+                                                    <comboitem label="22"/>
+                                                    <comboitem label="25"/>
+                                                    <comboitem label="24"/>
+                                                    <comboitem label="27"/>
+                                                    <comboitem label="26"/>
+                                                    <comboitem label="29"/>
+                                                    <comboitem label="28"/>
+                                                    <comboitem label="30"/>
+                                                </combobox>
+                                            </groupbox> 
+                                        </row>
+                                        
+                    
+                                        <row visible="false">
+                                            <span style="float:right">
+                                                <label style="font-weight:bold2" value=" Registrado por(*): " />
+                                            </span>
+                                            <span>
+                                                <textbox id="registrado" readonly="true" cols="32"   value="${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}" />
+                                                <textbox id="registradoU"  style="background:white;border:0px;font-size:8px" disabled="true" cols="2" />
+                                            </span>
+                                            <span></span>
+                                            <span></span>
+                                        </row>
+                                      
+                                    </rows>
+                                </grid>
+                                                        
+                                      
+                                <groupbox  style="background:#D6E3F6"  id="gb" mold="3d" width="100%">
+                             
+                                    <label value="Digite la Serie" style="font-weight:bold;size:14px" />
+                                    <span> 
+                                        <textbox onOK="buscarSeries(self.value)" id="seriebuscar" value=""/>
+                                        <image  src="/images/enter.png"  height="14px"/>
+                                    </span>
+                                    <separator orient="vertical"/>
+                                    <separator orient="vertical"/>
+                                    <separator orient="vertical"/>
+                                    <span>
+                                        <checkbox style="font-weight:bold;size:14px" id="genFactura" label="¿GENERAR COBRO PARA ÉSTE MES?" />
+                                    </span>
+                                
+                                   
+                                </groupbox>
+                                <grid id="productos">
+                                    <columns sizable="true">
+                                        <column label="Cod." width="5px" />
+                                        <column label="Equipo"  width="280px" />
+                                        <column label="Valor"  width="80px" />
+                                        <column align="center"  label="Series"  width="80px" />
+                                        <column align="center" label="Opción" width="10px"  />
+                                        <column align="center" label="Facturado/Prestado" width="110px"  />
+                                    </columns>
+                                    <rows id="filas">
+                                    </rows>
+                                    <foot style="background:#D6E3F6">
+                                        <footer/>
+                                        <footer>
+                                            <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="VALOR A FACTURAR: "/>
+                                        </footer>
+                                        <footer>
+                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" id="valortotal"  value="0.0"  readonly="true"   />
+                                        </footer>
+                                        <footer width="10px">
+                                            <label style="font:14px;font-weight:bold;background:#E1E1E1;border:0px" value=" "/>
+                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" id="valortotaliva"  value="0.0"  readonly="true"   />
+                                        </footer>
+                                        <footer>
+                                            <label style="float:center;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="# "/>
+                                            <intbox cols="3"  style="float:center;text-align:left;font:14px;font-weight:bold;background:#D6E3F6;border:0px"  id="cantidadtotal" readonly="true" value="0"    />
+                                        </footer>
+                                        <footer>
+                                            <label style="text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="#"/>
+                                            <intbox cols="3"  style=";font:14px;font-weight:bold;background:#D6E3F6;border:0px"  id="facturadostotal" readonly="true" value="0"    />
+                                            <label style="text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="#"/>
+                                            <intbox cols="3"  style=";font:14px;font-weight:bold;background:#D6E3F6;border:0px"  id="prestadostotal" readonly="true" value="0"    />
+                                        </footer>
+                                    </foot>
+                                               
+                                </grid>
+                                       
+                                     
+                              
+                            </panelchildren>
+                        </panel>
+                       
+                   		
+	    		
+                    </groupbox>
+                  
+                </tabpanel>
+                <tabpanel>
+                    <!--listbox mold="paging" rows="10" pageSize="10"   id="facturasDatos" width="100%">
+                        <listhead>
+                            <listheader label="Factura"/>
+                            <listheader label="Fecha Pago"/>
+                            <listheader label="Total"/>
+                            <listheader label="Saldo"/>
+                            <listheader label="Opcion"/>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                        </listitem>
+                    </listbox--> 
+                    <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasDatos" >
+                        <columns>
+                            <column  label="No."/>
+                            <column  label="Fecha Pago"/>
+                            <column   label="Total"/>
+                            <column   label="Saldo"/>
+                            <column   label="Ref."/>
+                            <column  width="150px"  label="Acciones"/>
+                        </columns>
+                        <rows id="filasFac">
+                        </rows>
+                    </grid>
+                </tabpanel>
+                <tabpanel>
+             
+                    <grid>
+                        <rows>
+                            <row visible = "false">
+                                <intbox id="codigos" readonly="true" />
+                                <intbox id="atendida" readonly="true" />
+                            </row>
+                            <row>
+                                <span style="float:right">Atendido por:  </span>
+                                <textbox id="atendidanombre" cols="50" readonly="true" />
+                            </row>
+                            <row>
+                                <span style="float:right">Fecha:  </span>
+                                <datebox readonly="true" onCreate="self.value = adm.Date()" id="fechasoporte"/>
+                            </row>
+                            <row>
+                                <span style="float:right"> Observación: </span>
+                                <textbox readonly="true" cols="60" rows="3" id="observacion"/>
+                            </row>
+                            <row>
+                                <span style="float:right"> Generar Orden: </span>
+                                <checkbox id="generar" disabled="true"   />
+                            </row>
+                            <row>
+                                <span style="float:right"> No. Orden: </span>
+                                <intbox id="noorden" readonly="true"   />
+                            </row>
+                        </rows>
+                    </grid>
+                    <button image="/images/guardar.gif" id="guardars" label="Guardar"  disabled="true"  onClick="guardars();modificars.disabled = true;"/>
+                    <button  image="/images/nuevo.gif" id="agregars" label="Agregar" onClick="nuevos(new Soporte(0)); habilitar(false); observacion.focus();guardars.disabled = false;modificars.disabled = true" />
+                    <button  image="/images/editar.gif" id="modificars"  label="Modificar" disabled="true"  onClick="habilitar(false); observacion.focus();guardars.disabled = false;"/>
+                    <listbox mold="paging" rows="10" pageSize="10"  onSelect="nuevos(soporte.selectedItem.value);modificars.disabled = false" id="soporte" width="100%">
+                        <listhead>
+                            <listheader label="Fecha"/>
+                            <listheader label="Observación"/>
+                            <listheader label="Orden Generada"/>
+                            <listheader label="Atendida"/>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.fecha}" />
+                            <listcell label="${each.observacion}" />
+                            <listcell label="${each.generada}" />
+                            <listcell label="${each.empleados}" />
+                        </listitem>
+                    </listbox>
+                </tabpanel>
+                <tabpanel>
+                    <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasPag" >
+                        <columns>
+                            <column  sort="auto"  label="No."/>
+                            <column  label="Emisión"/>
+                            <column   label="Total"/>
+                            <column sort="auto"  label="Fec.Pago"/>
+                            <column   label="Debe"/>
+                            <column   label="Haber"/>
+                            <column   label="Observación"/>
+                            <column   label="Fec.Depo"/>
+                            <column   label="Acción"/>
+                        </columns>
+                        <rows id="filasPag">
+                            
+                        </rows>
+                    </grid>
+                    <textbox id="observacionanula" />
+                    <checkbox id="continuar" />
+                </tabpanel>
+                <tabpanel>
+                    <panel height="470px" style="margin-bottom:10px"
+                           title="Reporte" border="normal">
+                        <panelchildren>
+                            <jasperreport id="reportelocal" />
+                        </panelchildren>
+                    </panel>
+                
+                </tabpanel>
+            </tabpanels>
+            
+            
+        </tabbox>
+        <panel framable="true" visible="false" id="contratosPanel" title="CONTRATOS CON ÉSTE CLIENTE" style="position:absolute; top:5%; left:5%" width="600px">
+            <panelchildren>
+                <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;anadir.disabled = false;  eliminar.disabled = false;" id="contratosCliente" width="100%">
+                    <listhead>
+                        <listheader label="Contra."/>
+                        <listheader label="Plan"/>
+                        <listheader label="Fecha"/>
+                        <listheader label="Estado"/>
+                    </listhead>
+                    <listitem forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.fecha}" />
+                    </listitem>
+                </listbox>
+                <button label="CERRAR" onClick="contratosPanel.visible = false"/>
+            </panelchildren>
+        </panel>
+    </div>
+</window>

@@ -34,6 +34,7 @@
     <class>jcinform.persistencia.Empleadosfacturas</class>
     <class>jcinform.persistencia.Facturaanulada</class>
     <class>jcinform.persistencia.Facturasenviadas</class>
+    <class>jcinform.persistencia.Empleadosector</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <!--property name="toplink.jdbc.user" value="root"/>
