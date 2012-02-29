@@ -146,6 +146,7 @@ void ingresar(Menuitem item,String pantalla ){
                             <menu label="Cobros" image="/images/cobros.png" >
                                 <menupopup>
                                     <menuitem image="/images/contratos.png" value="/contratos.zul"  label="Contratos" onClick='ingresar(self,"Contratos")' />
+                                    <menuitem image="/images/contratos.png" value="/contratosSucursal.zul"  label="Contratos" onClick='ingresar(self,"Contratos")' />
                                     <menuitem image="/images/soporte.png" value="/soporte.zul"  label="Soporte" onClick='ingresar(self,"Soporte")' />
                                 <!--menuitem image="/images/facturacion.png" value="/facturacion.zul"  label="Facturación" onClick='ingresar(self,"")' /-->
                                     <menuseparator />

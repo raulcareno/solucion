@@ -58,7 +58,7 @@ void llenarCliente(Clientes cli){
 
 }
 void llenar(Contratos  equi2){
- genFactura.setChecked(false);
+  
     equi = equi2;
 
 //SETEO LA FORMA DE PAGO
@@ -661,9 +661,7 @@ if(sihay==0){
  
  }
  
- if(genFactura.isChecked() && facturadostotal.value <= 0){
-      gen.generarCobros(sucursalEmp.getSucursal(),equi,fechainstalacion.value);
- }
+ 
  Date fechaInstalacion = fechainstalacion.value;
  if(facturadostotal.value > 0){
  //EMPIEZO A GENERAR FACTURA Y CXCOBRAR 
@@ -676,29 +674,8 @@ if(sihay==0){
             fac.setContratos(equi);
             fac.setSucursal(sucursalEmp.getSucursal());
             BigDecimal valor = null;
-            if(genFactura.isChecked()){
-                
-                valor = new BigDecimal(redondear(equi.getPlan().getValor(), 2)).subtract(equi.getDescuento());
-                if (fechaInstalacion.getDate() > 1) {
-                    int noDias = equi.getPlan().getDias() - fechaInstalacion.getDate();
-                    if (noDias > 0) {
-                        if ((fechaInstalacion.getMonth() == adm.Date().getMonth())) {
-                            valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(equi.getPlan().getDias()), 2, RoundingMode.HALF_UP);
-                        } else {
-                            valor = new BigDecimal(equi.getPlan().getValor()).subtract(equi.getDescuento());
-                        }
-                    } else {
-                         valor = new BigDecimal(0);
-                    }
-
-                } else {
-                    valor = new BigDecimal(redondear(equi.getPlan().getValor(), 2)).subtract(equi.getDescuento());
-                }
-        
-            }
-            if(valor!=null && genFactura.isChecked())
-                fac.setSubtotal((valortotal.value).add(valor));
-            else
+      
+           
                 fac.setSubtotal(valortotal.value);
             fac.setDescuento(new BigDecimal(0));
             fac.setBaseiva(fac.getSubtotal());
@@ -709,39 +686,9 @@ if(sihay==0){
             adm.guardar(fac);
     
     
-                            List col = productos.getRows().getChildren();
+                             
                             String seriesString = "";
-                            if(genFactura.isChecked()){
-                                Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                                det.setTotal(valor);
-                                det.setPlan(equi.getPlan());
-                                det.setCantidad(1);
-                                det.setMes(fechaInstalacion.getMonth() + 1);
-                                det.setAnio(fechaInstalacion.getYear() + 1900);
-                                det.setDescripcion("generada");
-                                det.setFactura(fac);
-                                adm.guardar(det);
-                            }
-                                    for (int i = 0; i < col.size(); i++) {
-                                             Row object = (Row) col.get(i);
-                                             Series serieDet = ((Series)object.getValue());
-                                              List labels = object.getChildren();
-                                                if(((Checkbox) labels.get(5)).isChecked()){ //si el item es facturado
-                                                        Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                                                        det.setTotal(serieDet.getDetallecompra().getEquipos().getPvp1());
-                                                        det.setPlan(null);
-                                                        det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
-                                                        det.setCantidad(1);
-                                                        det.setMes(fecha.getMonth()+1);  
-                                                        det.setAnio(fecha.getYear()+1900); 
-                                                        det.setDescripcion(null);
-                                                        det.setFactura(fac);
-                                                        adm.guardar(det);
-                                                
-                                                }
-
-
-                                      }
+                            
                             Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
                             cuenta.setDebe(fac.getTotal());
                             cuenta.setHaber(BigDecimal.ZERO);
@@ -796,7 +743,7 @@ if(sihay==0){
         return permiso.verificarPermiso("Soporte",accion);
  }
  void nuevo(){
-     genFactura.setChecked(false);
+      
      telefono.value ="";
      direccion.value ="";
     if(verificar("Agregar")){
@@ -818,7 +765,7 @@ if(sihay==0){
         llenar(new Contratos(0));
         estado(false,false);
         eliminar.disabled = true;
-        productos.getRows().getChildren().clear();
+         
         identificacion2.focus();
      bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
     }else{
@@ -835,7 +782,7 @@ if(sihay==0){
         }
     }
  void nuevo2(){
-  genFactura.setChecked(false);
+   
     if(verificar("Agregar")){
        guardar.disabled=false;
        agregare = true;
@@ -850,7 +797,7 @@ if(sihay==0){
         estado(false,false);
         efe.selected = true;
         efe.checked = true;
-        productos.getRows().getChildren().clear();
+         
      bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -1589,21 +1536,7 @@ void verificarCedula(String valor){
     }
        
                                      public void quitarFila(String codigoBuscar){
-                              
-                                                     Rows filas2 = productos.getRows();
-                                                
-                                                    List listadoProductos = filas2.getChildren();
-                                                        for (int i = 0; i <= listadoProductos.size()-1; i++) {
-                                                           Row object = (Row) listadoProductos.get(i);
-                                                                                                              
-                                                          Series nuevo = ((Series)object.getValue());
-                                                          String codigoA = "id"+nuevo.getSerie();
-                                                           if(codigoA.equals(codigoBuscar)){
-                                                                productos.getRows().removeChild(object);
-                                                                break;
-                                                           }
-                                                        }
-
+                               
                                     }
       void buscarSeries(String serie){
                             List seriesEn = adm.query("Select o from Series as o where o.estado = 'C'  and o.serie = '"+serie+"'" + 
@@ -1746,31 +1679,10 @@ void verificarCedula(String valor){
                                            
     } 
     public void sumar(){
-        List col = productos.getRows().getChildren();
-        BigDecimal total = new BigDecimal(0);
-        int cantidad = 0;
-        int facturados = 0;
-             for (int i = 0; i < col.size(); i++) {
-                    Row object = (Row) col.get(i);
-                    Detallecompra det = new Detallecompra();
-                    List labels = object.getChildren();
-                       Boolean fac = ((Checkbox) labels.get(5)).isChecked();
-                       if(fac){
-                            BigDecimal val = ((Decimalbox) labels.get(2)).getValue();
-                            total = total.add(val);
-                            facturados ++;
-                       }
-                       cantidad ++;
-             }
-             valortotal.value = total;
-             cantidadtotal.value = cantidad;
-             facturadostotal.value = facturados;
-             prestadostotal.value = (cantidad - facturados);
-             valortotaliva.value = total.multiply(empresa.getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)).add(total);
-    }
+        }
     
 void buscarSeries(Contratos contratos){
-productos.getRows().getChildren().clear();
+ 
            List seriesEn = adm.query("Select o from Series as o where o.estado = 'P' " +
            " and o.contratos.codigo = '"+contratos.getCodigo()+"' ");
                   if(seriesEn.size()>0){
@@ -1964,31 +1876,14 @@ void llamar(){
                 <tab id="registro" label="Contratos"/>
                 <tab onSelect="facturasPendientes()" label="Pendientes" id="facturas"/>
                 <tab onSelect="buscarSoportes()" label="Hist. Técnica" />
-                <tab onSelect="facturasPagadas()" label="Hist. Pagos" id="historial" />
+                 
                
             </tabs>
             <tabpanels>
                 <tabpanel>
                     <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                    <button  image="/images/nuevo.gif" id="agregar" label="Nuevo Cliente y Contrato" onClick="nuevo();" />
-                    <!--button  image="/images/nuevo.gif" id="agregar2" label="Nuevo Contrato" onClick="nuevo2();" /-->
                     <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                    <button label="Añadir Pendientes" disabled="true" id="anadir" image="/images/empleados.png" >
-                        <attribute name="onClick">{
-                                                    final Window win = (Window) Executions.createComponents("generarIndividual.zul", null, null);
-                                                    win.setMaximizable(true);
-                                                    win.setClosable(true);
-                                                    win.setAttribute("plan", equi.getPlan()+"");
-                                                    win.setAttribute("planid", equi.getPlan().getCodigo());
-                                                    win.setAttribute("planvalor", new BigDecimal(equi.getPlan().getValor()));
-                                                    win.setAttribute("contrato", equi.getCodigo());
-                                                    win.setAttribute("clienteid", equi.getClientes().getCodigo());
-                                                    win.setTitle("Asignar rubros por cobrar");
-                                                    win.doModal();
-                                            }                            
-                        </attribute>
-                    </button>
+  
                     <groupbox id="panel" mold="3d" width="830px">
                         <panel id="equiposcontrol"  width="100%" >
                             <panelchildren>
@@ -2395,62 +2290,7 @@ void llamar(){
                                     </rows>
                                 </grid>
                                                         
-                                      
-                                <groupbox  style="background:#D6E3F6"  id="gb" mold="3d" width="100%">
-                             
-                                    <label value="Digite la Serie" style="font-weight:bold;size:14px" />
-                                    <span> 
-                                        <textbox onOK="buscarSeries(self.value)" id="seriebuscar" value=""/>
-                                        <image  src="/images/enter.png"  height="14px"/>
-                                    </span>
-                                    <separator orient="vertical"/>
-                                    <separator orient="vertical"/>
-                                    <separator orient="vertical"/>
-                                    <span>
-                                        <checkbox style="font-weight:bold;size:14px" id="genFactura" label="¿GENERAR COBRO PARA ÉSTE MES?" />
-                                    </span>
-                                
-                                   
-                                </groupbox>
-                                <grid id="productos">
-                                    <columns sizable="true">
-                                        <column label="Cod." width="5px" />
-                                        <column label="Equipo"  width="280px" />
-                                        <column label="Valor"  width="80px" />
-                                        <column align="center"  label="Series"  width="80px" />
-                                        <column align="center" label="Opción" width="10px"  />
-                                        <column align="center" label="Facturado/Prestado" width="110px"  />
-                                    </columns>
-                                    <rows id="filas">
-                                    </rows>
-                                    <foot style="background:#D6E3F6">
-                                        <footer/>
-                                        <footer>
-                                            <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="VALOR A FACTURAR: "/>
-                                        </footer>
-                                        <footer>
-                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" id="valortotal"  value="0.0"  readonly="true"   />
-                                        </footer>
-                                        <footer width="10px">
-                                            <label style="font:14px;font-weight:bold;background:#E1E1E1;border:0px" value=" "/>
-                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" id="valortotaliva"  value="0.0"  readonly="true"   />
-                                        </footer>
-                                        <footer>
-                                            <label style="float:center;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="# "/>
-                                            <intbox cols="3"  style="float:center;text-align:left;font:14px;font-weight:bold;background:#D6E3F6;border:0px"  id="cantidadtotal" readonly="true" value="0"    />
-                                        </footer>
-                                        <footer>
-                                            <label style="text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="#"/>
-                                            <intbox cols="3"  style=";font:14px;font-weight:bold;background:#D6E3F6;border:0px"  id="facturadostotal" readonly="true" value="0"    />
-                                            <label style="text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="#"/>
-                                            <intbox cols="3"  style=";font:14px;font-weight:bold;background:#D6E3F6;border:0px"  id="prestadostotal" readonly="true" value="0"    />
-                                        </footer>
-                                    </foot>
-                                               
-                                </grid>
-                                       
-                                     
-                              
+                          
                             </panelchildren>
                         </panel>
                        
