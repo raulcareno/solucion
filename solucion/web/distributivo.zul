@@ -958,8 +958,15 @@ void guardarc(){
                                   mateProfe.setSeimprime(((Checkbox)labels.get(7)).isChecked());
                                   mateProfe.setFormula((((Textbox)labels.get(8)).value));
                                   if((!mateProfe.getCodigomap().equals(0)) ){
-                                        if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1))
+                                        if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
                                             adm.actualizar(mateProfe);
+                                             String quera = "update notas set materia = '"+ mateProfe.getMateria().getCodigo() +"', " +
+                                                " orden = '"+mateProfe.getOrden()+"', seimprime = "+ mateProfe.getSeimprime() +",  " +
+                                                " promedia = "+ mateProfe.getMinisterio()  +", cuantitativa = "+ mateProfe.getCuantitativa() +"  "+
+                                                " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
+                                                " and materia = "+mateProfe.getMateria().getCodigo()+" ";
+                                                adm.ejecutaSqlNativo(quera);
+                                        }
                                   }else{
 
                                     if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
