@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window onCreate="cargando();" height="100%" border="normal">
+    <zk xmlns="http://www.zkoss.org/2005/zul">
+        <zscript>
+<![CDATA[
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.disciplina;
+import java.math.BigDecimal;
+import bean.reportesClase;
+import jcinform.persistencia.*;
+import jcinform.conexion.Administrador;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+import jcinform.conexion.*;
+import jcinform.bean.sources.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+Permisos per = new Permisos();
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Empresa empresa = (Empresa) ses.getAttribute("empresa");
+Empleados user = (Empleados)ses.getAttribute("user");
+ ReportesClase reportes = new ReportesClase();
+List cantones = adm.query("Select o from Canton as o " + 
+    " where o.codigo in (Select se.sector.canton.codigo from Empleadosector as se where se.empleados.codigo = '"+user.getCodigo()+"' and se.estado = true )   ");
+     
+Canton cantonTodos = new Canton(-1);
+cantonTodos.setNombre("- TODOS - ");
+cantones.add(0,cantonTodos);
+
+ Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
+ Empleados empSel = new Empleados(-1);
+             empSel.setApellidos("");
+             empSel.setNombres("");
+             
+ List planes = adm.query("Select o from Plan as o " + 
+     " where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  order by o.nombre, o.valor ");
+     Plan pSel = new Plan(-1);
+     pSel.setNombre("[TODOS]");
+     planes.add(0,pSel);
+ List empleadosEncontrados = new ArrayList();
+ //adm.query("Select o from Empleados as o  order by o.apellidos");      
+ empleadosEncontrados.add(user);
+ 
+ public Double redondear(Double numero, int decimales) {
+                try{
+                        BigDecimal d = new BigDecimal(numero);
+                d = d.setScale(decimales, RoundingMode.HALF_UP);
+                return d.doubleValue();
+                }catch(Exception e){
+                    return 0.0;
+                }
+        
+        }
+
+ 
+                
+
+ void showReport() {
+ try{
+    String tipo = reporte.getSelectedItem().getValue();
+           if(tipo.equals("linea")){
+                return;
+           }
+            ver.visible = false;
+            reportese.visible = true;
+            cerrar.setVisible(true);
+            Map parametros = new HashMap();
+           
+            parametros.put("empresa", empresa.getRazonsocial());
+            parametros.put("ruc", empresa.getRuc());
+            parametros.put("direccion", empresa.getDireccion());
+            parametros.put("telefono", empresa.getTelefono());
+            parametros.put("desde", desde.value);
+            parametros.put("hasta", hasta.value);
+            parametros.put("estado", estadoContrato.selectedItem.value);
+            try{
+                parametros.put("canton", cant.selectedItem.value+"");
+                parametros.put("sector", sectorList.selectedItem.value+"");
+                parametros.put("sector2", sectorList2.selectedItem.value+"");
+            }catch(Exception e){
+            }
+            
+           String directorioReportes = empresa.getReportes();
+            JRDataSource datasource = null;
+           if(tipo.equals("CXCLI")){
+                Integer cclientev = ccliente.value;
+                if(cclientev != null ){
+                }else{
+                        cclientev = -1; //TODOS LOS CLIENTES
+                }
+                if(cclientev.equals(-1)){
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value,cant.selectedItem.value);
+                }else{
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),null,null);
+                }
+                
+                
+                report.setSrc(directorioReportes+"cxcclientes.jasper");
+            }else if(tipo.equals("CXCLIEST")){
+                datasource = reportes.facturasPendientesest(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value);
+                report.setSrc(directorioReportes+"cxcclientesest.jasper");
+            }else if(tipo.equals("PORSECTOR")){
+                                datasource = reportes.facturasPendientes(sectorList.selectedItem.value);
+                   report.setSrc(directorioReportes+"cxcclientesxzona.jasper");
+                   
+            }else if(tipo.equals("PORSECTORCLI") || tipo.equals("PORSECTORCLI2")){
+                  datasource = reportes.clientesxsector(sectorList.selectedItem.value,estadoContrato.selectedItem.value);
+                   if(tipo.equals("PORSECTORCLI"))
+                        report.setSrc(directorioReportes+"listacontratos.jasper");
+                   else
+                        report.setSrc(directorioReportes+"listacontratos2.jasper");
+                   
+                   
+            }else if(tipo.equals("PORESTADO")){
+                  datasource = reportes.clientesxestado(estadoContrato.selectedItem.value);
+                  report.setSrc(directorioReportes+"listacontratosestado.jasper");
+            }else if(tipo.equals("PORESTADOPLAN")){
+                    Set items2 = planList.getSelectedItems();
+                    List listPlanes = new ArrayList(items2);
+                    if(listPlanes.size()<=0){
+                    alert("Seleccione al menos un plan");
+                    return;
+                    }
+                  datasource = reportes.clientesxestadoplan(estadoContrato.selectedItem.value,listPlanes,tipoplanList.selectedItem.value);
+                  report.setSrc(directorioReportes+"listacontratosestado.jasper");
+            }else if(tipo.equals("PORSECTORCLILETRA")){
+                  datasource = reportes.clientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value,estadoContrato.selectedItem.value);
+                   report.setSrc(directorioReportes+"listacontratosletras.jasper");
+                   
+            }else if(tipo.equals("EQUIPOSPORSECTORCLILETRA")){
+                  datasource = reportes.equiposclientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value,estadoContrato.selectedItem.value);
+                   report.setSrc(directorioReportes+"listacontratosletrasequipos.jasper");
+                   
+            }else if(tipo.equals("INVNORMAL")){
+                  datasource = reportes.inventarioNormal();
+                   report.setSrc(directorioReportes+"inventarioNormal.jasper");
+                   
+            }else if(tipo.equals("INVGEN")){
+                  datasource = reportes.inventarioGeneral();
+                   report.setSrc(directorioReportes+"inventarioNorTranAju.jasper");
+            }else if(tipo.equals("INVTRAN")){
+                  datasource = reportes.inventarioTransito();
+                   report.setSrc(directorioReportes+"inventarioTransito.jasper");
+                   
+            }else if(tipo.equals("INVAJU")){
+                  datasource = reportes.inventarioAjuste();
+                   report.setSrc(directorioReportes+"inventarioAjuste.jasper");
+                   
+            }else  if(tipo.equals("COBROS")){
+                Integer cclientev = ccliente.value;
+                if(cclientev != null ){
+                }else{
+                        cclientev = -1;
+                }
+                
+                  if(cclientev.equals(-1)){
+                        datasource = reportes.facturasCobradas(new Clientes(cclientev), desde.value, hasta.value,sectorList.selectedItem.value);
+                }else{
+                        datasource = reportes.facturasCobradas(new Clientes(cclientev), desde.value, hasta.value,null);
+                }
+                   
+                    report.setSrc(directorioReportes+"cpclientes.jasper");
+            }else  if(tipo.equals("COBROS2")){
+                Integer cclientev = ccliente.value;
+                if(cclientev != null ){
+                }else{
+                        cclientev = -1;
+                }
+                
+                  if(cclientev.equals(-1)){
+                        datasource = reportes.facturasCobradasContador(new Clientes(cclientev), desde.value, hasta.value,sectorList.selectedItem.value);
+                }else{
+                        datasource = reportes.facturasCobradasContador(new Clientes(cclientev), desde.value, hasta.value,null);
+                }
+                   
+                    report.setSrc(directorioReportes+"cpclientescontador.jasper");
+            }else  if(tipo.equals("ARQUEO")){
+                   datasource = reportes.reporteCaja(desde.value, hasta.value);
+                    report.setSrc(directorioReportes+"rpcaja.jasper");
+            }else  if(tipo.equals("ARQUEO2")){
+                   datasource = reportes.reporteCaja2(desde.value, hasta.value);
+                    report.setSrc(directorioReportes+"rpcajapei.jasper");
+            }else  if(tipo.equals("ARQUEOU")){
+                   datasource = reportes.reporteCaja(desde.value, hasta.value,empleadosList.selectedItem.value);
+                    report.setSrc(directorioReportes+"rpcaja.jasper");
+            }
+            else  if(tipo.equals("COMISIONES1")){
+                   datasource = reportes.facturasComisiones1(empleadosList.selectedItem.value,desde.value, hasta.value);
+                    report.setSrc(directorioReportes+"listacontratosComision.jasper");
+            }else  if(tipo.equals("COMISIONES2")){
+                 datasource = reportes.facturasComision(empleadosList.selectedItem.value, desde.value, hasta.value, estadoContrato.selectedItem.value);
+                 report.setSrc(directorioReportes+"listacontratosComision2.jasper");
+            }else if(tipo.equals("-1")){
+                   alert("No ha seleccionado ningún reporte...!");
+                    return;
+            }
+            if(!tipo.equals("-1")){
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                if(format.getSelectedItem().getValue().equals("xlsm")){
+                    Map exportParams = new HashMap();
+                    exportParams.put(net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter.PROPERTY_ONE_PAGE_PER_SHEET.toString(), false);
+                    parametros.put("exportParameter", exportParams);
+                    report.setType("xls");
+                }else{
+                    report.setType((String) format.getSelectedItem().getValue());
+                }
+            }
+            } catch (Exception ex) {
+                Logger.getLogger("reportescobros.zul").log(Level.SEVERE, null, ex);
+                
+            }
+}
+
+void campos(String valor){
+    filaclientes.visible=false;
+    filaclientes1.visible=false;
+    filafechas.visible=false;
+      filacanton.visible=false;
+      filasector.visible=false;
+      filaletras.visible=false;
+      Date fec = adm.Date();
+      filasector2.visible = false;
+      filaempleados.visible=false;
+      filaestado.visible = false;
+      filaplan.visible = false;
+            filatipoplan.visible = false;
+      fec.setDate(1);
+        if(valor.equals("CXCLI")){
+            titulo.value= "Cuentas por Pagar";
+            filaclientes.visible=true;
+            filaclientes1.visible=true;
+            filacanton.visible=true;
+            filasector.visible=true;      
+            desde.value = fec; 
+        }else if(valor.equals("CXCLIEST")){
+            titulo.value= "Cuentas por Pagar";
+            filacanton.visible=true;
+            filasector.visible=true;      
+            filaestado.visible = true;
+            desde.value = fec; 
+        }else if(valor.equals("COBROS")){
+            titulo.value= "Cobros Realizados";
+            filaclientes.visible=true;
+            filaclientes1.visible=true;
+            filafechas.visible=true;
+            filacanton.visible=true;
+            filasector.visible=true;    
+            desde.value = fec;
+        }else if(valor.equals("COBROS2")){
+            titulo.value= "Cobros";
+            filaclientes.visible=true;
+            filaclientes1.visible=true;
+            filafechas.visible=true;
+            filacanton.visible=true;
+            filasector.visible=true;    
+            desde.value = fec;
+        }else if(valor.equals("ARQUEO") || valor.equals("ARQUEO2")){
+            titulo.value= "Cobros Diarios";
+            filafechas.visible=true;
+            desde.value = adm.Date();
+        } else if(valor.equals("ARQUEOU")){
+            titulo.value= "Cobros Diarios";
+            filafechas.visible=true;
+            desde.value = adm.Date();
+          //  filaempleados.visible=true;
+        }else if(valor.equals("PORSECTOR")){
+            titulo.value= "X Cobrar";
+            filacanton.visible=true;
+            filasector.visible=true;
+        }else if(valor.equals("PORSECTORCLI") || valor.equals("PORSECTORCLI2")){
+            titulo.value= "X Cobrar";
+            filacanton.visible=true;
+            filasector.visible=true;
+            filaestado.visible = true;
+        }else if(valor.equals("PORESTADO")){
+            titulo.value ="X Estado";
+            filaestado.visible = true;
+        
+        }else if(valor.equals("PORESTADOPLAN")){
+            titulo.value ="X Estado";
+            filaestado.visible = true;
+            filaplan.visible = true;
+            filatipoplan.visible = true;
+        
+        }else if(valor.equals("PORSECTORCLILETRA")){
+            titulo.value= "X Cobrar";
+            filacanton.visible=true;
+            filasector.visible=true;
+            filasector2.visible=true;
+            filaletras.visible=true;
+            filaestado.visible = true;
+        }else if(valor.equals("EQUIPOSPORSECTORCLILETRA")){
+            titulo.value= "X Cobrar";
+            filacanton.visible=true;
+            filasector.visible=true;
+            filasector2.visible=true;
+            filaletras.visible=true;
+            filaestado.visible=true;
+        }else{
+            titulo.value= " ";
+        }
+}
+
+ //BUSQUEDA DE CLIENTES
+  void buscar(String p){
+        List ClientesEncontrados = adm.query("Select o from Clientes as o WHERE o.codigo "
+        + " in (Select co.clientes.codigo from Contratos as co where co.sector.codigo "
+        + " in (Select se.sector.codigo from Empleadosector as se where se.empleados.codigo = '"+user.getCodigo()+"' and se.estado = true )   ) "
+        + " AND o.apellidos like '"+p+"%' order by o.apellidos");
+        lcliente = new Listbox();
+        int a=0;
+            for (Iterator it = lcliente.getItems().iterator(); it.hasNext();) {
+                    lcliente.getItems().remove(a);
+                }
+
+
+               for (Iterator it = ClientesEncontrados.iterator(); it.hasNext();) {
+                      Clientes acceIt = (Clientes) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getApellidos()+" "+acceIt.getNombres()));
+                      li.appendChild(new Listcell(acceIt.getDireccion()+""));
+                      lcliente.appendChild(li);
+             }
+    }
+    
+        void buscarSectores(Integer codigo){
+          bd.value = "";
+        List NodosEncontrados = adm.query("Select o from Sector as o " +
+                " where o.canton.codigo = '"+codigo+"'  " + 
+                " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  "+ 
+                " and o.codigo in (Select se.sector.codigo from Empleadosector as se where se.empleados.codigo = '"+user.getCodigo()+"'  and se.estado = true  )  order by o.numero, o.nombre");
+        sectorList = new Listbox();
+        int a=0;
+            for (Iterator it = sectorList.getItems().iterator(); it.hasNext();) {
+                    sectorList.getItems().remove(a);
+                }
+                      Listitem liTodos = new Listitem();
+                      Sector todos = new Sector(-1);;
+                      liTodos.setValue(todos);
+                      liTodos.appendChild(new Listcell(" - TODOS - "));
+                      sectorList.appendChild(liTodos);
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNumero()+".- "+acceIt.getNombre()+" "));
+                      sectorList.appendChild(li);
+             }
+         sectorList2 = new Listbox();
+            int a=0;
+            for (Iterator it = sectorList2.getItems().iterator(); it.hasNext();) {
+                    sectorList2.getItems().remove(a);
+                }
+            for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNumero()+".- "+acceIt.getNombre()+" "));
+                      sectorList2.appendChild(li);
+             }
+
+    }
+]]>
+        </zscript>
+        <panel width="100%" id="parametros"  height="100%" border="normal">
+            <panelchildren>
+                <grid  id="ver" style="background:transparent;border:1px" width="700px">
+                    <rows>
+                        <row >
+     
+                            <span style="float:right"> Reporte:</span>
+                            <span>
+                                <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="400px"  mold="select" >
+                                    <listitem disabled="true" label="[Seleccione]" value="-1" selected="true" />
+                                    <listitem disabled="true" label="" />
+                                    <listitem  disabled="true" id="linea0" label="========CLIENTES==============" value="linea" />
+                                    <listitem id="CXCLI" label="Cuentas x Cobrar x Clientes" value="CXCLI" />
+                                    <listitem id="CXCLIEST" label="Cuentas x Cobrar x Clientes y Estado" value="CXCLIEST" />
+                                    <listitem id="COBROS"  label="Cuentas Cobradas por Clientes " value="COBROS" />
+                                    <listitem id="ARQUEOU" label="Reporte Diario de Caja X Fechas y Usuario" value="ARQUEOU" />
+                                    <listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" />
+
+                                    <listitem  disabled="true" id="linea" label="=========CONTRATOS================" value="linea" />
+                                    <listitem id="PORSECTORCLI" label="Clientes por Sector " value="PORSECTORCLI" />
+                                    <listitem id="PORESTADO" label="Clientes por Estado " value="PORESTADO" />
+                                    <listitem id="PORESTADOPLAN" label="Clientes por Estado y Plan" value="PORESTADOPLAN" />
+                                    <listitem id="PORSECTORCLI2" label="Clientes por Sector sin Valor" value="PORSECTORCLI2" />
+                                    <listitem id="PORSECTORCLILETRA" label="Clientes por Sector(Desde-Hasta) [A-Z] " value="PORSECTORCLILETRA" />
+          
+                                </listbox>
+    
+                            </span>
+                        </row>
+                        <row id="filaempleados">
+                            <span style="float:right"> Empleado: </span>
+                            <bandbox style="background-color:transparent" disabled="false" readonly="true" width="240px"  id="bdEmp">
+                                <bandpopup>
+                                    <vbox>
+                                                       
+                                        <listbox   onSelect="bdEmp.value=(self.selectedItem.value).getApellidos() + ' ' +  (self.selectedItem.value).getNombres(); bdEmp.closeDropdown();"   id="empleadosList"  >
+                                            <listitem forEach="${empleadosEncontrados}" selected="true"    value="${each}">
+                                                <listcell label="${each.apellidos}" />
+                                                <listcell label="${each.nombres}" />
+                                            </listitem>
+                                        </listbox> 
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                        </row>
+                        <row id="filaestado" visible="false">
+                                        <span style="float:right"> Estado: </span>
+                                        <radiogroup id="estadoContrato" >
+                                                <radio id="eactivo" selected="true" value="Activo" label="Activo" style="font-weight:bold2" />
+                                                <radio id="ecortado"  value="Cortado"  label="Cortado" style="font-weight:bold2" />
+                                                <radio id="esuspendido"  value="Suspendido"  label="Suspendido" style="font-weight:bold2" />
+                                                <radio  id="eterminado" value="Terminado"  label="Terminado" style="font-weight:bold2" />
+                                            </radiogroup>    
+                        </row>
+                        <row id="filaclientes" visible="false" >
+                            <span style="float:right"> Clientes: </span>
+
+                            <span>
+                                <intbox cols="1" disabled="true" id ="ccliente" />
+                                <textbox cols="50" onOK ="btcliente.value = ncliente.value; buscar(btcliente.value); bcliente.open(ccliente);btcliente.focus()" id="ncliente" />
+                                <button  image="/images/auditoria.gif" onClick="bcliente.open(ccliente);btcliente.focus();"  />
+                                <button   image="/images/eliminar.gif" onClick='ccliente.value = null; ncliente.value = null; filacanton.visible = true; filasector.visible = true;' /> 
+                                
+                        
+                                <popup    id="bcliente" width="580px">
+                                    <groupbox>
+                                        <vbox>
+                                            <hbox>
+                                            Buscar: 
+                                                <textbox value="" id="btcliente" constraint="no empty"  onChanging="buscar(event.value)"  onOK="buscar(self.value)" maxlength="60" />
+                                                <button id="buscar"   label="Buscar" onClick="buscar(btcliente.getValue());"/>
+                                            </hbox>
+                                            <hbox>
+                                                <listbox onSelect='ccliente.value = ((Clientes)self.selectedItem.value).getCodigo(); ncliente.value = ((Clientes)self.selectedItem.value).getApellidos() +" "+ ((Clientes)self.selectedItem.value).getNombres(); bcliente.close(); filacanton.visible = false; filasector.visible = false;' id="lcliente" width="400px">
+                                                    <listhead>
+                                                        <listheader label="Nombres"/>
+                                                        <listheader label="Dirección"/>
+                                                    </listhead>
+                                                    <listitem forEach="${allEvents}" value="${each}">
+                                                        <listcell label="${each.apellidos}" />
+                                                        <listcell label="${each.direccion}" />
+                                                    </listitem>
+                                                </listbox>
+                                            </hbox>
+                                        </vbox>
+                                    </groupbox>
+                                    
+                                </popup>
+                            </span>
+                        </row>
+                        <row  id="filaclientes1"  visible="false"  >
+                            <span style="float:right"> </span>
+
+                            <span>
+                               
+                                <label style="color:blue" value="(EN BLANCO PARA TODOS LOS CLIENTES)"/>
+                              
+                            </span>
+                        </row>
+                        
+                        <row   id="filafechas"  visible="false">
+                            <span style="float:right"> Fechas: </span>
+
+                            <span>
+                           Desde:
+                                <datebox onCreate="self.value = adm.Date()" id="desde"/>
+                           Hasta: 
+                                <datebox onCreate="self.value = adm.Date()"  id="hasta"/>
+                              
+                            </span>
+                        </row>
+                        <row visible = "false" id="filacanton">
+                            <span style="float:right"> Cantón(*):</span>
+                            <bandbox  width="200px" readonly="true"  id="bdCanton">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="cant" width="250px"
+                                                     onSelect='bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();bdSector.value = "" ;'>
+                        
+                                            <listitem forEach="${cantones}" value="${each}">
+                                                <listcell label="${each.nombre}" />
+
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+
+                        </row>
+                      <row visible = "false" id="filatipoplan">
+                            <span style="float:right"> Tipo(*):</span>
+                                        <listbox mold="select" id="tipoplanList" width="250px">
+                                            <listitem selected="true" value="TODOS" label="TODOS" />
+                                            <listitem  value="HOME" label="HOME" />
+                                            <listitem value="BASICO" label="BASICO" />
+                                            <listitem value="CORPORATIVO" label="CORPORATIVO" />
+                                            <listitem value="PREMIUM" label="PREMIUM" />
+                                        </listbox>
+                              
+
+                        </row>
+                        <row visible = "false" id="filaplan">
+                            <span style="float:right"> Plan(*):</span>
+                                        <listbox height="80px" id="planList" width="250px" multiple="true" checkmark="true" >
+                                            <listitem forEach="${planes}" value="${each}">
+                                                <listcell label="${each.nombre}" />
+                                            </listitem>
+                                        </listbox>
+                              
+
+                        </row>
+                      <row visible = "false" id="filasector">
+                            <span style="float:right"> Sector(*):</span>
+                            <bandbox  width="200px" readonly="true"  id="bdSector">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="sectorList" width="250px"
+                                                     onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
+                                 
+                                            <listitem forEach="${perfiles}" value="${each}">
+                                                <listcell label="${each.nombre}" />
+
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+
+                        </row>
+                        <row visible = "false" id="filasector2">
+                            <span style="float:right"> Sector 2(*):</span>
+                            <bandbox  width="200px" readonly="true"  id="bdSector2">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="sectorList2" width="250px"
+                                                     onSelect="bdSector2.value=self.selectedItem.label;bdSector2.closeDropdown();">
+                                 
+                                            <listitem forEach="${perfiles}" value="${each}">
+                                                <listcell label="${each.nombre}" />
+
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                        </row>
+                        <row id="filaletras" visible="false">
+                            <span style="float:right"> Letras:</span>
+                            <span>
+                                <listbox  width="50px"  mold="select" id="desdeletra">
+                                    <listitem selected="true" value="A" label="A" /> 
+                                    <listitem value="B" label="B" /> 
+                                    <listitem value="C" label="C" />
+                                    <listitem value="D" label="D" /> 
+                                    <listitem value="E" label="E" /> 
+                                    <listitem value="F" label="F" />  
+                                    <listitem value="G" label="G" />
+                                    <listitem value="H" label="H" />
+                                    <listitem value="I" label="I" />
+                                    <listitem value="J" label="J" /> 
+                                    <listitem value="K" label="K" /> 
+                                    <listitem value="L" label="L" /> 
+                                    <listitem value="M" label="M" /> 
+                                    <listitem value="N" label="N" />  
+                                    <listitem value="Ñ" label="Ñ" />  
+                                    <listitem value="O" label="O" /> 
+                                    <listitem value="P" label="P" /> 
+                                    <listitem value="Q" label="Q" /> 
+                                    <listitem value="R" label="R" /> 
+                                    <listitem value="S" label="S" /> 
+                                    <listitem value="T" label="T" /> 
+                                    <listitem value="U" label="U" /> 
+                                    <listitem value="V" label="V" /> 
+                                    <listitem value="W" label="W" /> 
+                                    <listitem value="X" label="X" /> 
+                                    <listitem value="Y" label="Y" /> 
+                                    <listitem value="Z" label="Z" /> 
+						
+                                </listbox>
+                            Hasta:
+                            
+                                <listbox width="50px" mold="select" id="hastaletra">
+                                    <listitem value="A" label="A" /> 
+                                    <listitem value="B" label="B" /> 
+                                    <listitem value="C" label="C" />
+                                    <listitem value="D" label="D" /> 
+                                    <listitem value="E" label="E" /> 
+                                    <listitem value="F" label="F" />  
+                                    <listitem value="G" label="G" />
+                                    <listitem value="H" label="H" />
+                                    <listitem value="I" label="I" />
+                                    <listitem value="J" label="J" /> 
+                                    <listitem value="K" label="K" /> 
+                                    <listitem value="L" label="L" /> 
+                                    <listitem value="M" label="M" /> 
+                                    <listitem value="N" label="N" />  
+                                    <listitem value="Ñ" label="Ñ" />  
+                                    <listitem value="O" label="O" /> 
+                                    <listitem value="P" label="P" /> 
+                                    <listitem value="Q" label="Q" /> 
+                                    <listitem value="R" label="R" /> 
+                                    <listitem value="S" label="S" /> 
+                                    <listitem value="T" label="T" /> 
+                                    <listitem value="U" label="U" /> 
+                                    <listitem value="V" label="V" /> 
+                                    <listitem value="W" label="W" /> 
+                                    <listitem value="X" label="X" /> 
+                                    <listitem value="Y" label="Y" /> 
+                                    <listitem selected="true" value="Z" label="Z" /> 
+						
+                                </listbox>
+                            </span>
+                        </row>
+                        <row  style="background:transparent;border:0px">
+                            <span style="float:right"> Título:</span>
+                            <span>
+                                <textbox id="titulo" value=" " cols="30"/>
+                                <span>
+                                    <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
+                                        <bandpopup>
+                                            <vbox>
+                                                <listbox width="170px" id="format"  onSelect="bd.value=self.selectedItem.label; bd.close();showReport();">
+                                                    <listitem  value="pdf" selected="true">
+                                                        <listcell  image="/images/pdf.png" label="PDF" />
+                                                    </listitem>
+                                                    <listitem value="rtf">
+                                                        <listcell  image="/images/word.gif" label="Word" />
+                                                    </listitem>
+                                                    <listitem value="xls">
+                                                        <listcell  image="/images/excel.gif"  label="Excel(Múltiple Hoja)" />
+                                                    </listitem>
+                                                    <listitem value="xlsm">
+                                                        <listcell  image="/images/excel.gif"  label="Excel(Una Hoja)" />
+                                                    </listitem>
+                                                    <listitem value="jxl">
+                                                        <listcell  image="/images/excel.gif" label="JXL" />
+                                                    </listitem>
+                                                    <listitem value="csv">
+                                                        <listcell  image="/images/csv.gif" label="CSV" />
+                                                    </listitem>
+                                                    <listitem value="odt">
+                                                        <listcell  image="/images/open.png" label="OpenOfic" />
+                                                    </listitem>
+                                                    <listitem value="xml">
+                                                        <listcell  image="/images/xml.gif" label="XML" />
+                                                    </listitem>
+                                                    <listitem value="html">
+                                                        <listcell  image="/images/html.gif" label="HTML" />
+                                                    </listitem>
+                                                </listbox>
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
+                                    <button label="Ejecutar...!" image="/images/run.gif" onClick='showReport();'/>
+                                
+                                </span>
+
+                            </span>
+                        </row>
+
+                      
+                    </rows>
+                </grid>
+                <zscript>
+                    public void aumentar(){
+                    String tamanio = report.height.replace("px","").replace("%","");
+                       Integer t = new Integer(tamanio);
+                       report.height = (t+100)+"px";
+                    }
+                    public void reducir(){
+                    String tamanio = report.height.replace("px","").replace("%","");
+                       Integer t = new Integer(tamanio);
+                       report.height = (t-100)+"px";
+                    }
+
+                </zscript>
+                <grid id="reportese" visible="false" width="100%" height="100%">
+                    <rows>
+                        <row   spans="2">
+                            <span>
+                                <button  image="/images/eliminar.gif" id="cerrar"   label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
+                                <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
+                                <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
+                                <button label="Refrescar...!" image="/images/actualizar.png" onClick='showReport();'/>
+                            </span>
+
+                        </row>
+
+                        <row   spans="2">
+                            <jasperreport width="100%" height="500px" id="report" />
+                        </row>
+
+                    </rows>
+                </grid>
+            </panelchildren>
+        </panel>
+
+
+        <zscript>
+
+Permisos per = new Permisos();
+void cargando(){
+        NMAT.visible = per.verificarPermisoReporte("NMAT", "Ingresar");
+        NMATD.visible = per.verificarPermisoReporte("NMATD", "Ingresar");
+   
+}
+        </zscript>
+
+
+    </zk>
+</window>

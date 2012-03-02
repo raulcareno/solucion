@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import jcinform.conexion.Administrador;
 import jcinform.persistencia.Clientes;
+import jcinform.persistencia.Empleados;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.*;
 
@@ -15,10 +18,12 @@ public class autoCompletarClientesSector extends Combobox {
 //		Arrays.sort(arreglo);
     }
     Administrador adm;
-
+Empleados emp;
     public autoCompletarClientesSector() {
         //	refresh("");
         adm = new Administrador();
+        Session a = Sessions.getCurrent();
+          emp = (Empleados) a.getAttribute("user");
 
     }
 
@@ -46,9 +51,12 @@ public class autoCompletarClientesSector extends Combobox {
             List<Clientes> estu = new ArrayList<Clientes>();
             if (abuscar.length() > 1) {
                 estu = adm.query("Select o from Clientes as o "
-                        + "where o.apellidos like '%" + abuscar + "%' "
+                        + "where (o.apellidos like '%" + abuscar + "%' "
                         + "OR "
-                        + "o.razonsocial like '%" + abuscar + "%' "
+                        + "o.razonsocial like '%" + abuscar + "%' ) "
+                        + " and o.codigo "
+                        + "in (Select co.clientes.codigo from Contratos as co where co.sector.codigo "
+                        + "in (Select se.sector.codigo from Empleadosector as se where se.empleados.codigo = '"+emp.getCodigo()+"' and se.estado = true )   ) "
                         + "order by o.apellidos ",0,10);
             }
 

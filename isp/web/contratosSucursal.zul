@@ -461,247 +461,10 @@ Boolean validar(){
                 permiso.auditar("Contratos","Guardar",""+equi.getContrato()+" - "+equi.getClientes());
          }
              
- if(facturadostotal.value > 0){//GENERO LA CABECERA DE COMPRA Y LOS DETALLLES CON LAS SERIES PARA
-      Cabeceracompra cabeCompra = new Cabeceracompra();
-       cabeCompra.setProveedores(null);
-       cabeCompra.setFecha(fecha.value);
-       cabeCompra.setSeries(null);
-       cabeCompra.setCantidad(0);
-       cabeCompra.setTotal(0d);
-       cabeCompra.setSucursal(sucursalEmp.getSucursal());
-       cabeCompra.setDocumento("VEN");
-       adm.guardar(cabeCompra);
-        List col = productos.getRows().getChildren();
-        String seriesString = "";
-        int sihay =0;
-                  for (int i = 0; i < col.size(); i++) {
-                         Row object = (Row) col.get(i);
-                         Series serieDet = ((Series)object.getValue());
-                          List labels = object.getChildren();
-                            if(((Checkbox) labels.get(5)).isChecked()){ //si el item es facturado
-                                  Detallecompra det = new Detallecompra();
-                                  Boolean actualizar = false;
-                                  int cantidad = 0;
-                                  if(i > 0){
-                                    List detList = adm.query("Select o from Detallecompra as o " + 
-                                            " where o.contratos.codigo = '"+equi.getCodigo()+"' " + 
-                                            " and o.equipos.codigo = '"+ ((Intbox) labels.get(0)).getValue()+"' ");
-                                            if(detList.size()>0){
-                                                    det = (Detallecompra)detList.get(0);
-                                                    cantidad = det.getCantidad();
-                                                    actualizar = true;
-                                            }else{
-                                                    det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
-                                                     actualizar = false;
-                                            }
-                                  }else{
-                                        det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
-                                  }
-                                  det.setContratos(equi);
-                                  det.setCabeceracompra(cabeCompra);
-                                  det.setCosto(serieDet.getDetallecompra().getEquipos().getPvp1().doubleValue());
-                                  det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
-                                  det.setCantidad(-1);
-                                    if(serieDet.getDetallecompra().getEquipos().getBien()){
-                                          if(actualizar){
-                                            det.setCantidad(cantidad-1);
-                                            adm.actualizar(det);
-                                          }else{
-                                            adm.guardar(det);
-                                          }
-                                          sihay++;
-                                  }
-//                               alert(""+serieDet.getEstado());
-                               //TENGO QUE ELIMINAR TODO EL REGISTRO DE COMPRA EN CASO DE QUE HAYA SOLO UN ITEM
-                               try{
-                                    if(serieDet.getEstado().equals("P")){
-                                            Series serAc = serieDet;
-                                            int cant = serAc.getDetallecompra().getCantidad();
-                                            if(cant == -1){
-                                                adm.eliminarObjeto(Series.class, serAc.getCodigo()); 
-                                                adm.eliminarObjeto(Detallecompra.class,serAc.getDetallecompra().getCodigo());
-                                                adm.eliminarObjeto(Cabeceracompra.class,serAc.getDetallecompra().getCabeceracompra().getCodigo());
-                                            }else{
-                                                adm.eliminarObjeto(Series.class, serAc.getCodigo()); 
-                                                Detallecompra deta = serAc.getDetallecompra();
-                                                deta.setCantidad(deta.getCantidad()+1);
-                                                adm.actualizar(deta);
-                                            }
-                                        }
-                                   }catch(Exception err){
-                                   System.out.println("ERROR AL COMPARAR ESTADO Y ELIMINAR"+err);
-                                   }         
-                               
-                                  Series ser = new Series();
-                                  ser.setCodigo(adm.getNuevaClave("Series","codigo"));
-                                  ser.setSerie(serieDet.getSerie());
-                                  ser.setDetallecompra(det);
-                                  ser.setContratos(equi);
-                                  ser.setSucursal(sucursalEmp.getSucursal());
-                                  ser.setEstado("V");//VENTA
-                                  
-                               if(serieDet.getDetallecompra().getEquipos().getBien())
-                                  adm.guardar(ser);
-                            }
-
-                  }
-
- 
-if(sihay==0){
-        adm.eliminarObjeto(Cabeceracompra.class, cabeCompra.getCodigo());
-} 
- 
- 
- }
- 
-  if(prestadostotal.value  > 0){
-        List seriesExi = adm.query("Select o from Series as o where o.estado = 'P' and o.contratos.codigo = '"+equi.getCodigo()+"' ");
-        if(seriesExi.size()> 0 ){
-            for(Iterator it = seriesExi.iterator(); it.hasNext();) {
-                    Series object = (Series)it.next();
-                    adm.eliminarObjeto(Series.class, object.getCodigo()); 
-                    adm.eliminarObjeto(Detallecompra.class,object.getDetallecompra().getCodigo());
-                    adm.eliminarObjeto(Cabeceracompra.class,object.getDetallecompra().getCabeceracompra().getCodigo());   
-            }
-        }
-  
-  
-       Cabeceracompra cabeCompra = new Cabeceracompra();
-       cabeCompra.setProveedores(null);
-       cabeCompra.setFecha(fecha.value);
-       cabeCompra.setSeries(null);
-       cabeCompra.setCantidad(0);
-       cabeCompra.setTotal(0d);
-       cabeCompra.setSucursal(sucursalEmp.getSucursal());
-       cabeCompra.setDocumento("PRE");
-       adm.guardar(cabeCompra);
-        List col = productos.getRows().getChildren();
-        String seriesString = "";
-        int sihay = 0;
-                  for (int i = 0; i < col.size(); i++) {
-                         Row object = (Row) col.get(i);
-                         Series serieDet = ((Series)object.getValue());
-                          List labels = object.getChildren();
-                            if(serieDet.getDetallecompra().getEquipos().getBien()){
-                            
-                            }
-                          
-                            if(!((Checkbox) labels.get(5)).isChecked()){ //si el item NO es facturado
-                                  Detallecompra det = new Detallecompra();
-                                  Boolean actualizar = false;
-                                  int cantidad = 0;
-                                  if(i > 0){
-                                    List detList = adm.query("Select o from Detallecompra as o " + 
-                                            " where o.contratos.codigo = '"+equi.getCodigo()+"' " + 
-                                            " and o.equipos.codigo = '"+ ((Intbox) labels.get(0)).getValue()+"' ");
-                                            if(detList.size()>0){
-                                                    det = (Detallecompra)detList.get(0);
-                                                    cantidad = det.getCantidad();
-                                                    actualizar = true;
-                                            }else{
-                                                    det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
-                                                     actualizar = false;
-                                            }
-                                  }else{
-                                        det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
-                                  }
-                                  det.setContratos(equi);
-                                  det.setCabeceracompra(cabeCompra);
-                                  det.setCosto(serieDet.getDetallecompra().getEquipos().getPvp1().doubleValue());
-                                  det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
-                                  det.setCantidad(-1);
-                                  if(serieDet.getDetallecompra().getEquipos().getBien()){
-                                  sihay++;
-                                          if(actualizar){
-                                            det.setCantidad(cantidad-1);
-                                            adm.actualizar(det);
-                                          }else{
-                                            adm.guardar(det);
-                                          }
-                                  }
-                                  Series ser = new Series();
-                                  ser.setCodigo(adm.getNuevaClave("Series","codigo"));
-                                  ser.setSerie(serieDet.getSerie());
-                                  ser.setDetallecompra(det);
-                                  ser.setContratos(equi);
-                                  ser.setSucursal(sucursalEmp.getSucursal());
-                                  ser.setEstado("P");//PRESTAMO
-                                  if(serieDet.getDetallecompra().getEquipos().getBien())
-                                  adm.guardar(ser);
-                            }
-
-                  }
-
-         if(sihay==0){
-                adm.eliminarObjeto(Cabeceracompra.class, cabeCompra.getCodigo());
-         }
- 
- }
- 
- 
- Date fechaInstalacion = fechainstalacion.value;
- if(facturadostotal.value > 0){
- //EMPIEZO A GENERAR FACTURA Y CXCOBRAR 
- Date fecha = adm.Date();
-             Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
-            fac.setNumero(null);
-            fac.setClientes(equi.getClientes());
-            fac.setEstado(true);
-            fac.setFecha(fecha);
-            fac.setContratos(equi);
-            fac.setSucursal(sucursalEmp.getSucursal());
-            BigDecimal valor = null;
-      
-           
-                fac.setSubtotal(valortotal.value);
-            fac.setDescuento(new BigDecimal(0));
-            fac.setBaseiva(fac.getSubtotal());
-            fac.setPorcentajeiva(empresa.getIva());
-            fac.setValoriva((fac.getSubtotal()).multiply(empresa.getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)));
-            fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
-            fac.setObservacion("V");
-            adm.guardar(fac);
-    
-    
-                             
-                            String seriesString = "";
-                            
-                            Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
-                            cuenta.setDebe(fac.getTotal());
-                            cuenta.setHaber(BigDecimal.ZERO);
-                            cuenta.setDeposito(BigDecimal.ZERO);
-                            cuenta.setCheque(BigDecimal.ZERO);
-                            cuenta.setEfectivo(BigDecimal.ZERO);
-                            cuenta.setFactura(fac);
-                            cuenta.setFecha(fecha);
-                            cuenta.setNotarjeta("");
-                            cuenta.setNocheque("");
-                            cuenta.setTotal(fac.getTotal());
-                            adm.guardar(cuenta);
-
-
-                    
-                              final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
-                                win.setMaximizable(true);
-                                win.setClosable(true);
-                                win.setAttribute("codigoFactura", fac.getCodigo()+"");
-                                win.setAttribute("valoraPagar", fac.getTotal());
-                                win.setTitle("Facturar Clientes");
-                                win.doModal();
-           
-            
- 
- } 
-  
- 
- 
           Messagebox.show("Contrato Registrado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                     guardar.disabled=true;
                     agregar.disabled=false;
-                    
-                    //llenar(new Contratos(0));      
-                    //nuevo2();
-                    estado(true,false);
+                     estado(true,false);
                     sumar();
                      
 }
@@ -746,7 +509,7 @@ if(sihay==0){
         identificacion2.focus();
      bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
     }else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            Messagebox.show("No tiene permisos para realizar esta acción..._!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
 }
   public Double redondear(Double numero, int decimales) {
@@ -777,7 +540,7 @@ if(sihay==0){
          
      bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;
     }else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            //Messagebox.show("No tiene permisos para realizar esta acción...,!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
 }
  void move(){
@@ -1564,16 +1327,12 @@ void llamar(){
                                             <groupbox id="busqueda" style="background:#D6E3F6" mold="3d" width="100%">
                                                 <span>
                                                                 
-                                                    <label style="font-weight:bold2" value="Identificación:" />
+                                                    <label style="font-weight:bold2" value="." />
                                                 </span>
                                                 <span>
-                                                    <textbox id="identificacion"  readonly="false"   onChanging="buscarCliCed(event.value); "  cols="13"   onOK="verificarCedula(self.value); bclientei.visible = false;"  />
-                                                    <image  tooltip="autompletar" popup="autompletar"  src="/images/keyboard.png"  />
-                                                    <popup id="autompletar" width="300px">
-                                                        <html>
-                                                                        Ingrese un número de cédula, ruc o pasaporte, para buscar Ejemplo: 1709700548, luego presione ENTER o seleccione uno de los del listado de búsqueda
-                                                        </html>
-                                                    </popup>
+                                                    <textbox id="identificacion"  visible="false" readonly="false"   onChanging="buscarCliCed(event.value); "  cols="13"   onOK="verificarCedula(self.value); bclientei.visible = false;"  />
+                                                     
+                                                     
                                                     <groupbox closable="true" style="position: absolute;background:#E2EDFE;" visible="false" id="bclientei">
                                                         <vbox>
                                                             <hbox>
@@ -1600,7 +1359,7 @@ void llamar(){
                                                     <label style="font-weight:bold2" id="labelnombre" value="Apellidos: " />
                                                 </span>
                                                 <span>
-                                                    <combobox  cols="35" id="combo" onSelect="verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion())" autodrop="true" buttonVisible="false"  use="jcinform.bean.autoCompletarClientes"/>
+                                                    <combobox  cols="35" id="combo" onSelect="verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion())" autodrop="true" buttonVisible="false"  use="jcinform.bean.autoCompletarClientesSector"/>
 
                                                     <image  tooltip="autompletar2" popup="autompletar2"  src="/images/keyboard.png"  />
                                                     <popup id="autompletar2" width="300px">
@@ -1609,9 +1368,9 @@ void llamar(){
                                                         </html>
                                                     </popup>
  
-                                                    <label style="font-weight:bold2" id="labelcontrato" value="No.Contrato" />
-                                                    <intbox readonly="false" cols="5"   onOK ="verificarContrato(self.value)"   id="buscarContrato" />
-                                                    <image  tooltip="autompletarNo" popup="autompletarNo"  src="/images/keyboard.png"  />
+                                                    <label style="font-weight:bold2" visible="false" id="labelcontrato" value="No.Contrato" />
+                                                    <intbox visible ="false" readonly="false" cols="5"   onOK ="verificarContrato(self.value)"   id="buscarContrato" />
+                                                    <!--image  tooltip="autompletarNo" popup="autompletarNo"  src="/images/keyboard.png"  /-->
                                                     <popup id="autompletarNo" width="300px">
                                                         <html>
                                                                             Digite el No de Contrato y Presione Enter

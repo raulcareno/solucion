@@ -147,18 +147,12 @@ void ingresar(Menuitem item,String pantalla ){
                                 <menupopup>
                                     <menuitem image="/images/contratos.png" value="/contratosSucursal.zul"  label="Contratos y Cobros" onClick='ingresar(self,"Contratos")' />
                                     <menuitem image="/images/soporte.png" value="/soporte.zul"  label="Soporte" onClick='ingresar(self,"Soporte")' />
+                                     
+                                    <menuseparator />
+                                     
+                                    <menuitem value="/reporteCobrosSector.zul"  image="/images/reportes.png" label="Reportes" onClick='ingresar(self,"Reportes")' />
+                                    <menuitem label="Salir" image="/images/exit.gif"  onClick="salir()" />
  
-                                    <menuseparator />
-                                     
-                                     
-                                    <menuitem image="/images/tarjeta.png" value="/registroFacturas.zul"  label="Registrar Cobros" onClick='ingresar(self,"Registro de Cobros")' />
-                                    <menuitem image="/images/tarjeta.png" value="/registroFacturasDebito.zul"  label="Registrar Cobros Debitos" onClick='ingresar(self,"Registro de Cobros")' />
-                                    <menuitem image="/images/calendario.png" value="/generarFacturas.zul"  label="Generación Facturas" onClick='ingresar(self,"Generacion Cobros")' />
-                                     
-                                    <menuseparator />
-                                     
-                                    <menuitem value="/reporteCobros.zul"  image="/images/reportes.png" label="Reportes" onClick='ingresar(self,"Reportes")' />
-                                    <menuitem value="/megas.zul"  image="/images/mb.png" label="Megas Ocupados" onClick='ingresar(self,"Reportes")' />
                                 </menupopup>
                             </menu>
                         </menubar>

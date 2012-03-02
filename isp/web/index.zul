@@ -193,6 +193,10 @@ void ingresar(Menuitem item,String pantalla ){
             if(emp==null){
                 Executions.sendRedirect("login.zul");
             }    
+            if(emp.getPantalla().equals("Externa")){
+                Executions.sendRedirect("/indexCobros.zul");
+            }    
+            
             }
         </zscript>
     </borderlayout>
