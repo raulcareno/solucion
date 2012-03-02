@@ -51,6 +51,8 @@ public class Empleados implements Serializable {
     private String usuario;
     @Column(name = "clave")
     private String clave;
+    @Column(name = "pantalla")
+    private String pantalla;
     @Column(name = "estado")
     private Boolean estado;
     @Column(name = "tipo")
@@ -189,6 +191,16 @@ public class Empleados implements Serializable {
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
     }
+
+    public String getPantalla() {
+        return pantalla;
+    }
+
+    public void setPantalla(String pantalla) {
+        this.pantalla = pantalla;
+    }
+    
+    
 
     public Collection<Auditoria> getAuditoriaCollection() {
         return auditoriaCollection;

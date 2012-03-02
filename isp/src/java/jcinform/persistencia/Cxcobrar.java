@@ -101,6 +101,13 @@ public class Cxcobrar implements Serializable {
     @JoinColumn(name = "empleados", referencedColumnName = "codigo")
     @ManyToOne
     private Empleados empleados;
+    
+      
+    @JoinColumn(name = "sector", referencedColumnName = "codigo")
+    @ManyToOne
+    private Sector sector;
+    
+    
     public Cxcobrar() {
     }
 
@@ -343,8 +350,17 @@ public class Cxcobrar implements Serializable {
         this.nocuentaban = nocuentaban;
     }
 
+    public Sector getSector() {
+        return sector;
+    }
+
+    public void setSector(Sector sector) {
+        this.sector = sector;
+    }
+
    
     
+
 
     
     @Override

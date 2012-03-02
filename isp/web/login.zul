@@ -129,7 +129,10 @@ void ingresoSistemas(){
                     permisos.llenar(user,perio);
                     generarFacturas gen = new generarFacturas();
                     gen.generacionAutomatico(perio.getSucursal());
-                    Executions.sendRedirect("index.zul");
+                    if(perio.getEmpleados().getPantalla().equals("Interna" ))
+                        Executions.sendRedirect("index.zul");
+                    else
+                        Executions.sendRedirect("indexCobros.zul");
 
 
             }else{

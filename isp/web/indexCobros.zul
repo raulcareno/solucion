@@ -105,7 +105,7 @@ void ingresar(Menuitem item,String pantalla ){
                     <panelchildren>
 
                         <menubar id="menubar" autodrop="true"  width="100%">
-                            <menu label="Administración"  image="/images/administracion1.png"  >
+                            <!--menu label="Administración"  image="/images/administracion1.png"  >
                                 <menupopup>
                                     <menuitem  value="/accesos.zul"  image="/images/key.png"  label="Accesos" onClick='ingresar(self,"Accesos")' />
                                     <menuitem  value="/auditoria.zul"  image="/images/auditoria.gif" label="Auditoria" onClick='ingresar(self,"Auditoria")' />
@@ -120,11 +120,11 @@ void ingresar(Menuitem item,String pantalla ){
                                     <menuitem value="/respaldos.zul" image="/images/base.gif"   label="Respaldar BD Sistema"  onClick='ingresar(self,"Respaldar")' />
                                     <menuitem label="Salir" image="/images/exit.gif"  onClick="salir()" />
                                 </menupopup>
-                            </menu>
-                            <menu label="Personas"   image="/images/personas.png" >
+                            </menu-->
+                            <!--menu label="Personas"   image="/images/personas.png" >
                                 <menupopup>
                                     <menuitem   value="/proveedores.zul"  image="/images/proveedor.png" label="Proveedores" onClick='ingresar(self,"Proveedores")' />
-                                <!--menuitem    value="/clientes.zul" image="/images/clientes.png" label="Clientes" onClick='ingresar(self,"")' /-->
+                                
                                     <menuseparator />
                                     <menuitem    value="/empleados.zul" image="/images/empleados.png" label="Empleados" onClick='ingresar(self,"Empleados")' />
                                     <menuitem    value="/comisiones.zul" image="/images/comision.png" label="Comisión-Empleados" onClick='ingresar(self,"Comisiones")' />
@@ -132,9 +132,9 @@ void ingresar(Menuitem item,String pantalla ){
                                     <menuitem    value="/empleadosucursal.zul" image="/images/sectores.png" label="Sucursal-Empleados" onClick='ingresar(self,"EmpleadosSectores")' />
 
                                 </menupopup>
-                            </menu>
+                            </menu-->
 
-                            <menu label="Control" image="/images/control.png" >
+                            <!--menu label="Control" image="/images/control.png" >
                                 <menupopup>
                                 
                                     <menuitem value="/comprasventas.zul" image="/images/equipos.png" label="Compras/Ventas" onClick='ingresar(self,"Compras")' />
@@ -142,22 +142,21 @@ void ingresar(Menuitem item,String pantalla ){
                                     <menuitem   value="/marcas.zul"  image="/images/marcas.png" label="Marcas" onClick='ingresar(self,"Marcas")' />
                                     <menuitem  value="/equipos.zul"   image="/images/equipos2.png" label="Equipos" onClick='ingresar(self,"Equipos")' />
                                 </menupopup>
-                            </menu>
+                            </menu-->
                             <menu label="Cobros" image="/images/cobros.png" >
                                 <menupopup>
-                                    <menuitem image="/images/contratos.png" value="/contratos.zul"  label="Contratos" onClick='ingresar(self,"Contratos")' />
-                                    <menuitem image="/images/contratos.png" value="/contratosSucursal.zul"  label="Contratos" onClick='ingresar(self,"Contratos")' />
+                                    <menuitem image="/images/contratos.png" value="/contratosSucursal.zul"  label="Contratos y Cobros" onClick='ingresar(self,"Contratos")' />
                                     <menuitem image="/images/soporte.png" value="/soporte.zul"  label="Soporte" onClick='ingresar(self,"Soporte")' />
-                                <!--menuitem image="/images/facturacion.png" value="/facturacion.zul"  label="Facturación" onClick='ingresar(self,"")' /-->
+ 
                                     <menuseparator />
-                                    <menuitem image="/images/facturacion.png" value="/asignarFacturas.zul"  label="Asignar Facturas" onClick='ingresar(self,"Facturacion")' />
-                                    <menuitem image="/images/facturacion.png" value="/generarArchivoBanco.zul"  label="Generar Archivo Banco" onClick='ingresar(self,"Facturacion")' />
+                                     
+                                     
                                     <menuitem image="/images/tarjeta.png" value="/registroFacturas.zul"  label="Registrar Cobros" onClick='ingresar(self,"Registro de Cobros")' />
                                     <menuitem image="/images/tarjeta.png" value="/registroFacturasDebito.zul"  label="Registrar Cobros Debitos" onClick='ingresar(self,"Registro de Cobros")' />
                                     <menuitem image="/images/calendario.png" value="/generarFacturas.zul"  label="Generación Facturas" onClick='ingresar(self,"Generacion Cobros")' />
-                                    <menuitem image="/images/calendario.png" value="/anularFacturaExtra.zul"  label="Ingresar Factura Anulada" onClick='ingresar(self,"Generacion Cobros")' />
+                                     
                                     <menuseparator />
-                                    <menuitem  value="/planes.zul"    image="/images/planes.png" label="Planes Productos" onClick='ingresar(self,"Planes")' />
+                                     
                                     <menuitem value="/reporteCobros.zul"  image="/images/reportes.png" label="Reportes" onClick='ingresar(self,"Reportes")' />
                                     <menuitem value="/megas.zul"  image="/images/mb.png" label="Megas Ocupados" onClick='ingresar(self,"Reportes")' />
                                 </menupopup>

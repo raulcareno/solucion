@@ -43,7 +43,19 @@ void llenar(Empleados empa){
 
     if(empa.getEstado()!=null)
             estadoe.checked= empa.getEstado();
- 
+    if(empa.getPantalla()!=null){
+                  for (int i = 0; i <= pantalla.getItems().size(); i++) {
+                            String tr0 = ((Listitem)pantalla.getItems().get(i)).getValue();
+                            String primero = tr0+"";
+                            String segundo = empa.getPantalla();
+                            if(primero.equals(segundo)){
+                             
+                                pantalla.setSelectedItem((Listitem)pantalla.getItems().get(i));
+                                //bd.value = empa.getPantalla()+"";
+                                break;
+                            }
+                   }
+                }
  
                 if(empa.getPerfil()!=null){
                   for (int i = 0; i <= perf.getItems().size(); i++) {
@@ -111,6 +123,7 @@ void estado(Boolean estado,Boolean modificar){
         empa.setEstado(estadoe.checked);
         empa.setUsuario(usuario.value);
         empa.setTipo(tipo.selectedItem.value);
+        empa.setPantalla(pantalla.selectedItem.value);
 
         empa.setClave(permiso.encriptar(clave.value));
  
@@ -320,6 +333,15 @@ empa.setPerfil(g);
                                     </bandpopup>
                                 </bandbox>
 
+                            </row>
+                            <row>
+                                <span style="float:right"> Pantalla(*):</span>
+                                 <listbox id="pantalla" width="200px" >
+                                                 
+                                                <listitem  value="Interna" label="Interna" />
+                                                <listitem  value="Externa" label="Externa" />
+ 
+                                 </listbox>
                             </row>
 
                       

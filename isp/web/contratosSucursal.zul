@@ -253,51 +253,28 @@ void llenar(Contratos  equi2){
      registrado.value = usuarioActual.getApellidos()+" "+usuarioActual.getNombres();
      registradoU.value = usuarioActual.getCodigo()+"";
      }  
-     buscarSeries(equi);
+     
     
 }
 void estado(Boolean estado,Boolean modificar){
     
    
-    buscarE1.disabled = estado;
-    buscarE2.disabled = estado;
-    buscarE3.disabled = estado;
-    buscarE.disabled = estado;
+ 
     fecha.disabled = estado;
-    nocuenta.readonly = estado;
-    tipocuenta.disabled = estado;
+     tipocuenta.disabled = estado;
     diapago.disabled = estado;
     direccioni.readonly = estado;
     referenciai.readonly = estado;
-    descuento.readonly = estado;
-    telefonoi.readonly = estado;
-    fechainstalacion.disabled = estado;
-    autorizado.disabled = estado;
-    usuario.readonly = estado;
+     
     ip.readonly = estado;
     clave.readonly = estado;
-    bd.disabled = estado;
-    bdRadio.disabled = estado;
-    bdNodo.disabled = estado;
-    bd22.disabled = estado;
-    numerocontrato.readonly = estado;
-    nuevoC.disabled = estado;
-    nuevoE.disabled = estado;
-     identificacion.focus();
-     deb.disabled=estado;
-     efe.disabled=estado;
-     cbr.disabled=estado;
-     eactivo.disabled=estado;
-     ecortado.disabled = estado;
-     esuspendido.disabled=estado;
-     eterminado.disabled=estado;
      direccion.readonly = estado;
      telefono.readonly = estado;
      email.readonly = estado;
      nombres.readonly = estado;
      apellidos.readonly = estado;
      razonsocial.readonly = estado;
-     identificacion2.readonly = estado;
+      
      
      //combo.readonly = estado;
 
@@ -726,7 +703,7 @@ if(sihay==0){
                     //nuevo2();
                     estado(true,false);
                     sumar();
-                    buscarSeries(equi);
+                     
 }
 
  Boolean verificar(String accion){
@@ -1202,7 +1179,7 @@ void verificarCedula(String valor){
                             }
                             Span s = new Span();
                             Button aButton = null;
-                            aButton = new Button("");//"Cobrar"
+                            aButton = new Button("Cobrar");//"Cobrar"
                             aButton.setImage("/images/dinero.gif");
                             aButton.setId(""+vec.get(0));
                             aButton.setAttribute("valor",vec.get(3));
@@ -1226,80 +1203,7 @@ void verificarCedula(String valor){
                                 });
                                 s.appendChild(aButton);
                               //row.appendChild(aButton);
-                              
-                            Button aButtonDes = null;
-                            aButtonDes = new Button("");//"Descuento"
-                            aButtonDes.setImage("/images/descuento.png");
-                            aButtonDes.setId("des"+vec.get(0));
-                            aButtonDes.setAttribute("valor",vec.get(3));
-                            aButtonDes.setTooltip(desc);
-                            aButtonDes.addEventListener("onClick", new EventListener() {
-                             public void onEvent(Event event) throws Exception {
-                                 if(verificar2("Ingresar")){
-                                      registro.setSelected(true);
-                                    final Window win = (Window) Executions.createComponents("descuentoCliente.zul", null, null);
-                                    win.setMaximizable(true);
-                                    win.setClosable(true);
-                                    win.setAttribute("codigoFactura", aButtonDes.getId().replace("des",""));
-                                    win.setAttribute("valoraPagar", aButtonDes.getAttribute("valor"));
-                                    win.setTitle("Aplicar Descuento");
-                                    win.doModal();
-                                }else{
-                                        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                                }                      
-
-                              
-                               
-                              }
-                                });
-                              s.appendChild(aButtonDes);
-                              //row.appendChild(aButtonDes);
-                              
-                              
-                              Button aButtonEli = null;
-                            aButtonEli = new Button("");//"Eliminar"
-                            aButtonEli.setImage("/images/eliminar.gif");
-                            aButtonEli.setId("eli"+vec.get(0));
-                            aButton.setTooltip(elm);
-                            aButtonEli.addEventListener("onClick", new EventListener() {
-                             public void onEvent(Event event) throws Exception {
-                                 if(verificar2("Eliminar")){
-                                 registro.setSelected(true);
-                                 int valor0 = Messagebox.show("Seguro que desea Eliminar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
-                                  seriespanel.visible = false;
-                                   
-                                   if(valor0 == 16){
-                                     
-                                      Integer facCodi = new Integer(aButtonEli.getId().replace("eli",""));
-                                      List siEx = adm.query("Select o from Cxcobrar as o where o.factura.codigo = '"+facCodi+"'");
-                                      if(siEx.size()>1){
-                                               
-                                                Messagebox.show("No se puede eliminar, ya tiene pagos realizados...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
-                                      }else{
-                                              //adm.ejecutaSql("Delete from Cabeceracompra where factura.codigo = '"+facCodi +"' ");
-                                              adm.ejecutaSql("Delete from Empleadosfacturas where factura.codigo = '"+facCodi +"' ");
-                                              adm.ejecutaSql("Delete from Cxcobrar where factura.codigo = '"+facCodi +"' ");
-                                              adm.ejecutaSql("Delete from Detalle  where factura.codigo = '"+facCodi +"' ");
-                                              adm.eliminarObjeto(Factura.class, facCodi );
-                                              facturas.setSelected(true);
-                                      }
-                                      
-                                      
-                                    }
-                                     
-                                    facturas.setSelected(true);  
-                                      
-                                }else{
-                                        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                                }                      
-
-                              
-                               
-                              }
-                                });
-                                s.appendChild(aButtonEli);
-                              //row.appendChild(aButtonEli);
-                            row.appendChild(s);
+                              row.appendChild(s);
                             filasFac.appendChild(row);
                 }
             
@@ -1538,238 +1442,11 @@ void verificarCedula(String valor){
                                      public void quitarFila(String codigoBuscar){
                                
                                     }
-      void buscarSeries(String serie){
-                            List seriesEn = adm.query("Select o from Series as o where o.estado = 'C'  and o.serie = '"+serie+"'" + 
-                                    " and o.serie not in (Select a.serie from Series as a where a.estado IN ( 'A','P','V') ) " + 
-                                    " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo() +"'  ");
-                               if(seriesEn.size()>0){
-                                           
-                                           try{
-                                                    Row row = new Row();
-                                                      //CARGO LAS SERIES COMO ATRIBUTO
-                                                      ArrayList series = new ArrayList();
-                                                            Intbox intb = new Intbox(seriesEn.get(0).getDetallecompra().getEquipos().getCodigo());
-                                                            intb.setCols(3);
-                                                            intb.setReadonly(true);
-                                                            intb.setStyle("float:right;text-align:right");
-                                                             row.appendChild(intb);
-                                                            Label prod = new Label(""+seriesEn.get(0).getDetallecompra().getEquipos());
-                                                            row.appendChild(prod);
-                                                            Decimalbox valor = new Decimalbox((seriesEn.get(0).getDetallecompra().getEquipos().getPvp1()));
-                                                            valor.setFormat("##0.00");
-                                                            valor.setStyle("float:right;text-align:right");
-                                                            valor.setReadonly(true);
-                                                            row.appendChild(valor);
-                                                            
-                                                            
-                                                            Label seri = new Label(""+seriesEn.get(0).getSerie());
-                                                            row.appendChild(seri);
-                                                         
-                                                            Button aButton = null;
-                                                            aButton = new Button("quitar");
-                                                            aButton.setImage("/images/quitar.gif");
-                                                            aButton.setHeight("5px");
-                                                            aButton.setId("id"+seriesEn.get(0).getSerie());
-                                                            aButton.addEventListener("onClick", new EventListener() {
-                                                                public void onEvent(Event event) throws Exception {
-                                                                     //int valor0 = Messagebox.show("Seguro que desea quitar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
-                                                                     //seriespanel.visible = false;
-                                                                     //if(valor0 == 16){
-                                                                        quitarFila(aButton.getId());
-                                                                        sumar();
-                                                                     //}
-
-                                                                }
-                                                            });
-                                                            row.appendChild(aButton);
-                                                            
-                                                            Checkbox facturado = new Checkbox();
-                                                            facturado.setChecked(false);
-                                                            facturado.addEventListener("onCheck", new EventListener() {
-                                                                public void onEvent(Event event) throws Exception {
-                                                                     sumar();
-
-                                                                }
-                                                            });
-                                                            
-                                                            row.appendChild(facturado);
-                                                            
-                                                            
-                                                            row.setValue(seriesEn.get(0)); 
-                                                    filas.appendChild(row);
-                                                    sumar();
-                                                    }catch(Exception e){
-                                                        Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-                                                    }
-                                                
-                                                seriebuscar.value="";
-                                                seriebuscar.focus();
-                                                
-                                           }else{
-                                               List equipos = adm.query("Select o from Equipos as o " + 
-                                                    " where o.tipo = '"+serie+"' and o.bien = false and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo() +"' ");
-                                                       if(equipos.size()>0){
-                                                                       try{
-                                                                                    Row row = new Row();
-                                                                                      //CARGO LAS SERIES COMO ATRIBUTO
-                                                                                      ArrayList series = new ArrayList();
-                                                                                            Intbox intb = new Intbox(equipos.get(0).getCodigo());
-                                                                                            intb.setCols(3);
-                                                                                            intb.setReadonly(true);
-                                                                                            intb.setStyle("float:right;text-align:right");
-                                                                                             row.appendChild(intb);
-                                                                                            Label prod = new Label(""+equipos.get(0));
-                                                                                            row.appendChild(prod);
-                                                                                            Decimalbox valor = new Decimalbox((equipos.get(0).getPvp1()));
-                                                                                            valor.setFormat("##0.00");
-                                                                                            valor.setStyle("float:right;text-align:right");
-                                                                                            valor.setReadonly(true);
-                                                                                            row.appendChild(valor);
-
-
-                                                                                            Label seri = new Label(""+equipos.get(0).getTipo());
-                                                                                            row.appendChild(seri);
-
-                                                                                            Button aButton = null;
-                                                                                            aButton = new Button("quitar");
-                                                                                            aButton.setImage("/images/quitar.gif");
-                                                                                            aButton.setHeight("5px");
-                                                                                            aButton.setId("id"+equipos.get(0).getTipo());
-                                                                                            aButton.addEventListener("onClick", new EventListener() {
-                                                                                                public void onEvent(Event event) throws Exception {
-                                                                                                        quitarFila(aButton.getId());
-                                                                                                        sumar();
-                                                                                                  }
-                                                                                            });
-                                                                                            row.appendChild(aButton);
-
-                                                                                            Checkbox facturado = new Checkbox();
-                                                                                            facturado.setChecked(true);
-                                                                                            facturado.addEventListener("onCheck", new EventListener() {
-                                                                                                public void onEvent(Event event) throws Exception {
-                                                                                                     sumar();
-
-                                                                                                }
-                                                                                            });
-
-                                                                                            row.appendChild(facturado);
-                                                                                            Detallecompra det = new Detallecompra();
-                                                                                            Series ser = new Series();
-                                                                                            ser.setSerie(equipos.get(0).getTipo());
-                                                                                            det.setEquipos(equipos.get(0));
-                                                                                            ser.setDetallecompra(det);
-                                                                                            row.setValue(ser); 
-                                                                                    filas.appendChild(row);
-                                                                                    sumar();
-                                                                                    }catch(Exception e){
-                                                                                        Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...! \\n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-                                                                                    }
-
-                                                                                seriebuscar.value="";
-                                                                                seriebuscar.focus();
-                                                                
-                                                                
-                                                        }else{
-                                                         Messagebox.show("SERIE NO ENCONTRADA (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                                                        seriebuscar.value="";
-                                                        seriebuscar.focus();
-                                                        }
-                                           }
-                                           
-                                           
-    } 
+ 
     public void sumar(){
         }
     
-void buscarSeries(Contratos contratos){
- 
-           List seriesEn = adm.query("Select o from Series as o where o.estado = 'P' " +
-           " and o.contratos.codigo = '"+contratos.getCodigo()+"' ");
-                  if(seriesEn.size()>0){
-                  for(Iterator it = seriesEn.iterator(); it.hasNext();) {
-                      Series object = (Series)it.next();
-                      try{
-                        Row row = new Row();
-                          //CARGO LAS SERIES COMO ATRIBUTO
-                          ArrayList series = new ArrayList();
-                                Intbox intb = new Intbox(object.getDetallecompra().getEquipos().getCodigo());
-                                intb.setCols(3);
-                                intb.setReadonly(true);
-                                intb.setStyle("float:right;text-align:right");
-                                 row.appendChild(intb);
-                                Label prod = new Label(""+object.getDetallecompra().getEquipos());
-                                row.appendChild(prod);
-                                Decimalbox valor = new Decimalbox((object.getDetallecompra().getEquipos().getPvp1()));
-                                valor.setFormat("##0.00");
-                                valor.setStyle("float:right;text-align:right");
-                                valor.setReadonly(true);
-                                row.appendChild(valor);
-
-
-                                Label seri = new Label(""+object.getSerie());
-                                row.appendChild(seri);
-
-                                Button aButton = null;
-                                aButton = new Button("quitar");
-                                aButton.setImage("/images/quitar.gif");
-                                aButton.setHeight("5px");
-                                aButton.setId("id"+object.getSerie());
-                                aButton.setAttribute("serieId",object.getCodigo());
-                                aButton.setAttribute("serie",object);
-                                aButton.addEventListener("onClick", new EventListener() {
-                                    public void onEvent(Event event) throws Exception {
-                                    Integer sec = aButton.getAttribute("serieId");
-                                         int valor0 = Messagebox.show("Seguro de Eliminar este elemento, Desea Continuar? \n SE ELIMINARÁ DEL REGISTRO DE LAS SERIES", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
-                                          
-                                           if(valor0 == 16){
-                                            
-                                            //TENGO QUE ELIMINAR TODO EL REGISTRO DE COMPRA EN CASO DE QUE HAYA SOLO UN ITEM
-                                            Series serAc = aButton.getAttribute("serie");
-                                            int cant = serAc.getDetallecompra().getCantidad();
-                                            if(cant == -1){
-                                                adm.eliminarObjeto(Series.class, sec); 
-                                                adm.eliminarObjeto(Detallecompra.class,serAc.getDetallecompra().getCodigo());
-                                                adm.eliminarObjeto(Cabeceracompra.class,serAc.getDetallecompra().getCabeceracompra().getCodigo());
-                                            }else{
-                                                adm.eliminarObjeto(Series.class, sec); 
-                                                Detallecompra deta = serAc.getDetallecompra();
-                                                deta.setCantidad(deta.getCantidad()+1);
-                                                adm.actualizar(deta);
-                                            }
-                                            quitarFila(aButton.getId());
-                                            sumar();
-                                          }
-
-                                    }
-                                });
-                                row.appendChild(aButton);
-                                Checkbox facturado = new Checkbox();
-                                facturado.setChecked(false);
-                                facturado.addEventListener("onCheck", new EventListener() {
-                                    public void onEvent(Event event) throws Exception {
-                                         sumar();
-
-                                    }
-                                });
-
-                                row.appendChild(facturado);
-
-
-                                row.setValue(object); 
-                                filas.appendChild(row);
-                        sumar();
-                        }catch(Exception e){
-                            Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-                        }
-
-                    seriebuscar.value="";
-                    seriebuscar.focus();
-                    
-                    }
-
-               }
-    } 
-  
+   
 void llamar(){  
           String object = (String)InputMessageBox.showQuestion("Número de Factura", "Ingreso");
         System.out.println("RESULT: " + object);
@@ -1855,22 +1532,12 @@ void llamar(){
     </zscript>
     <div>
         <!--button label="MOSTRAR" id="mensaje"  onClick="llamar()" /-->
-    
-        <popup id="desc" width="150px">
-            <vbox>
-			Aplicar o Eliminar un Descuento
-            </vbox>
-        </popup>
-        <popup id="cobr" width="150px">
+         <popup id="cobr" width="150px">
             <vbox>
 			Cobrar la deuda seleccionada
             </vbox>
         </popup>
-        <popup id="elm" width="150px">
-            <vbox>
-			Eliminar el cobro seleccionado
-            </vbox>
-        </popup>
+       
         <tabbox width="100%"  height="600px" orient="vertical"  >
             <tabs  width="150px">
                 <tab id="registro" label="Contratos"/>
@@ -2084,18 +1751,18 @@ void llamar(){
                                             <textbox id="referenciai" rows="2" cols="40" readonly="true"  />
                                             <span style="float:right"> Descuento </span>
                                             <span > 
-                                                <decimalbox id="descuento" format="#0.00" cols="4" />$   
+                                                <decimalbox id="descuento" readonly="true" format="#0.00" cols="4" />$   
                                             </span>
                                         </row>
                                                    
                                                            
                                         <row>
                                             <span style="float:right"> Canton(*):</span>
-                                            <bandbox  width="200px" readonly="true"  id="bdCanton">
+                                            <bandbox  width="200px"  disabled="true"   id="bdCanton">
                                                 <bandpopup>
                                                     <vbox>
                                                         <listbox id="cantones" width="250px" rows="10"
-                                                                                                                         onSelect="bdCanton.value=self.selectedItem.label;bdCanton.closeDropdown(); buscarSectores(((Canton)self.selectedItem.value).getCodigo()); buscarNodos(((Canton)self.selectedItem.value).getCodigo());">
+                                                           onSelect="bdCanton.value=self.selectedItem.label;bdCanton.closeDropdown(); buscarSectores(((Canton)self.selectedItem.value).getCodigo()); buscarNodos(((Canton)self.selectedItem.value).getCodigo());">
                                                             <listitem   forEach="${cantonesList}" value="${each}">
                                                                 <listcell label="${each.nombre}" />
                                                             </listitem>
@@ -2105,7 +1772,7 @@ void llamar(){
                                             </bandbox>
                                             <span style="float:right"> Nodos(*):</span>
                                                            
-                                            <bandbox  width="200px" readonly="true"  id="bdNodo">
+                                            <bandbox  width="200px"  disabled="true"  readonly="true"  id="bdNodo">
                                                 <bandpopup>
                                                     <vbox>
                                                         <listbox id="nodos" width="250px" rows="10"
@@ -2118,7 +1785,7 @@ void llamar(){
                                         </row>
                                         <row>
                                             <span style="float:right"> Sector(*):</span>
-                                            <bandbox  width="200px" readonly="true"  id="bdSector">
+                                            <bandbox  width="200px" disabled="true" readonly="true"  id="bdSector">
                                                 <bandpopup>
                                                     <vbox>
                                                         <listbox id="sectores" width="250px" rows="10"
@@ -2300,17 +1967,7 @@ void llamar(){
                   
                 </tabpanel>
                 <tabpanel>
-                    <!--listbox mold="paging" rows="10" pageSize="10"   id="facturasDatos" width="100%">
-                        <listhead>
-                            <listheader label="Factura"/>
-                            <listheader label="Fecha Pago"/>
-                            <listheader label="Total"/>
-                            <listheader label="Saldo"/>
-                            <listheader label="Opcion"/>
-                        </listhead>
-                        <listitem forEach="${allEvents}" value="${each}">
-                        </listitem>
-                    </listbox--> 
+ 
                     <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasDatos" >
                         <columns>
                             <column  label="No."/>
