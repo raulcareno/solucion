@@ -951,7 +951,7 @@ void verificarCedula(String valor){
                              public void onEvent(Event event) throws Exception {
                                if(verificar3("Ingresar")){
                                         registro.setSelected(true);
-                                        final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
+                                        final Window win = (Window) Executions.createComponents("facturarCliente2.zul", null, null);
                                         win.setMaximizable(true);
                                         win.setClosable(true);
                                         win.setAttribute("codigoFactura", aButton.getId());
