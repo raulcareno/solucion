@@ -5,6 +5,7 @@
 
 package jcinform.persistencia;
 
+ 
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -21,6 +22,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  *
@@ -66,7 +68,16 @@ public class Soporte implements Serializable {
     private String observacion3;
     @Column(name = "generada")
     private Boolean generada = false;
-        @Column(name = "noorden")
+    @Transient
+    String clientesNombre;
+      
+    @Transient
+    String empleadosNombre;
+      
+    @Transient
+    String tecnicoNombre;
+    
+    @Column(name = "noorden")
     private Integer noorden;
     @JoinColumn(name = "clientes", referencedColumnName = "codigo")
     @ManyToOne
@@ -205,6 +216,40 @@ public class Soporte implements Serializable {
 
     public void setActividad(Integer actividad) {
         this.actividad = actividad;
+    }
+
+    public String getClientesNombre() {
+        if(clientes!=null)
+        return clientes.getApellidos()+" "+clientes.getNombres();
+        else
+            return "";
+                
+    }
+
+    public void setClientesNombre(String clientesNombre) {
+        this.clientesNombre = clientesNombre;
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                 
+
+    public String getEmpleadosNombre() {
+        if(empleados!=null)
+        return empleados.getApellidos()+" "+empleados.getNombres();
+        else
+            return "";
+    }
+
+    public void setEmpleadosNombre(String empleadosNombre) {
+        this.empleadosNombre = empleadosNombre;
+    }
+
+    public String getTecnicoNombre() {
+        if(tecnico!=null)
+            return tecnico.getApellidos()+" "+tecnico.getNombres();
+        else
+            return "";
+    }
+
+    public void setTecnicoNombre(String tecnicoNombre) {
+        this.tecnicoNombre = tecnicoNombre;
     }
     
     

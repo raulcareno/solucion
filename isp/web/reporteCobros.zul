@@ -97,6 +97,26 @@ cantones.add(0,cantonTodos);
                 
                 
                 report.setSrc(directorioReportes+"cxcclientes.jasper");
+            }else if(tipo.equals("HISTORIA")){
+                Integer cclientev = ccliente.value;
+                if(cclientev != null ){
+                }else{
+                        cclientev = -1; //TODOS LOS CLIENTES
+                }
+                if(cclientev.equals(-1)){
+                        datasource = reportes.historiaTecnicaCliente(new Clientes(cclientev));
+                }else{
+                        datasource = reportes.historiaTecnicaCliente(new Clientes(cclientev));
+                }
+                
+                
+                report.setSrc(directorioReportes+"soporte.jasper");
+            }else if(tipo.equals("HISTORIA2")){
+                datasource = reportes.historiaTecnicaUsuario(empleadosList.selectedItem.value);
+                report.setSrc(directorioReportes+"soporte.jasper");
+            }else if(tipo.equals("HISTORIA3")){
+                datasource = reportes.historiaTecnicaSector(sectorList.selectedItem.value,cant.selectedItem.value);
+                report.setSrc(directorioReportes+"soporte.jasper");
             }else if(tipo.equals("CXCLIEST")){
                 datasource = reportes.facturasPendientesest(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value);
                 report.setSrc(directorioReportes+"cxcclientesest.jasper");
@@ -227,7 +247,21 @@ void campos(String valor){
       filaplan.visible = false;
             filatipoplan.visible = false;
       fec.setDate(1);
-        if(valor.equals("CXCLI")){
+        if(valor.equals("HISTORIA")){
+            titulo.value= "Historia Técnica por Cliente";
+            filaclientes.visible=true;
+            filaclientes1.visible=true;
+            desde.value = fec; 
+        }else if(valor.equals("HISTORIA2")){
+            titulo.value= "Historia Técnica por Usuario";
+            filaempleados.visible=true;
+            desde.value = fec; 
+        }else if(valor.equals("HISTORIA3")){
+            titulo.value= "Historia Técnica por Sector";
+            filacanton.visible=true;
+           filasector.visible=true;
+            desde.value = fec; 
+        }else if(valor.equals("CXCLI")){
             titulo.value= "Cuentas por Pagar";
             filaclientes.visible=true;
             filaclientes1.visible=true;
@@ -413,6 +447,10 @@ void campos(String valor){
                                     <listitem  disabled="true" id="linea99" label="========EMPLEADOS=================" value="linea2" />
                                     <listitem id="COMISIONES1" label="Contratos vendidos por empleado" value="COMISIONES1" />
                                     <listitem id="COMISIONES2" label="Contratos vendidos por empleado - estados " value="COMISIONES2" />
+                                    <listitem  disabled="true" id="linea299" label="========SOPORTE TÉCNICO=================" value="linea299" />
+                                    <listitem id="HISTORIA" label="Historia Técnica x Cliente" value="HISTORIA" />
+                                    <listitem id="HISTORIA2" label="Historia Técnica x Usuario" value="HISTORIA2" />
+                                    <listitem id="HISTORIA3" label="Historia Técnica x Sector" value="HISTORIA3" />
            
                                 </listbox>
     

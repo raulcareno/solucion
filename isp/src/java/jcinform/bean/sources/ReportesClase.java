@@ -12,6 +12,7 @@ import jcinform.bean.sources.clasestmp.Pendientes;
 import jcinform.conexion.Administrador;
 import jcinform.persistencia.*;
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Listitem;
@@ -1057,5 +1058,79 @@ public class ReportesClase {
         System.out.println("" + quer);
         ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
         return ds;
+    }
+
+    public JRDataSource historiaTecnicaCliente(Clientes cli) {
+        Administrador adm = new Administrador();
+        List<Clientes> clientes = new ArrayList<Clientes>();
+        if (cli.getCodigo().equals(-1)) {
+
+            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                    + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+        } else {
+            cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
+            clientes.add(cli);
+        }
+        List detalles = new ArrayList();
+        String quer = "";
+        for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
+            Clientes clientes1 = itCli.next();
+            quer = "SELECT  o FROM Soporte as o WHERE o.clientes.codigo  =  " + clientes1.getCodigo() + "  "
+                    + "order by o.fecha ";
+
+            List facEncontradas = adm.query(quer);
+            Pendientes pendi = null;
+            for (Iterator it = facEncontradas.iterator(); it.hasNext();) {
+                Soporte object = (Soporte) it.next();
+                detalles.add(object);
+
+            }
+
+
+        }
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(detalles);
+        return beanCollectionDataSource;
+    }
+
+    public JRDataSource historiaTecnicaUsuario(Empleados emple) {
+        Administrador adm = new Administrador();
+        List detalles = new ArrayList();
+        String quer = "SELECT  o FROM Soporte as o WHERE o.empleados.codigo  =  " + emple.getCodigo() + "  "
+                + "order by o.fecha ";
+        List facEncontradas = adm.query(quer);
+        for (Iterator it = facEncontradas.iterator(); it.hasNext();) {
+            Soporte object = (Soporte) it.next();
+            detalles.add(object);
+
+        }
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(detalles);
+        return beanCollectionDataSource;
+    }
+
+    public JRDataSource historiaTecnicaSector(Sector cli,Canton cant) {
+        Administrador adm = new Administrador();
+        List<Clientes> clientes = new ArrayList<Clientes>();
+    
+            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                    + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                    + "and o.sector.codigo = '"+cli.getCodigo()+"' order by o.clientes.apellidos");
+        
+        List detalles = new ArrayList();
+        String quer = "";
+        for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
+            Clientes clientes1 = itCli.next();
+            quer = "SELECT  o FROM Soporte as o WHERE o.clientes.codigo  =  " + clientes1.getCodigo() + "  "
+                    + "order by o.fecha ";
+            List facEncontradas = adm.query(quer);
+            for (Iterator it = facEncontradas.iterator(); it.hasNext();) {
+                Soporte object = (Soporte) it.next();
+                detalles.add(object);
+
+            }
+
+
+        }
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(detalles);
+        return beanCollectionDataSource;
     }
 }
