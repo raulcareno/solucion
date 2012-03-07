@@ -40,6 +40,9 @@ public class Factura implements Serializable {
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
+    @Column(name = "emision")
+    @Temporal(TemporalType.DATE)
+    private Date emision;
     @Column(name = "total")
     private BigDecimal total;
     @Column(name = "estado")
@@ -210,6 +213,15 @@ public class Factura implements Serializable {
         this.impresa = impresa;
     }
 
+    public Date getEmision() {
+        return emision;
+    }
+
+    public void setEmision(Date emision) {
+        this.emision = emision;
+    }
+
+    
     public Collection<Detalle> getDetalleCollection() {
         return detalleCollection;
     }
