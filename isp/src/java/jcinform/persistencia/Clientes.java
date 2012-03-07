@@ -35,6 +35,8 @@ public class Clientes implements Serializable {
     @Basic(optional = false)
     @Column(name = "codigo")
     private Integer codigo;
+    @Column(name = "tipoidentificacion")
+    private String tipoidentificacion;
     @Column(name = "identificacion")
     private String identificacion;
     @Column(name = "razonsocial")
@@ -158,6 +160,14 @@ public class Clientes implements Serializable {
 
     public void setFormapago(String formapago) {
         this.formapago = formapago;
+    }
+
+    public String getTipoidentificacion() {
+        return tipoidentificacion;
+    }
+
+    public void setTipoidentificacion(String tipoidentificacion) {
+        this.tipoidentificacion = tipoidentificacion;
     }
 
  

@@ -491,7 +491,12 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
  
  }
  void imprimirTodosEmpleado(){
-            List col = facturasDatosAsignados.getRows().getChildren();
+        generarCM cm = new generarCM();
+        List col = facturasDatosAsignados.getRows().getChildren();
+        byte[] data = cm.empezarGenerar(col);
+        Filedownload.save(data, "file", "archivoBanco");
+        /* 
+        List col = facturasDatosAsignados.getRows().getChildren();
             ArrayList detalles = new ArrayList();
             String codigos = "";
                            for (int i = 0; i < col.size(); i++) {
@@ -552,7 +557,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                 
             }
                 
- 
+ */
  }
   ]]>
     </zscript>
@@ -772,6 +777,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                             <span>
                                                 <button label="Guardar" image="/images/guardar.gif" onClick="guardarFilas();facturasPendientesEmpleado();"/>
                                                 <button label="Imprimir" image="/images/imprimir.gif" onClick="imprimirTodosEmpleado()"/>
+                                                
                                             </span>
                                         </row>
                                         
