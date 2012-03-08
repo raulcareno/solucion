@@ -440,6 +440,11 @@ void recalcular(){
             }else if(tipo.equals("MEJ")){
                     datasource = noti.mejoresporcurso(sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"mejoresporcurso.jasper");
+            }else if(tipo.equals("PROC")){
+                    reportesClase noti = new reportesClase();
+                    datasource = noti.promediosxcursoymateria(sistemasCombo.getSelectedItem().getValue(),curs.getSelectedItem().getValue());
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"promediosxcursoymateria.jasper");
             }else if(tipo.equals("RECC")){
                     datasource = noti.recordporcurso(curs.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"record.jasper");
@@ -691,6 +696,12 @@ void campos(String valor){
              filacursos.visible = true;
             filamaterias.visible = true;
  filaestudiantes.visible = true;
+        }else if(valor.equals("PROC")  ){
+             titulo.value= "Promedios x Curso y Materia";
+             curs.disabled = false;
+             sistemasCombo.disabled = false;
+              filaaportes.visible = true;
+              filacursos.visible = true;
         }else if(valor.equals("CERD")  ){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
@@ -801,6 +812,7 @@ void campos(String valor){
                                     <listitem  id="CNF3" label="Cuadro Final" value="CNF3" />
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
                                     <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
+                                    <listitem  id="PROC" label="Promedios x Materias y Curso " value="PROC" />
                                     <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
                                     
                                     <listitem  id="EST" label="Estadístico por Curso" value="EST" />
@@ -842,6 +854,7 @@ void campos(String valor){
                                     <listitem  id="DIS2" label="Profesores por Curso" value="DIS2" />
                                     <listitem  id="PROF" label="Listado de Profesores" value="PROF" />
                                     <listitem  id="PROFC" label="Listado de Profesores completo" value="PROFC" />
+                                   
         
                                 </listbox>
                               

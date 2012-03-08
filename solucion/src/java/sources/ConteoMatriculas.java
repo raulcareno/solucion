@@ -4,7 +4,7 @@
  */
 package sources;
 
-import java.util.Collection;
+import java.math.BigDecimal;
 
 /**
  *
@@ -18,6 +18,8 @@ public class ConteoMatriculas {
     public String especialidad;
     public String genero;
     public Integer numero;
+    public BigDecimal promedio;
+    public String materia;
      
     
     public ConteoMatriculas(){
@@ -72,6 +74,22 @@ public class ConteoMatriculas {
 
     public void setNumero(Integer numero) {
         this.numero = numero;
+    }
+
+    public String getMateria() {
+        return materia;
+    }
+
+    public void setMateria(String materia) {
+        this.materia = materia;
+    }
+
+    public BigDecimal getPromedio() {
+        return promedio;
+    }
+
+    public void setPromedio(BigDecimal promedio) {
+        this.promedio = promedio;
     }
   
     
