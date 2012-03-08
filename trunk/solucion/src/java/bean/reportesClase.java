@@ -3820,7 +3820,74 @@ public class reportesClase {
         return ds;
 
     }
-    
+   
+       public JRDataSource promediosxcursoymateria(Sistemacalificacion sistema,Cursos curso) {
+//     int tamanio=0;
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+                + "where  o.sistema.codigosis  = '" + sistema.getCodigosis() + "' "
+                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + "  "
+                + "order by o.sistema.orden ");
+        List<Cursos> cursos  = new ArrayList<Cursos>();
+        List<Global> map = new ArrayList<Global>();
+        if(curso.getCodigocur().equals(-2)){
+                cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+ periodo.getCodigoper() +"' order by o.secuencia, o.paralelo.descripcion ");
+                map = adm.query("Select DISTINCT o.materia from MateriaProfesor as o "
+                                    + " where o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  "
+                                + " and o.ministerio = true order by o.orden");
+        }else{
+                cursos = adm.query("Select o from Cursos as o where o.secuencia = '"+curso.getSecuencia()+"' and o.periodo.codigoper = '"+ periodo.getCodigoper() +"' order by o.secuencia, o.paralelo.descripcion ");
+                map = adm.query("Select DISTINCT o.materia from MateriaProfesor as o "
+                                    + " where o.curso.codigocur = '"+curso.getCodigocur()+"'  "
+                                + " and o.ministerio = true order by o.orden");
+        }
+        
+        
+                        
+        
+        List<ConteoMatriculas> lisNotas = new ArrayList();
+          int i= 1;
+           for (Iterator<Cursos> it = cursos.iterator(); it.hasNext();) {
+               Cursos cursos1 = it.next();
+//               List<MateriaProfesor> map = adm.query("Select o from MateriaProfesor as o "
+//                                    + " where o.curso.codigocur = '"+cursos1.getCodigocur()+"'  and o.ministerio = true order by o.orden");
+               for (Iterator<Global> itMap = map.iterator(); itMap.hasNext();) {
+                   Global mapProfesor = itMap.next();
+                              List nativo =   adm.queryNativo(" Select avg("+notas.get(0).getNota() +") from notas "
+                                        + " where materia = '"+mapProfesor.getCodigo()+"' "
+                                        + "and  matricula in (Select codigomat from matriculas where curso = '"+cursos1.getCodigocur()+"' )  ");
+                              for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                                  Vector vec = (Vector) itna.next();
+                                        ConteoMatriculas c = new ConteoMatriculas();
+                                        c.setNumero(i); 
+                                        c.setNombrecurso(cursos1.getSecuencia()+".-"+cursos1.getDescripcion()); 
+                                        c.setEspecialidad(cursos1.getEspecialidad().getDescripcion()); 
+                                        c.setParalelo(cursos1.getParalelo().getDescripcion());
+                                        c.setGenero("");
+                                        c.setConteo(1);
+                                        if(vec.get(0)!= null){
+                                            c.setPromedio(new BigDecimal(vec.get(0)+""));
+                                        }else{
+                                            c.setPromedio(null);
+                                        }
+                                        c.setMateria(mapProfesor.getDescripcion());
+                                        lisNotas.add(c); 
+                              }
+                              
+
+               }
+           }
+         
+           
+ 
+        ReporteMatriculadosDataSource ds = new ReporteMatriculadosDataSource(lisNotas);
+        return ds;
+
+    }
+   
     public JRDataSource cuadrocalificacionesestadistico(Cursos curso, Sistemacalificacion sistema) {
 //     int tamanio=0;
         Administrador adm = new Administrador();

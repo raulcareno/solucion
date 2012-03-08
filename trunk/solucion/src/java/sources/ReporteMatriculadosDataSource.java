@@ -63,6 +63,10 @@ public class ReporteMatriculadosDataSource implements JRDataSource{
             valor = nodo.getParalelo();
         }  else if ("numero".equals(fieldName)) {
             valor = nodo.getNumero();
+        }  else if ("materia".equals(fieldName)) {
+            valor = nodo.getMateria();
+        }  else if ("promedio".equals(fieldName)) {
+            valor = nodo.getPromedio();
         } 
 
          } catch (Exception e) {
