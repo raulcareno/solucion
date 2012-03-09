@@ -104,18 +104,18 @@ cantones.add(0,cantonTodos);
                         cclientev = -1; //TODOS LOS CLIENTES
                 }
                 if(cclientev.equals(-1)){
-                        datasource = reportes.historiaTecnicaCliente(new Clientes(cclientev));
+                        datasource = reportes.historiaTecnicaCliente(new Clientes(cclientev),desde.value, hasta.value);
                 }else{
-                        datasource = reportes.historiaTecnicaCliente(new Clientes(cclientev));
+                        datasource = reportes.historiaTecnicaCliente(new Clientes(cclientev),desde.value, hasta.value);
                 }
                 
                 
                 report.setSrc(directorioReportes+"soporte.jasper");
             }else if(tipo.equals("HISTORIA2")){
-                datasource = reportes.historiaTecnicaUsuario(empleadosList.selectedItem.value);
+                datasource = reportes.historiaTecnicaUsuario(empleadosList.selectedItem.value,desde.value, hasta.value);
                 report.setSrc(directorioReportes+"soporte.jasper");
             }else if(tipo.equals("HISTORIA3")){
-                datasource = reportes.historiaTecnicaSector(sectorList.selectedItem.value,cant.selectedItem.value);
+                datasource = reportes.historiaTecnicaSector(sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value);
                 report.setSrc(directorioReportes+"soporte.jasper");
             }else if(tipo.equals("CXCLIEST")){
                 datasource = reportes.facturasPendientesest(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value);
@@ -250,15 +250,18 @@ void campos(String valor){
         if(valor.equals("HISTORIA")){
             titulo.value= "Historia Técnica por Cliente";
             filaclientes.visible=true;
+            filafechas.visible=true;
             filaclientes1.visible=true;
             desde.value = fec; 
         }else if(valor.equals("HISTORIA2")){
             titulo.value= "Historia Técnica por Usuario";
             filaempleados.visible=true;
+            filafechas.visible=true;
             desde.value = fec; 
         }else if(valor.equals("HISTORIA3")){
             titulo.value= "Historia Técnica por Sector";
             filacanton.visible=true;
+            filafechas.visible=true;
            filasector.visible=true;
             desde.value = fec; 
         }else if(valor.equals("CXCLI")){

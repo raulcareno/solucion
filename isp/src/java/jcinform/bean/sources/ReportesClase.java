@@ -1060,7 +1060,9 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource historiaTecnicaCliente(Clientes cli) {
+    public JRDataSource historiaTecnicaCliente(Clientes cli,Date desde, Date hasta) {
+        String desdestr = convertiraString(desde);
+        String hastastr = convertiraString(hasta);
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         if (cli.getCodigo().equals(-1)) {
@@ -1076,6 +1078,7 @@ public class ReportesClase {
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
             Clientes clientes1 = itCli.next();
             quer = "SELECT  o FROM Soporte as o WHERE o.clientes.codigo  =  " + clientes1.getCodigo() + "  "
+                    + "and  o.fecha between '"+desdestr+"' and '"+hastastr+"' "
                     + "order by o.fecha ";
 
             List facEncontradas = adm.query(quer);
@@ -1092,10 +1095,14 @@ public class ReportesClase {
         return beanCollectionDataSource;
     }
 
-    public JRDataSource historiaTecnicaUsuario(Empleados emple) {
+    public JRDataSource historiaTecnicaUsuario(Empleados emple,Date desde, Date hasta) {
+         
         Administrador adm = new Administrador();
+        String desdestr = convertiraString(desde);
+        String hastastr = convertiraString(hasta);
         List detalles = new ArrayList();
         String quer = "SELECT  o FROM Soporte as o WHERE o.empleados.codigo  =  " + emple.getCodigo() + "  "
+                + "and  o.fecha between '"+desdestr+"' and '"+hastastr+"' "
                 + "order by o.fecha ";
         List facEncontradas = adm.query(quer);
         for (Iterator it = facEncontradas.iterator(); it.hasNext();) {
@@ -1107,19 +1114,45 @@ public class ReportesClase {
         return beanCollectionDataSource;
     }
 
-    public JRDataSource historiaTecnicaSector(Sector cli,Canton cant) {
+    public JRDataSource historiaTecnicaSector(Sector sec,Canton canton,Date desde, Date hasta) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
-    
-            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                    + "and o.sector.codigo = '"+cli.getCodigo()+"' order by o.clientes.apellidos");
+//            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+//                    + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+//                    + "and o.sector.codigo = '"+sec.getCodigo()+"' order by o.clientes.apellidos");
+//            
+             if (sec.getCodigo().equals(-1)) {
+
+                if (canton.getCodigo().equals(-1)) {
+                    clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                            + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+
+                } else {
+                    clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                            + "where o.sector.canton.codigo = '" + canton.getCodigo() + "' and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+
+                }
+            } else if (canton.getCodigo().equals(-1)) {
+
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+
+
+            } else {
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "where o.sector.codigo = '" + sec.getCodigo() + "' "
+                        + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+
+            }
         
         List detalles = new ArrayList();
         String quer = "";
+        String desdestr = convertiraString(desde);
+        String hastastr = convertiraString(hasta);
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
             Clientes clientes1 = itCli.next();
-            quer = "SELECT  o FROM Soporte as o WHERE o.clientes.codigo  =  " + clientes1.getCodigo() + "  "
+            quer = "SELECT  o FROM Soporte as o WHERE o.clientes.codigo  =  " + clientes1.getCodigo() + " "
+                    + "and  o.fecha between '"+desdestr+"' and '"+hastastr+"' "
                     + "order by o.fecha ";
             List facEncontradas = adm.query(quer);
             for (Iterator it = facEncontradas.iterator(); it.hasNext();) {
