@@ -213,12 +213,12 @@ void cargarVacio(){
             try {
  
                 java.io.File f = new java.io.File(inobjeto.getFotos()+inobjeto.getRuc()+"."+inobjeto.getEmail());
+                System.out.println(""+inobjeto.getFotos()+inobjeto.getRuc()+"."+inobjeto.getEmail());
                 fin = new FileInputStream(f);
                 byte[] buffer = new byte[(int) f.length()];
                 fin.read(buffer);
                 fin.close();
                 foto0.setContent(new org.zkoss.image.AImage("fotito", buffer));
-
             } catch (FileNotFoundException ex) {
                 cargarVacio();
                 Logger.getLogger("ERROR EN MATRICULAS: ").log(Level.SEVERE, null, ex);

@@ -80,6 +80,9 @@ cantones.add(0,cantonTodos);
                 parametros.put("sector2", sectorList2.selectedItem.value+"");
             }catch(Exception e){
             }
+            try{
+                parametros.put("empleado",empleadosList.selectedItem.value+"");
+            }catch(Exception ar){}
             
            String directorioReportes = empresa.getReportes();
             JRDataSource datasource = null;
