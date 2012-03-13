@@ -429,7 +429,7 @@ Boolean validar(){
     equi.setTelefono(telefonoi.value);
     equi.setEmpleados2(new Empleados((new Integer(codigoemp.value))));
     
-    
+  
      if(equi.getContrato()==null){
             Integer valor = adm.getNuevaClave("Contratos","contrato");
             equi.setContrato(valor);
@@ -470,6 +470,12 @@ Boolean validar(){
             equi.setEmpleados(new Empleados(new Integer(registradoU.value)));//REGISTRADOR
              adm.actualizar(equi);
                 permiso.auditar("Contratos","Actualizar",""+equi.getContrato()+" - "+equi.getClientes());
+                Historialcortes historia = new Historialcortes();
+                historia.setCodigo(adm.getNuevaClave("Historialcortes","codigo"));
+                historia.setFecha(adm.Date());
+                historia.setEstado(estadoContrato.selectedItem.value);
+                historia.setContratos(equi);
+                adm.guardar(historia);
          }else{
           //EN CASO DE Q VAYA A ACTUALIAR
              if(validarContrato(numerocontrato.value)){
@@ -1364,6 +1370,23 @@ void verificarCedula(String valor){
                 
  }
  
+ void facturasCortes(){
+ 
+ List historia = adm.query("Select o from Historialcortes as o " + 
+        " where o.contratos.codigo = '"+equi.getCodigo()+"' ");
+        historiaCortesGrid.getRows().getChildren().clear();
+        System.out.println(""+historia);
+                for (Iterator itna = historia.iterator(); itna.hasNext();) {
+                            Historialcortes vec = (Historialcortes) itna.next();
+                            Row row = new Row();
+                            SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
+                             Date d = vec.getFecha();
+                             row.appendChild(new Label(d1.format(d)+""));
+                             row.appendChild(new Label(vec.getEstado()+""));
+                             filasCortes.appendChild(row);
+                            
+                  }
+ }
    void facturasPagadas(){
                 try{
                 List facEncontradas =  adm.queryNativo("SELECT cx.codigo, fa.numero, fa.fecha, " + 
@@ -1965,6 +1988,7 @@ void llamar(){
                 <tab onSelect="facturasPendientes()" label="Pendientes" id="facturas"/>
                 <tab onSelect="buscarSoportes()" label="Hist. Técnica" />
                 <tab onSelect="facturasPagadas()" label="Hist. Pagos" id="historial" />
+                 <tab onSelect="facturasCortes()" label="Hist. Cortes" id="historiaCortes" />
                
             </tabs>
             <tabpanels>
@@ -2551,6 +2575,17 @@ void llamar(){
                     </grid>
                     <textbox id="observacionanula" />
                     <checkbox id="continuar" />
+                </tabpanel>
+                 <tabpanel>
+                    <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="historiaCortesGrid" >
+                        <columns>
+                            <column  label="Fecha"/>
+                            <column   label="Acción Realizada"/>
+                        </columns>
+                        <rows id="filasCortes">
+                            
+                        </rows>
+                    </grid>
                 </tabpanel>
                 <tabpanel>
                     <panel height="470px" style="margin-bottom:10px"
