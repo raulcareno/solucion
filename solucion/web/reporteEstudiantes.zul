@@ -874,6 +874,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc(directorioReportes+"conasistencia.jasper");
+            }else if(tipo.equals("LASI2")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"conasistencia2.jasper");
             }else if(tipo.equals("LGEN")){
                     datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
@@ -1092,6 +1096,8 @@ void campos(String valor){
             titulo.value = "Listado de Estudiantes";
        if(valor.equals("LASI"))
             titulo.value = "Listado de Estudiantes";
+            if(valor.equals("LASI2"))
+            titulo.value = "Registro del Profesor";
        if(valor.equals("LGEN"))
             titulo.value = "Listado de Estudiantes";
        if(valor.equals("LFEC"))
@@ -1179,6 +1185,7 @@ void campos(String valor){
                                 <listitem  id="LCAS" label="Estudiantes con Casilleros vacios" value="LCAS"/>
                                 <listitem  id="LCA" label="Estudiantes 1 Casillero" value="LCA"/>
                                 <listitem  id="LASI" label="Listado para Asistencia" value="LASI"/>
+                                <listitem  id="LASI2" label="Listado para Notas(Registro del Profesor)" value="LASI2"/>
                                 
                                 <listitem  id="LGEN" label="Estudiantes por Genero (Masculino:Femenino)" value="LGEN"/>
                                 <listitem  id="LFEC" label="Estudiantes por Fecha y Edad (Años Cumplidos)" value="LFEC"/>
@@ -1357,6 +1364,7 @@ void campos(String valor){
             LCAS.visible = per.verificarPermisoReporte("LCAS", "Ingresar");
             LCA.visible = per.verificarPermisoReporte("LCA", "Ingresar");
             LASI.visible = per.verificarPermisoReporte("LASI", "Ingresar");
+            LASI2.visible = per.verificarPermisoReporte("LASI", "Ingresar");
             LGEN.visible = per.verificarPermisoReporte("LGEN", "Ingresar");
             LFEC.visible = per.verificarPermisoReporte("LFEC", "Ingresar");
             LMIN.visible = per.verificarPermisoReporte("LMIN", "Ingresar");

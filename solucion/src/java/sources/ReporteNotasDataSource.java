@@ -145,6 +145,12 @@ public class ReporteNotasDataSource implements JRDataSource {
                 } catch (Exception e) {
                 }
                 
+            }  else if ("identificacion".equals(fieldName)) {
+                try {
+                    valor = nodo.getMprofesor().getEmpleado().getIdentificacion()+"";
+                } catch (Exception e) {
+                }
+                
             } else if ("optativa".equals(fieldName)) {
                 try {
                     valor = nodo.getMprofesor().getEmpleado().getApellidos() + " " + nodo.getMprofesor().getEmpleado().getNombres() + " ";
