@@ -322,7 +322,7 @@ void generar(String tipo,Date fecha,Boolean empi){
                                     </listbox>
                                   <checkbox id="incluir" style="font-weight:bold" label="PREVIO RECALCULO?"  />
                                     <button label="Aprovechamiento"   image="/images/run.gif" onClick="aprovechamiento2();"/>
-                                    <button label="Disciplina"   image="/images/run.gif" onClick="disciplina()"/>
+                                    <!--button label="Disciplina"   image="/images/run.gif" onClick="disciplina()"/-->
                                  
                                 </span>
                             </row>

@@ -254,7 +254,7 @@ public class Procesos {
                     Matriculas matriculas1 = it.next();
                     List val = adm.queryNativo("select avg(" + no.getNota() + ")  from notas " +
                             "where matricula = '" + matriculas1.getCodigomat() + "' " +
-                            "and promedia = true and disciplina = true  ");
+                            " and materia = 0   ");
                      //       System.out.println(matriculas1.getEstudiante().getApellido()+": " + ((Vector)val.get(0)).get(0));
                     Double  promedio =  (Double) ((Vector)val.get(0)).get(0);
                     if(promedio == null){

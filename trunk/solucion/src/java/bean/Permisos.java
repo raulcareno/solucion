@@ -226,9 +226,27 @@ public class Permisos {
                 a.setAttribute("accesos",accesosList);
                 
                 return true;
+        }else{
+            Accesos ac = new Accesos();
+                Administrador adm = new Administrador();
+                ac.setCodigoacc(adm.getNuevaClave("Accesos", "codigoacc"));
+                if(pantalla){
+                    ac.setModulo(idVariable);
+                    ac.setGrupo("MATRICULAS");
+                }else{
+                    ac.setModulo("REP | "+descripcion+" ["+idVariable+"]");
+                }
+                ac.setGrupo(grupo);
+                ac.setGuardar(true);
+                ac.setIngresar(true);
+                ac.setActualizar(true);
+                ac.setEliminar(Boolean.TRUE);
+                ac.setPerfil(null);
+                adm.guardar(ac);
+                return false;
         }
         
-        return false;
+        //return false;
 
     }
 
