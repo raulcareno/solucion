@@ -293,7 +293,7 @@ public class reportesClase {
 
     }
 
-    public JRDataSource cuadrocalificaciones(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta, Boolean incluyefaltas) {
+    public JRDataSource cuadrocalificaciones(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta, Boolean incluyefaltas,Boolean incluyepromedio) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -411,6 +411,7 @@ public class reportesClase {
                         if (true && !matriculaAct.equals(matriNueva)) {//PARA EL PROMEDIO
 
                             //IMPRIMO EL PROMEDIO ******************************* 
+                            if(incluyepromedio){
                             Object promedioFinal = null;
                             String query2 = "round(cast(avg(" + query + ") as decimal(9,4))," + 2 + ")";
                             q = "Select matricula," + query2 + "  from notas "
@@ -474,7 +475,7 @@ public class reportesClase {
                                 }
                                 //row.setParent(this);
                             }
-
+                            }
 
                             
                             

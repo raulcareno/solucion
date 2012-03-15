@@ -488,18 +488,18 @@ void recalcular(){
             }else if(tipo.equals("CCAL2")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked);
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked,incluirpromedio.checked);
                     report.setSrc(directorioReportes+"cuadrocalificaciones2.jasper");
                            
             }else if(tipo.equals("CCAL3")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked);
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked,incluirpromedio.checked);
                     report.setSrc(directorioReportes+"cuadrocalificaciones3.jasper");
             }else if(tipo.equals("CCAL")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked);
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked,incluirpromedio.checked);
                     report.setSrc(directorioReportes+"cuadrocalificaciones.jasper");
 
             }else if(tipo.equals("ESTA")){
@@ -618,6 +618,7 @@ void campos(String valor){
     filaaportes.visible = false;
      filasecuencia.visible = false;
      incluirfaltas.visible = false;
+     incluirpromedio.visible = false;
         if(valor.equals("DIS")){
             curs.disabled = false;
             filacursos.visible = true;
@@ -711,6 +712,7 @@ void campos(String valor){
              filaestudiantes.visible = true;
         }else if(valor.equals("CCAL") || valor.equals("CCAL2") || valor.equals("CCAL3")){
              incluirfaltas.visible = true;
+             incluirpromedio.visible = true;
              curs.disabled = false;
              sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Calificaciones";
@@ -788,7 +790,7 @@ void campos(String valor){
         </zscript>
         <panel width="100%" id="parametros"  height="100%" border="normal">
             <panelchildren>
-                <grid  id="ver" style="background:transparent;border:1px" width="700px">
+                <grid  id="ver" style="background:transparent;border:1px" width="750px">
                     <rows>
                         <row  style="background:transparent;border:0px">
      
@@ -870,7 +872,9 @@ void campos(String valor){
                                 <separator bar="true" orient="vertical" />
                                 Nota de Peligro:<decimalbox id="peligro" value="13.33" cols="5"/>
                                 <separator bar="true" orient="vertical" />
-                                  <checkbox visible="false" id="incluirfaltas" label="INCLUIR FALTAS" style="color:blue" />
+                                INCLUIR: 
+                                <checkbox visible="false" checked="true" id="incluirpromedio" label="PROMEDIO" style="color:blue" />
+                                  <checkbox visible="false" id="incluirfaltas" label=" FALTAS" style="color:blue" />
                             </span>
                         </row>
 
