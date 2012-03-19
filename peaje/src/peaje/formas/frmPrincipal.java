@@ -3659,6 +3659,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     verIp.tomarFotoIp(ubicacionDirectorio + "fotos" + separador + fac.getCodigo() + ".jpg", this);
                 }
                 try {
+                    if (empresaObj.getRetardoEntrada() != null) {
+                            if (empresaObj.getRetardoEntrada().length() > 0) {
+                                Integer retardo = new Integer(empresaObj.getRetardoEntrada());
+                                Thread.sleep(retardo * 1000);
+                            }
+                   }
                     abrirPuerta(puertoViene);
                 } catch (Exception e) {
                     System.out.println("PROCESO CORRECTO NO ABRIÓ PUERTA POR PUERTO DESHABILITADO");
@@ -3762,7 +3768,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             llenarFechayHora(fac, "no");
                             errores.setText("<html> Valor: "+fac.getTotal()+" </html>");
                             imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
-
+                            if (empresaObj.getRetardoSalida() != null) {
+                            if (empresaObj.getRetardoSalida().length() > 0) {
+                                Integer retardo = new Integer(empresaObj.getRetardoSalida());
+                                Thread.sleep(retardo * 1000);
+                            }
+                        }
                         } else {
                             fac = calcularTiempo(fac);
                             adm.actualizar(fac);
