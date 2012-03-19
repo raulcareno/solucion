@@ -59,6 +59,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
             facturasDatos.getRows().getChildren().clear();
             ArrayList contratosAnadidos = new ArrayList();
             int i =0;
+           Bancos banco = bancosList.selectedItem.value ;
             BigDecimal total = new BigDecimal(0);
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
                             Vector vec = (Vector) itna.next();
@@ -76,7 +77,9 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                 if(row == null){
                                     row = new Row();
                                    }
-                                    if(dos instanceof Integer){
+                                   if(j== 5){
+                                   
+                                   }else  if(dos instanceof Integer){
                                              row.setValue(dos);
                                              row.appendChild(new Label(dos+""));
                                     }else if(dos instanceof Date){
@@ -99,42 +102,8 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                             BigDecimal val = ((BigDecimal) vec.get(5));
                             total = total.add(val);
 
-                              Button aButton = null;
-                            aButton = new Button("");
-                            aButton.setImage("/images/imprimir.gif");
-                            aButton.setId(""+vec.get(0));
-                            if( vec.get(1) == null)
-                                aButton.setDisabled(true);
-                            aButton.setAttribute("valor",vec.get(3));
-                            aButton.addEventListener("onClick", new EventListener() {
-                             public void onEvent(Event event) throws Exception {
-                               /* if(verificar3("Ingresar")){ */
-                                     Map parameters = new HashMap();
-                                    List detalleFac = adm.query("Select o from Detalle as o where o.factura.codigo = '" + aButton.getId() + "'");
-                                    ArrayList detalles = new ArrayList();
-                                   for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
-                                        Detalle det = itAbono.next();
-                                         detalles.add(det);
-                                   }
-                                   ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
-                                   reportelocal.setSrc(directorioReportes+"factura.jasper");
-                                   reportelocal.setParameters(parameters);
-                                   reportelocal.setDatasource(ds);
-                                   reportelocal.setType("pdf");
-                                   impresion.selected = true;
-                                    /*final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
-                                    win.setMaximizable(true);
-                                    win.setClosable(true);
-                                    win.setAttribute("reporte",reportelocal);
-                                    win.setTitle("Reporte");
-                                    win.doModal(); */
-                                 /*}else{
-                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                                    } */
-
-                              }
-                                });
-                              row.appendChild(aButton);
+                            row.appendChild(new Label(banco.getNombre()+""));
+                              //row.appendChild(aButton);
                             try{
                                     filasFac.appendChild(row);
                             }catch(Exception exs){
@@ -295,7 +264,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                      Row object = (Row) arr.get(i);
                                       filasFacAsignados.appendChild(object);
                           }
-                          bancoSeleccionado.value = bancosList.selectedItem.value +"";
+                          bancoSeleccionado.value = (bancosList.selectedItem.value).getNombre() +"";
                                
  }
  void quitarFilas(){
@@ -351,7 +320,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                                   facEnvi.setFecha(fechaAc);
                                                   facEnvi.setNumero(num);
                                                   facEnvi.setEmpleados(usuarioActual);
-                                                  facEnvi.setSaldo(new BigDecimal(labels.get(7).getValue()));
+                                                  facEnvi.setSaldo(new BigDecimal(labels.get(6).getValue()));
                                                   facEnvi.setDebito(new BigDecimal(0));
                                                   facEnvi.setTotal(new BigDecimal(0));
                                                   facEnvi.setDescuento(new BigDecimal(0));
@@ -359,12 +328,13 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                                   if(!arr.contains(facCodigo))
                                                        adm.guardar(facEnvi);
                                               }catch(Exception ax){
-                                                System.out.println(""+ax.getMessage());
+                                                System.out.println(".."+ax.getMessage());
+                                                System.out.println(".."+ax);
                                             }
 
                                         
                           }
-
+generaArch.disabled = false;
  }
  
   public List buscarEnviadas(Sucursal suc, Integer numero) {
@@ -385,6 +355,9 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
         try{
         //   bancoSeleccinoado.value = bancosList.selectedItem.value +"";
             List facturasDatosAsignados2 =  buscarEnviadas(sucursalEmp.getSucursal(),new Integer(numeroinforme.value));
+                 if(facturasDatosAsignados2.size()>0){
+                    generaArch.disabled =false;
+                }
             facturasDatosAsignados.getRows().getChildren().clear();
             ArrayList contratosAnadidos = new ArrayList();
             int i =0;
@@ -669,7 +642,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                             <button label="Buscar" onClick="facturasPendientes()"/>
                                             </span>
                                         </row>
-                                        <row spans="4">
+                                        <row visible="false" spans="4">
                                             <groupbox id="gb" mold="3d" width="100%">
                                                 # Inicial de Factura
                                                 <intbox id="numero" style="color:blue; text-align:center;font-size:14px;font-weight:bold" constraint="no empty,no zero: Ingrese el número inicial para continuar debe ser mayor a 0 y no blanco" />
@@ -681,7 +654,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                         </row>
                                     </rows>
                                 </grid>
-                                <grid height="350px"     fixedLayout="true"  id="facturasDatos" >
+                                <grid height="350px" width="500px"    fixedLayout="true"  id="facturasDatos" >
                                     <columns>
                                         <column  width="35px" >
                                             <checkbox id="todos" label="Selección" onCheck="seleccionarTodos(self,0)" />
@@ -690,10 +663,9 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                         <column sort="auto"    width="68px" label="# Fac."/>
                                         <column sort="auto"    width="85px"   label="Fecha"/>
                                         <column sort="auto" width="150px"   label="Cliente "/>
-                                        <column sort="auto"   width="150px"   label="Dirección "/>
-                                        <column   width="45px"   label="Total"/>
+                                        <column sort="auto"  visible="false" width="150px"   label="Dirección "/>
                                         <column    width="45px"  label="Saldo"/>
-                                        <column  width="45px" label=""/>
+                                        <column  width="45px" label="Banco"/>
                                     </columns>
                                     <rows id="filasFac">
                                     </rows>
@@ -701,12 +673,14 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                         <footer/>
                                         <footer/>
                                         <footer/>
-                                        <footer/>
-                                        <footer/>
-                                        <footer width="10px">
+                                  
+                                        <footer width="100px">
                                             
-                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
+                                            <decimalbox format="#00.00" 
+                                            style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
                                         </footer>
+                                        <footer/>
+                                      
                                         <footer/>
                                                                                       
                                     </foot>
@@ -747,7 +721,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                         <row spans="2" align="center">
                                             <span>
                                                 <button label="Guardar" image="/images/guardar.gif" onClick="guardarFilas();facturasPendientesEmpleado();"/>
-                                                <button label="Generar Archivo" disabled="true" image="/images/imprimir.gif" onClick="imprimirTodosEmpleado()"/>
+                                                <button label="Generar Archivo" disabled="true" image="/images/imprimir.gif" onClick="imprimirTodosEmpleado()" id="generaArch"/>
                                                 
                                             </span>
                                         </row>
@@ -764,7 +738,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                         <column   sort="auto"  width="68px" label="# Fac."/>
                                         <column   sort="auto"  width="85px"   label="Fecha"/>
                                         <column  sort="auto"  width="150px" label="Clientes"/>
-                                        <column  sort="auto"  width="150px" label="Dirección "/>
+                                        <column  sort="auto" visible="false" width="150px" label="Dirección "/>
                                         <column   width="45px"   label="Saldo"/>
                                         <column    width="45px"  label="Banco"/>
                                         <column  width="45px" label=""/>

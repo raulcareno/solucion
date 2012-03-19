@@ -5,13 +5,12 @@
 package jcinform.bean;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Iterator;
 import java.util.List;
 import jcinform.conexion.Administrador;
-import jcinform.persistencia.Archivosbanco;
-import jcinform.persistencia.Bancos;
-import jcinform.persistencia.Empleadossucursal;
-import jcinform.persistencia.Factura;
+import jcinform.persistencia.*;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Row;
@@ -40,9 +39,10 @@ public class generarCM {
             BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
             for (Iterator it = datos.iterator(); it.hasNext();) {
                 Row object = (Row) it.next();
-                Factura fac = (Factura) adm.buscarClave(new Integer(object.getValue().toString()), Factura.class);
-                String valor = fac.getTotal() + "";
-                String base = fac.getBaseiva() + "";
+                //Facturasenviadas fac = (Facturasenviadas) adm.buscarClave(new Integer(((Facturasenviadas)object.getValue()).getCodigo(), Facturasenviadas.class);
+                Facturasenviadas fac = (Facturasenviadas) object.getValue();
+                String valor = fac.getSaldo()+ "";
+                String base = (fac.getSaldo().divide(new BigDecimal(1.12), 2, RoundingMode.HALF_UP)) + "";//BASE IVA TOCARÍA SACAR LA BASE IVA DE LO QUE SE ENVIARÍA
                 try {
 
                     valor = valor.replace(",", "").replace(".", "");
@@ -60,15 +60,15 @@ public class generarCM {
                 } catch (Exception e) {
                 }
                 writer.write("CO" // cobro
-                        + "\t" + fac.getContratos().getCodigo()  // no de contrato
+                        + "\t" + fac.getFactura().getContratos().getCodigo()  // no de contrato
                         + "\tUSD" // moneda
                         + "\t" + valor // valor adeudado
-                        + "\tCTA\t" + fac.getContratos().getTipocuenta() // tipo de cuenta aho, cor
-                        + "\t" + fac.getContratos().getNocuenta() // cuenta del banco
+                        + "\tCTA\t" + fac.getFactura().getContratos().getTipocuenta() // tipo de cuenta aho, cor
+                        + "\t" + fac.getFactura().getContratos().getNocuenta() // cuenta del banco
                         + "\tMENSUALIDAD " + mes(fac.getFecha().getMonth()) +""+(fac.getFecha().getYear()+1900) // descripcion nuestra
-                        + "\t" + fac.getContratos().getClientes().getTipoidentificacion() // tipo de documento
-                        + "\t" + fac.getContratos().getClientes().getIdentificacion().replace("-", "") // cedula
-                        + "\t" + fac.getClientes().getApellidos() + " " + fac.getClientes().getNombres() // nombres cliente
+                        + "\t" + fac.getFactura().getContratos().getClientes().getTipoidentificacion() // tipo de documento
+                        + "\t" + fac.getFactura().getContratos().getClientes().getIdentificacion().replace("-", "") // cedula
+                        + "\t" + fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres() // nombres cliente
                         + "\t" + base //base del iva
                         + "\t"
                         + "\t"
