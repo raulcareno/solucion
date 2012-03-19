@@ -8,7 +8,12 @@ import java.io.*;
 import java.util.Iterator;
 import java.util.List;
 import jcinform.conexion.Administrador;
+import jcinform.persistencia.Archivosbanco;
+import jcinform.persistencia.Bancos;
+import jcinform.persistencia.Empleadossucursal;
 import jcinform.persistencia.Factura;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Row;
 
 /**
@@ -25,17 +30,16 @@ public class generarCM {
         //empezarGenerar();
     }
 
-    public   byte[] empezarGenerar(List datos) {
+    public   byte[] empezarGenerar(List datos,Bancos banco) {
         try {
             Administrador adm = new Administrador();
-
+            Session ses = Sessions.getCurrent();
+            Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
             byte[] data = null;
             File outFile = File.createTempFile("archivoSalida", ".txt");
             BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
             for (Iterator it = datos.iterator(); it.hasNext();) {
                 Row object = (Row) it.next();
-                System.out.println(" " + object.getValue());
-                System.out.println(" " + object.getChildren().get(0));
                 Factura fac = (Factura) adm.buscarClave(new Integer(object.getValue().toString()), Factura.class);
                 String valor = fac.getTotal() + "";
                 String base = fac.getBaseiva() + "";
@@ -55,14 +59,17 @@ public class generarCM {
                     }
                 } catch (Exception e) {
                 }
-                writer.write("CO\t" + fac.getContratos().getCodigo() + "\tUSD\t" + valor
-                        + "\tCTA\t" + fac.getContratos().getTipocuenta()
-                        + "\t" + fac.getContratos().getNocuenta()
-                        + "\tMENSUALIDAD " + mes(fac.getFecha().getMonth()) +""+(fac.getFecha().getYear()+1900)
-                        + "\t" + fac.getContratos().getClientes().getTipoidentificacion()
-                        + "\t" + fac.getContratos().getClientes().getIdentificacion().replace("-", "")
-                        + "\t" + fac.getClientes().getApellidos() + " " + fac.getClientes().getNombres()
-                        + "\t" + base
+                writer.write("CO" // cobro
+                        + "\t" + fac.getContratos().getCodigo()  // no de contrato
+                        + "\tUSD" // moneda
+                        + "\t" + valor // valor adeudado
+                        + "\tCTA\t" + fac.getContratos().getTipocuenta() // tipo de cuenta aho, cor
+                        + "\t" + fac.getContratos().getNocuenta() // cuenta del banco
+                        + "\tMENSUALIDAD " + mes(fac.getFecha().getMonth()) +""+(fac.getFecha().getYear()+1900) // descripcion nuestra
+                        + "\t" + fac.getContratos().getClientes().getTipoidentificacion() // tipo de documento
+                        + "\t" + fac.getContratos().getClientes().getIdentificacion().replace("-", "") // cedula
+                        + "\t" + fac.getClientes().getApellidos() + " " + fac.getClientes().getNombres() // nombres cliente
+                        + "\t" + base //base del iva
                         + "\t"
                         + "\t"
                         + "\t"
@@ -70,30 +77,15 @@ public class generarCM {
                         + "\t"
                         + "\t"
                         + "\t" + fac.getNumero()
-                        + "\tNo.AutorizacionFactura");
+                        + "\t"+sucursalEmp.getSucursal().getEmpresa().getNoautorizacion());
                 writer.newLine(); // Esto es un salto de linea
-
             }
-            for (int i = 0; i < 10; i++) {
 //                writer.write("CO\tNoCONTRATO"+i+"\tUSD\tvalorcancelar01234567890"
-//                    + "\tCTA\tAHOCTE"
-//                    + "\tNO.CUENTA"
-//                    + "\tREFERENCIADELPAGO"
-//                    + "\tTipo(C)edula(R)ucPasaporte"
-//                    + "\tIDENTIFICACIONnO."
-//                    + "\tNOMBRE DEL BENEFICIARIO O DEUDOR"
-//                    + "\tVALOR BASE IMPONIBLE MENOR A VALOR"
-//                    + "\tCO"
-//                    + "\tCB"
-//                    + "\tCB"
-//                    + "\tCB"
-//                    + "\tCB"
-//                    + "\tCB"
-//                    + "\tNOFACTURAORECIBO"
-//                    + "\tNo.AutorizacionFactura");
-//                    writer.newLine(); // Esto es un salto de linea
-            }
-
+//                    + "\tCTA\tAHOCTE" //                    + "\tNO.CUENTA"
+//                    + "\tREFERENCIADELPAGO" //                    + "\tTipo(C)edula(R)ucPasaporte"
+//                    + "\tIDENTIFICACIONnO." //                    + "\tNOMBRE DEL BENEFICIARIO O DEUDOR"
+//                    + "\tVALOR BASE IMPONIBLE MENOR A VALOR" //                    + "\tCO"
+ //                    + "\tNOFACTURAORECIBO" //                    + "\tNo.AutorizacionFactura");
             FileInputStream input;
             writer.close();
             try {
@@ -104,8 +96,13 @@ public class generarCM {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            //outFile.deleteOnExit();
-            //Filedownload.save(data, "file", "archivo.txt");
+            Archivosbanco archivo = new Archivosbanco();
+            archivo.setArchivo(data);
+            archivo.setFecha(adm.Date());
+            archivo.setNumero(Integer.SIZE);
+            archivo.setBancos(banco); 
+            archivo.setEmpleados(sucursalEmp.getEmpleados());
+            adm.guardar(archivo);
 
             return data;
         } catch (IOException e) {

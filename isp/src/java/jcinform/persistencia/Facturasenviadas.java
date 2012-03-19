@@ -54,6 +54,9 @@ public class Facturasenviadas implements Serializable {
     @JoinColumn(name = "factura", referencedColumnName = "codigo")
     @ManyToOne
     private Factura factura;
+    @JoinColumn(name = "bancos", referencedColumnName = "codigo")
+    @ManyToOne
+    private Bancos bancos;
 
     public Facturasenviadas() {
     }
@@ -164,6 +167,14 @@ public class Facturasenviadas implements Serializable {
 
     public void setFactura(Factura factura) {
         this.factura = factura;
+    }
+
+    public Bancos getBancos() {
+        return bancos;
+    }
+
+    public void setBancos(Bancos bancos) {
+        this.bancos = bancos;
     }
     
 

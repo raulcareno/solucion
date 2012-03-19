@@ -73,7 +73,8 @@ public class Empresa implements Serializable {
     private BigDecimal iva;
     @OneToMany(mappedBy = "empresa")
     private Collection<Sucursal> sucursalCollection;
-
+    @Column(name = "noautorizacion")
+    private String noautorizacion;
     public Empresa() {
     }
 
@@ -257,6 +258,16 @@ public class Empresa implements Serializable {
     public void setSucursalCollection(Collection<Sucursal> sucursalCollection) {
         this.sucursalCollection = sucursalCollection;
     }
+
+    public String getNoautorizacion() {
+        return noautorizacion;
+    }
+
+    public void setNoautorizacion(String noautorizacion) {
+        this.noautorizacion = noautorizacion;
+    }
+    
+    
 
     @Override
     public int hashCode() {

@@ -30,6 +30,8 @@ public class Bancos implements Serializable {
     private String nombre;
     @Column(name = "cod")
     private String cod;
+    @Column(name = "empresa")
+    private String empresa;
 
     public Bancos() {
     }
@@ -62,6 +64,15 @@ public class Bancos implements Serializable {
         this.cod = cod;
     }
 
+    public String getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(String empresa) {
+        this.empresa = empresa;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;

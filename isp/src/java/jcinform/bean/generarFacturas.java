@@ -573,7 +573,7 @@ public class generarFacturas {
         return deudas;
     }
     
-    //BUSCA POR NUMERO DE INFORME
+    //BUSCA POR NUMERO DE INFORME BUSCO LAS FACTURAS ENVIADAS.
   public List buscar(Sucursal suc, Integer numero) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         
