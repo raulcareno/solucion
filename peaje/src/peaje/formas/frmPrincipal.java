@@ -406,7 +406,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel31 = new javax.swing.JLabel();
         btnGuardarCambios = new javax.swing.JButton();
         jLabel33 = new javax.swing.JLabel();
-        jLabel34 = new javax.swing.JLabel();
         activa1 = new javax.swing.JCheckBox();
         jLabel35 = new javax.swing.JLabel();
         jButton10 = new javax.swing.JButton();
@@ -417,6 +416,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel53 = new javax.swing.JLabel();
         txtGracia1 = new javax.swing.JFormattedTextField();
         nocontar1 = new javax.swing.JCheckBox();
+        salida1 = new javax.swing.JCheckBox();
         frmClientes1 = new javax.swing.JInternalFrame();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -507,6 +507,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         facturar2 = new javax.swing.JCheckBox();
         ingresos2 = new javax.swing.JSpinner();
         jLabel47 = new javax.swing.JLabel();
+        salida2 = new javax.swing.JCheckBox();
         frmRespaldarBase = new javax.swing.JInternalFrame();
         btnRespaldoWindows = new javax.swing.JButton();
         btnRespaldoLinux = new javax.swing.JButton();
@@ -980,6 +981,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         formaTarjetas1.setTitle("Registro y Modificación de Tarjetas");
         formaTarjetas1.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nuevo.gif"))); // NOI18N
+        formaTarjetas1.setVisible(false);
         formaTarjetas1.getContentPane().setLayout(null);
 
         jLabel14.setText("No. Tarjeta: ");
@@ -1279,6 +1281,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         frmLote.setMaximizable(true);
         frmLote.setTitle("Cambiar horarios por lote");
+        frmLote.setVisible(false);
 
         tablaCambios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1288,7 +1291,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 {null, null, null, null}
             },
             new String [] {
-                "ESTADO", "CLIENTE", "TARJETA", "APLICO EL CAMBIO"
+                "ESTADO", "CLIENTE", "TARJETA", "APLICAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -1309,14 +1312,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jScrollPane5.setViewportView(tablaCambios);
         tablaCambios.getColumnModel().getColumn(0).setResizable(false);
         tablaCambios.getColumnModel().getColumn(0).setPreferredWidth(5);
-        tablaCambios.getColumnModel().getColumn(0).setHeaderValue("ESTADO");
         tablaCambios.getColumnModel().getColumn(1).setResizable(false);
         tablaCambios.getColumnModel().getColumn(1).setPreferredWidth(250);
-        tablaCambios.getColumnModel().getColumn(1).setHeaderValue("CLIENTE");
         tablaCambios.getColumnModel().getColumn(2).setResizable(false);
         tablaCambios.getColumnModel().getColumn(3).setResizable(false);
         tablaCambios.getColumnModel().getColumn(3).setPreferredWidth(10);
-        tablaCambios.getColumnModel().getColumn(3).setHeaderValue("Desde");
 
         diasHabiles1.setBorder(javax.swing.BorderFactory.createTitledBorder("Días Habiles"));
         diasHabiles1.setLayout(null);
@@ -1333,7 +1333,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         diasHabiles1.add(lunes1);
-        lunes1.setBounds(80, 20, 55, 23);
+        lunes1.setBounds(60, 20, 55, 23);
 
         martes1.setText("Martes");
         martes1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1342,7 +1342,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         diasHabiles1.add(martes1);
-        martes1.setBounds(150, 20, 60, 23);
+        martes1.setBounds(120, 20, 60, 23);
 
         miercoles1.setText("Miércoles");
         miercoles1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1351,7 +1351,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         diasHabiles1.add(miercoles1);
-        miercoles1.setBounds(220, 20, 70, 23);
+        miercoles1.setBounds(180, 20, 70, 23);
 
         jueves1.setText("Jueves");
         jueves1.addActionListener(new java.awt.event.ActionListener() {
@@ -1365,7 +1365,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         diasHabiles1.add(jueves1);
-        jueves1.setBounds(300, 20, 60, 23);
+        jueves1.setBounds(250, 20, 60, 23);
 
         viernes1.setText("Viernes");
         viernes1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1374,7 +1374,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         diasHabiles1.add(viernes1);
-        viernes1.setBounds(360, 20, 62, 23);
+        viernes1.setBounds(310, 20, 62, 23);
 
         sabado1.setText("Sábado");
         sabado1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1383,7 +1383,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         diasHabiles1.add(sabado1);
-        sabado1.setBounds(430, 20, 63, 23);
+        sabado1.setBounds(380, 20, 63, 23);
 
         domingo1.setText("Domingo");
         domingo1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1392,7 +1392,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         diasHabiles1.add(domingo1);
-        domingo1.setBounds(490, 20, 70, 23);
+        domingo1.setBounds(440, 20, 70, 23);
 
         todos1.setText("Todos");
         todos1.addActionListener(new java.awt.event.ActionListener() {
@@ -1425,7 +1425,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         jPanel10.add(horaDesde1);
-        horaDesde1.setBounds(50, 20, 80, 20);
+        horaDesde1.setBounds(50, 20, 70, 20);
 
         horaHasta1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1433,14 +1433,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         jPanel10.add(horaHasta1);
-        horaHasta1.setBounds(180, 20, 80, 20);
+        horaHasta1.setBounds(180, 20, 70, 20);
 
         panelHoras1.setBorder(javax.swing.BorderFactory.createTitledBorder("Fechas de Validez"));
         panelHoras1.setLayout(null);
 
         jLabel29.setText("Hasta: ");
         panelHoras1.add(jLabel29);
-        jLabel29.setBounds(160, 20, 40, 14);
+        jLabel29.setBounds(130, 20, 40, 14);
 
         jLabel30.setText("Desde:");
         panelHoras1.add(jLabel30);
@@ -1448,11 +1448,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         fechaDesde1.setDateFormatString("dd/MMM/yyyy");
         panelHoras1.add(fechaDesde1);
-        fechaDesde1.setBounds(50, 20, 95, 20);
+        fechaDesde1.setBounds(50, 20, 80, 20);
 
         fechaHasta1.setDateFormatString("dd/MMM/yyyy");
         panelHoras1.add(fechaHasta1);
-        fechaHasta1.setBounds(200, 20, 95, 20);
+        fechaHasta1.setBounds(170, 20, 80, 20);
 
         nombreBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1473,9 +1473,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel33.setForeground(new java.awt.Color(0, 51, 255));
         jLabel33.setText("Se aplicará el horario y fechas a todos los que estén en la lista ");
 
-        jLabel34.setText("Habilitar Tarjetas");
-
         activa1.setSelected(true);
+        activa1.setText("Habilitar Tarjetas");
 
         jLabel35.setForeground(new java.awt.Color(0, 51, 255));
         jLabel35.setText("y con el VISTO en APLICO CAMBIO");
@@ -1491,7 +1490,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
         jLabel36.setText("Presione Enter");
 
-        jLabel52.setText("# de Ingresos Diarios");
+        jLabel52.setText("# Ingresos Diarios");
 
         facturar1.setText("Facturar");
         facturar1.addActionListener(new java.awt.event.ActionListener() {
@@ -1518,59 +1517,62 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         nocontar1.setText("No contar");
 
+        salida1.setText("Ingresa por la Salida");
+
         javax.swing.GroupLayout frmLoteLayout = new javax.swing.GroupLayout(frmLote.getContentPane());
         frmLote.getContentPane().setLayout(frmLoteLayout);
         frmLoteLayout.setHorizontalGroup(
             frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frmLoteLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(frmLoteLayout.createSequentialGroup()
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frmLoteLayout.createSequentialGroup()
-                        .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
-                        .addGap(4, 4, 4))
                     .addGroup(frmLoteLayout.createSequentialGroup()
-                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(nombreBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel36)
-                        .addGap(20, 20, 20))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frmLoteLayout.createSequentialGroup()
-                        .addComponent(jLabel34)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(activa1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(noingresodiarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(facturar1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtGracia1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nocontar1)))
-                .addGap(23, 23, 23))
-            .addGroup(frmLoteLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(diasHabiles1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
-                .addGap(35, 35, 35))
-            .addGroup(frmLoteLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(btnGuardarCambios)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel35))
-                .addContainerGap(34, Short.MAX_VALUE))
-            .addGroup(frmLoteLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
+                        .addContainerGap()
+                        .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(frmLoteLayout.createSequentialGroup()
+                                .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(nombreBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel36))
+                            .addGroup(frmLoteLayout.createSequentialGroup()
+                                .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(frmLoteLayout.createSequentialGroup()
+                                        .addComponent(activa1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(noingresodiarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(facturar1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(panelHoras1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(frmLoteLayout.createSequentialGroup()
+                                        .addComponent(txtGracia1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(nocontar1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(salida1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(108, 108, 108))))
+                            .addGroup(frmLoteLayout.createSequentialGroup()
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(frmLoteLayout.createSequentialGroup()
+                            .addGap(20, 20, 20)
+                            .addComponent(btnGuardarCambios)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel35)))
+                        .addGroup(frmLoteLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(diasHabiles1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         frmLoteLayout.setVerticalGroup(
@@ -1581,26 +1583,25 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     .addComponent(jLabel31)
                     .addComponent(nombreBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel36))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel34)
+                .addGap(7, 7, 7)
+                .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(activa1)
-                    .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel52)
-                        .addComponent(noingresodiarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(facturar1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtGracia1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(nocontar1)))
+                    .addComponent(noingresodiarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel52)
+                    .addComponent(facturar1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtGracia1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nocontar1)
+                    .addComponent(salida1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelHoras1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(diasHabiles1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(diasHabiles1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(frmLoteLayout.createSequentialGroup()
                         .addComponent(jLabel33)
@@ -1617,6 +1618,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmClientes1.setTitle("Registro y Modifación de Clientes");
         frmClientes1.setAutoscrolls(true);
         frmClientes1.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
+        frmClientes1.setVisible(false);
         frmClientes1.getContentPane().setLayout(null);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -1928,6 +1930,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmLoteTarjetas.setMaximizable(true);
         frmLoteTarjetas.setTitle("Ingreso de Tarjetas por Lotes");
         frmLoteTarjetas.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/File3.gif"))); // NOI18N
+        frmLoteTarjetas.setVisible(false);
         frmLoteTarjetas.getContentPane().setLayout(null);
 
         panelencontrados.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
@@ -2049,7 +2052,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         diasHabiles2.add(jueves2);
-        jueves2.setBounds(10, 60, 60, 23);
+        jueves2.setBounds(10, 40, 60, 23);
 
         viernes2.setText("Viernes");
         viernes2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -2058,7 +2061,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         diasHabiles2.add(viernes2);
-        viernes2.setBounds(70, 60, 62, 23);
+        viernes2.setBounds(70, 40, 62, 23);
 
         sabado2.setText("Sábado");
         sabado2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -2067,7 +2070,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         diasHabiles2.add(sabado2);
-        sabado2.setBounds(130, 60, 63, 23);
+        sabado2.setBounds(130, 40, 63, 23);
 
         domingo2.setText("Domingo");
         domingo2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -2076,7 +2079,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         diasHabiles2.add(domingo2);
-        domingo2.setBounds(200, 60, 70, 23);
+        domingo2.setBounds(200, 40, 70, 23);
 
         todos2.setText("Todos");
         todos2.addActionListener(new java.awt.event.ActionListener() {
@@ -2093,7 +2096,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         todos2.setBounds(10, 20, 55, 23);
 
         frmLoteTarjetas.getContentPane().add(diasHabiles2);
-        diasHabiles2.setBounds(200, 230, 310, 100);
+        diasHabiles2.setBounds(200, 250, 310, 80);
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Horas de ingreso"));
         jPanel11.setLayout(null);
@@ -2211,7 +2214,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         jLabel42.setText("Gracia min.");
         frmLoteTarjetas.getContentPane().add(jLabel42);
-        jLabel42.setBounds(280, 180, 60, 20);
+        jLabel42.setBounds(380, 180, 60, 20);
 
         txtGracia2.setEditable(false);
         txtGracia2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -2222,7 +2225,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         frmLoteTarjetas.getContentPane().add(txtGracia2);
-        txtGracia2.setBounds(340, 180, 80, 20);
+        txtGracia2.setBounds(330, 180, 40, 20);
 
         facturar2.setText("Facturar");
         facturar2.addActionListener(new java.awt.event.ActionListener() {
@@ -2244,11 +2247,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         frmLoteTarjetas.getContentPane().add(ingresos2);
-        ingresos2.setBounds(280, 210, 40, 17);
+        ingresos2.setBounds(200, 200, 40, 17);
 
-        jLabel47.setText("No. Ingresos: ");
+        jLabel47.setText("No. Ingresos:");
         frmLoteTarjetas.getContentPane().add(jLabel47);
-        jLabel47.setBounds(210, 210, 70, 14);
+        jLabel47.setBounds(250, 200, 70, 14);
+
+        salida2.setText("Ingresa por la Salida");
+        frmLoteTarjetas.getContentPane().add(salida2);
+        salida2.setBounds(200, 220, 130, 20);
 
         frmLoteTarjetas.setBounds(5, 5, 570, 460);
         contenedor.add(frmLoteTarjetas, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -6226,8 +6233,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     tarActu.setIngresos((Integer) noingresodiarios.getValue());
                     tarActu.setFacturar(facturar1.isSelected());
                     tarActu.setNocontar(nocontar1.isSelected());
+                    tarActu.setSalida(salida1.isSelected()); 
                     tarActu.setGracia(Integer.parseInt(txtGracia1.getText()));
-                    tarActu.setSalida(false);
+//                    tarActu.setSalida(false);
                     System.out.println("CORRECTO" + tarActu.getClientes().getNombres());
                     adm.actualizar(tarActu);
 
@@ -6451,9 +6459,10 @@ private void btnGuardarCambios1ActionPerformed(java.awt.event.ActionEvent evt) {
             tarActu.setClientes(new Clientes(new Integer(clienteCod.getText())));
             tarActu.setFacturar(facturar2.isSelected());
             tarActu.setNocontar(nocontar2.isSelected());
+            tarActu.setSalida(salida2.isSelected());
             tarActu.setIngresos((Integer) ingresos2.getValue());
             tarActu.setGracia(Integer.parseInt(txtGracia2.getText()));
-            tarActu.setSalida(false);
+//            tarActu.setSalida(false);
 
             adm.guardar(tarActu);
         } catch (Exception ex) {
@@ -6952,7 +6961,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
@@ -7045,6 +7053,8 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JCheckBox sabado2;
     private javax.swing.JLabel salid;
     private javax.swing.JCheckBox salida;
+    private javax.swing.JCheckBox salida1;
+    private javax.swing.JCheckBox salida2;
     private javax.swing.JSpinner spConsumo;
     private javax.swing.JSpinner spIngreso;
     private javax.swing.JSpinner spSalida;
