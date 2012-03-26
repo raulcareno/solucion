@@ -80,8 +80,8 @@ public class generarCM {
                             + "\t"
                             + "\t"
                             + "\t"
-                            + "\t" + fac.getNumero()
-                            + "\t" + sucursalEmp.getSucursal().getEmpresa().getNoautorizacion());
+                            + "\t" + fac.getNumero() // numero de factura
+                            + "\t" + fac.getFactura().getAutorizacion()); // numero de autorización
                     writer.newLine(); // Esto es un salto de linea
                 }
 
@@ -172,7 +172,7 @@ public class generarCM {
                             + "\t"
                             + "\t"
                             + "\t" + fac.getNumero()
-                            + "\t" + sucursalEmp.getSucursal().getEmpresa().getNoautorizacion());
+                            + "\t" + fac.getFactura().getAutorizacion());
                     writer.newLine(); // Esto es un salto de linea
                 }
             }

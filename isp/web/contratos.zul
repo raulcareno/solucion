@@ -110,6 +110,7 @@ void llenar(Contratos  equi2){
     referenciai.value = equi.getReferencia();
     descuento.value = equi.getDescuento();
     telefonoi.value = equi.getTelefono();
+    telefono.value = equi.getTelefonof();
     try{
         if(equi.getDiapago() == null){
             diapago.value  = "1";

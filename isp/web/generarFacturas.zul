@@ -1,5 +1,5 @@
 
-<window   border="normal" >
+<window   border="normal" onCreate="cargando()" >
 
     <zscript>
          <![CDATA[
@@ -18,12 +18,14 @@
     
 
   Session ses = Sessions.getCurrent();
+  Empleadossucursal sucursalEmp = ses.getAttribute("sector");
     Administrador adm = new Administrador();
     List allEvents = adm.query("Select o from Sucursal as o");
     static Sucursal equi = new Sucursal();
     Permisos permiso = new Permisos();
     generarFacturas gen = new generarFacturas();
-    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+
+    
     Empresa empresa = ses.getAttribute("empresa"); 
     String directorioReportes = empresa.getReportes();
     void generar(){
@@ -150,6 +152,11 @@
                                 numero.focus();
                                 return;        
                             }
+                            if(num < suc.getDesde() || num > suc.getHasta()){
+                                Messagebox.show("El # de Autorización ya no sirve para el rango establecido, modifique en los datos de la Empresa ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                numero.focus();
+                                return;        
+                            }
                         String nofacturas="";
                              for (int i = 0; i < col.size(); i++) {
                                      Row object = (Row) col.get(i);
@@ -187,6 +194,8 @@
                                                 String nn = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num2);
                                                 if(fac.getNumero() == null){
                                                    fac.setNumero(nn);
+                                                   fac.setAutorizacion(autorizacion.value);
+                                                   fac.setEmision(adm.Date());
                                                   adm.actualizar(fac);
                                                   facturasGeneradas.add(fac);
                                                     num2++;
@@ -329,6 +338,8 @@
                     <caption>3.- Operaciones </caption>
 	    			# Inicial de Factura
                     <intbox id="numero" style="color:blue; text-align:center;font-size:14px;font-weight:bold" constraint="no empty,no zero: Ingrese el número inicial para continuar debe ser mayor a 0 y no blanco" />
+                    # Autorización
+                    <textbox maxlength="10" id="autorizacion" style="color:blue; text-align:center;font-size:14px;font-weight:bold" constraint="no empty: Ingrese el número Autorización de sus facturas" />
                     <button label="Empezar a Generar #" onClick="numero.getValue(); generarFacturas(); "/>
                     <button label="Imprimir" image="/images/imprimir.gif" onClick="imprimirTodos()"/>
                     <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
@@ -408,4 +419,11 @@
         </rows>    
     </grid>
 
+<zscript>
+    cargando(){
+            Session ses = Sessions.getCurrent();
+            Empleadossucursal sucursalEmp2 = ses.getAttribute("sector");    
+            autorizacion.value = sucursalEmp2.getSucursal().getAutorizacion();
+    }
+</zscript>
 </window>

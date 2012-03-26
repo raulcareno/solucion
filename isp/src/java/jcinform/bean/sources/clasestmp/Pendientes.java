@@ -18,6 +18,7 @@ public class Pendientes implements Comparable {
     public void Pendientes() {
     }
     String factura;
+    String telefono;
     Date fecha, fechapago;
     BigDecimal total, valorabonoefe, valorabonoche, valorabonotar, valorabonodep, valorabonodes, valorabonoban;
     BigDecimal enplanes,enequipos,eninstalaciones;
@@ -290,6 +291,16 @@ public class Pendientes implements Comparable {
     public void setEnplanes(BigDecimal enplanes) {
         this.enplanes = enplanes;
     }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+    
+    
 
     @Override
     public int compareTo(Object o) {

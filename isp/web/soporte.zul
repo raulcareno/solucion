@@ -88,7 +88,7 @@ llenarCliente(Clientes clienteEn){
      codigocli.value = clienteEn.getCodigo()+"";
      direccion.value  = clienteEn.getDireccion();
      direccioni.value  = clienteEn.getDireccion();
-     direccioni.value  = clienteEn.getTelefono();
+     telefonoi.value  = clienteEn.getTelefono();
      combo.value = clienteEn.getApellidos()+" "+clienteEn.getNombres() ;
 
 }
@@ -431,7 +431,8 @@ void buscarContratos(Clientes empa){
                              }
 
                     }catch(Exception e){
-                            Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            System.out.println("FNC: buscarSoporte, No ha seleccionado el Cliente");
 
                         }
                  }
@@ -473,7 +474,8 @@ void buscarContratos(Clientes empa){
                 }
                
                    }catch(Exception e){
-                            Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            System.out.println("FNC: facturasPendientes, No ha seleccionado el Cliente");
                             
                         }
                 
@@ -550,7 +552,15 @@ void buscarContratos(Clientes empa){
                                         </span>
                                     </span>
                                 </row>
-                                 
+                                <row>
+                                   
+                                        <label value="Dirección: " style="font-weight:bold" />    
+                                        <span>
+                                            <textbox id="direccioni" cols="40" readonly="true"  visible="true" />
+                                        <label value="Teléfono: " style="font-weight:bold" />    
+                                            <textbox id="telefonoi" readonly="true" visible="true" />
+                                            </span>
+                                </row> 
                                 <row visible="false">
                                     <span style="float:right">Dirección:  </span>
                                     <textbox id="direccion" cols="32"  readonly="true"  />
@@ -730,8 +740,7 @@ void buscarContratos(Clientes empa){
                
             </rows>
         </grid>
-        <textbox id="direccioni" cols="40" readonly="true"  visible="false" />
-        <textbox id="telefonoi" readonly="true" visible="false" />
+
      
         <panel height="1px" visible="false" style="margin-bottom:10px"
                            title="Reporte" border="normal">

@@ -111,6 +111,8 @@ public class ReportePendientesDataSource implements JRDataSource {
                 valor = nodo.getEnequipos();
             }       else if ("eninstalaciones".equals(fieldName)) {
                 valor = nodo.getEninstalaciones();
+            } else if ("telefono".equals(fieldName)) {
+                valor = nodo.getTelefono();
             }     
 
 

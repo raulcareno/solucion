@@ -59,6 +59,8 @@ public class Factura implements Serializable {
     private BigDecimal porcentajeiva;
     @Column(name = "valoriva")
     private BigDecimal valoriva;
+    @Column(name = "autorizacion")
+    private String autorizacion;
     @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
     @ManyToOne
     private Sucursal sucursal;
@@ -221,7 +223,15 @@ public class Factura implements Serializable {
         this.emision = emision;
     }
 
-    
+    public String getAutorizacion() {
+        return autorizacion;
+    }
+
+    public void setAutorizacion(String autorizacion) {
+        this.autorizacion = autorizacion;
+    }
+
+
     public Collection<Detalle> getDetalleCollection() {
         return detalleCollection;
     }

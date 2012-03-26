@@ -46,6 +46,13 @@ public class Sucursal implements Serializable {
     private Integer seccompras;
     @Column(name = "secrecibos")
     private Integer secrecibos;
+    @Column(name = "autorizacion")
+    private String autorizacion;
+    @Column(name = "desde")
+    private Integer desde;
+    @Column(name = "hasta")
+    private Integer hasta;
+        
     @JoinColumn(name = "empresa", referencedColumnName = "ruc")
     @ManyToOne
     private Empresa empresa;
@@ -129,6 +136,32 @@ public class Sucursal implements Serializable {
         this.empresa = empresa;
     }
 
+    public String getAutorizacion() {
+        return autorizacion;
+    }
+
+    public void setAutorizacion(String autorizacion) {
+        this.autorizacion = autorizacion;
+    }
+
+    public Integer getDesde() {
+        return desde;
+    }
+
+    public void setDesde(Integer desde) {
+        this.desde = desde;
+    }
+
+    public Integer getHasta() {
+        return hasta;
+    }
+
+    public void setHasta(Integer hasta) {
+        this.hasta = hasta;
+    }
+
+    
+    
     public Collection<Factura> getFacturaCollection() {
         return facturaCollection;
     }
