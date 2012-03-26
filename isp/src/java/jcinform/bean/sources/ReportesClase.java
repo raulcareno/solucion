@@ -732,7 +732,7 @@ public class ReportesClase {
                 + "where o.haber > 0 "
                 + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
                 + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' "
-                + "and o.empleados.codigo = '" + empleado.getCodigo() + "' order by o.fecha ";
+                + "and o.empleados.codigo = '" + empleado.getCodigo() + "' order by o.factura.numero, o.fecha ";
         if (empleado.getCodigo().equals(-1)) {
             query = "Select o from Cxcobrar as o "
                     + "where o.haber > 0 "

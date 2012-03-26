@@ -213,6 +213,7 @@ void buscarContratos(Clientes empa){
                             fechamodifica.value = sop.getFechamodifica();
                             fechafin.value = sop.getFechafin();
                             fechaorden.value = sop.getFechaorden();
+                            escalar.checked = sop.getEscalar();
                             try{
                              Integer valorEstado = sop.getEstado();
                                 if(valorEstado.equals(null)){
@@ -604,12 +605,13 @@ void buscarContratos(Clientes empa){
                                         <bandbox style="background-color:transparent" value="Asistencia" disabled="true" readonly="true" width="90px"  id="bdActividad">
                                             <bandpopup>
                                                 <vbox>
-                                                       
+
                                                     <listbox   onSelect="bdActividad.value=self.selectedItem.label;bdActividad.closeDropdown();"   id="estadoActividad"  >
                                                         <listitem selected="true" label="Asistencia" value="1" />
                                                         <listitem label="Retiro de Equipos" value="2" />
                                                         <listitem label="Traslado" value="3" />
-                                                    
+                                                        <listitem label="Llamada" value="4" />
+                                                        <listitem label="Instalación" value="5" />
                                                     </listbox> 
                                                 </vbox>
                                             </bandpopup>
@@ -617,7 +619,7 @@ void buscarContratos(Clientes empa){
                                     
                                     </span>
                                 </row>
-                                                                <row>
+                                   <row>
                                     <span style="float:right"> No. Orden: </span>
                                     <span>   
                                         <checkbox visible ="false" id="generar" onCheck="bd.disabled = (!self.checked) " disabled="true"   />
@@ -643,6 +645,27 @@ void buscarContratos(Clientes empa){
                                         
                                     </span>
                                 </row>
+                                  <row>
+                                    <span style="float:right"> Escalar: </span>
+                                    <span>   
+                                        <checkbox visible ="false" id="escalar" onCheck="bdEs.disabled = (!self.checked) " disabled="true"   />
+                                        <span>Empleado:</span>
+                                        <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bdEs">
+                                            <bandpopup>
+                                                <vbox>
+                                                    <listbox   onSelect="bdEs.value=(self.selectedItem.value).getApellidos() +' '+(self.selectedItem.value).getNombres() ;bdEs.closeDropdown();"   id="empleadosListEs"  >
+                                                        <listitem forEach="${empleadosEncontrados}"    value="${each}">
+                                                            <listcell label="${each.apellidos}" />
+                                                            <listcell label="${each.nombres}" />
+                                                        </listitem>
+                                                    </listbox> 
+                                                </vbox>
+                                            </bandpopup>
+                                        </bandbox>
+                                        
+                                    </span>
+                                </row>
+                                
                                 <row>
                                     <span style="float:right"> Comentario: </span>
                                     <textbox readonly="true" cols="82"  rows="4" id="observacion"/> 

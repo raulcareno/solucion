@@ -40,11 +40,13 @@ public class generarCM {
             File outFile =  File.createTempFile("archivoBan", ".txt");
             BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
             if (banco.getNombre().toLowerCase().contains("pichincha")) {
-             
+              
                 for (Iterator it = datos.iterator(); it.hasNext();) {
                     Row object = (Row) it.next();
                     //Facturasenviadas fac = (Facturasenviadas) adm.buscarClave(new Integer(((Facturasenviadas)object.getValue()).getCodigo(), Facturasenviadas.class);
                     Facturasenviadas fac = (Facturasenviadas) object.getValue();
+                    String factura = fac.getFactura().getNumero().replace("FAC", "-");
+                    factura = factura.substring(0,3)+"-"+factura.substring(3,6)+"-00"+factura.substring(7, factura.length());
                     String valor = fac.getSaldo() + "";
                     String base = (fac.getSaldo().divide(new BigDecimal(1.12), 2, RoundingMode.HALF_UP)) + "";//BASE IVA TOCARÍA SACAR LA BASE IVA DE LO QUE SE ENVIARÍA
                     try {
@@ -72,7 +74,7 @@ public class generarCM {
                             + "\tMENSUALIDAD " + mes(fac.getFecha().getMonth()) + "" + (fac.getFecha().getYear() + 1900) // descripcion nuestra
                             + "\t" + fac.getFactura().getContratos().getClientes().getTipoidentificacion() // tipo de documento
                             + "\t" + fac.getFactura().getContratos().getClientes().getIdentificacion().replace("-", "") // cedula
-                            + "\t" + fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres() // nombres cliente
+                            + "\t" + ((fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres()).length() > 41 ? (fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres()).substring(0,41) :(fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres()))   // nombres cliente
                             + "\t" + base //base del iva
                             + "\t"
                             + "\t"
@@ -80,7 +82,7 @@ public class generarCM {
                             + "\t"
                             + "\t"
                             + "\t"
-                            + "\t" + fac.getNumero() // numero de factura
+                            + "\t" + factura // numero de factura
                             + "\t" + fac.getFactura().getAutorizacion()); // numero de autorización
                     writer.newLine(); // Esto es un salto de linea
                 }
@@ -171,7 +173,7 @@ public class generarCM {
                             + "\t"
                             + "\t"
                             + "\t"
-                            + "\t" + fac.getNumero()
+                            + "\t" + fac.getFactura().getNumero().replace("FAC", "")
                             + "\t" + fac.getFactura().getAutorizacion());
                     writer.newLine(); // Esto es un salto de linea
                 }

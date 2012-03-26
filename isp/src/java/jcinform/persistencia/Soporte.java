@@ -66,8 +66,14 @@ public class Soporte implements Serializable {
     @Lob
     @Column(name = "observacion3")
     private String observacion3;
+    @Column(name = "auditoria")
+    private String auditoria;
     @Column(name = "generada")
     private Boolean generada = false;
+    @Column(name = "escalar")
+    private Boolean escalar = false;
+    @Column(name = "revisoescalar")
+    private Boolean revisoescalar = false;
     @Transient
     String clientesNombre;
       
@@ -86,6 +92,9 @@ public class Soporte implements Serializable {
     @JoinColumn(name = "empleados", referencedColumnName = "codigo")
     @ManyToOne
     private Empleados empleados;
+    @JoinColumn(name = "empleadoescalar", referencedColumnName = "codigo")
+    @ManyToOne
+    private Empleados empleadoescalar;
     
     @JoinColumn(name = "tecnico", referencedColumnName = "codigo")
     @ManyToOne
@@ -250,6 +259,38 @@ public class Soporte implements Serializable {
 
     public void setTecnicoNombre(String tecnicoNombre) {
         this.tecnicoNombre = tecnicoNombre;
+    }
+
+    public String getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(String auditoria) {
+        this.auditoria = auditoria;
+    }
+
+    public Empleados getEmpleadoescalar() {
+        return empleadoescalar;
+    }
+
+    public void setEmpleadoescalar(Empleados empleadoescalar) {
+        this.empleadoescalar = empleadoescalar;
+    }
+
+    public Boolean getEscalar() {
+        return escalar;
+    }
+
+    public void setEscalar(Boolean escalar) {
+        this.escalar = escalar;
+    }
+
+    public Boolean getRevisoescalar() {
+        return revisoescalar;
+    }
+
+    public void setRevisoescalar(Boolean revisoescalar) {
+        this.revisoescalar = revisoescalar;
     }
     
     
