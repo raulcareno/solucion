@@ -535,7 +535,7 @@ generaArch.disabled = false;
                                             <span style="float:right"> Día de Pago Desde:</span>
                                             <span>
                                                 
-                                                <listbox mold="select" onSelect="diapago2.selectedItem.value = self.selectedItem.value"  width="47px"  id="diapago">
+                                                <listbox mold="select"  width="47px"  id="diapago">
                                                     <listitem value="1" selected="true" label="1"/>
                                                     <listitem value="2" label="2"/>
                                                     <listitem value="3" label="3"/>
