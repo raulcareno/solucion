@@ -437,7 +437,10 @@ generaArch.disabled = false;
         generarCM cm = new generarCM();
         List col = facturasDatosAsignados.getRows().getChildren();
         byte[] data = cm.empezarGenerar(col,bancosList.selectedItem.value);
-        Filedownload.save(data, "file", "archivoBanco");
+       Date fec = adm.Date();   
+       String nombreArchivo = "NDE"+(fec.getYear()+1900)+""+(fec.getMonth()==11 || fec.getMonth()==10 ? fec.getMonth()+"":"0"+fec.getMonth())+""+(fec.getDate()<10?"0"+fec.getDate()+"":fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa())+"01"; 
+        Filedownload.save(data, "file", ""+nombreArchivo);
+        
         /* 
         List col = facturasDatosAsignados.getRows().getChildren();
             ArrayList detalles = new ArrayList();
