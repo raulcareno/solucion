@@ -69,7 +69,7 @@ public class generarCM {
                             + "\t" + fac.getFactura().getContratos().getCodigo() // no de contrato
                             + "\tUSD" // moneda
                             + "\t" + valor // valor adeudado
-                            + "\tCTA\t" + fac.getFactura().getContratos().getTipocuenta() // tipo de cuenta aho, cor
+                            + "\tCTA\t" + (fac.getFactura().getContratos().getTipocuenta().equals("AHO")?"AHO":"CTE") // tipo de cuenta aho, cTE
                             + "\t" + fac.getFactura().getContratos().getNocuenta() // cuenta del banco
                             + "\tMENSUALIDAD " + mes(fac.getFecha().getMonth()) + "" + (fac.getFecha().getYear() + 1900) // descripcion nuestra
                             + "\t" + fac.getFactura().getContratos().getClientes().getTipoidentificacion() // tipo de documento

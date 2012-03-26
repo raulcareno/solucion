@@ -93,7 +93,7 @@ llenarCliente(Clientes clienteEn){
 
 }
 void buscarContratos(Clientes empa){
-  contratosCliente = new Listbox();
+        contratosCliente = new Listbox();
         int a=0;
             for (Iterator it = contratosCliente.getItems().iterator(); it.hasNext();) {
                    contratosCliente.getItems().remove(a);
