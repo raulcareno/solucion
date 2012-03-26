@@ -66,6 +66,13 @@ public class Soporte implements Serializable {
     @Lob
     @Column(name = "observacion3")
     private String observacion3;
+    
+    @Column(name = "direccion")
+    private String direccion;
+    
+    @Column(name = "telefono")
+    private String telefono;
+    
     @Column(name = "auditoria")
     private String auditoria;
     @Column(name = "generada")
@@ -76,7 +83,7 @@ public class Soporte implements Serializable {
     private Boolean revisoescalar = false;
     @Transient
     String clientesNombre;
-      
+    
     @Transient
     String empleadosNombre;
       
@@ -261,7 +268,7 @@ public class Soporte implements Serializable {
         this.tecnicoNombre = tecnicoNombre;
     }
 
-    public String getAuditoria() {
+        public String getAuditoria() {
         return auditoria;
     }
 

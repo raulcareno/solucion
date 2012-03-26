@@ -120,6 +120,9 @@ cantones.add(0,cantonTodos);
             }else if(tipo.equals("HISTORIA3")){
                 datasource = reportes.historiaTecnicaSector(sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value);
                 report.setSrc(directorioReportes+"soporte.jasper");
+            }else if(tipo.equals("HOJARUTA")){
+                datasource = reportes.hojaRutaEmpleado(empleadosList.selectedItem.value,desde.value, hasta.value);
+                report.setSrc(directorioReportes+"agendadoEmpleado.jasper");
             }else if(tipo.equals("CXCLIEST")){
                 datasource = reportes.facturasPendientesest(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value);
                 report.setSrc(directorioReportes+"cxcclientesest.jasper");
@@ -258,6 +261,11 @@ void campos(String valor){
             desde.value = fec; 
         }else if(valor.equals("HISTORIA2")){
             titulo.value= "Historia Técnica por Usuario";
+            filaempleados.visible=true;
+            filafechas.visible=true;
+            desde.value = fec; 
+        }else if(valor.equals("HOJARUTA")){
+            titulo.value= "Hoja de Ruta";
             filaempleados.visible=true;
             filafechas.visible=true;
             desde.value = fec; 
@@ -457,6 +465,8 @@ void campos(String valor){
                                     <listitem id="HISTORIA" label="Historia Técnica x Cliente" value="HISTORIA" />
                                     <listitem id="HISTORIA2" label="Historia Técnica x Usuario" value="HISTORIA2" />
                                     <listitem id="HISTORIA3" label="Historia Técnica x Sector" value="HISTORIA3" />
+                                    <listitem id="HOJARUTA" label="Hoja de Ruta x Empleado" value="HOJARUTA" />
+                                    
            
                                 </listbox>
     

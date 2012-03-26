@@ -209,11 +209,16 @@ void buscarContratos(Clientes empa){
                             observacion.value = sop.getObservacion();
                             solucion.value = sop.getObservacion2();
                             generar.checked  = sop.getGenerada();
+                            try{
+                            escalar.checked = sop.getEscalar();
+                            }catch(Exception mx){
+                                escalar.checked = false;
+                            }
                             noorden.value = sop.getNoorden();
                             fechamodifica.value = sop.getFechamodifica();
                             fechafin.value = sop.getFechafin();
                             fechaorden.value = sop.getFechaorden();
-                            escalar.checked = sop.getEscalar();
+                            
                             try{
                              Integer valorEstado = sop.getEstado();
                                 if(valorEstado.equals(null)){
@@ -270,6 +275,29 @@ void buscarContratos(Clientes empa){
 
 
                               } 
+                            try{
+                                escalar.checked = sop.getEscalar();
+                              }catch(Exception exm){
+                                escalar.checked = false;
+                              }  
+                              bdEs.value = "";
+                              if(sop.getEmpleadoescalar() != null){
+                                     try{
+                                     
+                                                for (int i = 0; i <= empleadosListEs.getItems().size(); i++) {
+                                                            Empleados tr0 = ((Empleados)((Listitem)empleadosListEs.getItems().get(i)).getValue());
+                                                            int primero = tr0.getCodigo();
+                                                            int segundo = sop.getEmpleadoescalar().getCodigo();
+                                                            if(primero == segundo){
+                                                                empleadosListEs.setSelectedItem((Listitem)empleadosListEs.getItems().get(i));
+                                                                bdEs.value = sop.getEmpleadoescalar().getApellidos()+" "+sop.getEmpleadoescalar().getNombres();
+                                                                break;
+                                                            }
+                                                   }
+                                         }catch(Exception err){System.out.println("ERROR EMPLEADOS ESCALAR: "+err);}
+
+
+                              } 
                             
                         }else{
                                 Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -281,6 +309,8 @@ void buscarContratos(Clientes empa){
                             observacion.readonly = estado;
                             solucion.readonly = estado;
                             generar.disabled  = estado;
+                            escalar.disabled  = estado;
+                            bdEs.readonly = estado;
                             bdActividad.disabled = estado;
                             bdEstado.disabled = estado;
                             String va =  estadoSoporte.selectedItem.value;
@@ -307,7 +337,8 @@ void buscarContratos(Clientes empa){
                                 sop.setObservacion2(solucion.value);
                                 sop.setGenerada(generar.checked);
                                 sop.setActividad(new Integer(estadoActividad.selectedItem.value));
-                                
+                                sop.setGenerada(escalar.checked);
+                               
                                 sop.setEstado(valorEstado);
                                 if(valorEstado.equals(1)){
                                     sop.setFechafin(adm.Date());
@@ -318,6 +349,12 @@ void buscarContratos(Clientes empa){
                                     sop.setTecnico(empleadosList.selectedItem.value);
                                     sop.setGenerada(true);
                                 }
+                                if(escalar.checked){
+                                    sop.setEmpleadoescalar(empleadosListEs.selectedItem.value);
+                                     sop.setEscalar(true);
+                                }
+                                
+                                
 
                                 if(valorEstado.equals(3) && sop.getNoorden() == null){ 
                                     Integer valor = adm.getNuevaClave("Soporte","noorden");
@@ -401,6 +438,8 @@ void buscarContratos(Clientes empa){
                                       Soporte  acceIt = (Soporte) it.next();
                                       Listitem li = new Listitem();
                                       li.setValue(acceIt);
+                                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                                      li.appendChild(new Listcell( (acceIt.getNoorden()==null?' ':acceIt.getNoorden() ) +""));
                                       li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
                                       li.appendChild(new Listcell(acceIt.getObservacion()+""));
                                       li.appendChild(new Listcell((acceIt.getGenerada()==true?"SI":"NO")));
@@ -648,9 +687,9 @@ void buscarContratos(Clientes empa){
                                   <row>
                                     <span style="float:right"> Escalar: </span>
                                     <span>   
-                                        <checkbox visible ="false" id="escalar" onCheck="bdEs.disabled = (!self.checked) " disabled="true"   />
+                                        <checkbox visible ="true" id="escalar" onCheck="bdEs.disabled = (!self.checked) " disabled="true"   />
                                         <span>Empleado:</span>
-                                        <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bdEs">
+                                        <bandbox style="background-color:transparent" readonly="true" width="240px"  id="bdEs">
                                             <bandpopup>
                                                 <vbox>
                                                     <listbox   onSelect="bdEs.value=(self.selectedItem.value).getApellidos() +' '+(self.selectedItem.value).getNombres() ;bdEs.closeDropdown();"   id="empleadosListEs"  >
@@ -668,11 +707,11 @@ void buscarContratos(Clientes empa){
                                 
                                 <row>
                                     <span style="float:right"> Comentario: </span>
-                                    <textbox readonly="true" cols="82"  rows="4" id="observacion"/> 
+                                    <textbox readonly="true" cols="82"  rows="3" id="observacion"/> 
                                 </row>
                                 <row>
                                     <span style="float:right"> Solución: </span>
-                                    <textbox readonly="true" cols="82"  rows="4" id="solucion"/> 
+                                    <textbox readonly="true" cols="82"  rows="3" id="solucion"/> 
                                 </row>
                                 
                                 <row style="background:#CDDFF5">
@@ -694,8 +733,11 @@ void buscarContratos(Clientes empa){
                             
                         
 	   
-                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="nuevos(soporte.selectedItem.value);modificars.disabled = false" id="soporte" width="100%">
+                                <listbox mold="paging" rows="10" pageSize="10"  
+                                onSelect="nuevos(soporte.selectedItem.value);modificars.disabled = false" id="soporte" width="100%">
                                     <listhead>
+                                        <listheader label="Ticket"/>
+                                        <listheader label="Orden Trabajo"/>
                                         <listheader label="Fecha"/>
                                         <listheader label="Observación"/>
                                         <listheader label="Orden Generada"/>

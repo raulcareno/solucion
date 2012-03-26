@@ -1166,4 +1166,29 @@ public class ReportesClase {
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(detalles);
         return beanCollectionDataSource;
     }
+    
+    
+    public JRDataSource hojaRutaEmpleado(Empleados emple,Date desde, Date hasta) {
+         
+        Administrador adm = new Administrador();
+        String desdestr = convertiraString(desde);
+        String hastastr = convertiraString(hasta);
+        List detalles = new ArrayList();
+        String comple = "o.tecnico.codigo  =  " + emple.getCodigo() + "  and ";
+        if(emple.getCodigo().equals(-1)){
+            comple ="";
+        }
+        String quer = "SELECT  o FROM Soporte as o WHERE "+comple
+                + " o.fecha between '"+desdestr+"' and '"+hastastr+"' and o.estado in (3,4) "
+                + "order by o.fecha ";
+        List facEncontradas = adm.query(quer);
+        for (Iterator it = facEncontradas.iterator(); it.hasNext();) {
+            Soporte object = (Soporte) it.next();
+            detalles.add(object);
+
+        }
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(detalles);
+        return beanCollectionDataSource;
+    }
+
 }
