@@ -584,13 +584,25 @@ Boolean validar(){
                                   ser.setSucursal(sucursalEmp.getSucursal());
                                   ser.setEstado("V");//VENTA
                                   
-                               if(serieDet.getDetallecompra().getEquipos().getBien())
+                               if(serieDet.getDetallecompra().getEquipos().getBien()){
                                   adm.guardar(ser);
+                                  try{
+                                        List seriesempleados = adm.query("Select o from Seriesempleados as o where o.series.serie = '"+serieDet.getSerie()+"' ");
+                                        System.out.println("SERIESEMPLEADOS: "+seriesempleados);
+                                        for(Iterator it = seriesempleados.iterator(); it.hasNext();) {
+                                            Seriesempleados object = (Seriesempleados)it.next();
+                                            object.setEstado(false);
+                                            adm.actualizar(object);          
+                                        }
+                                        
+                                  }catch(Exception em){
+                                  System.out.println(em+"");
+                                  }
+                                }
                             }
 
                   }
 
- 
 if(sihay==0){
         adm.eliminarObjeto(Cabeceracompra.class, cabeCompra.getCodigo());
 } 
@@ -670,8 +682,22 @@ if(sihay==0){
                                   ser.setContratos(equi);
                                   ser.setSucursal(sucursalEmp.getSucursal());
                                   ser.setEstado("P");//PRESTAMO
-                                  if(serieDet.getDetallecompra().getEquipos().getBien())
-                                  adm.guardar(ser);
+                                  if(serieDet.getDetallecompra().getEquipos().getBien()){
+                                        adm.guardar(ser);
+                                        try{
+                                        List seriesempleados = adm.query("Select o from Seriesempleados as o where o.series.serie = '"+serieDet.getSerie()+"' ");
+                                        System.out.println("SERIESEMPLEADOS: "+seriesempleados);
+                                        for(Iterator it = seriesempleados.iterator(); it.hasNext();) {
+                                            Seriesempleados object = (Seriesempleados)it.next();
+                                            object.setEstado(false);
+                                            adm.actualizar(object);          
+                                        }
+                                        
+                                  }catch(Exception em){
+                                  System.out.println(em+"");
+                                  }
+                                  }
+                                  
                             }
 
                   }

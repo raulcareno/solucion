@@ -1,178 +1,224 @@
-<window   border="normal"
- >
+  
+<window   border="normal">
 
- <zscript>
-  import bean.EventDAO; 
-  import java.util.ArrayList; 
-  import jcinform.persistencia.*;
-  import jcinform.conexion.*;
-  import jcinform.bean.*;
-  import java.math.BigDecimal;
+    <zscript>
+        import bean.EventDAO; 
+        import java.util.ArrayList; 
+        import jcinform.persistencia.*;
+        import jcinform.conexion.*;
+        import jcinform.bean.*;
+        import java.math.BigDecimal;
 
-  Session ses = Sessions.getCurrent();
-    Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Series as o " + 
-    " where o.estado = 'C' and o.serie = 'aa' " + 
-    " and o.serie not in (Select a.serie from Series as a where a.estado IN ( 'A','P','V') ) ");
- 
-    static Series equi = new Series();
-    Permisos permiso = new Permisos();
-    //SimpleTreeModel stm = new SimpleTreeModel(root);
-//FUNCIONES
-void llenar(Series equi2){
-   equi = equi2;
-    nombreserie.value = equi.getSerie();
-    
+        Session ses = Sessions.getCurrent();
+        Administrador adm = new Administrador();
+        List allEvents = adm.query("Select o from Seriesempleados as o where o.codigo = -1 ");
+        static Seriesempleados equi = new Seriesempleados();
+        Permisos permiso = new Permisos();
+        List empleadosLista = adm.query("Select o from Empleados as o "); 
+        Empleados emp = new Empleados(-1);
+            emp.setApellidos("[SELECCIONE]");
+            emp.setNombres("");
+         empleadosLista.add(0,emp);
 
 
-    
-}
-void estado(Boolean estado,Boolean modificar){
-    if(modificar){
-        equi = (Series)datos.selectedItem.value;
-    }
-    nombreserie.readonly = estado;
-    cod.readonly = estado;
-
-}
-
-
- void guardar(){
-    if(nombreserie.value.equals("")){
-            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-            return;
-    }
-        equi.setSerie(nombreserie.value);
-        
- 
-             adm.actualizar(equi);
-                List children = datos.selectedItem.children;
-                  ((Listcell)children.get(0)).label = equi.getCodigo()+"";
-                  ((Listcell)children.get(1)).label = nombreserie.value+ "" ;
-                  permiso.auditar("Series","Actualizar",""+equi.getCodigo()+" - "+equi.getSerie());
- 
-   
-                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-                    guardar.disabled=true;
-                    estado(true,false);
-                    llenar(new Series(0));
-
-    }
-
- Boolean verificar(String accion){
-        return permiso.verificarPermiso("Bancos",accion);
- }
- void nuevo(){
-    if(verificar("Agregar")){
-       guardar.disabled=false;
-        llenar(new Series(0));
-        estado(false,false);
-        
-    }else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-    }
-}
- void move(){
-        llenar((Series)datos.selectedItem.value);
-        modificar.disabled = false;
-  }
-void modificar(){
-  if(verificar("Modificar")){
-       guardar.disabled=false; estado(false,true);
-    }else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-    }
-}
-void eliminar(){
-  if(verificar("Eliminar")){
-        try{
-             equi = (Series)datos.selectedItem.value;
-             adm.eliminarObjeto(Series.class, equi.getCodigo());
-             permiso.auditar("Series","Eliminar",""+equi.getCodigo()+" - "+equi.getSerie());
-            datos.removeItemAt(datos.getSelectedIndex());
-            llenar(new Series(0));
-                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-        }catch(Exception e){
-            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        //FUNCIONES
+        void llenar(Seriesempleados equi2){
+                equi = equi2;
+                try{serie.value = equi.getSeries().getSerie();}catch(Exception e){ serie.value = "";}
+                try{serieSerie.value = equi.getSeries().getSerie();}catch(Exception e){ serieSerie.value = "";}
+                try{equipoSerie.value = equi.getSeries().getDetallecompra().getEquipos()+"";}catch(Exception e){ equipoSerie.value = "";}
+                try{codigoSerie.value = equi.getSeries().getCodigo()+"";}catch(Exception e){ codigoSerie.value = "";}
+                fecha.value = equi.getFecha();
+                
         }
-}else{
+        void estado(Boolean estado,Boolean modificar){
+            if(modificar){
+                equi = (Seriesempleados)datos.selectedItem.value;
+            }
+            serie.readonly = estado;
+            fecha.disabled = estado;
+        }
+
+
+        void guardar(){
+                if(empleadosL.selectedItem.value.equals("-1")){
+                    Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                    return;
+                }
+                
+                equi.setSeries(new Series(new Integer(codigoSerie.value)));
+                equi.setEmpleados(empleadosL.selectedItem.value);
+                equi.setEstado(true);
+                equi.setFecha(fecha.value);
+
+                if((!equi.getCodigo().equals(0)) ){
+                    adm.actualizar(equi);
+                    List children = datos.selectedItem.children;
+                    ((Listcell)children.get(0)).label = equipoSerie.value+"";
+                    ((Listcell)children.get(1)).label = serieSerie.value+ "" ;
+                    permiso.auditar("Seriesempleados","Actualizar",""+equi.getCodigo()+" - "+equipoSerie.value+" "+serieSerie.value);
+                }else{
+                    equi.setCodigo(adm.getNuevaClave("Seriesempleados","codigo"));
+                    adm.guardar(equi);
+                    permiso.auditar("Seriesempleados","Guardar",""+equi.getCodigo()+" - "+equipoSerie.value+" "+serieSerie.value);
+                }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                guardar.disabled=true;
+                agregar.disabled=false;
+                estado(true,false);
+                llenar(new Seriesempleados(0));
+                buscar(empleadosL.selectedItem.value);
+                }
+
+    Boolean verificar(String accion){
+        return permiso.verificarPermiso("Bancos",accion);
+   }
+    void nuevo(){
+        if(verificar("Agregar")){
+            guardar.disabled=false;
+            llenar(new Seriesempleados(0));
+            estado(false,false);
+        }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
     }
-}
-   void buscar(String p){
+        void move(){
+            llenar((Seriesempleados)datos.selectedItem.value);
+            
+            modificar.disabled = false;
+        }
+        void modificar(){
+            if(verificar("Modificar")){
+                guardar.disabled=false; estado(false,true);
+            }else{
+                Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            }
+        }
+        void eliminar(){
+                if(verificar("Eliminar")){
+                try{
+                    equi = (Seriesempleados)datos.selectedItem.value;
+                    adm.eliminarObjeto(Seriesempleados.class, equi.getCodigo());
+                    permiso.auditar("Seriesempleados","Eliminar",""+equi.getCodigo()+" - "+equi.getSeries().getSerie());
+                    datos.removeItemAt(datos.getSelectedIndex());
+                    llenar(new Seriesempleados(0));
+                    Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                }catch(Exception e){
+                    Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                }
+                }else{
+                    Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                }
+        }
+        void buscar(Empleados empleado){
 
       
-        List equivaEncontrados = adm.query("Select o from Series as o " + 
-    " where o.estado = 'C' and o.serie like '%"+p+"%'  " + 
-    " and o.serie not in (Select a.serie from Series as a where a.estado IN ( 'A','P','V') )  " +
-        "  order by o.serie");
-        datos = new Listbox();
-        int a=0;
-            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                List equivaEncontrados = adm.query("Select o from Seriesempleados as o " + 
+                " where o.empleados.codigo = '"+empleado.getCodigo()+"' and o.estado = true order by o.series.serie");
+                datos = new Listbox();
+                int a=0;
+                for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
                     datos.getItems().remove(a);
                 }
-   
-       
-               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
-                      Series acceIt = (Series) it.next();
-                      Listitem li = new Listitem();
-                      li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
-                      li.appendChild(new Listcell(acceIt.getSerie()+" "));
-                      datos.appendChild(li);
-             }
+                for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                    Seriesempleados acceIt = (Seriesempleados) it.next();
+                    Listitem li = new Listitem();
+                    li.setValue(acceIt);
+                    li.appendChild(new Listcell(acceIt.getSeries().getDetallecompra().getEquipos()+" "));
+                    li.appendChild(new Listcell(acceIt.getSeries().getSerie()+" "));
+                    li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+" "));
+                    datos.appendChild(li);
+                }
 
-    }
-void cargar(Series g){
-equi.setSeries(g);
-}
-  </zscript>
-<groupbox mold="3d" >
-       <caption label="Agregar Series" />
+        }
+        void cargar(Bancos g){
+            equi.setBancos(g);
+        }
+        void buscarSerie(String ser){
+        List allEvents = adm.query("Select o from Series as o " + 
+                " where o.estado = 'C' and o.serie = '"+ser+"' " + 
+                " and o.serie not in (Select a.serie from Series as a where a.estado IN ( 'A','P','V') ) ");
+        
+        }
+    </zscript>
+    <groupbox mold="3d" >
+        <caption label="Agregar Equipos a Empleados" />
 	
-<grid width="100%">
-<rows> 
-<row><span style="float:right"> Serie(*):</span>
-        <textbox id="nombreserie"  maxlength="100" cols="40" readonly="true"   />   </row>
- </rows>
-</grid>
-<vbox>
-<vbox>
-<hbox>
-    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-</hbox>
-</vbox>
+        <grid width="80%">
+            <rows> 
+                <row>
+                    <span style="float:right"> Seleccione un Empleado(*):</span>
+                           <listbox mold="select" id="empleadosL" width="250px"
+                              onSelect="buscar(self.selectedItem.value)">
+                                    <listitem forEach="${empleadosLista}" value="${each}">
+                                        <listcell label="${each.apellidos} ${each.nombres}" />
 
-			</vbox>
+                                    </listitem>
+                           </listbox>
+                                              
+                </row>
+                <row>
+                    
+                    <span style="float:right"> Serie(*):</span>
+                    <!--textbox id="serie"  onChanging="buscarSerie(event.value)"   maxlength="20"  cols="40" readonly="true"   /--> 
+                    <combobox  cols="50" id="serie" onSelect='codigoSerie.value = ((Series)self.selectedItem.value).getCodigo()+""; serieSerie.value = ((Series)self.selectedItem.value).getSerie()+""; equipoSerie.value = ((Series)self.selectedItem.value).getDetallecompra().getEquipos()+""; ' 
+                          autodrop="true" buttonVisible="false"  use="jcinform.bean.autoCompletarSeries"/>
+                </row>
+                <row >
+                    <span></span>
+                    <span>
+                    <span > Codigo:</span>
+                    <textbox id="codigoSerie"  maxlength="100" cols="10" readonly="true"   />   
+                    <span> Serie:</span>
+                    <textbox id="serieSerie"  maxlength="100" cols="15" readonly="true"   />   
+                    <span> Equipo:</span>
+                    <textbox id="equipoSerie"  maxlength="100" cols="20" readonly="true"   />   
+                    </span>
+                    
+                </row>
+                <row>
+                            <span style="float:right"> Fecha(*):</span>                    
+                            <datebox id="fecha"  format="dd/MM/yyyy HH:mm" onCreate="self.value= adm.Date()"/>
+                </row>
+                </rows>
+        </grid>
+        <vbox>
+            <vbox>
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                </hbox>
+            </vbox>
 
- </groupbox>
-<groupbox width="100%" mold="3d" >
+        </vbox>
 
-       <caption label="Busquedas" />
-<vbox>
-   <hbox>  Apellidos:
-                                <textbox id="buscarText" constraint="no empty: Ingrese un criterio a buscar"  onOK="self.getValue(); buscar(self.value)" maxlength="60" cols="40" />
-                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
-                            </hbox>
-    <hbox width="100%">
-         
-         <listbox mold="paging" onSelect="move();estado(true,false);guardar.disabled=true" 
-         id="datos" rows="20" width="400px">
-			<listhead>
-                                <listheader label="Código"/>
-                                <listheader label="nombreserie"/>
-			</listhead>
-			<listitem forEach="${allEvents}" value="${each}">
-                           <listcell label="${each.codigo}" />
-                           <listcell label="${each.serie}" />
-            </listitem>
-		</listbox>
+    </groupbox>
+    <groupbox width="480px" mold="3d" >
+
+        <caption label="Lista de Equipos Asignados" />
+        <vbox>
+   
+            <hbox width="100%">
+                <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="478px" height="250px">
+                    <listhead>
+                        <listheader label="Equipo"/>
+                        <listheader label="Serie"/>
+                        <listheader label="Asignado"/>
+
+                    </listhead>
+                    <listitem forEach="${allEvents}" value="${each}">
+                         <listcell label="${each.detallecompra.equipos}" />
+                        <listcell label="${each.serie}" />
+                        <listcell label="${each.fecha}" />
+                    </listitem>
+                </listbox>
 
 
-    </hbox>
-</vbox>
-</groupbox>
+            </hbox>
+        </vbox>
+    </groupbox>
 	
 
 </window>
