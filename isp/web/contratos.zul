@@ -55,13 +55,13 @@ void llenarCliente(Clientes cli){
             email.value = cli.getEmail()+"";
             apellidos.value = cli.getApellidos()+" "+cli.getNombres();//cliente
             String tipoIde = cli.getTipoidentificacion();
-        if(tipoIde.equals("C")){
+       if(tipoIde.equals("C")){
             cedula.selected = true;
-        }else if(equi.getEstado().equals("R")){
+        }else if(tipoIde.equals("R")){
             ruc.selected = true;
-        }else if(equi.getEstado().equals("P")){
+        }else if(tipoIde.equals("P")){
             pasaporte.selected = true;
-        } 
+        }  
        
 
 }
@@ -930,13 +930,13 @@ llenarCliente(Clientes clienteEn){
      nombres.value = clienteEn.getNombres() ;
      razonsocial.value = clienteEn.getRazonsocial();
      String tipoIde = clienteEn.getTipoidentificacion();
-        if(tipoIde.equals("C")){
-            cedula.selected = true;
-        }else if(equi.getEstado().equals("R")){
-            ruc.selected = true;
-        }else if(equi.getEstado().equals("P")){
-            pasaporte.selected = true;
-        } 
+       if(tipoIde.equals("C")){
+        cedula.selected = true;
+    }else if(tipoIde.equals("R")){
+        ruc.selected = true;
+    }else if(tipoIde.equals("P")){
+        pasaporte.selected = true;
+    } 
      
 
 }
@@ -957,12 +957,12 @@ void buscarCedula(String valor){
                 nombres.value = cli.getNombres();
                 String tipoIde = cli.getTipoidentificacion();
                     if(tipoIde.equals("C")){
-                        cedula.selected = true;
-                    }else if(equi.getEstado().equals("R")){
-                        ruc.selected = true;
-                    }else if(equi.getEstado().equals("P")){
-                        pasaporte.selected = true;
-                    } 
+                                    cedula.selected = true;
+                                }else if(tipoIde.equals("R")){
+                                    ruc.selected = true;
+                                }else if(tipoIde.equals("P")){
+                                    pasaporte.selected = true;
+                                } 
  
             } 
 
@@ -1053,7 +1053,14 @@ void verificarCedula(String valor){
                            }
                            
                   
-                                
+                                 String tipoIde = empa.getTipoidentificacion();
+                                if(tipoIde.equals("C")){
+                                    cedula.selected = true;
+                                }else if(tipoIde.equals("R")){
+                                    ruc.selected = true;
+                                }else if(tipoIde.equals("P")){
+                                    pasaporte.selected = true;
+                                } 
                              
               
             }else{
@@ -2151,9 +2158,9 @@ void llamar(){
                                                 <textbox id="identificacion2" onBlur="buscarCedula(self.value)" readonly="true"   cols="13" />
                                                 <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
                                                 <radiogroup id="tipoIdentificacion" >
-                                                        <radio disabled="true" id="cedula" selected="true" value="C" label="Cedula" style="font-weight:bold2" />
+                                                        <radio disabled="true" id="cedula" value="C" label="Ced." style="font-weight:bold2" />
                                                         <radio disabled="true"  id="ruc"  value="R"  label="RUC" style="font-weight:bold2" />
-                                                        <radio disabled="true"  id="pasaporte"  value="P"  label="Pasaporte" style="font-weight:bold2" />
+                                                        <radio disabled="true"  id="pasaporte"  value="P"  label="Pass." style="font-weight:bold2" />
                                                 </radiogroup>
                                                             <!--button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/-->
                                             </span>
