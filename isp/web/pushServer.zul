@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+	<style dynamic="true">
+		.comet-news {
+			color: #0A94F3;
+		}
+	</style>
+	<window id="ventana" onCreate="cargar()"> Please press the "Start" button to see the demo "Comet Server Push".
+		<button label="Start" onClick="jcinform.bean.CometServerPush.start(informacion)"/>
+		<button label="Stop" onClick="jcinform.bean.CometServerPush.stop()"/>
+		<separator/>
+		<hbox>
+		Change Maximum Diameter:
+		<textbox id="informacion" />
+		</hbox>
+		 
+                <zscript>
+                    void cargar(){
+                        jcinform.bean.CometServerPush.start(informacion);
+                    }
+                    </zscript>
+	</window>
+</zk>

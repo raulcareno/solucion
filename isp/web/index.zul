@@ -3,17 +3,17 @@
 <zk onCreate="verificar()" xmlns="http://www.zkoss.org/2005/zul">
   
     <style>
-.estil{
-	height:100%;
-    background-image: url(./images/cabecera.png)   ;
-    background-color:#004669;
-}
-.estilo2{
-   height:110%;
-    //background-color:#004669;
-    background-image: url(./images/bg.jpg)   ;
-    background-color:#FFC66F;
-}
+        .estil{
+        height:100%;
+        background-image: url(./images/cabecera.png)   ;
+        background-color:#004669;
+        }
+        .estilo2{
+        height:110%;
+        //background-color:#004669;
+        background-image: url(./images/bg.jpg)   ;
+        background-color:#FFC66F;
+        }
     </style>
     <borderlayout onCreate="verificar();"  width="100%" style="float:center"  height="100%">
        
@@ -22,6 +22,8 @@
             import jcinform.conexion.*;
             import jcinform.persistencia.*;
                 Permisos permiso = new Permisos();
+                Administrador adm = new Administrador();
+                
     Boolean verificar(String accion,String menu){
         return permiso.verificarPermiso(menu,accion);
 
@@ -164,14 +166,44 @@ void ingresar(Menuitem item,String pantalla ){
                                     <menuitem value="/megas.zul"  image="/images/mb.png" label="Megas Ocupados" onClick='ingresar(self,"Reportes")' />
                                 </menupopup>
                             </menu>
+                            <menu   image="/images/exit.gif" id="cerrar" label="Cerrar Sesión" onClick="salir()"/>
                         </menubar>
                     </panelchildren>
                 </panel>
-            
+     
             </div>
         </north>
         <center  flex="true" >
             <div>
+                <div align="center" >
+                    
+                
+                    <panel style="background-color:red" id="mensajes" title="LISTA DE PENDIENTES"  border="normal"
+                       collapsible="true" framable="true" width="430px" height="200px"  visible="false">
+                        <panelchildren >
+                            <hbox>
+                                <image src="/images/pendientes.png" height="60px"/>
+                             
+                                <listbox id="pendientes" width="420px" onSelect="soporteSeleccionado(self.selectedItem.value);">
+                                    <listitem value="21" label="sdsd" />
+                                 
+                                </listbox>
+                            </hbox>
+		 
+                         
+                        </panelchildren>
+                        <toolbar>
+                            SELECCIONE UN ITEM PARA VER LA INFORMACIÓN
+                        </toolbar>
+                        <zscript>
+                            void soporteSeleccionado(Soporte sop){
+                            sop.setRevisoescalar(true);
+                            adm.actualizar(sop);
+                    
+                            }
+                        </zscript>
+                    </panel>      
+                </div>
                 <panel>
                     <panelchildren>
                         <tabbox context="derecho" id="mytab" width="100%" height="600px">
@@ -181,26 +213,30 @@ void ingresar(Menuitem item,String pantalla ){
                             <tabpanels id="tps" >
                                 <tabpanel>
                                     <iframe scrolling="false" width="100%" height="100%" src="/blanco.zul" />
+                       
                                 </tabpanel>
                             </tabpanels>
                         </tabbox>
+                                      
                     </panelchildren>
                 </panel>
             </div>
         </center>
 
         <zscript>
-    void verificar(){
+            void verificar(){
             Session a = Sessions.getCurrent();
             Empleados emp = a.getAttribute("user");
             if(emp==null){
-                Executions.sendRedirect("login.zul");
+            Executions.sendRedirect("login.zul");
             }    
             if(emp.getPantalla().equals("Externa")){
-                Executions.sendRedirect("/indexCobros.zul");
+            Executions.sendRedirect("/indexCobros.zul");
             }    
-            
+            //       jcinform.bean.CometServerPush.start(escalar);
+            jcinform.bean.CometServerPush.start(mensajes,pendientes,emp);
             }
+             
         </zscript>
     </borderlayout>
    
