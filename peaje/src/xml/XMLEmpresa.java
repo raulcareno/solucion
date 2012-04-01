@@ -294,14 +294,19 @@ public static UsuarioActivo user = new UsuarioActivo();
         item = xmlDoc.createElement(PUERTATIC);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getPuertatic()+""));
         personal.appendChild(item);
+        
         item = xmlDoc.createElement(PUERTAFAC);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getPuertafac()+""));
         personal.appendChild(item);
+        
         item = xmlDoc.createElement(BLOQUEAR);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBloquear()+""));
         personal.appendChild(item);
+        
         item = xmlDoc.createElement(BLOQUEARSALIDA);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBloquearsalida()+""));
+        personal.appendChild(item);
+        
         item = xmlDoc.createElement(BARRERAS);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBarreras()+""));
         personal.appendChild(item);
