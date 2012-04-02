@@ -13,6 +13,7 @@ import org.zkoss.lang.Threads;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.DesktopUnavailableException;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zkex.zul.East;
 import org.zkoss.zul.*;
 
 /**
@@ -23,7 +24,7 @@ public class CometServerPush {
 
     static Administrador adm;
 
-    public static void start(Panel mensajes, Listbox lista, Empleados emp)
+    public static void start(Panel mensajes, Listbox lista, Empleados emp,East este)
             throws InterruptedException {
         final Desktop desktop = Executions.getCurrent().getDesktop();
 
@@ -33,7 +34,7 @@ public class CometServerPush {
             adm = new Administrador();
             desktop.enableServerPush(true);
 
-            new WorkingThread(mensajes, lista, emp).start();
+            new WorkingThread(mensajes, lista, emp,este).start();
         }
     }
 
@@ -52,14 +53,17 @@ public class CometServerPush {
         private final Panel _mensajes;
         private final Listbox _lista;
         private final Empleados _empleado;
+        private final East _este;
+        
         //(mensajes,cliente,telefono,comentario,emp)
 
-        private WorkingThread(Panel mensajes, Listbox lista, Empleados empleados) {
+        private WorkingThread(Panel mensajes, Listbox lista, Empleados empleados,East este) {
             //_desktop = info.getDesktop();
             _desktop = mensajes.getDesktop();
             _lista = lista;
             _empleado = empleados;
             _mensajes = mensajes;
+            _este = este;
         }
 
         public void run() {
@@ -80,19 +84,25 @@ public class CometServerPush {
                         }
 
                         List<Soporte> soportes = adm.query("Select o from Soporte as o "
-                                + " WHERE o.empleados.codigo = '" + _empleado.getCodigo() + "' and o.revisoescalar = false ");
+                                + " WHERE o.empleadoescalar.codigo = '" + _empleado.getCodigo() + "' "
+                                + "and o.revisoescalar = false order by o.fecha asc ");
+                        
                         for (Iterator<Soporte> it = soportes.iterator(); it.hasNext();) {
                             Soporte soporte = it.next();
                             Listitem li = new Listitem();
                             li.setValue(soporte);
                             li.appendChild(new Listcell(soporte.getClientes() + ""));
-                            li.appendChild(new Listcell("REVISAR"));
+                            li.appendChild(new Listcell(soporte.getFecha().toLocaleString() + ""));
                             _lista.appendChild(li);
                         }
                         if (soportes.size() <= 0) {
                             ((Panel) _mensajes).setVisible(false);
+                            _este.setSize("0%");
+                            _este.setVisible(false);
                         } else {
                             ((Panel) _mensajes).setVisible(true);
+                            _este.setSize("30%");
+                            _este.setVisible(true);
                         }
 
                     } finally {

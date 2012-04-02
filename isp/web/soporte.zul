@@ -1,5 +1,5 @@
 <?page id="contratospage"?>
-<window id="contratosventana"  border="normal" >
+<window  onCreate="cargando()" id="crearSoporte"  border="normal" >
     <style>
 .MyGridRowHeight tr.z-row td.z-row-inner  
 {
@@ -188,8 +188,8 @@ void buscarContratos(Clientes empa){
              }
  
     }
-    
-    
+
+   
  nuevos(Soporte sop){
  orden.value = null;
                    if(verificar("Agregar")){
@@ -209,12 +209,7 @@ void buscarContratos(Clientes empa){
                             observacion.value = sop.getObservacion();
                             solucion.value = sop.getObservacion2();
                             generar.checked  = sop.getGenerada();
-                            try{
-                            escalar.checked = sop.getEscalar();
-                            }catch(Exception mx){
-                                escalar.checked = false;
-                            }
-                            noorden.value = sop.getNoorden();
+                           noorden.value = sop.getNoorden();
                             fechamodifica.value = sop.getFechamodifica();
                             fechafin.value = sop.getFechafin();
                             fechaorden.value = sop.getFechaorden();
@@ -280,6 +275,11 @@ void buscarContratos(Clientes empa){
                               }catch(Exception exm){
                                 escalar.checked = false;
                               }  
+                            try{
+                                 revisoescalar.checked = sop.getRevisoescalar();
+                            }catch(Exception mx){
+                                revisoescalar.checked = false;
+                            }
                               bdEs.value = "";
                               if(sop.getEmpleadoescalar() != null){
                                      try{
@@ -303,6 +303,21 @@ void buscarContratos(Clientes empa){
                                 Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                         }  
  }
+         void buscarPrimaria(Integer valor){
+       
+            List empleados = adm.query("Select o from Soporte as o where o.codigo = "+(valor)+" ");
+            if(empleados.size()>0){
+                nuevos(empleados.get(0));
+                modificars.disabled = false;
+                  llenarCliente((empleados.get(0)).getClientes());
+                buscarSoportes();
+                 buscarContratos((empleados.get(0)).getClientes());
+                facturasPendientes();
+            }
+ 
+    }
+    
+ 
  habilitar(Boolean estado){
                 if(verificar("Modificar")){
                             fechasoporte.readonly = estado;
@@ -338,6 +353,7 @@ void buscarContratos(Clientes empa){
                                 sop.setGenerada(generar.checked);
                                 sop.setActividad(new Integer(estadoActividad.selectedItem.value));
                                 sop.setGenerada(escalar.checked);
+                                sop.setRevisoescalar(revisoescalar.checked);
                                
                                 sop.setEstado(valorEstado);
                                 if(valorEstado.equals(1)){
@@ -701,7 +717,7 @@ void buscarContratos(Clientes empa){
                                                 </vbox>
                                             </bandpopup>
                                         </bandbox>
-                                        
+                                        <checkbox visible ="true" id="revisoescalar"  disabled="true"   />
                                     </span>
                                 </row>
                                 
@@ -816,4 +832,16 @@ void buscarContratos(Clientes empa){
              
      
     </div>
+    
+    <zscript>
+        void cargando(){
+          try{
+                   Soporte llegaSop = crearSoporte.getAttribute("soporteActual");
+                   buscarPrimaria(llegaSop.getCodigo());
+                   System.out.println("SOPORTE Q LLEGA: "+llegaSop);
+             }catch(Exception e){
+              System.out.println("ERROR EN CARGAR SOPOrTE: "+e);
+             }
+        }
+    </zscript>
 </window>

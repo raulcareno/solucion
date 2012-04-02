@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="ISP Sistema"?>
 <zk onCreate="verificar()" xmlns="http://www.zkoss.org/2005/zul">
-  
-    <style>
-        .estil{
-        height:100%;
-        background-image: url(./images/cabecera.png)   ;
-        background-color:#004669;
-        }
-        .estilo2{
-        height:110%;
-        //background-color:#004669;
-        background-image: url(./images/bg.jpg)   ;
-        background-color:#FFC66F;
-        }
-    </style>
-    <borderlayout onCreate="verificar();"  width="100%" style="float:center"  height="100%">
-       
-        <zscript>
+    <zscript>
     <![CDATA[
             import jcinform.conexion.*;
             import jcinform.persistencia.*;
@@ -63,6 +47,19 @@ void ingresar(Menuitem item,String pantalla ){
 
                         }
 }
+void ingresarSoporte(Soporte sop){
+                if(!verificar("Ingresar","Soporte") && !pantalla.equals("Respaldar")){
+                        Messagebox.show("No tiene permisos para ingresar a ésta pantalla...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        return;
+                }
+                                            final Window win = (Window) Executions.createComponents("soporte.zul", null, null);
+                                            win.setMaximizable(true);
+                                            win.setClosable(true);
+                                            win.setAttribute("soporteActual", sop);
+                                            win.setTitle("Soporte");
+                                            win.doModal();
+                             
+}
 
                public Boolean buscar(String id){
                     List tabes = tbs.getChildren();
@@ -87,10 +84,29 @@ void ingresar(Menuitem item,String pantalla ){
                     Executions.sendRedirect("login.zul");
             }
     ]]>
-        </zscript>
-        <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="55px" >
-            <div height="35px" class="estil" >
+    </zscript>
+    <style>
+        .estil{
+        height:100%;
+        background-image: url(./images/cabecera.png)   ;
+        background-color:#004669;
+        }
+        .estilo2{
+        height:110%;
+        //background-color:#004669;
+        background-image: url(./images/bg.jpg)   ;
+        background-color:#FFC66F;
+        }
+    </style>
 
+    <borderlayout onCreate="verificar();"  width="100%" style="float:center"  height="100%">
+       
+    
+     
+        <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="55px" >
+            
+            <div height="35px" class="estil" >
+      
                 <label  style="padding-left:10px;color:white;font-size:17px;font-weight:bold" value="${sessionScope.empresa.razonsocial}"  />
                 <separator orient="vertical"/>
                 <label  style="padding-left:10px;color:white;font-size:17px;font-weight:bold" value="...::::..."  />
@@ -172,38 +188,12 @@ void ingresar(Menuitem item,String pantalla ){
                 </panel>
      
             </div>
+            
         </north>
         <center  flex="true" >
+          
             <div>
-                <div align="center" >
-                    
-                
-                    <panel style="background-color:red" id="mensajes" title="LISTA DE PENDIENTES"  border="normal"
-                       collapsible="true" framable="true" width="430px" height="200px"  visible="false">
-                        <panelchildren >
-                            <hbox>
-                                <image src="/images/pendientes.png" height="60px"/>
-                             
-                                <listbox id="pendientes" width="420px" onSelect="soporteSeleccionado(self.selectedItem.value);">
-                                    <listitem value="21" label="sdsd" />
-                                 
-                                </listbox>
-                            </hbox>
-		 
-                         
-                        </panelchildren>
-                        <toolbar>
-                            SELECCIONE UN ITEM PARA VER LA INFORMACIÓN
-                        </toolbar>
-                        <zscript>
-                            void soporteSeleccionado(Soporte sop){
-                            sop.setRevisoescalar(true);
-                            adm.actualizar(sop);
-                    
-                            }
-                        </zscript>
-                    </panel>      
-                </div>
+            
                 <panel>
                     <panelchildren>
                         <tabbox context="derecho" id="mytab" width="100%" height="600px">
@@ -234,11 +224,39 @@ void ingresar(Menuitem item,String pantalla ){
             Executions.sendRedirect("/indexCobros.zul");
             }    
             //       jcinform.bean.CometServerPush.start(escalar);
-            jcinform.bean.CometServerPush.start(mensajes,pendientes,emp);
+            jcinform.bean.CometServerPush.start(mensajes,pendientes,emp,este);
             }
              
         </zscript>
+        <east size="30%"  title="ASISTENCIAS PENDIENTES"  flex="true" maxsize="450" splittable="true" 
+                 collapsible="true" id="este"  >
+            <div  style="background:#B8D335" >
+                 <image src="/images/pendientes.png" height="20px"/>
+                   <label style="font-weight:bold" value="SELECCIONE UN ITEM PARA VER LA INFORMACIÓN" />
+                <panel id="mensajes"   border="normal" width="430px" height="100%" >
+                    <panelchildren >
+                       
+                        <listbox id="pendientes" width="420px" onSelect="soporteSeleccionado(self.selectedItem.value);">
+                            <listitem value="21" label="sdsd" />
+                        </listbox>
+                     
+		 
+                         
+                    </panelchildren>
+                   
+                    <zscript>
+                        void soporteSeleccionado(Soporte sop){
+                        sop.setRevisoescalar(true);
+                        adm.actualizar(sop);
+                        ingresarSoporte(sop);
+                    
+                        }
+                    </zscript>
+                </panel>      
+            </div>
+        </east>
     </borderlayout>
-   
+     
+    
  
 </zk>
