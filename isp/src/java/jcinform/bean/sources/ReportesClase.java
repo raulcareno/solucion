@@ -448,7 +448,7 @@ public class ReportesClase {
                     detalleLocal = null;
 
                     pendi.setCliente(clientes1);
-                    pendi.setFactura("" + vec.get(1));
+                    pendi.setFactura("" + vec.get(1).toString().substring(9));
                     Date d = (Date) vec.get(2);
                     pendi.setFecha(d);
 
@@ -463,6 +463,7 @@ public class ReportesClase {
             }
 
         }
+        Collections.sort(detalles);
         List<Facturaanulada> anuladas = adm.queryNativo("Select o.* from Facturaanulada as o "
                 + "where o.fecha between '" + desdestr + "' and  '" + hastastr + "' "
                 + " and o.numero LIKE '" + sucursal.getSerie1() + sucursal.getSerie2() + "FAC%'", Facturaanulada.class);
@@ -475,7 +476,7 @@ public class ReportesClase {
             clientes1.setApellidos("-");
             clientes1.setNombres("");
             pendi.setCliente(clientes1);
-            pendi.setFactura(facturaanulada.getNumero());
+            pendi.setFactura(facturaanulada.getNumero().substring(9));
             pendi.setFecha(facturaanulada.getFecha());
             pendi.setTotal(new BigDecimal(0));
             pendi.setSaldo(new BigDecimal(0));
@@ -487,7 +488,8 @@ public class ReportesClase {
 //            Pendientes pendientes = it.next();
 //            System.out.println(""+pendientes.getFactura()+ ";"+pendientes.getCliente());
 //        }
-        Collections.sort(detalles);
+       Collections.sort(detalles);
+        
 //        System.out.println("__________________________________________--");
 //       for (Iterator<Pendientes> it = detalles.iterator(); it.hasNext();) {
 //            Pendientes pendientes = it.next();

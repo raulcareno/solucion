@@ -77,6 +77,7 @@
         if(verificar("Agregar")){
             guardar.disabled=false;
             llenar(new Seriesempleados(0));
+            fecha.value = new Date();
             estado(false,false);
         }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -112,9 +113,12 @@
         }
         void buscar(Empleados empleado){
 
-      
+      if(empleado == null){
+      return;
+      }
                 List equivaEncontrados = adm.query("Select o from Seriesempleados as o " + 
                 " where o.empleados.codigo = '"+empleado.getCodigo()+"' and o.estado = true order by o.series.serie");
+                if(equivaEncontrados.size()>0){
                 datos = new Listbox();
                 int a=0;
                 for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -129,7 +133,7 @@
                     li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+" "));
                     datos.appendChild(li);
                 }
-
+                }
         }
         void cargar(Bancos g){
             equi.setBancos(g);
