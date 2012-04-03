@@ -1,0 +1,71 @@
+<?page id="detallesfacturapage"?>
+<window id="detallesFactura" onOpen="cargando()" onCreate="cargando()"  >
+  
+    <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.util.ArrayList;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+    Administrador adm = new Administrador();
+ 
+ 
+
+]]>
+    </zscript>
+       
+
+   
+
+ 
+    <vbox>
+        <hbox>  Factura 
+               
+        </hbox>
+        <hbox>
+            <separator bar="true"/>
+              
+        </hbox>
+    </vbox>
+    <listbox mold="paging" rows="10" pageSize="10"  id="datos" width="100%">
+        <listhead>
+            <listheader label="Cant"/>
+            <listheader label="Detalle"/>
+            <listheader label="Valor"/>
+        </listhead>
+          
+    </listbox>
+    <button id="CANC"  label="SALIR" onClick="detallesFactura.detach();"/>
+    <zscript>
+                      <![CDATA[
+            void cargando(){
+                System.out.println("LLEGO....");
+                Integer facCod= detallesFactura.getAttribute("codigoFactura");
+                List listaDetalles = adm.query("Select o from Detalle as o where o.factura.codigo =  '"+facCod+"' ");
+                    datos = new Listbox();
+                    System.out.println("cargando.....");
+                    int a=0;
+                for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                        datos.getItems().remove(a);
+                }
+
+
+                for (Iterator it = listaDetalles.iterator(); it.hasNext();) {
+                        Detalle acceIt = (Detalle) it.next();
+                        Listitem li = new Listitem();
+                        li.setValue(acceIt);
+                        li.appendChild(new Listcell(acceIt.getCantidad()+""));
+                        li.appendChild(new Listcell(acceIt.getPlan()+" "));
+                        
+                        li.appendChild(new Listcell(acceIt.getTotal()+" "));
+                        datos.appendChild(li);
+                        System.out.println("detalle: "+acceIt);
+                }
+           
+            }
+            ]]>
+    </zscript>
+
+</window>
