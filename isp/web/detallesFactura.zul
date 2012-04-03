@@ -21,22 +21,55 @@
 
  
     <vbox>
-        <hbox>  Factura 
-               
-        </hbox>
-        <hbox>
-            <separator bar="true"/>
-              
-        </hbox>
+        <grid width="370px">
+		 
+            <rows>
+                <row>
+                    <span style="float:right;text-align:right">Factura: </span>
+                    <label id="nofactura" />	 
+                </row>
+                <row>
+                    <span style="float:right;text-align:right">Cliente:</span> 
+                    <label id="cliente" />	 
+                </row>
+                <row>
+                    <span style="float:right;text-align:right">Fecha:</span> 
+                    <label id="fecha" />	 
+                </row>
+                <row spans="2">
+                    <listbox mold="paging" rows="10" pageSize="10"  id="datos" width="100%">
+                        <listhead>
+                            <listheader label="Cant"/>
+                            <listheader label="Detalle"/>
+                            <listheader label="Valor"/>
+                        </listhead>
+
+                    </listbox>
+                </row>
+                <row>
+                    <span style="float:right;text-align:right">Subtotal:</span> 
+                    <label id="subtotal" />	 
+                </row>
+                <row>
+                    <span style="float:right;text-align:right">Descuento:</span> 
+                    <label id="descuento" />	 
+                </row>
+                <row>
+                    <span style="float:right;text-align:right">IVA:</span>
+                    <div> 
+                        <label id="baseiva" />	Valor IVA:   
+                        <label id="valoriva" />
+                    </div> 
+                </row>
+                <row>
+                    <span style="float:right;text-align:right">TOTAL:</span> 
+                    <label id="total" />	 
+                </row>
+            </rows>
+        </grid>
+ 
     </vbox>
-    <listbox mold="paging" rows="10" pageSize="10"  id="datos" width="100%">
-        <listhead>
-            <listheader label="Cant"/>
-            <listheader label="Detalle"/>
-            <listheader label="Valor"/>
-        </listhead>
-          
-    </listbox>
+    
     <button id="CANC"  label="SALIR" onClick="detallesFactura.detach();"/>
     <zscript>
                       <![CDATA[
@@ -51,13 +84,28 @@
                         datos.getItems().remove(a);
                 }
 
-
+            if(listaDetalles.size()>0){
+                    Detalle acceIt = (Detalle) listaDetalles.get(0);
+                    Factura fac = acceIt.getFactura();
+                    cliente.value = fac.getClientes()+"";
+                    fecha.value = fac.getFecha().toLocaleString()+"";
+                    nofactura.value = fac.getNumero().replace("FAC","-")+"";
+                    subtotal.value =""+ fac.getSubtotal();
+                    descuento.value = fac.getDescuento()+"";
+                    baseiva.value = fac.getPorcentajeiva()+"%";
+                    valoriva.value = fac.getValoriva()+"";
+                    total.value = fac.getTotal()+"";
+                    
+            }
                 for (Iterator it = listaDetalles.iterator(); it.hasNext();) {
                         Detalle acceIt = (Detalle) it.next();
                         Listitem li = new Listitem();
                         li.setValue(acceIt);
                         li.appendChild(new Listcell(acceIt.getCantidad()+""));
-                        li.appendChild(new Listcell(acceIt.getPlan()+" "));
+                        if(acceIt.getPlan()!=null)
+                            li.appendChild(new Listcell(acceIt.getPlan()+" "));
+                         else
+                            li.appendChild(new Listcell(acceIt.getEquipos()+" "));
                         
                         li.appendChild(new Listcell(acceIt.getTotal()+" "));
                         datos.appendChild(li);

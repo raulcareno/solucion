@@ -1455,7 +1455,7 @@ void verificarCedula(String valor){
                 try{
                 List facEncontradas =  adm.queryNativo("SELECT cx.codigo, fa.numero, fa.fecha, " + 
                     "  fa.total, cx.fecha, cx.debe, cx.haber,IF(cx.haber < fa.total && cx.haber >0,'ABONO',IF(cx.haber = fa.total,'PAGADO','')),cx.fechadeposito  " + 
-                    " FROM cxcobrar cx, factura  fa "   +
+                    " ,fa.codigo FROM cxcobrar cx, factura  fa "   +
                     "   WHERE fa.clientes  =  "+codigocli.value+"  " + 
                     "  AND cx.factura = fa.codigo and cx.haber > 0 GROUP BY cx.codigo " + 
                     " order by fa.codigo desc, fa.fecha desc, cx.fecha "); 
@@ -1536,13 +1536,14 @@ void verificarCedula(String valor){
                                   seriespanel.visible = false;
                                    
                                    if(valor0 == 16){
-                                     
                                       Integer facCodi = new Integer(aButtonEli.getId().replace("elip",""));
-                                      List siEx = adm.query("Select o from Cxcobrar as o where o.factura.codigo = '"+facCodi+"'");
+                                      Cxcobrar cobro = adm.buscarClave(facCodi, Cxcobrar.class);
+                                      /* List siEx = adm.query("Select o from Cxcobrar as o where o.factura.codigo = '"+cobro.getFactura().getCodigo()+"'");
                                       if(siEx.size()>1){
                                                  Messagebox.show("No se puede eliminar, ya tiene pagos realizados...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
                                       }else{
-                                              Cxcobrar cobro = adm.buscarClave(facCodi, Cxcobrar.class);
+                                      */
+                                              
                                               Factura mifac = cobro.getFactura();
                                               observacionanula.value = "";
                                               continuar.checked = false;
@@ -1595,7 +1596,7 @@ void verificarCedula(String valor){
                                                }
                                        
                                       
-                                      }
+                                      //}
                                       
                                       
                                     }
@@ -1615,27 +1616,23 @@ void verificarCedula(String valor){
                             Button bDeta = null;
                             bDeta = new Button("Detalles");//"Eliminar"
                             bDeta.setImage("/images/control.png");
-                            bDeta.setId("detaVer"+vec.get(0));
+                            bDeta.setId("detaVer"+vec.get(9));
                             bDeta.setVisible(mostrarEliminar);
                             bDeta.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
                              Integer facCodi = null;
                                 try{
                                  facCodi = new Integer(bDeta.getId().replace("detaVer",""));
-                                 alert(""+facCodi);
+//                                 alert(""+facCodi);
                                  }catch(Exception e){
                                     System.out.println("error en conversion a integer:"+e);
                                  }
                                    final Window win = (Window) Executions.createComponents("detallesFactura.zul", null, null);
                                     win.setMaximizable(true);
                                     win.setClosable(true);
-                                     win.setAttribute("codigoFactura", facCodi);
+                                    win.setAttribute("codigoFactura", facCodi);
                                     win.setTitle("Detalle de Factura");
                                     win.doModal();
-
-                                                     
-
-                              
                                
                               }
                                 });
@@ -2838,13 +2835,14 @@ void llamar(){
                             <column   label="Observación"/>
                             <column   label="Fec.Depo"/>
                             <column   label="Acción"/>
+                            <column   label="-"/>
                         </columns>
                         <rows id="filasPag">
                             
                         </rows>
                     </grid>
-                    <textbox id="observacionanula" />
-                    <checkbox id="continuar" />
+                    <textbox id="observacionanula" visible="false"/>
+                    <checkbox id="continuar" visible="false" />
                 </tabpanel>
                  <tabpanel>
                     <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="historiaCortesGrid" >
