@@ -326,6 +326,8 @@ void buscarContratos(Clientes empa){
                             generar.disabled  = estado;
                             escalar.disabled  = estado;
                             bdEs.readonly = estado;
+                            direccioni.readonly = estado;
+                            telefonoi.readonly = estado;
                             bdActividad.disabled = estado;
                             bdEstado.disabled = estado;
                             String va =  estadoSoporte.selectedItem.value;
@@ -353,6 +355,8 @@ void buscarContratos(Clientes empa){
                                 sop.setGenerada(generar.checked);
                                 sop.setActividad(new Integer(estadoActividad.selectedItem.value));
                                 sop.setGenerada(escalar.checked);
+                                sop.setDireccion(direccioni.value);
+                                sop.setTelefono(telefonoi.value);
                                 sop.setRevisoescalar(revisoescalar.checked);
                                
                                 sop.setEstado(valorEstado);
