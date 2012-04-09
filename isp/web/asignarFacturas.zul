@@ -1,4 +1,4 @@
-<?page id="contratospage"?>
+<?page id="contratospage2"?>
 <window id="contratosventana" onCreate="cargando()"  border="normal" >
     <style>
 .MyGridRowHeight tr.z-row td.z-row-inner  

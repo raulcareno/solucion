@@ -1616,13 +1616,15 @@ void verificarCedula(String valor){
                             Button bDeta = null;
                             bDeta = new Button("Detalles");//"Eliminar"
                             bDeta.setImage("/images/control.png");
-                            bDeta.setId("detaVer"+vec.get(9));
+                            bDeta.setId(vec.get(0)+"c"+vec.get(9));
                             bDeta.setVisible(mostrarEliminar);
                             bDeta.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
                              Integer facCodi = null;
                                 try{
-                                 facCodi = new Integer(bDeta.getId().replace("detaVer",""));
+                                  
+                                //System.out.println(""+);
+                                 facCodi = new Integer(bDeta.getId().substring(val.indexOf("c")+1, bDeta.getId().length()));
 //                                 alert(""+facCodi);
                                  }catch(Exception e){
                                     System.out.println("error en conversion a integer:"+e);
