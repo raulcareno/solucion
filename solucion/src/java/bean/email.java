@@ -316,7 +316,7 @@ class EnviarAutenticacion {
 
     public static Boolean RecuperarClave(String email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto,Boolean autorizacion, Boolean star) {
 //        String host ="smtp.gmail.com";//Suponiendo que el servidor SMTPsea la propia máquina
-        //String from ="setecompu.ec@gmail.com";
+        //String from ="jcinform@gmail.com";
         String from = emailInstitucion;
 //        String to = email;
         Properties prop = new Properties();
