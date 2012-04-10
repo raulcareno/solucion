@@ -22,7 +22,7 @@ public class Pendientes implements Comparable {
     Date fecha, fechapago;
     BigDecimal total, valorabonoefe, valorabonoche, valorabonotar, valorabonodep, valorabonodes, valorabonoban;
     BigDecimal enplanes,enequipos,eninstalaciones;
-    BigDecimal valorabonoret;
+    BigDecimal valorabonoret, subtotal,iva;
     BigDecimal valorabonotra, valorabonoriva, valorabonorfue, valorabonotot;
     String numerotransferencia, numeroretencion;
     BigDecimal saldo;
@@ -298,6 +298,22 @@ public class Pendientes implements Comparable {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public BigDecimal getIva() {
+        return iva;
+    }
+
+    public void setIva(BigDecimal iva) {
+        this.iva = iva;
+    }
+
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
     }
     
     

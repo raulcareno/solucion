@@ -412,7 +412,8 @@ public class ReportesClase {
         String hastastr = convertiraString(hasta);
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
             Clientes clientes1 = itCli.next();
-            String sql = "SELECT fa.codigo, fa.numero, fa.fecha,  fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo,SUM(cx.haber) abonos"
+            String sql = "SELECT fa.codigo, fa.numero, fa.fecha,  fa.total,  "
+                    + "(SUM(cx.debe) - SUM(cx.haber)) saldo,SUM(cx.haber) abonos, fa.subtotal, fa.valoriva"
                     + " FROM detalle de, cxcobrar cx, factura  fa "
                     + " WHERE de.factura = fa.codigo "
                     + "AND fa.clientes  =  " + clientes1.getCodigo() + "  "
@@ -430,6 +431,7 @@ public class ReportesClase {
                     List<Detalle> detalleLocal = adm.query("Select o from Detalle as o where o.factura.codigo = '" + vec.get(0) + "'");
                     int ii = 0;
                     pendi = new Pendientes();
+                    
                     pendi.setPlan("");
                     for (Iterator<Detalle> it = detalleLocal.iterator(); it.hasNext();) {
                         Detalle detalle = it.next();
@@ -453,8 +455,13 @@ public class ReportesClase {
                     pendi.setFecha(d);
 
                     pendi.setTotal((BigDecimal) vec.get(3));
+                    
                     pendi.setSaldo((BigDecimal) vec.get(4));
                     pendi.setValorabonoefe((BigDecimal) vec.get(5));
+                    
+                    pendi.setSubtotal((BigDecimal) vec.get(6));
+                    pendi.setIva((BigDecimal) vec.get(7));
+                    
                     detalles.add(pendi);
                     i++;
 
@@ -480,6 +487,8 @@ public class ReportesClase {
             pendi.setFecha(facturaanulada.getFecha());
             pendi.setTotal(new BigDecimal(0));
             pendi.setSaldo(new BigDecimal(0));
+            pendi.setSubtotal(new BigDecimal(0));
+            pendi.setIva(new BigDecimal(0));
             pendi.setValorabonoefe(new BigDecimal(0));
             detalles.add(pendi);
         }

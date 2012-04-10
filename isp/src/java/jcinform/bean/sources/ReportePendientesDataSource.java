@@ -113,7 +113,18 @@ public class ReportePendientesDataSource implements JRDataSource {
                 valor = nodo.getEninstalaciones();
             } else if ("telefono".equals(fieldName)) {
                 valor = nodo.getTelefono();
-            }     
+            } else if ("subtotal".equals(fieldName)) {
+                valor = nodo.getSubtotal();
+            } else if ("iva".equals(fieldName)) {
+                valor = nodo.getIva();
+            }    else if ("ruc".equals(fieldName)) {
+                try {
+                valor = nodo.getCliente().getIdentificacion();    
+                } catch (Exception e) {
+                    valor ="";
+                }
+                
+            }             
 
 
    

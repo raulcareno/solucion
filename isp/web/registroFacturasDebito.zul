@@ -55,18 +55,18 @@ if(usuarioActual.getTipo().equals("OTRO")){
  
     void seleccionarTodos(Checkbox estado,Integer tipo){
                 if(tipo == 0){
-                       List col = facturasDatos.getRows().getChildren();
+                       List col = facturasDatosAsignados.getRows().getChildren();
                               for (int i = 0; i < col.size(); i++) {
                                      Row object = (Row) col.get(i);
                                       List labels = object.getChildren();
-                                        ((Checkbox) labels.get(0)).setChecked(estado.isChecked());
+                                        ((Checkbox) labels.get(8)).setChecked(estado.isChecked());
                                }
                  }else{
                         List col = facturasDatosAsignados.getRows().getChildren();
                               for (int i = 0; i < col.size(); i++) {
                                      Row object = (Row) col.get(i);
                                       List labels = object.getChildren();
-                                        ((Checkbox) labels.get(0)).setChecked(estado.isChecked());
+                                        ((Checkbox) labels.get(8)).setChecked(estado.isChecked());
                                }
                  
                  }
@@ -181,7 +181,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
                             Intbox codigodes = new Intbox(0);
                             codigodes.setCols(1);
                             codigodes.setDisabled(true);
-                            Decimalbox descuento = new Decimalbox();
+                            final Decimalbox descuento = new Decimalbox();
                             descuento.setStyle("text-align:center");
                             descuento.setFormat("#00.00");
                             descuento.setCols(4);
@@ -200,7 +200,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
                             row.appendChild(descuento);
                             
                            
-                            Decimalbox deposito = new Decimalbox();
+                            final Decimalbox deposito = new Decimalbox();
                             deposito.setStyle("text-align:center");
                             deposito.setFormat("#00.00");
                             deposito.setCols(4);
@@ -214,6 +214,23 @@ if(usuarioActual.getTipo().equals("OTRO")){
                             nocuenta.setCols(6);
                             nocuenta.setValue(empf.getNocuenta());
                             row.appendChild(nocuenta);
+                            Checkbox todo = new Checkbox();
+                             todo.addEventListener("onCheck", new EventListener() {
+                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
+                                    try {
+                                    if(todo.isChecked()){
+                                        deposito.setValue(empf.getSaldo().subtract(descuento.getValue()));
+                                     }else{
+                                        deposito.setValue(new BigDecimal("0"));
+                                     }
+                                    } catch (Exception e) {
+                                      
+                                    }
+
+                                }
+                            });
+                            
+                            row.appendChild(todo);
 
                            
                             if(empf.getTotal().doubleValue()>0)
@@ -231,7 +248,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
 
  }
  
- 
+  
  void imprimirTodosEmpleado(){
             ReportePendientesDataSource ds = reportes.reporteCobrosRecaudador(fecha.value,empleados.selectedItem.value);
                 Map parameters = new HashMap();
@@ -296,7 +313,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                     </rows>
                                 </grid>
 
-                                <grid height="350px"  sclass="MyGridRowHeight2"  fixedLayout="true"  id="facturasDatosAsignados" >
+                                <grid height="350px"    width="800px"  sclass="MyGridRowHeight2"  fixedLayout="true"  id="facturasDatosAsignados" >
                                     <columns>
                                         <column   width="68px" label="# Fac."/>
                                         <column   width="68px"   label="Fecha"/>
@@ -306,6 +323,10 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                         <column    width="45px"  label="Dscto."/>
                                         <column    width="45px"  label="Debitado"/>
                                         <column    width="50px"  label="No.Cuenta"/>
+                                         <column  width="35px" >
+                                            <!--checkbox id="todos2" label="Selección" onCheck="seleccionarTodos(self,0)" /-->
+                                            Pagado
+                                        </column>
 
                                     </columns>
                                     <rows id="filasFacAsignados">
