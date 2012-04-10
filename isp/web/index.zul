@@ -128,6 +128,7 @@ void ingresarSoporte(Soporte sop){
                                     <menuitem  value="/accesos.zul"  image="/images/key.png"  label="Accesos" onClick='ingresar(self,"Accesos")' />
                                     <menuitem  value="/auditoria.zul"  image="/images/auditoria.gif" label="Auditoria" onClick='ingresar(self,"Auditoria")' />
                                     <menuitem  value="/empresa.zul"  image="/images/institucion.png" label="Empresas" onClick='ingresar(self,"Empresa")' />
+                                    <menuitem  value="/sucursales.zul"  image="/images/institucion.png" label="Sucursales" onClick='ingresar(self,"Empresa")' />
                                     <menuitem  value="/cantonesysectores.zul"  image="/images/cantones.png" label="Cantones-Sectores" onClick='ingresar(self,"Cantones")' />
                                     <menuitem value="/perfiles.zul" image="/images/perfiles.png" label="Perfiles" onClick='ingresar(self,"Perfiles")' />
                                     <menuseparator />

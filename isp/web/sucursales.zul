@@ -1,0 +1,258 @@
+
+<window   border="normal"
+ >
+
+    <zscript>    <![CDATA[
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+Administrador adm = new Administrador();
+  Session ses = Sessions.getCurrent();
+  Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+  List allEvents = adm.query("Select o from Sucursal as  o ");
+    static Sucursal equi = new Sucursal();
+    Permisos permiso = new Permisos();
+    //SimpleTreeModel stm = new SimpleTreeModel(root);
+//FUNCIONES
+
+
+List empresas2 = adm.query("Select o from Empresa as o ");
+
+void llenar(Sucursal equi2){
+   equi = equi2;
+        serie1.value = equi.getSerie1();
+        serie2.value = equi.getSerie2();
+        descripcion.value = equi.getDescripcion();
+        autorizacion.value = equi.getAutorizacion();
+        desde.value = equi.getDesde();
+        hasta.value = equi.getHasta();
+
+                  
+       if(equi2.getEmpresa() != null){
+             try{
+                      for (int i = 0; i <= empresas.getItems().size(); i++) {
+                                    Empresa tr0 = ((Empresa)((Listitem)empresas.getItems().get(i)).getValue());
+                                    String primero = tr0.getRuc();
+                                    String segundo = equi2.getEmpresa().getRuc();
+                                    if(primero.equals(segundo)){
+                                        empresas.setSelectedItem((Listitem)empresas.getItems().get(i));
+                                        bd1.value = equi2.getEmpresa().getRazonsocial();
+                                        break;
+                                    }
+                        }
+                 }catch(Exception err){System.out.println("ERROR no tiene cursos asignados COMBO CURSOS: "+err);}
+
+
+            }
+    
+
+
+    
+}
+void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+        equi = (Sucursal)datos.selectedItem.value;
+    }
+      serie1.readonly = estado;
+        serie2.readonly = estado;
+        descripcion.readonly = estado;
+        autorizacion.readonly = estado;
+        desde.readonly = estado;
+        hasta.readonly = estado;
+
+
+}
+
+
+ void guardar(){
+    if(serie1.value.equals("") || serie2.value.equals("") || descripcion.value.equals("") ){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Cobros", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+        equi.setSerie1(serie1.value);
+        equi.setSerie2(serie2.value);
+        equi.setDescripcion(descripcion.value);
+        equi.setAutorizacion(autorizacion.value);
+        equi.setDesde(desde.value);
+        equi.setHasta(hasta.value);
+        equi.setEmpresa(empresas.selectedItem.value);
+         
+        
+        if((!equi.getCodigo().equals(0)) ){
+             adm.actualizar(equi);
+                List children = datos.selectedItem.children;
+               permiso.auditar("Sucursales","Actualizar",""+equi.getCodigo()+" - "+equi.getDescripcion());
+         }else{
+                equi.setCodigo(adm.getNuevaClave("Sucursal","codigo"));
+                adm.guardar(equi);
+                permiso.auditar("Sucursales","Guardar",""+equi.getCodigo()+" - "+equi.getDescripcion());
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Sucursal(0));
+ 
+    }
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Empresa",accion);
+ }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new Sucursal(0));
+        estado(false,false);
+        
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Sucursal)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             equi = (Sucursal)datos.selectedItem.value;
+             adm.eliminarObjeto(Sucursal.class, equi.getCodigo());
+             permiso.auditar("Sucursales","Eliminar",""+equi.getCodigo()+" - "+equi.getNombre());
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Sucursal(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+   void buscar(String p){
+
+      
+        List equivaEncontrados = adm.query("Select o from Sucursal as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+   
+       
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Sucursal acceIt = (Sucursal) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNumero()+""));
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                      li.appendChild(new Listcell(acceIt.getEmpresa().getNombre()+" "));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Sucursal g){
+equi.setPerfil(g);
+}
+  ]]>
+    </zscript>
+    <groupbox mold="3d" >
+        <caption label="Agregar Sucursales" />
+	
+        <grid width="100%">
+            <rows>
+                <row>   <span style="float:right"> Empresa(*):</span>
+                    <bandbox  width="400px" readonly="true"  id="bd1">
+                        <bandpopup>
+                            <vbox>
+                                <listbox id="empresas" width="660px" rows="10"
+                                  onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
+                                    <listitem selected="true" forEach="${empresas2}" value="${each}">
+                                        <listcell label="${each.razonsocial}" />
+                                    </listitem>
+                                </listbox>
+                            </vbox>
+                        </bandpopup>
+                    </bandbox>
+                </row>
+                <row>
+                    <span style="float:right"> Serie1(*):</span>
+                    <span>
+                    <textbox id="serie1"  maxlength="3" cols="4" readonly="true"   />
+                        Serie2(*):
+                    <textbox id="serie2"  maxlength="3" cols="4" readonly="true"   />
+                    </span>
+                </row>
+                 
+                 
+                 
+                <row>
+                    <span style="float:right"> Descripcion(*):</span>
+                    <textbox id="descripcion"  maxlength="100" cols="40" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Número Autorización(*):</span>
+                    <span>
+                        <textbox id="autorizacion"  readonly="true"   />
+                        Desde la Factura:
+                        <intbox id="desde"  readonly="true"   />
+                        Hasta
+                        <intbox id="hasta"  readonly="true"   />
+                    </span>
+                    
+                </row>
+          
+ 
+
+            </rows>
+        </grid>
+        <vbox>
+            <vbox>
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                </hbox>
+            </vbox>
+
+        </vbox>
+
+    </groupbox>
+    <groupbox width="100%" mold="3d" >
+
+        <caption label="Busquedas" />
+        <vbox>
+   
+            <hbox width="100%">
+                <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="400px">
+                    <listhead>
+                        <listheader  label="Empresa"/>
+                        <listheader sort="auto" label="Series"/>
+                        <listheader sort="auto" label="Sucursal"/>
+
+                    </listhead>
+                    <listitem forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.empresa.razonsocial}" />
+                        <listcell label="${each.serie1} ${each.serie2}" />
+                        <listcell label="${each.descripcion}" />
+                        
+                    </listitem>
+                </listbox>
+
+
+            </hbox>
+        </vbox>
+    </groupbox>
+	
+
+</window>
