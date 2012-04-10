@@ -123,6 +123,9 @@ cantones.add(0,cantonTodos);
             }else if(tipo.equals("HOJARUTA")){
                 datasource = reportes.hojaRutaEmpleado(empleadosList.selectedItem.value,desde.value, hasta.value);
                 report.setSrc(directorioReportes+"agendadoEmpleado.jasper");
+            }else if(tipo.equals("HOJARUTA2")){
+                datasource = reportes.soporteEstado(estadoActividad.selectedItem.value,estadoSoporte.selectedItem.value,desde.value, hasta.value);
+                report.setSrc(directorioReportes+"agendadoEmpleado.jasper");
             }else if(tipo.equals("CXCLIEST")){
                 datasource = reportes.facturasPendientesest(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value);
                 report.setSrc(directorioReportes+"cxcclientesest.jasper");
@@ -252,6 +255,7 @@ void campos(String valor){
       filaestado.visible = false;
       filaplan.visible = false;
             filatipoplan.visible = false;
+            estadossoporterow.visible = false;
       fec.setDate(1);
         if(valor.equals("HISTORIA")){
             titulo.value= "Historia Técnica por Cliente";
@@ -264,11 +268,17 @@ void campos(String valor){
             filaempleados.visible=true;
             filafechas.visible=true;
             desde.value = fec; 
+            
         }else if(valor.equals("HOJARUTA")){
             titulo.value= "Hoja de Ruta";
             filaempleados.visible=true;
             filafechas.visible=true;
             desde.value = fec; 
+        }else if(valor.equals("HOJARUTA2")){
+            titulo.value= "Hoja de Ruta";
+            filafechas.visible=true;
+            desde.value = fec; 
+            estadossoporterow.visible = true;
         }else if(valor.equals("HISTORIA3")){
             titulo.value= "Historia Técnica por Sector";
             filacanton.visible=true;
@@ -702,7 +712,7 @@ void campos(String valor){
                                 </listbox>
                             </span>
                         </row>
-                                                        <row>
+                        <row id="estadossoporterow">
                                     <span style="float:right"> Actividad:</span>
                                     <span>
                                                                             

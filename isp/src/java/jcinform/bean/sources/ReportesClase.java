@@ -1173,8 +1173,8 @@ public class ReportesClase {
     public JRDataSource hojaRutaEmpleado(Empleados emple,Date desde, Date hasta) {
          
         Administrador adm = new Administrador();
-        String desdestr = convertiraString(desde);
-        String hastastr = convertiraString(hasta);
+        String desdestr = convertiraString(desde) +" 00:00:01";
+        String hastastr = convertiraString(hasta)+ " 23:59:59";
         List detalles = new ArrayList();
         String comple = "o.tecnico.codigo  =  " + emple.getCodigo() + "  and ";
         if(emple.getCodigo().equals(-1)){
@@ -1182,6 +1182,32 @@ public class ReportesClase {
         }
         String quer = "SELECT  o FROM Soporte as o WHERE "+comple
                 + " o.fecha between '"+desdestr+"' and '"+hastastr+"' and o.estado in (3,4) "
+                + "order by o.fecha ";
+        List facEncontradas = adm.query(quer);
+        for (Iterator it = facEncontradas.iterator(); it.hasNext();) {
+            Soporte object = (Soporte) it.next();
+            detalles.add(object);
+
+        }
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(detalles);
+        return beanCollectionDataSource;
+    }
+    public JRDataSource soporteEstado(String actividad, String estado,Date desde, Date hasta) {
+         
+        Administrador adm = new Administrador();
+        String desdestr = convertiraString(desde) +" 00:00:01";
+        String hastastr = convertiraString(hasta)+ " 23:59:59";
+        List detalles = new ArrayList();
+        String comple1 = " and o.actividad =  '" + actividad + "' ";
+        if(actividad.equals("-1")){
+            comple1 ="";
+        }
+        String comple2 = " and o.estado =  " + estado+ "  ";
+        if(estado.equals("-1")){
+            comple2 ="";
+        }
+        String quer = "SELECT  o FROM Soporte as o WHERE " 
+                + " o.fecha between '"+desdestr+"' and '"+hastastr+"' " +comple1 +" "+ comple2
                 + "order by o.fecha ";
         List facEncontradas = adm.query(quer);
         for (Iterator it = facEncontradas.iterator(); it.hasNext();) {
