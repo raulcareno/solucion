@@ -466,6 +466,7 @@ void campos(String valor){
                                     <listitem id="HISTORIA2" label="Historia Técnica x Usuario" value="HISTORIA2" />
                                     <listitem id="HISTORIA3" label="Historia Técnica x Sector" value="HISTORIA3" />
                                     <listitem id="HOJARUTA" label="Hoja de Ruta x Empleado" value="HOJARUTA" />
+                                    <listitem id="HOJARUTA2" label="Reporte por Estados" value="HOJARUTA2" />
                                     
            
                                 </listbox>
@@ -701,6 +702,46 @@ void campos(String valor){
                                 </listbox>
                             </span>
                         </row>
+                                                        <row>
+                                    <span style="float:right"> Actividad:</span>
+                                    <span>
+                                                                            
+                                        <bandbox style="background-color:transparent" value="Todos"  readonly="true" width="90px"  id="bdActividad">
+                                            <bandpopup>
+                                                <vbox>
+
+                                                    <listbox   onSelect="bdActividad.value=self.selectedItem.label;bdActividad.closeDropdown();"   id="estadoActividad"  >
+                                                        <listitem selected="true" label="Todos" value="-1" />
+                                                        <listitem label="Asistencia" value="1" />
+                                                        <listitem label="Retiro de Equipos" value="2" />
+                                                        <listitem label="Traslado" value="3" />
+                                                        <listitem label="Llamada" value="4" />
+                                                        <listitem label="Instalación" value="5" />
+                                                    </listbox> 
+                                                </vbox>
+                                            </bandpopup>
+                                        </bandbox>
+                                        Estado:
+                                        <bandbox style="background-color:transparent" value="Todos" readonly="true" width="90px"  id="bdEstado">
+                                            <bandpopup>
+                                                <vbox>
+                                                       
+                                                    <listbox  onSelect="bdEstado.value=self.selectedItem.label;bdEstado.closeDropdown();"   id="estadoSoporte"  >
+                                                        <listitem label="Todos" selected="true" value="-1" />
+                                                        <listitem label="Ingresado" value="0" />
+                                                        <listitem  label="Agendado" value="3" />
+                                                        <listitem label="RE-Agendado" value="4" />
+                                                        <listitem label="Pendiente" value="2" />
+                                                        <listitem label="Resuelto" value="1" />
+                                                     
+                                                    </listbox> 
+                                                </vbox>
+                                            </bandpopup>
+                                        </bandbox>  
+                                    
+                                    
+                                    </span>
+                                </row>
                         <row  style="background:transparent;border:0px">
                             <span style="float:right"> Título:</span>
                             <span>
