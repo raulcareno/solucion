@@ -59,7 +59,15 @@ public class ReporteEstadisticoDataSource implements JRDataSource{
             valor = nodo.getEquivalencia();
         }  else if ("promedio".equals(fieldName)) {
             valor = nodo.getPromedio();
-        } 
+        }  else if ("empleado".equals(fieldName)) {
+            valor = nodo.getEmpleado()+"";
+        }  else if ("curso".equals(fieldName)) {
+            valor = nodo.getCurso()+"";
+        }   else if ("total".equals(fieldName)) {
+            valor = nodo.getTotal();
+        } else if ("porcentaje".equals(fieldName)) {
+            valor = nodo.getPorcentaje();
+        }   
 
          } catch (Exception e) {
              System.out.println("en datasource Acta "+e);

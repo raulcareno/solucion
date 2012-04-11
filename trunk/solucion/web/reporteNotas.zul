@@ -507,6 +507,13 @@ void recalcular(){
                     datasource = noti.cuadrocalificacionesestadistico(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"estadisticoxmaterias.jasper");
 
+            }else if(tipo.equals("ESTAD")){
+                    parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
+                    parametros.put("desde",desde.doubleValue());
+                    parametros.put("hasta",hasta.doubleValue());
+                    datasource = noti.cuadrocalificacionesestadisticodistributivo(sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    report.setSrc(directorioReportes+"estadisticoxdistributivo.jasper");
+
             }else if(tipo.equals("CSUP")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
@@ -727,6 +734,13 @@ void campos(String valor){
              filacursos.visible = true;
             filaaportes.visible = true;
             
+        }else if(valor.equals("ESTAD")){
+             curs.disabled = false;
+             sistemasCombo.disabled = false;
+             titulo.value= "CUADRO ESTADISTICO DE RENDIMIENTO POR DISTRIBUTIVO";
+             filaaportes.visible = true;
+             fila.visible = true;
+            
         }else if(valor.equals("CSUP")){
             curs.disabled = false;
             sistemasCombo.disabled = false;
@@ -819,9 +833,9 @@ void campos(String valor){
                                     
                                     <listitem  id="EST" label="Estadístico por Curso" value="EST" />
                                     <listitem  id="ESTA" label="Estadístico de Rendimiento por Curso" value="ESTA" />
+                                    <listitem  id="ESTAD" label="Estadístico de Rendimiento por Distributivo" value="ESTAD" />
                                     
                                     <listitem  id="linea0281" label="============ACTAS Y CERTIFICADOS=============" value="linea2801" />
-                                    
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
                                     <listitem  id="CERT2" label="Certificado de Promoción(con decimales en notas)" value="CERT2"/>
                                     <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
