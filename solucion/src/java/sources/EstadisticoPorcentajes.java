@@ -5,6 +5,8 @@
 package sources;
 
 import java.util.Collection;
+import jcinform.persistencia.Cursos;
+import jcinform.persistencia.Empleados;
 
 /**
  *
@@ -13,14 +15,18 @@ import java.util.Collection;
 public class EstadisticoPorcentajes {
     
     public Integer contador;
+    public Integer total;
     public String equivalencia;
     public String tipo;
     public Object valor;
     public Double promedio;
+    public Double porcentaje;
     public String materia;
     public Integer numero;
     public Integer matriculados;
     public Integer nomatriculados;
+    public Empleados empleado;
+    public Cursos curso;
      
     
     public EstadisticoPorcentajes(){
@@ -100,6 +106,38 @@ public class EstadisticoPorcentajes {
 
     public void setValor(Object valor) {
         this.valor = valor;
+    }
+
+    public Cursos getCurso() {
+        return curso;
+    }
+
+    public void setCurso(Cursos curso) {
+        this.curso = curso;
+    }
+
+    public Empleados getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleados empleado) {
+        this.empleado = empleado;
+    }
+
+    public Double getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(Double porcentaje) {
+        this.porcentaje = porcentaje;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
     }
     
      
