@@ -30,16 +30,22 @@ void llenar(Equivalencias equi2){
       if(equi.getValorminimo().equals(null)){
         equi.setValormaximo(0.0);
         equi.setValorminimo(0.0);
-    }
+        equi.setNota(0.0);
+     }
     }catch(Exception aa){
         equi.setValormaximo(0.0);
         equi.setValorminimo(0.0);
+        equi.setNota(0.0);
     }    
   
  BigDecimal mini = new BigDecimal(equi.getValorminimo());
     desde.value = mini;
  BigDecimal maxi= new BigDecimal(equi.getValormaximo());
     hasta.value = maxi;
+    
+ BigDecimal not= new BigDecimal(equi.getNota());
+    nota.value = not;
+    
     int p   = 0;
     try{
         if(equi.getGrupo().equals("AP")){
@@ -78,6 +84,7 @@ void estado(Boolean estado,Boolean modificar){
     abreviatura.readonly  = estado;
     desde.readonly  = estado;
     hasta.readonly  = estado;
+    nota.readonly = estado;
     grupo.disabled = estado;
 
 }
@@ -93,6 +100,7 @@ void estado(Boolean estado,Boolean modificar){
         equi.setGrupo(grupo.selectedItem.value);
         equi.setValorminimo((desde.value).doubleValue());
         equi.setValormaximo((hasta.value).doubleValue());
+        equi.setNota((nota.value).doubleValue());
 
 
         equi.setPeriodo(periodo);
@@ -206,16 +214,20 @@ void grupo(String tipo){
             rabreviatura.visible = false;
             rdesde.visible = false;
             rhasta.visible = false;
+            rnota.visible = false;
             
         if(tipo.equals("AP")){
             rnombre.visible = true;
             rabreviatura.visible = true;
             rdesde.visible = true;
             rhasta.visible = true;
+            rnota.visible = true;
             lbldesde.value = "Desde(*)";
             lbldesde.value = "Hasta(*)";
             lblnombre.value = "Nombre(*)";
             lblabreviatura.value = "Abreviatura(*)";
+             
+             
         }else if(tipo.equals("DI")){
             rnombre.visible = true;
             rabreviatura.visible = true;
@@ -263,6 +275,10 @@ void grupo(String tipo){
                 <row id="rhasta"> 
                     <span style="float:right"><label id="lblhasta" value="Hasta(*):"/></span>
                     <decimalbox format="#,##0.##" id="hasta" maxlength="8" cols="8"  readonly="true"  /> 
+                </row>
+                <row id="rnota"> 
+                    <span style="float:right"><label id="lblnota" value="Nota(*):"/></span>
+                    <decimalbox format="#,##0.##" id="nota" maxlength="8" cols="8"  readonly="true"  /> 
                 </row>
     
  

@@ -592,7 +592,7 @@ public class notas extends Rows {
                         String toda = notas.get(j - 2).getNota() + "";
                         String uno = toda.substring(0, 1).toUpperCase();
                         toda = toda.substring(1, toda.length());
-                        String vaNota = ((Equivalencias) object1.getSelectedItem().getValue()).getValormaximo().toString();
+                        String vaNota = ((Equivalencias) object1.getSelectedItem().getValue()).getNota().toString();
                         Double aCargar = 0.0;
                         if (vaNota.equals("")) {
                             aCargar = 0.0;
