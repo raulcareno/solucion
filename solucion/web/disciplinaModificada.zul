@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window     height="100%" 
+            border="normal"
+>
+    <zk xmlns="http://www.zkoss.org/2005/zul">
+
+        <zscript>
+<![CDATA[
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.disciplina;
+import java.math.BigDecimal;
+import bean.reportesClase;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+ 
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+import bean.Permisos;
+Permisos per = new Permisos();
+
+         
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+disciplina discipli = new disciplina();
+
+Empleados user = (Empleados)ses.getAttribute("user");
+    List cursos = null;
+    if(user.getTipo().equals("Interna")){
+        cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia, o.especialidad.descripcion, o.paralelo.descripcion ");
+    }else{
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+    }
+    List especialidades = adm.query("SELECT o  FROM Global AS o WHERE o.grupo = 'ESP'");
+    Global glob = new Global(-1);
+    glob.setDescripcion("[Seleccione]");
+    especialidades.add(0,glob);
+
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+List sistemas = new ArrayList();
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and o.esdisciplina = true  and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+
+              Sistemacalificacion stodos = new Sistemacalificacion();
+              stodos.setNombre(""+trime.getDescripcion()+"");
+              int orden = 0;
+              int codigo=0;
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+
+              }
+              stodos.setOrden(orden);
+              stodos.setCodigosis(codigo);
+              stodos.setTrimestre(trime);
+              sistemas.add(stodos);
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    siste.setNombre("...... * "+siste.getNombre());
+                    sistemas.add(siste);
+               }
+
+ }
+
+//List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+Sistemacalificacion stodos0 = new Sistemacalificacion(-1);
+stodos0.setNombre("[Seleccione]");
+sistemas.add(0,stodos0);
+
+Cursos selec = new Cursos(-1);
+selec.setDescripcion("[Seleccione]");
+cursos.add(0,selec);
+Cursos todos = new Cursos(-2);
+todos.setDescripcion("[TODOS]");
+  if(user.getTipo().equals("Interna"))
+    cursos.add(todos);
+//notas noti = new notas();
+reportesClase  noti = new reportesClase();
+ 
+      public Double redondear(Double numero, int decimales) {
+        try{
+                BigDecimal d = new BigDecimal(numero);
+        d = d.setScale(decimales, RoundingMode.HALF_UP);
+        return d.doubleValue();
+        }catch(Exception e){
+            return 0.0;
+        }
+        
+    }
+
+void buscar2(Cursos cur){
+
+            if(estudiantesCombo.disabled==false){
+                    List empleadosEncontrados = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+cur.codigocur+"'  order by o.estudiante.apellido");
+                    estudiantesCombo.getChildren().clear();
+                    Matriculas matri = new Matriculas(-1);
+                    Estudiantes es = new Estudiantes(-1);
+                    es.setApellido("[Seleccione]");
+                    es.setNombre("");
+                    matri.setEstudiante(es);
+                    empleadosEncontrados.add(0,matri);
+                        
+                           for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                                  Matriculas estudent = (Matriculas) it.next();
+                                    Listitem item = new Listitem();
+                                    item.setValue(estudent);
+                                    item.appendChild(new Listcell(estudent.estudiante.apellido+" "+estudent.estudiante.nombre));
+                                    estudiantesCombo.appendChild(item);
+                         }
+                            matri = new Matriculas(-2);
+                            matri.setEstudiante(es);
+                                    Listitem item = new Listitem();
+                                    item.setValue(matri);
+                                    item.appendChild(new Listcell("[TODOS]"));
+                                    estudiantesCombo.appendChild(item);
+
+                                    estudiantesCombo.setSelectedIndex(0);
+            }
+
+    
+        
+    }
+    Nota no = new Nota();
+    String qNota="";
+    DisciplinaModificada disModificada = new DisciplinaModificada();
+    
+    
+    public void cargarNota(){
+        Matriculas mat = estudiantesCombo.selectedItem.value;
+        if(sistemasCombo.selectedItem==null ){
+                return;
+        }
+        Sistemacalificacion sis = sistemasCombo.selectedItem.value;
+        notaActual.value = new BigDecimal(0);
+        observacion.value = " ";
+        
+        
+        if(sis.getCodigosis().equals(new Integer(-1)) ){
+                return;
+        }
+        
+        
+        List notaNotas = adm.query("Select o from Notanotas as o where o.sistema.codigosis = '"+sis.getCodigosis()+"' ");
+            for (Iterator it = notaNotas.iterator(); it.hasNext();) {
+                        Notanotas n = (Notanotas) it.next();
+                        qNota = ""+n.getNota();
+            }
+                try{
+                    List disciplinaEncontrada = adm.query("Select o from DisciplinaModificada as o " + 
+                                " where o.matricula.codigomat = '"+mat.getCodigomat()+"'  " +
+                                " and o.sistema.codigosis =  '"+sis.getCodigosis()+"' ");
+                                if(disciplinaEncontrada.size()>0){
+                                     notaActual.value = new BigDecimal(disciplinaEncontrada.get(0).getNota());
+                                     observacion.value = ""+disciplinaEncontrada.get(0).getObservacion();
+                                }else{
+                                List nota = adm.query("Select o."+qNota+" from Notas as o where o.materia.codigo = 0 and o.matricula.codigomat = '"+mat.getCodigomat()+"' ");
+                                        notaActual.value = new BigDecimal(nota.get(0).toString());
+                                }
+     
+                }catch(Exception e){
+                }
+    }
+    public void guardar(){
+      Matriculas mat = estudiantesCombo.selectedItem.value;
+        Sistemacalificacion sis = sistemasCombo.selectedItem.value;
+        
+       String del = "Delete from DisciplinaModificada where matricula.codigomat = '" + mat.getCodigomat() + "' " +
+            " and sistema.codigosis = '" + sis.getCodigosis() + "'   ";
+            adm.ejecutaSql(del);
+            
+            DisciplinaModificada disM = new DisciplinaModificada(adm.getNuevaClave("DisciplinaModificada","codigo"));
+            disM.setMatricula(mat);
+            disM.setSistema(sis);
+            disM.setNota(notaActual.getValue().doubleValue());
+            disM.setEmpleado(user);
+            disM.setObservacion(observacion.value);
+            adm.guardar(disM);
+               Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            
+    
+    }
+    
+
+]]>
+        </zscript>
+        <panel width="100%" id="parametros"  height="100%" border="normal">
+            <panelchildren>
+                <grid  id="ver" style="background:transparent;border:1px" width="750px">
+                    <rows>
+                        <row id="filacursos" style="background:transparent;border:0px">
+                            <span style="float:right"> Curso:</span>
+                            <span>
+                                <listbox id="curs" width="450px"  mold="select" onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
+                                    <listitem   forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
+                                </listbox>
+                            </span>
+                        </row>
+                     
+                        
+                        <row    id="filaestudiantes"   style="background:transparent;border:0px">
+                            <span style="float:right"> Estudiantes: </span>
+                            <listbox  onSelect="cargarNota()" id="estudiantesCombo" width="450px"  mold="select" >
+                                <listitem    forEach="${estudiantes}" value="${each}" label="${each.apellidos}" />
+
+                            </listbox>
+                        </row>
+                        <row   id="filaaportes"   style="background:transparent;border:0px" >
+                            <span style="float:right"> Aporte: </span>
+
+                            <listbox onSelect="cargarNota()"  id="sistemasCombo" width="450px"  mold="select" >
+                                <listitem  forEach="${sistemas}" value="${each}">
+                                    <listcell label="${each.nombre}" />
+                                </listitem>
+                            </listbox>
+                        </row>
+                        <row   id="filanota"   style="background:transparent;border:0px" >
+                            <span style="float:right"> Nota Actual/Modificada: </span>
+                            <span>
+                                <decimalbox  constraint="no empty: Ingrese una Nota para continuar..."  id="notaActual"/>
+                            
+                                <button  image="/images/auditoria.gif" onClick="cargarNota()" id="buscar"   label="Buscar" />
+                            </span>
+    
+                        </row>
+                        <row   id="filaobservacion"   style="background:transparent;border:0px" >
+                            <span style="float:right"> Observación: </span>
+                            <textbox constraint="no empty: Ingrese una observación para continuar..." value=" " rows="2" id="observacion"/>
+                        </row>
+                        <row  style="background:transparent;border:0px" >
+                            <span></span>
+                            <button  image="/images/guardar.png" onClick="notaActual.getValue(); observacion.getValue(); guardar(); " id="guardar"   
+                                     label="Guardar Nota" />
+                        </row>
+
+                    </rows>
+                </grid>
+
+            </panelchildren>
+        </panel>
+
+
+      
+
+    </zk>
+</window>
