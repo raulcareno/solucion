@@ -157,20 +157,20 @@ public class Permisos {
 
     }
 
-    public boolean verificarPermisoReporte(String idVariable,String descripcion, String accion,Boolean pantalla,String grupo) {
-          
+    public boolean verificarPermisoReporte(String idVariable, String descripcion, String accion, Boolean pantalla, String grupo) {
+
         Session a = Sessions.getCurrent();
-        if(idVariable== null){
+        if (idVariable == null) {
             return true;
         }
         idVariable = idVariable.replace("_", " ");
         List<Accesos> accesosList = (List<Accesos>) a.getAttribute("accesos");
         Empleados empleadoAc = (Empleados) a.getAttribute("user");
-       
-        if(idVariable.equals("-1")){
+
+        if (idVariable.equals("-1")) {
             return true;
         }
-        if(idVariable.toUpperCase().contains("LINEA")){
+        if (idVariable.toUpperCase().contains("LINEA")) {
             return true;
         }
         for (Iterator<Accesos> it = accesosList.iterator(); it.hasNext();) {
@@ -200,52 +200,74 @@ public class Permisos {
                 }
             }
         }
-        
-        if(empleadoAc.getPerfil().getDescripcion().contains("ADMINIS")){
-                Accesos ac = new Accesos();
-                Administrador adm = new Administrador();
-                ac.setCodigoacc(adm.getNuevaClave("Accesos", "codigoacc"));
-                if(pantalla){
-                    ac.setModulo(idVariable);
-                    ac.setGrupo("MATRICULAS");
-                }else{
-                    ac.setModulo("REP | "+descripcion+" ["+idVariable+"]");
-                    
-                }
-                ac.setGrupo(grupo);
-                
-                ac.setGuardar(true);
-                ac.setIngresar(true);
-                ac.setActualizar(true);
-                ac.setEliminar(Boolean.TRUE);
-                ac.setPerfil(empleadoAc.getPerfil());
-                adm.guardar(ac);
-                
-                accesosList.add(ac);
-                a.removeAttribute("accesos");
-                a.setAttribute("accesos",accesosList);
-                
-                return true;
-        }else{
+
+        if (empleadoAc.getPerfil().getDescripcion().contains("ADMINIS")) {
             Accesos ac = new Accesos();
-                Administrador adm = new Administrador();
-                ac.setCodigoacc(adm.getNuevaClave("Accesos", "codigoacc"));
-                if(pantalla){
-                    ac.setModulo(idVariable);
-                    ac.setGrupo("MATRICULAS");
-                }else{
-                    ac.setModulo("REP | "+descripcion+" ["+idVariable+"]");
-                }
-                ac.setGrupo(grupo);
-                ac.setGuardar(true);
-                ac.setIngresar(true);
-                ac.setActualizar(true);
-                ac.setEliminar(Boolean.TRUE);
-                ac.setPerfil(null);
-                adm.guardar(ac);
-                return false;
+            Administrador adm = new Administrador();
+            ac.setCodigoacc(adm.getNuevaClave("Accesos", "codigoacc"));
+            if (pantalla) {
+                ac.setModulo(idVariable);
+                ac.setGrupo("MATRICULAS");
+            } else {
+                ac.setModulo("REP | " + descripcion + " [" + idVariable + "]");
+
+            }
+            ac.setGrupo(grupo);
+
+            ac.setGuardar(true);
+            ac.setIngresar(true);
+            ac.setActualizar(true);
+            ac.setEliminar(Boolean.TRUE);
+            ac.setPerfil(empleadoAc.getPerfil());
+            adm.guardar(ac);
+
+            accesosList.add(ac);
+            a.removeAttribute("accesos");
+            a.setAttribute("accesos", accesosList);
+            
+            //CAMBIO LOS ****************************
+            ac = new Accesos();
+            ac.setCodigoacc(adm.getNuevaClave("Accesos", "codigoacc"));
+            if (pantalla) {
+                ac.setModulo(idVariable);
+                ac.setGrupo("MATRICULAS");
+            } else {
+                ac.setModulo("REP | " + descripcion + " [" + idVariable + "]");
+
+            }
+            ac.setGrupo(grupo);
+
+            ac.setGuardar(true);
+            ac.setIngresar(true);
+            ac.setActualizar(true);
+            ac.setEliminar(Boolean.TRUE);
+            ac.setPerfil(null);
+            adm.guardar(ac);
+            //**********************
+            
+            
+
+            return true;
+        } else {
+            Accesos ac = new Accesos();
+            Administrador adm = new Administrador();
+            ac.setCodigoacc(adm.getNuevaClave("Accesos", "codigoacc"));
+            if (pantalla) {
+                ac.setModulo(idVariable);
+                ac.setGrupo("MATRICULAS");
+            } else {
+                ac.setModulo("REP | " + descripcion + " [" + idVariable + "]");
+            }
+            ac.setGrupo(grupo);
+            ac.setGuardar(true);
+            ac.setIngresar(true);
+            ac.setActualizar(true);
+            ac.setEliminar(Boolean.TRUE);
+            ac.setPerfil(null);
+            adm.guardar(ac);
+            return false;
         }
-        
+
         //return false;
 
     }
@@ -295,18 +317,19 @@ public class Permisos {
             System.out.println("ERROR EN AUDITAR" + e);
         }
     }
-public void auditarRepre(String tabla, String tipo, String campo) {
+
+    public void auditarRepre(String tabla, String tipo, String campo) {
         try {
             Session a = Sessions.getCurrent();
             Administrador adm = new Administrador();
             Estudiantes emp = (Estudiantes) a.getAttribute("userEstudiante");
 
-            Representante repre =  (Representante) a.getAttribute("userRepresentante");
+            Representante repre = (Representante) a.getAttribute("userRepresentante");
 
             Auditoria audi = new Auditoria();
-            if(repre != null){
-                 audi.setRepresentante(repre);
-            }else{
+            if (repre != null) {
+                audi.setRepresentante(repre);
+            } else {
                 audi.setEstudiante(emp);
             }
             audi.setCodigo(adm.getNuevaClave("Auditoria", "codigo"));

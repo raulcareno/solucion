@@ -1008,7 +1008,9 @@ public class notas extends Rows {
         }
         for (Iterator<Cursos> ita = listaLlega.iterator(); ita.hasNext();) {
             Cursos ActualCurso = ita.next();
-
+            List<DisciplinaModificada> existeModificaciones = adm.query("Select o from DisciplinaModificada as o "
+                    + "where o.matricula.curso.codigocur = '" + ActualCurso.getCodigocur() + "' ");
+            
             List<MateriaProfesor> maprofes = adm.query("Select o from MateriaProfesor as o "
                     + "where o.curso.codigocur = '" + ActualCurso.getCodigocur() + "' "
                     + "and o.materia.codigo > 1 and o.ministerio = true and o.opcional = true ");
@@ -1161,9 +1163,20 @@ public class notas extends Rows {
                             for (int j = 1; j < vecDato.size(); j++) {
                                 Double object1 = (Double) vecDato.get(j);
                                 String toda = notas.get(j - 1).getNota() + "";
+                                Sistemacalificacion sisPregunta = notas.get(j - 1).getSistema();
+                                
                                 String uno = toda.substring(0, 1).toUpperCase();
                                 toda = toda.substring(1, toda.length());
+                                
                                 inter.eval("nota.set" + (uno + toda) + "(" + redondear(new Double(object1), decimales.intValue()) + ");");
+                                if(existeModificaciones.size()>0){
+                                    DisciplinaModificada disBuscada = buscarModificada(existeModificaciones, sisPregunta, new Integer(((Integer) vecDato.get(0))));
+                                    if(disBuscada != null){
+                                        Double valor = disBuscada.getNota();
+                                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(valor, decimales.intValue()) + ");");    
+                                    }
+                                    
+                                }
                             }
                             nota = (Notas) inter.get("nota");
                             nota.setCuantitativa(true);
@@ -1194,7 +1207,17 @@ public class notas extends Rows {
             }
         }
     }
+public DisciplinaModificada buscarModificada( List<DisciplinaModificada> lista, Sistemacalificacion sis, Integer matricula){ 
+    
+    for (Iterator<DisciplinaModificada> itMd = lista.iterator(); itMd.hasNext();) {
+        DisciplinaModificada dM = itMd.next();
+        if(dM.getMatricula().getCodigomat().equals(matricula) && dM.getSistema().getCodigosis().equals(sis.getCodigosis())){
+            return dM;
+        }
+    }
+    return null;
 
+}
     public void nuevaClave() {
         try {
             Administrador adm = new Administrador();

@@ -234,7 +234,7 @@ void buscar2(Cursos cur){
                         </row>
                         <row   id="filaobservacion"   style="background:transparent;border:0px" >
                             <span style="float:right"> Observación: </span>
-                            <textbox constraint="no empty: Ingrese una observación para continuar..." value=" " rows="2" id="observacion"/>
+                            <textbox constraint="no empty: Ingrese una observación para continuar..." cols="60" value=" " rows="2" id="observacion"/>
                         </row>
                         <row  style="background:transparent;border:0px" >
                             <span></span>
