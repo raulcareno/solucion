@@ -180,7 +180,12 @@ void buscar2(Cursos cur){
             disM.setEmpleado(user);
             disM.setObservacion(observacion.value);
             adm.guardar(disM);
-               Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+              String modif = "Update Notas set "+qNota+" = "+notaActual.getValue()+"  " + 
+                " where matricula.codigomat = '" + mat.getCodigomat() + "' " +
+                " and materia.codigo = 0  ";
+            adm.ejecutaSql(modif);
+            
+            Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
             
     
     }
