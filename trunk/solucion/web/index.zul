@@ -305,6 +305,7 @@ div.z-listbox-body{background: white; border: 0; overflow: auto; width: 100%; po
                                     <menuitem onClick="ingresar(self)" id="Distributivo" label="Distributivo"  image="/images/distributivo.png" value="/distributivo.zul" />
                                     <menuitem onClick="ingresar(self)" id="Registro_de_Notas" label="Registro de Notas"  image="/images/notas.png" value="/notas.zul" />
                                     <menuitem onClick="ingresar(self)" id="Registro_de_Disciplina" image="/images/notas.png"  label="Registro de Disciplinas" value="/disciplina.zul" />
+                                    <menuitem onClick="ingresar(self)" id="Registro_de_Disciplina_Modificada" image="/images/notas.png"  label="Modificar Disciplina x Junta" value="/disciplinaModificada.zul" />
                                     <menuitem onClick="ingresar(self)" id="Registro_de_Faltas" image="/images/notas.png"  label="Registro de Faltas" value="/faltas.zul" />
                                     <menuitem onClick="ingresar(self)" id="Reportes_Notas" label="Reportes Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
                                     <menuitem onClick="ingresar(self)" id="Parametros_Autoevaluacion" image="/images/textos.png"  label="Parametros Rendimiento" value="/perfil.zul" />

@@ -1146,7 +1146,7 @@ public class notas extends Rows {
 
                     //INICIO PROCESO DE GUARDAR LAS NOTAS
                     secuencial sec = new secuencial();
-
+//
                     for (int i = 0; i < aguardar.size(); i++) {
                         try {
                             //Row object = (Row) aguardar.get(i);
