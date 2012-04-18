@@ -3,6 +3,8 @@
 <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <borderlayout id="todo" height="250%" onCreate="cargando();" >
     <zscript>
+        <![CDATA[
+        
 import jcinform.persistencia.*;
   import jcinform.procesos.Administrador;
   import bean.Permisos;
@@ -29,7 +31,41 @@ Session a = Sessions.getCurrent();
         //a.invalidate();
  }
 
+void cambiarEstado(Estudiantes user){
+    Date fechaActual = adm.Date();
+    String fec = (fechaActual.getYear()+1900) + "-" + (fechaActual.getMonth()+1) + "-"+(fechaActual.getDate())+"";
+        List pendientesEncontrados = adm.query("Select o from Asignados  as o " + 
+            " where o.matricula.estudiante.codigoest =  '"+user.getCodigoest()+"'  " + 
+            " and o.fechai <= '"+fec+"' and o.estado = true order by o.fechai");
+        datos = new Listbox();
+        System.out.println("contiene deudas pendientes"+pendientesEncontrados.size());
+        if(pendientesEncontrados.size()>0){
+                user.setPendientes(true);
+                adm.actualizar(user);
+                emp = user.getRepresentante();
+                emp.setEstado(true);
+                adm.actualizar(emp);
+        }else{
+                user.setPendientes(false);
+                adm.actualizar(user);
+                emp = user.getRepresentante();
+                emp.setEstado(false);
+                adm.actualizar(emp);
+        
+        }
+         a.removeAttribute("userEstudiante");
+         a.setAttribute("userEstudiante",user);
+}
+ 
+  void ingresarSin(String valor){
+        Include inc = (Include) xcontents;
+        inc.setSrc(valor);
+ }
+ 
+
  void ingresar(String valor){
+      cambiarEstado(emp2);
+      System.out.println("ESTUDIANTE:"+emp2);
      if(emp.getEstado() == null)
          emp.setEstado(false);
  
@@ -95,7 +131,7 @@ Session a = Sessions.getCurrent();
  
  
   } 
-
+]]>
     </zscript>
     <north style="background-image: url(./images/cabefondo1.png)"  size="85px" >
         <div>
@@ -119,9 +155,13 @@ Session a = Sessions.getCurrent();
                     <fisheye image="/images/calendarioacademico.png"  onClick='ingresar("/calendar_1.zul")' />
                     <fisheye image="/images/cambioclave.png" onClick='ingresar("/cambioClaveRepresentante.zul")' />
                     <fisheye image="/images/correo.png" onClick='ingresar("/correosr/comunicadoEstudianteIndex.zul")' />
-                                        <fisheye image="/images/matriculacion.png" onClick='ingresarMatriculas()' />
+                    <fisheye image="/images/pendientes.png" onClick='ingresarSin("/pendientesEstudiantes.zul")' />
                     <fisheye image="/images/comentario1.png"  onClick='ingresar("/comentariosEstudiantes.zul")'  />
                     <fisheye image="/images/mistareas.png" onClick='ingresar("/tareasEstudiante.zul")' />
+                    <fisheye image="/images/matriculacion.png" onClick='ingresarMatriculas()' />
+                    
+                    
+                    
 
                     <fisheye image="/images/ayuda2.png" onClick='ingresar("/ayudafuera.zul")' />
                     <fisheye image="/images/salida.png" onClick="salir()" />

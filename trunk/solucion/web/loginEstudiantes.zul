@@ -33,28 +33,28 @@
             import javax.faces.context.FacesContext;
   import bean.email;
             Administrador adm = new Administrador();
+            Session ses = Sessions.getCurrent();
 
     void verPantall(Boolean esEstudiante){
-    error.visible = false;
-             
+            //true es estudiante
+            //false es representante
+            error.visible = false;
             if(esEstudiante){
                     Estudiantes user =adm.ingresoSistemaE(usuario.value, clave.value);
                     if(user != null){
-                    Session ses = Sessions.getCurrent();
-                    ses.setAttribute("userEstudiante",user);
-                    //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
-                    Executions.sendRedirect("indexEstudiantes.zul");
-            }else{
-               // Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                   String command2 = "animar('"+win2.getUuid()+"')";
-             Clients.evalJavaScript(command2);
-                error.visible = true;
-                usuario.focus();
-            }
+                                ses.setAttribute("userEstudiante",user);
+                                //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
+                                Executions.sendRedirect("indexEstudiantes.zul");
+                        }else{
+                           // Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                               String command2 = "animar('"+win2.getUuid()+"')";
+                         Clients.evalJavaScript(command2);
+                            error.visible = true;
+                            usuario.focus();
+                        }
             }else{//PANTALLA DEL REPRESENTANTE
                 Representante user =adm.ingresoSistemaR(usuario.value, clave.value);
                      if(user != null){
-                        Session ses = Sessions.getCurrent();
                         ses.setAttribute("userRepresentante",user);
                         //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
                         //Executions.sendRedirect("indexRepresentantes.zul");

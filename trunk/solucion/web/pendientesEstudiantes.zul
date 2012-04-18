@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+      <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+    <script type="text/javascript" src="/js/masks.js"/>
+  <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+ 
+    <window onCreate="buscar()">
+
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+  import java.text.SimpleDateFormat;
+  
+    Administrador adm = new Administrador();
+    Permisos permiso = new Permisos();
+    Object media = null;
+    Session ses = Sessions.getCurrent();
+Estudiantes user =  (Estudiantes)ses.getAttribute("userEstudiante");
+    
+//FUNCIONES
+  void buscar(){
+  
+  Date fechaActual = adm.Date();
+  String fec = (fechaActual.getYear()+1900) + "-" + (fechaActual.getMonth()+1) + "-"+(fechaActual.getDate())+"";
+        List pendientesEncontrados = adm.query("Select o from Asignados  as o " + 
+            " where o.matricula.estudiante.codigoest =  '"+user.getCodigoest()+"'  " + 
+            " and o.fechai <= '"+fec+"' and o.estado = true order by o.fechai");
+        datos = new Listbox();
+        if(pendientesEncontrados.size()>0){
+                user.setPendientes(true);
+                adm.actualizar(user);
+                Representante rep = user.getRepresentante();
+                rep.setEstado(true);
+                adm.actualizar(rep);
+        }else{
+                user.setPendientes(false);
+                adm.actualizar(user);
+                Representante rep = user.getRepresentante();
+                rep.setEstado(false);
+                adm.actualizar(rep);
+        
+        }
+         ses.removeAttribute("userEstudiante");
+         ses.setAttribute("userEstudiante",user);
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+                
+                        
+               for (Iterator it = pendientesEncontrados.iterator(); it.hasNext();) {
+                      Asignados acceIt = (Asignados) it.next();
+                      Listitem li = new Listitem();
+                      SimpleDateFormat d1 = new SimpleDateFormat("MMM-yyyy");
+                      Date d = acceIt.getFechai();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getProducto()+""));
+                      li.appendChild(new Listcell(d1.format(d)+""));
+                      li.appendChild(new Listcell(acceIt.getValor()+""));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Global g){
+empa.setPerfil(g);
+}
+]]>
+        </zscript>
+        <groupbox  width="100%" mold="3d" >
+            <caption label="Listado" />
+                        <vbox>
+                             
+                            <hbox>
+                                <listbox mold="paging" rows="20" pageSize="20"  
+                                 id="datos" width="800px">
+                                    <listhead>
+                                        <listheader label="RUBRO"/>
+                                        <listheader label="FECHA DE PAGO"/>
+                                        <listheader label="VALOR"/>
+                                         
+
+                                    </listhead>
+                                    <listitem forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.codigoemp}" />
+                                        <listcell label="${each.apellidos}" />
+                                        <listcell label="${each.direccion}" />
+                                    </listitem>
+                                </listbox>
+
+
+                            </hbox>
+                        </vbox>
+                    </groupbox>
+  
+
+    </window>
+</zk>
