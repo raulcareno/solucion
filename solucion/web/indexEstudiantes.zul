@@ -3,6 +3,9 @@
 <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <borderlayout height="100%" onCreate="cargando();" >
     <zscript>
+        
+        <![CDATA[
+        
 import jcinform.persistencia.*;
   import jcinform.procesos.Administrador;
   import bean.Permisos;
@@ -29,8 +32,11 @@ Session a = Sessions.getCurrent();
  }
 
  void ingresar(String valor){
+    cambiarEstado(emp);
      if(emp.getPendientes()){
-            Messagebox.show("Proceso bloqueado por la administración, acerquese a las oficinas..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            Messagebox.show("Proceso bloqueado por la Administración por: " + 
+                                    " FALTA DE DOCUMENTOS o SALDOS PENDIENTES.  " + 
+                                    " Acerquese a las oficinas para solucionar los procesos pendientes que tiene con la Institución..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         return;
      }
  /*else if(!emp.getAplico()){
@@ -41,11 +47,44 @@ Session a = Sessions.getCurrent();
         inc.setSrc(valor);
  }
  
+ void cambiarEstado(Estudiantes user){
+    Date fechaActual = adm.Date();
+    String fec = (fechaActual.getYear()+1900) + "-" + (fechaActual.getMonth()+1) + "-"+(fechaActual.getDate())+"";
+        List pendientesEncontrados = adm.query("Select o from Asignados  as o " + 
+            " where o.matricula.estudiante.codigoest =  '"+user.getCodigoest()+"'  " + 
+            " and o.fechai <= '"+fec+"' and o.estado = true order by o.fechai");
+        datos = new Listbox();
+        System.out.println("contiene deudas pendientes"+pendientesEncontrados.size());
+        if(pendientesEncontrados.size()>0){
+                user.setPendientes(true);
+                adm.actualizar(user);
+                Representante rep = user.getRepresentante();
+                rep.setEstado(true);
+                adm.actualizar(rep);
+        }else{
+                user.setPendientes(false);
+                adm.actualizar(user);
+                Representante rep = user.getRepresentante();
+                rep.setEstado(false);
+                adm.actualizar(rep);
+        
+        }
+         a.removeAttribute("userEstudiante");
+         a.setAttribute("userEstudiante",user);
+}
+ 
+  void ingresarSin(String valor){
+        Include inc = (Include) xcontents;
+        inc.setSrc(valor);
+ }
+ 
      void ingresarMatriculas(){
                     
                   
                             if(emp.getPendientes()){
-                                Messagebox.show("Proceso bloqueado por la Administración, acerquese a las oficinas para solucionar los procesos pendientes que tiene con la Institución..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                 Messagebox.show("Proceso bloqueado por la Administración por: " + 
+                                    " FALTA DE DOCUMENTOS o SALDOS PENDIENTES.  " + 
+                                    " Acerquese a las oficinas para solucionar los procesos pendientes que tiene con la Institución..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                                 return;
                             }
                              try{
@@ -91,6 +130,8 @@ Session a = Sessions.getCurrent();
 
             }catch(Exception e){}
         }
+        
+]]>
 
     </zscript>
     <north style="background-image: url(./images/cabefondo1.png)"  size="15%" >
@@ -121,6 +162,7 @@ Session a = Sessions.getCurrent();
                             <fisheye image="/images/correo.png" onClick='ingresar("/correos/comunicadoEstudianteIndex.zul")' />
                             <fisheye image="/images/comentario1.png" onClick='ingresar("/comentariosEstudiantes.zul")' />
                             <fisheye image="/images/mistareas.png" onClick='ingresar("/tareasEstudiante.zul")' />
+                            <fisheye image="/images/pendientes.png" onClick='ingresarSin("/pendientesEstudiantes.zul")' />
                             <fisheye image="/images/matriculacion.png" onClick='ingresarMatriculas()' />
                             <fisheye image="/images/ayuda2.png" onClick='ingresar("/ayudafuera.zul")' />
                             <fisheye image="/images/salida.png" onClick="salir()" />
