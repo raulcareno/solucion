@@ -1554,16 +1554,16 @@ void verificarCedula(String valor){
                                                         win.setClosable(true);
                                                         win.setTitle("Observación de Anular Factura");
                                                         win.doModal();
-                                                      Facturaanulada facAnulada = new Facturaanulada();
+                                                      /* Facturaanulada facAnulada = new Facturaanulada();
                                                       facAnulada.setFactura(mifac);
                                                       facAnulada.setEmpleados(usuarioActual);
                                                       facAnulada.setFecha(adm.Date());
                                                       facAnulada.setNumero(mifac.getNumero());
                                                       facAnulada.setObservacion(observacionanula.value);
                                                       facAnulada.setValorpago(cobro.getHaber());
-                                                      facAnulada.setNopago(cobro.getCodigo());
+                                                      facAnulada.setNopago(cobro.getCodigo()); */
                                                       if(continuar.isChecked()){
-                                                        adm.guardar(facAnulada);
+                                                        //adm.guardar(facAnulada);
                                                         adm.eliminarObjeto(Cxcobrar.class, facCodi );
                                                         mifac.setNumero(null);
                                                         adm.actualizar(mifac);

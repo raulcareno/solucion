@@ -160,7 +160,9 @@ String llenarCeros(String numero){
                             Factura fac = adm.buscarClave(codigofac.value,Factura.class);
                             fac.setNumero(nn+"");
                             fac.setAutorizacion(sucursalEmp.getSucursal().getAutorizacion());
-                            fac.setEmision(adm.Date());
+                            if(fac.getEmision() == null){
+                                fac.setEmision(adm.Date());
+                            }
                             adm.actualizar(fac);
                             facturaPanel.visible=false;
                            imprimir();

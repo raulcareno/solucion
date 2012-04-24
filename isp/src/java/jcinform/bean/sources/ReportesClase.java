@@ -412,14 +412,14 @@ public class ReportesClase {
         String hastastr = convertiraString(hasta);
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
             Clientes clientes1 = itCli.next();
-            String sql = "SELECT fa.codigo, fa.numero, fa.fecha,  fa.total,  "
+            String sql = "SELECT fa.codigo, fa.numero, fa.emision,  fa.total,  "
                     + "(SUM(cx.debe) - SUM(cx.haber)) saldo,SUM(cx.haber) abonos, fa.subtotal, fa.valoriva"
                     + " FROM detalle de, cxcobrar cx, factura  fa "
                     + " WHERE de.factura = fa.codigo "
                     + "AND fa.clientes  =  " + clientes1.getCodigo() + "  "
                     + " AND fa.sucursal = '" + sucursal.getCodigo() + "' "
                     + " AND cx.factura = fa.codigo "
-                    + "AND fa.fecha between '" + desdestr + "' and '" + hastastr + "' and fa.numero > 0 "
+                    + "AND fa.emision between '" + desdestr + "' and '" + hastastr + "' and fa.numero > 0 "
                     + "GROUP BY fa.numero    ";
             //+ "GROUP BY fa.numero  having SUM(cx.haber) >0  ";
             List facEncontradas = adm.queryNativo(sql);

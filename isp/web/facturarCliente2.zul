@@ -159,6 +159,9 @@ String llenarCeros(String numero){
                       
                             Factura fac = adm.buscarClave(codigofac.value,Factura.class);
                             fac.setNumero(nn+"");
+                             if(fac.getEmision() == null){
+                                fac.setEmision(adm.Date());
+                            }
                             adm.actualizar(fac);
                             facturaPanel.visible=false;
                            imprimir();
