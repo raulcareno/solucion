@@ -43,7 +43,7 @@ Cursos selec = new Cursos(-1);
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 void buscar2(Cursos cur){
     String tipo = reporte.getSelectedItem().getValue();
-    if(tipo.equals("LMAT3") || tipo.equals("LPAS") || tipo.equals("LMIN") || tipo.equals("INS") || tipo.equals("INS2") || tipo.equals("LCLA33") || tipo.equals("LMAT") || tipo.equals("LMATF") || tipo.equals("LMATYR") || tipo.equals("LINSF")   || tipo.equals("RET") || tipo.equals("LREP2") ){
+    if(tipo.equals("LMAT3") || tipo.equals("LPAS") || tipo.equals("LMIN") || tipo.equals("INS") || tipo.equals("INS2") || tipo.equals("LCLA33") || tipo.equals("LMAT") || tipo.equals("LMATF") || tipo.equals("LMATYR") || tipo.equals("LINSF")   || tipo.equals("RET") || tipo.equals("LREP2") || tipo.equals("LREP3") ){
             filaestudiantes.visible = false;
             estudiantesCombo.disabled = true;
            return;
@@ -748,7 +748,7 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     
                 	Set items2 = estudiantesCombo.getSelectedItems();
 
-                    if (items2.isEmpty() && !tipo.equals("LPAS") && !tipo.equals("LMIN") && !tipo.equals("INS") && !tipo.equals("INS2") && !tipo.equals("LCLA33")  && !tipo.equals("LMAT") && !tipo.equals("LMATF") && !tipo.equals("LMATYR") && !tipo.equals("LINSF") && !tipo.equals("RET")   && !tipo.equals("LREP2")  && !tipo.equals("LMAT3") ) {
+                    if (items2.isEmpty() && !tipo.equals("LPAS") && !tipo.equals("LMIN") && !tipo.equals("INS") && !tipo.equals("INS2") && !tipo.equals("LCLA33")  && !tipo.equals("LMAT") && !tipo.equals("LMATF") && !tipo.equals("LMATYR") && !tipo.equals("LINSF") && !tipo.equals("RET")   && !tipo.equals("LREP2")  && !tipo.equals("LMAT3") && !tipo.equals("LREP3") ) {
                             Messagebox.show("NO HA SELECCIONADO NINGÚN ESTUDIANTE...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             return;
 						} else {
@@ -837,6 +837,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LREP2",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"libromatriculas.jasper");
+            }else if(tipo.equals("LREP3")){
+                    datasource = certificados(listadoCursos,"LREP3",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"representantes2.jasper");
             }else if(tipo.equals("LINT2")){
                     datasource = certificados(listadoCursos,"LINT2",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
@@ -1182,6 +1186,7 @@ void campos(String valor){
                                 <listitem  id="LCLA4" label="Representante con Claves (Individual-Recortar)" value="LCLA4"/>
                                 <listitem  id="LCOR" label="Estudiantes con Correos electrónicos" value="LCOR"/>
                                 <listitem  id="LREP" label="Estudiantes con Representantes" value="LREP"/>
+                                <listitem  id="LREP3" label="Estudiantes con Representantes(Financiero)" value="LREP3"/>
                                 <listitem  id="LCAS" label="Estudiantes con Casilleros vacios" value="LCAS"/>
                                 <listitem  id="LCA" label="Estudiantes 1 Casillero" value="LCA"/>
                                 <listitem  id="LASI" label="Listado para Asistencia" value="LASI"/>
@@ -1361,6 +1366,7 @@ void campos(String valor){
 
             LREP.visible = per.verificarPermisoReporte("LREP", "Ingresar");
             LREP2.visible = per.verificarPermisoReporte("LREP", "Ingresar");
+            LREP3.visible = per.verificarPermisoReporte("LREP", "Ingresar");
             LCAS.visible = per.verificarPermisoReporte("LCAS", "Ingresar");
             LCA.visible = per.verificarPermisoReporte("LCA", "Ingresar");
             LASI.visible = per.verificarPermisoReporte("LASI", "Ingresar");
