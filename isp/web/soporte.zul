@@ -366,9 +366,15 @@ void buscarContratos(Clientes empa){
                                 sop.setClientes(new Clientes(new Integer(codigocli.value)));
                                 sop.setNoorden(noorden.value);
                                 if(valorEstado.equals(3) || valorEstado.equals(4)){
-                                    sop.setTecnico(empleadosList.selectedItem.value);
                                     sop.setGenerada(true);
                                 }
+                                try{
+                                    sop.setTecnico(empleadosList.selectedItem.value);
+                                }catch(Exception exx){
+                                    System.out.println("");
+                                }
+                                
+                                
                                 if(escalar.checked){
                                     sop.setEmpleadoescalar(empleadosListEs.selectedItem.value);
                                      sop.setEscalar(true);
