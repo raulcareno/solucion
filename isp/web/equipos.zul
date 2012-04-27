@@ -41,7 +41,7 @@ void llenar(Equipos empa){
     nombre.value = empa.getNombre();
     modelo.value = empa.getModelo();
     serie.value = empa.getTipo();
-    if(empa.getBien()){
+        if(empa.getBien()){
         bien.checked = true;
         codigoserie.visible = false;
      }else{
@@ -50,6 +50,11 @@ void llenar(Equipos empa){
       }
   
     pvp.value = empa.getPvp1();
+    pvp2.value = empa.getPvp2();
+    pvp3.value = empa.getPvp3();
+    contable.value = empa.getContable();
+    unidad.value = empa.getUnidad();
+    costo.value = empa.getCosto();
     
                 if(empa.getMarcas()!=null){
                   for (int i = 0; i <= perf.getItems().size(); i++) {
@@ -78,6 +83,11 @@ void estado(Boolean estado,Boolean modificar){
     bien.disabled = estado;
     servicio.disabled = estado;
     pvp.readonly = estado;
+    pvp2.readonly = estado;
+    pvp3.readonly = estado;
+    contable.readonly = estado;
+    unidad.readonly = estado;
+    costo.readonly = estado;
     perf.disabled = estado;
     bd.disabled = estado;
 
@@ -106,6 +116,13 @@ void estado(Boolean estado,Boolean modificar){
         empa.setModelo(modelo.value);
         empa.setSucursal(sucursalEmp.getSucursal());
         empa.setPvp1(pvp.value);
+        empa.setCosto(costo.value);
+        empa.setPvp1(pvp.value);
+        empa.setPvp2(pvp2.value);
+        empa.setPvp3(pvp3.value);
+        empa.setContable(contable.value);
+        empa.setUnidad(unidad.value);
+        
          if((!empa.getCodigo().equals(0)) ){
              adm.actualizar(empa);
          }else{
@@ -194,106 +211,129 @@ empa.setMarcas(g);
         </zscript>
  
 
-
-                    <grid width="100%">
-                        <rows>
-                            <row>
-                                <span>
-                                    <intbox id="codigo" disabled="true" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
-                                </span>
-                                <span></span>
-                            </row>
-
-                            <row>
-                                <span style="float:right"> Nombre(*):</span>
-                                <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />
+<hbox width="700px">
+        <grid width="350px">
+            <rows>
+                <row>
+  
+                    <span style="float:right"> Nombre(*):    <intbox id="codigo" disabled="true" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" /></span>
+                    <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />
                                 
-                            </row>
+                </row>
                            
-                            <row>
-                                <span style="float:right"> Modelo:</span>
-                                <textbox id="modelo" maxlength="30" cols="15" readonly="true"  />
-                            </row>
+                <row>
+                    <span style="float:right"> Modelo:</span>
+                    <textbox id="modelo" maxlength="30" cols="15" readonly="true"  />
+                </row>
                            
-                            <row>
-                                <span style="float:right"> Marcas(*):</span>
-                                <bandbox  readonly="true"  id="bd">
-                                    <bandpopup>
-                                        <vbox>
-                                            <listbox id="perf" width="250px"
-                                                     onSelect="bd.value=self.selectedItem.label;cargar(((Marcas)self.selectedItem.value));bd.closeDropdown();">
-                                                <listhead>
-                                                    <listheader label="Description"/>
-                                                </listhead>
-                                                <listitem forEach="${perfiles}" value="${each}">
-                                                    <listcell label="${each.nombre}" />
+                <row>
+                    <span style="float:right"> Marcas(*):</span>
+                    <bandbox  readonly="true"  id="bd">
+                        <bandpopup>
+                            <vbox>
+                                <listbox id="perf" width="250px"
+                                         onSelect="bd.value=self.selectedItem.label;cargar(((Marcas)self.selectedItem.value));bd.closeDropdown();">
+                                    <listhead>
+                                        <listheader label="Description"/>
+                                    </listhead>
+                                    <listitem forEach="${perfiles}" value="${each}">
+                                        <listcell label="${each.nombre}" />
 
-                                                </listitem>
-                                            </listbox>
-                                        </vbox>
-                                    </bandpopup>
-                                </bandbox>
+                                    </listitem>
+                                </listbox>
+                            </vbox>
+                        </bandpopup>
+                    </bandbox>
 
-                            </row>
-                         <row>
-                                <span style="float:right"> Es un Bien:</span>
-                                <span>
-	    			<radiogroup onCheck="">
-	    				<radio id="bien" value="true" onCheck="codigoserie.visible=false" selected="true" label="Bien"/>
-	    				<radio id="servicio" value="true" label="Servicio"  onCheck="codigoserie.visible=true" />
-	    			</radiogroup>
-                                    <span id="codigoserie" visible="false">
-                                        <textbox id="serie" />
-                                    </span>
-                                </span>
-                            </row>
-                              <row>
-                    <span style="float:right"> P.V.P. (*):</span>
-                            <decimalbox id="pvp"  maxlength="100" cols="40" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Es un Bien:</span>
+                    <span>
+                        <radiogroup onCheck="">
+                            <radio id="bien" value="true" onCheck="codigoserie.visible=false" selected="true" label="Bien"/>
+                            <radio id="servicio" value="true" label="Servicio"  onCheck="codigoserie.visible=true" />
+                        </radiogroup>
+                        <span id="codigoserie" visible="false">
+                            <textbox cols="7" id="serie" />
+                        </span>
+                    </span>
+                </row>
+                 <row>
+                    <span style="float:right"> Costo(*):</span>
+                    <decimalbox id="costo"  maxlength="100" cols="15" readonly="true"   />
+                </row>
+            </rows>
+        </grid>
+        <grid  width="350px">
+            <rows>
+               
+                <row>
+                    <span style="float:right"> p.v.p.1(*):</span>
+                    <decimalbox id="pvp"  maxlength="100" cols="15" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> p.v.p. 2 :</span>
+                    <decimalbox id="pvp2"  maxlength="100" cols="15" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> p.v.p. 3 :</span>
+                    <decimalbox id="pvp3"  maxlength="100" cols="15" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Cod.Contabilidad:</span>
+                    <textbox id="contable"  maxlength="100" cols="20" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Unidad(*):</span>
+                    <span>
+                    <textbox id="unidad" maxlength="100" cols="15" readonly="true"   />
+                    UNI,Mts.
+                    </span>
+                    
                 </row>
                       
-                        </rows>
-                    </grid>
-
-                    <vbox>
-                        <hbox>
-                            <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                            <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                            <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                            <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                        </hbox>
-                    </vbox>
+            </rows>
+        </grid>
+</hbox>
+        <vbox>
+            <hbox>
+                <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+            </hbox>
+        </vbox>
 
 
       
 
-                    <groupbox  width="100%" mold="3d" >
+        <groupbox  width="700px" mold="3d" >
 
-                        <caption label="Busquedas" />
-                        <vbox>
-                            <hbox>  Ip:
-                                <textbox id="buscarText"  maxlength="60" cols="40" />
-                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
-                            </hbox>
-                            <hbox>
-                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-                                    <listhead>
-                                        <listheader label="Cod."/>
-                                        <listheader label="Nombre"/>
-                                        <listheader label="Dirección"/>
+            <caption label="Busquedas" />
+            <vbox>
+                <hbox>  Descripción:
+                    <textbox id="buscarText"  maxlength="60" cols="40" />
+                    <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                </hbox>
+                <hbox>
+                    <listbox mold="paging"  width="690px"  rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" >
+                        <listhead>
+                            <listheader label="Cod."/>
+                            <listheader label="Nombre"/>
+                            <listheader label="Dirección"/>
 
-                                    </listhead>
-                                    <listitem forEach="${allEvents}" value="${each}">
-                                        <listcell label="${each.codigo}" />
-                                        <listcell label="${each.nombre}" />
-                                        <listcell label="${each.modelo}" />
-                                    </listitem>
-                                </listbox>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.codigo}" />
+                            <listcell label="${each.nombre}" />
+                            <listcell label="${each.modelo}" />
+                        </listitem>
+                    </listbox>
 
 
-                            </hbox>
-                        </vbox>
-                    </groupbox>
+                </hbox>
+            </vbox>
+        </groupbox>
 
  
 

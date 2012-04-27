@@ -55,6 +55,10 @@ public class Equipos implements Serializable {
     private BigDecimal pvp4;
     @Column(name = "bien")
     private Boolean bien = true;
+    @Column(name = "contable")
+    private String contable;
+    @Column(name = "unidad")
+    private String unidad;
     @OneToMany(mappedBy = "equipos")
     private Collection<Detallecompra> detallecompraCollection;
     @JoinColumn(name = "marcas", referencedColumnName = "codigo")
@@ -189,6 +193,22 @@ public class Equipos implements Serializable {
 
     public void setMarcas(Marcas marcas) {
         this.marcas = marcas;
+    }
+
+    public String getContable() {
+        return contable;
+    }
+
+    public void setContable(String contable) {
+        this.contable = contable;
+    }
+
+    public String getUnidad() {
+        return unidad;
+    }
+
+    public void setUnidad(String unidad) {
+        this.unidad = unidad;
     }
 
 //    public Collection<Detalle> getDetalleCollection() {

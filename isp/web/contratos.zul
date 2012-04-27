@@ -508,7 +508,7 @@ Boolean validar(){
  if(facturadostotal.value > 0){//GENERO LA CABECERA DE COMPRA Y LOS DETALLLES CON LAS SERIES PARA
       Cabeceracompra cabeCompra = new Cabeceracompra();
        cabeCompra.setProveedores(null);
-       cabeCompra.setFecha(fecha.value);
+       cabeCompra.setFecha(adm.Date());
        cabeCompra.setSeries(null);
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
@@ -624,7 +624,7 @@ if(sihay==0){
   
        Cabeceracompra cabeCompra = new Cabeceracompra();
        cabeCompra.setProveedores(null);
-       cabeCompra.setFecha(fecha.value);
+       cabeCompra.setFecha(adm.Date());
        cabeCompra.setSeries(null);
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
@@ -719,7 +719,7 @@ if(sihay==0){
             fac.setNumero(null);
             fac.setClientes(equi.getClientes());
             fac.setEstado(true);
-            fac.setFecha(fecha);
+            fac.setFecha(adm.Date());
             fac.setContratos(equi);
             fac.setSucursal(sucursalEmp.getSucursal());
             BigDecimal valor = null;

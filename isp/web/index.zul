@@ -157,9 +157,10 @@ void ingresarSoporte(Soporte sop){
                                 <menupopup>
                                 
                                     <menuitem value="/comprasventas.zul" image="/images/equipos.png" label="Compras/Ventas" onClick='ingresar(self,"Compras")' />
+                                    <menuitem value="/comprasventasSinSeries.zul" image="/images/equipos.png" label="Compras Sin Series" onClick='ingresar(self,"Compras")' />
                                     <menuseparator />
                                     <menuitem   value="/marcas.zul"  image="/images/marcas.png" label="Marcas" onClick='ingresar(self,"Marcas")' />
-                                    <menuitem  value="/equipos.zul"   image="/images/equipos2.png" label="Equipos" onClick='ingresar(self,"Equipos")' />
+                                    <menuitem  value="/equipos.zul"   image="/images/equipos2.png" label="Equipos/Productos" onClick='ingresar(self,"Equipos")' />
                                     <menuitem image="/images/calendario.png" value="/actualizarSeries.zul"  label="Actualizar Series" onClick='ingresar(self,"Generacion Cobros")' />
                                     <menuitem value="/asignarSeriesEmpleados.zul" image="/images/equipos.png" label="Inventario Empleados" onClick='ingresar(self,"Compras")' />
                                 </menupopup>
@@ -178,7 +179,7 @@ void ingresarSoporte(Soporte sop){
                                     <menuitem image="/images/calendario.png" value="/anularFacturaExtra.zul"  label="Ingresar Factura Anulada" onClick='ingresar(self,"Generacion Cobros")' />
 
                                     <menuseparator />
-                                    <menuitem  value="/planes.zul"    image="/images/planes.png" label="Planes Productos" onClick='ingresar(self,"Planes")' />
+                                    <menuitem  value="/planes.zul"    image="/images/planes.png" label="Planes de Internet" onClick='ingresar(self,"Planes")' />
                                     <menuitem value="/reporteCobros.zul"  image="/images/reportes.png" label="Reportes" onClick='ingresar(self,"Reportes")' />
                                     <menuitem value="/megas.zul"  image="/images/mb.png" label="Megas Ocupados" onClick='ingresar(self,"Reportes")' />
                                 </menupopup>
