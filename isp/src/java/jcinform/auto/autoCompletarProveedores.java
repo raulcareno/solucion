@@ -46,7 +46,7 @@ public class autoCompletarProveedores extends Combobox {
         if (!evt.isChangingBySelectBack()) {
             String abuscar = evt.getValue();
             List<Proveedores> estu = new ArrayList<Proveedores>();
-            if (abuscar.length() > 1) {
+            if (abuscar.length() > 0) {
                 estu = adm.query("Select o from Proveedores as o "
                         + "where o.representante like '%" + abuscar + "%' "
                         + "OR "

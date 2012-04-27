@@ -57,7 +57,7 @@ public class autoCompletarEquipos extends Combobox {
             String abuscar = evt.getValue();
 
             List<Equipos> estu = new ArrayList<Equipos>();
-            if (abuscar.length() > 1) {
+            if (abuscar.length() > 0) {
                 estu = adm.query("Select o from Equipos as o "
                         + " where o.nombre like '%" + abuscar + "%' "
                         + " and o.bien = true "
