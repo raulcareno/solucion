@@ -928,6 +928,28 @@ public class ReportesClase {
         return ds;
     }
 
+ public JRDataSource inventarioEmpleados(Empleados emp,Date desde, Date hasta) {
+        Administrador adm = new Administrador();
+        String desdestr = convertiraString(desde) + "";
+        String hastastr = convertiraString(hasta) + "";
+        ArrayList detalles = new ArrayList();
+        List<Seriesempleados> equivaEncontrados = adm.query("Select o from Seriesempleados as o " + 
+                " where o.empleados.codigo = '"+emp.getCodigo()+"' "
+                + " and o.estado = true   "
+                //+ " and o.estado = true and o.fecha between '"+desdestr+"' and '"+hastastr+"'  "
+                + " order by o.fecha ");
+         for (Iterator<Seriesempleados> it = equivaEncontrados.iterator(); it.hasNext();) {
+            Seriesempleados seriesempleados = it.next();
+            InventarioNormal inv = new InventarioNormal();
+            inv.setProducto(seriesempleados.getSeries().getDetallecompra().getEquipos() + "");
+            inv.setSerie(seriesempleados.getSeries().getSerie());
+            inv.setFecha(seriesempleados.getFecha()); 
+            detalles.add(inv);
+         }
+        ReporteInventarioNormalDataSource ds = new ReporteInventarioNormalDataSource(detalles);
+        return ds;
+    }
+
     public JRDataSource inventarioAjuste() {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
