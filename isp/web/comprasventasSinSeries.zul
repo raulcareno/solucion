@@ -658,13 +658,13 @@ void tipoDocumento(String tipo){
                                             <intbox cols="1" visible="false"  id="idproducto" readonly="true" />
                                             <!--textbox value="" onFocus="vu.focus()" readonly="true" id="productod" cols="50" /-->
                                             <combobox  cols="35" id="productod" onOK='vu.focus();' 
-                                            onSelect="llenarEquipo(self.selectedItem.value); " 
-                                            autodrop="true" buttonVisible="false"  
-                                            use="jcinform.auto.autoCompletarEquipos"/>
+                                                       onSelect="llenarEquipo(self.selectedItem.value); " 
+                                                       autodrop="true" buttonVisible="false"  
+                                                       use="jcinform.auto.autoCompletarEquipos"/>
                                             <zscript>
                                                 llenarEquipo(Equipos es){
-                                                    idproducto.value = es.getCodigo(); 
-                                                    vu.value  = es.getCosto().doubleValue();  
+                                                idproducto.value = es.getCodigo(); 
+                                                vu.value  = es.getCosto().doubleValue();  
  
                                                 }
                                             </zscript>
