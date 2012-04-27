@@ -555,9 +555,12 @@ void tipoDocumento(String tipo){
                             <span>
                                 
                                 <intbox  readonly="true"   cols="1" id="idproveedores" />
-                                <textbox readonly="true"  cols="39" id="proveedores" />
-                                
-                                <button label="" disabled="true"  id="buscarE3"  image="/images/auditoria.gif">
+                                <!--textbox readonly="true"  cols="39" id="proveedores" /-->
+                                <combobox  cols="35" id="proveedores" onOK='factura.focus();' 
+                                        onSelect="idproveedores.value = (self.selectedItem.value).getCodigo(); " 
+                                        autodrop="true" buttonVisible="false"  
+                                        use="jcinform.auto.autoCompletarProveedores"/>
+                                <!--button label="" disabled="true"  id="buscarE3"  image="/images/auditoria.gif">
                                     <attribute name="onClick">{
                                         final Window win = (Window) Executions.createComponents("buscarProveedores.zul", null, null);
                                         win.setMaximizable(true);
@@ -568,7 +571,7 @@ void tipoDocumento(String tipo){
                                         win.doModal();
                                         }                            
                                     </attribute>
-                                </button> 
+                                </button--> 
                             </span>
                         </row>
                         <row>
