@@ -256,6 +256,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                 if(fac.getNumero() == null){
                                                    fac.setNumero(nn);
                                                    fac.setAutorizacion(autorizacion.value);
+                                                   fac.setVencimiento(vencimiento.value);
                                                    fac.setEmision(adm.Date());
                                                   adm.actualizar(fac);
                                                     num2++;
@@ -721,6 +722,8 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                 
                                                 # Autorización
                                                 <textbox id="autorizacion" style="color:blue; text-align:center;font-size:14px;font-weight:bold" constraint="no empty: Ingrese el número Autorización de sus facturas" />
+                                                Fec. Vencimiento: 
+                                                <datebox format="dd/MM/yyyy"  onCreate="self.value = adm.Date(); " id="vencimiento" />
                                                 <button label="Empezar a Generar #" onClick="numero.getValue(); generarFacturas(); "/>
                                                 <button label="Imprimir" image="/images/imprimir.gif" onClick="imprimirTodos()"/>
 

@@ -159,7 +159,12 @@ String llenarCeros(String numero){
                       
                             Factura fac = adm.buscarClave(codigofac.value,Factura.class);
                             fac.setNumero(nn+"");
-                            fac.setAutorizacion(sucursalEmp.getSucursal().getAutorizacion());
+                            if(fac.getAutorizacion()==null){
+                                fac.setAutorizacion(sucursalEmp.getSucursal().getAutorizacion());
+                            }
+                            if(fac.getVencimiento()==null){
+                                fac.setVencimiento(adm.Date());
+                            }
                             if(fac.getEmision() == null){
                                 fac.setEmision(adm.Date());
                             }

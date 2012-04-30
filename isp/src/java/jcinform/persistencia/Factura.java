@@ -61,6 +61,9 @@ public class Factura implements Serializable {
     private BigDecimal valoriva;
     @Column(name = "autorizacion")
     private String autorizacion;
+    @Column(name = "vencimiento")
+    @Temporal(TemporalType.DATE)
+    private Date vencimiento;
     @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
     @ManyToOne
     private Sucursal sucursal;
@@ -247,6 +250,15 @@ public class Factura implements Serializable {
     public void setCxcobrarCollection(Collection<Cxcobrar> cxcobrarCollection) {
         this.cxcobrarCollection = cxcobrarCollection;
     }
+
+    public Date getVencimiento() {
+        return vencimiento;
+    }
+
+    public void setVencimiento(Date vencimiento) {
+        this.vencimiento = vencimiento;
+    }
+    
 
     @Override
     public int hashCode() {

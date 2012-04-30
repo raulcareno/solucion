@@ -152,7 +152,7 @@ cantones.add(0,cantonTodos);
                     return;
                     }
                   datasource = reportes.clientesxestadoplan(estadoContrato.selectedItem.value,listPlanes,tipoplanList.selectedItem.value);
-                  report.setSrc(directorioReportes+"listacontratosestado.jasper");
+                  report.setSrc(directorioReportes+"listacontratosestadoyplan.jasper");
             }else if(tipo.equals("PORSECTORCLILETRA")){
                   datasource = reportes.clientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value,estadoContrato.selectedItem.value);
                    report.setSrc(directorioReportes+"listacontratosletras.jasper");
