@@ -59,6 +59,10 @@ public class ReportesClase {
         if (!tipo.equals("TODOS")) {
             comple = " and o.plan.tipo = '" + tipo + "' ";
         }
+         String estadoComp = " and o.estado = '" + estado + "' ";
+        if(estado.equals("Todos")){
+            estadoComp ="";
+        }
         Boolean todoslosPlanes = false;
         String codigosPlanes = "";
         if (planes != null) {
@@ -81,9 +85,9 @@ public class ReportesClase {
         }
 
         List<Contratos> contra = adm.query("Select o from Contratos as o "
-                + " where  o.estado = '" + estado + "' "
-                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' " + comple + complemento2
-                + " order by o.clientes.apellidos");
+                + " where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' " + comple + complemento2
+                + estadoComp
+                + "order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();
             detalles.add(contratos);
@@ -95,10 +99,13 @@ public class ReportesClase {
     public JRDataSource clientesxestado(String estado) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-
+String estadoComp = " and o.estado = '" + estado + "' ";
+        if(estado.equals("Todos")){
+            estadoComp ="";
+        }
         List<Contratos> contra = adm.query("Select o from Contratos as o "
-                + " where  o.estado = '" + estado + "' "
-                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                + " where o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                + estadoComp
                 + " order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();
@@ -209,14 +216,18 @@ public class ReportesClase {
     public JRDataSource facturasPendientesest(Sector sec, Canton canton, String estado) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
+        String estadoComp = " and o.estado = '" + estado + "' ";
+        if(estado.equals("Todos")){
+            estadoComp ="";
+        }
         if (sec.getCodigo().equals(-1)) {
             if (canton.getCodigo().equals(-1)) {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' and o.estado = '" + estado + "'  order by o.clientes.apellidos");
+                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "+estadoComp+"  order by o.clientes.apellidos");
             } else {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                         + "where o.sector.canton.codigo = '" + canton.getCodigo() + "'  "
-                        + "and  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  and o.estado = '" + estado + "'  order by o.clientes.apellidos");
+                        + "and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "+estadoComp+"   order by o.clientes.apellidos");
 
             }
         } else if (canton.getCodigo().equals(-1)) {
@@ -512,15 +523,22 @@ public class ReportesClase {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
+        String estadoComp = " and o.estado = '" + estado + "' ";
+        String estadoComp2 = " WHERE o.estado = '" + estado + "' ";
+        if(estado.equals("Todos")){
+            estadoComp ="";
+            estadoComp2 ="";
+        }
         if (emp.getCodigo().equals(-1)) {
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + " WHERE o.estado = '" + estado + "' order by o.clientes.apellidos");
+                    + "  "+estadoComp2+" order by o.clientes.apellidos");
         } else {
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                     + " WHERE o.empleados2.codigo = '" + emp.getCodigo() + "'   "
-                    + " and o.estado = '" + estado + "' order by o.clientes.apellidos");
+                    + estadoComp
+                    + " order by o.clientes.apellidos");
         }
-
+        
 
         List<Pendientes> detalles = new ArrayList();
         String desdestr = convertiraString(desde);
@@ -846,22 +864,22 @@ public class ReportesClase {
     public JRDataSource clientesxsector(Sector sec, String estado) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-        String que = "Select o from Contratos as o "
-                + "where o.sector.codigo =  '" + sec.getCodigo() + "'"
-                + "  and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + " and o.estado = '" + estado + "' "
-                + "  order by o.clientes.apellidos";
+         String estadoComp = " and o.estado = '" + estado + "' ";
+        if(estado.equals("Todos")){
+            estadoComp ="";
+        }
+        String que = "";
 
         if (sec.getCodigo().equals(-1)) {
             que = "Select o from Contratos as o "
                     + "where o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
-                    + " and o.estado = '" + estado + "' "
+                    +  estadoComp
                     + "order by o.clientes.apellidos";
         } else {
             que = "Select o from Contratos as o "
                     + "where o.sector.codigo =  '" + sec.getCodigo() + "'"
                     + "  and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
-                    + " and o.estado = '" + estado + "' "
+                    +  estadoComp 
                     + "order by o.clientes.apellidos";
         }
         List<Contratos> contra = adm.query(que);;
