@@ -115,7 +115,31 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         return ds;
     }
 
-    public JRDataSource equiposclientesxsector(Sector ini, Sector fin, String letraini, String letrafin, String estado) {
+    public JRDataSource equiposclientesxsectorContador(Sector ini, Sector fin, String letraini, String letrafin, String estado) {
+        Administrador adm = new Administrador();
+        ArrayList detalles = new ArrayList();
+        String complemento = " and substring(o.contratos.clientes.apellidos,1,1) >= '" + letraini + "' "
+                + " and substring(o.contratos.clientes.apellidos,1,1) <= '" + letrafin + "' ";
+
+        List<Series> contra = adm.query("Select o from Series as o "
+                + "where o.contratos.sector.numero "
+                + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento
+                + "and o.estado = 'P' "
+                + "and o.contratos.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                + "and o.contratos.estado = '" + estado + "' "
+                + "order by o.contratos.clientes.apellidos");
+        for (Iterator<Series> it = contra.iterator(); it.hasNext();) {
+            Series ser = it.next();
+            Contratos contratos = ser.getContratos();
+            contratos.setSerie1(ser.getDetallecompra().getEquipos().getNombre()); // EQUIPO SERIE1
+            //contratos.setSerie2(ser.getDetallecompra().getCabeceracompra());
+            contratos.setSerie3(ser.getSerie()); // SERIE SERIE3
+            detalles.add(contratos);
+        }
+        ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
+        return ds;
+    }
+  public JRDataSource equiposclientesxsector(Sector ini, Sector fin, String letraini, String letrafin, String estado) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String complemento = " and substring(o.contratos.clientes.apellidos,1,1) >= '" + letraini + "' "
