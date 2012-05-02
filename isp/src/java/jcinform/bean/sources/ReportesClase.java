@@ -1090,13 +1090,21 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         return ds;
     }
   
-    public JRDataSource inventarioGeneral2(Proveedores proveedore, String numero) {
+    public JRDataSource inventarioGeneral2(Proveedores proveedore, String numero,Date desde, Date hasta, Boolean todasLasFechas) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
+        String desdestr = convertiraString(desde) + "";
+        String hastastr = convertiraString(hasta) + "";
+        String compleme = " and o.fecha between '"+desdestr+"' and  '"+hastastr+"' ";
+        if(todasLasFechas){
+            compleme = "";
+        }
         List<Cabeceracompra> compras = adm.query("Select o from Cabeceracompra as o "
                 + " where o.documento = 'COM' and o.factura = '"+numero+"' "
                 + " and o.proveedores.codigo = '"+proveedore.getCodigo()+"' "
-                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' ");
+                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                + compleme
+                + " ");
         for (Iterator<Cabeceracompra> it = compras.iterator(); it.hasNext();) {
             Cabeceracompra cabeceracompra = it.next();
             List<Detallecompra> detallesC = adm.query("Select o from Detallecompra as o "
@@ -1161,13 +1169,21 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         ReporteInventarioNormalDataSource ds = new ReporteInventarioNormalDataSource(detalles);
         return ds;
     }
-  public JRDataSource inventarioGeneral3(Proveedores proveedore) {
+  public JRDataSource inventarioGeneral3(Proveedores proveedore, Date desde,Date hasta, Boolean todasLasFechas) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
+        String desdestr = convertiraString(desde) + "";
+        String hastastr = convertiraString(hasta) + "";
+        String compleme = " and o.fecha between '"+desdestr+"' and  '"+hastastr+"' ";
+        if(todasLasFechas){
+            compleme = "";
+        }
         List<Cabeceracompra> compras = adm.query("Select o from Cabeceracompra as o "
                 + " where o.documento = 'COM' "
                 + " and o.proveedores.codigo = '"+proveedore.getCodigo()+"' "
-                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' ");
+                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                + compleme
+                + "");
         for (Iterator<Cabeceracompra> it = compras.iterator(); it.hasNext();) {
             Cabeceracompra cabeceracompra = it.next();
             List<Detallecompra> detallesC = adm.query("Select o from Detallecompra as o "

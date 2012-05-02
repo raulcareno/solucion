@@ -274,7 +274,7 @@ void campos(String valor){
              filanumerofactura.visible=false;
              filaproveedores.visible=false;
       fec.setDate(1);
-      
+      todasfechas.visible = false;
         if(valor.equals("INVNORMAL") || valor.equals("INVGEN")){
             titulo.value= "Inventario Normal";
              filafechas.visible=true;
@@ -283,9 +283,13 @@ void campos(String valor){
         }else if(valor.equals("INVGEN2")){
             titulo.value= "Inventario Normal x Series";
              filanumerofactura.visible=true;
+             todasfechas.visible = true;
+             filafechas.visible=true;
              filaproveedores.visible=true;
         }else if(valor.equals("INVGEN3")){
             titulo.value= "Inventario Normal x Series";
+            filafechas.visible=true;
+            todasfechas.visible = true;
              filanumerofactura.visible=true;
         }else if(valor.equals("HISTORIA")){
             titulo.value= "Historia Técnica por Cliente";
@@ -609,7 +613,7 @@ void campos(String valor){
                                 <datebox onCreate="self.value = adm.Date()" id="desde"/>
                                 Hasta: 
                                 <datebox onCreate="self.value = adm.Date()"  id="hasta"/>
-                              
+                              <checkbox id="todasfechas" onCheck="desde.value = !desde.disabled;" label="Todas las fechas"/>
                             </span>
                         </row>
                         <row id="filaproveedores">
