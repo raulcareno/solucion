@@ -1,24 +1,24 @@
 <?page id="contratospage"?>
 <window id="contratosventana"  border="normal" >
     <style>
-            .MyGridRowHeight tr.z-row td.z-row-inner  
-            {
-                  background: white;
-                  border-top: none;
-                  border-left: 1px solid white;
-                  border-right: 1px solid #CCC;
-                  //border-bottom: 1px solid #DDD;
-                  border-bottom: none;
+        .MyGridRowHeight tr.z-row td.z-row-inner  
+        {
+        background: white;
+        border-top: none;
+        border-left: 1px solid white;
+        border-right: 1px solid #CCC;
+        //border-bottom: 1px solid #DDD;
+        border-bottom: none;
 
-            }
-            /*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
-              background: #F8F8F8;
-            } */
-            .MyGridRowHeight td.z-row-inner
-            {
-                padding: 0px;
-                //overflow: hidden;
-            }
+        }
+        /*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+        background: #F8F8F8;
+        } */
+        .MyGridRowHeight td.z-row-inner
+        {
+        padding: 0px;
+        //overflow: hidden;
+        }
     </style>
     <zscript>   <![CDATA[
     
@@ -1895,6 +1895,24 @@ void verificarCedula(String valor){
                                                         }
 
                                     }
+                                    public void quitarFila2(String codigoBuscar){
+                              
+                                                     Rows filas2 = productos.getRows();
+                                                    List listadoProductos = filas2.getChildren();
+                                                        for (int i = 0; i <= listadoProductos.size()-1; i++) {
+                                                           Row object = (Row) listadoProductos.get(i);
+                                                                                               
+                                                          Detallecompra nuevo = ((Detallecompra)object.getValue());
+                                                          String codigoA = "id"+nuevo.getEquipos().getCodigo();
+                                                          System.out.println("1: "+ codigoA+" 2: "+codigoBuscar);               
+                                                           if(codigoA.equals(codigoBuscar)){
+                                                                productos.getRows().removeChild(object);
+                                                                break;
+                                                           }
+                                                        }
+
+                                    }
+      
       void buscarSeries(String serie){
                             List seriesEn = adm.query("Select o from Series as o where o.estado = 'C'  and o.serie = '"+serie+"'" + 
                                     " and o.serie not in (Select a.serie from Series as a where a.estado IN ( 'A','P','V') ) " + 
@@ -1910,6 +1928,12 @@ void verificarCedula(String valor){
                                                             intb.setReadonly(true);
                                                             intb.setStyle("float:right;text-align:right");
                                                              row.appendChild(intb);
+                                                            
+                                                            Intbox cant2 = new Intbox(1);
+                                                            cant2.setReadonly(true);
+                                                            cant2.setCols(3);
+                                                            row.appendChild(cant2);
+                                                            
                                                             Label prod = new Label(""+seriesEn.get(0).getDetallecompra().getEquipos());
                                                             row.appendChild(prod);
                                                             Decimalbox valor = new Decimalbox((seriesEn.get(0).getDetallecompra().getEquipos().getPvp1()));
@@ -1975,6 +1999,12 @@ void verificarCedula(String valor){
                                                                                             intb.setReadonly(true);
                                                                                             intb.setStyle("float:right;text-align:right");
                                                                                              row.appendChild(intb);
+                                                                                                    
+                                                                                            Intbox cant2 = new Intbox(1);
+                                                                                            cant2.setReadonly(true);
+                                                                                            cant2.setCols(3);
+                                                                                            row.appendChild(cant2);
+                                                                                            
                                                                                             Label prod = new Label(""+equipos.get(0));
                                                                                             row.appendChild(prod);
                                                                                             Decimalbox valor = new Decimalbox((equipos.get(0).getPvp1()));
@@ -2035,6 +2065,83 @@ void verificarCedula(String valor){
                                            
                                            
     } 
+      void anadirFila(){
+                    try{
+                                Row row = new Row();
+                                    //CARGO LAS SERIES COMO ATRIBUTO
+                                    ArrayList series = new ArrayList();
+                                        Intbox intb = new Intbox(idproducto.value);
+                                        intb.setCols(3);
+                                        intb.setReadonly(true);
+                                        intb.setStyle("float:right;text-align:right");
+                                        row.appendChild(intb);
+                                        
+                                        Intbox cant2 = new Intbox(cantidad2.value);
+                                        cant2.setCols(3);
+                                        cant2.setReadonly(true);
+                                        cant2.setStyle("float:right;text-align:right");
+                                        row.appendChild(cant2);
+                                            
+                                        Label prod = new Label(""+productod.value);
+                                        row.appendChild(prod);
+                                        
+                                        Decimalbox valor = new Decimalbox(new BigDecimal(vt.value));
+                                        valor.setFormat("##0.00");
+                                        valor.setStyle("float:right;text-align:right");
+                                        valor.setReadonly(true);
+                                        row.appendChild(valor);
+
+
+                                        Label seri = new Label(""+serieUnitario.value);
+                                        row.appendChild(seri);
+
+                                        Button aButton = null;
+                                        aButton = new Button("quitar");
+                                        aButton.setImage("/images/quitar.gif");
+                                        aButton.setHeight("5px");
+                                        aButton.setId("id"+idproducto.value);
+                                        aButton.addEventListener("onClick", new EventListener() {
+                                            public void onEvent(Event event) throws Exception {
+                                                    quitarFila2(aButton.getId());
+                                                    sumar();
+                                                }
+                                        });
+                                        row.appendChild(aButton);
+
+                                        Checkbox facturado = new Checkbox();
+                                        facturado.setChecked(true);
+                                        facturado.setDisabled(true);
+                                        facturado.addEventListener("onCheck", new EventListener() {
+                                            public void onEvent(Event event) throws Exception {
+                                                    sumar();
+
+                                            }
+                                        });
+
+                                        row.appendChild(facturado);
+                                        
+                                        Detallecompra det = new Detallecompra();
+                                        //Series ser = new Series();
+                                        //ser.setSerie(serieUnitario.value);
+                                        det.setEquipos(new Equipos(idproducto.value));
+                                        det.setCantidad(cantidad2.value*-1);
+                                        det.setCosto(vu.value);
+                                        det.setContratos(equi);
+                                        //ser.setDetallecompra(det);
+                                        row.setValue(det); 
+                                filas.appendChild(row);
+                                sumar();
+                                }catch(Exception e){
+                                    Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...! \\n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                                }
+
+                            seriebuscar.value="";
+                            seriebuscar.focus();
+ 
+
+
+
+    } 
     public void sumar(){
         List col = productos.getRows().getChildren();
         BigDecimal total = new BigDecimal(0);
@@ -2044,9 +2151,9 @@ void verificarCedula(String valor){
                     Row object = (Row) col.get(i);
                     Detallecompra det = new Detallecompra();
                     List labels = object.getChildren();
-                       Boolean fac = ((Checkbox) labels.get(5)).isChecked();
+                       Boolean fac = ((Checkbox) labels.get(6)).isChecked();
                        if(fac){
-                            BigDecimal val = ((Decimalbox) labels.get(2)).getValue();
+                            BigDecimal val = ((Decimalbox) labels.get(3)).getValue();
                             total = total.add(val);
                             facturados ++;
                        }
@@ -2074,7 +2181,14 @@ productos.getRows().getChildren().clear();
                                 intb.setCols(3);
                                 intb.setReadonly(true);
                                 intb.setStyle("float:right;text-align:right");
-                                 row.appendChild(intb);
+                                row.appendChild(intb);
+                                
+                                Intbox cant2 = new Intbox(1);
+                                cant2.setReadonly(true);
+                                cant2.setCols(3);
+                                cant2.setStyle("float:right;text-align:right");
+                                row.appendChild(cant2);
+                                 
                                 Label prod = new Label(""+object.getDetallecompra().getEquipos());
                                 row.appendChild(prod);
                                 Decimalbox valor = new Decimalbox((object.getDetallecompra().getEquipos().getPvp1()));
@@ -2236,17 +2350,17 @@ void llamar(){
     
         <popup id="desc" width="150px">
             <vbox>
-			Aplicar o Eliminar un Descuento
+                Aplicar o Eliminar un Descuento
             </vbox>
         </popup>
         <popup id="cobr" width="150px">
             <vbox>
-			Cobrar la deuda seleccionada
+                Cobrar la deuda seleccionada
             </vbox>
         </popup>
         <popup id="elm" width="150px">
             <vbox>
-			Eliminar el cobro seleccionado
+                Eliminar el cobro seleccionado
             </vbox>
         </popup>
         <tabbox width="100%"  height="600px" orient="vertical"  >
@@ -2255,7 +2369,7 @@ void llamar(){
                 <tab onSelect="facturasPendientes()" label="Pendientes" id="facturas"/>
                 <tab onSelect="buscarSoportes()" label="Hist. Técnica" />
                 <tab onSelect="facturasPagadas()" label="Hist. Pagos" id="historial" />
-                 <tab onSelect="facturasCortes()" label="Hist. Cortes" id="historiaCortes" />
+                <tab onSelect="facturasCortes()" label="Hist. Cortes" id="historiaCortes" />
                
             </tabs>
             <tabpanels>
@@ -2267,17 +2381,17 @@ void llamar(){
                     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
                     <button label="Añadir Pendientes" disabled="true" id="anadir" image="/images/empleados.png" >
                         <attribute name="onClick">{
-                                                    final Window win = (Window) Executions.createComponents("generarIndividual.zul", null, null);
-                                                    win.setMaximizable(true);
-                                                    win.setClosable(true);
-                                                    win.setAttribute("plan", equi.getPlan()+"");
-                                                    win.setAttribute("planid", equi.getPlan().getCodigo());
-                                                    win.setAttribute("planvalor", new BigDecimal(equi.getPlan().getValor()));
-                                                    win.setAttribute("contrato", equi.getCodigo());
-                                                    win.setAttribute("clienteid", equi.getClientes().getCodigo());
-                                                    win.setTitle("Asignar rubros por cobrar");
-                                                    win.doModal();
-                                            }                            
+                            final Window win = (Window) Executions.createComponents("generarIndividual.zul", null, null);
+                            win.setMaximizable(true);
+                            win.setClosable(true);
+                            win.setAttribute("plan", equi.getPlan()+"");
+                            win.setAttribute("planid", equi.getPlan().getCodigo());
+                            win.setAttribute("planvalor", new BigDecimal(equi.getPlan().getValor()));
+                            win.setAttribute("contrato", equi.getCodigo());
+                            win.setAttribute("clienteid", equi.getClientes().getCodigo());
+                            win.setTitle("Asignar rubros por cobrar");
+                            win.doModal();
+                            }                            
                         </attribute>
                     </button>
                     <groupbox id="panel" mold="3d" width="830px">
@@ -2300,7 +2414,7 @@ void llamar(){
                                                     <image  tooltip="autompletar" popup="autompletar"  src="/images/keyboard.png"  />
                                                     <popup id="autompletar" width="300px">
                                                         <html>
-                                                                        Ingrese un número de cédula, ruc o pasaporte, para buscar Ejemplo: 1709700548, luego presione ENTER o seleccione uno de los del listado de búsqueda
+                                                            Ingrese un número de cédula, ruc o pasaporte, para buscar Ejemplo: 1709700548, luego presione ENTER o seleccione uno de los del listado de búsqueda
                                                         </html>
                                                     </popup>
                                                     <groupbox closable="true" style="position: absolute;background:#E2EDFE;" visible="false" id="bclientei">
@@ -2334,7 +2448,7 @@ void llamar(){
                                                     <image  tooltip="autompletar2" popup="autompletar2"  src="/images/keyboard.png"  />
                                                     <popup id="autompletar2" width="300px">
                                                         <html>
-                                                                            Ingrese un Apellido del Cliente Ejemplo: AGUIRRE y seleccione uno de los del listado de búsqueda, si es que existe.
+                                                            Ingrese un Apellido del Cliente Ejemplo: AGUIRRE y seleccione uno de los del listado de búsqueda, si es que existe.
                                                         </html>
                                                     </popup>
  
@@ -2343,7 +2457,7 @@ void llamar(){
                                                     <image  tooltip="autompletarNo" popup="autompletarNo"  src="/images/keyboard.png"  />
                                                     <popup id="autompletarNo" width="300px">
                                                         <html>
-                                                                            Digite el No de Contrato y Presione Enter
+                                                            Digite el No de Contrato y Presione Enter
                                                         </html>
                                                     </popup>
                                
@@ -2361,9 +2475,9 @@ void llamar(){
                                                 <textbox id="identificacion2" onBlur="buscarCedula(self.value)" readonly="true"   cols="13" />
                                                 <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
                                                 <radiogroup id="tipoIdentificacion" >
-                                                        <radio disabled="true" id="cedula" value="C" label="Ced." style="font-weight:bold2" />
-                                                        <radio disabled="true"  id="ruc"  value="R"  label="RUC" style="font-weight:bold2" />
-                                                        <radio disabled="true"  id="pasaporte"  value="P"  label="Pass." style="font-weight:bold2" />
+                                                    <radio disabled="true" id="cedula" value="C" label="Ced." style="font-weight:bold2" />
+                                                    <radio disabled="true"  id="ruc"  value="R"  label="RUC" style="font-weight:bold2" />
+                                                    <radio disabled="true"  id="pasaporte"  value="P"  label="Pass." style="font-weight:bold2" />
                                                 </radiogroup>
                                                             <!--button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/-->
                                             </span>
@@ -2497,7 +2611,7 @@ void llamar(){
                                                 <bandpopup>
                                                     <vbox>
                                                         <listbox id="cantones" width="250px" rows="10"
-                                                                                                                         onSelect="bdCanton.value=self.selectedItem.label;bdCanton.closeDropdown(); buscarSectores(((Canton)self.selectedItem.value).getCodigo()); buscarNodos(((Canton)self.selectedItem.value).getCodigo());">
+                                                                 onSelect="bdCanton.value=self.selectedItem.label;bdCanton.closeDropdown(); buscarSectores(((Canton)self.selectedItem.value).getCodigo()); buscarNodos(((Canton)self.selectedItem.value).getCodigo());">
                                                             <listitem   forEach="${cantonesList}" value="${each}">
                                                                 <listcell label="${each.nombre}" />
                                                             </listitem>
@@ -2511,7 +2625,7 @@ void llamar(){
                                                 <bandpopup>
                                                     <vbox>
                                                         <listbox id="nodos" width="250px" rows="10"
-                                                                        onSelect="bdNodo.value=self.selectedItem.label;bdNodo.closeDropdown(); buscarRadios(((Nodos)self.selectedItem.value).getCodigo());">
+                                                                 onSelect="bdNodo.value=self.selectedItem.label;bdNodo.closeDropdown(); buscarRadios(((Nodos)self.selectedItem.value).getCodigo());">
 
                                                         </listbox>
                                                     </vbox>
@@ -2524,7 +2638,7 @@ void llamar(){
                                                 <bandpopup>
                                                     <vbox>
                                                         <listbox id="sectores" width="250px" rows="10"
-                                                                  onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
+                                                                 onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
                                     
                                                         </listbox>
                                                     </vbox>
@@ -2541,7 +2655,7 @@ void llamar(){
                                                 <bandpopup>
                                                     <vbox>
                                                         <listbox id="radio" width="450px"
-                                                     onSelect="bdRadio.value=self.selectedItem.label;bdRadio.closeDropdown();">
+                                                                 onSelect="bdRadio.value=self.selectedItem.label;bdRadio.closeDropdown();">
                                                             <listhead>
                                                                 <listheader label="Nombre"/>
                                                                 <listheader label="Sector"/>
@@ -2580,12 +2694,12 @@ void llamar(){
 
                                                 <button label=""  id="buscarE" disabled="true" image="/images/auditoria.gif">
                                                     <attribute name="onClick">{
-                                                            final Window win = (Window) Executions.createComponents("buscarEmpleados.zul", null, null);
-                                                            win.setMaximizable(true);
-                                                            win.setClosable(true);
-                                                            win.setAttribute("nuevo", true);
-                                                            win.setTitle("Buscar Empleados");
-                                                            win.doModal();
+                                                        final Window win = (Window) Executions.createComponents("buscarEmpleados.zul", null, null);
+                                                        win.setMaximizable(true);
+                                                        win.setClosable(true);
+                                                        win.setAttribute("nuevo", true);
+                                                        win.setTitle("Buscar Empleados");
+                                                        win.doModal();
                                                         }                            
                                                     </attribute>
                                                 </button>
@@ -2594,7 +2708,7 @@ void llamar(){
                                             <span style="float:right">   Usuario:</span>
                                             <span style="float:right">   
                                                 <textbox cols="15" readonly="true"   id="usuario" />
-                                                    Clave:
+                                                Clave:
                                                 <textbox cols="15" readonly="true"   id="clave" />
                                             </span>
                                         </row>
@@ -2617,7 +2731,7 @@ void llamar(){
                                                     <bandpopup>
                                                         <vbox>
                                                             <listbox  id="bancosList" width="250px"
-                                                                    onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
+                                                                      onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
                                                                 <listhead>
                                                                     <listheader label="Seleccione un Banco"/>
                                                                 </listhead>
@@ -2709,9 +2823,53 @@ void llamar(){
                                 
                                    
                                 </groupbox>
+                                <groupbox  style="background:#D6E3F6"  id="gb22" mold="3d" width="100%">
+                                    Cant.
+                                    <intbox onOK='productod.focus();' onBlur='if(self.value == null){ self.value = 1; calcular(self.value+"");}else{calcular(self.value+"");}'  onChanging="calcular(event.value);" cols="2" id="cantidad2" value="1"/>
+                                    <span>
+                                        <intbox cols="1" visible="false"  id="idproducto" readonly="true" />
+                                        Producto: 
+                                        <combobox  cols="35" id="productod" onOK='vu.focus();' 
+                                                   onSelect="llenarEquipo(self.selectedItem.value); " 
+                                                   autodrop="true" buttonVisible="false"  
+                                                   use="jcinform.auto.autoCompletarEquipos"/>
+                                        <zscript>
+                                            llenarEquipo(Equipos es){
+                                                idproducto.value = es.getCodigo(); 
+                                                vu.value  = es.getPvp1().doubleValue();  
+                                                vt.value = (vu.value * cantidad2.value);
+                                            }
+                                            calcular(String val){
+                                            try{
+                                            if(val!=null){
+                                            Integer valor = new Integer(val);
+                                            vt.value = (vu.value * valor);
+                                            }
+                                            
+                                            }catch(Exception ex){
+                                            System.out.println("error: en calcular: "+ex);
+                                            }
+                                            
+                                            }
+                                        </zscript>
+ 
+                                       
+                                    </span>
+                                    V/U: 
+                                    <doublebox onOK="add.focus()" value="0" cols="4"  readonly="true"  id="vu"  />
+                                    TOTAL: 
+                                    <doublebox onOK="add.focus()" value="0"  cols="4"    readonly="true"  id="vt"  />
+                                     
+                                    <textbox visible="false" onOK="add.focus()"  cols="9"   readonly="false"  id="serieUnitario"  />
+                                    <span>
+                                        <button  id="add"  label="Añadir"     image="/images/add2.png" onClick='actualizar.visible = false; continuar.visible = true; anadirFila();'/>
+                                    </span>
+                                       
+                                </groupbox>
                                 <grid id="productos">
                                     <columns sizable="true">
-                                        <column label="Cod." width="5px" />
+                                        <column label="Cod." visible="false" width="5px" />
+                                        <column label="Cant." width="5px" />
                                         <column label="Equipo"  width="280px" />
                                         <column label="Valor"  width="80px" />
                                         <column align="center"  label="Series"  width="80px" />
@@ -2850,7 +3008,7 @@ void llamar(){
                     <textbox id="observacionanula" visible="false"/>
                     <checkbox id="continuar" visible="false" />
                 </tabpanel>
-                 <tabpanel>
+                <tabpanel>
                     <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="historiaCortesGrid" >
                         <columns>
                             <column  label="Fecha"/>
