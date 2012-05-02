@@ -164,9 +164,15 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         return ds;
     }
 
-    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton) {
+    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton,Date desde, Date hasta, Boolean todasLasFechas) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
+        String desdestr = convertiraString(desde) + "";
+        String hastastr = convertiraString(hasta) + "";
+        String compleme = " and fa.fecha between '"+desdestr+"' and  '"+hastastr+"' ";
+        if(todasLasFechas){
+            compleme = "";
+        }
         if (cli.getCodigo().equals(-1)) {
 
 
@@ -207,7 +213,9 @@ String estadoComp = " and o.estado = '" + estado + "' ";
             quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
                     + "FROM cxcobrar cx, factura  fa "
                     + " WHERE fa.clientes  =  " + clientes1.getCodigo() + "  "
-                    + "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
+                    + "  AND cx.factura = fa.codigo"
+                    + compleme
+                    + " GROUP BY fa.codigo  "
                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
 
             List facEncontradas = adm.queryNativo(quer);
@@ -1090,20 +1098,13 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         return ds;
     }
   
-    public JRDataSource inventarioGeneral2(Proveedores proveedore, String numero,Date desde, Date hasta, Boolean todasLasFechas) {
+    public JRDataSource inventarioGeneral2(Proveedores proveedore, String numero) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-        String desdestr = convertiraString(desde) + "";
-        String hastastr = convertiraString(hasta) + "";
-        String compleme = " and o.fecha between '"+desdestr+"' and  '"+hastastr+"' ";
-        if(todasLasFechas){
-            compleme = "";
-        }
         List<Cabeceracompra> compras = adm.query("Select o from Cabeceracompra as o "
                 + " where o.documento = 'COM' and o.factura = '"+numero+"' "
                 + " and o.proveedores.codigo = '"+proveedore.getCodigo()+"' "
                 + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + compleme
                 + " ");
         for (Iterator<Cabeceracompra> it = compras.iterator(); it.hasNext();) {
             Cabeceracompra cabeceracompra = it.next();
@@ -1207,14 +1208,27 @@ String estadoComp = " and o.estado = '" + estado + "' ";
                     if (series.getEstado().equals("A")) { //POR AJUSTE
                         inv.setDocumento(series.getDetallecompra().getCabeceracompra().getSeries());
                         inv.setTipo("AJUSTE");
+                        inv.setContrato("");
+                        inv.setDireccion("");
                         inv.setCantidad(1);
                     } else if (series.getEstado().equals("P")) { //POR PRESTAMO TRANSITO
                         inv.setDocumento(series.getDetallecompra().getContratos().getClientes() + "");
                         inv.setTipo("PRESTAMO");
+                        try {
+                        inv.setContrato(""+series.getDetallecompra().getContratos().getContrato());
+                        inv.setDireccion(""+series.getDetallecompra().getContratos().getDireccionf());
+                        } catch (Exception e) {
+                        }
                         inv.setCantidad(1);
                     } else if (series.getEstado().equals("V")) { //POR VENTA
                         inv.setDocumento(series.getDetallecompra().getContratos().getClientes() + "");
                         inv.setTipo("VENTA");
+                        try {
+                            inv.setContrato(""+series.getDetallecompra().getContratos().getContrato());
+                        inv.setDireccion(""+series.getDetallecompra().getContratos().getDireccionf());
+                        } catch (Exception e) {
+                        }
+                        
                         inv.setCantidad(1);
                     }
 
@@ -1235,6 +1249,8 @@ String estadoComp = " and o.estado = '" + estado + "' ";
                     inv.setCompra(cabeceracompra.getCodigo() + "");
                     inv.setFactura(cabeceracompra.getFactura() + "");
                     inv.setSerie(series.getSerie());
+                    inv.setContrato("");//CARGO VACIO POR QUE ESTÁ EN STOCK 
+                    inv.setDireccion("");
                     inv.setProveedor(cabeceracompra.getProveedores().getRazonsocial() + "");
                     inv.setDocumento("Bodega");
                     inv.setTipo("STOCK");

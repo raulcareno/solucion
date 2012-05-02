@@ -20,6 +20,8 @@ public class InventarioNormal {
     Integer entrada,salida,total,cantidad,cantidadpro,ajuste,prestamo;
     String factura,compra,tipo,proveedor,serie,documento;
     
+    String contrato;
+    String direccion;
 
     public Integer getEntrada() {
         return entrada;
@@ -139,6 +141,22 @@ public class InventarioNormal {
 
     public void setPrestamo(Integer prestamo) {
         this.prestamo = prestamo;
+    }
+
+    public String getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(String contrato) {
+        this.contrato = contrato;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
     
     
