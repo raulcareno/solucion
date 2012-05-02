@@ -37,6 +37,8 @@ cantones.add(0,cantonTodos);
              
  List planes = adm.query("Select o from Plan as o " + 
      " where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  order by o.nombre, o.valor ");
+ List proveedores2 = adm.query("Select o from Proveedores  as o ");
+     
      Plan pSel = new Plan(-1);
      pSel.setNombre("[TODOS]");
      planes.add(0,pSel);
@@ -165,11 +167,17 @@ cantones.add(0,cantonTodos);
                    report.setSrc(directorioReportes+"listacontratosletrasequipos.jasper");
                    
             }else if(tipo.equals("INVNORMAL")){
-                  datasource = reportes.inventarioNormal();
+                  datasource = reportes.inventarioNormal(desde.value, hasta.value);
                    report.setSrc(directorioReportes+"inventarioNormal.jasper");
                    
             }else if(tipo.equals("INVGEN")){
-                  datasource = reportes.inventarioGeneral();
+                  datasource = reportes.inventarioGeneral(desde.value, hasta.value);
+                   report.setSrc(directorioReportes+"inventarioNorTranAju.jasper");
+            }else if(tipo.equals("INVGEN2")){
+                  datasource = reportes.inventarioGeneral2(proveedoresList.selectedItem.value,numeroFactura.value);
+                   report.setSrc(directorioReportes+"inventarioNorTranAju.jasper");
+            }else if(tipo.equals("INVGEN3")){//INVETARIO POR PROVEEDORES
+                  datasource = reportes.inventarioGeneral3(proveedoresList.selectedItem.value);
                    report.setSrc(directorioReportes+"inventarioNorTranAju.jasper");
             }else if(tipo.equals("INVTRAN")){
                   datasource = reportes.inventarioTransito();
@@ -263,8 +271,23 @@ void campos(String valor){
       filaplan.visible = false;
             filatipoplan.visible = false;
             estadossoporterow.visible = false;
+             filanumerofactura.visible=false;
+             filaproveedores.visible=false;
       fec.setDate(1);
-        if(valor.equals("HISTORIA")){
+      
+        if(valor.equals("INVNORMAL") || valor.equals("INVGEN")){
+            titulo.value= "Inventario Normal";
+             filafechas.visible=true;
+             desde.value = fec; 
+             
+        }else if(valor.equals("INVGEN2")){
+            titulo.value= "Inventario Normal x Series";
+             filanumerofactura.visible=true;
+             filaproveedores.visible=true;
+        }else if(valor.equals("INVGEN3")){
+            titulo.value= "Inventario Normal x Series";
+             filanumerofactura.visible=true;
+        }else if(valor.equals("HISTORIA")){
             titulo.value= "Historia Técnica por Cliente";
             filaclientes.visible=true;
             filafechas.visible=true;
@@ -479,6 +502,8 @@ void campos(String valor){
                                     <listitem  disabled="true" id="linea3" label="========INVENTARIOS=================" value="linea2" />
                                     <listitem id="INVNORMAL" label="Inventario Totales x Producto E/S/Aju./Prest." value="INVNORMAL" />
                                     <listitem id="INVGEN" label="Inventario con Series x Compras" value="INVGEN" />
+                                    <listitem id="INVGEN2" label="Inventario con Series x Compras x No.Factura y Proveedor" value="INVGEN2" />
+                                    <listitem id="INVGEN3" label="Inventario con Series x Compras x Proveedores" value="INVGEN3" />
                                     <listitem id="INVTRAN" label="Inventario Transito" value="INVTRAN" />
                                     <listitem id="INVAJU" label="Inventario Ajuste" value="INVAJU" />
                                     <listitem id="INVEMP" label="Inventario de Empleados" value="INVEMP" />
@@ -587,6 +612,26 @@ void campos(String valor){
                               
                             </span>
                         </row>
+                        <row id="filaproveedores">
+                             <span style="float:right"> Proveedor(*):</span>
+                                    <bandbox  width="400px" readonly="true"  id="bd1">
+                                        <bandpopup>
+                                            <vbox>
+                                                <listbox id="proveedoresList" width="660px" rows="10"
+                                                onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
+                                                    <listitem selected="true" forEach="${proveedores2}" value="${each}">
+                                                        <listcell label="${each.razonsocial}" />
+                                                    </listitem>
+                                                </listbox>
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
+                        </row>
+                        <row id="filanumerofactura">
+                            <span style="float:right"> Número de Factura(*):</span>
+                            <textbox id="numeroFactura" />
+                        </row>
+                        
                         <row visible = "false" id="filacanton">
                             <span style="float:right"> Cantón(*):</span>
                             <bandbox  width="200px" readonly="true"  id="bdCanton">

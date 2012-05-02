@@ -648,19 +648,22 @@ if(sihay==0){
  
   if(prestadostotal.value  > 0){
         List seriesExi = adm.query("Select o from Series as o where o.estado = 'P' and o.contratos.codigo = '"+equi.getCodigo()+"' ");
+        Date fechaAnterior = adm.Date();
         if(seriesExi.size()> 0 ){
             for(Iterator it = seriesExi.iterator(); it.hasNext();) {
                     Series object = (Series)it.next();
                     adm.eliminarObjeto(Series.class, object.getCodigo()); 
                     adm.eliminarObjeto(Detallecompra.class,object.getDetallecompra().getCodigo());
+                    fechaAnterior = object.getDetallecompra().getCabeceracompra().getFecha();
                     adm.eliminarObjeto(Cabeceracompra.class,object.getDetallecompra().getCabeceracompra().getCodigo());   
+                    
             }
         }
   
   
        Cabeceracompra cabeCompra = new Cabeceracompra();
        cabeCompra.setProveedores(null);
-       cabeCompra.setFecha(adm.Date());
+       cabeCompra.setFecha(fechaAnterior);
        cabeCompra.setSeries(null);
        cabeCompra.setCantidad(0);
        cabeCompra.setTotal(0d);
