@@ -62,6 +62,9 @@ public class Detallecompra implements Serializable {
     @JoinColumn(name = "contrato", referencedColumnName = "codigo")
     @ManyToOne
     private Contratos contratos;
+    @JoinColumn(name = "nodos", referencedColumnName = "codigo")
+    @ManyToOne
+    private Nodos nodos;
 
     public Detallecompra() {
     }
@@ -174,6 +177,16 @@ public class Detallecompra implements Serializable {
         this.contratos = contratos;
     }
 
+    public Nodos getNodos() {
+        return nodos;
+    }
+
+    public void setNodos(Nodos nodos) {
+        this.nodos = nodos;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

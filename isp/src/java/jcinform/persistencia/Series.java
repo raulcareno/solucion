@@ -46,6 +46,9 @@ public class Series implements Serializable {
    @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
     @ManyToOne
     private Sucursal sucursal;
+   @JoinColumn(name = "nodos", referencedColumnName = "codigo")
+    @ManyToOne
+    private Nodos nodos;
     public Series() {
     }
 
@@ -99,6 +102,14 @@ public class Series implements Serializable {
 
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
+    }
+
+    public Nodos getNodos() {
+        return nodos;
+    }
+
+    public void setNodos(Nodos nodos) {
+        this.nodos = nodos;
     }
 
     

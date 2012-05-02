@@ -17,9 +17,13 @@
   import java.util.ArrayList;
   import org.zkoss.image.AImage;
   import org.zkoss.image.Image;
+  import java.math.BigDecimal;
+  import java.math.RoundingMode;
+    
     Administrador adm = new Administrador();
     Session ses = Sessions.getCurrent();
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+    Empresa empresa = ses.getAttribute("empresa");
     List allEvents = adm.query("Select o from Nodos as o where o.nombre = 0");
     static Nodos empa = new Nodos();
     Permisos permiso = new Permisos();
@@ -112,7 +116,97 @@ void estado(Boolean estado,Boolean modificar){
          }else{
              adm.guardar(empa);
          }
+ if(prestadostotal.value  > 0){
+    List seriesExi = adm.query("Select o from Series as o " + 
+        " where o.estado = 'P' " + 
+        " and o.nodos.codigo = '"+empa.getCodigo()+"' ");
+        if(seriesExi.size()> 0 ){
+            for(Iterator it = seriesExi.iterator(); it.hasNext();) {
+                    Series object = (Series)it.next();
+                    adm.eliminarObjeto(Series.class, object.getCodigo()); 
+                    adm.eliminarObjeto(Detallecompra.class,object.getDetallecompra().getCodigo());
+                    adm.eliminarObjeto(Cabeceracompra.class,object.getDetallecompra().getCabeceracompra().getCodigo());   
+            }
+        }
+  
+  
+       Cabeceracompra cabeCompra = new Cabeceracompra();
+       cabeCompra.setProveedores(null);
+       cabeCompra.setFecha(adm.Date());
+       cabeCompra.setSeries(null);
+       cabeCompra.setCantidad(0);
+       cabeCompra.setTotal(0d);
+       cabeCompra.setSucursal(sucursalEmp.getSucursal());
+       cabeCompra.setDocumento("PRE");
+       adm.guardar(cabeCompra);
+        List col = productos.getRows().getChildren();
+        String seriesString = "";
+        int sihay = 0;
+                  for (int i = 0; i < col.size(); i++) {
+                         Row object = (Row) col.get(i);
+                         Series serieDet = ((Series)object.getValue());
+                          List labels = object.getChildren();
+                            if(serieDet.getDetallecompra().getEquipos().getBien()){
+                            
+                            }
+                          
+                            if(!((Checkbox) labels.get(5)).isChecked()){ //si el item NO es facturado
+                                  Detallecompra det = new Detallecompra();
+                                  Boolean actualizar = false;
+                                  int cantidad = 0;
+                                  if(i > 0){
+                                    List detList = adm.query("Select o from Detallecompra as o " + 
+                                            " where o.nodos.codigo = '"+empa.getCodigo()+"' " + 
+                                            " and o.equipos.codigo = '"+ ((Intbox) labels.get(0)).getValue()+"' ");
+                                            if(detList.size()>0){
+                                                    det = (Detallecompra)detList.get(0);
+                                                    cantidad = det.getCantidad();
+                                                    actualizar = true;
+                                            }else{
+                                                    det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                                     actualizar = false;
+                                            }
+                                  }else{
+                                        det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                  }
+                                  det.setNodos(empa);
+                                  det.setCabeceracompra(cabeCompra);
+                                  det.setCosto(serieDet.getDetallecompra().getEquipos().getPvp1().doubleValue());
+                                  det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
+                                  det.setCantidad(-1);
+                                  if(serieDet.getDetallecompra().getEquipos().getBien()){
+                                  sihay++;
+                                          if(actualizar){
+                                            det.setCantidad(cantidad-1);
+                                            adm.actualizar(det);
+                                          }else{
+                                            adm.guardar(det);
+                                          }
+                                  }
+                                  Series ser = new Series();
+                                  ser.setCodigo(adm.getNuevaClave("Series","codigo"));
+                                  ser.setSerie(serieDet.getSerie());
+                                  ser.setDetallecompra(det);
+                                  ser.setNodos(empa);
+                                  ser.setSucursal(sucursalEmp.getSucursal());
+                                  ser.setEstado("P");//PRESTAMO
+                                  if(serieDet.getDetallecompra().getEquipos().getBien()){
+                                        adm.guardar(ser);
+                                  }
+                                  
+                            }
+
+                  }
+
+         if(sihay==0){
+                adm.eliminarObjeto(Cabeceracompra.class, cabeCompra.getCodigo());
+         }
+ 
+ }
+ 
+              
               Boolean a = true;
+           
             if(a){
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                 permiso.auditar("Nodos","Guardar"," "+nombre.value);
@@ -143,6 +237,7 @@ void estado(Boolean estado,Boolean modificar){
         llenar((Nodos)datos.selectedItem.value);
         modificar.disabled = false;
         //registro.setSelected(true);
+        buscarSeries((Nodos)datos.selectedItem.value);
   }
 void modificar(){
   if(verificar("Modificar")){
@@ -213,8 +308,278 @@ void eliminar(){
     }
     
 void cargar(Sector g){
-empa.setSector(g);
+    empa.setSector(g);
 }
+public void sumar(){
+        List col = productos.getRows().getChildren();
+        BigDecimal total = new BigDecimal(0);
+        int cantidad = 0;
+        int facturados = 0;
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    Detallecompra det = new Detallecompra();
+                    List labels = object.getChildren();
+                       Boolean fac = ((Checkbox) labels.get(5)).isChecked();
+                       if(fac){
+                            BigDecimal val = ((Decimalbox) labels.get(2)).getValue();
+                            total = total.add(val);
+                            facturados ++;
+                       }
+                       cantidad ++;
+             }
+             valortotal.value = total;
+             cantidadtotal.value = cantidad;
+             facturadostotal.value = facturados;
+             prestadostotal.value = (cantidad - facturados);
+             valortotaliva.value = total.multiply(empresa.getIva().divide(new BigDecimal(100),2, RoundingMode.HALF_UP)).add(total);
+    }
+void buscarSeries(Nodos contratos){
+productos.getRows().getChildren().clear();
+           List seriesEn = adm.query("Select o from Series as o where o.estado = 'P' " +
+           " and o.nodos.codigo = '"+contratos.getCodigo()+"' ");
+                  if(seriesEn.size()>0){
+                  for(Iterator it = seriesEn.iterator(); it.hasNext();) {
+                      Series object = (Series)it.next();
+                      try{
+                        Row row = new Row();
+                          //CARGO LAS SERIES COMO ATRIBUTO
+                          ArrayList series = new ArrayList();
+                                Intbox intb = new Intbox(object.getDetallecompra().getEquipos().getCodigo());
+                                intb.setCols(3);
+                                intb.setReadonly(true);
+                                intb.setStyle("float:right;text-align:right");
+                                 row.appendChild(intb);
+                                Label prod = new Label(""+object.getDetallecompra().getEquipos());
+                                row.appendChild(prod);
+                                Decimalbox valor = new Decimalbox((object.getDetallecompra().getEquipos().getPvp1()));
+                                valor.setFormat("##0.00");
+                                valor.setStyle("float:right;text-align:right");
+                                valor.setReadonly(true);
+                                row.appendChild(valor);
+
+
+                                Label seri = new Label(""+object.getSerie());
+                                row.appendChild(seri);
+
+                                Button aButton = null;
+                                aButton = new Button("quitar");
+                                aButton.setImage("/images/quitar.gif");
+                                aButton.setHeight("5px");
+                                aButton.setId("id"+object.getSerie());
+                                aButton.setAttribute("serieId",object.getCodigo());
+                                aButton.setAttribute("serie",object);
+                                aButton.addEventListener("onClick", new EventListener() {
+                                    public void onEvent(Event event) throws Exception {
+                                    Integer sec = aButton.getAttribute("serieId");
+                                         int valor0 = Messagebox.show("Seguro de Eliminar este elemento, Desea Continuar? \n SE ELIMINARÁ DEL REGISTRO DE LAS SERIES", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                          
+                                           if(valor0 == 16){
+                                            
+                                            //TENGO QUE ELIMINAR TODO EL REGISTRO DE COMPRA EN CASO DE QUE HAYA SOLO UN ITEM
+                                            Series serAc = aButton.getAttribute("serie");
+                                            int cant = serAc.getDetallecompra().getCantidad();
+                                            if(cant == -1){
+                                                adm.eliminarObjeto(Series.class, sec); 
+                                                adm.eliminarObjeto(Detallecompra.class,serAc.getDetallecompra().getCodigo());
+                                                adm.eliminarObjeto(Cabeceracompra.class,serAc.getDetallecompra().getCabeceracompra().getCodigo());
+                                            }else{
+                                                adm.eliminarObjeto(Series.class, sec); 
+                                                Detallecompra deta = serAc.getDetallecompra();
+                                                deta.setCantidad(deta.getCantidad()+1);
+                                                adm.actualizar(deta);
+                                            }
+                                            quitarFila(aButton.getId());
+                                            sumar();
+                                          }
+
+                                    }
+                                });
+                                row.appendChild(aButton);
+                                Checkbox facturado = new Checkbox();
+                                facturado.setChecked(false);
+                                facturado.addEventListener("onCheck", new EventListener() {
+                                    public void onEvent(Event event) throws Exception {
+                                         sumar();
+
+                                    }
+                                });
+
+                                row.appendChild(facturado);
+
+
+                                row.setValue(object); 
+                                filas.appendChild(row);
+                        sumar();
+                        }catch(Exception e){
+                            Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                        }
+
+                    seriebuscar.value="";
+                    seriebuscar.focus();
+                    
+                    }
+
+               }
+    } 
+    public void quitarFila(String codigoBuscar){
+                              
+                                                     Rows filas2 = productos.getRows();
+                                                
+                                                    List listadoProductos = filas2.getChildren();
+                                                        for (int i = 0; i <= listadoProductos.size()-1; i++) {
+                                                           Row object = (Row) listadoProductos.get(i);
+                                                                                                              
+                                                          Series nuevo = ((Series)object.getValue());
+                                                          String codigoA = "id"+nuevo.getSerie();
+                                                           if(codigoA.equals(codigoBuscar)){
+                                                                productos.getRows().removeChild(object);
+                                                                break;
+                                                           }
+                                                        }
+
+                                    }
+void buscarSeries(String serie){
+                            List seriesEn = adm.query("Select o from Series as o where o.estado = 'C'  and o.serie = '"+serie+"'" + 
+                                    " and o.serie not in (Select a.serie from Series as a where a.estado IN ( 'A','P','V') ) " + 
+                                    " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo() +"'  ");
+                               if(seriesEn.size()>0){
+                                           
+                                           try{
+                                                    Row row = new Row();
+                                                      //CARGO LAS SERIES COMO ATRIBUTO
+                                                      ArrayList series = new ArrayList();
+                                                            Intbox intb = new Intbox(seriesEn.get(0).getDetallecompra().getEquipos().getCodigo());
+                                                            intb.setCols(3);
+                                                            intb.setReadonly(true);
+                                                            intb.setStyle("float:right;text-align:right");
+                                                             row.appendChild(intb);
+                                                            Label prod = new Label(""+seriesEn.get(0).getDetallecompra().getEquipos());
+                                                            row.appendChild(prod);
+                                                            Decimalbox valor = new Decimalbox((seriesEn.get(0).getDetallecompra().getEquipos().getPvp1()));
+                                                            valor.setFormat("##0.00");
+                                                            valor.setStyle("float:right;text-align:right");
+                                                            valor.setReadonly(true);
+                                                            row.appendChild(valor);
+                                                            
+                                                            
+                                                            Label seri = new Label(""+seriesEn.get(0).getSerie());
+                                                            row.appendChild(seri);
+                                                         
+                                                            Button aButton = null;
+                                                            aButton = new Button("quitar");
+                                                            aButton.setImage("/images/quitar.gif");
+                                                            aButton.setHeight("5px");
+                                                            aButton.setId("id"+seriesEn.get(0).getSerie());
+                                                            aButton.addEventListener("onClick", new EventListener() {
+                                                                public void onEvent(Event event) throws Exception {
+                                                                     //int valor0 = Messagebox.show("Seguro que desea quitar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                                     //seriespanel.visible = false;
+                                                                     //if(valor0 == 16){
+                                                                        quitarFila(aButton.getId());
+                                                                        sumar();
+                                                                     //}
+
+                                                                }
+                                                            });
+                                                            row.appendChild(aButton);
+                                                            
+                                                            Checkbox facturado = new Checkbox();
+                                                            facturado.setChecked(false);
+                                                            facturado.addEventListener("onCheck", new EventListener() {
+                                                                public void onEvent(Event event) throws Exception {
+                                                                     sumar();
+
+                                                                }
+                                                            });
+                                                            
+                                                            row.appendChild(facturado);
+                                                            
+                                                            
+                                                            row.setValue(seriesEn.get(0)); 
+                                                    filas.appendChild(row);
+                                                    sumar();
+                                                    }catch(Exception e){
+                                                        Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                                                    }
+                                                
+                                                seriebuscar.value="";
+                                                seriebuscar.focus();
+                                                
+                                           }else{
+                                               List equipos = adm.query("Select o from Equipos as o " + 
+                                                    " where o.tipo = '"+serie+"' and o.bien = false and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo() +"' ");
+                                                       if(equipos.size()>0){
+                                                                       try{
+                                                                                    Row row = new Row();
+                                                                                      //CARGO LAS SERIES COMO ATRIBUTO
+                                                                                      ArrayList series = new ArrayList();
+                                                                                            Intbox intb = new Intbox(equipos.get(0).getCodigo());
+                                                                                            intb.setCols(3);
+                                                                                            intb.setReadonly(true);
+                                                                                            intb.setStyle("float:right;text-align:right");
+                                                                                             row.appendChild(intb);
+                                                                                            Label prod = new Label(""+equipos.get(0));
+                                                                                            row.appendChild(prod);
+                                                                                            Decimalbox valor = new Decimalbox((equipos.get(0).getPvp1()));
+                                                                                            valor.setFormat("##0.00");
+                                                                                            valor.setStyle("float:right;text-align:right");
+                                                                                            valor.setReadonly(true);
+                                                                                            row.appendChild(valor);
+
+
+                                                                                            Label seri = new Label(""+equipos.get(0).getTipo());
+                                                                                            row.appendChild(seri);
+
+                                                                                            Button aButton = null;
+                                                                                            aButton = new Button("quitar");
+                                                                                            aButton.setImage("/images/quitar.gif");
+                                                                                            aButton.setHeight("5px");
+                                                                                            aButton.setId("id"+equipos.get(0).getTipo());
+                                                                                            aButton.addEventListener("onClick", new EventListener() {
+                                                                                                public void onEvent(Event event) throws Exception {
+                                                                                                        quitarFila(aButton.getId());
+                                                                                                        sumar();
+                                                                                                  }
+                                                                                            });
+                                                                                            row.appendChild(aButton);
+
+                                                                                            Checkbox facturado = new Checkbox();
+                                                                                            facturado.setChecked(true);
+                                                                                            facturado.addEventListener("onCheck", new EventListener() {
+                                                                                                public void onEvent(Event event) throws Exception {
+                                                                                                     sumar();
+
+                                                                                                }
+                                                                                            });
+
+                                                                                            row.appendChild(facturado);
+                                                                                            Detallecompra det = new Detallecompra();
+                                                                                            Series ser = new Series();
+                                                                                            ser.setSerie(equipos.get(0).getTipo());
+                                                                                            det.setEquipos(equipos.get(0));
+                                                                                            ser.setDetallecompra(det);
+                                                                                            row.setValue(ser); 
+                                                                                    filas.appendChild(row);
+                                                                                    sumar();
+                                                                                    }catch(Exception e){
+                                                                                        Messagebox.show("YA SE HA AGREGADO ESTA SERIE (*) ...! \\n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                                                                                    }
+
+                                                                                seriebuscar.value="";
+                                                                                seriebuscar.focus();
+                                                                
+                                                                
+                                                        }else{
+                                                         Messagebox.show("SERIE NO ENCONTRADA (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                        seriebuscar.value="";
+                                                        seriebuscar.focus();
+                                                        }
+                                           }
+                                           
+                                           
+    } 
+
+
 ]]>
         </zscript>
       
@@ -233,7 +598,7 @@ empa.setSector(g);
                         <bandpopup>
                             <vbox>
                                 <listbox id="cant" width="250px"
-                                                     onSelect="bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();">
+                                         onSelect="bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();">
                         
                                     <listitem forEach="${cantones}" value="${each}">
                                         <listcell label="${each.nombre}" />
@@ -251,7 +616,7 @@ empa.setSector(g);
                         <bandpopup>
                             <vbox>
                                 <listbox id="perf" width="250px"
-                                                     onSelect="bd.value=self.selectedItem.label;cargar(((Sector)self.selectedItem.value));bd.closeDropdown();">
+                                         onSelect="bd.value=self.selectedItem.label;cargar(((Sector)self.selectedItem.value));bd.closeDropdown();">
                                  
                                     <listitem forEach="${perfiles}" value="${each}">
                                         <listcell label="${each.nombre}" />
@@ -289,7 +654,62 @@ empa.setSector(g);
                       
             </rows>
         </grid>
-
+                                      
+        <groupbox  style="background:#D6E3F6"  id="gb" mold="3d" width="100%">
+                             
+            <label value="Digite la Serie" style="font-weight:bold;size:14px" />
+            <span> 
+                <textbox onOK="buscarSeries(self.value)" id="seriebuscar" value=""/>
+                <image  src="/images/enter.png"  height="14px"/>
+            </span>
+            <separator orient="vertical"/>
+            <separator orient="vertical"/>
+            <separator orient="vertical"/>
+            <span>
+                                       
+            </span>
+                                
+                                   
+        </groupbox>
+        <grid id="productos">
+            <columns sizable="true">
+                <column label="Cod." width="5px" />
+                <column label="Equipo"  width="280px" />
+                <column label="Valor"  width="80px" />
+                <column align="center"  label="Series"  width="80px" />
+                <column align="center" label="Opción" width="10px"  />
+                <column visible="false" align="center" label="Facturado/Prestado" width="110px"  />
+            </columns>
+            <rows id="filas">
+            </rows>
+            <foot style="background:#D6E3F6">
+                <footer/>
+                <footer>
+                    <label style="float:right;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="VALOR A FACTURAR: "/>
+                </footer>
+                <footer>
+                    <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" id="valortotal"  value="0.0"  readonly="true"   />
+                </footer>
+                <footer width="10px">
+                    <label style="font:14px;font-weight:bold;background:#E1E1E1;border:0px" value=" "/>
+                    <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" id="valortotaliva"  value="0.0"  readonly="true"   />
+                </footer>
+                <footer>
+                    <label style="float:center;text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="# "/>
+                    <intbox cols="3"  style="float:center;text-align:left;font:14px;font-weight:bold;background:#D6E3F6;border:0px"  id="cantidadtotal" readonly="true" value="0"    />
+                </footer>
+                <footer>
+                    <label style="text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="#"/>
+                    <intbox cols="3"  style=";font:14px;font-weight:bold;background:#D6E3F6;border:0px"  id="facturadostotal" readonly="true" value="0"    />
+                    <label style="text-align:right;font:14px;font-weight:bold;background:#D6E3F6;border:0px" value="#"/>
+                    <intbox cols="3"  style=";font:14px;font-weight:bold;background:#D6E3F6;border:0px"  id="prestadostotal" readonly="true" value="0"    />
+                </footer>
+            </foot>
+                                               
+        </grid>
+                                       
+                                     
+       
         <vbox>
             <hbox>
                 <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
@@ -297,9 +717,7 @@ empa.setSector(g);
                 <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                 <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
             </hbox>
-        </vbox>
-
-
+        </vbox>                       
     
 
         <groupbox  width="100%" mold="3d" >
