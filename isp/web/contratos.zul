@@ -523,86 +523,119 @@ Boolean validar(){
         int sihay =0;
                   for (int i = 0; i < col.size(); i++) {
                          Row object = (Row) col.get(i);
-                         Series serieDet = ((Series)object.getValue());
-                          List labels = object.getChildren();
-                            if(((Checkbox) labels.get(5)).isChecked()){ //si el item es facturado
-                                  Detallecompra det = new Detallecompra();
-                                  Boolean actualizar = false;
-                                  int cantidad = 0;
-                                  if(i > 0){
-                                    List detList = adm.query("Select o from Detallecompra as o " + 
-                                            " where o.contratos.codigo = '"+equi.getCodigo()+"' " + 
-                                            " and o.equipos.codigo = '"+ ((Intbox) labels.get(0)).getValue()+"' ");
-                                            if(detList.size()>0){
-                                                    det = (Detallecompra)detList.get(0);
-                                                    cantidad = det.getCantidad();
-                                                    actualizar = true;
-                                            }else{
-                                                    det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
-                                                     actualizar = false;
-                                            }
-                                  }else{
-                                        det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
-                                  }
-                                  det.setContratos(equi);
-                                  det.setCabeceracompra(cabeCompra);
-                                  det.setCosto(serieDet.getDetallecompra().getEquipos().getPvp1().doubleValue());
-                                  det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
-                                  det.setCantidad(-1);
-                                    if(serieDet.getDetallecompra().getEquipos().getBien()){
-                                          if(actualizar){
-                                            det.setCantidad(cantidad-1);
-                                            adm.actualizar(det);
-                                          }else{
-                                            adm.guardar(det);
-                                          }
-                                          sihay++;
-                                  }
-//                               alert(""+serieDet.getEstado());
-                               //TENGO QUE ELIMINAR TODO EL REGISTRO DE COMPRA EN CASO DE QUE HAYA SOLO UN ITEM
-                               try{
-                                    if(serieDet.getEstado().equals("P")){
-                                            Series serAc = serieDet;
-                                            int cant = serAc.getDetallecompra().getCantidad();
-                                            if(cant == -1){
-                                                adm.eliminarObjeto(Series.class, serAc.getCodigo()); 
-                                                adm.eliminarObjeto(Detallecompra.class,serAc.getDetallecompra().getCodigo());
-                                                adm.eliminarObjeto(Cabeceracompra.class,serAc.getDetallecompra().getCabeceracompra().getCodigo());
-                                            }else{
-                                                adm.eliminarObjeto(Series.class, serAc.getCodigo()); 
-                                                Detallecompra deta = serAc.getDetallecompra();
-                                                deta.setCantidad(deta.getCantidad()+1);
-                                                adm.actualizar(deta);
-                                            }
-                                        }
-                                   }catch(Exception err){
-                                   System.out.println("ERROR AL COMPARAR ESTADO Y ELIMINAR"+err);
-                                   }         
-                               
-                                  Series ser = new Series();
-                                  ser.setCodigo(adm.getNuevaClave("Series","codigo"));
-                                  ser.setSerie(serieDet.getSerie());
-                                  ser.setDetallecompra(det);
-                                  ser.setContratos(equi);
-                                  ser.setSucursal(sucursalEmp.getSucursal());
-                                  ser.setEstado("V");//VENTA
-                                  
-                               if(serieDet.getDetallecompra().getEquipos().getBien()){
-                                  adm.guardar(ser);
-                                  try{
-                                        List seriesempleados = adm.query("Select o from Seriesempleados as o where o.series.serie = '"+serieDet.getSerie()+"' ");
-                                        System.out.println("SERIESEMPLEADOS: "+seriesempleados);
-                                        for(Iterator it = seriesempleados.iterator(); it.hasNext();) {
-                                            Seriesempleados object = (Seriesempleados)it.next();
-                                            object.setEstado(false);
-                                            adm.actualizar(object);          
-                                        }
-                                        
-                                  }catch(Exception em){
-                                  System.out.println(em+"");
-                                  }
+                                 if(object.getValue() instanceof Series){
+                                            Series serieDet = ((Series)object.getValue());
+                                                        List labels = object.getChildren();
+                                                            if(((Checkbox) labels.get(6)).isChecked()){ //si el item es facturado
+                                                                Detallecompra det = new Detallecompra();
+                                                                Boolean actualizar = false;
+                                                                int cantidad = 0;
+                                                                if(i > 0){
+                                                                    List detList = adm.query("Select o from Detallecompra as o " + 
+                                                                            " where o.contratos.codigo = '"+equi.getCodigo()+"' " + 
+                                                                            " and o.equipos.codigo = '"+ ((Intbox) labels.get(0)).getValue()+"' ");
+                                                                            if(detList.size()>0){
+                                                                                    det = (Detallecompra)detList.get(0);
+                                                                                    cantidad = det.getCantidad();
+                                                                                    actualizar = true;
+                                                                            }else{
+                                                                                    det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                                                                    actualizar = false;
+                                                                            }
+                                                                }else{
+                                                                        det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                                                }
+                                                                det.setContratos(equi);
+                                                                det.setCabeceracompra(cabeCompra);
+                                                                det.setCosto(serieDet.getDetallecompra().getEquipos().getPvp1().doubleValue());
+                                                                det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
+                                                                det.setCantidad(-1);
+                                                                    if(serieDet.getDetallecompra().getEquipos().getBien()){
+                                                                        if(actualizar){
+                                                                            det.setCantidad(cantidad-1);
+                                                                            adm.actualizar(det);
+                                                                        }else{
+                                                                            adm.guardar(det);
+                                                                        }
+                                                                        sihay++;
+                                                                    }
+                                //                               alert(""+serieDet.getEstado());
+                                                            //TENGO QUE ELIMINAR TODO EL REGISTRO DE COMPRA EN CASO DE QUE HAYA SOLO UN ITEM
+                                                            try{
+                                                                    if(serieDet.getEstado().equals("P")){
+                                                                            Series serAc = serieDet;
+                                                                            int cant = serAc.getDetallecompra().getCantidad();
+                                                                            if(cant == -1){
+                                                                                adm.eliminarObjeto(Series.class, serAc.getCodigo()); 
+                                                                                adm.eliminarObjeto(Detallecompra.class,serAc.getDetallecompra().getCodigo());
+                                                                                adm.eliminarObjeto(Cabeceracompra.class,serAc.getDetallecompra().getCabeceracompra().getCodigo());
+                                                                            }else{
+                                                                                adm.eliminarObjeto(Series.class, serAc.getCodigo()); 
+                                                                                Detallecompra deta = serAc.getDetallecompra();
+                                                                                deta.setCantidad(deta.getCantidad()+1);
+                                                                                adm.actualizar(deta);
+                                                                            }
+                                                                        }
+                                                                }catch(Exception err){
+                                                                System.out.println("ERROR AL COMPARAR ESTADO Y ELIMINAR"+err);
+                                                                }         
+
+                                                                Series ser = new Series();
+                                                                ser.setCodigo(adm.getNuevaClave("Series","codigo"));
+                                                                ser.setSerie(serieDet.getSerie());
+                                                                ser.setDetallecompra(det);
+                                                                ser.setContratos(equi);
+                                                                ser.setSucursal(sucursalEmp.getSucursal());
+                                                                ser.setEstado("V");//VENTA
+
+                                                            if(serieDet.getDetallecompra().getEquipos().getBien()){
+                                                                adm.guardar(ser);
+                                                                try{
+                                                                        List seriesempleados = adm.query("Select o from Seriesempleados as o where o.series.serie = '"+serieDet.getSerie()+"' ");
+                                                                        System.out.println("SERIESEMPLEADOS: "+seriesempleados);
+                                                                        for(Iterator it = seriesempleados.iterator(); it.hasNext();) {
+                                                                            Seriesempleados object = (Seriesempleados)it.next();
+                                                                            object.setEstado(false);
+                                                                            adm.actualizar(object);          
+                                                                        }
+
+                                                                }catch(Exception em){
+                                                                System.out.println(em+"");
+                                                                }
+                                                                }
+                                                            } //SI ES FACTURADO FIN
+                                }else{
+                                            Detallecompra serieDet = ((Detallecompra)object.getValue());
+                                            List labels = object.getChildren();
+                                            if(((Checkbox) labels.get(6)).isChecked()){ //si el item es facturado
+                                                                Detallecompra det = new Detallecompra();
+                                                                Boolean actualizar = false;
+                                                                Integer cantidad = 0;
+                                                                if(i > 0){
+                                                                    det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                                                    actualizar = false;
+                                                                      
+                                                                }else{
+                                                                        det.setCodigo(adm.getNuevaClave("Detallecompra","codigo"));
+                                                                }
+                                                                det.setContratos(equi);
+                                                                det.setCabeceracompra(cabeCompra);
+                                                                det.setCosto(serieDet.getCosto());
+                                                                det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
+                                                                det.setCantidad(serieDet.getCantidad());
+                                                                    if(serieDet.getEquipos().getBien()){
+                                                                         
+                                                                        det.setCantidad(serieDet.getCantidad()*(-1));
+                                                                            adm.guardar(det);
+                                                                         
+                                                                        sihay++;
+                                                                         }
+                                                                
+
+
+                                            } //SI ES FACTURADO FIN
                                 }
-                            }
+                         
 
                   }
 
@@ -639,13 +672,14 @@ if(sihay==0){
         int sihay = 0;
                   for (int i = 0; i < col.size(); i++) {
                          Row object = (Row) col.get(i);
+                        if(object.getValue() instanceof Series){ 
                          Series serieDet = ((Series)object.getValue());
                           List labels = object.getChildren();
                             if(serieDet.getDetallecompra().getEquipos().getBien()){
                             
                             }
                           
-                            if(!((Checkbox) labels.get(5)).isChecked()){ //si el item NO es facturado
+                            if(!((Checkbox) labels.get(6)).isChecked()){ //si el item NO es facturado
                                   Detallecompra det = new Detallecompra();
                                   Boolean actualizar = false;
                                   int cantidad = 0;
@@ -702,7 +736,7 @@ if(sihay==0){
                                   }
                                   
                             }
-
+                        }
                   }
 
          if(sihay==0){
@@ -774,22 +808,39 @@ if(sihay==0){
                             }
                                     for (int i = 0; i < col.size(); i++) {
                                              Row object = (Row) col.get(i);
-                                             Series serieDet = ((Series)object.getValue());
-                                              List labels = object.getChildren();
-                                                if(((Checkbox) labels.get(5)).isChecked()){ //si el item es facturado
-                                                        Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-                                                        det.setTotal(serieDet.getDetallecompra().getEquipos().getPvp1());
-                                                        det.setPlan(null);
-                                                        det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
-                                                        det.setCantidad(1);
-                                                        det.setMes(fecha.getMonth()+1);  
-                                                        det.setAnio(fecha.getYear()+1900); 
-                                                        det.setDescripcion(null);
-                                                        det.setFactura(fac);
-                                                        adm.guardar(det);
-                                                
-                                                }
+                                             if(object.getValue() instanceof Series){
+                                                Series serieDet = ((Series)object.getValue());
+                                                List labels = object.getChildren();
+                                                    if(((Checkbox) labels.get(6)).isChecked()){ //si el item es facturado
+                                                            Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+                                                            det.setTotal(serieDet.getDetallecompra().getEquipos().getPvp1());
+                                                            det.setPlan(null);
+                                                            det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
+                                                            det.setCantidad(1);
+                                                            det.setMes(fecha.getMonth()+1);  
+                                                            det.setAnio(fecha.getYear()+1900); 
+                                                            det.setDescripcion(null);
+                                                            det.setFactura(fac);
+                                                            adm.guardar(det);
 
+                                                    }
+                                             }else{
+                                                Detallecompra serieDet = ((Detallecompra)object.getValue());
+                                                    List labels = object.getChildren();
+                                                        if(((Checkbox) labels.get(6)).isChecked()){ //si el item es facturado
+                                                            Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+                                                            det.setTotal(new BigDecimal(serieDet.getPvp1()));
+                                                            det.setPlan(null);
+                                                            det.setEquipos(new Equipos(((Intbox) labels.get(0)).getValue()));
+                                                            det.setCantidad(serieDet.getCantidad());
+                                                            det.setMes(fecha.getMonth()+1);  
+                                                            det.setAnio(fecha.getYear()+1900); 
+                                                            det.setDescripcion(null);
+                                                            det.setFactura(fac);
+                                                            adm.guardar(det);
+
+                                                        }
+                                             }
 
                                       }
                             Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
@@ -2124,8 +2175,10 @@ void verificarCedula(String valor){
                                         //Series ser = new Series();
                                         //ser.setSerie(serieUnitario.value);
                                         det.setEquipos(new Equipos(idproducto.value));
-                                        det.setCantidad(cantidad2.value*-1);
+                                        det.setCantidad(cantidad2.value);
+                                        System.out.println("CANTIDAD: "+det.getCantidad());
                                         det.setCosto(vu.value);
+                                        det.setPvp1(vt.value);
                                         det.setContratos(equi);
                                         //ser.setDetallecompra(det);
                                         row.setValue(det); 
@@ -2829,7 +2882,7 @@ void llamar(){
                                     <span>
                                         <intbox cols="1" visible="false"  id="idproducto" readonly="true" />
                                         Producto: 
-                                        <combobox  cols="35" id="productod" onOK='vu.focus();' 
+                                        <combobox  constraint="no empty: Campo requerido" cols="35" id="productod" onOK='vu.focus();' 
                                                    onSelect="llenarEquipo(self.selectedItem.value); " 
                                                    autodrop="true" buttonVisible="false"  
                                                    use="jcinform.auto.autoCompletarEquipos"/>
@@ -2856,13 +2909,15 @@ void llamar(){
                                        
                                     </span>
                                     V/U: 
-                                    <doublebox onOK="add.focus()" value="0" cols="4"  readonly="true"  id="vu"  />
+                                    <doublebox  constraint="no empty,no negative: Ingrese un producto"  onOK="add.focus()" value="0" cols="4"  readonly="true"  id="vu"  />
                                     TOTAL: 
                                     <doublebox onOK="add.focus()" value="0"  cols="4"    readonly="true"  id="vt"  />
                                      
                                     <textbox visible="false" onOK="add.focus()"  cols="9"   readonly="false"  id="serieUnitario"  />
                                     <span>
-                                        <button  id="add"  label="Añadir"     image="/images/add2.png" onClick='actualizar.visible = false; continuar.visible = true; anadirFila();'/>
+                                        <button  id="add"  label="Añadir"     
+                                        image="/images/add2.png" 
+                                        onClick='productod.getValue(); vu.getValue();anadirFila();vu.value = 0.0; vt.value = 0.0; productod.setRawValue(null); cantidad2.value = 1; productoid.value = null;productod.focus(); '/>
                                     </span>
                                        
                                 </groupbox>
