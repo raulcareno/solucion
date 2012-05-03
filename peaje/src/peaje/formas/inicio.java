@@ -17,17 +17,30 @@ public class inicio {
 
     public static Boolean comprobar() {
         WorkingDirectory w = new WorkingDirectory();
+         claves cl = new claves();
         String ubicacionDirectorio = w.get() + separador;
         if (ubicacionDirectorio.contains("build")) {
             ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
         }
-        ubicacionDirectorio = ubicacionDirectorio.substring(0,1);
+        String unidad = ubicacionDirectorio.substring(0,1);
+        datosConecta.setUbicacionDirectorio(ubicacionDirectorio);
         GeneraXMLPersonal pXml = new GeneraXMLPersonal();
         pXml.inicio();
         pXml.leerXML();
-        String serie = SerieDisco.getSerialNumber(ubicacionDirectorio);
+        
+        String serie = SerieDisco.getSerialNumber(unidad);
         System.out.println("SERIE DE INSTALACIÓN: "+serie);
         datosConecta = pXml.user;
+        String serie2 = cl.encriptar("jc" + serie);
+        if (serie2.equals("" + datosConecta.getSerie())) {
+            System.out.println("IGUALES");
+            //return true;//producto valido
+        } else {
+            System.out.println("NO IGUAL");
+            UsuarioActivo.setSerie(serie);
+            return false;
+        }
+        
         try {
             String nombre = datosConecta.getNombre();
             //System.out.println("NOMB:" + nombre);
