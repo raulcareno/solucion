@@ -62,6 +62,7 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String NOMBRE_ARCHIVO_XML = "KDJFASD5F4AS5D2.xml";
     private static final String IN = "IN";
     private static final String OUT = "OUT";
+    private static final String DATA = "DATA";
     // Variables
     private Document xmlDoc = null;
     private Element personal = null;
@@ -132,6 +133,10 @@ public static UsuarioActivo user = new UsuarioActivo();
         item = xmlDoc.createElement(OUT);
         item.appendChild(xmlDoc.createTextNode(beanEmpleado.getOut()));
         personal.appendChild(item);
+        
+        item = xmlDoc.createElement(DATA);
+        item.appendChild(xmlDoc.createTextNode(beanEmpleado.getSerie()));
+        personal.appendChild(item);
     }
 
     // genera el objeto de documento XML en una cadena de texto
@@ -196,6 +201,7 @@ public static UsuarioActivo user = new UsuarioActivo();
             beanEmpleado.setPuerto("puerto");
             beanEmpleado.setIn("in");
             beanEmpleado.setOut("out");
+            beanEmpleado.setSerie("data");
 
             //Generamos documento XML para los valores anteriores
             pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
@@ -232,6 +238,7 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setPuerto("puerto");
         beanEmpleado.setIn("in");
         beanEmpleado.setOut("out");
+        beanEmpleado.setSerie("data");
 
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
@@ -309,7 +316,8 @@ public static UsuarioActivo user = new UsuarioActivo();
                     user.setIn(((Node) inAgeList.item(0)).getNodeValue().trim());
 
                     //------
-
+                    try {
+                        
                         //----
                     NodeList outList = firstPersonElement.getElementsByTagName("OUT");
                     Element outElement = (Element) outList.item(0);
@@ -317,7 +325,18 @@ public static UsuarioActivo user = new UsuarioActivo();
                     NodeList outAgeList = outElement.getChildNodes();
                     user.setOut(((Node) outAgeList.item(0)).getNodeValue().trim());
 
+                    } catch (Exception e) {
+                    }
                     //------
+                    try {
+                        //----
+                        NodeList outList = firstPersonElement.getElementsByTagName("DATA");
+                        Element outElement = (Element) outList.item(0);
+
+                        NodeList outAgeList = outElement.getChildNodes();
+                        user.setSerie(((Node) outAgeList.item(0)).getNodeValue().trim());
+                    } catch (Exception e) {
+                    }
 
 
                 }//end of if clause

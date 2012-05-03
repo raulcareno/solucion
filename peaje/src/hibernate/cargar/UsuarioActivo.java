@@ -7,6 +7,8 @@ public class UsuarioActivo {
     private static String puerto;
     private static String in;
     private static String out;
+    private static String serie;
+    private static String ubicacionDirectorio;
         
     public UsuarioActivo() {}
     
@@ -56,6 +58,22 @@ public class UsuarioActivo {
 
     public static void setOut(String out) {
         UsuarioActivo.out = out;
+    }
+
+    public static String getSerie() {
+        return serie;
+    }
+
+    public static void setSerie(String serie) {
+        UsuarioActivo.serie = serie;
+    }
+
+    public static String getUbicacionDirectorio() {
+        return ubicacionDirectorio;
+    }
+
+    public static void setUbicacionDirectorio(String ubicacionDirectorio) {
+        UsuarioActivo.ubicacionDirectorio = ubicacionDirectorio;
     }
 
     

@@ -17,6 +17,7 @@ public class BeanUsuario {
     private String puerto;
     private String in;
     private String out;
+    private String serie;
 
     public BeanUsuario() {
         fecha = new Date();
@@ -81,6 +82,14 @@ public class BeanUsuario {
 
     public void setOut(String out) {
         this.out = out;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
     }
    
     
