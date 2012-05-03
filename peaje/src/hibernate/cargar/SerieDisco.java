@@ -13,8 +13,8 @@ import java.io.File;
  */
 
 
- public class DiskUtils {
-   private DiskUtils() { }
+ public class SerieDisco {
+   public SerieDisco() { }
 
    public static String getSerialNumber(String drive) {
    String result = "";
@@ -44,9 +44,8 @@ import java.io.File;
    }
 
    public static void main(String[] args){
-     String sn = DiskUtils.getSerialNumber("C");
-     javax.swing.JOptionPane.showConfirmDialog((java.awt.Component)
-          null, sn, "Serial Number of C:",
+     String sn = SerieDisco.getSerialNumber("C");
+     javax.swing.JOptionPane.showConfirmDialog((java.awt.Component)null, sn, "Serial Number of C:",
           javax.swing.JOptionPane.DEFAULT_OPTION);
    }
  }
