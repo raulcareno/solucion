@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
   <persistence-unit name="peajePU" transaction-type="RESOURCE_LOCAL">
-    <provider>oracle.toplink.essentials.PersistenceProvider</provider>
-    <class>hibernate.Registro</class>
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+  <class>hibernate.Registro</class>
     <class>hibernate.Factura</class>
     <class>hibernate.Productos</class>
     <class>hibernate.Detalle</class>
@@ -17,13 +17,12 @@
     <class>camaraIP.ImagePanel</class>
     <class>hibernate.Tarifasdiarias</class>
     <class>hibernate.Control</class>
+    <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
-      <property name="toplink.cache.type.default" value="NONE"/>
-      <!--property name="toplink.jdbc.user" value="root"/>
-      <property name="toplink.jdbc.password" value=""/>
-      <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/peaje?zeroDateTimeBehavior=convertToNull"/-->
-      <property name="toplink.weaving" value="false"/>
-      <property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.url" value=""/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value=""/>
     </properties>
   </persistence-unit>
 </persistence>
