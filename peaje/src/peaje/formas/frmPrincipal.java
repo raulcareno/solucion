@@ -1530,12 +1530,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         .addContainerGap()
                         .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(frmLoteLayout.createSequentialGroup()
-                                .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(nombreBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel36))
-                            .addGroup(frmLoteLayout.createSequentialGroup()
                                 .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(frmLoteLayout.createSequentialGroup()
                                         .addComponent(activa1)
@@ -1559,7 +1553,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                         .addComponent(salida1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGap(108, 108, 108))))
                             .addGroup(frmLoteLayout.createSequentialGroup()
-                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(frmLoteLayout.createSequentialGroup()
+                                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(nombreBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(jLabel36))
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(frmLoteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(frmLoteLayout.createSequentialGroup()
@@ -2263,6 +2264,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         frmRespaldarBase.setTitle("Respaldo de Información");
         frmRespaldarBase.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edittrash.gif"))); // NOI18N
+        frmRespaldarBase.setVisible(false);
         frmRespaldarBase.getContentPane().setLayout(null);
 
         btnRespaldoWindows.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/windows.png"))); // NOI18N
@@ -2837,6 +2839,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             btnCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/undo.gif"))); // NOI18N
             btnCerrar.setMnemonic('S');
             btnCerrar.setText("Cerrar Sesión");
+            btnCerrar.setEnabled(false);
             btnCerrar.setFocusable(false);
             btnCerrar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
             btnCerrar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -5376,11 +5379,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         // TODO add your handling code here:
-        usuario = new Usuarios();
-        permisos = new Accesos();
-        frmIngresarSistema.setVisible(true);
-        habilitarBotones(false);
-        usuariot.requestFocusInWindow();
+        System.exit(0);
+//        usuario = new Usuarios();
+//        permisos = new Accesos();
+//        frmIngresarSistema.setVisible(true);
+//        habilitarBotones(false);
+//        usuariot.requestFocusInWindow();
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
