@@ -2888,7 +2888,7 @@ void llamar(){
                                         <combobox  constraint="no empty: Campo requerido" cols="35" id="productod" onOK='vu.focus();' 
                                                    onSelect="llenarEquipo(self.selectedItem.value); " 
                                                    autodrop="true" buttonVisible="false"  
-                                                   use="jcinform.auto.autoCompletarEquipos"/>
+                                                   use="jcinform.auto.autoCompletarMateriales"/>
                                         <zscript>
                                             llenarEquipo(Equipos es){
                                                 idproducto.value = es.getCodigo(); 

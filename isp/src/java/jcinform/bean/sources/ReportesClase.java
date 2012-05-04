@@ -454,7 +454,11 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         String desdestr = convertiraString(desde);
         String hastastr = convertiraString(hasta);
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
+         
             Clientes clientes1 = itCli.next();
+            if(clientes1.getCodigo().equals(new Integer(309))){
+                System.out.println(""+clientes1);
+            }
             String sql = "SELECT fa.codigo, fa.numero, fa.emision,  fa.total,  "
                     + "(SUM(cx.debe) - SUM(cx.haber)) saldo,SUM(cx.haber) abonos, fa.subtotal, fa.valoriva"
                     + " FROM detalle de, cxcobrar cx, factura  fa "
@@ -465,6 +469,7 @@ String estadoComp = " and o.estado = '" + estado + "' ";
                     + "AND fa.emision between '" + desdestr + "' and '" + hastastr + "' and fa.numero > 0 "
                     + "GROUP BY fa.numero    ";
             //+ "GROUP BY fa.numero  having SUM(cx.haber) >0  ";
+//            System.out.println(""+sql);
             List facEncontradas = adm.queryNativo(sql);
             if (facEncontradas.size() > 0) {
                 Pendientes pendi = null;

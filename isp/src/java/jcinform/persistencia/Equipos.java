@@ -55,6 +55,8 @@ public class Equipos implements Serializable {
     private BigDecimal pvp4;
     @Column(name = "bien")
     private Boolean bien = true;
+    @Column(name = "material")
+    private Boolean material = false;
     @Column(name = "contable")
     private String contable;
     @Column(name = "unidad")
@@ -243,6 +245,15 @@ public class Equipos implements Serializable {
 //        this.contratosCollection2 = contratosCollection2;
 //    }
 
+    public Boolean getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Boolean material) {
+        this.material = material;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;
