@@ -50,6 +50,7 @@ public class frmConfiguracion extends javax.swing.JFrame {
         serieRecibe.setVisible(false);
         FC_Choose = new JFileChooser();
         tipoPanel.repaint();
+        panelDatos.setVisible(false);
     }
 
     /**
@@ -61,12 +62,13 @@ public class frmConfiguracion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         tipoPanel = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        panelDatos = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
@@ -92,13 +94,13 @@ public class frmConfiguracion extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Configuración Inicial del Sistema");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Reconfiguración en caso de una configuración previa"));
-        jPanel1.setLayout(null);
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel1.setText("<html>Si usted esta viendo esta pantalla, va a reconfigurar, o el archivo de configuración está dañado, o es la primera vez que lo hace\n</html>");
 
         tipoPanel.setLayout(null);
 
@@ -134,44 +136,44 @@ public class frmConfiguracion extends javax.swing.JFrame {
         tipoPanel.add(jLabel6);
         jLabel6.setBounds(70, 120, 130, 120);
 
-        jPanel1.add(tipoPanel);
-        tipoPanel.setBounds(-30, -50, 590, 320);
+        panelDatos.setBorder(javax.swing.BorderFactory.createTitledBorder("Reconfiguración en caso de una configuración previa"));
+        panelDatos.setLayout(null);
 
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel25.setText("Clave: ");
-        jPanel1.add(jLabel25);
+        panelDatos.add(jLabel25);
         jLabel25.setBounds(0, 40, 110, 14);
 
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel24.setText("Usuario: ");
-        jPanel1.add(jLabel24);
+        panelDatos.add(jLabel24);
         jLabel24.setBounds(0, 20, 110, 14);
 
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel26.setText("IP: ");
-        jPanel1.add(jLabel26);
+        panelDatos.add(jLabel26);
         jLabel26.setBounds(0, 60, 110, 14);
 
         jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel27.setText("Puerta de Saldia: ");
-        jPanel1.add(jLabel27);
+        panelDatos.add(jLabel27);
         jLabel27.setBounds(390, 120, 110, 14);
 
         usuarioBase.setText("root");
-        jPanel1.add(usuarioBase);
+        panelDatos.add(usuarioBase);
         usuarioBase.setBounds(120, 20, 160, 20);
 
         claveBase.setText("jcinform@2020");
-        jPanel1.add(claveBase);
+        panelDatos.add(claveBase);
         claveBase.setBounds(120, 40, 160, 20);
 
         ipBase.setText("localhost");
         ipBase.setToolTipText("Si su máquina es el servidor escriba: localhost, caso contrario escriba el nombre del servidor o la dirección IP");
-        jPanel1.add(ipBase);
+        panelDatos.add(ipBase);
         ipBase.setBounds(120, 60, 160, 20);
 
         puertoBase.setText("3306");
-        jPanel1.add(puertoBase);
+        panelDatos.add(puertoBase);
         puertoBase.setBounds(120, 80, 70, 20);
 
         continuar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
@@ -182,58 +184,58 @@ public class frmConfiguracion extends javax.swing.JFrame {
                 continuarActionPerformed(evt);
             }
         });
-        jPanel1.add(continuar);
+        panelDatos.add(continuar);
         continuar.setBounds(180, 170, 180, 50);
 
         jLabel29.setText("(localhost o IP del servidor)");
-        jPanel1.add(jLabel29);
+        panelDatos.add(jLabel29);
         jLabel29.setBounds(290, 60, 200, 14);
 
         jLabel30.setText("(Clave del motor de BD)");
-        jPanel1.add(jLabel30);
+        panelDatos.add(jLabel30);
         jLabel30.setBounds(290, 30, 200, 30);
 
         jLabel31.setText("(Usuario de de BD)");
-        jPanel1.add(jLabel31);
+        panelDatos.add(jLabel31);
         jLabel31.setBounds(290, 20, 200, 14);
 
         cmbAbre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7" }));
-        jPanel1.add(cmbAbre);
+        panelDatos.add(cmbAbre);
         cmbAbre.setBounds(400, 100, 40, 20);
 
         cmbCierra.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7" }));
-        jPanel1.add(cmbCierra);
+        panelDatos.add(cmbCierra);
         cmbCierra.setBounds(400, 140, 40, 20);
 
         jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel33.setText("Puerto: ");
-        jPanel1.add(jLabel33);
+        panelDatos.add(jLabel33);
         jLabel33.setBounds(0, 80, 110, 14);
 
         jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel34.setText("Puerta de Entrada: ");
-        jPanel1.add(jLabel34);
+        panelDatos.add(jLabel34);
         jLabel34.setBounds(390, 80, 110, 14);
 
         jLabel35.setText("(Puerto por el que se conecta)");
-        jPanel1.add(jLabel35);
+        panelDatos.add(jLabel35);
         jLabel35.setBounds(200, 80, 200, 20);
 
         jLabel36.setForeground(new java.awt.Color(255, 51, 0));
         jLabel36.setText("NO USABLE");
-        jPanel1.add(jLabel36);
+        panelDatos.add(jLabel36);
         jLabel36.setBounds(450, 140, 70, 20);
 
         jLabel37.setForeground(new java.awt.Color(255, 51, 0));
         jLabel37.setText("NO USABLE");
-        jPanel1.add(jLabel37);
+        panelDatos.add(jLabel37);
         jLabel37.setBounds(450, 100, 60, 20);
 
         serieDisco.setEditable(false);
         serieDisco.setText("abc0O01mnlabc");
         serieDisco.setToolTipText("");
         serieDisco.setFont(new java.awt.Font("Tw Cen MT", 1, 18)); // NOI18N
-        jPanel1.add(serieDisco);
+        panelDatos.add(serieDisco);
         serieDisco.setBounds(120, 100, 250, 27);
 
         serieRecibe2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -247,28 +249,24 @@ public class frmConfiguracion extends javax.swing.JFrame {
                 serieRecibe2KeyReleased(evt);
             }
         });
-        jPanel1.add(serieRecibe2);
+        panelDatos.add(serieRecibe2);
         serieRecibe2.setBounds(120, 130, 160, 23);
 
         serieRecibe.setEnabled(false);
-        jPanel1.add(serieRecibe);
+        panelDatos.add(serieRecibe);
         serieRecibe.setBounds(120, 130, 40, 20);
 
         jLabel2.setText("CLAVE:");
-        jPanel1.add(jLabel2);
+        panelDatos.add(jLabel2);
         jLabel2.setBounds(70, 130, 50, 14);
 
         jLabel4.setText("SERIE: ");
-        jPanel1.add(jLabel4);
+        panelDatos.add(jLabel4);
         jLabel4.setBounds(70, 110, 50, 14);
 
         jLabel32.setText("Solicite la clave del producto a su Proveedor");
-        jPanel1.add(jLabel32);
+        panelDatos.add(jLabel32);
         jLabel32.setBounds(120, 150, 230, 14);
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 204));
-        jLabel1.setText("<html>Si usted esta viendo esta pantalla, va a reconfigurar, o el archivo de configuración está dañado, o es la primera vez que lo hace\n</html>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -277,9 +275,14 @@ public class frmConfiguracion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
+                    .addComponent(panelDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tipoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,8 +290,12 @@ public class frmConfiguracion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addComponent(panelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(tipoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 11, Short.MAX_VALUE)))
         );
 
         pack();
@@ -373,12 +380,14 @@ public class frmConfiguracion extends javax.swing.JFrame {
         // TODO add your handling code here:
         tipoPanel.setVisible(false);
         esServidor = true;
+        panelDatos.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
          tipoPanel.setVisible(false);
         esServidor = false;
+        panelDatos.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
     public Boolean respaldar() {
         String dataBase= "peaje";
@@ -502,7 +511,7 @@ public class frmConfiguracion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel panelDatos;
     private javax.swing.JFormattedTextField puertoBase;
     private javax.swing.JFormattedTextField serieDisco;
     private javax.swing.JFormattedTextField serieRecibe;
