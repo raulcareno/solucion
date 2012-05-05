@@ -34,6 +34,7 @@ public class frmConfiguracion extends javax.swing.JFrame {
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
     String separador = File.separatorChar + "";
     static UsuarioActivo datosConecta;
+    public Boolean esServidor = false;
     /**
      * Creates new form frmConfiguracion
      */
@@ -48,6 +49,7 @@ public class frmConfiguracion extends javax.swing.JFrame {
         serieRecibe.setText(valor);
         serieRecibe.setVisible(false);
         FC_Choose = new JFileChooser();
+        tipoPanel.repaint();
     }
 
     /**
@@ -60,8 +62,13 @@ public class frmConfiguracion extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel24 = new javax.swing.JLabel();
+        tipoPanel = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         usuarioBase = new javax.swing.JFormattedTextField();
@@ -93,15 +100,52 @@ public class frmConfiguracion extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Reconfiguración en caso de una configuración previa"));
         jPanel1.setLayout(null);
 
-        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel24.setText("Usuario: ");
-        jPanel1.add(jLabel24);
-        jLabel24.setBounds(0, 20, 110, 14);
+        tipoPanel.setLayout(null);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edittrash.gif"))); // NOI18N
+        jButton1.setText("ES EL SERVIDOR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        tipoPanel.add(jButton1);
+        jButton1.setBounds(70, 60, 150, 52);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
+        jButton2.setText("<html>ES UN USUARIO </html>");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        tipoPanel.add(jButton2);
+        jButton2.setBounds(300, 60, 140, 52);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel5.setText("<html>Es una cuenta de algún usuario(empleado), alguna consola para el calificador, o para empezar a llamar turnos. si es así presione ES USUARIO\n</html>");
+        tipoPanel.add(jLabel5);
+        jLabel5.setBounds(300, 120, 160, 120);
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 51, 0));
+        jLabel6.setText("<html>Es el servidor o es la primera instalación del sistema, si és así presione en ES EL SERVIDOR\n</html>");
+        tipoPanel.add(jLabel6);
+        jLabel6.setBounds(70, 120, 130, 120);
+
+        jPanel1.add(tipoPanel);
+        tipoPanel.setBounds(-30, -50, 590, 320);
 
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel25.setText("Clave: ");
         jPanel1.add(jLabel25);
         jLabel25.setBounds(0, 40, 110, 14);
+
+        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel24.setText("Usuario: ");
+        jPanel1.add(jLabel24);
+        jLabel24.setBounds(0, 20, 110, 14);
 
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel26.setText("IP: ");
@@ -224,7 +268,7 @@ public class frmConfiguracion extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 204));
-        jLabel1.setText("Si usted esta viendo esta pantalla, va a reconfigurar, o el archivo de configuración está dañado");
+        jLabel1.setText("<html>Si usted esta viendo esta pantalla, va a reconfigurar, o el archivo de configuración está dañado, o es la primera vez que lo hace\n</html>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -232,19 +276,19 @@ public class frmConfiguracion extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -281,10 +325,14 @@ public class frmConfiguracion extends javax.swing.JFrame {
         GeneraXMLPersonal pXml = new GeneraXMLPersonal();
         pXml.leerXML();
         UsuarioActivo usuario = pXml.user;
-          
-          int val = JOptionPane.showConfirmDialog(this, "ES LA PRIMERA VEZ QUE INSTALA Y \n SI ÉSTE ES EL SERVIDOR SI");
-          if(val == JOptionPane.OK_OPTION){
-            respaldar();//GENERO LA BASE DE DATOS Y LAS TABLAS EN CASO DE NO EXISTIR
+          if(esServidor){
+            int val = JOptionPane.showConfirmDialog(this, "¿DESEA GENERAR LA BASE DE DATOS?, ÉSTO BORRARÁ LOS DATOS ACTUALES Y CARGARÁ EL SISTEMA DESDE CERO");
+            if(val == JOptionPane.OK_OPTION){
+                int val2 = JOptionPane.showConfirmDialog(this, "¿ESTÁ UD. SEGURO DE QUE DESEA GENERAR LA BASE DE DATOS?, ÉSTO BORRARÁ LOS DATOS ACTUALES Y CARGARÁ EL SISTEMA DESDE CERO");
+                    if(val2 == JOptionPane.OK_OPTION){
+                        respaldar();//GENERO LA BASE DE DATOS Y LAS TABLAS EN CASO DE NO EXISTIR
+                    }
+            }
           }
         try {
             Administrador adm = new Administrador(usuario);
@@ -320,6 +368,18 @@ public class frmConfiguracion extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_serieRecibe2KeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        tipoPanel.setVisible(false);
+        esServidor = true;
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+         tipoPanel.setVisible(false);
+        esServidor = false;
+    }//GEN-LAST:event_jButton2ActionPerformed
     public Boolean respaldar() {
         String dataBase= "peaje";
         String directorio = UsuarioActivo.getUbicacionDirectorio() + "" + separador + "da" + separador + "datos.sql";
@@ -397,6 +457,14 @@ public class frmConfiguracion extends javax.swing.JFrame {
 
     }
 
+    public Boolean getEsServidor() {
+        return esServidor;
+    }
+
+    public void setEsServidor(Boolean esServidor) {
+        this.esServidor = esServidor;
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -414,6 +482,8 @@ public class frmConfiguracion extends javax.swing.JFrame {
     private javax.swing.JComboBox cmbCierra;
     private javax.swing.JButton continuar;
     private javax.swing.JFormattedTextField ipBase;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
@@ -430,11 +500,14 @@ public class frmConfiguracion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JFormattedTextField puertoBase;
     private javax.swing.JFormattedTextField serieDisco;
     private javax.swing.JFormattedTextField serieRecibe;
     private javax.swing.JFormattedTextField serieRecibe2;
+    private javax.swing.JPanel tipoPanel;
     private javax.swing.JFormattedTextField usuarioBase;
     // End of variables declaration//GEN-END:variables
 }
