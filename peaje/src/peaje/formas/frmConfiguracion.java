@@ -14,7 +14,13 @@ import hibernate.cargar.Administrador;
 import hibernate.cargar.BeanUsuario;
 import hibernate.cargar.GeneraXMLPersonal;
 import hibernate.cargar.UsuarioActivo;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.StringTokenizer;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -28,11 +34,10 @@ public class frmConfiguracion extends javax.swing.JFrame {
     hibernate.cargar.claves cl = new hibernate.cargar.claves();
     String separador = File.separatorChar + "";
     static UsuarioActivo datosConecta;
-
     /**
      * Creates new form frmConfiguracion
      */
-          private JFileChooser FC_Choose;
+    private JFileChooser FC_Choose;
 
     public frmConfiguracion() {
         initComponents();
@@ -74,16 +79,12 @@ public class frmConfiguracion extends javax.swing.JFrame {
         jLabel35 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
-        btnRestaurar = new javax.swing.JButton();
         serieDisco = new javax.swing.JFormattedTextField();
         serieRecibe2 = new javax.swing.JFormattedTextField();
         serieRecibe = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        nombre = new javax.swing.JFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -138,7 +139,7 @@ public class frmConfiguracion extends javax.swing.JFrame {
             }
         });
         jPanel1.add(continuar);
-        continuar.setBounds(70, 170, 180, 50);
+        continuar.setBounds(180, 170, 180, 50);
 
         jLabel29.setText("(localhost o IP del servidor)");
         jPanel1.add(jLabel29);
@@ -184,16 +185,6 @@ public class frmConfiguracion extends javax.swing.JFrame {
         jPanel1.add(jLabel37);
         jLabel37.setBounds(450, 100, 60, 20);
 
-        btnRestaurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edittrash.gif"))); // NOI18N
-        btnRestaurar.setText("Examinar");
-        btnRestaurar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRestaurarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnRestaurar);
-        btnRestaurar.setBounds(320, 170, 97, 30);
-
         serieDisco.setEditable(false);
         serieDisco.setText("abc0O01mnlabc");
         serieDisco.setToolTipText("");
@@ -230,26 +221,6 @@ public class frmConfiguracion extends javax.swing.JFrame {
         jLabel32.setText("Solicite la clave del producto a su Proveedor");
         jPanel1.add(jLabel32);
         jLabel32.setBounds(120, 150, 230, 14);
-
-        jButton1.setText("win");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton1);
-        jButton1.setBounds(320, 200, 60, 23);
-
-        jButton2.setText("lin");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton2);
-        jButton2.setBounds(423, 170, 90, 23);
-        jPanel1.add(nombre);
-        nombre.setBounds(280, 230, 240, 20);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 204));
@@ -293,7 +264,7 @@ public class frmConfiguracion extends javax.swing.JFrame {
         beanEmpleado.setPuerto("" + puertoBase.getText().trim());
         beanEmpleado.setIn("" + cmbAbre.getSelectedItem().toString());
         beanEmpleado.setOut("" + cmbCierra.getSelectedItem().toString());
-        beanEmpleado.setSerie("" + serieRecibe.getText()+""+serieRecibe2.getText());
+        beanEmpleado.setSerie("" + serieRecibe.getText() + "" + serieRecibe2.getText());
 
 
         //Generamos documento XML para los valores anteriores
@@ -310,6 +281,11 @@ public class frmConfiguracion extends javax.swing.JFrame {
         GeneraXMLPersonal pXml = new GeneraXMLPersonal();
         pXml.leerXML();
         UsuarioActivo usuario = pXml.user;
+          
+          int val = JOptionPane.showConfirmDialog(this, "ES LA PRIMERA VEZ QUE INSTALA Y \n SI ÉSTE ES EL SERVIDOR SI");
+          if(val == JOptionPane.OK_OPTION){
+            respaldar();//GENERO LA BASE DE DATOS Y LAS TABLAS EN CASO DE NO EXISTIR
+          }
         try {
             Administrador adm = new Administrador(usuario);
             adm.query("Select o from Accesos as o where o.codigo = -1 ");
@@ -344,56 +320,50 @@ public class frmConfiguracion extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_serieRecibe2KeyReleased
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        respaldar();
-    }//GEN-LAST:event_jButton1ActionPerformed
-  
-  
-    private void btnRestaurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestaurarActionPerformed
-        if (FC_Choose.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
-        this.nombre.setText(FC_Choose.getSelectedFile().getAbsolutePath());
-        
-    }//GEN-LAST:event_btnRestaurarActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        respaldarLinux();
-    }//GEN-LAST:event_jButton2ActionPerformed
-public void respaldar() {
-
+    public Boolean respaldar() {
+        String dataBase= "peaje";
+        String directorio = UsuarioActivo.getUbicacionDirectorio() + "" + separador + "da" + separador + "datos.sql";
+        String ip = ipBase.getText();
+        String usuario = usuarioBase.getText();
+        String clave = claveBase.getText();
+        String puerto = puertoBase.getText();
+        System.out.println("Database creation example!");
+        Connection con = null;
         try {
-//            System.out.println(""+System.getProperty("os.name"));
-//            System.out.println(""+System.getProperty("os.arch"));
-//            System.out.println(""+System.getProperty("os.version"));
-        String directorio = UsuarioActivo.getUbicacionDirectorio()+""+separador+"da"+separador+"datos.sql";
-//            String sFichero = "C:\\WINDOWS\\system32\\mysqldump.exe";
-//            File fichero = new File(sFichero);
-//            if (!fichero.exists()) {
-//                JOptionPane.showMessageDialog(this, "No existe el archivo mysqldump.exe \n En el directorio  c:\\windows\\system32 \n copielo en el directorio indicado y vuelva a ejecutar");
-//                return;
-//            }
-            String ip = ipBase.getText();
-            //String direc = ubicacionArchivo.getText();
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://" + ip + ":" + puerto + "/mysql", usuario, clave);
+            try {
+                Statement st = con.createStatement();
+                st.executeUpdate("CREATE DATABASE "+dataBase);
 
-            String usuario = usuarioBase.getText();
-            String clave = claveBase.getText();
+                con = DriverManager.getConnection("jdbc:mysql://" + ip + ":" + puerto + "/"+dataBase, usuario, clave);
+                st = con.createStatement();
+                BufferedReader in = new BufferedReader(new FileReader(directorio));
+                String str;
+                StringBuilder sb = new StringBuilder();
+                while ((str = in.readLine()) != null) {
+                    sb.append(str + "\n ");
+                }
+                in.close();
 
-//            Date fechaActual = new Date();
-//            String fec = "fecha" + fechaActual.getDate() + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getYear() + 1900) + "_" + fechaActual.getHours() + "-" + fechaActual.getMinutes() + "-" + fechaActual.getSeconds() + "";
-            //File duir = new File(direc);
-            //duir.mkdir();
-            String ejecutar = "cmd /c mysqldump -h " + ip + " --op -u " + usuario + " -p" + clave + " -B peaje <  -r " + directorio;
-            System.out.println(""+ejecutar); 
-            Runtime.getRuntime().exec(ejecutar);
-//            respaldo.value = direc + "\\academico" + fec + ".sql ";
-            JOptionPane.showMessageDialog(this, "Respaldo realizado con Éxito ...! ");
+                String[] inst = sb.toString().split(";");
+
+                for (int i = 0; i < inst.length; i++) {
+
+                    if (!inst[i].trim().equals("")) {
+                        st.executeUpdate(inst[i]);
+                        System.out.println(">>" + inst[i]);
+                    }
+                }
+                System.out.println("1 row(s) affacted");
+                return true;
+            } catch (SQLException s) {
+                System.out.println("SQL statement is not executed!" + s);
+                return false;
+            }
         } catch (Exception e) {
-            System.out.println("" + e);
-            JOptionPane.showMessageDialog(this, "No se pudo realizar el Respaldo");
+            e.printStackTrace();
+            return false;
         }
 
     }
@@ -402,11 +372,11 @@ public void respaldar() {
     public void respaldarLinux() {
         try {
             String ip = ipBase.getText();
-             String directorio = UsuarioActivo.getUbicacionDirectorio()+""+separador+"da"+separador;
+            String directorio = UsuarioActivo.getUbicacionDirectorio() + "" + separador + "da" + separador;
             String usuario = usuarioBase.getText();
             String clave = claveBase.getText();
-             
-            String ubicacion = directorio + separador+"da"+ separador+"datos.sql";
+
+            String ubicacion = directorio + separador + "da" + separador + "datos.sql";
             String cnd = "mysqldump -h" + ip + " -u" + usuario + " -p" + clave + " -B peaje " + " -r" + ubicacion;
             StringTokenizer st = new StringTokenizer(cnd);
             String[] coma = new String[st.countTokens() + 1];
@@ -439,14 +409,11 @@ public void respaldar() {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRestaurar;
     private javax.swing.JPasswordField claveBase;
     private javax.swing.JComboBox cmbAbre;
     private javax.swing.JComboBox cmbCierra;
     private javax.swing.JButton continuar;
     private javax.swing.JFormattedTextField ipBase;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
@@ -464,7 +431,6 @@ public void respaldar() {
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JFormattedTextField nombre;
     private javax.swing.JFormattedTextField puertoBase;
     private javax.swing.JFormattedTextField serieDisco;
     private javax.swing.JFormattedTextField serieRecibe;
