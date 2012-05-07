@@ -1354,7 +1354,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <grid sclass="MyGridRowHeight">
                                     <rows>
                                         <row>
-                                            <span style="color:blue" >Facturar a </span>
+                                            <span style="color:blue;float:right" >COPIAR DE: </span>
                                             <span>
                                                 <button id="padrec" label="Padre"  disabled="true" onClick="copiarp();"/>
                                                 <button id="madrec" label="Madre"  disabled="true"  onClick="copiarm();"/>
@@ -1397,23 +1397,136 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         </panel>
                     </portalchildren>    
                     <portalchildren style="padding: 5px" width="50%">
+                        <panel collapsible="true"   
+                                    framable="true"  title="DATOS DEL PADRE"
+                                    border="normal" >
+                            <panelchildren>
+                                <grid sclass="MyGridRowHeight">
+                                    <rows>
+                                        <row  style="background:yellow">
+                                            <span style="float:right">BÚSQUEDA: </span>
+                                            <span>
+                                                <combobox id="combo2" onSelect="buscarRepresentante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoCompleteRepre"/>
+                                                APELLIDOS DEL REPRESENTANTE
+                                            </span>
+                                            
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Identificación:</span>
+                                            <textbox maxlength="10" cols="13"  readonly="true" id="cedulapa"  />
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Nombres:</span>
+                                            <textbox id="nombrespa"  maxlength="60" cols="40" readonly="true"   />
+                                            <intbox maxlength="14" cols="5"  readonly = "true"   visible="false"  id="codigore"  />
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Apellidos:</span>
+                                            <textbox id="apellidospa"  maxlength="60" cols="40" readonly="true"  />
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Ocupación:</span>
+                                            <span>
+                                                <textbox id="ocupacionpa" maxlength="100" cols="20"  readonly="true"    />
+                                      
+                                                <span > Profesión:</span>
+                                                <textbox id="profesionpa" maxlength="100" cols="20"  readonly="true"    />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Dirección:</span>
+                                            <span>
+                                                <textbox id="direccionpa" maxlength="100" cols="40"  readonly="true"    />
+                                                <button label="..." onClick="direccionpa.value = direccion.value" />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Teléfono:</span>
+                                            <span>
+                                                <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
+                                                <button label="..." onClick="telefonopa.value = telefono.value" />
+                                                <span > Email:</span>
+                                            <textbox id="emailpa" maxlength="100" cols="35"  readonly="true"    />
+                                            </span>
+                                        </row>
+                                       
+                                    </rows>
+                                </grid>
                                     
+                            </panelchildren>
+                        </panel>
+                      
+                        <panel collapsible="true"   framable="true"  title="DATOS DE LA MADRE" border="normal" >
+                            <panelchildren>
+                                <grid sclass="MyGridRowHeight">
+                                    <rows>
+ 
+                                        <row>
+                                            <span style="float:right"> Identificación:</span>
+                                            <textbox maxlength="10" cols="13"  readonly="true" id="cedulama"  />
+                                        </row>
+
+                                        <row>
+                           
+                                            <span style="float:right"> Nombres:</span>
+                                            <textbox id="nombresma"  maxlength="60" cols="40" readonly="true"   />
+                                        </row>
+
+                                        <row>
+                           
+                                            <span style="float:right"> Apellidos:</span>
+                                            <textbox id="apellidosma"  maxlength="60" cols="40" readonly="true"  />
+                                        </row>
+
+                                        <row>
+                         
+                                            <span style="float:right"> Ocupación:</span>
+                                            <span>
+                                            <textbox id="ocupacionma" maxlength="100" cols="20"  readonly="true"    />
+                                            
+                                                <span> Profesión:</span>
+                                            <textbox id="profesionma" maxlength="100" cols="20"  readonly="true"    />
+                                            </span>
+                                        </row>
+                                        <row>
+                              
+                                            <span style="float:right"> Dirección:</span>
+                                            <span>
+                                                <textbox id="direccionma" maxlength="100" cols="40"  readonly="true"    />
+                                                <button label="..." onClick="direccionma.value = direccion.value" />
+                                            </span>
+                                        </row>
+                                        <row>
+                                
+                                            <span style="float:right"> Teléfono:</span>
+                                            <span>
+                                                <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
+                                                <button label="..."  onClick="telefonoma.value = telefono.value" />
+                                                <span > Email:</span>
+                                            <textbox id="emailma" maxlength="100" cols="35"  readonly="true"    />
+                                            </span>
+                                        </row>
+                                     
+
+                                    </rows>
+                                </grid>
+
+                            </panelchildren>
+                        </panel>
+                       
                         <panel collapsible="true"   framable="true"  title="DATOS DE REPRESENTANTE" border="normal" >
                             <panelchildren>
                                 <grid sclass="MyGridRowHeight">
                                     <rows>
                                         <row>
-                                            <span style="color:blue" >Representante</span>
+                                            <span style="float:right; color:blue" >COPIAR DE:  </span>
                                             <span>
                                                 <button id="padrecr" label="Padre" disabled="true" onClick="copiarpr();"/>
                                                 <button id="madrecr" label="Madre" disabled="true"  onClick="copiarmr();"/>
                                                 <button id="limpiar" label="Nuevo"  disabled="true"  onClick="limpiarRepresentante();"/>
                                             </span>
                                         </row>
-                                        <row>
-                                            <span style="float:right"> Busqueda:</span>
-                                            <combobox id="combo2" onSelect="buscarRepresentante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoCompleteRepre"/>
-                                        </row>
+                                     
                                         <row>
                                             <span style="float:right"> Identificación:</span>
                                             <textbox maxlength="13" cols="10"   readonly="true" id="cedulare"  />
@@ -1477,124 +1590,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 </grid>
                             </panelchildren>
                         </panel>
-                        <panel collapsible="true"   
-                               framable="true"  title="DATOS DEL PADRE"
-                               border="normal" >
-                            <panelchildren>
-                                <grid sclass="MyGridRowHeight">
-                                    <rows>
-                                        
-                                        <row>
-                                            <span style="float:right"> Identificación:</span>
-                                            <textbox maxlength="10" cols="13"  readonly="true" id="cedulapa"  />
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Nombres:</span>
-                                            <textbox id="nombrespa"  maxlength="60" cols="40" readonly="true"   />
-                                            <intbox maxlength="14" cols="5"  readonly = "true"   visible="false"  id="codigore"  />
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Apellidos:</span>
-                                            <textbox id="apellidospa"  maxlength="60" cols="40" readonly="true"  />
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Ocupación:</span>
-                                            <textbox id="ocupacionpa" maxlength="100" cols="40"  readonly="true"    />
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Profesión:</span>
-                                            <textbox id="profesionpa" maxlength="100" cols="40"  readonly="true"    />
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Dirección:</span>
-                                            <span>
-                                                <textbox id="direccionpa" maxlength="100" cols="40"  readonly="true"    />
-                                                <button label="..." onClick="direccionpa.value = direccion.value" />
-                                            </span>
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Teléfono:</span>
-                                            <span>
-                                                <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
-                                                <button label="..." onClick="telefonopa.value = telefono.value" />
-                                            </span>
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Email:</span>
-                                            <textbox id="emailpa" maxlength="100" cols="40"  readonly="true"    />
-                                        </row>
-                                    </rows>
-                                </grid>
-                                    
-                            </panelchildren>
-                        </panel>
-                       
-                        <panel collapsible="true"   framable="true"  title="DATOS DE LA MADRE" border="normal" >
-                            <panelchildren>
-                                <grid sclass="MyGridRowHeight">
-                                    <rows>
-                                
-                                        <row>
-                                            <span style="color:blue">Datos Madre </span>
-                                            <span> </span>
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Identificación:</span>
-                                            <textbox maxlength="10" cols="13"  readonly="true" id="cedulama"  />
-                                        </row>
-
-                                        <row>
-                           
-                                            <span style="float:right"> Nombres:</span>
-                                            <textbox id="nombresma"  maxlength="60" cols="40" readonly="true"   />
-                                        </row>
-
-                                        <row>
-                           
-                                            <span style="float:right"> Apellidos:</span>
-                                            <textbox id="apellidosma"  maxlength="60" cols="40" readonly="true"  />
-                                        </row>
-
-                                        <row>
-                         
-                                            <span style="float:right"> Ocupación:</span>
-                                            <textbox id="ocupacionma" maxlength="100" cols="40"  readonly="true"    />
-                                        </row>
-                                        <row>
-                          
-
-                                            <span style="float:right"> Profesión:</span>
-                                            <textbox id="profesionma" maxlength="100" cols="40"  readonly="true"    />
-
-                                        </row>
-                                        <row>
-                              
-                                            <span style="float:right"> Dirección:</span>
-                                            <span>
-                                                <textbox id="direccionma" maxlength="100" cols="40"  readonly="true"    />
-                                                <button label="..." onClick="direccionma.value = direccion.value" />
-                                            </span>
-                                        </row>
-                                        <row>
-                                
-                                            <span style="float:right"> Teléfono:</span>
-                                            <span>
-                                                <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
-                                                <button label="..."  onClick="telefonoma.value = telefono.value" />
-                                            </span>
-                                        </row>
-                                        <row>
-                                 
-                                            <span style="float:right"> Email:</span>
-                                            <textbox id="emailma" maxlength="100" cols="40"  readonly="true"    />
-                                        </row>
-
-                                    </rows>
-                                </grid>
-
-                            </panelchildren>
-                        </panel>
-           
+                    
                     </portalchildren>
                 </portallayout>
 
