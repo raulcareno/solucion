@@ -687,6 +687,118 @@ void estado(Boolean estado,Boolean modificar){
             adm.guardar(estudent);
             estuNuevo = true;
          }
+         if(!(cod11.value).equals(0)){
+                Retiran ret = new Retiran(cod11.value);
+                ret.setApellidos(nom11.value);
+                ret.setParentesco(par11.value);
+                ret.setCedula(ci11.value);
+                ret.setTipo("R");
+                ret.setEstudiante(estudent);
+                adm.actualizar(ret);
+         }else{
+                Retiran ret = new Retiran(adm.getNuevaClave("Retiran","codigo"));
+                ret.setApellidos(nom11.value);
+                ret.setParentesco(par11.value);
+                ret.setCedula(ci11.value);
+                ret.setTipo("R");
+                ret.setEstudiante(estudent);
+                adm.guardar(ret);
+         }
+         
+         if(!(cod22.value).equals(0)){
+                Retiran ret = new Retiran(cod22.value);
+                ret.setApellidos(nom22.value);
+                ret.setParentesco(par22.value);
+                ret.setCedula(ci22.value);
+                ret.setTipo("R");
+                ret.setEstudiante(estudent);
+                adm.actualizar(ret);
+         }else{
+                Retiran ret = new Retiran(adm.getNuevaClave("Retiran","codigo"));
+                ret.setApellidos(nom22.value);
+                ret.setParentesco(par22.value);
+                ret.setCedula(ci22.value);
+                ret.setTipo("R");
+                ret.setEstudiante(estudent);
+                adm.guardar(ret);
+         }
+         
+         if(!(cod33.value).equals(0)){
+                Retiran ret = new Retiran(cod33.value);
+                ret.setApellidos(nom33.value);
+                ret.setParentesco(par33.value);
+                ret.setCedula(ci33.value);
+                ret.setTipo("R");
+                ret.setEstudiante(estudent);
+                adm.actualizar(ret);
+         }else{
+                Retiran ret = new Retiran(adm.getNuevaClave("Retiran","codigo"));
+                ret.setApellidos(nom33.value);
+                ret.setParentesco(par33.value);
+                ret.setCedula(ci33.value);
+                ret.setTipo("R");
+                ret.setEstudiante(estudent);
+                adm.guardar(ret);
+         }
+         
+         if(!(cod1.value).equals(0)){
+                Retiran ret = new Retiran(cod1.value);
+                ret.setApellidos(nom1.value);
+                ret.setParentesco(par1.value);
+                ret.setTelefono1(cel1.value);
+                ret.setTelefono2(con1.value);
+                ret.setEstudiante(estudent);
+                ret.setTipo("E");
+                adm.actualizar(ret);
+         }else{
+                Retiran ret = new Retiran(adm.getNuevaClave("Retiran","codigo"));
+                ret.setApellidos(nom1.value);
+                ret.setParentesco(par1.value);
+                ret.setTelefono1(cel1.value);
+                ret.setTelefono2(con1.value);
+                ret.setTipo("E");
+                ret.setEstudiante(estudent);
+                adm.guardar(ret);
+         }
+         if(!(cod2.value).equals(0)){
+                Retiran ret = new Retiran(cod2.value);
+                ret.setApellidos(nom2.value);
+                ret.setParentesco(par2.value);
+                ret.setTelefono1(cel2.value);
+                ret.setTelefono2(con2.value);
+                ret.setTipo("E");
+                ret.setEstudiante(estudent);
+                adm.actualizar(ret);
+         }else{
+                Retiran ret = new Retiran(adm.getNuevaClave("Retiran","codigo"));
+                ret.setApellidos(nom2.value);
+                ret.setParentesco(par2.value);
+                ret.setTelefono1(cel2.value);
+                ret.setTelefono2(con2.value);
+                ret.setTipo("E");
+                ret.setEstudiante(estudent);
+                adm.guardar(ret);
+         }
+         if(!(cod3.value).equals(0)){
+                Retiran ret = new Retiran(cod3.value);
+                ret.setApellidos(nom3.value);
+                ret.setParentesco(par3.value);
+                ret.setTelefono1(cel3.value);
+                ret.setTelefono2(con3.value);
+                ret.setTipo("E");
+                ret.setEstudiante(estudent);
+                adm.actualizar(ret);
+         }else{
+                Retiran ret = new Retiran(adm.getNuevaClave("Retiran","codigo"));
+                ret.setApellidos(nom3.value);
+                ret.setParentesco(par3.value);
+                ret.setTelefono1(cel3.value);
+                ret.setTelefono2(con3.value);
+                ret.setTipo("E");
+                ret.setEstudiante(estudent);
+                adm.guardar(ret);
+         }
+          
 
 
 //GUARDAR MATRICULA
@@ -826,6 +938,12 @@ ParametrosGlobales para = new ParametrosGlobales();
         llenar(new Estudiantes(0));
         estado(false,false);
         llenarConsumidor();
+        cod1.value = 0;
+        cod2.value = 0;
+        cod3.value = 0;
+        cod11.value = 0;
+        cod22.value = 0;
+        cod33.value = 0; 
         }catch(Exception e){
         alert(""+e);
         }
@@ -884,12 +1002,73 @@ valor = valor.substring(ini+1, fin);
                       estudent = object;
                  }
             llenar(estudent);
+            
+            List retiranList = adm.query("Select o from Retiran as o where o.estudiante.codigoest = '"+valor+"'  and o.tipo = 'R' ");
+            if(retiranList.size()>0){
+                int i=0;
+                for(Iterator it = retiranList.iterator(); it.hasNext();) {
+                      Retiran es = (Retiran)it.next();
+                      if(i==0){
+                            cod11.value = es.getEstudiante().getCodigoest(); 
+                            nom11.value =es.getApellidos();
+                            par11.value =es.getParentesco(); 
+                            ci11.value=es.getCedula();
+                      }else if(i==1){
+                            cod22.value =  es.getEstudiante().getCodigoest(); 
+                            nom22.value =es.getApellidos(); 
+                            par22.value =es.getParentesco(); 
+                            ci22.value=es.getCedula();       
+                      }else if(i==2){
+                            cod33.value =  es.getEstudiante().getCodigoest(); 
+                            nom33.value =es.getApellidos(); 
+                            par33.value = es.getParentesco(); 
+                            ci33.value=es.getCedula();       
+                      }
+                      i++;
+                 }
+            }else{
+               cod11.value = 0; nom11.value =""; par11.value = ""; ci11.value="";
+               cod22.value = 0; nom22.value =""; par22.value = ""; ci22.value="";
+               cod33.value = 0; nom33.value =""; par33.value = ""; ci33.value="";
+             }
+             
+             List emergenciaList = adm.query("Select o from Retiran as o where o.estudiante.codigoest = '"+valor+"'  and o.tipo = 'E' ");
+            if(emergenciaList.size()>0){
+                int i=0;
+                for(Iterator it = emergenciaList.iterator(); it.hasNext();) {
+                      Retiran es = (Retiran)it.next();
+                      if(i==0){
+                            cod1.value =es.getEstudiante().getCodigoest(); 
+                            nom1.value =es.getApellidos();
+                            par1.value =es.getParentesco(); 
+                            cel1.value=es.getTelefono1();
+                            con1.value=es.getTelefono2();
+                      }else if(i==1){
+                            cod2.value =  es.getEstudiante().getCodigoest(); 
+                            nom2.value =es.getApellidos(); 
+                            par2.value =es.getParentesco(); 
+                            cel2.value=es.getTelefono1();
+                            con2.value=es.getTelefono2();
+                      }else if(i==2){
+                            cod3.value =  es.getEstudiante().getCodigoest(); 
+                            nom3.value =es.getApellidos(); 
+                            par3.value = es.getParentesco(); 
+                            cel3.value=es.getTelefono1();
+                            con3.value=es.getTelefono2();
+                      }
+                      i++;
+                 }
+            }else{
+                 cod1.value = 0; nom1.value =""; par1.value = ""; cel1.value = ""; con1.value="";
+                cod2.value = 0;nom2.value =""; par2.value = ""; cel2.value = ""; con2.value="";
+                cod3.value = 0;nom3.value =""; par3.value = ""; cel3.value = ""; con3.value="";
+             }
             modificar.disabled=false;
             acta.disabled = false;
-           certificado.disabled = false;
-           certificado2.disabled = false;
-           claveprint.disabled = false;
-           eliminar.disabled=false;
+            certificado.disabled = false;
+            certificado2.disabled = false;
+            claveprint.disabled = false;
+            eliminar.disabled=false;
             }else{
                 estudent = new Estudiantes(0);
             }
@@ -1774,73 +1953,81 @@ public void quitarFila(String codigoBuscar){
                                     
                                 </row>
                                 <row spans="2">
-                                     <hbox>
-                                                <grid  width="100%" id="opciones2">
-                                                    <auxhead>
-                                                        <auxheader label="PERSONAS AUTORIZADAS A RETIRAR AL ESTUDIANTE: " colspan="5"/>
+                                    <hbox>
+                                        <grid  width="100%" id="opciones2">
+                                            <auxhead>
+                                                <auxheader label="PERSONAS AUTORIZADAS A RETIRAR AL ESTUDIANTE: " colspan="5"/>
                                              
-                                                    </auxhead>
-                                                    <columns sizable="true">
-                                                        <column label="NOMBRES" width="120px" />
-                                                        <column label="PARENTESCO" width="50px"  />
-                                                        <column label="C.I."  width="30px" />
+                                            </auxhead>
+                                            <columns sizable="true">
+                                                <column label="codigo" visible="false"/>
+                                                <column label="NOMBRES" width="120px" />
+                                                <column label="PARENTESCO" width="50px"  />
+                                                <column label="C.I."  width="30px" />
   
-                                                    </columns>
-                                                    <rows id="filas2">
-                                                        <row>
-                                                            <textbox id="nom11" cols="30" value=""/>
-                                                            <textbox id="par11" value=""/>
-                                                            <textbox id="ci11" cols="10" value=""/>
-                                                        </row>
-                                                        <row>
-                                                            <textbox id="nom22" cols="30"  value=""/>
-                                                            <textbox id="par22"  value=""/>
-                                                            <textbox id="ci22" cols="10" value=""/>
-                                                        </row>
-                                                        <row>
-                                                            <textbox id="nom33" cols="30"  value=""/>
-                                                            <textbox id="par33"  value=""/>
-                                                            <textbox id="ci33" cols="10"  value=""/>
-                                                        </row>
+                                            </columns>
+                                            <rows id="filas2">
+                                                <row>
+                                                    <intbox id="cod11" value="0"/>
+                                                    <textbox id="nom11" cols="30" value=""/>
+                                                    <textbox id="par11" value=""/>
+                                                    <textbox id="ci11" cols="10" value=""/>
+                                                </row>
+                                                <row>
+                                                    <intbox id="cod22" value="0"/>
+                                                    <textbox id="nom22" cols="30"  value=""/>
+                                                    <textbox id="par22"  value=""/>
+                                                    <textbox id="ci22" cols="10" value=""/>
+                                                </row>
+                                                <row>
+                                                    <intbox id="cod33" value="0"/>
+                                                    <textbox id="nom33" cols="30"  value=""/>
+                                                    <textbox id="par33"  value=""/>
+                                                    <textbox id="ci33" cols="10"  value=""/>
+                                                </row>
                                             
-                                                    </rows>
-                                                </grid>
+                                            </rows>
+                                        </grid>
                                                   
-                                                <grid  width="100%" id="opciones">
-                                                    <auxhead>
-                                                        <auxheader label="EN CASO DE EMERGENCIA: " colspan="4"/>
+                                        <grid  width="100%" id="opciones">
+                                            <auxhead>
+                                                <auxheader label="EN CASO DE EMERGENCIA: " colspan="4"/>
                                              
-                                                    </auxhead>
-                                                    <columns sizable="true">
-                                                        <column style="font-weight:bold" label="NOMBRES" width="120px" />
-                                                        <column label="PARENTESCO" width="50px"  />
-                                                        <column label="CELULAR"  width="30px" />
-                                                        <column label="CONVENCIONAL" width="30px"  />
-                                                    </columns>
-                                                    <rows>
-                                                        <row>
-                                                            <textbox id="nom1" cols="30" value=""/>
-                                                            <textbox id="par1" value=""/>
-                                                            <textbox id="cel1" cols="10"  value=""/>
-                                                            <textbox id="con1" cols="10"  value=""/>
-                                                        </row>
-                                                        <row>
-                                                            <textbox id="nom2" cols="30"  value=""/>
-                                                            <textbox id="par2"    value=""/>
-                                                            <textbox id="cel2" cols="10"   value=""/>
-                                                            <textbox id="con2" cols="10"   value=""/>
-                                                        </row>
-                                                        <row>
-                                                            <textbox id="nom3" cols="30"  value=""/>
-                                                            <textbox id="par3"  value=""/>
-                                                            <textbox id="cel3" cols="10"   value=""/>
-                                                            <textbox id="con3" cols="10"   value=""/>
-                                                        </row>
+                                            </auxhead>
+                                            <columns sizable="true">
+                                                <column visible="false" label="codigo" />
+                                                <column style="font-weight:bold" label="NOMBRES" width="120px" />
+                                                <column label="PARENTESCO" width="50px"  />
+                                                <column label="CELULAR"  width="30px" />
+                                                <column label="CONVENCIONAL" width="30px"  />
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <intbox id="cod1" value="0"/>
+                                                    <textbox id="nom1" cols="30" value=""/>
+                                                    <textbox id="par1" value=""/>
+                                                    <textbox id="cel1" cols="10"  value=""/>
+                                                    <textbox id="con1" cols="10"  value=""/>
+                                                </row>
+                                                <row>
+                                                    <intbox id="cod2" value="0"/>
+                                                    <textbox id="nom2" cols="30"  value=""/>
+                                                    <textbox id="par2"    value=""/>
+                                                    <textbox id="cel2" cols="10"   value=""/>
+                                                    <textbox id="con2" cols="10"   value=""/>
+                                                </row>
+                                                <row>
+                                                    <intbox id="cod3" value="0"/>
+                                                    <textbox id="nom3" cols="30"  value=""/>
+                                                    <textbox id="par3"  value=""/>
+                                                    <textbox id="cel3" cols="10"   value=""/>
+                                                    <textbox id="con3" cols="10"   value=""/>
+                                                </row>
                                             
-                                                    </rows>
-                                                </grid>
+                                            </rows>
+                                        </grid>
                                              
-                               </hbox>
+                                    </hbox>
                                 </row>
                                  
                             </rows>
