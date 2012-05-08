@@ -1052,10 +1052,74 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             }
         }
 
+    anadirRetiro(){
+                try{
+                    Row row = new Row();
+                      
+                      //CARGO LAS SERIES COMO ATRIBUTO
+                       
+                    
+                           Doublebox dou = new Doublebox(0);
+                            dou.setStyle("float:right;text-align:right");
+                            dou.setValue(vu.value);
+                            Intbox intb = new Intbox(cantidad.value);
+                            intb.setCols(3);
+                            intb.setReadonly(true);
+                             intb.setStyle("float:right;text-align:right");
+                            Label prod = new Label(productod.value);
+                            row.appendChild(intb);
+                            row.appendChild(prod);
+                            row.appendChild(dou);
+                            
+                            Button aButton = null;
+                            aButton = new Button("quitar");
+                            aButton.setImage("/images/quitar.gif");
+                            aButton.setHeight("5px");
+                            aButton.setId("id"+idproducto.value);
+                            aButton.addEventListener("onClick", new EventListener() {
+                                public void onEvent(Event event) throws Exception {
+                                     int valor0 = Messagebox.show("Seguro que desea quitar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                     seriespanel.visible = false;
+                                     if(valor0 == 16){
+                                        quitarFila(aButton.getId());
+                                     }
+                                        
+                                }
+                            });
+                            row.appendChild(aButton);
+                            
+                            row.setValue(new Equipos(idproducto.value)); 
+                    filas.appendChild(row);
+                    }catch(Exception e){
+                        alert("YA SE HA AGREGADO ESTE PRODUCTO");
+                    }
+                        vu.value=null;
+                        cantidad.value= null;
+                        productod.value=null;
+                        idproducto.value = null;
+                        cantidad.focus();
+  
+}
 
+public void quitarFila(String codigoBuscar){
+                 Rows filas2 =opciones.getRows();
+                List listadoProductos = filas2.getChildren();
+                    for (int i = 0; i <= listadoProductos.size()-1; i++) {
+                       Row object = (Row) listadoProductos.get(i);
+                       Equipos nuevo = ((Equipos)object.getValue());
+                       String codigoA = "id"+nuevo.getCodigo();
+                       if(codigoA.equals(codigoBuscar)){
+                            opciones.getRows().removeChild(object);
+                            break;
+                       }
+                    }
+
+}
+ 
 
   ]]>
     </zscript>
+  
     <tabbox width="100%">
         <tabs>
             <tab id="registro" label="Datos del Estudiante" />
@@ -1398,8 +1462,8 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     </portalchildren>    
                     <portalchildren style="padding: 5px" width="50%">
                         <panel collapsible="true"   
-                                    framable="true"  title="DATOS DEL PADRE"
-                                    border="normal" >
+                               framable="true"  title="DATOS DEL PADRE"
+                               border="normal" >
                             <panelchildren>
                                 <grid sclass="MyGridRowHeight">
                                     <rows>
@@ -1446,7 +1510,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                 <textbox id="telefonopa" maxlength="100" cols="13"  readonly="true"  />
                                                 <button label="..." onClick="telefonopa.value = telefono.value" />
                                                 <span > Email:</span>
-                                            <textbox id="emailpa" maxlength="100" cols="35"  readonly="true"    />
+                                                <textbox id="emailpa" maxlength="100" cols="35"  readonly="true"    />
                                             </span>
                                         </row>
                                        
@@ -1482,10 +1546,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                          
                                             <span style="float:right"> Ocupación:</span>
                                             <span>
-                                            <textbox id="ocupacionma" maxlength="100" cols="20"  readonly="true"    />
+                                                <textbox id="ocupacionma" maxlength="100" cols="20"  readonly="true"    />
                                             
                                                 <span> Profesión:</span>
-                                            <textbox id="profesionma" maxlength="100" cols="20"  readonly="true"    />
+                                                <textbox id="profesionma" maxlength="100" cols="20"  readonly="true"    />
                                             </span>
                                         </row>
                                         <row>
@@ -1503,7 +1567,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                 <textbox id="telefonoma" maxlength="50" cols="13"  readonly="true"  />
                                                 <button label="..."  onClick="telefonoma.value = telefono.value" />
                                                 <span > Email:</span>
-                                            <textbox id="emailma" maxlength="100" cols="35"  readonly="true"    />
+                                                <textbox id="emailma" maxlength="100" cols="35"  readonly="true"    />
                                             </span>
                                         </row>
                                      
@@ -1706,6 +1770,79 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                                     </span>
                                 </row>
+                                <row spans="2">
+                                    
+                                </row>
+                                <row spans="2">
+                                     <hbox>
+                                                <grid  width="100%" id="opciones2">
+                                                    <auxhead>
+                                                        <auxheader label="PERSONAS AUTORIZADAS A RETIRAR AL ESTUDIANTE: " colspan="5"/>
+                                             
+                                                    </auxhead>
+                                                    <columns sizable="true">
+                                                        <column label="NOMBRES" width="120px" />
+                                                        <column label="PARENTESCO" width="50px"  />
+                                                        <column label="C.I."  width="30px" />
+  
+                                                    </columns>
+                                                    <rows id="filas2">
+                                                        <row>
+                                                            <textbox id="nom11" cols="30" value=""/>
+                                                            <textbox id="par11" value=""/>
+                                                            <textbox id="ci11" cols="10" value=""/>
+                                                        </row>
+                                                        <row>
+                                                            <textbox id="nom22" cols="30"  value=""/>
+                                                            <textbox id="par22"  value=""/>
+                                                            <textbox id="ci22" cols="10" value=""/>
+                                                        </row>
+                                                        <row>
+                                                            <textbox id="nom33" cols="30"  value=""/>
+                                                            <textbox id="par33"  value=""/>
+                                                            <textbox id="ci33" cols="10"  value=""/>
+                                                        </row>
+                                            
+                                                    </rows>
+                                                </grid>
+                                                  
+                                                <grid  width="100%" id="opciones">
+                                                    <auxhead>
+                                                        <auxheader label="EN CASO DE EMERGENCIA: " colspan="4"/>
+                                             
+                                                    </auxhead>
+                                                    <columns sizable="true">
+                                                        <column style="font-weight:bold" label="NOMBRES" width="120px" />
+                                                        <column label="PARENTESCO" width="50px"  />
+                                                        <column label="CELULAR"  width="30px" />
+                                                        <column label="CONVENCIONAL" width="30px"  />
+                                                    </columns>
+                                                    <rows>
+                                                        <row>
+                                                            <textbox id="nom1" cols="30" value=""/>
+                                                            <textbox id="par1" value=""/>
+                                                            <textbox id="cel1" cols="10"  value=""/>
+                                                            <textbox id="con1" cols="10"  value=""/>
+                                                        </row>
+                                                        <row>
+                                                            <textbox id="nom2" cols="30"  value=""/>
+                                                            <textbox id="par2"    value=""/>
+                                                            <textbox id="cel2" cols="10"   value=""/>
+                                                            <textbox id="con2" cols="10"   value=""/>
+                                                        </row>
+                                                        <row>
+                                                            <textbox id="nom3" cols="30"  value=""/>
+                                                            <textbox id="par3"  value=""/>
+                                                            <textbox id="cel3" cols="10"   value=""/>
+                                                            <textbox id="con3" cols="10"   value=""/>
+                                                        </row>
+                                            
+                                                    </rows>
+                                                </grid>
+                                             
+                               </hbox>
+                                </row>
+                                 
                             </rows>
 
                         </grid>
