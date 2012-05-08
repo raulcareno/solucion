@@ -760,14 +760,14 @@ void estado(Boolean estado,Boolean modificar){
                 ret.setEstudiante(estudent);
                 adm.guardar(ret);
          }
-         if(!(cod2.value).equals(0)){
+           if(!(cod2.value).equals(0)){
                 Retiran ret = new Retiran(cod2.value);
                 ret.setApellidos(nom2.value);
                 ret.setParentesco(par2.value);
                 ret.setTelefono1(cel2.value);
                 ret.setTelefono2(con2.value);
-                ret.setTipo("E");
                 ret.setEstudiante(estudent);
+                ret.setTipo("E");
                 adm.actualizar(ret);
          }else{
                 Retiran ret = new Retiran(adm.getNuevaClave("Retiran","codigo"));
@@ -892,12 +892,18 @@ void estado(Boolean estado,Boolean modificar){
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         guardar.disabled=true;
         agregar.disabled=false;
+        guardar3.disabled=true;
+        agregar3.disabled=false;
         estado(true,false);
         //representante0.setTipoidentificacion("CF");
         acta.disabled = false;
         certificado.disabled = false;
         certificado2.disabled = false;
         claveprint.disabled = false;
+        acta3.disabled = false;
+        certificado3.disabled = false;
+        certificado23.disabled = false;
+        claveprint3.disabled = false;
         //llenar(new Estudiantes(0));
             combo.value="";
             permiso.auditar("Matriculas","Guardar",""+matricula.getCodigomat()+" "+matricula.getEstudiante().getApellido());
@@ -1009,17 +1015,17 @@ valor = valor.substring(ini+1, fin);
                 for(Iterator it = retiranList.iterator(); it.hasNext();) {
                       Retiran es = (Retiran)it.next();
                       if(i==0){
-                            cod11.value = es.getEstudiante().getCodigoest(); 
+                            cod11.value = es.getCodigo(); 
                             nom11.value =es.getApellidos();
                             par11.value =es.getParentesco(); 
                             ci11.value=es.getCedula();
                       }else if(i==1){
-                            cod22.value =  es.getEstudiante().getCodigoest(); 
+                            cod22.value =  es.getCodigo();  
                             nom22.value =es.getApellidos(); 
                             par22.value =es.getParentesco(); 
                             ci22.value=es.getCedula();       
                       }else if(i==2){
-                            cod33.value =  es.getEstudiante().getCodigoest(); 
+                            cod33.value =  es.getCodigo(); 
                             nom33.value =es.getApellidos(); 
                             par33.value = es.getParentesco(); 
                             ci33.value=es.getCedula();       
@@ -1038,19 +1044,19 @@ valor = valor.substring(ini+1, fin);
                 for(Iterator it = emergenciaList.iterator(); it.hasNext();) {
                       Retiran es = (Retiran)it.next();
                       if(i==0){
-                            cod1.value =es.getEstudiante().getCodigoest(); 
+                            cod1.value =es.getCodigo(); 
                             nom1.value =es.getApellidos();
                             par1.value =es.getParentesco(); 
                             cel1.value=es.getTelefono1();
                             con1.value=es.getTelefono2();
                       }else if(i==1){
-                            cod2.value =  es.getEstudiante().getCodigoest(); 
+                            cod2.value =  es.getCodigo();  
                             nom2.value =es.getApellidos(); 
                             par2.value =es.getParentesco(); 
                             cel2.value=es.getTelefono1();
                             con2.value=es.getTelefono2();
                       }else if(i==2){
-                            cod3.value =  es.getEstudiante().getCodigoest(); 
+                            cod3.value =  es.getCodigo(); 
                             nom3.value =es.getApellidos(); 
                             par3.value = es.getParentesco(); 
                             cel3.value=es.getTelefono1();
@@ -1069,6 +1075,12 @@ valor = valor.substring(ini+1, fin);
             certificado2.disabled = false;
             claveprint.disabled = false;
             eliminar.disabled=false;
+             modificar3.disabled=false;
+            acta3.disabled = false;
+            certificado3.disabled = false;
+            certificado23.disabled = false;
+            claveprint3.disabled = false;
+            eliminar3.disabled=false;
             }else{
                 estudent = new Estudiantes(0);
             }
@@ -1298,7 +1310,20 @@ public void quitarFila(String codigoBuscar){
 
   ]]>
     </zscript>
-  
+    <vbox>
+        <hbox>
+            <button image="/images/guardar.gif" id="guardar3" label="Guardar"  disabled="true"  onClick="guardar();"/>
+            <button  image="/images/nuevo.gif" id="agregar3" label="Agregar" onClick='cargandoFoto = false;combo.value="";nuevo();'  />
+            <button  image="/images/editar.gif" id="modificar3"  label="Modificar" disabled="true" onClick="modificar()"/>
+            <button  image="/images/imprimir.gif" id="acta3"  label="Acta" disabled="true"  onClick='showReport("AM")'/>
+            <button  image="/images/imprimir.gif" id="certificado3"  label="Certificado" disabled="true"  onClick='showReport("CM")' />
+            <button  image="/images/imprimir.gif" id="certificado23"  label="Certificado2" disabled="true"  onClick='showReport("CM2")'/>
+            <button  image="/images/imprimir.gif" id="claveprint3"  label="Clave" disabled="true"  onClick='showReport("CL")' />
+            <button  image="/images/imprimir.gif" id="carnetprint3"  label="Carnét" disabled="false"  onClick='showReport("CAR")' />
+            <button  image="/images/imprimir.gif" id="carnetprintm3"  label="Carnét M." disabled="false"  onClick='showReport("CARM")' />
+            <button  image="/images/eliminar.gif" id="eliminar3"  label="Eliminar(Matricula)" disabled="true"  onClick="eliminar();"/>
+        </hbox>
+    </vbox>
     <tabbox width="100%">
         <tabs>
             <tab id="registro" label="Datos del Estudiante" />
@@ -1419,7 +1444,7 @@ public void quitarFila(String codigoBuscar){
                                                         </row>
                                                         <row>
                                                             <span style="border:1px">
-                                                                <image border="1" height="110px"  id="foto0"/>
+                                                                <image border="1" height="100px"  id="foto0"/>
                                                                     <!--vbox width="50px" height="125px" style="border:1px" id="miimagen"/-->
                                                             </span>
                                                         </row>
@@ -1555,11 +1580,11 @@ public void quitarFila(String codigoBuscar){
                                         </row>
                                         <row>
                                             <span style="float:right;">
-                                                <label value="Fecha Matricula(*)" style="font-weight: bold;"/>
+                                                <label value="Fec.Matricula(*)" style="font-weight: bold;"/>
                                             </span>
                                             <span>
                                                 <datebox id="fechamatricula"  readonly="true"  />
-                                                <label value="Fecha Retiro(*)" style="font-weight: bold;"/>
+                                                <label value="Fec.Retiro(*)" style="font-weight: bold;"/>
                                                 <datebox id="fecharetiro"  readonly="true"  />
                                           
                                                                              
@@ -1592,52 +1617,7 @@ public void quitarFila(String codigoBuscar){
 
                             </panelchildren>
                         </panel>
-                        <panel collapsible="true" framable="true"  title="FACTURAR A" border="normal" >
-                            <panelchildren>
-                                <grid sclass="MyGridRowHeight">
-                                    <rows>
-                                        <row>
-                                            <span style="color:blue;float:right" >COPIAR DE: </span>
-                                            <span>
-                                                <button id="padrec" label="Padre"  disabled="true" onClick="copiarp();"/>
-                                                <button id="madrec" label="Madre"  disabled="true"  onClick="copiarm();"/>
-                                                <button id="representantec" label="Representante" disabled="true"  onClick="copiarr();"/>
-                                            </span>
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Tipo:</span>
-                                            <listbox mold="select" onSelect="llenarConsumidor();" disabled="true" id="tipofac" width="150px">
-                                                <listitem label="CEDULA" value="C">
-                                                </listitem>
-                                                <listitem label="RUC" value="R">
-                                                </listitem>
-                                                <listitem label="PASAPORTE" value="P">
-                                                </listitem>
-                                            </listbox>
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Identificación:</span>
-                                            <textbox maxlength="13" cols="13"  readonly="true" id="cedulafac"  />
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Nombre Factura:</span>
-                                            <textbox id="nombresfac"  maxlength="100" cols="40" readonly="true"   />
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Dirección:</span>
-                                            <textbox id="direccionfac" maxlength="100" cols="40"  readonly="true"    />
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Teléfono:</span>
-                                            <textbox id="telefonofac" maxlength="30" cols="13"  readonly="true"  /> 
-                                        </row>
-                                        <row>
-                                    
-                                        </row>
-                                    </rows>
-                                </grid>
-                            </panelchildren>
-                        </panel>
+                     
                     </portalchildren>    
                     <portalchildren style="padding: 5px" width="50%">
                         <panel collapsible="true"   
@@ -1660,12 +1640,13 @@ public void quitarFila(String codigoBuscar){
                                         </row>
                                         <row>
                                             <span style="float:right"> Nombres:</span>
-                                            <textbox id="nombrespa"  maxlength="60" cols="40" readonly="true"   />
-                                            <intbox maxlength="14" cols="5"  readonly = "true"   visible="false"  id="codigore"  />
-                                        </row>
-                                        <row>
-                                            <span style="float:right"> Apellidos:</span>
-                                            <textbox id="apellidospa"  maxlength="60" cols="40" readonly="true"  />
+                                            <span>
+                                                <textbox id="nombrespa"  maxlength="60" cols="20" readonly="true"   />
+                                                <intbox maxlength="14" cols="5"  readonly = "true"   visible="false"  id="codigore"  />
+                                        
+                                                <span > Apellidos:</span>
+                                                <textbox id="apellidospa"  maxlength="60" cols="20" readonly="true"  />
+                                            </span>
                                         </row>
                                         <row>
                                             <span style="float:right"> Ocupación:</span>
@@ -1712,13 +1693,13 @@ public void quitarFila(String codigoBuscar){
                                         <row>
                            
                                             <span style="float:right"> Nombres:</span>
-                                            <textbox id="nombresma"  maxlength="60" cols="40" readonly="true"   />
-                                        </row>
-
-                                        <row>
-                           
-                                            <span style="float:right"> Apellidos:</span>
-                                            <textbox id="apellidosma"  maxlength="60" cols="40" readonly="true"  />
+                                            <span>
+                                            
+                                                <textbox id="nombresma"  maxlength="60" cols="20" readonly="true"   />
+                                                <span> Apellidos:</span>
+                                                <textbox id="apellidosma"  maxlength="60" cols="20" readonly="true"  />
+                                                
+                                            </span>
                                         </row>
 
                                         <row>
@@ -1779,15 +1760,14 @@ public void quitarFila(String codigoBuscar){
                                             <span style="float:right;">
                                                 <label value="Nombres(*)" style="font-weight: bold;"/>
                                             </span>
-                                            <textbox id="nombresre"  maxlength="60" cols="40" readonly="true"   />
-                                    
-                                        </row>
-                                   
-                                        <row>
-                                            <span style="float:right;">
+                                            <span >
+                                                <textbox id="nombresre"  maxlength="60" cols="20" readonly="true"   />
+                                     
+                                            
                                                 <label value="Apellidos(*)" style="font-weight: bold;"/>
+                                                <textbox id="apellidosre"  maxlength="60" cols="20" readonly="true"  />
                                             </span>
-                                            <textbox id="apellidosre"  maxlength="60" cols="40" readonly="true"  />
+                                            
                                         </row>
                                 
                                         <row>
@@ -1795,14 +1775,13 @@ public void quitarFila(String codigoBuscar){
                                                 <label value="Dirección(*)" style="font-weight: bold;"/>
                                             </span>
                                             <span>
-                                                <textbox id="direccionre" maxlength="100" cols="40"  readonly="true"    />
+                                                <textbox id="direccionre" maxlength="100" cols="30"  readonly="true"    />
+                                                 <span > Teléfono:</span>
+                                            <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
                                 
                                             </span>
                                         </row>
-                                        <row>
-                                            <span style="float:right"> Teléfono:</span>
-                                            <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
-                                        </row>
+                                        
                                         <row>
                                             <span style="float:right"> Email:</span>
                                             <textbox id="emailre" maxlength="100" cols="40"  readonly="true"    />
@@ -1833,6 +1812,52 @@ public void quitarFila(String codigoBuscar){
                                 </grid>
                             </panelchildren>
                         </panel>
+                           <panel collapsible="true" framable="true"  title="FACTURAR A" border="normal" >
+                            <panelchildren>
+                                <grid sclass="MyGridRowHeight">
+                                    <rows>
+                                        <row>
+                                            <span style="color:blue;float:right" >COPIAR DE: </span>
+                                            <span>
+                                                <button id="padrec" label="Padre"  disabled="true" onClick="copiarp();"/>
+                                                <button id="madrec" label="Madre"  disabled="true"  onClick="copiarm();"/>
+                                                <button id="representantec" label="Representante" disabled="true"  onClick="copiarr();"/>
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Tipo:</span>
+                                            <span>
+                                                <listbox mold="select" onSelect="llenarConsumidor();" disabled="true" id="tipofac" width="150px">
+                                                    <listitem label="CEDULA" value="C">
+                                                    </listitem>
+                                                    <listitem label="RUC" value="R">
+                                                    </listitem>
+                                                    <listitem label="PASAPORTE" value="P">
+                                                    </listitem>
+                                                </listbox>
+                                         
+                                                Identificación:
+                                                <textbox maxlength="13" cols="13"  readonly="true" id="cedulafac"  />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Nombre Factura:</span>
+                                            <textbox id="nombresfac"  maxlength="100" cols="40" readonly="true"   />
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Dirección:</span>
+                                            <span>
+                                                <textbox id="direccionfac" maxlength="100" cols="30"  readonly="true"    />
+                                        
+                                                <span> Teléfono:</span>
+                                                <textbox id="telefonofac" maxlength="30" cols="13"  readonly="true"  /> 
+                                            </span>
+                                        </row>
+                                       
+                                    </rows>
+                                </grid>
+                            </panelchildren>
+                        </panel>
                     
                     </portalchildren>
                 </portallayout>
@@ -1844,7 +1869,7 @@ public void quitarFila(String codigoBuscar){
                     <panelchildren>
                         <grid sclass="MyGridRowHeight">
                             <rows>
-                                <row>
+                                <row visible="false">
                                     <span  style="float:right">
                                         YA SE MATRICULÓ:
                                     </span>
@@ -1859,7 +1884,7 @@ public void quitarFila(String codigoBuscar){
                                         <checkbox visible = "false"  id="suspenso"/>
                                     </span>
                                 </row>
-                                <row>
+                                <row style="background-color:#E2ECFE">
                                     <span style="float:right">Lugar de Nacimiento (*)
                                     </span>
                                     <span>
@@ -1879,21 +1904,25 @@ public void quitarFila(String codigoBuscar){
                                     <intbox id="hermanos"  />
                                                            
                                 </row>
-                                <row>
+                                 <row style="background-color:#E2ECFE">
                                     <span style="float:right">Lugar Ocupa  (*) :
                                     </span>
                                     <span>
                                         <spinner value="1" cols="2" id="lugar"  constraint="no negative,no zero,min 0 max 20" />
                                         Con quién vive (*):
-                                        <textbox id="vivecon"  />
+                                        
+                                        <combobox value="Padres"  id="vivecon" >
+                                            <comboitem label="Padres"/>
+                                            <comboitem label="Solo Madre"/>
+                                            <comboitem label="Solo Padre"/>
+                                            <comboitem label="Abuelos"/>
+                                            <comboitem label="Tíos"/>
+                                            <comboitem label="Encargado a Otros"/>
+                                            </combobox>
                                     </span>
                                 </row>
                                 <row>
-
  
-
-
-
                                     <span style="float:right">Ingresos:</span>
                                     <span>
                                         Padre:
@@ -1904,7 +1933,7 @@ public void quitarFila(String codigoBuscar){
                                         <intbox id="ingotros" cols="10"   />
                                     </span>
                                 </row>
-                                <row>
+                                 <row style="background-color:#E2ECFE">
                                     <span style="float:right">Tipo Vivienda
                                         <span style="color:blue"> (*)</span>:
                                     </span>
@@ -1936,7 +1965,7 @@ public void quitarFila(String codigoBuscar){
 
                                 </row>
                               
-                                <row>
+                              <row style="background-color:#E2ECFE">
 
                                     <span style="float:right;font-size:11px">
                                         <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
