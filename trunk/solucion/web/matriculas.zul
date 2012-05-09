@@ -481,6 +481,7 @@ void estado(Boolean estado,Boolean modificar){
    padrecr.disabled = estado;
    madrecr.disabled = estado;
    subirb.disabled = estado;
+   nuevoE.disabled = estado;
    limpiar.disabled = estado;
    representantec.disabled = estado;
    codigo.readonly = estado;
@@ -941,6 +942,7 @@ ParametrosGlobales para = new ParametrosGlobales();
     if(verificar("Agregar")){
        try{
         guardar.disabled=false;
+        guardar3.disabled=false;
         llenar(new Estudiantes(0));
         estado(false,false);
         llenarConsumidor();
@@ -1422,7 +1424,7 @@ public void quitarFila(String codigoBuscar){
                                                                         }
                                                                     </attribute>
                                                                 </button>
-                                                                <button label="Tomar " disabled="false" id="nuevoE" image="/images/subir.png" >
+                                                                <button label="Tomar " disabled="true" id="nuevoE" image="/images/subir.png" >
                                                                     <attribute name="onClick">{
                                                                         final Window win = (Window) Executions.createComponents("tomarFoto.zul", null, null);
                                                                         win.setMaximizable(true);
