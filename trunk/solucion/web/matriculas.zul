@@ -971,6 +971,7 @@ ParametrosGlobales para = new ParametrosGlobales();
 void modificar(){
   if(verificar("Modificar")){
        guardar.disabled=false;
+       guardar3.disabled=false;
         estado(false,false);
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -1009,7 +1010,7 @@ valor = valor.substring(ini+1, fin);
                  }
             llenar(estudent);
             
-            List retiranList = adm.query("Select o from Retiran as o where o.estudiante.codigoest = '"+valor+"'  and o.tipo = 'R' ");
+            List retiranList = adm.query("Select o from Retiran as o where o.estudiante.codigoest = '"+valor+"'  and o.tipo = 'R' order by o.codigo ");
             if(retiranList.size()>0){
                 int i=0;
                 for(Iterator it = retiranList.iterator(); it.hasNext();) {
@@ -1038,7 +1039,7 @@ valor = valor.substring(ini+1, fin);
                cod33.value = 0; nom33.value =""; par33.value = ""; ci33.value="";
              }
              
-             List emergenciaList = adm.query("Select o from Retiran as o where o.estudiante.codigoest = '"+valor+"'  and o.tipo = 'E' ");
+             List emergenciaList = adm.query("Select o from Retiran as o where o.estudiante.codigoest = '"+valor+"'  and o.tipo = 'E' order by o.codigo ");
             if(emergenciaList.size()>0){
                 int i=0;
                 for(Iterator it = emergenciaList.iterator(); it.hasNext();) {
@@ -1398,19 +1399,12 @@ public void quitarFila(String codigoBuscar){
 
                                     </rows>
                                 </grid>
-                            </panelchildren>
-                                                            
-                        </panel>
-                                
-    
-                        <panel   title="Foto" border="normal" framable="true"    collapsible="true" >
-                            <panelchildren>
 
                                 <grid>
                                     <rows>
                                         <row>
                                             <span>
-                                                <grid  sclass="MyGridRowHeight" >
+                                                <grid width="200px" height="100%" sclass="MyGridRowHeight" >
                                                     <rows>
                                                         <row>
                                                             <span  style="border:1px">
@@ -1444,7 +1438,7 @@ public void quitarFila(String codigoBuscar){
                                                         </row>
                                                         <row>
                                                             <span style="border:1px">
-                                                                <image border="1" height="100px"  id="foto0"/>
+                                                                <image border="1" height="117px"  id="foto0"/>
                                                                     <!--vbox width="50px" height="125px" style="border:1px" id="miimagen"/-->
                                                             </span>
                                                         </row>
@@ -1452,7 +1446,7 @@ public void quitarFila(String codigoBuscar){
                                                 </grid>
                                             </span>
                                             <span>
-                                                <grid  sclass="MyGridRowHeight" width="300px" height="220">
+                                                <grid  sclass="MyGridRowHeight" width="100%" height="100%">
                                                     <rows>
                                                         <row>
                                                             <span style="float:right;">
@@ -1776,8 +1770,8 @@ public void quitarFila(String codigoBuscar){
                                             </span>
                                             <span>
                                                 <textbox id="direccionre" maxlength="100" cols="30"  readonly="true"    />
-                                                 <span > Teléfono:</span>
-                                            <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
+                                                <span > Teléfono:</span>
+                                                <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
                                 
                                             </span>
                                         </row>
@@ -1812,7 +1806,7 @@ public void quitarFila(String codigoBuscar){
                                 </grid>
                             </panelchildren>
                         </panel>
-                           <panel collapsible="true" framable="true"  title="FACTURAR A" border="normal" >
+                        <panel collapsible="true" framable="true"  title="FACTURAR A" border="normal" >
                             <panelchildren>
                                 <grid sclass="MyGridRowHeight">
                                     <rows>
@@ -1904,7 +1898,7 @@ public void quitarFila(String codigoBuscar){
                                     <intbox id="hermanos"  />
                                                            
                                 </row>
-                                 <row style="background-color:#E2ECFE">
+                                <row style="background-color:#E2ECFE">
                                     <span style="float:right">Lugar Ocupa  (*) :
                                     </span>
                                     <span>
@@ -1918,7 +1912,7 @@ public void quitarFila(String codigoBuscar){
                                             <comboitem label="Abuelos"/>
                                             <comboitem label="Tíos"/>
                                             <comboitem label="Encargado a Otros"/>
-                                            </combobox>
+                                        </combobox>
                                     </span>
                                 </row>
                                 <row>
@@ -1933,7 +1927,7 @@ public void quitarFila(String codigoBuscar){
                                         <intbox id="ingotros" cols="10"   />
                                     </span>
                                 </row>
-                                 <row style="background-color:#E2ECFE">
+                                <row style="background-color:#E2ECFE">
                                     <span style="float:right">Tipo Vivienda
                                         <span style="color:blue"> (*)</span>:
                                     </span>
@@ -1965,7 +1959,7 @@ public void quitarFila(String codigoBuscar){
 
                                 </row>
                               
-                              <row style="background-color:#E2ECFE">
+                                <row style="background-color:#E2ECFE">
 
                                     <span style="float:right;font-size:11px">
                                         <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
