@@ -124,7 +124,7 @@
 				<crosstabHeaderCell>
 					<cellContents>
 						<staticText>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="89" height="83"/>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="89" height="75"/>
 							<textElement verticalAlignment="Middle">
 								<font isBold="true" pdfFontName="Helvetica-Bold"/>
 							</textElement>
@@ -176,7 +176,7 @@
 						<cellContents/>
 					</crosstabTotalColumnHeader>
 				</columnGroup>
-				<columnGroup name="rango" height="53">
+				<columnGroup name="rango" height="45">
 					<bucket>
 						<bucketExpression class="java.lang.String"><![CDATA[$F{rango}]]></bucketExpression>
 					</bucket>
@@ -186,9 +186,10 @@
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="26" height="53"/>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="26" height="45"/>
+								<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
 								<textElement verticalAlignment="Middle" rotation="Left">
-									<font isBold="true" pdfFontName="Helvetica-Bold"/>
+									<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{rango}]]></textFieldExpression>
 							</textField>
