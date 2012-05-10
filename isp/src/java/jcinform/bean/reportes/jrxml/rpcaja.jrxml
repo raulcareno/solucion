@@ -365,7 +365,7 @@
 				<textElement textAlignment="Center">
 					<font size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{factura}.substring(9)]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{factura}.length()>13 ?$F{factura}.substring(9):$F{factura})]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="92" y="0" width="48" height="13"/>
