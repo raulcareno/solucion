@@ -232,7 +232,7 @@ cantones.add(0,cantonTodos);
                         datasource = reportes.facturasCobradasContador(new Clientes(cclientev), desde.value, hasta.value,null);
                 }
                    
-                    report.setSrc(directorioReportes+"cpclientescontador.jasper");
+                    report.setSrc(directorioReportes+"cpclientescontador2.jasper");
             }else  if(tipo.equals("ARQUEO")){
                    datasource = reportes.reporteCaja(desde.value, hasta.value);
                     report.setSrc(directorioReportes+"rpcaja.jasper");

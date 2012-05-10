@@ -460,7 +460,7 @@ String estadoComp = " and o.estado = '" + estado + "' ";
                 System.out.println(""+clientes1);
             }
             String sql = "SELECT fa.codigo, fa.numero, fa.emision,  fa.total,  "
-                    + "(SUM(cx.debe) - SUM(cx.haber)) saldo,SUM(cx.haber) abonos, fa.subtotal, fa.valoriva"
+                    + "(SUM(cx.debe) - SUM(cx.haber)) saldo,SUM(cx.haber) abonos, fa.subtotal, fa.valoriva ,fa.contratos "
                     + " FROM detalle de, cxcobrar cx, factura  fa "
                     + " WHERE de.factura = fa.codigo "
                     + "AND fa.clientes  =  " + clientes1.getCodigo() + "  "
@@ -501,9 +501,12 @@ String estadoComp = " and o.estado = '" + estado + "' ";
                     pendi.setFactura("" + vec.get(1).toString().substring(9));
                     Date d = (Date) vec.get(2);
                     pendi.setFecha(d);
-
+                    pendi.setEmision(d);     
                     pendi.setTotal((BigDecimal) vec.get(3));
                     
+                    Contratos con = (Contratos) adm.buscarClave((Integer)vec.get(8),Contratos.class);
+                    pendi.setContrato(con.getContrato()+"");
+                    pendi.setDireccion(con.getDireccionf()); 
                     pendi.setSaldo((BigDecimal) vec.get(4));
                     pendi.setValorabonoefe((BigDecimal) vec.get(5));
                     
@@ -533,7 +536,9 @@ String estadoComp = " and o.estado = '" + estado + "' ";
             pendi.setCliente(clientes1);
             pendi.setFactura(facturaanulada.getNumero().substring(9));
             pendi.setFecha(facturaanulada.getFecha());
+            pendi.setEmision(facturaanulada.getFecha());
             pendi.setTotal(new BigDecimal(0));
+            pendi.setDireccion("");
             pendi.setSaldo(new BigDecimal(0));
             pendi.setSubtotal(new BigDecimal(0));
             pendi.setIva(new BigDecimal(0));

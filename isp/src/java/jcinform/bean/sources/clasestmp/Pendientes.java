@@ -19,7 +19,7 @@ public class Pendientes implements Comparable {
     }
     String factura;
     String telefono;
-    Date fecha, fechapago;
+    Date fecha, fechapago,emision;
     BigDecimal total, valorabonoefe, valorabonoche, valorabonotar, valorabonodep, valorabonodes, valorabonoban;
     BigDecimal enplanes,enequipos,eninstalaciones;
     BigDecimal valorabonoret, subtotal,iva;
@@ -314,6 +314,14 @@ public class Pendientes implements Comparable {
 
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public Date getEmision() {
+        return emision;
+    }
+
+    public void setEmision(Date emision) {
+        this.emision = emision;
     }
     
     
