@@ -514,6 +514,11 @@ void recalcular(){
                     datasource = noti.cuadrocalificacionesestadisticodistributivo(sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc(directorioReportes+"estadisticoxdistributivo.jasper");
 
+            }else if(tipo.equals("RESUL")){
+  
+                    datasource = noti.cuadrocalificacionesestadisticodistributivo(sistemasCombo.getSelectedItem().getValue(),new ArrayList());
+                    report.setSrc(directorioReportes+"resultados.jasper");
+
             }else if(tipo.equals("CSUP")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
@@ -834,6 +839,7 @@ void campos(String valor){
                                     <listitem  id="EST" label="Estadístico por Curso" value="EST" />
                                     <listitem  id="ESTA" label="Estadístico de Rendimiento por Curso" value="ESTA" />
                                     <listitem  id="ESTAD" label="Estadístico de Rendimiento por Distributivo" value="ESTAD" />
+                                    <listitem  id="RESUL" label="Resultados de Aprendizajes" value="RESUL" />
                                     
                                     <listitem  id="linea0281" label="============ACTAS Y CERTIFICADOS=============" value="linea2801" />
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
