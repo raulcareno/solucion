@@ -1333,7 +1333,7 @@ void verificarCedula(String valor){
 
   void facturasPendientes(){
                 try{
-                List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo,fa.contratos FROM cxcobrar cx, factura  fa "   +
+                List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo,fa.contratos, fa.numero FROM cxcobrar cx, factura  fa "   +
                         " WHERE fa.clientes  =  "+codigocli.value+"  " + 
                         "  AND cx.factura = fa.codigo GROUP BY fa.codigo   HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha "); 
                 
@@ -1609,21 +1609,14 @@ void verificarCedula(String valor){
                                                       final Window win = (Window) Executions.createComponents("anularFactura.zul", null, null);
                                                         win.setMaximizable(true);
                                                         win.setClosable(true);
-                                                        win.setTitle("Observación de Anular Factura");
+                                                        win.setTitle("Observación de Elimación del Pago");
                                                         win.doModal();
-                                                      /* Facturaanulada facAnulada = new Facturaanulada();
-                                                      facAnulada.setFactura(mifac);
-                                                      facAnulada.setEmpleados(usuarioActual);
-                                                      facAnulada.setFecha(adm.Date());
-                                                      facAnulada.setNumero(mifac.getNumero());
-                                                      facAnulada.setObservacion(observacionanula.value);
-                                                      facAnulada.setValorpago(cobro.getHaber());
-                                                      facAnulada.setNopago(cobro.getCodigo()); */
+                                                       
                                                       if(continuar.isChecked()){
-                                                        //adm.guardar(facAnulada);
+                                                        
                                                         adm.eliminarObjeto(Cxcobrar.class, facCodi );
-                                                        mifac.setNumero(null);
-                                                        adm.actualizar(mifac);
+                                                        //mifac.setNumero(null);
+                                                        //adm.actualizar(mifac);
                                                       }else{
                                                             historial.setSelected(true);
                                                           return;
@@ -1635,7 +1628,7 @@ void verificarCedula(String valor){
                                                     win.setClosable(true);
                                                     win.setTitle("Observación de Anular Cobro");
                                                     win.doModal();
-                                               
+                                                    /*
                                                       Facturaanulada facAnulada = new Facturaanulada();
                                                       facAnulada.setFactura(null);
                                                       facAnulada.setEmpleados(usuarioActual);
@@ -1643,11 +1636,11 @@ void verificarCedula(String valor){
                                                       facAnulada.setNumero(null);
                                                       facAnulada.setObservacion(observacionanula.value);
                                                       facAnulada.setValorpago(cobro.getHaber());
-                                                      facAnulada.setNopago(cobro.getCodigo());
-                                                    if(continuar.isChecked()){
-                                                        adm.guardar(facAnulada);
+                                                      facAnulada.setNopago(cobro.getCodigo()); */
+                                                    //if(continuar.isChecked()){
+                                                        //adm.guardar(facAnulada);
                                                         adm.eliminarObjeto(Cxcobrar.class, facCodi );
-                                                    }
+                                                    //}
                                           
                                                      historial.setSelected(true);
                                                }
@@ -2991,6 +2984,7 @@ void llamar(){
                             <column   label="Total"/>
                             <column   label="Saldo"/>
                             <column   label="Ref."/>
+                            <column   label="No.Factura"/>
                             <column  width="150px"  label="Acciones"/>
                         </columns>
                         <rows id="filasFac">
