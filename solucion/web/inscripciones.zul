@@ -1040,7 +1040,7 @@ void validar(Textbox texto){
                                  <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
                                 <separator bar="true"/>
                             </row>
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
+                            <row visible = "false" align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label  style="font-size:11px" value="¿Fué abanderado del pabellon nacional?" id="tc56566"/>
